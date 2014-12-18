@@ -2,12 +2,12 @@ deployment:
   staging:
     branch: develop
     commands:
-      - git push git@heroku.com:porter-qa.git $CIRCLE_SHA1:master
-      - heroku run rake db:migrate --app eatt-staging
+      # - git push git@heroku.com:porter-qa.git $CIRCLE_SHA1:master
+      # - heroku run rake db:migrate --app porter-qa
       # - bundle exec rake quay:build:develop
   production:
     branch: master
     commands:
-      - git push git@heroku.com:porter.git $CIRCLE_SHA1:master
-      - heroku run rake db:migrate --app eatt
+      # - git push git@heroku.com:porter.git $CIRCLE_SHA1:master
+      # - heroku run rake db:migrate --app porter
       # - bundle exec rake quay:build:master
