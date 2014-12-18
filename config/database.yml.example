@@ -1,0 +1,29 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: porter-web_development
+  pool: 5
+  username: postgres
+  password:
+  host: <%= ENV.fetch('DB_1_PORT_5432_TCP_ADDR', 'localhost') %>
+  port: <%= ENV.fetch('DB_1_PORT_5432_TCP_PORT', '5432') %>
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: porter-web_test
+  pool: 5
+  username: postgres
+  password:
+  host: <%= ENV.fetch('DB_1_PORT_5432_TCP_ADDR', 'localhost') %>
+  port: <%= ENV.fetch('DB_1_PORT_5432_TCP_PORT', '5432') %>
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: porter-web_production
+  pool: 5
+  username: postgres
+  password:
+  host: <%= ENV.fetch('DB_1_PORT_5432_TCP_ADDR', 'localhost') %>
+  port: <%= ENV.fetch('DB_1_PORT_5432_TCP_PORT', '5432') %>

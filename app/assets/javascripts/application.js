@@ -13,4 +13,25 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require angular
+//= require angular-cookies.min
+//= require select2.min
+//= require select2
+//= require underscore-min
+//= require jquery.scrollTo
+//= require jquery.cookie
 //= require_tree .
+
+
+$.cookie.json = true
+
+_.mixin({
+  rotate: function(array, n, guard) {
+    var head, tail
+    n = (n == null) || guard ? 1 : n
+    n = n % array.length
+    tail = array.slice(n)
+    head = array.slice(0, n)
+    return tail.concat(head)
+  }
+})

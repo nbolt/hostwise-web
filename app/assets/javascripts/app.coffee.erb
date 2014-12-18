@@ -1,0 +1,17 @@
+ordinal = (n) ->
+  s=["th","st","nd","rd"]
+  v=n%100
+  n+(s[(v-20)%10]||s[v]||s[0])
+
+
+AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+
+]
+
+app = angular.module('porter', ['ngCookies', 'ui.select2'])
+  .controller('app',           AppCtrl)
+  .config ['$httpProvider', ($httpProvider) ->
+    $httpProvider.defaults.headers.common['X-CSRF-Token'] = angular.element('meta[name=csrf-token]').attr 'content'
+  ]
+
+angular.element(document).on 'ready page:load', -> angular.bootstrap('body', ['porter'])
