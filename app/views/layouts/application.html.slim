@@ -40,19 +40,19 @@ html
     - if Rails.env == 'production' && logged_in?
         javascript:
           analytics.identify("#{ current_user.id }", {
-            name: "#{ current_user.full_name }",
+            name: "#{ current_user.name }",
             id: "#{ current_user.id }",
             email: "#{ current_user.email }",
             createdAt: "#{ current_user.created_at }",
             firstName: "#{ current_user.first_name }",
             lastName: "#{ current_user.last_name }"
-          }, {
-            integrations: {
-                Intercom : {
-                    user_hash : "#{ OpenSSL::HMAC.hexdigest('sha256', ENV['INTERCOM_SECRET'], current_user.id.to_s) }"
-                }
-            }
-          })
+          }//, {
+           // integrations: {
+           //     Intercom : {
+           //         user_hash : "#{ OpenSSL::HMAC.hexdigest('sha256', ENV['INTERCOM_SECRET'], current_user.id.to_s) }"
+           //     }
+           // }
+          )
 
           window.intercomSettings = { 
             "widget": {

@@ -11,47 +11,21 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 SignupCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
   $scope.step = (n) ->
-    switch n
-      when 1
-        $http.post('/auth/signup', {
-          stage: 1
-          form: $scope.form
-        }).success (rsp) ->
-          if rsp.success
-            angular.element('#signup .steps').css('margin-left', -600)
-          else
-            signup_flash('failure', rsp.message)
-      when 2
-        $http.post('/auth/signup', {
-          stage: 2
-          form: $scope.form
-        }).success (rsp) ->
-          if rsp.success
-            angular.element('#signup .steps').css('margin-left', -1200)
-          else
-            signup_flash('failure', rsp.message)
-        null
-      when 3
-        $http.post('/auth/signup', {
-          stage: 3
-          form: $scope.form
-        }).success (rsp) ->
-          if rsp.success
-            angular.element('#signup .steps').css('margin-left', -1800)
-          else
-            signup_flash('failure', rsp.message)
-        null
-      when 4
-        $http.post('/auth/signup', {
-          stage: 4
-          form: $scope.form
-          code: $scope.confirmation_code
-        }).success (rsp) ->
-          if rsp.success
-            $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/'
-          else
-            signup_flash('failure', rsp.message)
-        null
+    if n < 4
+      success = -> angular.element('#signup .steps').css('margin-left', -(n* 600))
+    else
+      success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/'
+    
+    $http.post('/auth/signup', {
+      stage: n
+      form: $scope.form
+      code: $scope.confirmation_code
+    }).success (rsp) ->
+      if rsp.success
+        success()
+      else
+        signup_flash('failure', rsp.message)
+
 
   signup_flash = (type, msg) ->
     angular.element('#signup .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
