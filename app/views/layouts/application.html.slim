@@ -64,10 +64,14 @@ html
   body ng:controller='app'
     header
       nav
-        .link
-          a href='/signup' Sign up
-        .link
-          a href='/signin' Log in
+        - if logged_in?
+          .link
+            a href='/signout' Log out
+        - else
+          .link
+            a href='/signup' Sign up
+          .link
+            a href='/signin' Log in
       .logo
         img src='/images/porter-white.png'
         .text Porter

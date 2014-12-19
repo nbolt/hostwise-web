@@ -8,11 +8,20 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
 ]
 
-SignupCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+
+  $scope.signin = ->
+    $http.post('/auth/signin', {
+      form: $scope.form
+    }).success (rsp) ->
+      if rsp.success
+        window.location = '/'
+      else
+        flash('failure', rsp.message)
 
   $scope.step = (n) ->
     if n < 4
-      success = -> angular.element('#signup .steps').css('margin-left', -(n* 600))
+      success = -> angular.element('#signup .steps').css('margin-left', -(n * 600))
     else
       success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/'
     
@@ -24,10 +33,10 @@ SignupCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       if rsp.success
         success()
       else
-        signup_flash('failure', rsp.message)
+        flash('failure', rsp.message)
 
 
-  signup_flash = (type, msg) ->
+  flash = (type, msg) ->
     angular.element('#signup .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
       angular.element('#signup .flash').css('opacity', 0)
@@ -36,8 +45,8 @@ SignupCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 ]
 
 app = angular.module('porter', ['ngCookies', 'ui.select2'])
-  .controller('app',    AppCtrl)
-  .controller('signup', SignupCtrl)
+  .controller('app',  AppCtrl)
+  .controller('auth', AuthCtrl)
   .config ['$httpProvider', ($httpProvider) ->
     $httpProvider.defaults.headers.common['X-CSRF-Token'] = angular.element('meta[name=csrf-token]').attr 'content'
   ]

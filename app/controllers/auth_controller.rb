@@ -40,6 +40,12 @@ class AuthController < ApplicationController
   end
 
   def signin
+    user = login(params[:form][:email], params[:form][:password])
+    if user
+      render json: { success: true }
+    else
+      render json: { success: false, message: user.errors.full_messages[0] }
+    end
   end
 
   def phone_confirmed
