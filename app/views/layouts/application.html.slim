@@ -62,4 +62,13 @@ html
 
 
   body ng:controller='app'
-    = yield
+    header
+      nav
+        .link
+          a href='/signup' Sign up
+        .link
+          a href='/signin' Log in
+      .logo
+        img src='/images/porter-white.png'
+        .text Porter
+    .body= yield

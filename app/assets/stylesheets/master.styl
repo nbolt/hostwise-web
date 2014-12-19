@@ -1,3 +1,8 @@
+black = #272727
+red = #C41348
+green = #88c425
+light-grey = #ccc
+
 facebook-blue = #3d599b
 twitter-blue  = #00abee
 
@@ -6,9 +11,96 @@ twitter-blue  = #00abee
     to   {opacity: 1}
 }
 
+@keyframes spin {
+    from {transform: rotate(0deg)}
+    to {transform: rotate(-360deg)}
+}
+
 html, body, .body
   height: 100%
   margin: 0
   font-family: Open Sans, Helvetica Neue,HelveticaNeue,Helvetica, Arial, sans-serif
-  color: #222
+  color: black
   font-size: 100%
+  
+header
+  padding: 10px
+  border-bottom: thin solid light-grey
+  .logo
+    img
+      width: 40px
+    .text
+      display: inline-block
+      vertical-align: top
+      margin: 10px 0 0 15px
+      font-size: 1.75em
+  nav
+    float: right
+    margin-top: 20px
+    .link
+      display: inline-block
+      vertical-align: top
+      margin: 0 10px
+      a
+        color: black
+        text-decoration: none
+        &:hover
+          color: red
+          
+#signup
+  width: 600px
+  margin: 80px auto
+  text-align: center
+  position: relative
+  .title
+    font-size: 2em
+    margin-bottom: 25px
+  .field
+    margin: 15px
+    input
+      padding: 8px 12px
+      border: thin solid light-grey
+      border-radius: 3px
+      width: 300px
+      &:focus
+        outline: none
+  .button
+    border: 2px solid red
+    width: 200px
+    border-radius: 3px
+    margin: auto
+    padding: 8px 4px 10px 6px
+    &:hover
+      background-color: red
+      color: white
+      cursor: pointer
+    .text
+      margin-right: 6px
+    .text, .typcn
+      display: inline-block
+      vertical-align: top
+  .form-container
+    overflow: hidden
+    .steps
+      width: 2400px
+      transition: margin-left .6s ease
+      .step
+        width: 600px
+        display: inline-block
+        vertical-align: top
+  .flash
+    position: absolute
+    top: -50px
+    width: 400px
+    left: 50%
+    margin-left: -200px
+    border-radius: 3px
+    box-sizing: border-box
+    color: white
+    opacity: 0
+    transition: opacity .6s ease
+    padding: 6px
+    &.success
+      background-color: green
+    &.failure
+      background-color: red

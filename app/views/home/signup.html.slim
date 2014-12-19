@@ -1,0 +1,35 @@
+#signup ng:controller='signup'
+  .flash
+  .title Sign up
+  .form-container
+    .steps
+      .step.one
+        .field
+          input type='email' placeholder='Email' ng:model='form.email'
+        .field
+          input type='password' placeholder='Password' ng:model='form.password'
+        .button ng:click='step(1)'
+          .text Sign up
+          .typcn.typcn-arrow-right-thick
+      .step.two
+        .field
+          input type='text' placeholder='First Name' ng:model='form.first_name'
+        .field
+          input type='text' placeholder='Last Name' ng:model='form.last_name'
+        .field
+          input type='text' placeholder='Company (optional)' ng:model='form.company'
+        .button ng:click='step(2)'
+          .text Continue
+          .typcn.typcn-arrow-right-thick
+      .step.three
+        .field
+          input type='text' placeholder='Mobile Number (10 digits)' ng:model='form.phone_number'
+        .button ng:click='step(3)'
+          .text Verify Phone Number
+          .typcn.typcn-arrow-right-thick
+      .step.four
+        .field
+          input type='text' placeholder='Confirmation Code' ng:model='form.confirmation_code'
+        .button ng:click='step(4)'
+          .text Complete Registration
+          .typcn.typcn-arrow-right-thick

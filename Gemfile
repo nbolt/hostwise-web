@@ -39,6 +39,7 @@ gem 'pry-rails', groups: [:test, :development]
 gem 'stylus', github: 'lucasmazza/ruby-stylus', group: :assets
 gem 'rmagick', require: false
 
+gem 'twilio-ruby'
 gem 'simplecov'
 gem 'sorcery'
 gem 'appsignal'

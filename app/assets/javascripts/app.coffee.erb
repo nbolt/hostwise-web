@@ -8,8 +8,62 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
 ]
 
+SignupCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+
+  $scope.step = (n) ->
+    switch n
+      when 1
+        $http.post('/auth/signup', {
+          stage: 1
+          form: $scope.form
+        }).success (rsp) ->
+          if rsp.success
+            angular.element('#signup .steps').css('margin-left', -600)
+          else
+            signup_flash('failure', rsp.message)
+      when 2
+        $http.post('/auth/signup', {
+          stage: 2
+          form: $scope.form
+        }).success (rsp) ->
+          if rsp.success
+            angular.element('#signup .steps').css('margin-left', -1200)
+          else
+            signup_flash('failure', rsp.message)
+        null
+      when 3
+        $http.post('/auth/signup', {
+          stage: 3
+          form: $scope.form
+        }).success (rsp) ->
+          if rsp.success
+            angular.element('#signup .steps').css('margin-left', -1800)
+          else
+            signup_flash('failure', rsp.message)
+        null
+      when 4
+        $http.post('/auth/signup', {
+          stage: 4
+          form: $scope.form
+          code: $scope.confirmation_code
+        }).success (rsp) ->
+          if rsp.success
+            $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/'
+          else
+            signup_flash('failure', rsp.message)
+        null
+
+  signup_flash = (type, msg) ->
+    angular.element('#signup .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
+    $timeout((->
+      angular.element('#signup .flash').css('opacity', 0)
+    ), 3000)
+
+]
+
 app = angular.module('porter', ['ngCookies', 'ui.select2'])
-  .controller('app',           AppCtrl)
+  .controller('app',    AppCtrl)
+  .controller('signup', SignupCtrl)
   .config ['$httpProvider', ($httpProvider) ->
     $httpProvider.defaults.headers.common['X-CSRF-Token'] = angular.element('meta[name=csrf-token]').attr 'content'
   ]

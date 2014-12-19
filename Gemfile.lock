@@ -309,6 +309,10 @@ GEM
     tins (0.13.2)
     turbolinks (2.5.3)
       coffee-rails
+    twilio-ruby (3.11.6)
+      builder (>= 2.1.2)
+      jwt (>= 0.1.2)
+      multi_json (>= 1.3.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.6.0)
@@ -366,6 +370,7 @@ DEPENDENCIES
   stylus!
   sucker_punch
   turbolinks
+  twilio-ruby
   uglifier
   vcr
   webmock
