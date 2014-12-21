@@ -1,0 +1,80 @@
+#add-property ng:controller='new_property'
+  - if current_user.properties.empty?
+    .page-title Add Your First Property
+  - else
+    .page-title Add New Property
+
+  .step-circles
+    .step.active
+      .num 1
+    .step
+      .num 2
+    .step
+      .num 3
+    .step
+      .num 4
+
+  #property-form-container
+    .flash
+    .steps
+      .step.one
+        form
+          .section
+            .title Address
+            .row.two
+              .field
+                input type='text' placeholder='Property nickname' required='' ng:model='form.title'
+              .field
+                input#city type='hidden' placeholder='City' required='' ng:model='form.city' ui-select2='cities()'
+            .row.two
+              .field
+                input type='text' placeholder='Address' required='' ng:model='form.address1'
+              .field
+                input type='text' placeholder='Apt/Suite' ng:model='form.address2'
+          .button
+            button ng:click='step(1)'
+              .text Next
+              .typcn.typcn-arrow-right-thick
+      .step.two
+        form
+          .section
+            .title Pick Dates
+          calendar
+          .button
+            button ng:click='step(2)'
+              .text Next
+              .typcn.typcn-arrow-right-thick
+      .step.three
+        form
+          .section
+            .title Select Services
+          .services
+            .service sid='{{ ::service.id }}' toggle-service='' ng:repeat='service in services'
+              .text ng:bind='::service.name'
+          .button
+            button ng:click='step(3)'
+              .text Next
+              .typcn.typcn-arrow-right-thick
+      .step.four
+        form
+          .section
+            .title Choose Payment
+          .payment
+            .card-entry
+              .title
+                = image_tag '/images/unknown.jpg'
+                .text Payment Details
+              .card-details
+                .field.card-number
+                  .label Card Number
+                  input data-stripe='number' ui:mask='9999 9999 9999 9999' ng:model='entry_card.number'
+                .field.expiry
+                  .label Expiry Date
+                  input data-stripe='expiry' ui:mask='99/99' ng:model='entry_card.expiry' placeholder='MM/YY'
+                .field.cvc
+                  .label CV Code
+                  input data-stripe='cvc' ng:model='entry_card.cvc' placeholder='123'
+          .button
+            button ng:click='step(4)'
+              .text Book now
+              .typcn.typcn-arrow-right-thick

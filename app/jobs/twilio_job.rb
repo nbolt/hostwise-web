@@ -1,6 +1,6 @@
-class TwilioJob
-  include SuckerPunch::Job
-
+class TwilioJob < ActiveJob::Base
+  queue_as :default
+ 
   def perform(to, body)
     twilio = Twilio::REST::Client.new(ENV['TWILIO_SID'], ENV['TWILIO_TOKEN'])
     twilio.account.messages.create(

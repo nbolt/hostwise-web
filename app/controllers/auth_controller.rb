@@ -5,7 +5,12 @@ class AuthController < ApplicationController
     when 1
       user = User.where(email: params[:form][:email])[0]
       if user
-        user.assign_attributes(user_params)
+        if user.phone_confirmed
+          render json: { success: false, message: "Account already exists" }
+          return
+        else
+          user.assign_attributes(user_params)
+        end
       else
         user = User.new(user_params)
       end
@@ -22,7 +27,7 @@ class AuthController < ApplicationController
       user = User.where(email: params[:form][:email])[0]
       user.phone_number = parsed_number
       user.phone_confirmation = rand(1000..9999)
-      TwilioJob.new.async.perform("+1#{user.phone_number}", "Welcome to Porter! You're confirmation code is: #{user.phone_confirmation}")
+      TwilioJob.perform_later("+1#{user.phone_number}", "Welcome to Porter! You're confirmation code is: #{user.phone_confirmation}")
     when 4
       user = User.where(email: params[:form][:email])[0]
       if params[:form][:confirmation_code] == user.phone_confirmation

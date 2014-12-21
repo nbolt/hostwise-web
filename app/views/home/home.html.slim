@@ -1,0 +1,10 @@
+#home ng:controller='properties'
+  #search
+    input type='text' placeholder='Search your properties' ng:model='search'
+
+  a#add-property href='/properties/new'
+    .text Add Property
+
+  #properties
+    .property ng:repeat='property in properties'
+      .title ng:bind='::property.title'

@@ -9,6 +9,7 @@ Bundler.require(:default, :assets, Rails.env)
 module PorterWeb
   class Application < Rails::Application
     #Stylus.setup Sprockets, config.assets rescue nil
+    config.active_job.queue_adapter = :sucker_punch
     Stylus.use('axis-css') if defined?(Stylus)
     config.generators do |g|
       g.test_framework :mini_test, :spec => true, :fixture => true
