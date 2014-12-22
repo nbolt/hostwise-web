@@ -162,7 +162,7 @@ form
     width: 400px
     margin: 20px auto
   .steps
-    width: 2400px
+    width: 3000px
     transition: margin-left .6s ease
     .step
       width: 600px
@@ -222,6 +222,33 @@ form
       &.active.selecting
         background-color: red !important
         color: white
+  .tabs
+    text-align: center
+    .tab
+      display: inline-block
+      vertical-align: top
+      margin: 10px 20px
+      padding-bottom: 4px
+      &.active
+        border-bottom: thin solid light-grey
+      &:hover
+        cursor: pointer
+  .payments
+    .payment
+      text-align: center
+      width: 300px
+      margin: 25px auto
+      padding: 10px
+      border-radius: 3px
+      background-color: #eee
+      label
+        margin: 0 10px
+      .brand
+        display: inline-block
+        vertical-align: top
+      &:hover
+        cursor: pointer
+
 calendar
   .arrows
     position: absolute
@@ -295,7 +322,7 @@ calendar
       margin: 20px auto
       border-radius: 3px
    
-.payment
+.new-payment
   color: #888
   width: 410px
   margin: auto

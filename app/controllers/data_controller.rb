@@ -12,4 +12,8 @@ class DataController < ApplicationController
     render json: current_user.properties
   end
 
+  def payments
+    render json: current_user.payments
+  end
+
 end

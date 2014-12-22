@@ -24,7 +24,7 @@ class PropertiesController < ApplicationController
         property.bookings.build(date: date)
       end
     when 3
-      if params[:chosen_services][0]
+      if params[:chosen_services].to_a[0]
         property = Property.find(params[:property_id])
         property.bookings.pending.each do |booking|
           params[:chosen_services].each do |_, service|
@@ -41,19 +41,27 @@ class PropertiesController < ApplicationController
       if params[:stripe_token]
         customer = Stripe::Customer.retrieve current_user.stripe_customer_id
         card = customer.cards.create(card: params[:stripe_token])
-        payment = current_user.payments.build({
-          stripe_id: card.id,
-          last4: card.last4,
-          card_type: card.brand.downcase.gsub(' ', '_'),
-          fingerprint: card.fingerprint
-        })
+        existing_payment = current_user.payments.where(fingerprint: card.fingerprint)[0]
+        if existing_payment
+          payment = existing_payment
+          customer.cards.retrieve(card.id).delete
+        else
+          payment = current_user.payments.create({
+            stripe_id: card.id,
+            last4: card.last4,
+            card_type: card.brand.downcase.gsub(' ', '_'),
+            fingerprint: card.fingerprint
+          })
+        end
       else
         payment = current_user.payments.where(stripe_id: params[:stripe_id])[0]
       end
-      property.booking.pending.each do |booking|
+      property.bookings.pending.each do |booking|
         booking.payment = payment
         booking.save
       end
+    when 5
+      property = Property.find(params[:property_id])
     end
     if property.save
       current_user.save

@@ -13,6 +13,8 @@
       .num 3
     .step
       .num 4
+    .step
+      .num 5
 
   #property-form-container
     .flash
@@ -59,7 +61,18 @@
         form
           .section
             .title Choose Payment
-          .payment
+          .tabs
+            .tab ng:class='show_existing_class()' ng:click="tab('existing')" Existing Cards
+            .tab ng:class='show_new_class()' ng:click="tab('new')" New Card
+          .existing ng:show='show_existing()'
+            .payments
+              .payment ng:repeat='payment in payments'
+                input icheck-payment='grey' type='radio' name='payment' id='payment-{{payment.id}}' value='{{payment.stripe_id}}'
+                label for='payment-{{payment.id}}'
+                  | **** **** **** {{ payment.last4 }}
+                .brand
+                  img ng:src='/images/{{payment.card_type}}.jpg'
+          .new-payment ng:show='show_new()'
             .card-entry
               .title
                 = image_tag '/images/unknown.jpg'
@@ -76,5 +89,14 @@
                   input data-stripe='cvc' ng:model='entry_card.cvc' placeholder='123'
           .button
             button ng:click='step(4)'
-              .text Book now
+              .text Next
+              .typcn.typcn-arrow-right-thick
+      .step.five
+        form
+          .section
+            .title Summary
+          p style='text-align:center' ...
+          .button
+            button ng:click='step(5)'
+              .text Give us your money
               .typcn.typcn-arrow-right-thick

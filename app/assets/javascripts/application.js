@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require angular
 //= require angular-cookies.min
+//= require mask
 //= require select2.min
 //= require select2
 //= require underscore-min

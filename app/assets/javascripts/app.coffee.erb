@@ -60,6 +60,9 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.chosen_services = {}
 
   $http.get('/data/services').success (rsp) -> $scope.services = rsp
+  $http.get('/data/payments').success (rsp) ->
+    $scope.payments = rsp
+    $scope.stripe_id = $scope.payments[0].stripe_id if $scope.payments[0]
 
   $scope.cities = ->
     {
@@ -73,6 +76,22 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         quietMillis: 400
         results: (data) -> { results: _(data).map (c) -> { id: c.id, text: c.name, state: c.state.abbr, county: c.county.name } }
     }
+
+  $scope.show_existing = -> if $scope.stripe_id then true  else false
+  $scope.show_new      = -> if $scope.stripe_id then false else true
+  $scope.show_existing_class = -> if $scope.show_existing() then 'active' else 'inactive'
+  $scope.show_new_class      = -> if $scope.show_new()      then 'active' else 'inactive'
+
+  $scope.select_payment = (id) -> $scope.stripe_id = id
+
+  $scope.tab = (tab) ->
+    switch tab
+      when 'existing'
+        angular.element('.existing .payment input').iCheck('uncheck')
+        angular.element('.existing .payment:eq(0) input').iCheck('check')
+        $scope.stripe_id = $scope.payments[0].id
+      when 'new'
+        $scope.stripe_id = null
 
   $scope.step = (n) ->
     post = ->
@@ -94,19 +113,20 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
           else
             flash('failure', rsp.message)
 
-    if n < 4
+    if n < 5
       success = ->
         angular.element('#property-form-container .steps').css('margin-left', -(n * 600))
         angular.element('.step-circles .step').removeClass('active').eq(n).addClass('active')
     else
       success = -> window.location = '/'
 
+    angular.element('.existing .payment:eq(0) input').iCheck('check') if n == 3 && $scope.stripe_id
     if n == 4 && !$scope.stripe_id
       Stripe.createToken {
-        number: angular.element('.payment input[data-stripe=number]').val()
-        cvc: angular.element('.payment input[data-stripe=cvc]').val()
-        exp_month: angular.element('.payment input[data-stripe=expiry]').val().split('/')[0]
-        exp_year: angular.element('.payment input[data-stripe=expiry]').val().split('/')[1]
+        number: angular.element('.new-payment input[data-stripe=number]').val()
+        cvc: angular.element('.new-payment input[data-stripe=cvc]').val()
+        exp_month: angular.element('.new-payment input[data-stripe=expiry]').val().split('/')[0]
+        exp_year: angular.element('.new-payment input[data-stripe=expiry]').val().split('/')[1]
       }, (_, rsp) ->
         if rsp.error
           flash 'failure', rsp.error.message
@@ -131,7 +151,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 ]
 
 
-app = angular.module('porter', ['ngCookies', 'ui.select2'])
+app = angular.module('porter', ['ngCookies', 'ui.mask', 'ui.select2'])
   .controller('app',          AppCtrl)
   .controller('auth',         AuthCtrl)
   .controller('new_property', NewPropertyCtrl)
@@ -139,6 +159,14 @@ app = angular.module('porter', ['ngCookies', 'ui.select2'])
   .config ['$httpProvider', ($httpProvider) ->
     $httpProvider.defaults.headers.common['X-CSRF-Token'] = angular.element('meta[name=csrf-token]').attr 'content'
   ]
+  .directive('icheckPayment', [-> (scope, element, attrs) ->
+    element.iCheck
+      checkboxClass: "icheckbox_square-#{attrs.icheckPayment}"
+      radioClass: "iradio_square-#{attrs.icheckPayment}"
+
+    element.on 'ifChecked', ->
+      scope.select_payment element.val()
+  ])
   .directive('toggleService', [-> (scope, element, attrs) ->
     element.on('click', ->
       element.addClass('selecting')
