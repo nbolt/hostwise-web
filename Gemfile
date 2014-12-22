@@ -40,6 +40,7 @@ gem 'stylus', github: 'lucasmazza/ruby-stylus', group: :assets
 gem 'rmagick', require: false
 
 gem 'twilio-ruby'
+gem 'smartystreets'
 gem 'simplecov'
 gem 'sorcery'
 gem 'appsignal'

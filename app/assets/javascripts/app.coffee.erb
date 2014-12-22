@@ -10,13 +10,16 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
 AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
+  $scope.posting = false
+
   $scope.signin = ->
     $http.post('/auth/signin', {
       form: $scope.form
     }).success (rsp) ->
       if rsp.success
-        window.location = '/'
+        window.location = rsp.redirect_to
       else
+        window.flash = flash
         flash('failure', rsp.message)
 
   $scope.step = (n) ->
@@ -25,27 +28,34 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     else
       success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/'
     
-    $http.post('/auth/signup', {
-      stage: n
-      form: $scope.form
-      code: $scope.confirmation_code
-    }).success (rsp) ->
-      if rsp.success
-        success()
-      else
-        flash('failure', rsp.message)
+    post()
 
 
   flash = (type, msg) ->
-    angular.element('#signup .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
+    angular.element('#signin .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
-      angular.element('#signup .flash').css('opacity', 0)
+      angular.element('#signin .flash').css('opacity', 0)
     ), 3000)
+
+  post = ->
+    unless $scope.posting
+      $scope.posting = true
+      $http.post('/auth/signup', {
+        stage: n
+        form: $scope.form
+        code: $scope.confirmation_code
+      }).success (rsp) ->
+        $scope.posting = false
+        if rsp.success
+          success()
+        else
+          flash('failure', rsp.message)
 
 ]
 
 NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
+  $scope.posting = false
   $scope.chosen_dates    = {}
   $scope.chosen_services = {}
 
@@ -66,20 +76,24 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
   $scope.step = (n) ->
     post = ->
-      $http.post('/properties/build', {
-        stage: n
-        form: $scope.form,
-        property_id: $scope.property_id,
-        chosen_dates: $scope.chosen_dates
-        chosen_services: $scope.chosen_services
-        stripe_token: $scope.stripe_token
-      }).success (rsp) ->
-        if rsp.success
-          success()
-          $scope.property_id = rsp.property_id
-        else
-          flash('failure', rsp.message)
-    
+      unless $scope.posting
+        $scope.posting = true
+        $http.post('/properties/build', {
+          stage: n
+          form: $scope.form,
+          property_id: $scope.property_id,
+          chosen_dates: $scope.chosen_dates
+          chosen_services: $scope.chosen_services
+          stripe_token: $scope.stripe_token
+          stripe_id: $scope.stripe_id
+        }).success (rsp) ->
+          $scope.posting = false
+          if rsp.success
+            success()
+            $scope.property_id = rsp.property_id
+          else
+            flash('failure', rsp.message)
+
     if n < 4
       success = ->
         angular.element('#property-form-container .steps').css('margin-left', -(n * 600))
@@ -87,7 +101,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     else
       success = -> window.location = '/'
 
-    if n == 4
+    if n == 4 && !$scope.stripe_id
       Stripe.createToken {
         number: angular.element('.payment input[data-stripe=number]').val()
         cvc: angular.element('.payment input[data-stripe=cvc]').val()

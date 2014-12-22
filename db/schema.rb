@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141221042939) do
+ActiveRecord::Schema.define(version: 20141221234809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,16 +69,17 @@ ActiveRecord::Schema.define(version: 20141221042939) do
 
   create_table "properties", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "title",         limit: 255
-    t.string   "address1",      limit: 255
-    t.string   "address2",      limit: 255
-    t.string   "city",          limit: 255
-    t.string   "state",         limit: 255
-    t.string   "zip",           limit: 255
-    t.string   "country",       limit: 255
-    t.string   "property_type", limit: 255
+    t.string   "title",                  limit: 255
+    t.string   "address1",               limit: 255
+    t.string   "address2",               limit: 255
+    t.string   "city",                   limit: 255
+    t.string   "state",                  limit: 255
+    t.string   "zip",                    limit: 255
+    t.string   "country",                limit: 255
+    t.string   "property_type",          limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "delivery_point_barcode"
   end
 
   create_table "services", force: :cascade do |t|
@@ -112,6 +113,7 @@ ActiveRecord::Schema.define(version: 20141221042939) do
     t.boolean  "phone_confirmed",                          default: false
     t.string   "company",                      limit: 255
     t.string   "phone_confirmation",           limit: 255
+    t.string   "stripe_customer_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
