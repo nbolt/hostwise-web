@@ -5,16 +5,14 @@ class PropertiesController < ApplicationController
   def build
     case params[:stage]
     when 1
-      if params[:form][:city]
-        # validate delivery_point_barcode and confirm with user if duplicate
-        property = current_user.properties.build(property_params)
-        city = City.find(params[:form][:city][:id])
-        property.city = city.name
-        property.state = city.state.abbr
-      else
-        render json: { success: false, message: "Please select a city" }
-        return
-      end
+      # validate delivery_point_barcode and confirm with user if duplicate
+      property = current_user.properties.build(property_params)
+      city = City.find(params[:form][:city][:id])
+      property.city = city.name
+      property.state = city.state.abbr
+      property.bedrooms = params[:form][:bedrooms][:id]
+      property.beds = params[:form][:beds][:id]
+      property.accommodates = params[:form][:accommodates][:id]
     when 2
       property = Property.find(params[:property_id])
       property.bookings.pending.destroy_all

@@ -33,6 +33,15 @@
                 input type='text' placeholder='Address' required='' ng:model='form.address1'
               .field
                 input type='text' placeholder='Apt/Suite' ng:model='form.address2'
+          .section
+            .title Details
+            .row.three
+              .field
+                input type='hidden' placeholder='Bedrooms' required='' ng:model='form.bedrooms' ui-select2='bedrooms()'
+              .field
+                input type='hidden' placeholder='Beds' required='' ng:model='form.beds' ui-select2='beds()'
+              .field
+                input type='hidden' placeholder='Accommodates' required='' ng:model='form.accommodates' ui-select2='accommodates()'
           .button
             button ng:click='step(1)'
               .text Next
