@@ -1,4 +1,4 @@
-class AuthController < ApplicationController
+class Team::AuthController < ApplicationController
 
   def signup
     case params[:stage]
@@ -69,6 +69,6 @@ class AuthController < ApplicationController
 
   def user_params
     params.require(:form).permit(:email, :password, :first_name, :last_name, :company, :role)
-  end
+  end  
 
 end
