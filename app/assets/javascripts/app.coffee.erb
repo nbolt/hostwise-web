@@ -140,8 +140,9 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.skip = (n) ->
     switch n
       when 2
-        angular.element('#property-form-container .steps').css('margin-left', -(3 * 600))
+        angular.element('#property-form-container .steps').css('margin-left', -(4 * 600))
         angular.element('.step-circles .step').removeClass('active').eq(4).addClass('active')
+    null
 
   $scope.step = (n) ->
     if validate(n)
@@ -287,6 +288,9 @@ app = angular.module('porter', ['ngCookies', 'ui.mask', 'ui.select2'])
                else if current_day >= month_days
                 ++current_day
                 'class="inactive day">' + (current_day - month_days)
+               else if moment().diff(new Date(year, month, current_day), 'days') > 0
+                ++current_day
+                'class="past day">' + current_day
                else
                  ++current_day
                  'day="' + current_day + '" month="' + month + '" year="' + year + '" class="active day">' + current_day) + '</td>'

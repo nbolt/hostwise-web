@@ -6,4 +6,5 @@ class Booking < ActiveRecord::Base
   has_many :services, through: :booking_services
 
   scope :pending, -> { includes(:services).where('services.id is null or bookings.payment_id is null').references(:services) }
+  scope :active,  -> { includes(:services).where('services.id is not null and bookings.payment_id is not null').references(:services) }
 end
