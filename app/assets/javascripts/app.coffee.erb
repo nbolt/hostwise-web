@@ -22,26 +22,6 @@ TeamAuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       else
         flash('failure', rsp.message)
 
-  $scope.step = (n) ->
-    if n < 4
-      success = -> angular.element('#signup .steps').css('margin-left', -(n * 600))
-    else
-      success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/'
-    
-    unless $scope.posting
-      $scope.posting = true
-      $http.post('/auth/signup', {
-        stage: n
-        form: $scope.form
-        code: $scope.confirmation_code
-      }).success (rsp) ->
-        $scope.posting = false
-        if rsp.success
-          success()
-        else
-          flash('failure', rsp.message)
-
-
   flash = (type, msg) ->
     angular.element('#signin .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
@@ -97,6 +77,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.posting = false
   $scope.chosen_dates    = {}
   $scope.chosen_services = {}
+  $scope.extras          = {}
 
   $http.get('/data/services').success (rsp) -> $scope.services = rsp
   $http.get('/data/payments').success (rsp) ->
@@ -156,6 +137,12 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       when 'new'
         $scope.stripe_id = null
 
+  $scope.skip = (n) ->
+    switch n
+      when 2
+        angular.element('#property-form-container .steps').css('margin-left', -(3 * 600))
+        angular.element('.step-circles .step').removeClass('active').eq(4).addClass('active')
+
   $scope.step = (n) ->
     if validate(n)
       post = ->
@@ -163,19 +150,22 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
           $scope.posting = true
           $http.post('/properties/build', {
             stage: n
-            form: $scope.form,
-            property_id: $scope.property_id,
+            form: $scope.form
+            property_id: $scope.property_id
             chosen_dates: $scope.chosen_dates
             chosen_services: $scope.chosen_services
             stripe_token: $scope.stripe_token
             stripe_id: $scope.stripe_id
+            extras: $scope.extras
           }).success (rsp) ->
             $scope.posting = false
+            _($scope.extras).extend(rsp.extras)
             if rsp.success
               success()
               $scope.property_id = rsp.property_id
+              $scope.extras = {}
             else
-              flash('failure', rsp.message)
+              flash(rsp.type || 'failure', rsp.message)
 
       if n < 5
         success = ->
@@ -203,7 +193,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   flash = (type, msg) ->
     angular.element('#property-form-container .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
-      angular.element('#property-form-container .flash').css('opacity', 0)
+      angular.element('#property-form-container .flash').css('opacity', 0).removeClass('info success failure')
     ), 3000)
 
   validate = (n) ->

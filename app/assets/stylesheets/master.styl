@@ -2,6 +2,7 @@ black = #272727
 red = #C41348
 green = #88c425
 light-grey = #ccc
+light-blue = #7296BF
 
 facebook-blue = #3d599b
 twitter-blue  = #00abee
@@ -55,6 +56,12 @@ form
   .button
     margin: auto
     text-align: center
+    .skip
+      color: light-blue
+      display: inline-block
+      margin-left: 25px
+      &:hover
+        cursor: pointer
   button
     border: 2px solid red
     width: 220px
@@ -114,7 +121,7 @@ form
   box-sizing: border-box
   color: white
   opacity: 0
-  transition: opacity .6s ease
+  transition: opacity .6s ease, height .6s ease
   padding: 6px
   text-align: center
   height: 34px
@@ -122,6 +129,9 @@ form
     background-color: green
   &.failure
     background-color: red
+  &.info
+    background-color: light-blue
+    height: 80px
       
 #search
   width: 600px
