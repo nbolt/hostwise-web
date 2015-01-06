@@ -1,6 +1,33 @@
 class PropertiesController < ApplicationController
-
   before_filter :require_login
+
+  expose(:property) { Property.find_by_slug params[:slug] }
+
+  def show
+    respond_to do |format|
+      format.html { redirect_to '/' unless property }
+      format.json { render json: property.to_json(include: :bookings) }
+    end
+  end
+
+  def update
+    property.assign_attributes property_params
+    if property.save
+      render json: { success: true }
+    else
+      render json: { success: false }
+    end
+  end
+
+  def cancel
+    booking = property.bookings.find params[:booking]
+    booking.destroy
+    if booking.destroyed?
+      render json: { success: true }
+    else
+      render json: { success: false }
+    end
+  end
 
   def build
     case params[:stage]
@@ -94,7 +121,7 @@ class PropertiesController < ApplicationController
   end
 
   def property_params
-    params.require(:form).permit(:title, :address1, :address2)
+    params.require(:form).permit(:title, :address1, :address2, :bedrooms, :beds, :accommodates)
   end
 
   def delivery_code(address1, address2, city, state)

@@ -1,8 +1,16 @@
 class Property < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :slugged
+
   belongs_to :user
   has_many :bookings, autosave: true, dependent: :destroy
 
   before_validation :standardize_address
+
+  def self.find_by_slug slug
+    friendly.find slug
+  rescue ActiveRecord::RecordNotFound
+  end
 
   def short_address
     "#{address1} #{zip}"
@@ -22,5 +30,12 @@ class Property < ActiveRecord::Base
     else
       errors[:base] << 'Address not found'
     end
+  end
+
+  def slug_candidates
+    [
+      :title,
+      [:title, :id]
+    ]
   end
 end

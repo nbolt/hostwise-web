@@ -1,0 +1,34 @@
+#property ng:controller='property'
+  #title ng:bind='::property.title'
+  #address
+    .address1
+      | {{property.address1}} {{property.address2}}
+    .address2
+      | {{property.city}}, {{property.state}} {{property.zip}}
+  #tabs
+    .tab.details  ng:click="tab('details')" Details
+    .tab.bookings ng:click="tab('bookings')" Bookings
+  #tab-content
+    .tab.details
+      .flash
+      .section
+        .title Rooms
+        .field.bedrooms
+          input type='hidden' placeholder='Bedrooms' required='' ng:model='form.bedrooms' ui-select2='bedrooms()'
+        .field
+          input type='hidden' placeholder='Beds' required='' ng:model='form.beds' ui-select2='beds()'
+        .field
+          input type='hidden' placeholder='Accommodates' required='' ng:model='form.accommodates' ui-select2='accommodates()'
+      .section
+        .title Special Instructions
+    .tab.bookings
+      .actions
+        .action Schedule Booking
+      .flash
+      .section
+        .title Bookings
+        #bookings
+          .booking ng:repeat='booking in property.bookings' id='booking-{{booking.id}}'
+            .cancel ng:click='cancel(booking)'
+              .typcn
+            .date ng:bind='::booking.parsed_date'

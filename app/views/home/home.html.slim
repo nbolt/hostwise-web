@@ -7,4 +7,5 @@
 
   #properties
     .property ng:repeat='property in properties'
-      .title ng:bind='::property.title'
+      a ng:href='/properties/{{property.slug}}'
+        .title ng:bind='::property.title'

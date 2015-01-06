@@ -1,6 +1,6 @@
-black = #272727
-red = #C41348
-green = #88c425
+black = #24272A
+red = #AB133E
+green = #9ABF72
 light-grey = #ccc
 light-blue = #7296BF
 
@@ -125,6 +125,8 @@ form
   padding: 6px
   text-align: center
   height: 34px
+  width: 400px
+  margin: auto
   &.success
     background-color: green
   &.failure
@@ -169,7 +171,6 @@ form
   width: 600px
   margin: auto
   .flash
-    width: 400px
     margin: 20px auto
   .steps
     width: 3000px
@@ -268,6 +269,81 @@ form
         vertical-align: top
       &:hover
         cursor: pointer
+        
+#property
+  #title
+    text-align: center
+    font-size: 2em
+  #address
+    text-align: center
+    color: #999
+    margin-top: 15px
+  #tabs
+    text-align: center
+    margin: 25px 0
+    .tab
+      display: inline-block
+      vertical-align: top
+      margin: 0 10px
+      font-size: 1.25em
+      padding: 2px
+      &:hover
+        cursor: pointer
+      &:hover, &.active
+        border-bottom: thin solid red
+  #tab-content
+    .flash
+      margin: 25px auto
+    .actions
+      text-align: center
+      .action
+        margin: 0 10px
+        color: #666
+        &:hover, &.active
+          color: red
+        &:hover
+          cursor: pointer
+    .tab
+      width: 600px
+      margin: 15px auto
+      display: none
+      &.active
+        display: block
+      .section
+        text-align: center
+        .title
+          font-size: 1.25em
+        .field
+          display: inline-block
+          vertical-align: top
+          margin: 25px 10px
+      #bookings
+        .booking
+          border: thin solid #ccc
+          width: 500px
+          padding: 15px
+          margin: 20px auto
+          border-radius: 3px
+          text-align: left
+          .cancel
+            float: right
+            font-size: 1.75em
+            margin-top: -10px
+            .typcn::before
+              content: '\e121'
+            &:hover
+              cursor: pointer
+              color: red
+              .typcn::before
+                content: '\e122'
+          .date
+            color: #999
+          a
+            color: black
+            text-decoration: none
+            &:hover
+              text-decoration: underline
+
 
 calendar
   .arrows
@@ -343,6 +419,11 @@ calendar
       padding: 15px
       margin: 20px auto
       border-radius: 3px
+      a
+        color: black
+        text-decoration: none
+        &:hover
+          text-decoration: underline
    
 .new-payment
   color: #888

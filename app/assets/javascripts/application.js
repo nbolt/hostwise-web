@@ -21,6 +21,8 @@
 //= require underscore-min
 //= require jquery.scrollTo
 //= require jquery.cookie
+//= require app
+//= require_tree ./controllers
 //= require_tree .
 
 
