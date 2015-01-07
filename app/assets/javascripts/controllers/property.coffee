@@ -47,10 +47,13 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', ($scope, $http, $windo
         flash('failure', rsp.message)
 
   flash = (type, msg) ->
-    angular.element('#property .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
+    angular.element('#property .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
       angular.element('#property .flash').css('opacity', 0).removeClass('info success failure')
     ), 3000)
+    $timeout((->
+      angular.element('#property .flash').removeClass('info success failure')
+    ), 4000)
 
   $scope.bedrooms = ->
     {

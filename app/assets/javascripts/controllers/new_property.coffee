@@ -118,10 +118,13 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         post()
 
   flash = (type, msg) ->
-    angular.element('#property-form-container .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
+    angular.element('#property-form-container .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
-      angular.element('#property-form-container .flash').css('opacity', 0).removeClass('info success failure')
+      angular.element('#property-form-container .flash').css('opacity', 0)
     ), 3000)
+    $timeout((->
+      angular.element('#property-form-container .flash').removeClass('info success failure')
+    ), 4000)
 
   validate = (n) ->
     switch n

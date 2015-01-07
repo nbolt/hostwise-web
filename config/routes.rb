@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     match '/auth/:action' => 'auth', via: [:get, :post], constraints: { subdomain: 'team' }
   end
 
+  get   '/properties/new'   => 'properties#new'
+  post  '/properties/build' => 'properties#build'
   get   '/properties/:slug' => 'properties#show'
   post  '/properties/:slug' => 'properties#update'
   match '/properties/:slug/:action' => 'properties', via: [:get, :post]
