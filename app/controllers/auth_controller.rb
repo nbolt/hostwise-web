@@ -17,6 +17,7 @@ class AuthController < ApplicationController
     when 2
       user = User.where(email: params[:form][:email])[0]
       user.assign_attributes(user_params)
+      UserMailer.welcome(user).deliver
     when 3
       parsed_number = params[:form][:phone_number].match(/(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*(\d).*(\d)/)
       unless parsed_number[10]

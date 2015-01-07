@@ -29,6 +29,7 @@ class PropertiesController < ApplicationController
       property.bedrooms = params[:form][:bedrooms][:id]
       property.beds = params[:form][:beds][:id]
       property.accommodates = params[:form][:accommodates][:id]
+      UserMailer.property_confirmation(property).deliver
     when 2
       property = Property.find(params[:property_id])
       property.bookings.pending.destroy_all
@@ -37,6 +38,7 @@ class PropertiesController < ApplicationController
         date = Date.strptime(nums.join('-'), '%m-%Y-%d')
         property.bookings.build(date: date)
       end
+      property.bookings.each {|booking| UserMailer.booking_confirmation(booking).deliver}
     when 3
       if params[:chosen_services].to_a[0]
         property = Property.find(params[:property_id])

@@ -4,6 +4,10 @@ class Property < ActiveRecord::Base
 
   before_validation :standardize_address
 
+  def short_address
+    "#{address1} #{zip}"
+  end
+
   private
 
   def standardize_address
