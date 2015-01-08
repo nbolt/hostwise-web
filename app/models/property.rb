@@ -5,7 +5,7 @@ class Property < ActiveRecord::Base
   belongs_to :user
   has_many :bookings, autosave: true, dependent: :destroy
 
-  before_validation :standardize_address
+  before_validation :standardize_address, on: :create
 
   def self.find_by_slug slug
     friendly.find slug
@@ -28,7 +28,7 @@ class Property < ActiveRecord::Base
       self.address2 = "#{address[:components][:secondary_designator]} #{address[:components][:secondary_number]}" if address[:components][:secondary_designator]
       self.zip = address[:components][:zipcode]
     else
-      errors[:base] << 'Address not found'
+      errors[:base] << 'Invalid address'
     end
   end
 

@@ -1,5 +1,8 @@
 AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
+  $http.get('/user').success (rsp) -> $scope.user = rsp
+  $http.get('/data/properties').success (rsp) -> $scope.properties = rsp
+
 ]
 
 app = angular.module('porter', ['ngCookies', 'ui.mask', 'ui.select2'])

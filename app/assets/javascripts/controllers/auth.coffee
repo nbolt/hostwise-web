@@ -33,12 +33,13 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
 
   flash = (type, msg) ->
-    angular.element('#signin .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
+    el = angular.element('#signin .flash, #signup .flash')
+    el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
-      angular.element('#signin .flash').css('opacity', 0)
+      el.css('opacity', 0)
     ), 3000)
     $timeout((->
-      angular.element('#signin .flash').removeClass('info success failure')
+      el.removeClass('info success failure')
     ), 4000)
 
 ]

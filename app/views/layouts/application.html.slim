@@ -64,14 +64,95 @@ html
     header
       nav
         - if logged_in?
+          #user
+            .drop-container
+              .drop-arrow
+              .drop
+                .links
+                  a href='javascript:void(0)'
+                    .link Payment Preferences
+                  a href='javascript:void(0)'
+                    .link Transaction History
+                  a href='javascript:void(0)'
+                    .link Account Settings
+                  a href='javascript:void(0)'
+                    .link Notification Settings
+                  a href='javascript:void(0)'
+                    .link Invite Friends
+                  a href='/signout'
+                    .link Logout
+            .avatar
+              img ng:src='{{::user.avatar}}'
+            .name
+              .text ng:bind='::user.first_name'
+            .arrow
+              .typcn.typcn-chevron-right
           .link
-            a href='/signout' Log out
+            a href='/book-service'
+              .button Book Service
         - else
           .link
-            a href='/signup' Sign up
+            a href='/signup'
+              .button Sign up
           .link
-            a href='/signin' Log in
+            a href='/signin'
+              .button Log in
       .logo
-        img src='/images/porter-white.png'
-        .text Porter
+        img src='/images/porter-navy.png'
+        .text
+          | Porter for 
+          span Hosts
+    - if logged_in?
+      #sidebar-container
+        #sidebar
+          .section sidebar-dropdown=''
+            .title
+              .icon
+                .typcn.typcn-home-outline
+              .text Properties
+              .arrow
+                .typcn.typcn-chevron-right
+            .drop-container
+              .search
+                .input
+                  .typcn.typcn-zoom-outline
+                  input type='text' placeholder='Search Properties'
+              .links
+                a ng:repeat='property in properties' ng:href='/properties/{{property.slug}}'
+                  .link ng:bind='::property.title' data-ellipsis=''
+          .section
+            .title
+              .icon
+                .typcn.typcn-delete-outline
+              .text Add Property
+              .arrow
+                .typcn.typcn-chevron-right
+          .section
+            .title
+              .icon
+                .typcn.typcn-cog
+              .text Account
+              .arrow
+                .typcn.typcn-chevron-right
+          .section
+            .title
+              .icon
+                .typcn.typcn-tag
+              .text Pricing
+              .arrow
+                .typcn.typcn-chevron-right
+          .section
+            .title
+              .icon
+                .typcn.typcn-info
+              .text FAQ
+              .arrow
+                .typcn.typcn-chevron-right
+          .section
+            .title
+              .icon
+                .typcn.typcn-contacts
+              .text Contact Us
+              .arrow
+                .typcn.typcn-chevron-right
     .body= yield
