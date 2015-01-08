@@ -124,7 +124,11 @@ header
           
 .body
   width: 976px
-  margin: 40px auto
+  margin: 40px 0
+  position: relative
+  left: 50%
+  margin-left: -448px
+  transition: margin-left .4s ease-in-out
   
 .drop-container
   max-height: 0
@@ -322,6 +326,7 @@ form
     border-radius: 3px
     border: thin solid light-grey
     color: black
+    box-sizing: border-box
     &:active, &:focus
       outline: none
       border: thin solid #ccc
