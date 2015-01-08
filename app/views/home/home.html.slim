@@ -1,11 +1,20 @@
-#home ng:controller='properties'
+#home.container ng:controller='properties'
   #search
+    .typcn.typcn-zoom-outline
     input type='text' placeholder='Search your properties' ng:model='search'
 
-  a#add-property href='/properties/new'
-    .text Add Property
+  #welcome Welcome back, {{user.first_name}}.
+
+  #actions
+    .action
+      input type='hidden' ui-select2='filters()' ng:model='filter'
+    .action
+      a href='/properties/new'
+        .button Add A New Property
 
   #properties
     .property ng:repeat='property in properties'
-      a ng:href='/properties/{{property.slug}}'
-        .title ng:bind='::property.title'
+      .photo
+      .title
+        .text ng:bind='::property.title'
+        a ng:href='/properties/{{property.slug}}' Manage Listing and Calendar

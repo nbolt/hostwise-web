@@ -116,6 +116,7 @@ header
       .button
         background-color: teal
         padding: 8px 12px
+        border-radius: 1px
         hover-darken()
       a
         text-decoration: none
@@ -208,7 +209,7 @@ header
                 color: #4E5562
                 opacity: 1
         .links
-          padding-bottom: 8px
+          padding: 8px 0
           a
             &:active, &:focus
               outline: none
@@ -303,14 +304,27 @@ form
     background-color: light-blue
     height: 80px
       
-#search
-  width: 600px
+.container
+  width: 768px
   margin: auto
+
+#search
+  margin: auto
+  position: relative
+  .typcn
+    position: absolute
+    left: 12px
+    top: 5px
+    font-size: 1.25em
   input
     width: 100%
-    padding: 8px 12px
+    padding: 8px 12px 8px 40px
     border-radius: 3px
     border: thin solid light-grey
+    color: black
+    &:active, &:focus
+      outline: none
+      border: thin solid #ccc
     
 .body .page-title
   font-size: 2em
@@ -564,29 +578,58 @@ calendar
               color: black
               
 #home
-  #add-property
-    text-decoration: none
-    .text
-      width: 200px
-      margin: 50px auto
-      text-align: center
-      background-color: red
-      padding: 10px
-      border-radius: 3px
-      color: white
-      border: 2px solid white
-    &:hover .text
-      border: 2px solid red
-      background-color: white
-      color: black
+  #welcome
+    font-size: 2em
+    margin: 40px 0
+  #actions
+    .action
+      display: inline-block
+      vertical-align: top
+      margin-right: 10px
+      &:hover
+        cursor: pointer
+      .button
+        color: white
+        background-color: teal
+        padding: 8px 12px
+        border-radius: 1px
+        hover-darken()
+      a
+        text-decoration: none
+      .select2-container
+        .select2-choice
+          background: white !important
+          position: relative
+          border-radius: 1px
+          &::after
+            font-family:'typicons';font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;height:1em;font-size:1em;text-align:center;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;text-rendering:optimizeLegibility
+            content: '\e049'
+            position: absolute
+            right: 4px
+            top: 12px
+            transform: rotate(90deg)
   #properties
-    margin-top: 50px
+    margin-top: 20px
     .property
-      border: thin solid #ccc
-      width: 500px
-      padding: 15px
-      margin: 20px auto
-      border-radius: 3px
+      background-color: white
+      padding: 18px 32px
+      margin: 5px auto
+      border-radius: 1px
+      .photo, .title
+        display: inline-block
+        vertical-align: top
+      .photo
+        width: 80px
+        height: 80px
+        border-radius: 99px
+        background-color: light-grey
+      .title
+        margin: 18px 0 0 15px
+        .text
+          font-weight: bold
+        a
+          font-size: .9em
+          color: teal
       a
         color: black
         text-decoration: none
