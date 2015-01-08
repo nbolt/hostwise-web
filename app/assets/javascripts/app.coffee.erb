@@ -1,7 +1,9 @@
 AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
-  $http.get('/user').success (rsp) -> $scope.user = rsp
-  $http.get('/data/properties').success (rsp) -> $scope.properties = rsp
+  $http.get('/user').success (rsp) ->
+    if rsp
+      $scope.user = rsp
+      $http.get('/data/properties').success (rsp) -> $scope.properties = rsp
 
 ]
 
