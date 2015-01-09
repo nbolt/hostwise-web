@@ -1,4 +1,4 @@
-NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $timeout, $upload) ->
 
   $scope.posting = false
   $scope.chosen_dates    = {}
@@ -47,6 +47,14 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       initSelection: (el, cb) ->
     }
 
+  $scope.type = ->
+    {
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: 8
+      data: [{id:'house',text:'House'},{id:'townhouse',text:'Townhouse'},{id:'apartment',text:'Apartment'}]
+      initSelection: (el, cb) ->
+    }
+
   $scope.show_existing = -> if $scope.stripe_id then true  else false
   $scope.show_new      = -> if $scope.stripe_id then false else true
   $scope.show_existing_class = -> if $scope.show_existing() then 'active' else 'inactive'
@@ -66,7 +74,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.skip = (n) ->
     switch n
       when 2
-        angular.element('#property-form-container .steps').css('margin-left', -(4 * 600))
+        angular.element('#property-form-container .steps').css('margin-left', -(4 * 768))
         angular.element('.step-circles .step').removeClass('active').eq(4).addClass('active')
     null
 
@@ -75,34 +83,51 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       post = ->
         unless $scope.posting
           $scope.posting = true
-          $http.post('/properties/build', {
-            stage: n
-            form: $scope.form
-            property_id: $scope.property_id
-            chosen_dates: $scope.chosen_dates
-            chosen_services: $scope.chosen_services
-            stripe_token: $scope.stripe_token
-            stripe_id: $scope.stripe_id
-            extras: $scope.extras
-          }).success (rsp) ->
-            $scope.posting = false
-            _($scope.extras).extend(rsp.extras)
-            if rsp.success
-              success()
-              $scope.property_id = rsp.property_id
-              $scope.extras = {}
-            else
-              flash(rsp.type || 'failure', rsp.message)
+          if $scope.files && $scope.files[0]
+            $upload.upload(
+              url: '/properties/build'
+              file: $scope.files[0]
+              data:
+                stage: n
+                form: $scope.form
+                property_id: $scope.property_id
+                stripe_token: $scope.stripe_token
+                stripe_id: $scope.stripe_id
+                extras: $scope.extras
+            ).success success_wrap
+          else
+            $http(
+              url: '/properties/build'
+              method: 'POST'
+              data:
+                stage: n
+                form: $scope.form
+                property_id: $scope.property_id
+                stripe_token: $scope.stripe_token
+                stripe_id: $scope.stripe_id
+                extras: $scope.extras
+            ).success success_wrap
 
-      if n < 5
+      if n < 3
         success = ->
-          angular.element('#property-form-container .steps').css('margin-left', -(n * 600))
-          angular.element('.step-circles .step').removeClass('active').eq(n).addClass('active')
+          angular.element('#property-form-container .steps').css('margin-left', -(n * 768))
+          angular.element('.step-nav .step.active').addClass('complete')
+          angular.element('.step-nav .step').removeClass('active').eq(n).addClass('active')
       else
         success = -> window.location = '/'
 
+      success_wrap = (rsp) ->
+        $scope.posting = false
+        _($scope.extras).extend(rsp.extras)
+        if rsp.success
+          success()
+          $scope.property_id = rsp.property_id
+          $scope.extras = {}
+        else
+          flash(rsp.type || 'failure', rsp.message)
+
       angular.element('.existing .payment:eq(0) input').iCheck('check') if n == 3 && $scope.stripe_id
-      if n == 4 && !$scope.stripe_id
+      if n == 3 && !$scope.stripe_id
         Stripe.createToken {
           number: angular.element('.new-payment input[data-stripe=number]').val()
           cvc: angular.element('.new-payment input[data-stripe=cvc]').val()
@@ -118,12 +143,12 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         post()
 
   flash = (type, msg) ->
-    angular.element('#property-form-container .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
+    angular.element('#property-form-container .step.active .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
-      angular.element('#property-form-container .flash').css('opacity', 0)
+      angular.element('#property-form-container .step.active .flash').css('opacity', 0)
     ), 3000)
     $timeout((->
-      angular.element('#property-form-container .flash').removeClass('info success failure')
+      angular.element('#property-form-container .step.active .flash').removeClass('info success failure')
     ), 4000)
 
   validate = (n) ->
@@ -134,8 +159,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         step_num = 'two'
       when 3
         step_num = 'three'
-      when 4
-        step_num = 'four'
     if _(angular.element('.step.' + step_num).find('input[required]')).filter((el) -> angular.element(el).val() == '')[0]
       flash('failure', 'Please fill in all required fields')
       false

@@ -41,13 +41,14 @@ primary-color-5 = #979FA9
   box-shadow: none
 
 html, body, .body
-  height: 100%
+  min-height: 100%
   margin: 0
   font-family: Open Sans, Helvetica Neue,HelveticaNeue,Helvetica, Arial, sans-serif
   color: black
   background-color: light-grey
   font-size: 100%
-
+  position: relative
+  
 header
   padding: 20px
   background-color: light-grey
@@ -138,6 +139,16 @@ header
   left: 50%
   margin-left: -448px
   transition: margin-left .4s ease-in-out
+  
+.button.teal, button.teal
+  background-color: teal
+  padding: 8px 12px
+  border-radius: 1px
+  color: white
+  hover-darken()
+  a
+    text-decoration: none
+    color: white
 
 .drop-container
   max-height: 0
@@ -157,7 +168,7 @@ header
   background-color: navy
   position: absolute
   top: 105px
-  bottom: 0
+  min-height: 100%
   left: 0
   width: 80px
   transition: width .4s ease-in-out
@@ -238,8 +249,6 @@ header
               border-bottom: thin solid light-navy
 form
   .button
-    margin: auto
-    text-align: center
     .skip
       color: light-blue
       display: inline-block
@@ -252,7 +261,7 @@ form
     color: white
     width: 220px
     border-radius: 3px
-    margin: 25px auto
+    margin: 15px auto
     padding: 8px 4px 10px 6px
     &:focus, &:active
       outline: none
@@ -358,22 +367,24 @@ form
   color: white
   opacity: 0
   transition: opacity .6s ease, height .6s ease
-  padding: 6px
-  text-align: center
-  height: 34px
-  width: 400px
-  margin: auto
+  padding: 8px 12px
+  display: inline-block
+  vertical-align: top
   &.success
     background-color: green
   &.failure
     background-color: red
   &.info
     background-color: light-blue
-    height: 80px
 
 .container
   width: 768px
   margin: auto
+  
+#preview
+  width: 40px
+  height: 40px
+  margin-left: 15px
 
 #search
   margin: auto
@@ -396,69 +407,89 @@ form
 
 .body .page-title
   font-size: 2em
-  text-align: center
-
-.step-circles
-  text-align: center
+  
+.step-nav
   margin: 40px 0 10px
   .step
     display: inline-block
     vertical-align: top
-    background-color: light-grey
-    border-radius: 99px
-    width: 40px
+    background-color: white
+    border-radius: 1px
+    width: 228px
     height: 40px
-    margin: 0 15px
-    color: white
+    margin-right: 6px
+    color: light-grey
+    border-bottom: 2px solid white
+    padding: 6px 12px
+    &:last-child
+      margin-right: 0
     &.active
-      background-color: red
-    .num
-      font-size: 1.5em
-      margin-top: 2px
-
+      border-bottom: 3px solid teal
+      .text
+        color: black
+      .step-icon
+        color: teal
+    &.complete
+      .check
+        color: teal
+    .icon, .text
+      display: inline-block
+      vertical-align: top
+    .icon
+      font-size: 1.6em
+      &.check
+        font-size: 2em
+        float: right
+        margin-top: -4px
+    .text
+      font-size: 1.2em
+      margin: 5px 40px 0 8px
+      
 #property-form-container
   overflow: hidden
-  width: 600px
   margin: auto
-  .flash
-    margin: 20px auto
+  border-radius: 1px
   .steps
-    width: 3000px
+    width: 2304px
     transition: margin-left .6s ease
     .step
-      width: 600px
+      width: 768px
       display: inline-block
       vertical-align: top
       position: relative
       form
         .section
+          background-color: white
+          padding: 30px
           .title
             font-size: 1.5em
             margin-bottom: 20px
-            text-align: center
           .row
-            margin: 20px 0
+            padding: 20px 0
+            .label
+              display: inline-block
+              vertical-align: top
+              font-weight: bold
+              margin-top: 8px
+              width: 110px
             &.two
               .field
-                display: inline-block
-                vertical-align: top
-                margin-right: 15px
                 &:last-child
                   margin-right: 0
                 .select2-container
-                  width: 290px
+                  width: 262px
             &.three
               .field
-                display: inline-block
-                vertical-align: top
-                margin-right: 15px
-                width: 188px
+                width: 170px
                 &:last-child
                   margin-right: 0
                 .select2-container
-                  width: 188px
+                  width: 170px
             .field
-              width: 290px
+              width: 262px
+              display: inline-block
+              vertical-align: top
+              margin-left: 15px
               input
                 padding: 8px 12px
                 border-radius: 3px
@@ -656,12 +687,6 @@ calendar
       margin-right: 10px
       &:hover
         cursor: pointer
-      .button
-        color: white
-        background-color: teal
-        padding: 8px 12px
-        border-radius: 1px
-        hover-darken()
       a
         text-decoration: none
       .select2-container

@@ -19,6 +19,7 @@ config/database.yml
 /.bundle
 /vendor/bundle
 /public/assets/
+/public/uploads/
 doc/
 vcr_cassettes/
 dump.rdb

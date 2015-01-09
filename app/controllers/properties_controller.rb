@@ -30,6 +30,12 @@ class PropertiesController < ApplicationController
   end
 
   def build
+    if params[:form].class == String
+      params[:form]   = JSON.parse params[:form]
+      params[:extras] = JSON.parse params[:extras]
+      params[:stage] = params[:stage].to_i
+    end
+
     case params[:stage]
     when 1
       # validate delivery_point_barcode and confirm with user if duplicate
@@ -56,30 +62,12 @@ class PropertiesController < ApplicationController
       property.bedrooms = params[:form][:bedrooms][:id]
       property.beds = params[:form][:beds][:id]
       property.accommodates = params[:form][:accommodates][:id]
+      property.property_photos.build(photo: params[:file]) # need to background this
+
       UserMailer.property_confirmation(property).deliver
     when 2
       property = Property.find(params[:property_id])
-      property.bookings.pending.destroy_all
-      params[:chosen_dates].map{|k,v| v.map{|d| "#{k}-#{d}" }}.flatten.each do |date|
-        nums = date.split('-'); nums[0] = nums[0].to_i + 1
-        date = Date.strptime(nums.join('-'), '%m-%Y-%d')
-        property.bookings.build(date: date)
-      end
-      property.bookings.each {|booking| UserMailer.booking_confirmation(booking).deliver}
     when 3
-      if params[:chosen_services].to_a[0]
-        property = Property.find(params[:property_id])
-        property.bookings.pending.each do |booking|
-          params[:chosen_services].each do |_, service|
-            service = Service.find service
-            booking.services.push service
-          end
-        end
-      else
-        render json: { success: false, message: "Please select at least one service" }
-        return
-      end
-    when 4
       property = Property.find(params[:property_id])
       if params[:stripe_token]
         customer = Stripe::Customer.retrieve current_user.stripe_customer_id
@@ -99,12 +87,7 @@ class PropertiesController < ApplicationController
       else
         payment = current_user.payments.where(stripe_id: params[:stripe_id])[0]
       end
-      property.bookings.pending.each do |booking|
-        booking.payment = payment
-        booking.save
-      end
-    when 5
-      property = Property.find(params[:property_id])
+      payment.update_attribute :property_id, property.id
     end
     if property.save
       current_user.save

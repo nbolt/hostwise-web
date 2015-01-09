@@ -3,7 +3,9 @@ class Property < ActiveRecord::Base
   friendly_id :slug_candidates, use: :slugged
 
   belongs_to :user
+  has_one :payment
   has_many :bookings, autosave: true, dependent: :destroy
+  has_many :property_photos, autosave: true, dependent: :destroy
 
   before_validation :standardize_address, on: :create
 

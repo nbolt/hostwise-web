@@ -1,73 +1,73 @@
-#add-property ng:controller='new_property'
+#add-property.container ng:controller='new_property'
   - if current_user.properties.empty?
     .page-title Add Your First Property
   - else
     .page-title Add New Property
 
-  .step-circles
+  .step-nav
     .step.active
-      .num 1
+      .icon.check
+        .typcn.typcn-input-checked
+      .icon.step-icon
+        .typcn.typcn-th-menu
+      .text Details
     .step
-      .num 2
+      .icon.check
+        .typcn.typcn-input-checked
+      .icon.step-icon
+        .typcn.typcn-document-text
+      .text Instructions
     .step
-      .num 3
-    .step
-      .num 4
-    .step
-      .num 5
+      .icon.check
+        .typcn.typcn-input-checked
+      .icon.step-icon
+        .typcn.typcn-credit-card
+      .text Payment
 
   #property-form-container
-    .flash
     .steps
-      .step.one
+      .step.one.active
         form
           .section
-            .title Address
+            .title Details
             .row.two
-              .field
-                input type='text' placeholder='Property nickname' required='' ng:model='form.title'
-              .field
-                input#city type='hidden' placeholder='City' required='' ng:model='form.city' ui-select2='cities()'
-            .row.two
+              .label Address
               .field
                 input type='text' placeholder='Address' required='' ng:model='form.address1'
               .field
-                input type='text' placeholder='Apt/Suite' ng:model='form.address2'
-          .section
-            .title Details
+                input#city type='hidden' placeholder='City' required='' ng:model='form.city' ui-select2='cities()'
+            .row.two
+              .label Info
+              .field
+                input type='text' placeholder='Property nickname' required='' ng:model='form.title'
+              .field
+                input type='hidden' placeholder='Property type' required='' ng:model='form.property_type' ui-select2='type()'
             .row.three
+              .label Rooms
               .field
                 input type='hidden' placeholder='Bedrooms' required='' ng:model='form.bedrooms' ui-select2='bedrooms()'
               .field
                 input type='hidden' placeholder='Beds' required='' ng:model='form.beds' ui-select2='beds()'
               .field
                 input type='hidden' placeholder='Accommodates' required='' ng:model='form.accommodates' ui-select2='accommodates()'
+            .row
+              .label Upload Photo
+              .field
+                input#photo type='file' new-property-photo='' ng-file-select='' ng-model='files'
+              img#preview
+          .section
+            .flash
           .button
-            button ng:click='step(1)'
+            button.teal ng:click='step(1)'
               .text Next
               .typcn.typcn-arrow-right-thick
       .step.two
         form
           .section
-            .title Pick Dates
-          calendar
-          .button
-            button ng:click='step(2)'
-              .text Next
-              .typcn.typcn-arrow-right-thick
-            .skip ng:click='skip(2)' Skip this step
-      .step.three
-        form
+            .title Instructions
           .section
-            .title Select Services
-          .services
-            .service sid='{{ ::service.id }}' toggle-service='' ng:repeat='service in services'
-              .text ng:bind='::service.name'
-          .button
-            button ng:click='step(3)'
-              .text Next
-              .typcn.typcn-arrow-right-thick
-      .step.four
+            .flash
+      .step.three
         form
           .section
             .title Choose Payment
@@ -97,16 +97,9 @@
                 .field.cvc
                   .label CV Code
                   input data-stripe='cvc' ng:model='entry_card.cvc' placeholder='123'
+          .section
+            .flash
           .button
             button ng:click='step(4)'
               .text Next
-              .typcn.typcn-arrow-right-thick
-      .step.five
-        form
-          .section
-            .title Summary
-          p style='text-align:center' ...
-          .button
-            button ng:click='step(5)'
-              .text Give us your money
               .typcn.typcn-arrow-right-thick

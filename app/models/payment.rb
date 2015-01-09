@@ -1,6 +1,6 @@
 class Payment < ActiveRecord::Base
   belongs_to :user
-  has_many :bookings
+  belongs_to :property
 
   validates :fingerprint, uniqueness: true
 end

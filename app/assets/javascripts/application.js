@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require angular
 //= require angular-cookies.min
+//= require angular-file-upload
 //= require mask
 //= require select2.min
 //= require select2

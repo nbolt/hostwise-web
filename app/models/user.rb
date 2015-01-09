@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   validates_numericality_of :phone_number, only_integer: true, if: lambda { validate_step_2 }
   validates_length_of :phone_number, is: 10, if: lambda { validate_step_2 }
 
+
   after_create :create_stripe_customer
 
   cattr_accessor :validate_step_1, :validate_step_2
