@@ -3,11 +3,14 @@ form
     input type='email' placeholder='Email Address' required='' ng:model='form.email'
   .field
     input type='password' placeholder='Password' required='' ng:model='form.password'
+  .cb
+    input type='checkbox' id='remember' ng:model='form.remember'
+    label for='remember' Remember me
   button ng:click='signin()'
     .text= t('auth.button.sign_in')
 a href='#'= t('auth.link.forgot_pwd')
 .create-account
-  | Do not have an account?
+  span Do not have an account?
   br
   a href='/signup'
     .button= t('auth.button.sign_up.step1')

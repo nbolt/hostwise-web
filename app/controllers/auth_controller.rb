@@ -46,7 +46,7 @@ class AuthController < ApplicationController
   end
 
   def signin
-    user = login(params[:form][:email], params[:form][:password])
+    user = login(params[:form][:email], params[:form][:password], params[:form][:remember])
     if user
       render json: { success: true, redirect_to: session[:return_to_url] || '/' }
     else
