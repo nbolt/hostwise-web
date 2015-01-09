@@ -1,0 +1,10 @@
+.forgotpwd ng:controller='reset-pwd'
+  .title= t('auth.title.change_your_pwd')
+  .flash
+  form
+    .field
+      input type='password' placeholder='Password' required='' ng:model='form.password'
+    .field
+      input type='password' placeholder='Confirm Password' required='' ng:model='form.password_confirmation'
+    button ng:click='save_pwd()'
+      .text= t('auth.button.update_pwd')

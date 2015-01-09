@@ -27,11 +27,15 @@ en:
         step1: 'Create an Account'
         step2: 'Account Details'
         step3: 'Mobile Verification'
+      forgot_pwd: 'Forgot Password'
+      change_your_pwd: 'Change your Password'
     button:
       sign_in: 'Sign In'
       sign_up:
         step1: 'Create Account'
         step2: 'Next'
         step3: 'Finish'
+      reset_pwd: 'Reset Password'
+      update_pwd: 'Update Password'
     link:
       forgot_pwd: 'Forgot password?'

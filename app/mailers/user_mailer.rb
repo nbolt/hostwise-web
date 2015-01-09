@@ -5,6 +5,18 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   DEFAULT_REPLY_TO = 'Porter<support@useporter.com>'
 
+  def reset_password_email(user, url)
+    mandrill do
+      mandrill_mail template: 'reset-password',
+                    subject: 'Your password has been reset',
+                    to: {email: user.email},
+                    vars: {'RESET_LINK' => url},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
   def welcome(user)
     mandrill do
       mandrill_mail template: 'welcome',

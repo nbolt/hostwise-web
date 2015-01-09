@@ -94,10 +94,10 @@ html
               .button Book Service
         - else
           .link
-            a href='' ng-click="show_signin_modal()"
+            a href='' ng-click="show_signin()"
               .button.login Login
           .link
-            a href='' ng-click="show_signup_modal()"
+            a href='' ng-click="show_signup()"
               .button Sign Up
       .logo
         img src='/images/porter-navy.png'
@@ -175,3 +175,4 @@ html
       = yield
     = render 'common/signin_modal'
     = render 'common/signup_modal'
+    = render 'common/forgotpwd_modal'

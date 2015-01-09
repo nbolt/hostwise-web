@@ -42,7 +42,7 @@ gem 'rmagick', require: false
 gem 'twilio-ruby'
 gem 'smartystreets'
 gem 'simplecov'
-gem 'sorcery'
+gem 'sorcery', git: 'https://github.com/NoamB/sorcery.git'
 gem 'appsignal'
 gem 'pg_search'
 gem 'httparty'
