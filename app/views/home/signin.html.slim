@@ -1,11 +1,5 @@
-#signin ng:controller='auth'
+.signin ng:controller='auth'
   .flash
-  .title Log in
-  form
-    .field
-      input type='email' placeholder='Email' required='' ng:model='form.email'
-    .field
-      input type='password' placeholder='Password' required='' ng:model='form.password'
-    button ng:click='signin()'
-      .text Log in
-      .typcn.typcn-arrow-right-thick
+  .title= t('auth.title.sign_in')
+  = render 'common/signin'
+

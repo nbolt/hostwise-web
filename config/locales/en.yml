@@ -20,4 +20,18 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  auth:
+    title:
+      sign_in: 'Log In'
+      sign_up:
+        step1: 'Create an Account'
+        step2: 'Account Details'
+        step3: 'Mobile Verification'
+    button:
+      sign_in: 'Sign In'
+      sign_up:
+        step1: 'Create Account'
+        step2: 'Next'
+        step3: 'Finish'
+    link:
+      forgot_pwd: 'Forgot password?'

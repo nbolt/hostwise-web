@@ -4,9 +4,16 @@ class User < ActiveRecord::Base
   has_many :properties, dependent: :destroy
   has_many :payments, autosave: true, dependent: :destroy
 
-  validates_presence_of :email, :first_name
+  validates_presence_of :email, :password, :password_confirmation, if: lambda { validate_step_1 }
+  validates :password, confirmation: true, if: lambda { self.validate_step_1 }
+
+  validates_presence_of :first_name, :last_name, :phone_number, if: lambda { validate_step_2 }
+  validates_numericality_of :phone_number, only_integer: true, if: lambda { validate_step_2 }
+  validates_length_of :phone_number, is: 10, if: lambda { validate_step_2 }
 
   after_create :create_stripe_customer
+
+  cattr_accessor :validate_step_1, :validate_step_2
 
   def name
     first_name + ' ' + last_name

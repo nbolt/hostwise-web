@@ -19,6 +19,7 @@
 //= require select2.min
 //= require select2
 //= require underscore-min
+//= require ngDialog.min
 //= require jquery.scrollTo
 //= require jquery.cookie
 //= require app

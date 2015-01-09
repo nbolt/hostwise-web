@@ -13,11 +13,11 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         flash('failure', rsp.message)
 
   $scope.step = (n) ->
-    if n < 4
-      success = -> angular.element('#signup .steps').css('margin-left', -(n * 600))
+    if n < 3
+      success = -> angular.element('.signup .steps').css('margin-left', -(n * 600))
     else
       success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/'
-    
+
     unless $scope.posting
       $scope.posting = true
       $http.post('/auth/signup', {
@@ -31,9 +31,8 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         else
           flash('failure', rsp.message)
 
-
   flash = (type, msg) ->
-    el = angular.element('#signin .flash, #signup .flash')
+    el = angular.element('.signin .flash, .signup .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
       el.css('opacity', 0)

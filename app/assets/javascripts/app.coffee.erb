@@ -7,7 +7,7 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
 ]
 
-app = angular.module('porter', ['ngCookies', 'ui.mask', 'ui.select2'])
+app = angular.module('porter', ['ngCookies', 'ngDialog', 'ui.mask', 'ui.select2'])
   .controller('app', AppCtrl)
   .config ['$httpProvider', ($httpProvider) ->
     $httpProvider.defaults.headers.common['X-CSRF-Token'] = angular.element('meta[name=csrf-token]').attr 'content'

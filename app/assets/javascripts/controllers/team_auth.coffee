@@ -13,9 +13,9 @@ TeamAuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         flash('failure', rsp.message)
 
   flash = (type, msg) ->
-    angular.element('#signin .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
+    angular.element('.signin .flash').removeClass('success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
-      angular.element('#signin .flash').css('opacity', 0)
+      angular.element('.signin .flash').css('opacity', 0)
     ), 3000)
 
 ]

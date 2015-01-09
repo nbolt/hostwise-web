@@ -12,6 +12,12 @@ teal = #34AAB0
 facebook-blue = #3d599b
 twitter-blue  = #00abee
 
+primary-color-1 = #2BAAB0
+primary-color-2 = #2C3842
+primary-color-3 = #E6C15D
+primary-color-4 = #E36159
+primary-color-5 = #979FA9
+
 @keyframes fadein {
     from {opacity: 0}
     to   {opacity: 1}
@@ -25,11 +31,11 @@ twitter-blue  = #00abee
 @font-face
   font-family: 'gotham-book'
   src: url('/type/gotham/gotham-book.woff') format('woff')
-  
+
 @font-face
   font-family: 'gotham-bold'
   src: url('/type/gotham/gotham-bold.woff') format('woff')
-  
+
 
 :invalid, :-moz-submit-invalid, :-moz-ui-invalid
   box-shadow: none
@@ -41,10 +47,10 @@ html, body, .body
   color: black
   background-color: light-grey
   font-size: 100%
-  
+
 header
   padding: 20px
-  background-color: white
+  background-color: light-grey
   .logo
     img
       width: 60px
@@ -95,7 +101,7 @@ header
           background-color: navy
         .drop-arrow
           width: 0
-          height: 0 
+          height: 0
           border-left: 8px solid transparent
           border-right: 8px solid transparent
           border-bottom: 10px solid navy
@@ -114,14 +120,17 @@ header
       vertical-align: top
       margin: 0 10px
       .button
-        background-color: teal
+        background-color: primary-color-1
         padding: 8px 12px
         border-radius: 1px
         hover-darken()
+        &.login
+          background-color: primary-color-2
+          hover-darken()
       a
         text-decoration: none
         color: white
-          
+
 .body
   width: 976px
   margin: 40px 0
@@ -129,7 +138,7 @@ header
   left: 50%
   margin-left: -448px
   transition: margin-left .4s ease-in-out
-  
+
 .drop-container
   max-height: 0
   overflow: hidden
@@ -142,7 +151,7 @@ header
       text-decoration: none
       .link
         margin: 8px 0 8px 15px
-  
+
 #sidebar-container
   z-index: 1
   background-color: navy
@@ -238,18 +247,18 @@ form
       &:hover
         cursor: pointer
   button
-    border: 2px solid red
+    border: 0
+    background-color: primary-color-1
+    color: white
     width: 220px
     border-radius: 3px
     margin: 25px auto
     padding: 8px 4px 10px 6px
-    background: white
     &:focus, &:active
       outline: none
     &:hover
-      background-color: red
-      color: white
       cursor: pointer
+      hover-darken()
     .text
       margin-right: 6px
     .typn
@@ -258,39 +267,91 @@ form
       display: inline-block
       vertical-align: top
 
-#signup, #signin
+.signup, .signin
+  color: primary-color-5
   width: 600px
   margin: 40px auto
   text-align: center
   position: relative
   .title
+    color: primary-color-2
     font-size: 2em
     margin-bottom: 25px
+    text-transform: uppercase
   .field
     margin: 15px
     input
       padding: 8px 12px
       border: thin solid light-grey
-      border-radius: 3px
+      border-radius: 5px
       width: 300px
       &:focus
         outline: none
+  a
+    color: primary-color-5
+    text-decoration: none
+  .create-account
+    margin: 10px 0
+    .button
+      display: inline-block
+      margin: 5px 0
+      width: 300px
+  button
+    width 324px
+  .button
+    background-color: white
+    color: dark-grey
+    padding: 8px 12px
+    border-radius: 3px
+    hover-darken()
   .form-container
     overflow: hidden
     .steps
-      width: 2400px
+      width: 1800px
       transition: margin-left .6s ease
+      .caption
+        font-size: 15px
       .step
         width: 600px
         display: inline-block
         vertical-align: top
+      .progress
+        margin: 0 auto 30px
+        position: relative
+        width: 324px
+        .typcn
+          background-color: white
+          font-size: 20px
+          line-height: 20px
+        hr
+          border: 0
+          border-top: 2px solid white
+          position: absolute
+          top: 5px
+          width: 100%
+          z-index: 1
+        span
+          background-color: light-grey
+          border: 2px solid white
+          border-radius: 50%
+          display: inline-block
+          height: 24px
+          margin-left: 120px
+          position: relative
+          text-align: center
+          width: 24px
+          z-index: 2
+          &.one
+            margin-left: 0
+          &.active
+            background-color: white
   .flash
     position: absolute
     top: -50px
-    width: 400px
+    width: 600px
     left: 50%
-    margin-left: -200px
-      
+    margin-left: -300px
+
 .flash
   border-radius: 3px
   box-sizing: border-box
@@ -309,7 +370,7 @@ form
   &.info
     background-color: light-blue
     height: 80px
-      
+
 .container
   width: 768px
   margin: auto
@@ -332,11 +393,11 @@ form
     &:active, &:focus
       outline: none
       border: thin solid #ccc
-    
+
 .body .page-title
   font-size: 2em
   text-align: center
-  
+
 .step-circles
   text-align: center
   margin: 40px 0 10px
@@ -354,7 +415,7 @@ form
     .num
       font-size: 1.5em
       margin-top: 2px
-      
+
 #property-form-container
   overflow: hidden
   width: 600px
@@ -458,7 +519,7 @@ form
         vertical-align: top
       &:hover
         cursor: pointer
-        
+
 #property
   #title
     text-align: center
@@ -583,7 +644,7 @@ calendar
             &.selecting
               background-color: white !important
               color: black
-              
+
 #home
   #welcome
     font-size: 2em
@@ -642,7 +703,7 @@ calendar
         text-decoration: none
         &:hover
           text-decoration: underline
-   
+
 .new-payment
   color: #888
   width: 410px
@@ -735,3 +796,52 @@ calendar
       margin-top: 2px
   .select2-search
     margin-top: 5px
+
+.ngdialog
+  .ngdialog-content
+    background: white
+    color: #444
+    margin: 120px auto
+    max-width: 100%
+    position: relative
+    width: 600px
+    .modal
+      background-color: light-grey
+      position: relative
+      .title
+        background-color: white
+        font-size: 22px
+        font-weight: bold
+        margin: 0
+        padding: 10px 20px
+        text-align: left
+      .flash
+        top: 60px
+        width: 500px
+        margin-left: -250px
+      form
+        margin-top: 50px
+      .create-account
+        padding-bottom: 50px
+      .progress
+        margin-top: 50px
+  .ngdialog-close
+    cursor: pointer
+    position: absolute
+    right: 0
+    top: 0
+    &:before
+      background: transparent
+      color: primary-color-2
+      content: "\00D7"
+      font-size: 26px
+      font-weight: 400
+      height: 30px
+      line-height: 26px
+      position: absolute
+      right: 10px
+      text-align: center
+      top: 15px
+      width: 30px
+    &:hover:before, &:active:before
+      color: dark-grey

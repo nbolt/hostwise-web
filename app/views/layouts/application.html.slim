@@ -55,16 +55,16 @@ html
            // }
           )
 
-          window.intercomSettings = { 
+          window.intercomSettings = {
             "widget": {
-              "activator": "#Intercom" }, 
+              "activator": "#Intercom" },
               "app_id": "y2g99hzz"
             }
 
 
   body ng:controller='app'
     header
-      nav
+      nav ng:controller='modal'
         - if logged_in?
           #user
             .drop-container
@@ -94,16 +94,16 @@ html
               .button Book Service
         - else
           .link
-            a href='/signup'
-              .button Sign up
+            a href='' ng-click="show_signin_modal()"
+              .button.login Login
           .link
-            a href='/signin'
-              .button Log in
+            a href='' ng-click="show_signup_modal()"
+              .button Sign Up
       .logo
         img src='/images/porter-navy.png'
         .text
-          | Porter for 
-          span Hosts
+          | | Porter for
+          span  Hosts
     - if logged_in?
       #sidebar-container
         #sidebar
@@ -173,3 +173,5 @@ html
                 .typcn.typcn-chevron-right
     .body slide-body=''
       = yield
+    = render 'common/signin_modal'
+    = render 'common/signup_modal'
