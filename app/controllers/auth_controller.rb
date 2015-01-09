@@ -29,7 +29,7 @@ class AuthController < ApplicationController
       user.phone_confirmation = rand(1000..9999)
       if user.save
         TwilioJob.perform_later("+1#{user.phone_number}", "Welcome to Porter! You're confirmation code is: #{user.phone_confirmation}")
-        UserMailer.welcome(user).deliver
+        UserMailer.welcome(user).then(:deliver)
         render json: { success: true }
       else
         render json: { success: false, message: user.errors.full_messages[0] }

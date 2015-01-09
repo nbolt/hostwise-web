@@ -64,7 +64,7 @@ class PropertiesController < ApplicationController
       property.accommodates = params[:form][:accommodates][:id]
       property.property_photos.build(photo: params[:file]) # need to background this
 
-      UserMailer.property_confirmation(property).deliver
+      UserMailer.property_confirmation(property).then(:deliver)
     when 2
       property = Property.find(params[:property_id])
     when 3

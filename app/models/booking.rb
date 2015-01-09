@@ -10,6 +10,6 @@ class Booking < ActiveRecord::Base
   scope :tomorrow, -> { where('date::date - now()::date = 1') }
 
   def send_reminder
-    UserMailer.booking_reminder(self).deliver
+    UserMailer.booking_reminder(self).then(:deliver)
   end
 end
