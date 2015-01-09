@@ -3,8 +3,7 @@ class AuthController < ApplicationController
   def signup
     case params[:stage]
     when 1
-      User.validate_step_1 = true
-      User.validate_step_2 = false
+      User.step = 1
       user = User.where(email: params[:form][:email])[0]
       if user
         if user.phone_confirmed
@@ -22,8 +21,7 @@ class AuthController < ApplicationController
         render json: { success: false, message: user.errors.full_messages[0] }
       end
     when 2
-      User.validate_step_1 = false
-      User.validate_step_2 = true
+      User.step = 2
       user = User.where(email: params[:form][:email])[0]
       user.assign_attributes(user_params)
       user.phone_confirmation = rand(1000..9999)
