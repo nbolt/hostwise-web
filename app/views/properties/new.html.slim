@@ -64,9 +64,29 @@
       .step.two
         form
           .section
-            .title Instructions
+            .title Add Special Instructions
+            .row
+              .label Access Information
+              .field
+                textarea placeholder='Tell us how our cleaners can gain access, and how to lock up after.' ng:model='form.access_info'
+            .row
+              .label Trash Disposal
+              .field
+                textarea placeholder='Anything we should now?' ng:model='form.trash_disposal'
+            .row
+              .label Parking Information
+              .field
+                textarea placeholder='Tell us how our cleaners can gain access, and how to lock up after.' ng:model='form.parking_info'
+            .row
+              .label Additional Information
+              .field
+                textarea placeholder='Anything we should now?' ng:model='form.additional_info'
           .section
             .flash
+          .button
+            button.teal ng:click='step(2)'
+              .text Next
+              .typcn.typcn-arrow-right-thick
       .step.three
         form
           .section

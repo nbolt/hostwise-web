@@ -67,6 +67,10 @@ class PropertiesController < ApplicationController
       UserMailer.property_confirmation(property).then(:deliver)
     when 2
       property = Property.find(params[:property_id])
+      property.access_info = params[:form][:access_info]
+      property.trash_disposal = params[:form][:trash_disposal]
+      property.parking_info = params[:form][:parking_info]
+      property.additional_info = params[:form][:additional_info]
     when 3
       property = Property.find(params[:property_id])
       if params[:stripe_token]
