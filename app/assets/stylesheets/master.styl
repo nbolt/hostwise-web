@@ -40,6 +40,9 @@ primary-color-5 = #979FA9
 :invalid, :-moz-submit-invalid, :-moz-ui-invalid
   box-shadow: none
 
+html
+  height: 100%
+
 html, body, .body
   min-height: 100%
   margin: 0
@@ -52,6 +55,11 @@ html, body, .body
 header
   padding: 20px
   background-color: white
+  position: fixed
+  top: 0
+  right: 0
+  left: 0
+  z-index: 100
   .logo
     img
       width: 60px
@@ -134,7 +142,7 @@ header
 
 .body
   width: 976px
-  margin: 40px 0
+  margin: 145px 0
   position: relative
   left: 50%
   margin-left: -488px
@@ -166,10 +174,11 @@ header
 #sidebar-container
   z-index: 1
   background-color: navy
-  position: absolute
+  position: fixed
   top: 105px
   min-height: 100%
   left: 0
+  bottom: 0
   width: 80px
   transition: width .4s ease-in-out
   overflow: hidden
@@ -369,6 +378,7 @@ form
     width: 600px
     left: 50%
     margin-left: -300px
+    min-height: 38px
 
 .flash
   border-radius: 3px
@@ -473,6 +483,8 @@ form
         .section
           background-color: white
           padding: 30px
+          &.flash-container
+            padding-top: 0
           .title
             font-size: 1.5em
             margin-bottom: 20px
@@ -734,6 +746,8 @@ calendar
             right: 4px
             top: 12px
             transform: rotate(90deg)
+        > a
+          margin-top: -1px
   #properties
     margin-top: 20px
     .property

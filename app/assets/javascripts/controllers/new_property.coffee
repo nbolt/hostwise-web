@@ -1,8 +1,6 @@
 NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $timeout, $upload) ->
 
   $scope.posting = false
-  $scope.chosen_dates    = {}
-  $scope.chosen_services = {}
   $scope.extras          = {}
 
   $http.get('/data/services').success (rsp) -> $scope.services = rsp
@@ -111,6 +109,8 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
       if n < 3
         success = ->
           angular.element('#property-form-container .steps').css('margin-left', -(n * 768))
+          angular.element('#property-form-container .steps .step.active').removeClass('active')
+          angular.element('#property-form-container .steps .step').eq(n).addClass('active')
           angular.element('.step-nav .step.active').addClass('complete')
           angular.element('.step-nav .step').removeClass('active').eq(n).addClass('active')
       else
