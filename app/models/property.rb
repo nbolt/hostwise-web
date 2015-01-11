@@ -29,6 +29,8 @@ class Property < ActiveRecord::Base
       self.address1 = "#{address[:components][:primary_number]} #{address[:components][:street_name]} #{address[:components][:street_suffix]}"
       self.address2 = "#{address[:components][:secondary_designator]} #{address[:components][:secondary_number]}" if address[:components][:secondary_designator]
       self.zip = address[:components][:zipcode]
+      self.city = address[:components][:city_name]
+      self.state = address[:components][:state_abbreviation]
     else
       errors[:base] << 'Invalid address'
     end

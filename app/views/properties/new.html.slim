@@ -33,9 +33,9 @@
             .row.two
               .label Address
               .field
-                input type='text' placeholder='Address' required='' ng:model='form.address1'
+                input type='text' placeholder='Street Name' required='' ng:model='form.address1'
               .field
-                input#city type='hidden' placeholder='City' required='' ng:model='form.city' ui-select2='cities()'
+                input type='text' placeholder='Zip' maxlength=5 required='' ng:model='form.zip'
             .row.two
               .label Info
               .field
