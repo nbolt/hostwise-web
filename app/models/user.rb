@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
     if false #photo
       photo.url
     else
-      "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}.jpg?s=60&d=identicon"
+      '/images/avatar.png'
     end
   end
 
