@@ -71,18 +71,7 @@ html
               .drop-arrow
               .drop
                 .links
-                  a href='javascript:void(0)'
-                    .link Payment Preferences
-                  a href='javascript:void(0)'
-                    .link Transaction History
-                  a href='javascript:void(0)'
-                    .link Account Settings
-                  a href='javascript:void(0)'
-                    .link Notification Settings
-                  a href='javascript:void(0)'
-                    .link Invite Friends
-                  a href='/signout'
-                    .link Logout
+                  = render 'common/account_settings'
             .avatar
               img ng:src='{{::user.avatar}}'
             .name
@@ -138,18 +127,7 @@ html
                 .typcn.typcn-chevron-right
             .drop-container
               .links
-                a href='javascript:void(0)'
-                  .link Payment Preferences
-                a href='javascript:void(0)'
-                  .link Transaction History
-                a href='javascript:void(0)'
-                  .link Account Settings
-                a href='javascript:void(0)'
-                  .link Notification Settings
-                a href='javascript:void(0)'
-                  .link Invite Friends
-                a href='/signout'
-                  .link Logout
+                = render 'common/account_settings'
           .section
             .title
               .icon
