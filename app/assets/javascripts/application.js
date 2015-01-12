@@ -16,6 +16,7 @@
 //= require angular
 //= require angular-cookies.min
 //= require angular-file-upload
+//= require angular-scroll.min
 //= require dirPagination
 //= require mask
 //= require select2.min

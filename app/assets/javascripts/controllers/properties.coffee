@@ -1,14 +1,15 @@
-PropertyHomeCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$document', ($scope, $http, $timeout, $document) ->
 
   $scope.filter = {id:'all',text:'Showing all'}
 
   # search within title | address1 | city | zip
-  $scope.search = (property) ->
-      query = ($scope.query or '').toLowerCase()
-      property.title.toLowerCase().indexOf(query) isnt -1 or
-      property.address1.toLowerCase().indexOf(query) isnt -1 or
-      property.city.toLowerCase().indexOf(query) isnt -1 or
-      property.zip.indexOf(query) isnt -1
+  $scope.$watch 'search', (n,o) -> if o
+    $timeout (->
+      $http.get('/data/properties', {params: {term: n}}).success (rsp) -> $scope.properties = rsp
+    ), 1000
+
+  $scope.page_changed = (n) ->
+    $document.scrollToElement angular.element('#search')
 
   $scope.filters = ->
     {

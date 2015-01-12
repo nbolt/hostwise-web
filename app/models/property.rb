@@ -1,6 +1,10 @@
 class Property < ActiveRecord::Base
   extend FriendlyId
+  include PgSearch
+
   friendly_id :slug_candidates, use: :slugged
+
+  pg_search_scope :search_property, against: [:title, :address1, :city, :zip], using: { tsearch: { prefix: true } }
 
   belongs_to :user
   has_one :payment
@@ -9,9 +13,19 @@ class Property < ActiveRecord::Base
 
   before_validation :standardize_address, on: :create
 
+  scope :by_user, -> (user) { where(user_id: user.id) }
+
   def self.find_by_slug slug
     friendly.find slug
   rescue ActiveRecord::RecordNotFound
+  end
+
+  def self.search(query)
+    if query.present?
+      search_property(query).reorder('LOWER(title)')
+    else
+      order('LOWER(title)')
+    end
   end
 
   def short_address
