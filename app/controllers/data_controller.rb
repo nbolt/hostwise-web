@@ -9,7 +9,7 @@ class DataController < ApplicationController
   end
 
   def properties
-    render json: current_user.properties
+    render json: current_user.properties.sort_by{ |property| property.title.downcase }
   end
 
   def payments

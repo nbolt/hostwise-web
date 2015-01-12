@@ -200,18 +200,17 @@ header
         background-color: navy
       .title
         margin-bottom: 15px
+        text-align: center
       .icon, .text, .arrow
         display: inline-block
         vertical-align: top
       .icon
-        margin-left: 21px
-        .typcn
-          font-size: 2em
-          &.typcn-delete-outline
-            margin-left: 2px
-            transform: rotate(45deg)
+        margin-top: 11px
+        .fa
+          font-size: 1.8em
       .text
         margin: 13px 0 0 28px
+        text-align: left
         width: 125px
       .arrow
         margin-top: 13px
@@ -227,10 +226,10 @@ header
             box-sizing: border-box
             width: 220px
             border-radius: 20px
-            .typcn
+            .fa
               position: absolute
               left: 12px
-              top: 8px
+              top: 11px
             input
               font-size: .9em
               background: none
@@ -408,14 +407,15 @@ form
 #search
   margin: auto
   position: relative
-  .typcn
+  i
+    color: primary-color-5
     position: absolute
     left: 12px
-    top: 5px
+    top: 14px
     font-size: 1.25em
   input
     width: 100%
-    padding: 8px 12px 8px 40px
+    padding: 12px 12px 12px 40px
     border-radius: 3px
     border: thin solid light-grey
     color: black
@@ -946,3 +946,24 @@ calendar
       position: absolute
       width: 16px
 
+.pagination
+  ul
+    list-style-type: none
+    margin: 15px 0
+    padding: 0
+    text-align: center
+    li
+      display: inline-block
+      padding: 5px 10px
+      margin: 0 8px
+      &.active
+        font-weight: bold
+      &.disabled a
+        color: dark-grey
+        cursor: not-allowed
+      a
+        color: primary-color-1
+        font-size: 18px
+        text-decoration: none
+        &:hover
+          color: primary-color-2

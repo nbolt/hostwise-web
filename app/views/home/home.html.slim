@@ -1,7 +1,7 @@
 #home.container ng:controller='properties'
   #search
-    .typcn.typcn-zoom-outline
-    input type='text' placeholder='Search your properties' ng:model='search'
+    i.fa.fa-search
+    input type='text' placeholder='Search your properties' ng:model='query'
 
   #welcome Welcome back, {{user.first_name}}.
 
@@ -13,8 +13,10 @@
         .button.teal Add A New Property
 
   #properties
-    .property ng:repeat='property in properties'
+    .property dir-paginate='property in properties | filter: search | itemsPerPage: 10'
       .photo
       .title
         .text ng:bind='::property.title'
         a ng:href='/properties/{{property.slug}}' Manage Listing and Calendar
+  .pagination
+    dir-pagination-controls template-url="/assets/pagination.html"

@@ -8,7 +8,7 @@ html
     meta property="og:type" content="company"
     meta property="og:site_name" content="Porter"
     meta property="og:description" content="5-Star Hospitality for Short-Term Rentals"
-    meta property="og:url" content="www.useporter.com"
+    meta property="og:url" content="www.porterforhosts.com"
     meta property='og:type' content='website'
     meta property="og:image" content=""
 
@@ -107,32 +107,32 @@ html
     - if logged_in?
       #sidebar-container
         #sidebar
-          .section sidebar-dropdown=''
+          .section sidebar-dropdown='' ng:controller='properties'
             .title
               .icon
-                .typcn.typcn-home-outline
+                .fa.fa-home
               .text Properties
               .arrow
                 .typcn.typcn-chevron-right
             .drop-container
               .search
                 .input
-                  .typcn.typcn-zoom-outline
-                  input type='text' placeholder='Search Properties'
+                  .fa.fa-search
+                  input type='text' placeholder='Search Properties' ng:model='query'
               .links
-                a ng:repeat='property in properties' ng:href='/properties/{{property.slug}}'
+                a ng:repeat='property in properties | filter: search' ng:href='/properties/{{property.slug}}'
                   .link ng:bind='::property.title' data-ellipsis=''
           .section
             .title
               .icon
-                .typcn.typcn-delete-outline
+                .fa.fa-plus-circle
               .text Add Property
               .arrow
                 .typcn.typcn-chevron-right
           .section sidebar-dropdown='250'
             .title
               .icon
-                .typcn.typcn-cog
+                .fa.fa-cog
               .text Account
               .arrow
                 .typcn.typcn-chevron-right
@@ -153,26 +153,27 @@ html
           .section
             .title
               .icon
-                .typcn.typcn-tag
+                .fa.fa-tag
               .text Pricing
               .arrow
                 .typcn.typcn-chevron-right
           .section
             .title
               .icon
-                .typcn.typcn-info
+                .fa.fa-info-circle
               .text FAQ
               .arrow
                 .typcn.typcn-chevron-right
           .section
             .title
               .icon
-                .typcn.typcn-contacts
+                .fa.fa-newspaper-o
               .text Contact Us
               .arrow
                 .typcn.typcn-chevron-right
     .body slide-body=''
       = yield
-    = render 'common/signin_modal'
-    = render 'common/signup_modal'
-    = render 'common/forgotpwd_modal'
+    - unless logged_in?
+        = render 'common/signin_modal'
+        = render 'common/signup_modal'
+        = render 'common/forgotpwd_modal'
