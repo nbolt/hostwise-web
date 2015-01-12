@@ -14,11 +14,17 @@
       .section
         .title Rooms
         .field.bedrooms
-          input type='hidden' placeholder='Bedrooms' required='' ng:model='form.bedrooms' ui-select2='bedrooms()'
+          input type='hidden' placeholder='Bedroom(s)' required='' ng:model='form.bedrooms' ui-select2='rooms()'
         .field
-          input type='hidden' placeholder='Beds' required='' ng:model='form.beds' ui-select2='beds()'
+          input type='hidden' placeholder='Bathroom(s)' required='' ng:model='form.bathrooms' ui-select2='rooms()'
         .field
-          input type='hidden' placeholder='Accommodates' required='' ng:model='form.accommodates' ui-select2='accommodates()'
+          input type='hidden' placeholder='Twin(s)' required='' ng:model='form.twin_beds' ui-select2='beds()'
+        .field
+          input type='hidden' placeholder='Full(s)' required='' ng:model='form.full_beds' ui-select2='beds()'
+        .field
+          input type='hidden' placeholder='Queen(s)' required='' ng:model='form.queen_beds' ui-select2='beds()'
+        .field
+          input type='hidden' placeholder='King(s)' required='' ng:model='form.king_beds' ui-select2='beds()'
       .section
         .title Special Instructions
     .tab.bookings

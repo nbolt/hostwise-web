@@ -53,9 +53,14 @@ class PropertiesController < ApplicationController
       end
 
       property = current_user.properties.build(property_params)
+      property.property_type = params[:form][:property_type][:id]
       property.bedrooms = params[:form][:bedrooms][:id]
-      property.beds = params[:form][:beds][:id]
-      property.accommodates = params[:form][:accommodates][:id]
+      property.bathrooms = params[:form][:bathrooms][:id]
+      property.twin_beds = params[:form][:twin_beds][:id]
+      property.full_beds = params[:form][:full_beds][:id]
+      property.queen_beds = params[:form][:queen_beds][:id]
+      property.king_beds = params[:form][:king_beds][:id]
+
       property.property_photos.build(photo: params[:file]) # need to background this
 
       UserMailer.property_confirmation(property).then(:deliver)
@@ -102,7 +107,8 @@ class PropertiesController < ApplicationController
   end
 
   def property_params
-    params.require(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :beds, :accommodates)
+    params.require(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :bathrooms,
+                                 :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type)
   end
 
   def delivery_code(address1, address2, zip)

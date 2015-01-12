@@ -21,11 +21,11 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
         results: (data) -> { results: _(data).map (c) -> { id: c.id, text: c.name, state: c.state.abbr, county: c.county.name } }
     }
 
-  $scope.bedrooms = ->
+  $scope.rooms = ->
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: 8
-      data: [{id:'0',text:'None'},{id:'1',text:'1 Bedroom'},{id:'2',text:'2 Bedrooms'},{id:'3',text:'3 Bedrooms'},{id:'4',text:'4 Bedrooms'}]
+      data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
       initSelection: (el, cb) ->
     }
 
@@ -33,15 +33,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: 8
-      data: [{id:'0',text:'None'},{id:'1',text:'1 Bed'},{id:'2',text:'2 Beds'},{id:'3',text:'3 Beds'},{id:'4',text:'4 Beds'}]
-      initSelection: (el, cb) ->
-    }
-
-  $scope.accommodates = ->
-    {
-      dropdownCssClass: 'details'
-      minimumResultsForSearch: 8
-      data: [{id:'1',text:'1 Person'},{id:'2',text:'2 People'},{id:'3',text:'3 People'},{id:'4',text:'4 People'}]
+      data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
       initSelection: (el, cb) ->
     }
 
@@ -49,7 +41,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: 8
-      data: [{id:'house',text:'House'},{id:'townhouse',text:'Townhouse'},{id:'apartment',text:'Apartment'}]
+      data: [{id:'house',text:'House'},{id:'condo',text:'Condo'},{id:'apartment',text:'Apartment'}]
       initSelection: (el, cb) ->
     }
 

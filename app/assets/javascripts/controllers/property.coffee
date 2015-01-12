@@ -8,10 +8,16 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', ($scope, $http, $windo
       booking.parsed_date = moment.utc(booking.date).format('MMMM Do, YYYY')
     bedrooms_text = if rsp.bedrooms == 0 then 'None' else if rsp.bedrooms == 1 then 'Bedroom' else 'Bedrooms'
     $scope.form.bedrooms = { id: rsp.bedrooms.toString(), text: "#{rsp.bedrooms} #{bedrooms_text}" }
-    beds_text = if rsp.beds == 0 then 'None' else if rsp.beds == 1 then 'Bed' else 'Beds'
-    $scope.form.beds = { id: rsp.beds.toString(), text: "#{rsp.beds} #{beds_text}" }
-    accommodates_text = if rsp.accommodates == 0 then 'None' else if rsp.accommodates == 1 then 'Person' else 'People'
-    $scope.form.accommodates = { id: rsp.accommodates.toString(), text: "#{rsp.accommodates} #{accommodates_text}" }
+    bathrooms_text = if rsp.bathrooms == 0 then 'None' else if rsp.bathrooms == 1 then 'Bath' else 'Bathrooms'
+    $scope.form.bathrooms = { id: rsp.bathrooms.toString(), text: "#{rsp.bathrooms} #{bathrooms_text}" }
+    twin_beds_text = if rsp.twin_beds == 0 then 'None' else if rsp.twin_beds == 1 then 'Bed' else 'Beds'
+    $scope.form.twin_beds = { id: rsp.twin_beds.toString(), text: "#{rsp.twin_beds} #{twin_beds_text}" }
+    full_beds_text = if rsp.full_beds == 0 then 'None' else if rsp.full_beds == 1 then 'Bed' else 'Beds'
+    $scope.form.full_beds = { id: rsp.full_beds.toString(), text: "#{rsp.full_beds} #{full_beds_text}" }
+    queen_beds_text = if rsp.queen_beds == 0 then 'None' else if rsp.queen_beds == 1 then 'Bed' else 'Beds'
+    $scope.form.queen_beds = { id: rsp.queen_beds.toString(), text: "#{rsp.queen_beds} #{queen_beds_text}" }
+    king_beds_text = if rsp.king_beds == 0 then 'None' else if rsp.king_beds == 1 then 'Bed' else 'Beds'
+    $scope.form.king_beds = { id: rsp.king_beds.toString(), text: "#{rsp.king_beds} #{king_beds_text}" }
 
   $scope.tab = (section) ->
     angular.element('#tabs .tab').removeClass('active')
@@ -32,15 +38,36 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', ($scope, $http, $windo
       else
         flash('failure', rsp.message)
 
-  $scope.$watch 'form.beds.id', (n,o) -> if o
-    $http.post($window.location.href, {form: { beds: n }}).success (rsp) ->
+  $scope.$watch 'form.bathrooms.id', (n,o) -> if o
+    $http.post($window.location.href, {form: { bathrooms: n }}).success (rsp) ->
       if rsp.success
         flash('success', 'Changes saved')
       else
         flash('failure', rsp.message)
 
-  $scope.$watch 'form.accommodates.id', (n,o) -> if o
-    $http.post($window.location.href, {form: { accommodates: n }}).success (rsp) ->
+  $scope.$watch 'form.twin_beds.id', (n,o) -> if o
+    $http.post($window.location.href, {form: { twin_beds: n }}).success (rsp) ->
+      if rsp.success
+        flash('success', 'Changes saved')
+      else
+        flash('failure', rsp.message)
+
+  $scope.$watch 'form.full_beds.id', (n,o) -> if o
+    $http.post($window.location.href, {form: { full_beds: n }}).success (rsp) ->
+      if rsp.success
+        flash('success', 'Changes saved')
+      else
+        flash('failure', rsp.message)
+
+  $scope.$watch 'form.queen_beds.id', (n,o) -> if o
+    $http.post($window.location.href, {form: { queen_beds: n }}).success (rsp) ->
+      if rsp.success
+        flash('success', 'Changes saved')
+      else
+        flash('failure', rsp.message)
+
+  $scope.$watch 'form.king_beds.id', (n,o) -> if o
+    $http.post($window.location.href, {form: { king_beds: n }}).success (rsp) ->
       if rsp.success
         flash('success', 'Changes saved')
       else
@@ -55,11 +82,11 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', ($scope, $http, $windo
       angular.element('#property .flash').removeClass('info success failure')
     ), 4000)
 
-  $scope.bedrooms = ->
+  $scope.rooms = ->
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: 8
-      data: [{id:'0',text:'None'},{id:'1',text:'1 Bedroom'},{id:'2',text:'2 Bedrooms'},{id:'3',text:'3 Bedrooms'},{id:'4',text:'4 Bedrooms'}]
+      data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
       initSelection: (el, cb) ->
     }
 
@@ -67,15 +94,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', ($scope, $http, $windo
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: 8
-      data: [{id:'0',text:'None'},{id:'1',text:'1 Bed'},{id:'2',text:'2 Beds'},{id:'3',text:'3 Beds'},{id:'4',text:'4 Beds'}]
-      initSelection: (el, cb) ->
-    }
-
-  $scope.accommodates = ->
-    {
-      dropdownCssClass: 'details'
-      minimumResultsForSearch: 8
-      data: [{id:'1',text:'1 Person'},{id:'2',text:'2 People'},{id:'3',text:'3 People'},{id:'4',text:'4 People'}]
+      data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
       initSelection: (el, cb) ->
     }
 
