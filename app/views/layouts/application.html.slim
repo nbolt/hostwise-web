@@ -118,7 +118,7 @@ html
               .search
                 .input
                   .fa.fa-search
-                  input type='text' placeholder='Search Properties' ng:model='query'
+                  input type='text' placeholder='Search Properties' ng:model='search'
               .links
                 a ng:repeat='property in properties | filter: search' ng:href='/properties/{{property.slug}}'
                   .link ng:bind='::property.title' data-ellipsis=''
