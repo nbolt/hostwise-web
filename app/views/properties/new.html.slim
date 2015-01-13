@@ -17,12 +17,6 @@
       .icon.step-icon
         .typcn.typcn-document-text
       .text Instructions
-    .step
-      .icon.check
-        .typcn.typcn-input-checked
-      .icon.step-icon
-        .typcn.typcn-credit-card
-      .text Payment
 
   #property-form-container
     .steps
@@ -30,6 +24,7 @@
         form
           .section
             .title Add Details
+            .flash
             .row.two
               .label Address
               .field
@@ -63,8 +58,6 @@
               .field
                 input#photo type='file' new-property-photo='' ng-file-select='' ng-model='files'
               img#preview
-          .section.flash-container
-            .flash
           .button
             button.teal ng:click='step(1)'
               .text Next
@@ -72,6 +65,7 @@
         form
           .section
             .title Add Special Instructions
+            .flash
             .row
               .label Access Information
               .field
@@ -88,49 +82,8 @@
               .label Additional Information
               .field
                 textarea placeholder='Anything we should now?' ng:model='form.additional_info'
-          .section
-            .flash
           .button
             button.teal ng:click='previous(1)'
               .text Previous
-            button.teal ng:click='skip(2)'
-              .text Skip
             button.teal ng:click='step(2)'
-              .text Next
-      .step.three
-        form
-          .section
-            .title Choose Payment
-            .tabs
-              .tab ng:class='show_existing_class()' ng:click="tab('existing')" Existing Cards
-              .tab ng:class='show_new_class()' ng:click="tab('new')" New Card
-            .existing ng:show='show_existing()'
-              .payments
-                .payment ng:repeat='payment in payments'
-                  input icheck-payment='grey' type='radio' name='payment' id='payment-{{payment.id}}' value='{{payment.stripe_id}}'
-                  label for='payment-{{payment.id}}'
-                    | **** **** **** {{ payment.last4 }}
-                  .brand
-                    img ng:src='/images/{{payment.card_type}}.jpg'
-            .new-payment ng:show='show_new()'
-              .card-entry
-                .title
-                  = image_tag '/images/unknown.jpg'
-                  .text Payment Details
-                .card-details
-                  .field.card-number
-                    .label Card Number
-                    input data-stripe='number' ui:mask='9999 9999 9999 9999' ng:model='entry_card.number'
-                  .field.expiry
-                    .label Expiry Date
-                    input data-stripe='expiry' ui:mask='99/99' ng:model='entry_card.expiry' placeholder='MM/YY'
-                  .field.cvc
-                    .label CV Code
-                    input data-stripe='cvc' ng:model='entry_card.cvc' placeholder='123'
-          .section.flash-container
-            .flash
-          .button
-            button.teal ng:click='previous(2)'
-              .text Previous
-            button.teal ng:click='step(3)'
-              .text Complete
+              .text Finish

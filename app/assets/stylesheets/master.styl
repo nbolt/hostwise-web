@@ -385,6 +385,7 @@ form
   border-radius: 3px
   box-sizing: border-box
   color: white
+  font-size: 14px
   opacity: 0
   transition: opacity .6s ease, height .6s ease
   padding: 8px 12px
@@ -436,7 +437,7 @@ form
     vertical-align: top
     background-color: white
     border-radius: 1px
-    width: 228px
+    width: 357px
     height: 40px
     margin-right: 6px
     color: light-grey
@@ -486,8 +487,12 @@ form
         .section
           background-color: white
           padding: 30px
-          &.flash-container
-            padding-top: 0
+          position: relative
+          .flash
+            left: 200px
+            margin-right: 30px
+            position: absolute
+            top: 30px
           .title
             font-size: 1.5em
             margin-bottom: 20px

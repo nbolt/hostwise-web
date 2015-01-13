@@ -51,7 +51,8 @@ class PropertiesController < ApplicationController
           return
         end
       end
-
+      render json: { success: true }
+    when 2
       property = current_user.properties.build(property_params)
       property.property_type = params[:form][:property_type][:id]
       property.bedrooms = params[:form][:bedrooms][:id]
@@ -60,43 +61,20 @@ class PropertiesController < ApplicationController
       property.full_beds = params[:form][:full_beds][:id]
       property.queen_beds = params[:form][:queen_beds][:id]
       property.king_beds = params[:form][:king_beds][:id]
-
       property.property_photos.build(photo: params[:file]) # need to background this
 
-      UserMailer.property_confirmation(property).then(:deliver)
-    when 2
-      property = Property.find(params[:property_id])
       property.access_info = params[:form][:access_info]
       property.trash_disposal = params[:form][:trash_disposal]
       property.parking_info = params[:form][:parking_info]
       property.additional_info = params[:form][:additional_info]
-    when 3
-      property = Property.find(params[:property_id])
-      if params[:stripe_token]
-        customer = Stripe::Customer.retrieve current_user.stripe_customer_id
-        card = customer.cards.create(card: params[:stripe_token])
-        existing_payment = current_user.payments.where(fingerprint: card.fingerprint)[0]
-        if existing_payment
-          payment = existing_payment
-          customer.cards.retrieve(card.id).delete
-        else
-          payment = current_user.payments.create({
-            stripe_id: card.id,
-            last4: card.last4,
-            card_type: card.brand.downcase.gsub(' ', '_'),
-            fingerprint: card.fingerprint
-          })
-        end
+
+      if property.save
+        current_user.save
+        UserMailer.property_confirmation(property).then(:deliver)
+        render json: { success: true }
       else
-        payment = current_user.payments.where(stripe_id: params[:stripe_id])[0]
+        render json: { success: false, message: property.errors.full_messages[0] }
       end
-      payment.update_attribute :property_id, property.id
-    end
-    if property.save
-      current_user.save
-      render json: { success: true, property_id: property.id }
-    else
-      render json: { success: false, message: property.errors.full_messages[0] }
     end
   end
 

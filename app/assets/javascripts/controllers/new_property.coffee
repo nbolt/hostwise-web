@@ -1,31 +1,14 @@
 NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $timeout, $upload) ->
 
+  $scope.num_steps = 2
   $scope.posting = false
-  $scope.extras          = {}
-
-  $http.get('/data/services').success (rsp) -> $scope.services = rsp
-  $http.get('/data/payments').success (rsp) ->
-    $scope.payments = rsp
-    $scope.stripe_id = $scope.payments[0].stripe_id if $scope.payments[0]
-
-  $scope.cities = ->
-    {
-      dropdownCssClass: 'cities'
-      data: []
-      initSelection: (el, cb) ->
-      formatResult: (obj, container, query) -> "#{obj.text}<div class='state'>#{obj.county}, #{obj.state}</div>"
-      ajax:
-        url: "/data/cities"
-        data: (term) -> { term: term }
-        quietMillis: 400
-        results: (data) -> { results: _(data).map (c) -> { id: c.id, text: c.name, state: c.state.abbr, county: c.county.name } }
-    }
+  $scope.extras = {}
 
   $scope.rooms = ->
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
-      data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
+      data: [{id:'0',text:'0'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
       initSelection: (el, cb) ->
     }
 
@@ -33,7 +16,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
-      data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
+      data: [{id:'0',text:'0'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
       initSelection: (el, cb) ->
     }
 
@@ -45,38 +28,13 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
       initSelection: (el, cb) ->
     }
 
-  $scope.show_existing = -> if $scope.stripe_id then true  else false
-  $scope.show_new      = -> if $scope.stripe_id then false else true
-  $scope.show_existing_class = -> if $scope.show_existing() then 'active' else 'inactive'
-  $scope.show_new_class      = -> if $scope.show_new()      then 'active' else 'inactive'
-
-  $scope.select_payment = (id) -> $scope.stripe_id = id
-
-  $scope.tab = (tab) ->
-    switch tab
-      when 'existing'
-        angular.element('.existing .payment input').iCheck('uncheck')
-        angular.element('.existing .payment:eq(0) input').iCheck('check')
-        $scope.stripe_id = $scope.payments[0].id
-      when 'new'
-        $scope.stripe_id = null
-
-  $scope.skip = (n) ->
-    angular.element('#property-form-container .flash').removeClass('info success failure').empty()
-    angular.element('#property-form-container .steps').css('margin-left', -(n * 768))
-    angular.element('.step-nav .step').removeClass('active').eq(n).addClass('active')
-    angular.element('body, html').animate
-      scrollTop: 0
-    , 'fast'
-    return true
-
   $scope.previous = (n) ->
     angular.element('#property-form-container .flash').removeClass('info success failure').empty()
     angular.element('#property-form-container .steps').css('margin-left', -((n-1) * 768))
+    angular.element('#property-form-container .steps .step.active').removeClass('active')
+    angular.element('#property-form-container .steps .step').eq(n-1).addClass('active')
     angular.element('.step-nav .step').removeClass('active').eq(n-1).addClass('active')
-    angular.element('body, html').animate
-      scrollTop: 0
-    , 'fast'
+    scroll 0
     return true
 
   $scope.step = (n) ->
@@ -91,9 +49,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
               data:
                 stage: n
                 form: $scope.form
-                property_id: $scope.property_id
-                stripe_token: $scope.stripe_token
-                stripe_id: $scope.stripe_id
                 extras: $scope.extras
             ).success success_wrap
           else
@@ -103,22 +58,17 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
               data:
                 stage: n
                 form: $scope.form
-                property_id: $scope.property_id
-                stripe_token: $scope.stripe_token
-                stripe_id: $scope.stripe_id
                 extras: $scope.extras
             ).success success_wrap
 
-      if n < 3
+      if n < $scope.num_steps
         success = ->
           angular.element('#property-form-container .steps').css('margin-left', -(n * 768))
           angular.element('#property-form-container .steps .step.active').removeClass('active')
           angular.element('#property-form-container .steps .step').eq(n).addClass('active')
           angular.element('.step-nav .step.active').addClass('complete')
           angular.element('.step-nav .step').removeClass('active').eq(n).addClass('active')
-          angular.element('body, html').animate
-            scrollTop: 0
-          , 'fast'
+          scroll 0
       else
         success = -> window.location = '/'
 
@@ -127,26 +77,11 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
         _($scope.extras).extend(rsp.extras)
         if rsp.success
           success()
-          $scope.property_id = rsp.property_id
           $scope.extras = {}
         else
           flash(rsp.type || 'failure', rsp.message)
 
-      angular.element('.existing .payment:eq(0) input').iCheck('check') if n == 3 && $scope.stripe_id
-      if n == 3 && !$scope.stripe_id
-        Stripe.createToken {
-          number: angular.element('.new-payment input[data-stripe=number]').val()
-          cvc: angular.element('.new-payment input[data-stripe=cvc]').val()
-          exp_month: angular.element('.new-payment input[data-stripe=expiry]').val().split('/')[0]
-          exp_year: angular.element('.new-payment input[data-stripe=expiry]').val().split('/')[1]
-        }, (_, rsp) ->
-          if rsp.error
-            flash 'failure', rsp.error.message
-          else
-            $scope.stripe_token = rsp.id
-            post()
-      else
-        post()
+      post()
 
   flash = (type, msg) ->
     angular.element('#property-form-container .step.active .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
@@ -156,6 +91,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
     $timeout((->
       angular.element('#property-form-container .step.active .flash').removeClass('info success failure')
     ), 4000)
+    scroll 0
 
   validate = (n) ->
     switch n
@@ -163,13 +99,16 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
         step_num = 'one'
       when 2
         step_num = 'two'
-      when 3
-        step_num = 'three'
     if _(angular.element('.step.' + step_num).find('input[required]')).filter((el) -> angular.element(el).val() == '')[0]
       flash('failure', 'Please fill in all required fields')
       false
     else
       true
+
+  scroll = (position) ->
+    angular.element('body, html').animate
+      scrollTop: position
+    , 'fast'
 
 ]
 

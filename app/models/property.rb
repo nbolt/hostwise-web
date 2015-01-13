@@ -7,7 +7,6 @@ class Property < ActiveRecord::Base
   pg_search_scope :search_property, against: [:title, :address1, :city, :zip], using: { tsearch: { prefix: true } }
 
   belongs_to :user
-  has_one :payment
   has_many :bookings, autosave: true, dependent: :destroy
   has_many :property_photos, autosave: true, dependent: :destroy
 
