@@ -89,10 +89,12 @@ html
             a href='' ng-click="show_signup()"
               .button Sign Up
       .logo
-        img src='/images/porter-navy.png'
-        .text
-          | | Porter for
-          span  Hosts
+        a href="#{root_path}"
+          img src='/images/porter-navy.png'
+        a href="#{root_path}"
+          .text
+            | | Porter for
+            span  Hosts
     - if logged_in?
       #sidebar-container
         #sidebar
@@ -112,12 +114,13 @@ html
                 a ng:repeat='property in properties | filter: search' ng:href='/properties/{{property.slug}}'
                   .link ng:bind='::property.title' data-ellipsis=''
           .section
-            .title
-              .icon
-                .fa.fa-plus-circle
-              .text Add Property
-              .arrow
-                .typcn.typcn-chevron-right
+            a href="#{properties_new_path}"
+              .title
+                .icon
+                  .fa.fa-plus-circle
+                .text Add Property
+                .arrow
+                  .typcn.typcn-chevron-right
           .section sidebar-dropdown='250'
             .title
               .icon
@@ -129,26 +132,29 @@ html
               .links
                 = render 'common/account_settings'
           .section
-            .title
-              .icon
-                .fa.fa-tag
-              .text Pricing
-              .arrow
-                .typcn.typcn-chevron-right
+            a href="#{pricing_path}"
+              .title
+                .icon
+                  .fa.fa-tag
+                .text Pricing
+                .arrow
+                  .typcn.typcn-chevron-right
           .section
-            .title
-              .icon
-                .fa.fa-info-circle
-              .text FAQ
-              .arrow
-                .typcn.typcn-chevron-right
+            a href="#{faq_path}"
+              .title
+                .icon
+                  .fa.fa-info-circle
+                .text FAQ
+                .arrow
+                  .typcn.typcn-chevron-right
           .section
-            .title
-              .icon
-                .fa.fa-newspaper-o
-              .text Contact Us
-              .arrow
-                .typcn.typcn-chevron-right
+            a href="#{help_path}"
+              .title
+                .icon
+                  .fa.fa-newspaper-o
+                .text Contact Us
+                .arrow
+                  .typcn.typcn-chevron-right
     .body slide-body=''
       = yield
     - unless logged_in?

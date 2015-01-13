@@ -1,4 +1,4 @@
-PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$document', ($scope, $http, $timeout, $document) ->
+PropertyHomeCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
   $scope.filter = {id:'all',text:'Showing all'}
 
@@ -12,7 +12,10 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$document', ($scope, $http, 
     ), 400
 
   $scope.page_changed = (n) ->
-    $document.scrollToElement angular.element('#search')
+    angular.element('body, html').animate
+      scrollTop: 0
+    , 'fast'
+    return true
 
   $scope.filters = ->
     {

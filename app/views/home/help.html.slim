@@ -1,0 +1,13 @@
+.container ng:controller='contact_us'
+  .page-title Questions? We have answers
+  .contact-form-container
+    form
+      .section
+        .row
+          .field
+            textarea placeholder='Send us a message...' ng:model='form.message'
+      .section
+        .flash
+      .button
+        button.teal ng:click='submit()'
+          .text Submit

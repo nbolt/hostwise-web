@@ -24,7 +24,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
   $scope.rooms = ->
     {
       dropdownCssClass: 'details'
-      minimumResultsForSearch: 8
+      minimumResultsForSearch: -1
       data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
       initSelection: (el, cb) ->
     }
@@ -32,7 +32,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
   $scope.beds = ->
     {
       dropdownCssClass: 'details'
-      minimumResultsForSearch: 8
+      minimumResultsForSearch: -1
       data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
       initSelection: (el, cb) ->
     }
@@ -40,7 +40,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
   $scope.type = ->
     {
       dropdownCssClass: 'details'
-      minimumResultsForSearch: 8
+      minimumResultsForSearch: -1
       data: [{id:'house',text:'House'},{id:'condo',text:'Condo'},{id:'apartment',text:'Apartment'}]
       initSelection: (el, cb) ->
     }
@@ -62,11 +62,22 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
         $scope.stripe_id = null
 
   $scope.skip = (n) ->
-    switch n
-      when 2
-        angular.element('#property-form-container .steps').css('margin-left', -(4 * 768))
-        angular.element('.step-circles .step').removeClass('active').eq(4).addClass('active')
-    null
+    angular.element('#property-form-container .flash').removeClass('info success failure').empty()
+    angular.element('#property-form-container .steps').css('margin-left', -(n * 768))
+    angular.element('.step-nav .step').removeClass('active').eq(n).addClass('active')
+    angular.element('body, html').animate
+      scrollTop: 0
+    , 'fast'
+    return true
+
+  $scope.previous = (n) ->
+    angular.element('#property-form-container .flash').removeClass('info success failure').empty()
+    angular.element('#property-form-container .steps').css('margin-left', -((n-1) * 768))
+    angular.element('.step-nav .step').removeClass('active').eq(n-1).addClass('active')
+    angular.element('body, html').animate
+      scrollTop: 0
+    , 'fast'
+    return true
 
   $scope.step = (n) ->
     if validate(n)
@@ -105,6 +116,9 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
           angular.element('#property-form-container .steps .step').eq(n).addClass('active')
           angular.element('.step-nav .step.active').addClass('complete')
           angular.element('.step-nav .step').removeClass('active').eq(n).addClass('active')
+          angular.element('body, html').animate
+            scrollTop: 0
+          , 'fast'
       else
         success = -> window.location = '/'
 
