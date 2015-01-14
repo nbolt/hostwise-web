@@ -27,14 +27,14 @@
             .flash
             .row.two
               .label Address
-              .field
-                input type='text' placeholder='Street Name' required='' ng:model='form.address1'
-              .field
+              .field.zip
                 input type='text' placeholder='Zip' maxlength=5 required='' ng:model='form.zip'
+              .field.street
+                input type='text' placeholder='Street Name' required='' ng:model='form.address1'
             .row
               .label Nickname
               .field
-                input type='text' placeholder='Enter a name' required='' ng:model='form.title'
+                input type='text' placeholder='Enter a name' ng:model='form.title'
             .row.three
               .label Info
               .field
@@ -54,10 +54,12 @@
               .field
                 input type='hidden' placeholder='King(s)' required='' ng:model='form.king_beds' ui-select2='beds()'
             .row
-              .label Upload Photo
+              .label Select Photo
+              label.file-upload for='photo'
+                | Browse
+              img.preview
               .field
                 input#photo type='file' new-property-photo='' ng-file-select='' ng-model='files'
-              img#preview
           .button
             button.teal ng:click='step(1)'
               .text Next

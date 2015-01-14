@@ -8,10 +8,10 @@ form
     label for='remember' Remember me
   button ng:click='signin()'
     .text= t('auth.button.sign_in')
-div
-  a href='/forgotpwd' class='forgot-pwd'= t('auth.link.forgot_pwd')
+div ng:controller='modal'
+  a href='' ng-click='show_forgot_pwd()' class='forgot-pwd'= t('auth.link.forgot_pwd')
   .create-account
     span Do not have an account?
     br
-    a href='/signup'
+    a href='' ng-click='show_signup()'
       .button= t('auth.button.sign_up.step1')

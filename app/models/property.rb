@@ -31,6 +31,22 @@ class Property < ActiveRecord::Base
     "#{address1} #{zip}"
   end
 
+  def primary_photo
+    if property_photos.empty?
+      '' #will add a default placeholder later
+    else
+      property_photos.first.photo.url
+    end
+  end
+
+  def primary_title
+    if title.present?
+      title
+    else
+      address1
+    end
+  end
+
   private
 
   def standardize_address

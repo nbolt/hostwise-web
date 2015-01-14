@@ -15,8 +15,9 @@
   #properties
     .property dir-paginate='property in properties | itemsPerPage: 10'
       .photo
+        img ng:src='{{::property.primary_photo}}'
       .title
-        .text ng:bind='::property.title'
+        .text ng:bind='::property.primary_title'
         a ng:href='/properties/{{property.slug}}' Manage Listing and Calendar
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"

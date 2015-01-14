@@ -22,9 +22,4 @@ class HomeController < ApplicationController
     logout
     redirect_to '/'
   end
-
-  def user
-    render json: current_user.to_json(methods: :avatar)
-  end
-
 end

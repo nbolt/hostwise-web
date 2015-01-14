@@ -9,7 +9,7 @@ class DataController < ApplicationController
   end
 
   def properties
-    render json: Property.by_user(current_user).search(params[:term]).to_json
+    render json: Property.by_user(current_user).search(params[:term]).to_json(methods: [:primary_photo, :primary_title])
   end
 
   def payments

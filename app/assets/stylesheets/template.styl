@@ -1,0 +1,66 @@
+// ----------------------------------------
+// write reusable styles
+// ----------------------------------------
+
+black = #24272A
+red = #AB133E
+green = #9ABF72
+dark-grey = #808080
+light-grey = #EDEEF1
+light-blue = #7296BF
+light-navy = #B9C1D5
+navy = #2D3842
+dark-navy = #242A30
+teal = #34AAB0
+
+facebook-blue = #3d599b
+twitter-blue  = #00abee
+
+primary-color-1 = #2BAAB0
+primary-color-2 = #2C3842
+primary-color-3 = #E6C15D
+primary-color-4 = #E36159
+primary-color-5 = #979FA9
+
+@keyframes fadein {
+  from {opacity: 0}
+  to   {opacity: 1}
+}
+
+@keyframes spin {
+  from {transform: rotate(0deg)}
+  to {transform: rotate(-360deg)}
+}
+
+@font-face
+  font-family: 'gotham-book'
+  src: url('/type/gotham/gotham-book.woff') format('woff')
+
+@font-face
+  font-family: 'gotham-bold'
+  src: url('/type/gotham/gotham-bold.woff') format('woff')
+
+
+:invalid, :-moz-submit-invalid, :-moz-ui-invalid
+  box-shadow: none
+
+html
+  height: 100%
+
+html, body, .body
+  min-height: 100%
+  margin: 0
+  font-family: Open Sans, Helvetica Neue,HelveticaNeue,Helvetica, Arial, sans-serif
+  color: black
+  background-color: light-grey
+  font-size: 100%
+  position: relative
+
+input[type=text], input[type=email], input[type=password], input[type=file]
+  border: thin solid light-grey
+  border-radius: 3px
+  box-shadow: none
+  box-sizing: border-box
+  padding: 8px 12px
+  &:focus
+    outline: none

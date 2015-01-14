@@ -83,10 +83,10 @@ html
               .button Book Service
         - else
           .link
-            a href='' ng-click="show_signin()"
+            a href='' ng-click='show_signin()'
               .button.login Login
           .link
-            a href='' ng-click="show_signup()"
+            a href='' ng-click='show_signup()'
               .button Sign Up
       .logo
         a href="#{root_path}"
@@ -98,21 +98,14 @@ html
     - if logged_in?
       #sidebar-container
         #sidebar
-          .section sidebar-dropdown='' ng:controller='properties'
-            .title
-              .icon
-                .fa.fa-home
-              .text Properties
-              .arrow
-                .typcn.typcn-chevron-right
-            .drop-container
-              .search
-                .input
-                  .fa.fa-search
-                  input type='text' placeholder='Search Properties' ng:model='search'
-              .links
-                a ng:repeat='property in properties | filter: search' ng:href='/properties/{{property.slug}}'
-                  .link ng:bind='::property.title' data-ellipsis=''
+          .section
+            a href="#{root_path}"
+              .title
+                .icon
+                  .fa.fa-home
+                .text Properties
+                .arrow
+                  .typcn.typcn-chevron-right
           .section
             a href="#{properties_new_path}"
               .title
