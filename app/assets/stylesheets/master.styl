@@ -1029,12 +1029,17 @@ calendar
     text-align: center
     width: 100%
     .flash
-      left: 84px
+      left: 74px
       position: absolute
-      top: 5px
+      top: 10px
+    .vr
+      border-left: 1px solid light-grey
+      display: inline-block
+      height: 193px
+      margin-top: 97px
     .section
       display: inline-block
-      padding: 20px
+      padding: 30px
       vertical-align: top
       .title
         color: primary-color-1
@@ -1043,11 +1048,25 @@ calendar
       .row
         position: relative
         width: 250px
+        &.two input
+          width: 125px
     input
       margin: 5px 0
       width: 250px
-    input[readonly=readonly]
-      background-color: light-grey
     button
+      height: 40px
       margin: 5px 0
-      width: 276px
+      position: relative
+      width: 100%
+      .text
+        margin-left: 30px
+      .icon
+        background-color: primary-color-6
+        display: inline-block
+        height: 40px
+        left: 0
+        position: absolute
+        top: 0
+        width: 40px
+        .fa
+          line-height: 40px

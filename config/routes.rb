@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get '/help' => 'home#help', as: :help
 
   get '/user' => 'users#show', as: :user
-  get '/user/:id/edit' => 'users#edit', as: :edit_user
+  get '/user/edit' => 'users#edit', as: :edit_user
   put '/user/update' => 'users#update'
 
   match '/:action' => 'home', via: [:get, :post]

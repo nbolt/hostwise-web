@@ -1,0 +1,38 @@
+.container
+  .page-title
+    .fa.fa-cog
+    | Account Settings
+  .account-container ng::controller='account'
+    .avatar
+      img ng:src='{{::user.avatar}}'
+    h2 ng:bind='::user.name'
+    form
+      .flash
+      .section
+        .title Contact Info
+        .row.two
+          input type='text' placeholder='First Name' ng:model='form.first_name'
+          input type='text' placeholder='Last Name' ng:model='form.last_name'
+        .row
+          input type='email' placeholder='Email Address' ng:model='form.email'
+        .row
+          input type='text' placeholder='Mobile Number' ng:model='form.phone_number'
+        .row
+          button.teal ng:click="update('info')"
+            .icon
+              span.fa.fa-rotate-right
+            .text Save Changes
+      .vr
+      .section
+        .title Change Password
+        .row
+          input type='password' placeholder='Current Password' ng:model='form.current_password'
+        .row
+          input type='password' placeholder='New Password' ng:model='form.password'
+        .row
+          input type='password' placeholder='Confirm New Password' ng:model='form.password_confirmation'
+        .row
+          button.teal ng:click="update('password')"
+            .icon
+              span.fa.fa-rotate-right
+            .text Update Password

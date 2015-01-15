@@ -6,12 +6,14 @@ class User < ActiveRecord::Base
   has_many :properties, dependent: :destroy
   has_many :payments, autosave: true, dependent: :destroy
 
-  validates_presence_of :email, :password, :password_confirmation, if: lambda { step == 1 }
-  validates :password, confirmation: true, if: lambda { step == 1 }
+  validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
+  validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
+  validates_presence_of :password, :password_confirmation, if: lambda { step == 'step1' || step == 'edit_password' }
+  validates :password, confirmation: true, if: lambda { step == 'step1' || step == 'edit_password' }
 
-  validates_presence_of :first_name, :last_name, :phone_number, if: lambda { step == 2 }
-  validates_numericality_of :phone_number, only_integer: true, if: lambda { step == 2 }
-  validates_length_of :phone_number, is: 10, if: lambda { step == 2 }
+  validates_presence_of :first_name, :last_name, :phone_number, if: lambda { step == 'step2' || step == 'edit_info' }
+  validates_numericality_of :phone_number, only_integer: true, if: lambda { step == 'step2' || step == 'edit_info' }
+  validates_length_of :phone_number, is: 10, if: lambda { step == 'step2' || step == 'edit_info' }
 
   after_create :create_stripe_customer
 
