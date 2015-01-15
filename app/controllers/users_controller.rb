@@ -16,6 +16,7 @@ class UsersController < ApplicationController
     user = current_user
     if params[:step] == 'info'
       User.step = 'edit_info'
+      user.assign_attributes(user_params)
     elsif params[:step] == 'password'
       User.step = 'edit_password'
       unless params[:form][:current_password].present?
@@ -26,10 +27,12 @@ class UsersController < ApplicationController
         render json: { success: false, message: "Current password doesn't match" }
         return
       end
+      params[:form].delete :current_password #clear unpermitted param
+      user.assign_attributes(user_params)
+    elsif params[:step] == 'photo'
+      user.avatars.build(photo: params[:file]) # need to background this
     end
 
-    params[:form].delete :current_password #clear unpermitted param
-    user.assign_attributes(user_params)
     if user.save
       render json: { success: true }
     else

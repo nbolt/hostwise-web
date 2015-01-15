@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
 
   has_many :properties, dependent: :destroy
   has_many :payments, autosave: true, dependent: :destroy
+  has_many :avatars, autosave: true, dependent: :destroy
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
   validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
@@ -24,10 +25,10 @@ class User < ActiveRecord::Base
   end
 
   def avatar
-    if false #photo
-      photo.url
-    else
+    if avatars.empty?
       "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}.jpg?s=60&d=mm"
+    else
+      avatars.last.photo.url
     end
   end
 

@@ -14,16 +14,19 @@ AccountCtrl = ['$scope', '$http', '$timeout', '$window', ($scope, $http, $timeou
       step: step
     }).success (rsp) ->
       if rsp.success
-        $scope.form.password = ''
-        $scope.form.password_confirmation = ''
-        $scope.form.current_password = ''
-        message = ((if step is 'info' then 'Contact info' else 'Password')) + ' updated successfully!'
+        message = 'Contact info'
+        if step is 'password'
+          message = 'Password'
+          $scope.form.password = ''
+          $scope.form.password_confirmation = ''
+          $scope.form.current_password = ''
+        message += ' updated successfully!'
         flash('info', message)
       else
         flash('failure', rsp.message)
 
   flash = (type, msg) ->
-    el = angular.element('.account-container .flash')
+    el = angular.element('.account-container form .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
       el.css('opacity', 0)

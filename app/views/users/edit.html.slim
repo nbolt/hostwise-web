@@ -3,8 +3,10 @@
     .fa.fa-cog
     | Account Settings
   .account-container ng::controller='account'
-    .avatar
+    .avatar ng::controller='avatar'
       img ng:src='{{::user.avatar}}'
+      .file-upload ng-file-select="" ng-model="files" ng-multiple="false"  Upload Photo
+      .flash
     h2 ng:bind='::user.name'
     form
       .flash
