@@ -1,21 +1,15 @@
 ModalCtrl = ['$scope', '$timeout', 'ngDialog', ($scope, $timeout, ngDialog) ->
   $scope.show_signin = ->
-    ngDialog.closeAll()
-    $timeout((->
-      ngDialog.open template: 'modal-sign-in', className: 'auth'
-    ), 700)
+    ngDialog.closeAll() if angular.element('.ngdialog')[0]
+    ngDialog.open template: 'modal-sign-in', className: 'auth'
 
   $scope.show_signup = ->
-    ngDialog.closeAll()
-    $timeout((->
-      ngDialog.open template: 'modal-sign-up', className: 'auth'
-    ), 700)
+    ngDialog.closeAll() if angular.element('.ngdialog')[0]
+    ngDialog.open template: 'modal-sign-up', className: 'auth'
 
   $scope.show_forgot_pwd = ->
-    ngDialog.closeAll()
-    $timeout((->
-      ngDialog.open template: 'modal-forgot-pwd', className: 'auth'
-    ), 700)
+    ngDialog.closeAll() if angular.element('.ngdialog')[0]
+    ngDialog.open template: 'modal-forgot-pwd', className: 'auth'
 ]
 
 app = angular.module('porter').controller('modal', ModalCtrl)
