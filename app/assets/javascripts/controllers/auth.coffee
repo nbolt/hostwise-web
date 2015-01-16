@@ -32,7 +32,7 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
           flash('failure', rsp.message)
 
   flash = (type, msg) ->
-    el = angular.element('.signin .flash, .signup .flash')
+    el = angular.element('.ngdialog.auth .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
       el.css('opacity', 0)
