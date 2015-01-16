@@ -13,18 +13,26 @@ class Property < ActiveRecord::Base
   before_validation :standardize_address, on: :create
 
   scope :by_user, -> (user) { where(user_id: user.id) }
+  scope :by_alphabetical, -> { reorder('LOWER(title)') }
+  scope :upcoming_bookings, -> { includes(:bookings).where('bookings.id is not null').order('bookings.created_at DESC').references(:bookings) }
+  scope :recently_added, -> { reorder('created_at DESC') }
 
   def self.find_by_slug slug
     friendly.find slug
   rescue ActiveRecord::RecordNotFound
   end
 
-  def self.search(query)
-    if query.present?
-      search_property(query).reorder('LOWER(title)')
-    else
-      order('LOWER(title)')
+  def self.search(term, sort)
+    case sort
+      when 'alphabetical'
+        results = by_alphabetical
+      when 'recently_added'
+        results = recently_added
+      when 'upcoming_service'
+        results = upcoming_bookings
     end
+    return results.search_property(term) if term.present? && !results.empty?
+    results
   end
 
   def short_address
