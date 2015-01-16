@@ -1,4 +1,4 @@
-ModalCtrl = ['$scope', 'ngDialog', ($scope, ngDialog) ->
+ModalCtrl = ['$scope', '$timeout', 'ngDialog', ($scope, $timeout, ngDialog) ->
   $scope.show_signin = ->
     ngDialog.closeAll()
     $timeout((->

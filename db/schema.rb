@@ -16,6 +16,13 @@ ActiveRecord::Schema.define(version: 20150115233503) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "avatars", force: :cascade do |t|
+    t.string   "photo"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "booking_services", force: :cascade do |t|
     t.integer  "booking_id"
     t.integer  "service_id"

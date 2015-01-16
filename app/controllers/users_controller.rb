@@ -15,10 +15,10 @@ class UsersController < ApplicationController
   def update
     user = current_user
     if params[:step] == 'info'
-      User.step = 'edit_info'
+      user.step = 'edit_info'
       user.assign_attributes(user_params)
     elsif params[:step] == 'password'
-      User.step = 'edit_password'
+      user.step = 'edit_password'
       unless params[:form][:current_password].present?
         render json: { success: false, message: 'Current password is required' }
         return

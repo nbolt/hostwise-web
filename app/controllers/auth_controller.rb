@@ -3,9 +3,9 @@ class AuthController < ApplicationController
   def signup
     case params[:stage]
     when 1
-      User.step = 'step1'
       user = User.where(email: params[:form][:email])[0]
       if user
+        user.step = 'step1'
         if user.phone_confirmed
           render json: { success: false, message: 'Account already exists' }
           return
@@ -21,8 +21,8 @@ class AuthController < ApplicationController
         render json: { success: false, message: user.errors.full_messages[0] }
       end
     when 2
-      User.step = 'step2'
       user = User.where(email: params[:form][:email])[0]
+      user.step = 'step2'
       user.assign_attributes(user_params)
       user.phone_confirmation = rand(1000..9999)
       if user.save
