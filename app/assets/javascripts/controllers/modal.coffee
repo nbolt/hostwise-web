@@ -1,20 +1,20 @@
-ModalCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+ModalCtrl = ['$scope', 'ngDialog', ($scope, ngDialog) ->
   $scope.show_signin = ->
     ngDialog.closeAll()
     $timeout((->
-      ngDialog.open template: 'modal-sign-in'
+      ngDialog.open template: 'modal-sign-in', className: 'auth'
     ), 700)
 
   $scope.show_signup = ->
     ngDialog.closeAll()
     $timeout((->
-      ngDialog.open template: 'modal-sign-up'
+      ngDialog.open template: 'modal-sign-up', className: 'auth'
     ), 700)
 
   $scope.show_forgot_pwd = ->
     ngDialog.closeAll()
     $timeout((->
-      ngDialog.open template: 'modal-forgot-pwd'
+      ngDialog.open template: 'modal-forgot-pwd', className: 'auth'
     ), 700)
 ]
 

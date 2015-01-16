@@ -1,3 +1,66 @@
+<<<<<<< HEAD
+=======
+black = #24272A
+red = #E06358
+green = #85A759
+dark-grey = #808080
+darker-grey = #5D5D5D
+light-grey = #E5E5E5
+lighter-grey = #EFEFEF
+light-blue = #7296BF
+light-navy = #B9C1D5
+navy = #2D3842
+dark-navy = #242A30
+teal = #35A9B1
+light-teal = #48BBBC
+yellow = #F79F57
+
+facebook-blue = #3d599b
+twitter-blue  = #00abee
+
+primary-color-1 = #2BAAB0
+primary-color-2 = #2C3842
+primary-color-3 = #E6C15D
+primary-color-4 = #E36159
+primary-color-5 = #979FA9
+
+@keyframes fadein {
+    from {opacity: 0}
+    to   {opacity: 1}
+}
+
+@keyframes spin {
+    from {transform: rotate(0deg)}
+    to {transform: rotate(-360deg)}
+}
+
+@font-face
+  font-family: 'gotham-book'
+  src: url('/type/gotham/gotham-book.woff') format('woff')
+
+@font-face
+  font-family: 'gotham-bold'
+  src: url('/type/gotham/gotham-bold.woff') format('woff')
+  
+typicons()
+  font-family:'typicons';font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;height:1em;font-size:1em;text-align:center;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;text-rendering:optimizeLegibility
+
+
+:invalid, :-moz-submit-invalid, :-moz-ui-invalid
+  box-shadow: none
+
+html
+  height: 100%
+
+html, body, .body
+  min-height: 100%
+  margin: 0
+  font-family: Open Sans, Helvetica Neue,HelveticaNeue,Helvetica, Arial, sans-serif
+  color: black
+  background-color: light-grey
+  font-size: 100%
+  position: relative
+
 header
   padding: 20px
   background-color: white
@@ -50,6 +113,32 @@ header
         margin: 19px 40px 0 0
         .typcn
           transform: rotate(90deg)
+    .link
+      display: inline-block
+      vertical-align: top
+      margin: 0 10px
+      position: relative
+      .button
+        background-color: primary-color-1
+        padding: 8px 12px
+        border-radius: 1px
+        color: white
+        hover-darken()
+        &.login
+          background-color: primary-color-2
+          hover-darken()
+      > a
+        text-decoration: none
+        color: white
+      &:hover
+        cursor: pointer
+        .drop-container
+          max-height: 260px
+      &.button
+        .drop-container
+          left: -120px
+          .drop-arrow
+            margin-left: 166px
       .drop-container
         position: absolute
         top: 71px
@@ -73,29 +162,13 @@ header
               border-bottom: thin solid transparent
             &:hover .link
               border-bottom: thin solid light-navy
-    .link
-      display: inline-block
-      vertical-align: top
-      margin: 0 10px
-      .button
-        background-color: primary-color-1
-        padding: 8px 12px
-        border-radius: 1px
-        hover-darken()
-        &.login
-          background-color: primary-color-2
-          hover-darken()
-      a
-        cursor: pointer
-        text-decoration: none
-        color: white
 
 .body
   width: 976px
   margin: 145px 0
   position: relative
   left: 50%
-  margin-left: -488px
+  margin-left: -448px
   transition: margin-left .4s ease-in-out
 
 .button.teal, button.teal
@@ -342,7 +415,7 @@ form
   &.failure
     background-color: red
   &.info
-    background-color: light-blue
+    background-color: yellow
 
 .container
   width: 768px
@@ -569,87 +642,47 @@ form
 
 #property
   #title
-    text-align: center
-    font-size: 2em
-  #address
-    text-align: center
-    color: #999
-    margin-top: 15px
-  #tabs
-    text-align: center
-    margin: 25px 0
-    .tab
+    background-color: white
+    padding: 12px 20px
+    border-radius: 1px
+    .photo, .text
       display: inline-block
       vertical-align: top
-      margin: 0 10px
-      font-size: 1.25em
-      padding: 2px
-      &:hover
-        cursor: pointer
-      &:hover, &.active
-        border-bottom: thin solid red
-  #tab-content
-    .flash
-      margin: 25px auto
-    .actions
-      text-align: center
-      .action
-        margin: 0 10px
-        color: #666
-        &:hover, &.active
-          color: red
-        &:hover
-          cursor: pointer
-    .tab
-      width: 600px
-      margin: 15px auto
-      display: none
-      &.active
-        display: block
-      .section
-        text-align: center
-        .title
-          font-size: 1.25em
-        .field
-          display: inline-block
-          vertical-align: top
-          margin: 25px 10px
-      #bookings
-        .booking
-          border: thin solid #ccc
-          width: 500px
-          padding: 15px
-          margin: 20px auto
-          border-radius: 3px
-          text-align: left
-          .cancel
-            float: right
-            font-size: 1.75em
-            margin-top: -10px
-            .typcn::before
-              content: '\e121'
-            &:hover
-              cursor: pointer
-              color: red
-              .typcn::before
-                content: '\e122'
-          .date
-            color: #999
-          a
-            color: black
-            text-decoration: none
-            &:hover
-              text-decoration: underline
+    .photo
+      img
+        border-radius: 99px
+        width: 90px
+        height: 90px
+    .text
+      margin: 16px
+      .title
+        font-size: 1.75em
+      .address
+        color: teal
+        font-weight: 600
+  #columns
+    margin-top: 25px
+    .column
+      display: inline-block
+      vertical-align: top
+      width: 470px
+      margin-right: 35px
+      &:last-child
+        margin-right: 0
 
 
-calendar
+#calendar
+  position: relative
+  background-color: white
+  padding: 25px 40px
   .arrows
     position: absolute
-    left: 0
-    right: 0
+    left: 55px
+    right: 55px
     z-index: 10
     .arrow
       font-size: 1.5em
+      color: teal
       &:hover
         cursor: pointer
       &.prev
@@ -663,34 +696,37 @@ calendar
   .table
     text-align: center
     table
-      width: 599px
+      width: 100%
       thead
         th
-          font-size: 1.5em
-          padding-bottom: 20px
+          &.month
+            font-size: 1.5em
+            padding-bottom: 20px
+            color: teal
+            .month_name
+              font-weight: 600
+          &.day_of_week
+            color: #B3B3B3
+            font-weight: bold
+          &:hover
+            cursor: default
       tbody
         td
-          padding: 18px
-          border: thin solid light-grey
+          padding: 16px
+          color: #999
+          border-radius: 50%
+          &:hover
+            cursor: default
           &.inactive
+            color: #E0E0E0
+          &.booked
+            background-color: teal
             color: white
-          &.past
-            color: light-grey
           &.active:hover
-            background-color: #efefef
             cursor: pointer
-          &.selecting
-            background-color: red !important
+          &.active:hover, &.selecting
+            background-color: teal
             color: white
-          &.chosen
-            background-color: red
-            color: white
-            &:hover
-              background-color: #efefef
-              color: black
-            &.selecting
-              background-color: white !important
-              color: black
 
 #home
   #welcome
@@ -712,7 +748,7 @@ calendar
           position: relative
           border-radius: 1px
           &::after
-            font-family:'typicons';font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;height:1em;font-size:1em;text-align:center;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;text-rendering:optimizeLegibility
+            typicons()
             content: '\e049'
             position: absolute
             right: 4px
@@ -752,66 +788,39 @@ calendar
         &:hover
           text-decoration: underline
 
-.new-payment
-  color: #888
-  width: 410px
-  margin: auto
-  .cards
+.card-entry
+  border: thin solid #ccc
+  border-radius: 3px
+  margin-top: 20px
+  .title
+    margin-top: 20px
     background-color: #eee
-    border: thin solid grey
-    border-radius: 3px
-    .card
-      padding: 12px 20px
-      .text
-        display: inline-block
-        vertical-align: top
-        margin-top: 2px
-        font-size: 1.2em
-        font-weight: 800
-      input
-        margin: 7px 10px 0 1px
-        display: inline-block
-        vertical-align: top
-      img
-        float: right
-      &:hover, &.chosen
-        background-color: green
-        color: white
-        cursor: pointer
-        .text
-          font-weight: 600
-  .card-entry
-    border: thin solid #ccc
-    border-radius: 3px
-    .title
-      margin-top: 20px
-      background-color: #eee
-      padding: 10px
-      font-weight: bold
-      font-size: 1.1em
-      img
-        float: right
-    .card-details
-      padding: 20px
-      .field
-        display: inline-block
-        .label
-          font-size: .75em
-          color: grey
-          text-transform: uppercase
-          font-weight: bold
-          margin-bottom: 5px
-        &.card-number
-          input
-            width: 185px
-            margin-right: 17px
-        &.expiry
-          input
-            width: 74px
-        &.cvc
-          margin: 12px 0 0 17px
-          input
-            width: 54px
+    padding: 10px
+    font-weight: bold
+    font-size: 1.1em
+    img
+      float: right
+  .card-details
+    padding: 20px
+    .field
+      display: inline-block
+      .label
+        font-size: .75em
+        color: grey
+        text-transform: uppercase
+        font-weight: bold
+        margin-bottom: 5px
+      &.card-number
+        input
+          width: 185px
+          margin-right: 17px
+      &.expiry
+        input
+          width: 74px
+      &.cvc
+        margin: 12px 0 0 17px
+        input
+          width: 54px
 
 .select2-container
   vertical-align: top
@@ -844,18 +853,29 @@ calendar
       margin-top: 2px
   .select2-search
     margin-top: 5px
-
+    
 .ngdialog
   .ngdialog-content
     background: white
     color: #444
-    margin: 120px auto
+    margin: auto
     max-width: 100%
     position: relative
+    .modal
+      position: relative
+  .ngdialog-close
+    position: absolute
+    right: 0
+    top: 0
+    &:hover
+      cursor: pointer
+
+.ngdialog.auth
+  .ngdialog-content
+    margin-top: 120px
     width: 600px
     .modal
       background-color: light-grey
-      position: relative
       .title
         background-color: white
         font-size: 22px
@@ -874,10 +894,6 @@ calendar
       .progress
         margin-top: 50px
   .ngdialog-close
-    cursor: pointer
-    position: absolute
-    right: 0
-    top: 0
     &:before
       background: transparent
       color: primary-color-2
@@ -891,8 +907,230 @@ calendar
       text-align: center
       top: 15px
       width: 30px
-    &:hover:before, &:active:before
-      color: dark-grey
+    &:hover
+      &::before, &:active::before
+        color: dark-grey
+        
+.ngdialog.booking
+  .ngdialog-close
+    color: white
+    margin-right: 6px
+    font-size: 1.5em
+    transition: opacity .5s ease-in-out
+    hover-darken()
+    &::before
+      typicons()
+      content: '\e057'
+  .ngdialog-content
+    width: 400px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .header
+        background-color: teal
+        color: white
+        font-size: 1.25em
+        padding: 10px
+        height: 50px
+        box-sizing: border-box
+        transition: background-color 1s ease-in-out, height 1s ease-in-out
+        .text
+          text-align: center
+          transition: opacity .5s ease-in-out
+        &.failure
+          background-color: red
+        &.success
+          background-color: green
+        &.info
+          background-color: yellow
+      .content-container
+        width: 800px
+        overflow: hidden
+        transition: margin-left .5s ease-in-out
+        .content
+          width: 400px
+          display: inline-block
+          vertical-align: top
+          box-sizing: border-box
+          margin: 0
+          .buttons
+            margin: 25px 0
+            .button
+              margin: auto
+              color: white
+              padding: 8px 12px
+              text-align: center
+              &:hover
+                cursor: pointer
+              &.teal
+                background-color: teal
+                &:hover
+                  background-color: light-teal
+            &.one
+              .button
+                width: 300px
+            &.two
+              .button
+                width: 125px
+          &.side
+            display: none
+            &.active
+              display: inline-block
+          &.payment
+            width: 350px
+            margin-left: 25px
+            .payment-tab
+              display: none
+              height: 238px
+              &.active
+                display: block
+              &.ach
+                .row.two
+                  .field
+                    width: 170px
+                    input
+                      width: 120px
+              &.credit-card
+                .row.two
+                  .field
+                    width: 130px
+                    input
+                      width: 80px
+            .payment-method
+              margin: 25px 0
+              border-bottom: 2px solid light-grey
+              padding-bottom: 25px
+              .text
+                margin-bottom: 10px
+              .select2-container
+                width: 200px
+                > a
+                  background: lighter-grey !important
+                  color: darker-grey
+                  border: thin solid light-grey
+                  border-radius: 1px !important
+            input
+              background: lighter-grey
+              border: thin solid light-grey
+              margin: 10px 0 20px
+              padding: 8px 12px
+              border-radius: 1px
+              width: 210px
+              &:active, &:focus
+                outline: none
+            .row.two
+              .field
+                  display: inline-block
+                  vertical-align: top
+          .services
+            padding: 0 50px
+            border-bottom: 2px solid light-grey
+          .payment
+            width: 300px
+            margin: 5px auto
+            position: relative
+            .overlay
+              position: absolute
+              top: 0
+              left: 0
+              right: 0
+              bottom: 0
+              z-index: 100000
+              display: none
+              &:hover
+                cursor: pointer
+            .icon, .arrow
+              position: absolute
+              z-index: 100
+              font-size: 1.25em
+              top: 4px
+            .icon
+              left: 10px
+            .arrow
+              right: 10px
+              margin-top: 2px
+              transform: rotate(90deg)
+            &.new
+              .overlay, .arrow
+                display: block
+                transform: rotate(0deg)
+                margin-top: 0
+            .select2-container
+              width: 100%
+              > a
+                background: lighter-grey !important
+                color: darker-grey
+                font-weight: 600
+                .select2-chosen
+                  margin-left: 25px
+          .head
+            color: teal
+            font-size: 1.5em
+            text-align: center
+            position: relative
+            padding: 20px
+            border-bottom: 2px solid light-grey
+            .arrows
+              position: absolute
+              top: 20px
+              left: 30px
+              right: 30px
+              color: darker-grey
+              .arrow
+                &:hover
+                  cursor: pointer
+                &.prev
+                  float: left
+                &.next
+                  float: right
+            .text
+              span
+                font-weight: 600
+      .service
+        margin: 20px 0
+        .icon, .text, label
+          display: inline-block
+          vertical-align: top
+        .icon
+          border-radius: 50%
+          border: 2px solid darker-grey
+          width: 56px
+          height: 56px
+        &.active
+          .icon
+            border: 2px solid teal
+        .text
+          font-size: 1.25em
+          width: 160px
+          margin: 14px 0 0 14px
+        label
+          margin: 18px 0 0 15px
+      .total
+        padding: 10px
+        width: 300px
+        margin: auto
+        .text, .amount, .details, .typcn
+          display: inline-block
+          vertical-align: top
+        > .text
+          color: darker-grey
+          vertical-align: bottom
+          font-size: 1.25em
+          font-weight: 600
+          margin:  0 10px 5px
+          upcase()
+        .amount
+          color: teal
+          font-size: 2.75em
+        .details
+          float: right
+          margin-top: 30px
+          .text
+            color: teal
+            margin-right: 5px
+          &:hover
+            cursor: pointer
 
 .cb
   input[type=checkbox]
@@ -1079,3 +1317,33 @@ calendar
         width: 40px
         .fa
           line-height: 40px
+
+.switch
+  input
+    display none
+  i
+    display inline-block
+    cursor pointer
+    padding-right 20px
+    transition all ease 0.2s
+    border-radius 20px
+    box-shadow inset 0 0 1px rgba(0,0,0,.5)
+    &:before
+      display block
+      content ''
+      width 20px
+      height 20px
+      border-radius 20px
+      background white
+      box-shadow 0 1px 2px rgba(0,0,0,.5)
+  :checked
+    & + i
+      padding-right 0
+      padding-left 20px
+  &.red
+    :checked
+      & + i
+        box-shadow inset 0 0 1px rgba(0,0,0,.5), inset 0 0 60px teal
+        
+.select2-drop.payment
+  z-index: 10000

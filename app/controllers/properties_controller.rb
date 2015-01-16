@@ -6,7 +6,7 @@ class PropertiesController < ApplicationController
   def show
     respond_to do |format|
       format.html { redirect_to '/' unless property }
-      format.json { render json: property.to_json(include: :bookings) }
+      format.json { render json: property.to_json(include: [:bookings, :property_photos], methods: :short_address) }
     end
   end
 
@@ -23,6 +23,19 @@ class PropertiesController < ApplicationController
     booking = property.bookings.find params[:booking]
     booking.destroy
     if booking.destroyed?
+      render json: { success: true }
+    else
+      render json: { success: false }
+    end
+  end
+
+  def book
+    booking = property.bookings.build(date: params[:date][:moment])
+    booking.payment = Payment.find params[:payment][:id]
+    params[:services].each do |service|
+      booking.services.push Service.where(name: service)[0]
+    end
+    if booking.save
       render json: { success: true }
     else
       render json: { success: false }

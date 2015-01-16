@@ -1,40 +1,13 @@
 #property ng:controller='property'
-  #title ng:bind='::property.title'
-  #address
-    .address1
-      | {{property.address1}} {{property.address2}}
-    .address2
-      | {{property.city}}, {{property.state}} {{property.zip}}
-  #tabs
-    .tab.details  ng:click="tab('details')" Details
-    .tab.bookings ng:click="tab('bookings')" Bookings
-  #tab-content
-    .tab.details
-      .flash
-      .section
-        .title Rooms
-        .field.bedrooms
-          input type='hidden' placeholder='Bedroom(s)' required='' ng:model='form.bedrooms' ui-select2='rooms()'
-        .field
-          input type='hidden' placeholder='Bathroom(s)' required='' ng:model='form.bathrooms' ui-select2='rooms()'
-        .field
-          input type='hidden' placeholder='Twin(s)' required='' ng:model='form.twin_beds' ui-select2='beds()'
-        .field
-          input type='hidden' placeholder='Full(s)' required='' ng:model='form.full_beds' ui-select2='beds()'
-        .field
-          input type='hidden' placeholder='Queen(s)' required='' ng:model='form.queen_beds' ui-select2='beds()'
-        .field
-          input type='hidden' placeholder='King(s)' required='' ng:model='form.king_beds' ui-select2='beds()'
-      .section
-        .title Special Instructions
-    .tab.bookings
-      .actions
-        .action Schedule Booking
-      .flash
-      .section
-        .title Bookings
-        #bookings
-          .booking ng:repeat='booking in property.bookings' id='booking-{{booking.id}}'
-            .cancel ng:click='cancel(booking)'
-              .typcn
-            .date ng:bind='::booking.parsed_date'
+  #title
+    .photo
+      img ng:src='{{::property.property_photos[0].photo.url}}'
+    .text
+      .title ng:bind='::property.title'
+      .address ng:bind='::property.short_address'
+  #columns
+    .column.calendar
+      #calendar calendar='' options='calendar_options'
+    .column.info
+
+= render 'common/booking_modal'

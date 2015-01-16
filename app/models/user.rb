@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   validates_numericality_of :phone_number, only_integer: true, if: lambda { step == 'step2' || step == 'edit_info' }
   validates_length_of :phone_number, is: 10, if: lambda { step == 'step2' || step == 'edit_info' }
 
-  after_create :create_stripe_customer
+  after_create :create_stripe_customer, :create_balanced_customer
 
   cattr_accessor :step
 
@@ -38,7 +38,11 @@ class User < ActiveRecord::Base
     StripeCustomerJob.perform_later self
   end
 
+  def create_balanced_customer
+    BalancedCustomerJob.perform_later self
+  end
+
   def format_phone_number
-    self.phone_number = phone_number.strip.gsub(' ', '').delete("()-") if phone_number.present?
+    self.phone_number = phone_number.strip.gsub(' ', '').delete("()-.+") if phone_number.present?
   end
 end

@@ -17,7 +17,8 @@ html
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'css_imports'
     = javascript_include_tag :application, 'data-turbolinks-track' => true
-    = javascript_include_tag 'https://js.stripe.com/v2'
+    = javascript_include_tag 'https://js.stripe.com/v2', async: true, onload: 'stripe_loaded()'
+    = javascript_include_tag 'https://js.balancedpayments.com/1.1/balanced.js', async: true, onload: 'balanced_loaded()'
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700', async: true
     = csrf_meta_tags
     = yield :head
@@ -28,7 +29,9 @@ html
         analytics=analytics||[];(function(){var e=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group"],t=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var n=0;n<e.length;n++)analytics[e[n]]=t(e[n])})(),analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)};
         analytics.load("#{ENV['SEGMENT_KEY']}")
       }
-      Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}")
+      
+      function stripe_loaded(){Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}")}
+      function balanced_loaded(){}
 
     - if Rails.env == 'production'
       javascript:
@@ -61,12 +64,11 @@ html
               "app_id": "y2g99hzz"
             }
 
-
   body ng:controller='app'
     header
       nav ng:controller='modal'
         - if logged_in?
-          #user
+          #user.link
             .drop-container
               .drop-arrow
               .drop
@@ -78,9 +80,13 @@ html
               .text ng:bind='::user.first_name'
             .arrow
               .typcn.typcn-chevron-right
-          .link
-            a href='/book-service'
-              .button Book Service
+          .link.button
+            .button Book Service
+            .drop-container
+              .drop-arrow
+              .drop
+                .links
+                  = render 'common/account_settings'
         - else
           .link
             a href='' ng-click='show_signin()'
@@ -88,13 +94,12 @@ html
           .link
             a href='' ng-click='show_signup()'
               .button Sign Up
-      .logo
-        a href="#{root_path}"
+      a href="#{root_path}"
+        .logo
           img src='/images/porter-navy.png'
-        a href="#{root_path}"
           .text
-            | | Porter for
-            span  Hosts
+            | | Porter for 
+            span Hosts
     - if logged_in?
       #sidebar-container
         #sidebar
@@ -151,6 +156,6 @@ html
     .body slide-body=''
       = yield
     - unless logged_in?
-        = render 'common/signin_modal'
-        = render 'common/signup_modal'
-        = render 'common/forgotpwd_modal'
+      = render 'common/signin_modal'
+      = render 'common/signup_modal'
+      = render 'common/forgotpwd_modal'

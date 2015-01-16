@@ -1,9 +1,12 @@
 app = angular.module('porter').directive('calendar', [->
-  link: (scope, element) ->
+  scope:
+    options: '='
+  link: (scope, element, attrs) ->
     days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     _month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     scope.chosen_dates = {}
+    options = scope.options
     
     gen_cal = (cal, month, year) ->
       calendar = element.find('table')
@@ -19,7 +22,8 @@ app = angular.module('porter').directive('calendar', [->
 
       calendar.find('tbody').remove()
       calendar.find('thead').after('<tbody></tbody>')
-      calendar.find('.month_header th.month').text(month_name + ' ' + year)
+      calendar.find('.month_header .month_name').text(month_name)
+      calendar.find('.month_header .year').text(year)
 
       current_day = 0
       for row in [1..6]
@@ -32,7 +36,7 @@ app = angular.module('porter').directive('calendar', [->
              else if current_day >= month_days
               ++current_day
               'class="inactive day">' + (current_day - month_days)
-             else if moment().diff(new Date(year, month, current_day), 'days') > 0
+             else if options.disable_past && moment().diff(new Date(year, month, current_day), 'days') > 0
               ++current_day
               'class="past day">' + current_day
              else
@@ -56,6 +60,7 @@ app = angular.module('porter').directive('calendar', [->
         scope.month = moment().month()
         scope.year = moment().year()
       gen_cal(0, scope.month, scope.year)
+      options.onchange() if options.onchange
 
     gen_cals()
 
@@ -64,23 +69,25 @@ app = angular.module('porter').directive('calendar', [->
 
     element.on('click', 'td.active', ->
       $this = angular.element(@)
-      $this.addClass('selecting')
-      $this.on('mouseleave.selecting', ->
-        $this.off('mouseleave.selecting')
-        $this.removeClass('selecting')
-        key = "#{$this.attr('month')}-#{$this.attr('year')}"
-        if $this.hasClass('chosen')
-          $this.removeClass('chosen')
-          scope.chosen_dates[key] = scope.chosen_dates[key].filter (d) -> d != $this.attr('day')
-        else
-          $this.addClass('chosen')
-          scope.chosen_dates[key] = [] unless scope.chosen_dates[key] && scope.chosen_dates[key][0]
-          scope.chosen_dates[key].push $this.attr('day')
+      options.onclick($this) if options.onclick
+      if options.selectable && !$this.hasClass(options.selected_class)
+        $this.addClass('selecting')
+        $this.on('mouseleave.selecting', ->
+          $this.off('mouseleave.selecting')
+          $this.removeClass('selecting')
+          key = "#{$this.attr('month')}-#{$this.attr('year')}"
+          if options.clickable
+            if $this.hasClass('chosen')
+              $this.removeClass('chosen')
+              scope.chosen_dates[key] = scope.chosen_dates[key].filter (d) -> d != $this.attr('day')
+            else
+              $this.addClass('chosen')
+              scope.chosen_dates[key] = [] unless scope.chosen_dates[key] && scope.chosen_dates[key][0]
+              scope.chosen_dates[key].push $this.attr('day')
       )
     )
 
 
-  restrict: 'E'
   template: "
     <div class='arrows'>
       <div class='arrow prev'><div class='typcn'></div></div>
@@ -90,7 +97,17 @@ app = angular.module('porter').directive('calendar', [->
       <table>
         <thead>
           <tr class='month_header'>
-            <th class='month' colspan='7'></th>
+            <th class='month' colspan='7'><span class='month_name'></span> <span class='year'></span></th>
+          </tr>
+          <tr class='day_header'>
+            <th class='day_of_week'>Su</th>
+            <th class='day_of_week'>Mo</th>
+            <th class='day_of_week'>Tu</th>
+            <th class='day_of_week'>We</th>
+            <th class='day_of_week'>Th</th>
+            <th class='day_of_week'>Fr</th>
+            <th class='day_of_week'>Sa</th>
+          </tr>
         </thead>
         <tbody></tbody>
       </table>

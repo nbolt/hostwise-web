@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150109003412) do
+ActiveRecord::Schema.define(version: 20150115233503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20150109003412) do
     t.string   "last4"
     t.string   "card_type"
     t.string   "fingerprint"
-    t.integer  "property_id"
+    t.string   "balanced_id"
   end
 
   add_index "payments", ["user_id"], name: "index_payments_on_user_id", using: :btree
@@ -82,9 +82,16 @@ ActiveRecord::Schema.define(version: 20150109003412) do
     t.datetime "updated_at"
     t.string   "delivery_point_barcode"
     t.integer  "bedrooms"
-    t.integer  "beds"
-    t.integer  "accommodates"
+    t.integer  "bathrooms"
+    t.integer  "twin_beds"
     t.string   "slug"
+    t.string   "access_info"
+    t.string   "parking_info"
+    t.string   "additional_info"
+    t.string   "trash_disposal"
+    t.integer  "full_beds"
+    t.integer  "queen_beds"
+    t.integer  "king_beds"
   end
 
   create_table "property_photos", force: :cascade do |t|
@@ -108,30 +115,35 @@ ActiveRecord::Schema.define(version: 20150109003412) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                        limit: 255,                 null: false
-    t.string   "crypted_password",             limit: 255,                 null: false
-    t.string   "salt",                         limit: 255,                 null: false
+    t.string   "email",                           limit: 255,                 null: false
+    t.string   "crypted_password",                limit: 255,                 null: false
+    t.string   "salt",                            limit: 255,                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "remember_me_token",            limit: 255
+    t.string   "remember_me_token",               limit: 255
     t.datetime "remember_me_token_expires_at"
     t.datetime "last_login_at"
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
-    t.string   "last_login_from_ip_address",   limit: 255
-    t.string   "first_name",                   limit: 255
-    t.string   "last_name",                    limit: 255
-    t.string   "phone_number",                 limit: 255
-    t.boolean  "phone_confirmed",                          default: false
-    t.string   "company",                      limit: 255
-    t.string   "phone_confirmation",           limit: 255
+    t.string   "last_login_from_ip_address",      limit: 255
+    t.string   "first_name",                      limit: 255
+    t.string   "last_name",                       limit: 255
+    t.string   "phone_number",                    limit: 255
+    t.boolean  "phone_confirmed",                             default: false
+    t.string   "company",                         limit: 255
+    t.string   "phone_confirmation",              limit: 255
     t.string   "stripe_customer_id"
     t.string   "role"
+    t.string   "reset_password_token"
+    t.datetime "reset_password_token_expires_at"
+    t.datetime "reset_password_email_sent_at"
+    t.string   "balanced_customer_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["last_logout_at", "last_activity_at"], name: "index_users_on_last_logout_at_and_last_activity_at", using: :btree
   add_index "users", ["remember_me_token"], name: "index_users_on_remember_me_token", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", using: :btree
 
   create_table "zips", force: :cascade do |t|
     t.integer  "city_id"

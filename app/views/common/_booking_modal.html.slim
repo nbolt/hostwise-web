@@ -1,0 +1,79 @@
+script#booking-modal type="text/ng-template"
+  .booking.modal ng:controller='booking_modal'
+    .header
+      .text Booking Confirmation
+    .content-container
+      .content.main
+        .head
+          .text
+            | {{selected_date.day_text}} 
+            span ng:bind='selected_date.date_text'
+        .services
+          .service
+            .icon
+            .text Cleaning
+            label.switch.red
+              input type='checkbox' toggle-service='cleaning'
+              i
+          .service
+            .icon
+            .text Linens & Towels
+            label.switch.red
+              input type='checkbox' toggle-service='linens'
+              i
+          .service
+            .icon
+            .text Restocking
+            label.switch.red
+              input type='checkbox' toggle-service='restocking'
+              i
+        .total
+          .details
+            .text View Details
+            .typcn.typcn-chevron-right
+          .text Total
+          .amount
+            | $
+            span ng:bind='total()'
+        .payment
+          .overlay ng:click='toPayment()'
+          .icon
+            .typcn.typcn-credit-card
+          .arrow
+            .typcn.typcn-chevron-right
+          input type='hidden' ui-select2='paymentHash()' ng:model='payment'
+        .buttons.two
+          .button.teal ng:click='book()' Book
+      .content.side.payment
+        .head
+          .arrows
+            .arrow.prev ng:click='fromPayment()'
+              .typcn.typcn-chevron-left
+          .text Add Payment
+        .payment-method
+          .text Select Payment Method
+          input type='hidden' ui-select2='paymentMethodHash()' ng:model='payment_method' value='credit-card'
+        .payment-tab.ach
+          .field.name
+            .label Name
+            input ng:model='bank.name'
+          .row.two
+            .field.account-number
+              .label Account Number
+              input ng:model='bank.account_number'
+            .field.routing-number
+              .label Routing Number
+              input ng:model='bank.routing_number'
+        .payment-tab.credit-card.active
+          .field.card-number
+            .label Card Number
+            input data-stripe='number' ui:mask='9999 9999 9999 9999' ng:model='card.number'
+          .row.two
+            .field.expiry
+              .label Expiry Date
+              input data-stripe='expiry' ui:mask='99/99' ng:model='card.expiry' placeholder='MM/YY'
+            .field.cvc
+              .label CV Code
+              input data-stripe='cvc' ng:model='card.cvc' placeholder='123'
+        .buttons.one
+          .button.teal ng:click='add_payment()' Add Payment

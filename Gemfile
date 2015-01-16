@@ -38,6 +38,7 @@ gem 'pry-rails', groups: [:test, :development]
 
 gem 'stylus', github: 'lucasmazza/ruby-stylus', group: :assets
 gem 'rmagick', require: false
+gem 'faraday', '~> 0.8.9'
 
 gem 'twilio-ruby'
 gem 'smartystreets'
@@ -55,6 +56,7 @@ gem 'turbolinks'
 gem 'mandrill_mailer'
 gem 'stripe-rails'
 gem 'stripe'
+gem 'balanced'
 gem 'slim'
 gem 'decent_exposure'
 gem 'clockwork'
