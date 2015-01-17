@@ -6,13 +6,13 @@ HomeCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.price = '0.00'
 
   $scope.expand = (target) ->
-    angular.element('.' + target).slideDown()
+    angular.element('.' + target).slideDown(600)
     return true
 
   $scope.testimonials = [
-    {text: 'Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor. Lorem ipsum dolor sit amet', thumb: '/assets/testimonial_thumb.png'},
-    {text:'Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor. Lorem ipsum dolor sit amet', thumb: '/assets/testimonial_thumb.png'},
-    {text:'Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor. Lorem ipsum dolor sit amet', thumb: '/assets/testimonial_thumb.png'}
+    {text:'Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor. Lorem ipsum dolor sit amet.', thumb: '/images/testimonial_thumb.png', name: 'Matt L.', company: 'LuxPads'},
+    {text:'Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.', thumb: '/images/testimonial_thumb.png', name: 'Ryan A.', company: 'AirBnB'},
+    {text:'Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor. Lorem ipsum dolor sit amet...', thumb: '/images/testimonial_thumb.png', name: 'Chris A.', company: 'HomeAway'}
   ]
 
   $scope.house = ->

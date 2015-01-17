@@ -207,7 +207,7 @@
           width: 160px
         span
           display: inline-block
-          font-size: 15px
+          font-size: 22px
           font-weight: bold
           margin: -28px 5px 0 0
           vertical-align: middle
@@ -246,3 +246,34 @@
       color: primary-color-5
       font-size: 16px
       margin-top: 10px
+    ul[rn-carousel]
+      height: 200px
+      margin: 50px auto 0
+      width: 900px
+      li
+        color: dark-grey
+        .text
+          margin: 0 auto 30px
+          text-align: center
+          width: 600px
+        .name
+          font-size: 15px
+          font-weight: bold
+        .company
+          font-size: 14px
+      .rn-carousel-control
+        top: 20%
+        &.rn-carousel-control-next,
+        &.rn-carousel-control-prev
+          width: 0
+          height: 0
+          &:before
+            content: ''
+        &.rn-carousel-control-next
+          border-top: 14px solid transparent
+          border-bottom: 14px solid transparent
+          border-left: 14px solid primary-color-1
+        &.rn-carousel-control-prev
+          border-top: 14px solid transparent
+          border-bottom: 14px solid transparent
+          border-right:14px solid primary-color-1

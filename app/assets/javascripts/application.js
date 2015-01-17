@@ -16,7 +16,8 @@
 //= require angular
 //= require angular-cookies.min
 //= require angular-file-upload
-//= require angular-flexslider
+//= require angular-carousel.min
+//= require angular-touch
 //= require dirPagination
 //= require mask
 //= require select2.min

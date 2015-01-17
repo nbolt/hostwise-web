@@ -14,8 +14,9 @@ app = angular.module('porter', ['ngCookies',
                                 'ui.select2',
                                 'ui.slider',
                                 'ngDialog',
+                                'ngTouch',
+                                'angular-carousel',
                                 'angularFileUpload',
-                                'angular-flexslider',
                                 'angularUtils.directives.dirPagination'])
   .controller('app', AppCtrl)
   .config ['$httpProvider', ($httpProvider) ->

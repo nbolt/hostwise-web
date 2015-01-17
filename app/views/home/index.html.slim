@@ -92,4 +92,15 @@
       .title Your first service is on us.
       .subtitle We're confident that you'll love us so your first service is complementary.
       a.button.yellow href='' ng-click='show_signup()' Book It Today
-  =render 'testimonials'
+  .testimonials
+    .title What Our Hosts Are Saying
+    .subtitle Lorem ipsum dolor sit amet conseceteur doli consuale
+    ul.carousel1.ng-scope rn-carousel='' rn-carousel-buffered='' rn-carousel-controls='' rn-carousel-index='carouselIndex'
+      li ng-repeat=('t in testimonials')
+        .text
+          | {{::t.text}}
+        img ng:src="{{::t.thumb}}"
+        .name
+          | {{::t.name}}
+        .company
+          | {{::t.company}}
