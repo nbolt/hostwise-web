@@ -5,7 +5,6 @@ class AuthController < ApplicationController
     when 1
       user = User.where(email: params[:form][:email])[0]
       if user
-        user.step = 'step1'
         if user.phone_confirmed
           render json: { success: false, message: 'Account already exists' }
           return
@@ -14,6 +13,7 @@ class AuthController < ApplicationController
         end
       else
         user = User.new(user_params)
+        user.step = 'step1'
       end
       if user.save
         render json: { success: true }
