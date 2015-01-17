@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   after_create :create_stripe_customer, :create_balanced_customer
 
-  cattr_accessor :step
+  attr_accessor :step
 
   def name
     first_name + ' ' + last_name
