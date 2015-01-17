@@ -9,6 +9,7 @@ class AuthController < ApplicationController
           render json: { success: false, message: 'Account already exists' }
           return
         else
+          user.step = 'step1'
           user.assign_attributes(user_params)
         end
       else
