@@ -37,7 +37,7 @@ HomeCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     angular.element('.pricing .sliders .bathrooms').text(n)
     cal_price $scope.option, $scope.bedrooms, $scope.bathrooms
 
-  cal_price = (option, bedrooms, bathrooms) ->
+  cal_price = (option, bedrooms, bathrooms) -> #need to replace the formula
     if option is 'house'
       $scope.cost = bedrooms * 15 + bathrooms * 10
     else if option is 'condo'
