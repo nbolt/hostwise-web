@@ -13,7 +13,7 @@
         .button.teal Add A New Property
 
   #properties
-    .property dir-paginate='property in properties | itemsPerPage: 10'
+    .property dir-paginate='property in user.properties | itemsPerPage: 10'
       .photo
         img ng:src='{{::property.primary_photo}}'
       .title

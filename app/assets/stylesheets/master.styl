@@ -69,7 +69,7 @@ header
       vertical-align: top
       margin: 0 10px
       position: relative
-      .button
+      .head-button
         background-color: primary-color-1
         padding: 8px 12px
         border-radius: 1px
@@ -83,20 +83,21 @@ header
         color: white
       &:hover
         cursor: pointer
+      &.hover:hover
         .drop-container
           max-height: 260px
-      &.button
+      &.head-button
         .drop-container
           left: -120px
           .drop-arrow
             margin-left: 166px
       .drop-container
         position: absolute
-        top: 71px
+        top: 61px
         width: 260px
         left: -67px
         .drop
-          background-color: navy
+          background-color: dark-navy
         .drop-arrow
           width: 0
           height: 0
@@ -113,6 +114,50 @@ header
               border-bottom: thin solid transparent
             &:hover .link
               border-bottom: thin solid light-navy
+        &.properties
+          overflow-y: scroll
+          .search
+            overflow: auto
+            .input
+              position: relative
+              background-color: #2D3842
+              margin-left: 12px
+              box-sizing: border-box
+              width: 220px
+              border-radius: 20px
+              margin: 15px auto 0
+              .typcn
+                position: absolute
+                left: 16px
+                top: 6px
+                color: light-navy
+              input
+                font-size: .9em
+                background: none
+                border: none
+                padding-left: 40px
+                color: light-navy
+                &:active, &:focus
+                  outline: none
+                  box-shadow: none
+                &::-webkit-input-placeholder, &:-moz-placeholder, &::-moz-placeholder, &:-ms-input-placeholder
+                  color: #4E5562
+                  opacity: 1
+          .links
+            padding: 8px 0
+            a
+              &:active, &:focus
+                outline: none
+              .link
+                display: inline-block
+                vertical-align: top
+                color: light-navy
+                border-bottom: thin solid transparent
+                max-height: 23px
+                width: 220px
+                text-align: left
+              &:hover .link
+                text-decoration: underline
 
 footer
   background-color: primary-color-2

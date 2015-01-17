@@ -4,7 +4,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
   $scope.flashing = false
   $scope.selected_services = {cleaning:false,linens:false,restocking:false}
 
-  if $scope.user.payments[0]
+  if $scope.user.payments
     $scope.payment = $scope.user.payments[0].id
   else
     $scope.payment = { id: 'new', text: 'Add New Payment' }

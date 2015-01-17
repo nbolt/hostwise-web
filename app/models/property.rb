@@ -23,13 +23,17 @@ class Property < ActiveRecord::Base
   end
 
   def self.search(term, sort)
-    case sort
-      when 'alphabetical'
-        results = by_alphabetical
-      when 'recently_added'
-        results = recently_added
-      when 'upcoming_service'
-        results = upcoming_bookings
+    if sort
+      case sort
+        when 'alphabetical'
+          results = by_alphabetical
+        when 'recently_added'
+          results = recently_added
+        when 'upcoming_service'
+          results = upcoming_bookings
+      end
+    else
+      results = Property.all
     end
     return results.search_property(term) if term.present? && !results.empty?
     results

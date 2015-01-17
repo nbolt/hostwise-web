@@ -68,7 +68,7 @@ html
     header
       nav ng:controller='modal'
         - if logged_in?
-          #user.link
+          #user.link.hover
             .drop-container
               .drop-arrow
               .drop
@@ -80,13 +80,18 @@ html
               .text ng:bind='::user.first_name'
             .arrow
               .typcn.typcn-chevron-right
-          .link.button
-            .button Book Service
-            .drop-container
+          .link.head-button ng:controller='property_search' properties-dropdown=''
+            .head-button Book Service
+            .drop-container.properties
               .drop-arrow
               .drop
+                .search
+                  .input
+                    .typcn.typcn-zoom-outline
+                    input type='text' placeholder='Search Properties' ng:model='property_search'
                 .links
-                  = render 'common/account_settings'
+                  a ng:repeat='property in user.properties' ng:href='/properties/{{property.slug}}'
+                    .link ng:bind='::property.title' data-ellipsis=''
         - else
           .link
             a href='' ng-click='show_signin()'
