@@ -1,4 +1,4 @@
-class Team::AuthController < ApplicationController
+class Admin::AuthController < ApplicationController
 
   def signin
     user = login(params[:form][:email], params[:form][:password])
@@ -14,17 +14,5 @@ class Team::AuthController < ApplicationController
       render json: { success: false, message: message }
     end
   end
-
-  def phone_confirmed
-    user = User.where(email: params[:email])[0]
-    auto_login user
-    render nothing: true
-  end
-
-  private
-
-  def user_params
-    params.require(:form).permit(:email, :password, :first_name, :last_name, :company, :role)
-  end  
 
 end

@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
-  get '' => 'team#index',   constraints: { subdomain: 'team' }
-  get '/:action' => 'team', constraints: { subdomain: 'team' }
-  scope module: 'team' do
-    match '/auth/:action' => 'auth', via: [:get, :post], constraints: { subdomain: 'team' }
+  get '' => 'admin#index',   constraints: { subdomain: 'admin' }
+  get '/:action' => 'admin', constraints: { subdomain: 'admin' }
+  scope module: 'admin' do
+    match '/auth/:action' => 'auth', via: [:get, :post], constraints: { subdomain: 'admin' }
+  end
+
+  get '' => 'contractor#index',   constraints: { subdomain: 'contractor' }
+  get '/:action' => 'contractor', constraints: { subdomain: 'contractor' }
+  scope module: 'contractor' do
+    match '/auth/:action' => 'auth', via: [:get, :post], constraints: { subdomain: 'contractor' }
   end
 
   get   '/properties/new'   => 'properties#new'
