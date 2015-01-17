@@ -16,12 +16,14 @@
 //= require angular
 //= require angular-cookies.min
 //= require angular-file-upload
+//= require angular-flexslider
 //= require dirPagination
 //= require mask
 //= require select2.min
 //= require select2
 //= require underscore-min
 //= require ngDialog.min
+//= require slider
 //= require jquery.scrollTo
 //= require jquery.cookie
 //= require app

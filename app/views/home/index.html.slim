@@ -1,0 +1,95 @@
+.home ng:controller='home'
+  .hero ng:controller='modal'
+    .title Get Your Property Cleaned Today, For Free.
+    .subtitle We'll bring hotel quality linens, towels, and top-notch cleaners to ensure your guests receive a 5 Star experience -- every time.
+    a.button.yellow href='' ng-click='show_signup()' Book It For Free
+    .note + $49 one-time property setup
+  .arrow-down
+  .services
+    .title Save Time & Maximize Revenue
+    .subtitle We handle all the dirty work so you can more time for [ x ]
+    ul
+      li
+        =image_tag 'icon_cleaning.png'
+        div Cleaning & Staging
+        span Our highly-trained, professional cleaners all have 2+ years of experience and do amazing work.
+      li
+        =image_tag 'icon_linens.png'
+        div Linens & Towels
+        span High quality luxury linens and towels, commercially pressed and delivered to your property.
+      li
+        =image_tag 'icon_restocking.png'
+        div Restocking Supplies
+        span We've partnered with C.O. Bigelow to provide your guests with super high quality toiletries.
+    a.button.teal href='' ng-click="expand('how-it-works')" See How It Works
+  .how-it-works
+    .title It's As Easy As 1-2-3
+    .subtitle Lorem ipsum dolor sit amet conseceteur doli consuale
+    ul
+      li
+        =image_tag 'hiw_1.png'
+        div 1. Add a Property
+        span Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor.
+      li
+        =image_tag 'hiw_2.png'
+        div 2. Book Services
+        span Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor.
+      li
+        =image_tag 'hiw_3.png'
+        div 3. Grow Your Portfolio
+        span Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor.
+  .features
+    .title We're changing the short term rental game
+    ul
+      li
+        =image_tag 'feature_od.png'
+        div On demand, same day service
+        span Last minute bookings? Our ops team is ready to get your property in tip-top shape in time for your next guest.
+      li
+        =image_tag 'feature_hotel.png'
+        div Never lose a guest to a hotel again
+        span We're bringing the best parts of the hotel experience to your short-term rentals.
+      li
+        =image_tag 'feature_save.png'
+        div Your guest pay for it
+        span We've used big-data to determine the cleaning fees you should be charging, so there's cost to you.
+      li
+        =image_tag 'feature_stars.png'
+        div 5 star cleaning ratings -- Every time
+        span Our 37-point luxury hotel cleaning checklist ensures your guests arrive impressed and always leave happy.
+  .pricing
+    .title Simple & Transparent Pricing
+    .input
+      .options
+        a.circle href='' ng-click='house()'
+          .house.active
+        .label House
+        a.circle href='' ng-click='condo()'
+          .condo
+        .label Apartment/Condo
+      .sliders
+        slider ceiling='15' floor='0' ng-model='bedrooms'
+        .selection
+          .arrow-left
+          span.bedrooms 0
+          | Bedrooms
+        slider ceiling='15' floor='0' ng-model='bathrooms'
+        .selection
+          .arrow-left
+          span.bathrooms 0
+          | Bathrooms
+    .details
+      .price
+        span $
+        input type='' ng-model='price'
+        br
+        | + $49 one-time property setup
+      a.button.teal href='' View Full Pricing
+  .offer ng:controller='modal'
+    .details
+      .subtitle
+        strong Don't forget...
+      .title Your first service is on us.
+      .subtitle We're confident that you'll love us so your first service is complementary.
+      a.button.yellow href='' ng-click='show_signup()' Book It Today
+  =render 'testimonials'

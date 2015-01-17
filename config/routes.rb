@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get '/faq' => 'home#faq', as: :faq
   get '/help' => 'home#help', as: :help
 
+  get '/home' => 'users#home', as: :home
   get '/user' => 'users#show', as: :user
   get '/user/edit' => 'users#edit', as: :edit_user
   put '/user/update' => 'users#update'

@@ -16,7 +16,7 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     if n < 3
       success = -> angular.element('.signup .steps').css('margin-left', -(n * 600))
     else
-      success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/'
+      success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/home'
 
     unless $scope.posting
       $scope.posting = true
@@ -32,7 +32,7 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
           flash('failure', rsp.message)
 
   flash = (type, msg) ->
-    el = angular.element('.ngdialog.auth .flash')
+    el = angular.element('.signin .flash, .signup .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
       el.css('opacity', 0)

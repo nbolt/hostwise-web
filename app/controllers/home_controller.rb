@@ -1,26 +1,21 @@
 class HomeController < ApplicationController
+  layout 'default'
 
   def index
-    if logged_in?
-      if current_user.properties.empty?
-        redirect_to '/properties/new'
-      else
-        render 'home'
-      end
-    end
+    redirect_to home_path if logged_in?
   end
 
   def signup
-    redirect_to '/' if logged_in?
+    redirect_to home_path if logged_in?
   end
 
   def signin
-    redirect_to '/' if logged_in?
+    redirect_to home_path if logged_in?
   end
 
   def signout
     logout
-    redirect_to '/'
+    redirect_to root_path
   end
 
   def user

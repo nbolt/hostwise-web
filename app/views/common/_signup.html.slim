@@ -3,11 +3,12 @@
   .steps
     .step.one
       .title= t('auth.title.sign_up.step1')
-      .progress
-        hr
-        span.one.active 1
-        span.two 2
-        span.three 3
+      .progress-container
+        .progress
+          hr
+          span.one.active 1
+          span.two 2
+          span.three 3
       form
         .field
           input type='email' placeholder='Email Address' required='' ng:model='form.email'
@@ -15,15 +16,16 @@
           input type='password' placeholder='Password' required='' ng:model='form.password'
         .field
           input type='password' placeholder='Confirm Password' required='' ng:model='form.password_confirmation'
-        button ng:click='step(1)'
+        button.yellow ng:click='step(1)'
           .text= t('auth.button.sign_up.step1')
     .step.two
       .title= t('auth.title.sign_up.step2')
-      .progress
-        hr
-        span.one.typcn.typcn-tick
-        span.two.active 2
-        span.three 3
+      .progress-container
+        .progress
+          hr
+          span.one.typcn.typcn-tick
+          span.two.active 2
+          span.three 3
       form
         .field
           input type='text' placeholder='First Name' required='' ng:model='form.first_name'
@@ -33,18 +35,19 @@
           input type='text' placeholder='Company (Optional)' ng:model='form.company'
         .field
           input type='text' placeholder='Mobile Number' required='' ng:model='form.phone_number'
-        button ng:click='step(2)'
+        button.yellow ng:click='step(2)'
           .text= t('auth.button.sign_up.step2')
     .step.three
       .title= t('auth.title.sign_up.step3')
-      .progress
-        hr
-        span.one.typcn.typcn-tick
-        span.two.typcn.typcn-tick
-        span.three.active 3
+      .progress-container
+        .progress
+          hr
+          span.one.typcn.typcn-tick
+          span.two.typcn.typcn-tick
+          span.three.active 3
       p.caption We sent you a text with your verification code
       form
         .field
           input type='text' placeholder='Confirmation Code' required='' ng:model='form.confirmation_code'
-        button ng:click='step(3)'
+        button.yellow ng:click='step(3)'
           .text= t('auth.button.sign_up.step3')

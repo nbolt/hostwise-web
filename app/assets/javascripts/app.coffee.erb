@@ -12,8 +12,10 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 app = angular.module('porter', ['ngCookies',
                                 'ui.mask',
                                 'ui.select2',
+                                'ui.slider',
                                 'ngDialog',
                                 'angularFileUpload',
+                                'angular-flexslider',
                                 'angularUtils.directives.dirPagination'])
   .controller('app', AppCtrl)
   .config ['$httpProvider', ($httpProvider) ->

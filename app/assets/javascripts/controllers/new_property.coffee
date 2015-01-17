@@ -70,7 +70,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $ti
           angular.element('.step-nav .step').removeClass('active').eq(n).addClass('active')
           scroll 0
       else
-        success = -> window.location = '/'
+        success = -> window.location = '/home'
 
       success_wrap = (rsp) ->
         $scope.posting = false

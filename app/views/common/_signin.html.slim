@@ -6,12 +6,11 @@ form
   .cb
     input type='checkbox' id='remember' ng:model='form.remember'
     label for='remember' Remember me
-  button ng:click='signin()'
+  button.yellow ng:click='signin()'
     .text= t('auth.button.sign_in')
 div ng:controller='modal'
   a href='' ng-click='show_forgot_pwd()' class='forgot-pwd'= t('auth.link.forgot_pwd')
   .create-account
     span Do not have an account?
-    br
     a href='' ng-click='show_signup()'
       .button= t('auth.button.sign_up.step1')

@@ -1,17 +1,17 @@
-// ----------------------------------------
-// write reusable styles
-// ----------------------------------------
-
 black = #24272A
-red = #AB133E
-green = #9ABF72
+red = #E06358
+green = #85A759
 dark-grey = #808080
-light-grey = #EDEEF1
+darker-grey = #5D5D5D
+light-grey = #E5E5E5
+lighter-grey = #EFEFEF
 light-blue = #7296BF
 light-navy = #B9C1D5
 navy = #2D3842
 dark-navy = #242A30
-teal = #34AAB0
+teal = #35A9B1
+light-teal = #48BBBC
+yellow = #F79F57
 
 facebook-blue = #3d599b
 twitter-blue  = #00abee
@@ -21,7 +21,8 @@ primary-color-2 = #2C3842
 primary-color-3 = #E6C15D
 primary-color-4 = #E36159
 primary-color-5 = #979FA9
-primary-color-6 = #259096
+primary-color-6 = #3A4A61
+primary-color-7 = #59626A
 
 @keyframes fadein {
   from {opacity: 0}
@@ -41,23 +42,17 @@ primary-color-6 = #259096
   font-family: 'gotham-bold'
   src: url('/type/gotham/gotham-bold.woff') format('woff')
 
+typicons()
+  font-family:'typicons';font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;height:1em;font-size:1em;text-align:center;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;text-rendering:optimizeLegibility
+
 
 :invalid, :-moz-submit-invalid, :-moz-ui-invalid
   box-shadow: none
 
-html
-  height: 100%
-
-html, body, .body
-  min-height: 100%
-  margin: 0
-  font-family: Open Sans, Helvetica Neue,HelveticaNeue,Helvetica, Arial, sans-serif
-  color: black
-  background-color: light-grey
-  font-size: 100%
-  position: relative
-
-input[type=text], input[type=email], input[type=password], input[type=file]
+input[type=text],
+input[type=email],
+input[type=password],
+input[type=file]
   border: thin solid light-grey
   border-radius: 3px
   box-shadow: none
@@ -65,3 +60,24 @@ input[type=text], input[type=email], input[type=password], input[type=file]
   padding: 8px 12px
   &:focus
     outline: none
+
+.button
+  border-radius: 1px
+  color: white
+  cursor: pointer
+  letter-spacing: 0.02em
+  padding: 8px 12px
+  text-align: center
+  text-decoration: none
+  hover-darken()
+  &.teal
+    background-color: primary-color-1
+    hover-darken()
+  &.yellow
+    background-color: primary-color-3
+    hover-darken()
+  &.red
+    background-color: primary-color-4
+    hover-darken()
+  &:hover
+    color: white
