@@ -1,8 +1,9 @@
-NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $timeout, $upload) ->
+NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scope, $http, $timeout, $upload, $location) ->
 
   $scope.num_steps = 2
   $scope.posting = false
   $scope.extras = {}
+  $scope.form = {zip: $location.search().zip, address1: $location.search().address1}
 
   $scope.rooms = ->
     {

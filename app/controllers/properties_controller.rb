@@ -91,6 +91,19 @@ class PropertiesController < ApplicationController
     end
   end
 
+  def address
+    code = delivery_code(params[:form][:address1], params[:form][:address2], params[:form][:zip])
+    unless code
+      render json: { success: false, message: 'Invalid address' }
+      return
+    end
+    render json: { success: true }
+  end
+
+  def first
+    redirect_to '/properties/new' unless current_user.properties.empty?
+  end
+
   private
 
   def not_authenticated

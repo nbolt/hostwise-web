@@ -1,0 +1,22 @@
+.first-property.container ng:controller='first_property'
+  .hero
+    ul
+      li
+        =image_tag 'icon_cleaning.png'
+      li
+        =image_tag 'icon_linens.png'
+      li
+        =image_tag 'icon_restocking.png'
+  .form-container
+    form
+      .section
+        .title Add Your First Property
+        .flash
+        .row
+          .field
+            input type='text' placeholder='Zip' maxlength=5 required='' ng:model='form.zip'
+          .field
+            input type='text' placeholder='Street Name' required='' ng:model='form.address1'
+          .field
+            .button.red ng:click='submit()'
+              .text Next

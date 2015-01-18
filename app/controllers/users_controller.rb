@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_filter :require_login, except: [:show]
 
   def home
-    redirect_to '/properties/new' if current_user.properties.empty?
+    redirect_to '/properties/first' if current_user.properties.empty?
   end
 
   def show
