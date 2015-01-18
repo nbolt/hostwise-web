@@ -3,7 +3,9 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
   $scope.num_steps = 2
   $scope.posting = false
   $scope.extras = {}
-  $scope.form = {zip: $location.search().zip, address1: $location.search().address1}
+
+  $scope.init = ->
+    $scope.form = {zip: getParam('zip'), address1: getParam('address1')}
 
   $scope.rooms = ->
     {
@@ -110,6 +112,9 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
     angular.element('body, html').animate
       scrollTop: position
     , 'fast'
+
+  getParam = (name) ->
+    decodeURIComponent name[1] if name = (new RegExp("[?&]" + encodeURIComponent(name) + "=([^&]*)")).exec(location.search)
 
 ]
 

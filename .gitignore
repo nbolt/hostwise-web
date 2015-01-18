@@ -2,6 +2,7 @@
 capybara-*.html
 .powenv
 .rspec
+.env
 /log
 /tmp
 /db/*.sqlite3
