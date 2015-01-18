@@ -65,12 +65,17 @@ html
   body ng:controller='app'
     header ng:controller='modal'
       nav
-        .link
-          a href='' ng-click='show_signin()'
-            .head-button.login Login
-        .link
-          a href='' ng-click='show_signup()'
-            .head-button Sign Up
+        - if logged_in?
+          .link
+            a href='/auth'
+              .head-button Go To Your Dashboard
+        - else
+          .link
+            a href='' ng-click='show_signin()'
+              .head-button.login Login
+          .link
+            a href='' ng-click='show_signup()'
+              .head-button Sign Up
       .logo
         a href="#{root_path}"
           img src='/images/porter-navy.png'

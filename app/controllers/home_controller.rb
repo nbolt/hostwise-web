@@ -1,16 +1,12 @@
 class HomeController < ApplicationController
   layout 'default'
 
-  def index
-    redirect_to home_path if logged_in?
-  end
-
   def signup
-    redirect_to home_path if logged_in?
+    redirect_to root_path if logged_in?
   end
 
   def signin
-    redirect_to home_path if logged_in?
+    redirect_to auth_path if logged_in?
   end
 
   def signout
@@ -19,7 +15,7 @@ class HomeController < ApplicationController
   end
 
   def user
-    render json: current_user.to_json(methods: :avatar, include: [:properties, :payments])
+    render json: current_user.to_json(include: [:payments, properties: {methods: [:nickname, :short_address, :primary_photo], include: [:bookings]}])
   end
 
 end

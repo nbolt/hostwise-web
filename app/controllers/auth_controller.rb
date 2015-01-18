@@ -1,5 +1,13 @@
 class AuthController < ApplicationController
 
+  def auth
+    if logged_in?
+      redirect_to subdomain: current_user.role, controller: 'dashboard', action: ''
+    else
+      redirect_to '/signin'
+    end
+  end
+
   def signup
     case params[:stage]
     when 1
@@ -47,7 +55,7 @@ class AuthController < ApplicationController
   def signin
     user = login(params[:form][:email], params[:form][:password], params[:form][:remember])
     if user
-      render json: { success: true, redirect_to: session[:return_to_url] || home_path }
+      render json: { success: true, redirect_to: session[:return_to_url] || auth_path }
     else
       user = User.where(email: params[:form][:email])[0]
       if user

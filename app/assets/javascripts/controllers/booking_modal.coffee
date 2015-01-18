@@ -36,12 +36,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     total
 
   $scope.add_payment = ->
-    if $scope.payment_method == 'credit-card'
+    if $scope.payment_method.id == 'credit-card'
       Stripe.createToken
-        number: angular.element(".card-details input[data-stripe=number]").val()
-        cvc: angular.element(".card-details input[data-stripe=cvc]").val()
-        exp_month: angular.element(".card-details input[data-stripe=expiry]").val().split("/")[0]
-        exp_year: angular.element(".card-details input[data-stripe=expiry]").val().split("/")[1]
+        number: angular.element(".payment-tab.credit-card input[data-stripe=number]").val()
+        cvc: angular.element(".payment-tab.credit-card input[data-stripe=cvc]").val()
+        exp_month: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[0]
+        exp_year: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[1]
       , (_, rsp) ->
         if rsp.error
           flash "failure", rsp.error.message

@@ -1,18 +1,17 @@
 class Contractor::AuthController < ApplicationController
+  before_filter :require_login
 
-  def signin
-    user = login(params[:form][:email], params[:form][:password])
-    if user
-      render json: { success: true, redirect_to: session[:return_to_url] || '/' }
-    else
-      user = User.where(email: params[:form][:email])[0]
-      if user
-        message = 'Invalid password'
-      else
-        message = 'Invalid email'
-      end
-      render json: { success: false, message: message }
+  private
+
+  def require_login
+    if !logged_in? || logged_in? && current_user.role != 'contractor'
+      session[:return_to_url] = request.url if Config.save_return_to_url && request.get?
+      self.send(Config.not_authenticated_action)
     end
+  end
+
+  def not_authenticated
+    redirect_to '/signin'
   end
 
 end

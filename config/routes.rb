@@ -1,27 +1,12 @@
 Rails.application.routes.draw do
-  get '' => 'admin#index',   constraints: { subdomain: 'admin' }
-  get '/:action' => 'admin', constraints: { subdomain: 'admin' }
-  scope module: 'admin' do
-    match '/auth/:action' => 'auth', via: [:get, :post], constraints: { subdomain: 'admin' }
-  end
 
-  get '' => 'contractor#index',   constraints: { subdomain: 'contractor' }
-  get '/:action' => 'contractor', constraints: { subdomain: 'contractor' }
-  scope module: 'contractor' do
-    match '/auth/:action' => 'auth', via: [:get, :post], constraints: { subdomain: 'contractor' }
-  end
+  get '/auth' => 'auth#auth', as: 'auth'
 
-  get   '/properties/new'   => 'properties#new'
-  get   '/properties/first' => 'properties#first'
-  post   '/properties/address' => 'properties#address'
-  post  '/properties/build' => 'properties#build'
-  get   '/properties/:slug' => 'properties#show'
-  post  '/properties/:slug' => 'properties#update'
-  match '/properties/:slug/:action' => 'properties', via: [:get, :post]
+  get '/user' => 'home#user'
 
   post '/password_resets' => 'password_resets#create'
-  get '/password_resets/:id/edit' => 'password_resets#edit', as: :edit_password_reset
-  put '/password_resets/:id' => 'password_resets#update'
+  get  '/password_resets/:id/edit' => 'password_resets#edit', as: :edit_password_reset
+  put  '/password_resets/:id' => 'password_resets#update'
 
   get '/signin' => 'home#signin', as: :signin
   get '/signup' => 'home#signup', as: :signup
@@ -30,10 +15,21 @@ Rails.application.routes.draw do
   get '/faq' => 'home#faq', as: :faq
   get '/help' => 'home#help', as: :help
 
-  get '/home' => 'users#home', as: :home
-  get '/user' => 'users#show', as: :user
-  get '/user/edit' => 'users#edit', as: :edit_user
-  put '/user/update' => 'users#update'
+  scope module: 'host', constraints: { subdomain: 'host' } do
+    get   '/' => 'home#index'
+    get   '/dashboard' => 'home#dashboard'
+    get   '/properties/new'   => 'properties#new'
+    get   '/properties/first' => 'properties#first'
+    post  '/properties/address' => 'properties#address'
+    post  '/properties/build' => 'properties#build'
+    get   '/properties/:slug' => 'properties#show'
+    post  '/properties/:slug' => 'properties#update'
+    get   '/user' => 'users#show', as: :host_user
+    get   '/user/edit' => 'users#edit', as: :edit_host_user
+    put   '/user/update' => 'users#update'
+    match '/users/:action' => 'users', via: [:get, :post]
+    match '/properties/:slug/:action' => 'properties', via: [:get, :post]
+  end
 
   match '/:action' => 'home', via: [:get, :post]
   match '/:controller/:action', via: [:get, :post]

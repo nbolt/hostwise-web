@@ -1,12 +1,10 @@
-class PropertiesController < ApplicationController
-  before_filter :require_login
-
+class Host::PropertiesController < Host::AuthController
   expose(:property) { Property.find_by_slug params[:slug] }
 
   def show
     respond_to do |format|
       format.html { redirect_to '/' unless property }
-      format.json { render json: property.to_json(include: [:bookings, :property_photos], methods: :short_address) }
+      format.json { render json: property.to_json(include: [:bookings, :property_photos], methods: [:nickname, :short_address, :primary_photo]) }
     end
   end
 
@@ -105,10 +103,6 @@ class PropertiesController < ApplicationController
   end
 
   private
-
-  def not_authenticated
-    redirect_to '/signin'
-  end
 
   def property_params
     params.require(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :bathrooms,

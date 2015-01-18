@@ -33,7 +33,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     }
 
   refresh_properties = ->
-    $http.get('/data/properties', {params: {term: $scope.term, sort: $scope.sort}}).success (rsp) -> $scope.user.properties = rsp
+    $http.get('/data/properties', {params: {term: $scope.term, sort: $scope.sort}}).success (rsp) -> $scope.user.properties = rsp if $scope.user
 
 ]
 
