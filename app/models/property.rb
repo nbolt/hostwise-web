@@ -39,6 +39,10 @@ class Property < ActiveRecord::Base
     results
   end
 
+  def nickname
+    title || address1
+  end
+
   def short_address
     "#{address1} #{zip}"
   end
@@ -48,14 +52,6 @@ class Property < ActiveRecord::Base
       '' #will add a default placeholder later
     else
       property_photos.first.photo.url
-    end
-  end
-
-  def primary_title
-    if title.present?
-      title
-    else
-      address1
     end
   end
 
@@ -79,8 +75,8 @@ class Property < ActiveRecord::Base
 
   def slug_candidates
     [
-      :title,
-      [:title, :id]
+      :nickname,
+      [:nickname, :id]
     ]
   end
 end

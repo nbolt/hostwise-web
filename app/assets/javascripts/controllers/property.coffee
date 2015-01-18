@@ -43,6 +43,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
         $scope.selected_date.date_text = date.format('MMM Do')
     }
 
+  $scope.exists = (booking) ->
+    _(_(_($scope.user.properties).map((p) -> p.bookings)).flatten())
+
   $scope.cancel = (booking) ->
     $http.post($window.location.href + '/cancel', {booking: booking.id}).success (rsp) ->
       if rsp.success

@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    render json: current_user.to_json(methods: [:avatar, :name], include: [:properties])
+    render json: current_user.to_json(include: [properties: {methods: [:nickname, :short_address, :primary_photo], include: :bookings}])
   end
 
   def edit

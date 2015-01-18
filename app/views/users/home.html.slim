@@ -17,7 +17,7 @@
       .photo
         img ng:src='{{::property.primary_photo}}'
       .title
-        .text ng:bind='::property.primary_title'
+        .text ng:bind='::property.nickname'
         a ng:href='/properties/{{property.slug}}' Manage Listing and Calendar
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"

@@ -91,7 +91,7 @@ html
                     input type='text' placeholder='Search Properties' ng:model='property_search'
                 .links
                   a ng:repeat='property in user.properties' ng:href='/properties/{{property.slug}}'
-                    .link ng:bind='::property.title' data-ellipsis=''
+                    .link ng:bind='::property.nickname' data-ellipsis=''
         - else
           .link
             a href='' ng-click='show_signin()'
