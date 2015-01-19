@@ -126,10 +126,10 @@ header
               width: 220px
               border-radius: 20px
               margin: 15px auto 0
-              .typcn
+              .fa
                 position: absolute
                 left: 16px
-                top: 6px
+                top: 10px
                 color: light-navy
               input
                 font-size: .9em
@@ -1240,52 +1240,57 @@ form
   margin: 40px auto 0
   overflow: hidden
   section
-    border-radius: 3px
     color: primary-color-1
     display: inline-block
-    margin-left: 24px
+    margin-left: 12px
     vertical-align: top
-    width: 240px
+    width: 248px
     &:first-child
       margin-left: 0
-    .header, .footer
-      background-color: primary-color-1
-      color: white
-      padding: 10px
-      text-align: center
-    .header
-      border-radius: 3px 3px 0 0
-    .footer
-      border-radius: 0 0 3px 3px
     .content
       background-color: white
       min-height: 200px
-      padding: 25px 0
+      padding: 35px 10px
       text-align: center
+      img.icon
+        width: 120px
       h2
-        font-size: 35px
-        line-height: 35px
-        margin: 0
+        font-size: 18px
       h3
-        font-size: 15px
-        font-weight: normal
-        margin: 0
+        border-bottom: 1px solid light-grey
+        color: primary-color-5
+        font-size: 13px
+        margin: 40px 0 0
+        padding-bottom: 30px
+      .per-bed
+        margin-top: 30px
+        span
+          display: inline-block
+          font-weight: bold
+          width: 50%
+          &:first-child
+            color: black
+            font-weight: normal
+            text-align: right
+      .home-type
+        margin-top: 30px
+        span
+          display: inline-block
+          font-weight: bold
+          text-align: left
+          width: 50px
+          &:first-child
+            color: black
+            font-weight: normal
+            margin-right: 20px
+            text-align: right
+            width: 100px
     &.linen
       color: primary-color-4
-      .header, .footer
-        background-color: primary-color-4
     &.toiletries
       color: primary-color-3
-      .header, .footer
-        background-color: primary-color-3
-    .per-bed
-      margin-top: 30px
-      span
-        display: inline-block
-        width: 50%
-        &:first-child
-          color: black
-          text-align: right
+      img
+        width: 100%
 
 .contact-form-container
   overflow: hidden

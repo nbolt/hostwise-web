@@ -16,7 +16,7 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     if n < 3
       success = -> angular.element('.signup .steps').css('margin-left', -(n * 450))
     else
-      success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/home'
+      success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/auth'
 
     unless $scope.posting
       $scope.posting = true

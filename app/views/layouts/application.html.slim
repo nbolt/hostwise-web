@@ -87,7 +87,7 @@ html
               .drop
                 .search
                   .input
-                    .typcn.typcn-zoom-outline
+                    .fa.fa-search
                     input type='text' placeholder='Search Properties' ng:model='property_search'
                 .links
                   a ng:repeat='property in user.properties' ng:href='/properties/{{property.slug}}'
@@ -135,7 +135,7 @@ html
               .links
                 = render 'common/account_settings'
           .section
-            a href="#{pricing_path}"
+            a href='/pricing'
               .title
                 .icon
                   .fa.fa-tag
@@ -143,7 +143,7 @@ html
                 .arrow
                   .typcn.typcn-chevron-right
           .section
-            a href="#{faq_path}"
+            a href='/faq'
               .title
                 .icon
                   .fa.fa-info-circle
@@ -151,7 +151,7 @@ html
                 .arrow
                   .typcn.typcn-chevron-right
           .section
-            a href="#{help_path}"
+            a href='/help'
               .title
                 .icon
                   .fa.fa-newspaper-o
