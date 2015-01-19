@@ -767,29 +767,40 @@ form
             height: 300px
           .content
             padding: 15px
-          .field
-            margin-bottom: 20px
-            .label
-              color: teal
-              font-weight: 600
-            .input
-              position: relative
-              margin-top: 4px
-              .typcn
-                position: absolute
-                top: 2px
-                right: 8px
-                font-size: 1.4em
-                color: green
-                opacity: 0
-                transition: opacity .6s ease-in-out
-            .select2-container
-              width: 100%
+          .row
             &.one
-              input
+              .field
                 width: 440px
-            &.property_type
-              width: 150px
+                input
+                  width: 100%
+            &.two
+              .field
+                width: 210px
+                margin-right: 20px
+                &:last-child
+                  margin-right: 0
+            .field
+              margin-bottom: 20px
+              display: inline-block
+              vertical-align: top
+              .label
+                color: teal
+                font-weight: 600
+              .input
+                position: relative
+                margin-top: 4px
+                .typcn
+                  position: absolute
+                  top: 2px
+                  right: 8px
+                  font-size: 1.4em
+                  color: green
+                  opacity: 0
+                  transition: opacity .6s ease-in-out
+              .select2-container
+                width: 100%
+              &.property_type
+                width: 150px
         &.active
           .head
             border-bottom: 2px solid teal
@@ -797,8 +808,12 @@ form
             margin-top: -2px
             .typcn
               transform: rotate(90deg)
-          .content-container
-            max-height: 300px
+          &.map
+            .content-container
+              max-height: 300px
+          &.details
+            .content-container
+              max-height: 500px
 
 
 #calendar
@@ -847,7 +862,7 @@ form
           border-radius: 50%
           &:hover
             cursor: default
-          &.inactive
+          &.inactive, &.past
             color: #E0E0E0
           &.booked
             background-color: teal

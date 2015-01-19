@@ -23,7 +23,7 @@
           .icon
             .typcn.typcn-location-outline
           .text ng:bind='::property.address1'
-        .content-container
+        .content-container.map
           #map
       .section.details
         .head ng:click="expand('details')"
@@ -32,17 +32,52 @@
           .icon
             .typcn.typcn-th-menu
           .text Edit Details
-        .content-container
+        .content-container.details
           .content
-            .field.one
-              .label Nickname
-              .input.nickname
-                .typcn.typcn-tick
-                input type='text' ng:model='form.nickname'
-            .field.one.property_type
-              .label Property Type
-              .input.property_type
-                .typcn.typcn-tick
-                input type='hidden' ui-select2='property_type()' ng:model='form.property_type'
+            .row.one
+              .field
+                .label Nickname
+                .input.nickname
+                  .typcn.typcn-tick
+                  input type='text' ng:model='form.nickname'
+            .row.one
+              .field.property_type
+                .label Property Type
+                .input.property_type
+                  .typcn.typcn-tick
+                  input type='hidden' ui-select2='property_type()' ng:model='form.property_type'
+            .row.two
+              .field.bedrooms
+                .label Bedrooms
+                .input.bedrooms
+                  .typcn.typcn-tick
+                  input type='hidden' ui-select2='bedrooms()' ng:model='form.bedrooms'
+              .field.bathrooms
+                .label Bathrooms
+                .input.bathrooms
+                  .typcn.typcn-tick
+                  input type='hidden' ui-select2='bathrooms()' ng:model='form.bathrooms'
+            .row.two
+              .field.twins
+                .label Twin Beds
+                .input.twins
+                  .typcn.typcn-tick
+                  input type='hidden' ui-select2='twins()' ng:model='form.twin_beds'
+              .field.fulls
+                .label Full Beds
+                .input.fulls
+                  .typcn.typcn-tick
+                  input type='hidden' ui-select2='fulls()' ng:model='form.full_beds'
+            .row.two
+              .field.queens
+                .label Queen Beds
+                .input.queens
+                  .typcn.typcn-tick
+                  input type='hidden' ui-select2='queens()' ng:model='form.queen_beds'
+              .field.kings
+                .label King Beds
+                .input.kings
+                  .typcn.typcn-tick
+                  input type='hidden' ui-select2='kings()' ng:model='form.king_beds'
 
 = render 'common/booking_modal'

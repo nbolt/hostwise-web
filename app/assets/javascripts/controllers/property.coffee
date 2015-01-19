@@ -23,20 +23,21 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
     $scope.form.bedrooms = { id: rsp.bedrooms.toString(), text: "#{rsp.bedrooms} #{bedrooms_text}" }
     bathrooms_text = if rsp.bathrooms == 0 then 'None' else if rsp.bathrooms == 1 then 'Bath' else 'Bathrooms'
     $scope.form.bathrooms = { id: rsp.bathrooms.toString(), text: "#{rsp.bathrooms} #{bathrooms_text}" }
-    twin_beds_text = if rsp.twin_beds == 0 then 'None' else if rsp.twin_beds == 1 then 'Bed' else 'Beds'
-    $scope.form.twin_beds = { id: rsp.twin_beds.toString(), text: "#{rsp.twin_beds} #{twin_beds_text}" }
-    full_beds_text = if rsp.full_beds == 0 then 'None' else if rsp.full_beds == 1 then 'Bed' else 'Beds'
-    $scope.form.full_beds = { id: rsp.full_beds.toString(), text: "#{rsp.full_beds} #{full_beds_text}" }
-    queen_beds_text = if rsp.queen_beds == 0 then 'None' else if rsp.queen_beds == 1 then 'Bed' else 'Beds'
-    $scope.form.queen_beds = { id: rsp.queen_beds.toString(), text: "#{rsp.queen_beds} #{queen_beds_text}" }
-    king_beds_text = if rsp.king_beds == 0 then 'None' else if rsp.king_beds == 1 then 'Bed' else 'Beds'
-    $scope.form.king_beds = { id: rsp.king_beds.toString(), text: "#{rsp.king_beds} #{king_beds_text}" }
+    twin_beds_text = if rsp.twin_beds == 0 then 'None' else if rsp.twin_beds == 1 then '1 Twin' else "#{rsp.twin_beds} Twins"
+    $scope.form.twin_beds = { id: rsp.twin_beds.toString(), text: twin_beds_text }
+    full_beds_text = if rsp.full_beds == 0 then 'None' else if rsp.full_beds == 1 then '1 Full' else "#{rsp.full_beds} Fulls"
+    $scope.form.full_beds = { id: rsp.full_beds.toString(), text: full_beds_text }
+    queen_beds_text = if rsp.queen_beds == 0 then 'None' else if rsp.queen_beds == 1 then '1 Queen' else "#{rsp.queen_beds} Queens"
+    $scope.form.queen_beds = { id: rsp.queen_beds.toString(), text: queen_beds_text }
+    king_beds_text = if rsp.king_beds == 0 then 'None' else if rsp.king_beds == 1 then '1 King' else "#{rsp.king_beds} Kings"
+    $scope.form.king_beds = { id: rsp.king_beds.toString(), text: king_beds_text }
 
   $scope.calendar_options =
     {
       selectable: true
       clickable: false
       selected_class: 'booked'
+      disable_past: true
       onchange: () ->
         if $scope.property
           _($scope.property.bookings).each (booking) ->
@@ -91,7 +92,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
     else
       el.css 'opacity', 0
       $timeout((->el.css 'opacity', 1),600)
-    $timeout((->el.css 'opacity', 0),5000)
+    $timeout((->el.css 'opacity', 0),4000)
 
   $scope.$watch 'form.nickname', (n,o) -> if o
     $timeout.cancel promises.nickname
@@ -113,42 +114,42 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
   $scope.$watch 'form.bedrooms.id', (n,o) -> if o
     $http.post($window.location.href, {form: { bedrooms: n }}).success (rsp) ->
       if rsp.success
-        flash('success', 'Changes saved')
+        form_flash 'bedrooms'
       else
         flash('failure', rsp.message)
 
   $scope.$watch 'form.bathrooms.id', (n,o) -> if o
     $http.post($window.location.href, {form: { bathrooms: n }}).success (rsp) ->
       if rsp.success
-        flash('success', 'Changes saved')
+        form_flash 'bathrooms'
       else
         flash('failure', rsp.message)
 
   $scope.$watch 'form.twin_beds.id', (n,o) -> if o
     $http.post($window.location.href, {form: { twin_beds: n }}).success (rsp) ->
       if rsp.success
-        flash('success', 'Changes saved')
+        form_flash 'twins'
       else
         flash('failure', rsp.message)
 
   $scope.$watch 'form.full_beds.id', (n,o) -> if o
     $http.post($window.location.href, {form: { full_beds: n }}).success (rsp) ->
       if rsp.success
-        flash('success', 'Changes saved')
+        form_flash 'fulls'
       else
         flash('failure', rsp.message)
 
   $scope.$watch 'form.queen_beds.id', (n,o) -> if o
     $http.post($window.location.href, {form: { queen_beds: n }}).success (rsp) ->
       if rsp.success
-        flash('success', 'Changes saved')
+        form_flash 'queens'
       else
         flash('failure', rsp.message)
 
   $scope.$watch 'form.king_beds.id', (n,o) -> if o
     $http.post($window.location.href, {form: { king_beds: n }}).success (rsp) ->
       if rsp.success
-        flash('success', 'Changes saved')
+        form_flash 'kings'
       else
         flash('failure', rsp.message)
 
@@ -169,11 +170,51 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
       initSelection: (el, cb) ->
     }
 
-  $scope.beds = ->
+  $scope.bedrooms = ->
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
-      data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
+      data: [{id:'0',text:'None'},{id:'1',text:'1 Bedroom'},{id:'2',text:'2 Bedrooms'},{id:'3',text:'3 Bedrooms'},{id:'4',text:'4 Bedrooms'},{id:'5',text:'5 Bedrooms'},{id:'6',text:'6 Bedrooms'},{id:'7',text:'7 Bedrooms'},{id:'8',text:'8 Bedrooms'},{id:'9',text:'9 Bedrooms'},{id:'10',text:'10 Bedrooms'}]
+      initSelection: (el, cb) ->
+    }
+
+  $scope.bathrooms = ->
+    {
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      data: [{id:'0',text:'None'},{id:'1',text:'1 Bathroom'},{id:'2',text:'2 Bathrooms'},{id:'3',text:'3 Bathrooms'},{id:'4',text:'4 Bathrooms'},{id:'5',text:'5 Bathrooms'},{id:'6',text:'6 Bathrooms'},{id:'7',text:'7 Bathrooms'},{id:'8',text:'8 Bathrooms'},{id:'9',text:'9 Bathrooms'},{id:'10',text:'10 Bathrooms'}]
+      initSelection: (el, cb) ->
+    }
+
+  $scope.twins = ->
+    {
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      data: [{id:'0',text:'None'},{id:'1',text:'1 Twin'},{id:'2',text:'2 Twins'},{id:'3',text:'3 Twins'},{id:'4',text:'4 Twins'},{id:'5',text:'5 Twins'},{id:'6',text:'6 Twins'},{id:'7',text:'7 Twins'},{id:'8',text:'8 Twins'},{id:'9',text:'9 Twins'},{id:'10',text:'10 Twins'}]
+      initSelection: (el, cb) ->
+    }
+
+  $scope.fulls = ->
+    {
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      data: [{id:'0',text:'None'},{id:'1',text:'1 Full'},{id:'2',text:'2 Fulls'},{id:'3',text:'3 Fulls'},{id:'4',text:'4 Fulls'},{id:'5',text:'5 Fulls'},{id:'6',text:'6 Fulls'},{id:'7',text:'7 Fulls'},{id:'8',text:'8 Fulls'},{id:'9',text:'9 Fulls'},{id:'10',text:'10 Fulls'}]
+      initSelection: (el, cb) ->
+    }
+
+  $scope.queens = ->
+    {
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      data: [{id:'0',text:'None'},{id:'1',text:'1 Queen'},{id:'2',text:'2 Queens'},{id:'3',text:'3 Queens'},{id:'4',text:'4 Queens'},{id:'5',text:'5 Queens'},{id:'6',text:'6 Queens'},{id:'7',text:'7 Queens'},{id:'8',text:'8 Queens'},{id:'9',text:'9 Queens'},{id:'10',text:'10 Queens'}]
+      initSelection: (el, cb) ->
+    }
+
+  $scope.kings = ->
+    {
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      data: [{id:'0',text:'None'},{id:'1',text:'1 King'},{id:'2',text:'2 Kings'},{id:'3',text:'3 Kings'},{id:'4',text:'4 Kings'},{id:'5',text:'5 Kings'},{id:'6',text:'6 Kings'},{id:'7',text:'7 Kings'},{id:'8',text:'8 Kings'},{id:'9',text:'9 Kings'},{id:'10',text:'10 Kings'}]
       initSelection: (el, cb) ->
     }
 
