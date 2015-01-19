@@ -1330,8 +1330,15 @@ form
   .section
     background-color: white
     padding: 30px
-    .row
-      padding: 20px 0
+    .flash
+      margin: 5px 0
+    .right
+      text-align: right
+    button
+      margin-bottom: 0
+      width: 100px
+      .fa
+        margin-left: 3px
     textarea
       border: thin solid light-grey
       border-radius: 3px
@@ -1339,6 +1346,33 @@ form
       height: 200px
       padding: 8px 12px
       width: 100%
+    p
+      color: primary-color-1
+      margin: 0
+  ul.links
+    margin: 10px 0 0
+    padding: 0
+    list-style-type: none
+    li
+      background-color: white
+      display: inline-block
+      margin-left: 10px
+      padding: 20px
+      width: 209px
+      &:first-child
+        margin-left: 0
+      a
+        color: primary-color-1
+      .fa
+        border-right: 1px solid light-grey
+        font-size: 25px
+        padding-right: 10px
+      span
+        display: inline-block
+        font-size: 14px
+        margin-top: 2px
+        padding-left: 10px
+        vertical-align: top
 
 .account-container
   background-color: white
