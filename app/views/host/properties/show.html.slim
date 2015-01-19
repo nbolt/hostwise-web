@@ -7,7 +7,37 @@
       .address ng:bind='::property.short_address'
   #columns
     .column.calendar
-      #calendar calendar='' options='calendar_options'
+      .section.calendar
+        .head
+          .arrow
+            .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-calendar-outline
+          .text Add / Edit Service Dates
+        #calendar calendar='' options='calendar_options'
     .column.info
+      .section.map
+        .head ng:click="expand('map')"
+          .arrow
+            .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-location-outline
+          .text ng:bind='::property.address1'
+        .content-container
+          #map
+      .section.details
+        .head ng:click="expand('details')"
+          .arrow
+            .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-th-menu
+          .text Edit Details
+        .content-container
+          .content
+            .field.one
+              .label Nickname
+              .input.nickname
+                .typcn.typcn-tick
+                input type='text' ng:model='property.nickname'
 
 = render 'common/booking_modal'

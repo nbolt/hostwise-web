@@ -5,6 +5,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
   $scope.payment = {}
   $scope.selected_services = {cleaning:false,linens:false,restocking:false}
   $scope.selected_booking = null
+  promises = {}
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
@@ -57,8 +58,41 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
               angular.element(".booking.modal .services .service.#{service.name} input").attr 'checked', true
     }
 
+  $scope.expand = (section) ->
+    angular.element('#property .section').removeClass 'active'
+    angular.element("#property .section.#{section}").addClass 'active'
+    if section == 'map'
+      map = L.mapbox.map 'map', 'useporter.l02en9o9'
+      geocoder = L.mapbox.geocoder 'mapbox.places'
+      geocoder.query $scope.property.full_address, (err, data) ->
+        if data.latlng
+          map.setView([data.latlng[0], data.latlng[1]], 14)
+          L.marker([data.latlng[0], data.latlng[1]], {
+              icon: L.mapbox.marker.icon({
+                  'marker-size': 'large',
+                  'marker-symbol': 'building',
+                  'marker-color': '#35A9B1'
+              })
+          }).addTo map
+    null
+
   $scope.exists = () ->
     _(_(_(_($scope.user.properties).map((p) -> p.bookings)).flatten())).find (b) -> b.id.toString() == $scope.selected_booking
+
+  $scope.$watch 'property.nickname', (n,o) -> if o
+    $timeout.cancel promises.nickname
+    promises.nickname = $timeout((->
+      $http.post($window.location.href, {form: { title: n }}).success (rsp) ->
+        if rsp.success
+          if angular.element('.input.nickname .typcn').css('opacity') == '0'
+            angular.element('.input.nickname .typcn').css 'opacity', 1
+          else
+            angular.element('.input.nickname .typcn').css 'opacity', 0
+            $timeout((->angular.element('.input.nickname .typcn').css 'opacity', 1),600)
+          #$timeout((->angular.element('.input.nickname .typcn').css 'opacity', 0),5000)
+        else
+          flash('failure', rsp.message)
+    ),2000)
 
   $scope.$watch 'form.bedrooms.id', (n,o) -> if o
     $http.post($window.location.href, {form: { bedrooms: n }}).success (rsp) ->

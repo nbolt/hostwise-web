@@ -728,6 +728,72 @@ form
       margin-right: 35px
       &:last-child
         margin-right: 0
+      .section
+        background-color: white
+        border-radius: 1px
+        overflow: hidden
+        .head
+          padding: 15px
+          color: #E8E9EA
+          font-size: 1.25em
+          text-align: center
+          border-bottom: 2px solid transparent
+          transition: color .6s ease-in-out, border .6s ease-in-out
+          .icon, .text, .arrow
+            display: inline-block
+            vertical-align: top
+          .icon
+            margin-right: 10px
+            float: left
+            font-size: 1.25em
+            margin-top: -6px
+          .arrow
+            float: right
+            color: teal
+            font-size: 1.25em
+            margin-top: -6px
+          &:hover
+            cursor: pointer
+        &.calendar
+          .head
+            background-color: teal
+            color: white
+            .typcn
+              color: white
+        .content-container
+          max-height: 0px
+          transition: max-height .6s ease-in-out
+          #map
+            height: 300px
+          .content
+            padding: 15px
+          .field
+            .label
+              color: teal
+              font-weight: 600
+            .input
+              position: relative
+              margin-top: 4px
+              .typcn
+                position: absolute
+                top: 6px
+                right: 8px
+                font-size: 1.4em
+                color: green
+                opacity: 0
+                transition: opacity .6s ease-in-out
+            &.one
+              input
+                width: 440px
+        &.active
+          .head
+            border-bottom: 2px solid teal
+          .arrow
+            margin-top: -2px
+            .typcn
+              transform: rotate(90deg)
+          .content-container
+            max-height: 300px
 
 
 #calendar

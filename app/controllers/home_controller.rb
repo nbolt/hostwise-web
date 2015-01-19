@@ -23,6 +23,6 @@ class HomeController < ApplicationController
   end
 
   def user
-    render json: current_user.to_json(include: [:payments, properties: {methods: [:nickname, :short_address, :primary_photo], include: [:bookings]}], methods: [:avatar, :name])
+    render json: current_user.to_json(include: [:payments, properties: {methods: [:nickname, :short_address, :primary_photo, :full_address], include: [:bookings]}], methods: [:avatar, :name])
   end
 end

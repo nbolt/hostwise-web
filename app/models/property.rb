@@ -47,6 +47,10 @@ class Property < ActiveRecord::Base
     "#{address1} #{zip}"
   end
 
+  def full_address
+    "#{address1} #{address2} #{city} #{state} #{zip}"
+  end
+
   def primary_photo
     if property_photos.empty?
       '' #will add a default placeholder later

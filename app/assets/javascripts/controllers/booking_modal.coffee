@@ -101,7 +101,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     $http.post("#{$window.location.href}/#{$scope.selected_booking}/update", {
       payment: $scope.payment
       services: services_array()
-      date: $scope.selected_date
     }).success (rsp) ->
       if rsp.success
         ngDialog.closeAll()
