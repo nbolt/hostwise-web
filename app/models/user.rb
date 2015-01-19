@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :properties, dependent: :destroy
   has_many :payments, autosave: true, dependent: :destroy
   has_many :avatars, autosave: true, dependent: :destroy
+  has_many :messages, dependent: :destroy
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
   validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' }

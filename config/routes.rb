@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     post  '/properties/:slug' => 'properties#update'
     get   '/user/edit' => 'users#edit', as: :edit_host_user
     put   '/user/update' => 'users#update'
+    post  '/message' => 'users#message'
     match '/users/:action' => 'users', via: [:get, :post]
     match '/properties/:slug/:action' => 'properties', via: [:get, :post]
     match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]

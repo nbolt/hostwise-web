@@ -1,19 +1,19 @@
-ContactUsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+HelpCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
-  $scope.posting = false
   $scope.form = {}
 
-  $scope.submit = ->
-    $http.post('', {
+  $scope.send = ->
+    $http.post('/message', {
       form: $scope.form
     }).success (rsp) ->
       if rsp.success
+        $scope.form.message = ''
         flash('info', 'Thanks for contacting us. We will get back to us shortly.')
       else
         flash('failure', rsp.message)
 
   flash = (type, msg) ->
-    el = angular.element('.signin .flash, .signup .flash')
+    el = angular.element('form .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
       el.css('opacity', 0)
@@ -24,4 +24,4 @@ ContactUsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
 ]
 
-app = angular.module('porter').controller('contact_us', ContactUsCtrl)
+app = angular.module('porter').controller('help', HelpCtrl)
