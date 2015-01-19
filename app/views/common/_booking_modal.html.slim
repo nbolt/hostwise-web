@@ -6,23 +6,23 @@ script#booking-modal type="text/ng-template"
       .content.main
         .head
           .text
-            | {{selected_date.day_text}} 
+            | {{selected_date.day_text}}
             span ng:bind='selected_date.date_text'
         .services
           .service.cleaning
-            .icon
+            img.icon src='/images/book_clean.png'
             .text Cleaning
             label.switch.red
               input type='checkbox' toggle-service='cleaning'
               i
           .service.linens
-            .icon
+            img.icon src='/images/book_linens.png'
             .text Linens & Towels
             label.switch.red
               input type='checkbox' toggle-service='linens'
               i
           .service.restocking
-            .icon
+            img.icon src='/images/book_restock.png'
             .text Restocking
             label.switch.red
               input type='checkbox' toggle-service='restocking'
