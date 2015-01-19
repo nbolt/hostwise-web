@@ -4,7 +4,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
   $scope.flashing = false
 
   unless $scope.payment.id
-    if $scope.user.payments
+    if $scope.user.payments && $scope.user.payments[0]
       payment = $scope.user.payments[0]
       payment_type = if payment.stripe_id then 'Card' else 'Bank'
       $scope.payment.id = payment.id
