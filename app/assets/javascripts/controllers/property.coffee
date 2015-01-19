@@ -2,13 +2,16 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
 
   $scope.form = {}
   $scope.selected_date = {}
+  $scope.payment = {}
+  $scope.selected_services = {cleaning:false,linens:false,restocking:false}
+  $scope.selected_booking = null
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
     _($scope.property.bookings).each (booking) ->
       date = moment.utc booking.date
       booking.parsed_date = date.format('MMMM Do, YYYY')
-      angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass 'booked'
+      angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
     bedrooms_text = if rsp.bedrooms == 0 then 'None' else if rsp.bedrooms == 1 then 'Bedroom' else 'Bedrooms'
     $scope.form.bedrooms = { id: rsp.bedrooms.toString(), text: "#{rsp.bedrooms} #{bedrooms_text}" }
@@ -32,7 +35,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
         if $scope.property
           _($scope.property.bookings).each (booking) ->
             date = moment.utc(booking.date)
-            angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked')
+            angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
       onclick: ($this) ->
         ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
@@ -41,15 +44,21 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
         $scope.selected_date.num = date.day()
         $scope.selected_date.day_text = date.format('dddd,')
         $scope.selected_date.date_text = date.format('MMM Do')
+        $scope.selected_booking = $this.attr('booking')
+        $scope.selected_services = {cleaning:false,linens:false,restocking:false}
+        if $scope.selected_booking
+          $http.get("#{$window.location.href}/#{$scope.selected_booking}/show").success (rsp) ->
+            payment_type = if rsp.payment.stripe_id then 'Card' else 'Bank'
+            $scope.payment.id = rsp.payment.id
+            $scope.payment.text = "#{payment_type} ending in #{rsp.payment.last4}"
+            _(rsp.services).each (service) ->
+              $scope.selected_services[service.name] = true
+              angular.element(".booking.modal .services .service.#{service.name}").addClass 'active'
+              angular.element(".booking.modal .services .service.#{service.name} input").attr 'checked', true
     }
 
-  $scope.exists = (booking) ->
-    _(_(_($scope.user.properties).map((p) -> p.bookings)).flatten())
-
-  $scope.cancel = (booking) ->
-    $http.post($window.location.href + '/cancel', {booking: booking.id}).success (rsp) ->
-      if rsp.success
-        angular.element("#booking-#{booking.id}").fadeOut()
+  $scope.exists = () ->
+    _(_(_(_($scope.user.properties).map((p) -> p.bookings)).flatten())).find (b) -> b.id.toString() == $scope.selected_booking
 
   $scope.$watch 'form.bedrooms.id', (n,o) -> if o
     $http.post($window.location.href, {form: { bedrooms: n }}).success (rsp) ->

@@ -1,5 +1,6 @@
 class Host::PropertiesController < Host::AuthController
   expose(:property) { Property.find_by_slug params[:slug] }
+  expose(:booking)  { Booking.find_by_id params[:booking] }
 
   def show
     respond_to do |format|

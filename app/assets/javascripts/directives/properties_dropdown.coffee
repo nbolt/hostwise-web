@@ -1,5 +1,5 @@
 app = angular.module('porter').directive('propertiesDropdown', [-> (scope, element, attrs) ->
-  element.on 'click', ->
+  element.on 'click', '.head-button', ->
     if element.children('.drop-container').css('max-height') == '0px'
       max_height = 70 + (scope.user.properties.length * 40)
       max_height = 310 if max_height > 310

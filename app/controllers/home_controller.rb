@@ -5,6 +5,10 @@ class HomeController < ApplicationController
     redirect_to subdomain: current_user.role, controller: 'home', action: 'index' if logged_in?
   end
 
+  def home
+    redirect_to subdomain: 'www', controller: 'home', action: 'index'
+  end
+
   def signup
     redirect_to root_path if logged_in?
   end

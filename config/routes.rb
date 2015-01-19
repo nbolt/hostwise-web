@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   get '/auth' => 'auth#auth', as: 'auth'
+  get '/home' => 'home#home', as: 'home'
 
   post '/password_resets' => 'password_resets#create'
   get  '/password_resets/:id/edit' => 'password_resets#edit', as: :edit_password_reset
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
     put   '/user/update' => 'users#update'
     match '/users/:action' => 'users', via: [:get, :post]
     match '/properties/:slug/:action' => 'properties', via: [:get, :post]
+    match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]
   end
 
   get '/user' => 'home#user'

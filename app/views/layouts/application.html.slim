@@ -99,7 +99,7 @@ html
           .link
             a href='' ng-click='show_signup()'
               .button Sign Up
-      a href="#{root_path}"
+      a href="#{logged_in? && '/' || home_path}"
         .logo
           img src='/images/porter-navy.png'
           .text

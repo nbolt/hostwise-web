@@ -9,19 +9,19 @@ script#booking-modal type="text/ng-template"
             | {{selected_date.day_text}} 
             span ng:bind='selected_date.date_text'
         .services
-          .service
+          .service.cleaning
             .icon
             .text Cleaning
             label.switch.red
               input type='checkbox' toggle-service='cleaning'
               i
-          .service
+          .service.linens
             .icon
             .text Linens & Towels
             label.switch.red
               input type='checkbox' toggle-service='linens'
               i
-          .service
+          .service.restocking
             .icon
             .text Restocking
             label.switch.red
@@ -42,8 +42,11 @@ script#booking-modal type="text/ng-template"
           .arrow
             .typcn.typcn-chevron-right
           input type='hidden' ui-select2='paymentHash()' ng:model='payment'
-        .buttons.two
+        .buttons.one ng:hide='exists()'
           .button.teal ng:click='book()' Book
+        .buttons.two ng:show='exists()'
+          .button.red ng:click='cancel()' Cancel Booking
+          .button.teal ng:click='update()' Update Booking
       .content.side.payment
         .head
           .arrows

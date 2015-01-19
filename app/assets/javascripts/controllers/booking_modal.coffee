@@ -2,12 +2,16 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
 
   last_payment = null
   $scope.flashing = false
-  $scope.selected_services = {cleaning:false,linens:false,restocking:false}
 
-  if $scope.user.payments
-    $scope.payment = $scope.user.payments[0].id
-  else
-    $scope.payment = { id: 'new', text: 'Add New Payment' }
+  unless $scope.payment.id
+    if $scope.user.payments
+      payment = $scope.user.payments[0]
+      payment_type = if payment.stripe_id then 'Card' else 'Bank'
+      $scope.payment.id = payment.id
+      $scope.payment.text = "#{payment_type} ending in #{payment.last4}"
+    else
+      $scope.payment.id = 'new'
+      $scope.payment.text = 'Add New Payment'
 
   payments_map = _($scope.user.payments).map (payment) ->
     payment_type = if payment.stripe_id then 'Card' else 'Bank'
@@ -85,6 +89,22 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
           date = $scope.selected_date.moment
           angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass 'booked'
 
+
+  $scope.cancel = ->
+    $http.post("#{$window.location.href}/#{$scope.selected_booking}/cancel").success (rsp) ->
+      if rsp.success
+        ngDialog.closeAll()
+        date = $scope.selected_date.moment
+        angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass 'booked'
+
+  $scope.update = ->
+    $http.post("#{$window.location.href}/#{$scope.selected_booking}/update", {
+      payment: $scope.payment
+      services: services_array()
+      date: $scope.selected_date
+    }).success (rsp) ->
+      if rsp.success
+        ngDialog.closeAll()
 
   flash = (type, msg) ->
     unless $scope.flashing
