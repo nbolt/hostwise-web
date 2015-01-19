@@ -768,6 +768,7 @@ form
           .content
             padding: 15px
           .field
+            margin-bottom: 20px
             .label
               color: teal
               font-weight: 600
@@ -776,15 +777,19 @@ form
               margin-top: 4px
               .typcn
                 position: absolute
-                top: 6px
+                top: 2px
                 right: 8px
                 font-size: 1.4em
                 color: green
                 opacity: 0
                 transition: opacity .6s ease-in-out
+            .select2-container
+              width: 100%
             &.one
               input
                 width: 440px
+            &.property_type
+              width: 150px
         &.active
           .head
             border-bottom: 2px solid teal

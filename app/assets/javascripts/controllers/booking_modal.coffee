@@ -25,7 +25,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     null
 
   $scope.fromPayment = ->
-    angular.element('.booking.modal .content > .payment .select2-container').select2 'val', $scope.payment.id || last_payment || payments_map[0].id
+    angular.element('.booking.modal .content > .payment .select2-container').select2 'val', $scope.payment.id != 'new' && $scope.payment.id || last_payment || payments_map[0].id
     angular.element('.booking.modal .content.main').addClass 'active'
     angular.element('.booking.modal .content-container').css 'margin-left', 0
     $timeout((->

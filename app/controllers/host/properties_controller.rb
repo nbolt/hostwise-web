@@ -11,6 +11,7 @@ class Host::PropertiesController < Host::AuthController
 
   def update
     property.assign_attributes property_params
+    property.property_type = params[:form][:property_type][:id] if params[:form][:property_type]
     if property.save
       render json: { success: true }
     else

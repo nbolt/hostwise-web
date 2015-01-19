@@ -38,6 +38,11 @@
               .label Nickname
               .input.nickname
                 .typcn.typcn-tick
-                input type='text' ng:model='property.nickname'
+                input type='text' ng:model='form.nickname'
+            .field.one.property_type
+              .label Property Type
+              .input.property_type
+                .typcn.typcn-tick
+                input type='hidden' ui-select2='property_type()' ng:model='form.property_type'
 
 = render 'common/booking_modal'

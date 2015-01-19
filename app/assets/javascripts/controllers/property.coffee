@@ -1,3 +1,5 @@
+String.prototype.capitalize = -> this.charAt(0).toUpperCase() + this.slice(1)
+
 PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialog', ($scope, $http, $window, $timeout, $rootScope, ngDialog) ->
 
   $scope.form = {}
@@ -9,10 +11,13 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
+    $scope.form     = rsp
+    $scope.form.property_type = { id: rsp.property_type, text: rsp.property_type.capitalize() }
     _($scope.property.bookings).each (booking) ->
       date = moment.utc booking.date
       booking.parsed_date = date.format('MMMM Do, YYYY')
       angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+      #angular.element('#property .section .input.property_type').select2 'data', rsp.property
 
     bedrooms_text = if rsp.bedrooms == 0 then 'None' else if rsp.bedrooms == 1 then 'Bedroom' else 'Bedrooms'
     $scope.form.bedrooms = { id: rsp.bedrooms.toString(), text: "#{rsp.bedrooms} #{bedrooms_text}" }
@@ -79,20 +84,31 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
   $scope.exists = () ->
     _(_(_(_($scope.user.properties).map((p) -> p.bookings)).flatten())).find (b) -> b.id.toString() == $scope.selected_booking
 
-  $scope.$watch 'property.nickname', (n,o) -> if o
+  form_flash = (field) ->
+    el = angular.element(".input.#{field} .typcn")
+    if el.css('opacity') == '0'
+      el.css 'opacity', 1
+    else
+      el.css 'opacity', 0
+      $timeout((->el.css 'opacity', 1),600)
+    $timeout((->el.css 'opacity', 0),5000)
+
+  $scope.$watch 'form.nickname', (n,o) -> if o
     $timeout.cancel promises.nickname
     promises.nickname = $timeout((->
       $http.post($window.location.href, {form: { title: n }}).success (rsp) ->
         if rsp.success
-          if angular.element('.input.nickname .typcn').css('opacity') == '0'
-            angular.element('.input.nickname .typcn').css 'opacity', 1
-          else
-            angular.element('.input.nickname .typcn').css 'opacity', 0
-            $timeout((->angular.element('.input.nickname .typcn').css 'opacity', 1),600)
-          #$timeout((->angular.element('.input.nickname .typcn').css 'opacity', 0),5000)
+          form_flash 'nickname'
         else
           flash('failure', rsp.message)
     ),2000)
+
+  $scope.$watch 'form.property_type', (n,o) -> if o
+    $http.post($window.location.href, {form: { property_type: n }}).success (rsp) ->
+      if rsp.success
+        form_flash 'property_type'
+      else
+        flash('failure', rsp.message)
 
   $scope.$watch 'form.bedrooms.id', (n,o) -> if o
     $http.post($window.location.href, {form: { bedrooms: n }}).success (rsp) ->
@@ -158,6 +174,14 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
       data: [{id:'0',text:'None'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'},{id:'6',text:'6'},{id:'7',text:'7'},{id:'8',text:'8'},{id:'9',text:'9'},{id:'10',text:'10'}]
+      initSelection: (el, cb) ->
+    }
+
+  $scope.property_type = ->
+    {
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      data: [{id:'house',text:'House'},{id:'condo',text:'Condo'},{id:'apartment',text:'Apartment'}]
       initSelection: (el, cb) ->
     }
 
