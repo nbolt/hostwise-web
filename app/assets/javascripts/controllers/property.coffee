@@ -1,6 +1,6 @@
 String.prototype.capitalize = -> this.charAt(0).toUpperCase() + this.slice(1)
 
-PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialog', ($scope, $http, $window, $timeout, $rootScope, ngDialog) ->
+PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope', 'ngDialog', ($scope, $http, $window, $timeout, $upload, $rootScope, ngDialog) ->
 
   $scope.form = {}
   $scope.selected_date = {}
@@ -93,6 +93,12 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$rootScope', 'ngDialo
       el.css 'opacity', 0
       $timeout((->el.css 'opacity', 1),600)
     $timeout((->el.css 'opacity', 0),4000)
+
+  $scope.$watch 'files', (n,o) -> if n
+    $upload.upload(
+      url: $window.location.href
+      file: n[0]
+    ).success (rsp) -> console.log rsp
 
   $scope.$watch 'form.nickname', (n,o) -> if o
     $timeout.cancel promises.nickname
