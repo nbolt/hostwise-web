@@ -17,7 +17,6 @@ Rails.application.routes.draw do
 
   scope module: 'host', constraints: { subdomain: 'host' } do
     get   '/' => 'home#index'
-    get   '/dashboard' => 'home#dashboard'
     get   '/properties/new'   => 'properties#new'
     get   '/properties/first' => 'properties#first'
     post  '/properties/address' => 'properties#address'

@@ -2,7 +2,7 @@ class AuthController < ApplicationController
 
   def auth
     if logged_in?
-      redirect_to subdomain: current_user.role, controller: 'dashboard', action: ''
+      redirect_to subdomain: current_user.role, controller: 'home', action: 'index'
     else
       redirect_to '/signin'
     end
