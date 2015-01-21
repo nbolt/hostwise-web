@@ -67,7 +67,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
   $scope.expand = (section) ->
     angular.element('#property .section').removeClass 'active'
     angular.element("#property .section.#{section}").addClass 'active'
-    if section == 'map'
+    if section == 'map' && !angular.element('.leaflet-container')[0]
       map = L.mapbox.map 'map', 'useporter.l02en9o9'
       geocoder = L.mapbox.geocoder 'mapbox.places'
       geocoder.query $scope.property.full_address, (err, data) ->
