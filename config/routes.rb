@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     post  '/properties/build' => 'properties#build'
     get   '/properties/:slug' => 'properties#show'
     post  '/properties/:slug' => 'properties#update'
-    get   '/user/edit' => 'users#edit', as: :edit_host_user
+    get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
     post  '/message' => 'users#message'
     get   '/payments' => 'payments#index', as: :payments
@@ -26,6 +26,12 @@ Rails.application.routes.draw do
     match '/users/:action' => 'users', via: [:get, :post]
     match '/properties/:slug/:action' => 'properties', via: [:get, :post]
     match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]
+  end
+
+  scope module: 'admin', constraints: { subdomain: 'admin' } do
+    get   '/' => 'home#index'
+    get   '/user/edit' => 'users#edit'
+    put   '/user/update' => 'users#update'
   end
 
   get '/user' => 'home#user'

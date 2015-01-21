@@ -1,4 +1,5 @@
 class Contractor::AuthController < ApplicationController
+  layout 'contractor'
   before_filter :require_login
 
   private

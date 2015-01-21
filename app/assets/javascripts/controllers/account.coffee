@@ -1,25 +1,17 @@
 AccountCtrl = ['$scope', '$http', '$timeout', '$window', ($scope, $http, $timeout, $window) ->
 
-  $scope.form = {}
-
-  $http.get($window.location.href + '.json').success (rsp) ->
-    $scope.form.email = rsp.email
-    $scope.form.phone_number = rsp.phone_number
-    $scope.form.first_name = rsp.first_name
-    $scope.form.last_name = rsp.last_name
-
   $scope.update = (step) ->
     $http.put('/user/update', {
-      form: $scope.form
+      user: $scope.user
       step: step
     }).success (rsp) ->
       if rsp.success
         message = 'Contact info'
         if step is 'password'
           message = 'Password'
-          $scope.form.password = ''
-          $scope.form.password_confirmation = ''
-          $scope.form.current_password = ''
+          $scope.user.password = ''
+          $scope.user.password_confirmation = ''
+          $scope.user.current_password = ''
         message += ' updated successfully!'
         flash('info', message)
       else

@@ -1,4 +1,5 @@
 class Host::AuthController < ApplicationController
+  layout 'host'
   before_filter :require_login
 
   private

@@ -1,4 +1,4 @@
-class Host::UsersController < Host::AuthController
+class Admin::UsersController < Admin::AuthController
   def update
     user = current_user
     if params[:step] == 'info'
@@ -24,16 +24,6 @@ class Host::UsersController < Host::AuthController
       render json: { success: true }
     else
       render json: { success: false, message: user.errors.full_messages[0] }
-    end
-  end
-
-  def message
-    message = current_user.messages.create({body: params[:form][:message]})
-    if message.save
-      #TODO: forward the message to support@useporter.com
-      render json: { success: true }
-    else
-      render json: { success: false, message: message.errors.full_messages[0] }
     end
   end
 
