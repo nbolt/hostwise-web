@@ -5,7 +5,7 @@
   .payment-container ng::controller='payment'
     .flash
     ul
-      li ng:repeat='payment in user.payments' ng:if='payment.status_cd == 1'
+      li ng:repeat='payment in user.payments'
         .fa.fa-credit-card
         .details
           span ng:if='payment.stripe_id'
