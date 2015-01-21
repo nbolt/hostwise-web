@@ -73,7 +73,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
     {
       dropdownCssClass: 'filters'
       minimumResultsForSearch: 8
-      data: [{id:'alphabetical',text:'Alphabetical'},{id:'recently_added',text:'Recently Added'},{id:'upcoming_service',text:'Upcoming Service'}]
+      data: [{id:'alphabetical',text:'Alphabetical'},{id:'recently_added',text:'Recently Added'},{id:'upcoming_service',text:'Upcoming Service'},{id:'deactivated',text:'Deactivated'}]
       initSelection: (el, cb) ->
     }
 

@@ -5,6 +5,7 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       if rsp
         $scope.user = rsp
         $scope.user.payments = _($scope.user.payments).filter (payment) -> payment.status_cd == 1
+        $scope.user.properties = _($scope.user.properties).filter (property) -> property.active
 
   $scope.$emit 'fetch_user'
 

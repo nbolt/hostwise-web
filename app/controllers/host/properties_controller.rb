@@ -24,14 +24,9 @@ class Host::PropertiesController < Host::AuthController
     end
   end
 
-  def cancel
-    booking = property.bookings.find params[:booking]
-    booking.destroy
-    if booking.destroyed?
-      render json: { success: true }
-    else
-      render json: { success: false }
-    end
+  def deactivate
+    property.update_attribute :active, false
+    render json: { success: true }
   end
 
   def book
@@ -72,6 +67,8 @@ class Host::PropertiesController < Host::AuthController
       render json: { success: true }
     when 2
       property = current_user.properties.build(property_params)
+      property.active = true
+
       property.property_type = params[:form][:property_type][:id]
       property.bedrooms = params[:form][:bedrooms][:id]
       property.bathrooms = params[:form][:bathrooms][:id]

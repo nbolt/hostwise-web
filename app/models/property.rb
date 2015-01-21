@@ -12,6 +12,8 @@ class Property < ActiveRecord::Base
 
   before_validation :standardize_address, on: :create
 
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
   scope :by_user, -> (user) { where(user_id: user.id) }
   scope :by_alphabetical, -> { reorder('LOWER(title)') }
   scope :upcoming_bookings, -> { includes(:bookings).where('bookings.id is not null').order('bookings.created_at DESC').references(:bookings) }
@@ -22,18 +24,20 @@ class Property < ActiveRecord::Base
   rescue ActiveRecord::RecordNotFound
   end
 
-  def self.search(term, sort)
+  def self.search(term, sort=nil)
     if sort
       case sort
         when 'alphabetical'
-          results = by_alphabetical
+          results = by_alphabetical.active
         when 'recently_added'
-          results = recently_added
+          results = recently_added.active
         when 'upcoming_service'
-          results = upcoming_bookings
+          results = upcoming_bookings.active
+        when 'deactivated'
+          results = inactive
       end
     else
-      results = Property.all
+      results = Property.active
     end
     return results.search_property(term) if term.present? && !results.empty?
     results

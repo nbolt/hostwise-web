@@ -64,6 +64,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
               angular.element(".booking.modal .services .service.#{service.name} input").attr 'checked', true
     }
 
+  $scope.confirm_deactivation = ->
+    ngDialog.open template: 'deactivation-modal', className: 'booking', scope: $scope
+
   $scope.expand = (section) ->
     angular.element('#property .section').removeClass 'active'
     angular.element("#property .section.#{section}").addClass 'active'
