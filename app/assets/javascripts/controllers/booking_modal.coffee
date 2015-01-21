@@ -72,6 +72,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
               $scope.$emit 'fetch_user'
               $scope.fromPayment()
 
+  $scope.confirm_booking = -> ngDialog.closeAll()
+  $scope.confirm_cancellation = -> ngDialog.closeAll()
 
   $scope.book = ->
     if $scope.payment.id == 'new'
@@ -85,17 +87,33 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
         date: $scope.selected_date
       }).success (rsp) ->
         if rsp.success
-          ngDialog.closeAll()
           date = $scope.selected_date.moment
-          angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass 'booked'
-
+          angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr 'booking', rsp.id
+          angular.element('.booking.modal .content.side').removeClass 'active'
+          angular.element('.booking.modal .content.side.confirm_booking').addClass 'active'
+          angular.element('.booking.modal .content-container').css 'margin-left', -400
+          null
 
   $scope.cancel = ->
+    angular.element('.booking.modal .content.side').removeClass 'active'
+    angular.element('.booking.modal .content.side.confirm_cancellation').addClass 'active'
+    angular.element('.booking.modal .content-container').css 'margin-left', -400
+    null
+
+  $scope.cancel_cancellation = ->
+    angular.element('.booking.modal .content.main').addClass 'active'
+    angular.element('.booking.modal .content-container').css 'margin-left', 0
+    $timeout((->
+      angular.element('.booking.modal .content.side').removeClass 'active'
+    ),600)
+    null
+
+  $scope.confirm_cancellation = ->
     $http.post("#{$window.location.href}/#{$scope.selected_booking}/cancel").success (rsp) ->
       if rsp.success
         ngDialog.closeAll()
         date = $scope.selected_date.moment
-        angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass 'booked'
+        angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('booked').removeAttr 'booking'
 
   $scope.update = ->
     $http.post("#{$window.location.href}/#{$scope.selected_booking}/update", {
@@ -103,7 +121,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
       services: services_array()
     }).success (rsp) ->
       if rsp.success
-        ngDialog.closeAll()
+        angular.element('.booking.modal .content.side').removeClass 'active'
+        angular.element('.booking.modal .content.side.confirm_booking').addClass 'active'
+        angular.element('.booking.modal .content-container').css 'margin-left', -400
+        null
 
   flash = (type, msg) ->
     unless $scope.flashing
@@ -167,6 +188,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     _($scope.selected_services).each (selected, service) ->
       services.push service if selected
     services
+
+  $scope.included_services = -> _(services_array()).join(', ')
 
 ]
 

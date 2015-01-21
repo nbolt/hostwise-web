@@ -37,7 +37,7 @@ class Host::PropertiesController < Host::AuthController
       booking.services.push Service.where(name: service)[0]
     end
     if booking.save
-      render json: { success: true }
+      render json: { success: true, id: booking.id }
     else
       render json: { success: false }
     end
@@ -108,7 +108,7 @@ class Host::PropertiesController < Host::AuthController
   private
 
   def property_params
-    params.permit(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :bathrooms,
+    params.require(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :bathrooms,
                                 :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type)
   end
 

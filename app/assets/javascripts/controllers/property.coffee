@@ -97,7 +97,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
   $scope.$watch 'files', (n,o) -> if n
     $upload.upload(
       url: $window.location.href
-      file: n[0]
+      file: n[0],
+        form: ''
     ).success (rsp) -> console.log rsp
 
   $scope.$watch 'form.nickname', (n,o) -> if o

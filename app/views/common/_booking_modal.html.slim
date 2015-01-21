@@ -7,7 +7,8 @@ script#booking-modal type="text/ng-template"
         .head
           .text
             | {{selected_date.day_text}}
-            span ng:bind='selected_date.date_text'
+            span
+              |  {{selected_date.date_text}}
         .services
           .service.cleaning
             img.icon src='/images/book_clean.png'
@@ -43,10 +44,18 @@ script#booking-modal type="text/ng-template"
             .typcn.typcn-chevron-right
           input type='hidden' ui-select2='paymentHash()' ng:model='payment'
         .buttons.one ng:hide='exists()'
-          .button.teal ng:click='book()' Book
-        .buttons.two ng:show='exists()'
-          .button.red ng:click='cancel()' Cancel Booking
-          .button.teal ng:click='update()' Update Booking
+          .button.teal ng:click='book()'
+            .icon
+              .typcn.typcn-tick
+            .text Book
+        .buttons.one ng:show='exists()'
+          .button.teal ng:click='update()'
+            .icon
+              .typcn.typcn-tick
+            .text Update Booking
+          .cancel
+            | Do you wish to
+            span ng:click='cancel()'  cancel this job?
       .content.side.payment
         .head
           .arrows
@@ -80,3 +89,36 @@ script#booking-modal type="text/ng-template"
               input data-stripe='cvc' ng:model='card.cvc' placeholder='123'
         .buttons.one
           .button.teal ng:click='add_payment()' Add Payment
+      .content.side.confirm_booking
+        .head
+          .text You're All Set
+        .check-icon
+          .typcn.typcn-tick
+        .date
+          | {{selected_date.day_text}} {{selected_date.date_text}}
+        .included
+          .title What's Included:
+          .text
+            | {{included_services()}}
+        .buttons.one
+          .button.teal ng:click='confirm_booking()'
+            .icon
+              .typcn.typcn-tick
+            .text OK
+      .content.side.confirm_cancellation
+        .head
+          .text Are you sure?
+        .check-icon
+          .typcn.typcn-times
+        .date
+          | {{selected_date.day_text}} {{selected_date.date_text}}
+        .text Are you sure you want to cancel?
+        .buttons.two
+          .button.teal ng:click='cancel_cancellation()'
+            .icon
+              .typcn.typcn-tick
+            .text Back
+          .button.red ng:click='confirm_cancellation()'
+            .icon
+              .typcn.typcn-times
+            .text Cancel
