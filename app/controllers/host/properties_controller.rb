@@ -10,8 +10,12 @@ class Host::PropertiesController < Host::AuthController
   end
 
   def update
-    property.assign_attributes property_params
-    property.property_photos.build(photo: params[:file]) if params[:file]
+    if params[:file]
+      property.property_photos.destroy_all
+      property.property_photos.build(photo: params[:file])
+    else
+      property.assign_attributes property_params
+    end
     property.property_type = params[:form][:property_type][:id] if params[:form] && params[:form][:property_type]
     if property.save
       render json: { success: true }
