@@ -67,6 +67,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
   $scope.confirm_deactivation = ->
     ngDialog.open template: 'deactivation-modal', className: 'booking', scope: $scope
 
+  $scope.confirm_reactivation = ->
+    ngDialog.open template: 'reactivation-modal', className: 'booking', scope: $scope
+
   $scope.expand = (section) ->
     angular.element('#property .section').removeClass 'active'
     angular.element("#property .section.#{section}").addClass 'active'

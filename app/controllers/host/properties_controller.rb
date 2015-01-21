@@ -29,6 +29,11 @@ class Host::PropertiesController < Host::AuthController
     render json: { success: true }
   end
 
+  def reactivate
+    property.update_attribute :active, true
+    render json: { success: true }
+  end
+
   def book
     booking = property.bookings.build(date: params[:date][:moment])
     booking.payment = Payment.find params[:payment][:id]

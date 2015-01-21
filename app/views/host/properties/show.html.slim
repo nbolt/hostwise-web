@@ -15,9 +15,10 @@
             .typcn.typcn-calendar-outline
           .text Add / Edit Service Dates
         #calendar calendar='' options='calendar_options'
-      .cancel
+      .deactivate
         | Do you wish to
-        span ng:click='confirm_deactivation()'  deactivate this property?
+        span ng:click='confirm_deactivation()' ng:show='property.active'  deactivate this property?
+        span ng:click='confirm_reactivation()' ng:hide='property.active'  reactivate this property?
     .column.info
       .section.map
         .head ng:click="expand('map')"
@@ -123,3 +124,4 @@
 
 = render 'common/booking_modal'
 = render 'common/deactivation_modal'
+= render 'common/reactivation_modal'

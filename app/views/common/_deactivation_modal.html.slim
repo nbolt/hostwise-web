@@ -1,0 +1,20 @@
+script#deactivation-modal type="text/ng-template"
+  .booking.modal ng:controller='deactivation_modal'
+    .header
+      .text Confirm Deactivation
+    .content-container
+      .content.confirm_cancellation
+        .head
+          .text Are you sure?
+        .check-icon
+          .typcn.typcn-times
+        .text Are you sure you want to deactivate?
+        .buttons.two
+          .button.teal ng:click='cancel_deactivation()'
+            .icon
+              .typcn.typcn-tick
+            .text Back
+          .button.red ng:click='confirm_deactivation()'
+            .icon
+              .typcn.typcn-times
+            .text Yes
