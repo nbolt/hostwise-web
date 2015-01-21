@@ -109,7 +109,7 @@ class Host::PropertiesController < Host::AuthController
 
   def property_params
     params.permit(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :bathrooms,
-                                 :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type)
+                                :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type)
   end
 
   def delivery_code(address1, address2, zip)

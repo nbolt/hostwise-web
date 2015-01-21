@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   get '/auth' => 'auth#auth', as: 'auth'
-  get '/home' => 'home#home', as: 'home'
 
   post '/password_resets' => 'password_resets#create'
   get  '/password_resets/:id/edit' => 'password_resets#edit', as: :edit_password_reset
