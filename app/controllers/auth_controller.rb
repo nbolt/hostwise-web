@@ -54,7 +54,7 @@ class AuthController < ApplicationController
 
   def signin
     user = User.where(email: params[:form][:email])[0]
-    if !user.phone_confirmed
+    if user && !user.phone_confirmed
       render json: { success: false, message: "Email not found" }
     else
       user = login(params[:form][:email], params[:form][:password], params[:form][:remember])
