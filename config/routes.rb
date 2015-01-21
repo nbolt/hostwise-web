@@ -28,6 +28,15 @@ Rails.application.routes.draw do
     match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]
   end
 
+  scope module: 'contractor', constraints: { subdomain: 'contractor' } do
+    get   '/' => 'home#index'
+    get   '/faq' => 'home#faq', as: :contractor_faq
+    get   '/help' => 'home#help', as: :contractor_help
+    get   '/user/edit' => 'users#edit'
+    put   '/user/update' => 'users#update'
+    post  '/message' => 'users#message'
+  end
+
   scope module: 'admin', constraints: { subdomain: 'admin' } do
     get   '/' => 'home#index'
     get   '/user/edit' => 'users#edit'

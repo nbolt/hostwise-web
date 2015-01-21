@@ -94,22 +94,14 @@ html
             .title
               .icon
                 .fa.fa-home
-              .text Customers
+              .text Dashboard
               .arrow
                 .typcn.typcn-chevron-right
         .section
           a href=''
             .title
               .icon
-                .fa.fa-plus-circle
-              .text Contractors
-              .arrow
-                .typcn.typcn-chevron-right
-        .section
-          a href=''
-            .title
-              .icon
-                .fa.fa-tag
+                .fa.fa-list
               .text Jobs
               .arrow
                 .typcn.typcn-chevron-right
@@ -123,5 +115,21 @@ html
           .drop-container
             .links
               = render 'contractor/account_settings'
+        .section
+          a href='/faq'
+            .title
+              .icon
+                .fa.fa-info-circle
+              .text FAQ
+              .arrow
+                .typcn.typcn-chevron-right
+        .section
+          a href='/help'
+            .title
+              .icon
+                .fa.fa-newspaper-o
+              .text Contact Us
+              .arrow
+                .typcn.typcn-chevron-right
     .body slide-body=''
       = yield
