@@ -2,7 +2,7 @@ class AuthController < ApplicationController
 
   def auth
     if logged_in?
-      redirect_to subdomain: current_user.role, controller: 'home', action: 'index'
+      redirect_to subdomain: current_user.role.to_s, controller: 'home', action: 'index'
     else
       redirect_to '/signin'
     end
@@ -22,6 +22,7 @@ class AuthController < ApplicationController
         end
       else
         user = User.new(user_params)
+        user.role = :host
         user.step = 'step1'
       end
       if user.save
@@ -82,7 +83,7 @@ class AuthController < ApplicationController
 
   def user_params
     params.require(:form).permit(:email, :password, :password_confirmation,
-                                 :first_name, :last_name, :company, :phone_number, :role)
+                                 :first_name, :last_name, :company, :phone_number)
   end
 
 end

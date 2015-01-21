@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   has_many :avatars, autosave: true, dependent: :destroy
   has_many :messages, dependent: :destroy
 
+  as_enum :role, admin: 0, host: 1, contractor: 2
+
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
   validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
   validates_presence_of :password, :password_confirmation, if: lambda { step == 'step1' || step == 'edit_password' }

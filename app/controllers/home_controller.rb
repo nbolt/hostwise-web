@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    redirect_to subdomain: current_user.role, controller: 'home', action: 'index' if logged_in?
+    redirect_to subdomain: current_user.role.to_s, controller: 'home', action: 'index' if logged_in?
   end
 
   def signup
