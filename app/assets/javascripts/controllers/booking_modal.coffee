@@ -50,7 +50,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
         if rsp.error
           flash "failure", rsp.error.message
         else
-          $http.post('/users/add_payment',{stripe_id:rsp.id,payment_method:$scope.payment_method}).success (rsp) ->
+          $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method}).success (rsp) ->
             if rsp.success
               angular.element('.booking.modal .content > .payment .select2-container')
                 .select2 'data', payments_map.unshift({ id: rsp.payment.id, text: "Card ending in #{rsp.payment.last4}" })
@@ -64,14 +64,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
         if rsp.status_code != 201
           flash 'failure', rsp.errors[0].description
         else
-          $http.post('/users/add_payment',{balanced_id:rsp.bank_accounts[0].id,payment_method:$scope.payment_method}).success (rsp) ->
+          $http.post('/payments/add',{balanced_id:rsp.bank_accounts[0].id,payment_method:$scope.payment_method}).success (rsp) ->
             if rsp.success
               angular.element('.booking.modal .content > .payment .select2-container')
                 .select2 'data', payments_map.unshift({ id: rsp.payment.id, text: "Bank ending in #{rsp.payment.last4}" })
                 .select2 'val', rsp.payment.id
               $scope.$emit 'fetch_user'
               $scope.fromPayment()
-          
+
 
   $scope.book = ->
     if $scope.payment.id == 'new'

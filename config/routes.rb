@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     get   '/user/edit' => 'users#edit', as: :edit_host_user
     put   '/user/update' => 'users#update'
     post  '/message' => 'users#message'
+    get   '/payments' => 'payments#index', as: :payments
+    post  '/payments/add' => 'payments#add'
+    put   '/payments/delete' => 'payments#delete'
     match '/users/:action' => 'users', via: [:get, :post]
     match '/properties/:slug/:action' => 'properties', via: [:get, :post]
     match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]

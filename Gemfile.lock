@@ -318,6 +318,8 @@ GEM
       tilt (~> 1.1)
     shoulda-matchers (2.7.0)
       activesupport (>= 3.0.0)
+    simple_enum (2.1.1)
+      activesupport (>= 4.0.0)
     simplecov (0.9.1)
       docile (~> 1.1.0)
       multi_json (~> 1.0)
@@ -418,6 +420,7 @@ DEPENDENCIES
   rr
   sass-rails
   shoulda-matchers
+  simple_enum
   simplecov
   slim
   smartystreets

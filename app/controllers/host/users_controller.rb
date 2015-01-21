@@ -34,32 +34,6 @@ class Host::UsersController < Host::AuthController
     end
   end
 
-  def add_payment
-    if params[:payment_method][:id] == 'credit-card'
-      customer = Stripe::Customer.retrieve current_user.stripe_customer_id
-      card = customer.cards.create(card: params[:stripe_id])
-      payment = current_user.payments.create({
-        stripe_id: card.id,
-        last4: card.last4,
-        card_type: card.brand.downcase.gsub(' ', '_'),
-        fingerprint: card.fingerprint
-      })
-    else
-      bank_account = Balanced::BankAccount.fetch "/bank_accounts/#{params[:balanced_id]}"
-      bank_account.associate_to_customer "/customers/#{current_user.balanced_customer_id}"
-      payment = current_user.payments.create({
-        balanced_id: bank_account.id,
-        last4: bank_account.account_number.gsub('x',''),
-        fingerprint: bank_account.fingerprint
-      })
-    end
-    if payment.save
-      render json: { success: true, payment: payment }
-    else
-      render json: { success: false, message: payment.errors.full_messages[0] }
-    end
-  end
-
   def message
     message = current_user.messages.create({body: params[:form][:message]})
 

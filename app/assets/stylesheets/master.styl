@@ -1053,6 +1053,134 @@ form
       top: 15px
       width: 30px
 
+.ngdialog.payment
+  .ngdialog-close
+    color: white
+    margin-right: 6px
+    font-size: 1.5em
+    transition: opacity .5s ease-in-out
+    hover-darken()
+    &::before
+      typicons()
+      content: '\e057'
+  .ngdialog-content
+    width: 400px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .flash
+        border-radius: 0
+        height: 50px
+        left: 0
+        position: absolute
+        top: 0
+        width: 100%
+      .header
+        background-color: teal
+        color: white
+        font-size: 1.25em
+        padding: 10px
+        height: 50px
+        box-sizing: border-box
+        transition: background-color 1s ease-in-out, height 1s ease-in-out
+        .text
+          text-align: center
+          transition: opacity .5s ease-in-out
+        &.failure
+          background-color: red
+        &.success
+          background-color: green
+        &.info
+          background-color: yellow
+      .content
+        display: inline-block
+        vertical-align: top
+        box-sizing: border-box
+        width: 350px
+        margin-left: 25px
+        .buttons
+          margin: 25px auto
+          .button
+            margin: auto
+            color: white
+            padding: 8px 12px
+            text-align: center
+            display: block
+            vertical-align: top
+            width: auto
+            &:hover
+              cursor: pointer
+            &.teal
+              background-color: teal
+              &:hover
+                background-color: light-teal
+        .payment-tab
+          display: none
+          &.active
+            display: block
+          &.ach
+            .row.two
+              .field
+                width: 170px
+                input
+                  width: 120px
+          &.credit-card
+            .row.two
+              .field
+                width: 130px
+                input
+                  width: 80px
+        .payment-method
+          margin: 25px 0
+          border-bottom: 2px solid light-grey
+          padding-bottom: 25px
+          .text
+            margin-bottom: 10px
+          .select2-container
+            width: 200px
+            > a
+              background: lighter-grey !important
+              color: darker-grey
+              border: thin solid light-grey
+              border-radius: 1px !important
+        input
+          background: lighter-grey
+          border: thin solid light-grey
+          margin: 10px 0 20px
+          padding: 8px 12px
+          border-radius: 1px
+          width: 210px
+          &:active, &:focus
+            outline: none
+        .row.two
+          .field
+            display: inline-block
+            vertical-align: top
+        .head
+          color: teal
+          font-size: 1.5em
+          text-align: center
+          position: relative
+          padding: 20px
+          border-bottom: 2px solid light-grey
+          .arrows
+            position: absolute
+            top: 20px
+            left: 30px
+            right: 30px
+            color: darker-grey
+            .arrow
+              &:hover
+                cursor: pointer
+              &.prev
+                float: left
+              &.next
+                float: right
+          .text
+            span
+              font-weight: 600
+
 .ngdialog.booking
   .ngdialog-close
     color: white
@@ -1476,6 +1604,34 @@ form
         margin-top: 2px
         padding-left: 10px
         vertical-align: top
+
+.payment-container
+  background-color: white
+  margin: 40px auto 0
+  overflow: hidden
+  padding: 30px
+  ul
+    list-style-type: none
+    margin: 0
+    padding: 0
+    li
+      border: 1px solid light-grey
+      margin-bottom: 5px
+      padding: 20px
+      position: relative
+      a
+        color: primary-color-1
+        text-decoration: none
+      div
+        display: inline-block
+      .links
+        position: absolute
+        right: 20px
+      .fa
+        font-size: 25px
+        margin-right: 20px
+      &.add-payment
+        color: primary-color-1
 
 .account-container
   background-color: white

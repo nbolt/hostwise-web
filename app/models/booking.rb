@@ -7,7 +7,7 @@ class Booking < ActiveRecord::Base
 
   scope :pending, -> { includes(:services).where('services.id is null or bookings.payment_id is null').references(:services) }
   scope :active,  -> { includes(:services).where('services.id is not null and bookings.payment_id is not null').references(:services) }
-  scope :tomorrow, -> { where('date::date - now()::date = 1') }
+  scope :tomorrow, -> { where('date = ?', Date.today + 1) }
 
   def send_reminder
     UserMailer.booking_reminder(self).then(:deliver)
