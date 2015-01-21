@@ -53,17 +53,22 @@ class AuthController < ApplicationController
   end
 
   def signin
-    user = login(params[:form][:email], params[:form][:password], params[:form][:remember])
-    if user
-      render json: { success: true, redirect_to: session[:return_to_url] || auth_path }
+    user = User.where(email: params[:form][:email])[0]
+    if !user.phone_confirmed
+      render json: { success: false, message: "Email not found" }
     else
-      user = User.where(email: params[:form][:email])[0]
+      user = login(params[:form][:email], params[:form][:password], params[:form][:remember])
       if user
-        message = 'Invalid password'
+        render json: { success: true, redirect_to: session[:return_to_url] || auth_path }
       else
-        message = 'Invalid email'
+        user = User.where(email: params[:form][:email])[0]
+        if user
+          message = 'Invalid password'
+        else
+          message = 'Email not found'
+        end
+        render json: { success: false, message: message }
       end
-      render json: { success: false, message: message }
     end
   end
 
