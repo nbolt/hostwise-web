@@ -89,13 +89,13 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
     $http.get("/properties/#{property.slug}.json").success (rsp) ->
       $scope.property = rsp
       _($scope.property.bookings).each (booking) ->
-        console.log booking
         date = moment.utc booking.date
         booking.parsed_date = date.format('MMMM Do, YYYY')
         angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
   $scope.exists = () ->
-    _(_(_(_($scope.user.properties).map((p) -> p.bookings)).flatten())).find (b) -> b.id.toString() == $scope.selected_booking
+    if $scope.property.bookings
+      _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking
 
   refresh_properties = ->
     $http.get('/data/properties', {params: {term: $scope.term, sort: $scope.sort}}).success (rsp) -> $scope.user.properties = rsp if $scope.user

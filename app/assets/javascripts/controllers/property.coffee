@@ -83,7 +83,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     null
 
   $scope.exists = () ->
-    _(_(_(_($scope.user.properties).map((p) -> p.bookings)).flatten())).find (b) -> b.id.toString() == $scope.selected_booking
+    if $scope.property.bookings
+      _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking
 
   form_flash = (field) ->
     el = angular.element(".input.#{field} .typcn")
