@@ -1,4 +1,4 @@
-BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scope, $http, $timeout, $window, ngDialog) ->
+BookingModalCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
 
   last_payment = null
   $scope.flashing = false
@@ -81,7 +81,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     else if !services_array()[0]
       flash 'failure', 'Please select at least one service'
     else
-      $http.post($window.location.href + '/book', {
+      $http.post("/properties/#{$scope.property.slug}/book", {
         payment: $scope.payment
         services: services_array()
         date: $scope.selected_date
@@ -109,14 +109,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     null
 
   $scope.confirm_cancellation = ->
-    $http.post("#{$window.location.href}/#{$scope.selected_booking}/cancel").success (rsp) ->
+    $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/cancel").success (rsp) ->
       if rsp.success
         ngDialog.closeAll()
         date = $scope.selected_date.moment
         angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('booked').removeAttr 'booking'
 
   $scope.update = ->
-    $http.post("#{$window.location.href}/#{$scope.selected_booking}/update", {
+    $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/update", {
       payment: $scope.payment
       services: services_array()
     }).success (rsp) ->

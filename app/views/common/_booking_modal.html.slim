@@ -3,6 +3,8 @@ script#booking-modal type="text/ng-template"
     .header
       .text Booking Confirmation
     .content-container
+      .content.side.calendar
+        #calendar calendar='' options='calendar_options'
       .content.main
         .head
           .text
@@ -88,7 +90,10 @@ script#booking-modal type="text/ng-template"
               .label CV Code
               input data-stripe='cvc' ng:model='card.cvc' placeholder='123'
         .buttons.one
-          .button.teal ng:click='add_payment()' Add Payment
+          .button.teal ng:click='add_payment()'
+            .icon
+              .typcn.typcn-credit-card
+            .text Add Payment
       .content.side.confirm_booking
         .head
           .text You're All Set

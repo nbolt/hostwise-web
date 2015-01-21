@@ -19,5 +19,11 @@
       .title
         .text ng:bind='::property.nickname'
         a ng:href='/properties/{{property.slug}}' Manage Listing and Calendar
+      .button.teal ng:click='quick_add(property)'
+        .icon
+          .typcn.typcn-calendar-outline
+        .text Quick Add
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
+
+= render 'common/booking_modal'

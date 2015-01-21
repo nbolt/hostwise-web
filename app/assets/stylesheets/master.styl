@@ -908,6 +908,37 @@ form
       padding: 18px 32px
       margin: 5px auto
       border-radius: 1px
+      .button
+        margin: 0 10px
+        color: white
+        text-align: left
+        display: inline-block
+        vertical-align: top
+        float: right
+        width: 200px
+        padding: 0
+        margin-top: 22px
+        .icon, .text
+          display: inline-block
+          vertical-align: top
+        .icon
+          background-color: light-teal
+          width: 40px
+          height: 40px
+          font-size: 1.6em
+          .typcn
+            margin-left: 8px
+        .text
+          text-align: center
+          font-size: 1.25em
+          margin-top: 5px
+          width: 160px
+        &:hover
+          cursor: pointer
+        &.teal
+          background-color: teal
+          &:hover
+            background-color: light-teal
       .photo, .title
         display: inline-block
         vertical-align: top
@@ -1281,6 +1312,16 @@ form
             display: none
             &.active
               display: inline-block
+          &.calendar
+            #calendar
+              width: 350px
+              padding: 0
+              margin: 25px auto
+              .arrows
+                left: 25px
+                right: 25px
+              tbody td
+                padding: 15px
           &.confirm_cancellation
             .head, .check-icon, .date
               color: red
