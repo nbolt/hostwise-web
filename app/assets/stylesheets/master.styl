@@ -797,6 +797,15 @@ form
                   color: green
                   opacity: 0
                   transition: opacity .6s ease-in-out
+                textarea
+                  width: 415px
+                  border: thin solid light-grey
+                  border-radius: 1px
+                  resize: none
+                  padding: 10px
+                  color: #A3A3A3
+                  &:active, &:focus
+                    outline: none
               .select2-container
                 width: 100%
               &.property_type
@@ -814,6 +823,9 @@ form
           &.details
             .content-container
               max-height: 600px
+          &.instructions
+            .content-container
+              max-height: 700px
 
 
 #calendar

@@ -160,6 +160,13 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
       else
         flash('failure', rsp.message)
 
+  $scope.$watch 'form.parking_info', (n,o) -> if o
+    $http.post($window.location.href, {form: { parking_info: n }}).success (rsp) ->
+      if rsp.success
+        form_flash 'parking'
+      else
+        flash('failure', rsp.message)
+
   flash = (type, msg) ->
     angular.element('#property .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->

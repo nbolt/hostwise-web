@@ -84,5 +84,38 @@
                 .label Select Photo
                 input#photo type='file' new-property-photo='' ng-file-select='' ng-model='files' style='width:210px;margin-right: 15px'
                 img.preview src='/images/1x1.png' width='38'
+      .section.instructions
+        .head ng:click="expand('instructions')"
+          .arrow
+            .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-document-text
+          .text Edit Instructions
+        .content-container.instructions
+          .content
+            .row.one
+              .field
+                .label Access Information
+                .input.access
+                  .typcn.typcn-tick
+                  textarea rows='4' type='text' ng:model='form.access_info'
+            .row.one
+              .field
+                .label Trash Disposal
+                .input.trash
+                  .typcn.typcn-tick
+                  textarea rows='4' type='text' ng:model='form.trash_disposal'
+            .row.one
+              .field
+                .label Parking Information
+                .input.parking
+                  .typcn.typcn-tick
+                  textarea rows='4' type='text' ng:model='form.parking_info'
+            .row.one
+              .field
+                .label Additional Information
+                .input.additional
+                  .typcn.typcn-tick
+                  textarea rows='4' type='text' ng:model='form.additional_info'
 
 = render 'common/booking_modal'
