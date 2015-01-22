@@ -41,6 +41,8 @@ Rails.application.routes.draw do
     get   '/' => 'home#index'
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
+    get   '/contractors' => 'contractors#index'
+    post   '/contractor/signup' => 'contractors#signup'
   end
 
   get '/user' => 'home#user'

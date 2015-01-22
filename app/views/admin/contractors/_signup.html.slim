@@ -1,0 +1,15 @@
+script#sign-up type="text/ng-template"
+  .default.modal ng:controller='contractors'
+    .title Contractor Account
+    .flash
+    form
+      .field
+        input type='email' placeholder='Email Address' required='' ng:model='form.email'
+      .field
+        input type='text' placeholder='First Name' required='' ng:model='form.first_name'
+      .field
+        input type='text' placeholder='Last Name' required='' ng:model='form.last_name'
+      .field
+        input type='text' placeholder='Mobile Number' required='' ng:model='form.phone_number'
+      button.yellow ng:click='add_contractor()'
+        .text Create

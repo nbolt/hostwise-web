@@ -78,10 +78,9 @@ html
             | | Porter for
             span &nbsp;Hosts
     = yield
-    - unless logged_in?
-      = render 'common/signin_modal'
-      = render 'common/signup_modal'
-      = render 'common/forgotpwd_modal'
+    = render 'common/signin_modal'
+    = render 'common/signup_modal'
+    = render 'common/forgotpwd_modal'
     footer ng:controller='modal'
       div
         div.left

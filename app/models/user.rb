@@ -11,18 +11,20 @@ class User < ActiveRecord::Base
   as_enum :role, admin: 0, host: 1, contractor: 2
   as_enum :status, deleted: 0, active: 1, pending: 2
 
-  validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
-  validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' }
+  validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' }
+  validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' }
   validates_presence_of :password, :password_confirmation, if: lambda { step == 'step1' || step == 'edit_password' }
   validates :password, confirmation: true, if: lambda { step == 'step1' || step == 'edit_password' }
 
-  validates_presence_of :first_name, :last_name, :phone_number, if: lambda { step == 'step2' || step == 'edit_info' }
-  validates_numericality_of :phone_number, only_integer: true, if: lambda { step == 'step2' || step == 'edit_info' }
-  validates_length_of :phone_number, is: 10, if: lambda { step == 'step2' || step == 'edit_info' }
+  validates_presence_of :first_name, :last_name, :phone_number, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' }
+  validates_numericality_of :phone_number, only_integer: true, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' }
+  validates_length_of :phone_number, is: 10, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' }
 
   after_create :create_stripe_customer, :create_balanced_customer
 
   attr_accessor :step
+
+  scope :contractors, -> { where(role_cd: 2) }
 
   def name
     first_name + ' ' + last_name

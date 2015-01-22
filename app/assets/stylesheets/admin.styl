@@ -1,0 +1,40 @@
+.contractors
+  .header
+    margin-bottom: 20px
+    .button
+      display: inline-block
+      width: 200px
+    .select2-container
+      float: right
+      width: 150px
+      .select2-choice
+        background: white !important
+        position: relative
+        border-radius: 1px
+        &::after
+          typicons()
+          content: '\e049'
+          position: absolute
+          right: 4px
+          top: 12px
+          transform: rotate(90deg)
+      > a
+        margin-top: -4px
+  table
+    font-size: 14px
+    width: 100%
+    th, td
+      padding: 10px
+      text-align: left
+    th
+      color: dark-grey
+    td
+      background-color: white
+    tr
+      border-top: 3px solid light-grey
+      &:first-child
+        border-top: 0
+    .avatar
+      border-radius: 50%
+      height: 35px
+      width: 35px

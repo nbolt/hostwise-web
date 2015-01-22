@@ -1,0 +1,27 @@
+.contractors ng:controller='contractors'
+  .header
+    a.button.teal href='' ng:click='show_signup()' Create Contractor
+    input type='hidden' ui-select2='sorters()' ng:model='sorter'
+  table cellpadding='0' cellspacing='0'
+    tbody
+      tr.days
+        th
+        th Name/Location
+        th Email
+        th Phone Number
+        th Status
+        th Joined
+      tr ng:repeat='user in users'
+        td
+          img.avatar ng:src='{{::user.avatar}}'
+        td
+          | {{user.name}}
+        td
+          | {{user.email}}
+        td
+          | {{user.phone_number}}
+        td
+          | &nbsp;
+        td
+          | {{user.created_at}}
+= render 'signup'
