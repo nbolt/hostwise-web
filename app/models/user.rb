@@ -7,12 +7,15 @@ class User < ActiveRecord::Base
   has_many :payments, autosave: true, dependent: :destroy
   has_many :avatars, autosave: true, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :contractor_jobs, class_name: 'ContractorJobs'
+  has_many :jobs, through: :contractor_jobs, source: :booking
 
   as_enum :role, admin: 0, host: 1, contractor: 2
   as_enum :status, deleted: 0, active: 1, pending: 2
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' }
   validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' }
+
   validates_presence_of :password, :password_confirmation, if: lambda { step == 'step1' || step == 'edit_password' }
   validates :password, confirmation: true, if: lambda { step == 'step1' || step == 'edit_password' }
 

@@ -29,5 +29,8 @@ script#add-payment-modal type="text/ng-template"
           .field.cvc
             .label CV Code
             input data-stripe='cvc' ng:model='card.cvc' placeholder='123'
-      .buttons
-        .button.teal ng:click='add_payment()' Add Payment
+      .buttons.one
+        .button.teal ng:click='add_payment()'
+          .icon
+            .typcn.typcn-credit-card
+          .text Add Payment

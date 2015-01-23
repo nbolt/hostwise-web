@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150121205513) do
+ActiveRecord::Schema.define(version: 20150122002708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150121205513) do
     t.datetime "date"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "status"
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -52,6 +53,16 @@ ActiveRecord::Schema.define(version: 20150121205513) do
   end
 
   add_index "cities", ["county_id"], name: "index_cities_on_county_id", using: :btree
+
+  create_table "contractor_jobs", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "contractor_jobs", ["booking_id"], name: "index_contractor_jobs_on_booking_id", using: :btree
+  add_index "contractor_jobs", ["user_id"], name: "index_contractor_jobs_on_user_id", using: :btree
 
   create_table "counties", force: :cascade do |t|
     t.integer  "state_id"
@@ -174,5 +185,7 @@ ActiveRecord::Schema.define(version: 20150121205513) do
   add_foreign_key "booking_services", "services"
   add_foreign_key "bookings", "payments"
   add_foreign_key "bookings", "properties"
+  add_foreign_key "contractor_jobs", "bookings"
+  add_foreign_key "contractor_jobs", "users"
   add_foreign_key "payments", "users"
 end

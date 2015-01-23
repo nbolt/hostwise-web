@@ -1,0 +1,34 @@
+#jobs.container.contractor ng:controller='jobs'
+  .page-title
+    .icon
+      .typcn.typcn-document-text
+    .text Jobs
+  .tabs
+    .filters
+      .arrow
+        .typcn.typcn-chevron-right
+      input type='hidden' ui-select2='filters()' ng:model='filter'
+    .tab.open.active ng:click="tab('open')" Open
+    .tab.upcoming ng:click="tab('upcoming')" Upcoming
+    .tab.past ng:click="tab('past')" Past
+  .tab-content
+    .tab ng:repeat="tab in tabs" class='{{tab.name}}'
+      .day ng:repeat="day in tab.days"
+        .head
+          .text ng:bind='::day[2].date_text'
+        .jobs ng:repeat='job in day[1]'
+          .job
+            .photo
+              img ng:src='{{job.property.primary_photo}}'
+            .title
+              .text ng:bind='::job.property.short_address'
+            .button.teal
+              .icon
+                .typcn.typcn-tick
+              .text Claim Job
+            .infos
+              .info
+                .icon
+                  .typcn.typcn-credit-card
+                .text
+                  | ${{job.cost}}
