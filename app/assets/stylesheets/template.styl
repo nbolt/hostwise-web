@@ -73,12 +73,14 @@ input[type=file]
   hover-darken()
   &.teal
     background-color: primary-color-1
-    hover-darken()
+    .icon, &:hover
+      background-color: light-teal
   &.yellow
     background-color: primary-color-3
     hover-darken()
   &.red
-    background-color: primary-color-4
-    hover-darken()
+    background-color: dark-red
+    .icon, &:hover
+      background-color: red
   &:hover
     color: white

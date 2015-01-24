@@ -1,4 +1,4 @@
-JobsCtrl = ['$scope', '$http', 'ngDialog', ($scope, $http, ngDialog) ->
+JobsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
   
   $scope.tabs = [{name:'open'},{name:'upcoming'},{name:'past'}]
   $scope.filter = {id:'recent',text:'Most Recent'}
@@ -17,6 +17,22 @@ JobsCtrl = ['$scope', '$http', 'ngDialog', ($scope, $http, ngDialog) ->
       data: [{id:'recent',text:'Most Recent'}]
       initSelection: (el, cb) ->
     }
+
+  $scope.claim = (booking) ->
+    $http.post("/jobs/#{booking.id}/claim").success (rsp) ->
+      if rsp.success
+        angular.element("#job-#{booking.id}").fadeOut()
+        $timeout((->refresh_jobs()),600)
+      else
+        refresh_jobs()
+
+  $scope.drop = (booking) ->
+    $http.post("/jobs/#{booking.id}/drop").success (rsp) ->
+      if rsp.success
+        angular.element("#job-#{booking.id}").fadeOut()
+        $timeout((->refresh_jobs()),600)
+      else
+        refresh_jobs()
 
   refresh_jobs = ->
     _($scope.tabs).each (tab) ->

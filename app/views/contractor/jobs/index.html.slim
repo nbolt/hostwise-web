@@ -17,15 +17,19 @@
         .head
           .text ng:bind='::day[2].date_text'
         .jobs ng:repeat='job in day[1]'
-          .job
+          .job id='job-{{job.id}}'
             .photo
               img ng:src='{{job.property.primary_photo}}'
             .title
               .text ng:bind='::job.property.short_address'
-            .button.teal
+            .button.teal ng:click='claim(job)' ng:show="tab.name == 'open'"
               .icon
                 .typcn.typcn-tick
               .text Claim Job
+            .button.red ng:click='drop(job)' ng:show="tab.name == 'upcoming'"
+              .icon
+                .typcn.typcn-times
+              .text Drop Job
             .infos
               .info
                 .icon

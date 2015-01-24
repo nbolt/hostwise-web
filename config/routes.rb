@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     get   '/faq' => 'home#faq', as: :contractor_faq
     get   '/help' => 'home#help', as: :contractor_help
     get   '/jobs' => 'jobs#index', as: :contractor_jobs
+    match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
     post  '/message' => 'users#message'
