@@ -12,7 +12,7 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $t
     {
     dropdownCssClass: 'sorters'
     minimumResultsForSearch: -1
-    data: [{id:'sort_by',text:'Sort By'},{id:'name',text:'Name'},{id:'status',text:'Status'},{id:'location',text:'Location'}]
+    data: [{id:'sort_by',text:'Sort By'},{id:'name',text:'Name'},{id:'status',text:'Status'},{id:'recently_joined',text:'Recently Joined'}]
     initSelection: (el, cb) -> cb {id:'sort_by',text:'Sort By'}
     }
 

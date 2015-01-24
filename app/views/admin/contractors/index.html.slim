@@ -9,7 +9,7 @@
         th Name/Location
         th Email
         th Phone Number
-        th Status
+        th Position
         th Joined
       tr ng:repeat='user in users'
         td
@@ -21,7 +21,7 @@
         td
           | {{user.phone_number}}
         td
-          | &nbsp;
+          | {{user.contractor_profile.position}}
         td
-          | {{user.created_at}}
+          span ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
 = render 'signup'

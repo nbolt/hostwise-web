@@ -32,10 +32,12 @@ Rails.application.routes.draw do
     get   '/' => 'home#index'
     get   '/faq' => 'home#faq', as: :contractor_faq
     get   '/help' => 'home#help', as: :contractor_help
-    get   '/jobs' => 'jobs#index'
+    get   '/jobs' => 'jobs#index', as: :contractor_jobs
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
     post  '/message' => 'users#message'
+    get   '/users/:id/activate' => 'users#activate', as: :activate
+    put   '/users/:id/activated' => 'users#activated'
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do

@@ -78,6 +78,18 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
+  def contractor_welcome_email(user, url)
+    mandrill do
+      mandrill_mail template: 'contractor-welcome',
+                    subject: 'Thank you for joining our community!',
+                    to: {email: user.email, name: user.name},
+                    vars: {'APPLICATION_LINK' => url},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
   private
 
   def mandrill

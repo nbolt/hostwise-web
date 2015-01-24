@@ -2,7 +2,7 @@ class Admin::ContractorsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.contractors.to_json(methods: [:name, :avatar]) }
+      format.json { render json: User.contractors.to_json(include: [contractor_profile: {methods: [:position]}], methods: [:name, :avatar]) }
     end
   end
 
@@ -15,6 +15,8 @@ class Admin::ContractorsController < Admin::AuthController
     user.step = 'contractor_info'
 
     if user.save
+      UserMailer.contractor_welcome_email(user, activate_url(user.activation_token)).then(:deliver)
+
       render json: { success: true }
     else
       render json: { success: false, message: user.errors.full_messages[0] }

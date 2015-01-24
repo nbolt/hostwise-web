@@ -9,19 +9,22 @@ class User < ActiveRecord::Base
   has_many :messages, dependent: :destroy
   has_many :contractor_jobs, class_name: 'ContractorJobs'
   has_many :jobs, through: :contractor_jobs, source: :booking
+  has_one  :contractor_profile, dependent: :destroy
 
   as_enum :role, admin: 0, host: 1, contractor: 2
-  as_enum :status, deleted: 0, active: 1, pending: 2
 
-  validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' }
-  validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' }
+  validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile'}
+  validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
 
-  validates_presence_of :password, :password_confirmation, if: lambda { step == 'step1' || step == 'edit_password' }
-  validates :password, confirmation: true, if: lambda { step == 'step1' || step == 'edit_password' }
+  validates_presence_of :password, :password_confirmation, if: lambda { step == 'step1' || step == 'edit_password' || step == 'contractor_profile' }
+  validates :password, confirmation: true, if: lambda { step == 'step1' || step == 'edit_password' || step == 'contractor_profile' }
 
-  validates_presence_of :first_name, :last_name, :phone_number, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' }
-  validates_numericality_of :phone_number, only_integer: true, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' }
-  validates_length_of :phone_number, is: 10, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' }
+  validates_presence_of :first_name, :last_name, :phone_number, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
+  validates_numericality_of :phone_number, only_integer: true, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
+  validates_length_of :phone_number, is: 10, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
+
+  validates_numericality_of :secondary_phone, only_integer: true, if: lambda { self.secondary_phone.present? && step == 'contractor_profile' }
+  validates_length_of :secondary_phone, is: 10, if: lambda { self.secondary_phone.present? && step == 'contractor_profile' }
 
   after_create :create_stripe_customer, :create_balanced_customer
 
