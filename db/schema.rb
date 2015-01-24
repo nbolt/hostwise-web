@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122002708) do
+ActiveRecord::Schema.define(version: 20150122172213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,22 @@ ActiveRecord::Schema.define(version: 20150122002708) do
 
   add_index "contractor_jobs", ["booking_id"], name: "index_contractor_jobs_on_booking_id", using: :btree
   add_index "contractor_jobs", ["user_id"], name: "index_contractor_jobs_on_user_id", using: :btree
+
+  create_table "contractor_profiles", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "position_cd"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.string   "emergency_contact_phone"
+    t.string   "emergency_contact_first_name"
+    t.string   "emergency_contact_last_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "counties", force: :cascade do |t|
     t.integer  "state_id"
@@ -160,11 +176,13 @@ ActiveRecord::Schema.define(version: 20150122002708) do
     t.string   "company",                         limit: 255
     t.string   "phone_confirmation",              limit: 255
     t.string   "stripe_customer_id"
-    t.string   "role"
     t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
     t.string   "balanced_customer_id"
+    t.integer  "role_cd"
+    t.string   "secondary_phone"
+    t.integer  "status_cd",                                   default: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
