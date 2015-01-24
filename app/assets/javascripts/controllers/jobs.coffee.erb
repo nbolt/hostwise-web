@@ -40,6 +40,9 @@ JobsCtrl = ['$scope', '$http', 'ngDialog', ($scope, $http, ngDialog) ->
   $scope.$watch 'filter', (n,o) -> if o
     refresh_jobs()
 
+  client = new Faye.Client "http://pubsub.fanout.io/r/<%= ENV['FANOUT_ID'] %>/bayeux"
+  client.subscribe '/jobs', (data) -> refresh_jobs()
+
 ]
 
 app = angular.module('porter').controller('jobs', JobsCtrl)

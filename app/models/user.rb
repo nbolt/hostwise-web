@@ -44,6 +44,30 @@ class User < ActiveRecord::Base
     end
   end
 
+  def claim_job booking
+    if booking.contractors.count == booking.size
+      false
+    else
+      booking.contractors.push self
+      if booking.contractors.count == booking.size
+        booking.scheduled!
+        booking.save
+      end
+      fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
+      fanout.publish_async 'jobs', {}
+      true
+    end
+  end
+
+  def drop_job booking
+    booking.contractors.delete self
+    booking.open!
+    booking.save
+    fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
+    fanout.publish_async 'jobs', {}
+    true
+  end
+
   private
 
   def create_stripe_customer
