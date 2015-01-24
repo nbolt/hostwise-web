@@ -1,7 +1,8 @@
-JobsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', ($scope, $http, $timeout, $interval, $window, ngDialog) ->
   
   $scope.tabs = [{name:'open'},{name:'upcoming'},{name:'past'}]
   $scope.filter = {id:'recent',text:'Most Recent'}
+  faye = null
 
   $scope.tab = (name) ->
     angular.element('#jobs .tabs .tab').removeClass 'active'
@@ -56,8 +57,13 @@ JobsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout,
   $scope.$watch 'filter', (n,o) -> if o
     refresh_jobs()
 
-  client = new Faye.Client "http://pubsub.fanout.io/r/<%= ENV['FANOUT_ID'] %>/bayeux"
-  client.subscribe '/jobs', (data) -> refresh_jobs()
+  load_faye = null
+  load_faye = $interval((->
+    if $window.faye_loaded
+      $interval.cancel(load_faye)
+      faye = new Faye.Client "http://pubsub.fanout.io/r/<%= ENV['FANOUT_ID'] %>/bayeux"
+      faye.subscribe '/jobs', (data) -> refresh_jobs()
+  ), 200)
 
 ]
 
