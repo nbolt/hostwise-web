@@ -1,5 +1,5 @@
 class Contractor::UsersController < Contractor::AuthController
-  skip_before_filter :require_login, only: [:activate, :activated]
+  skip_before_filter :require_login, only: [:activate, :activated, :avatar]
 
   def update
     user = current_user
@@ -75,6 +75,17 @@ class Contractor::UsersController < Contractor::AuthController
       end
     else
       render json: { success: false, message: profile.errors.full_messages[0] }
+    end
+  end
+
+  def avatar
+    user = User.load_from_activation_token(params[:id])
+    user.avatars.build(photo: params[:file])
+
+    if user.save
+      render json: { success: true }
+    else
+      render json: { success: false, message: user.errors.full_messages[0] }
     end
   end
 

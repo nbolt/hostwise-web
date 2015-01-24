@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     post  '/message' => 'users#message'
     get   '/users/:id/activate' => 'users#activate', as: :activate
     put   '/users/:id/activated' => 'users#activated'
+    put   '/users/:id/avatar' => 'users#avatar'
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do

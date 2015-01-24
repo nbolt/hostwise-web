@@ -6,7 +6,7 @@
     h1 Welcome to Porter for Hosts!
     h3 Confirm your information below to finish setting up your account.
     form
-      .section.avatar ng::controller='avatar'
+      .section.avatar
         .file-upload ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
         img ng:src='{{::user.avatar}}'
         .flash
