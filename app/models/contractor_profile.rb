@@ -5,6 +5,8 @@ class ContractorProfile < ActiveRecord::Base
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
+  attr_encrypted :ssn, :driver_license, key: ENV['CIPHER_KEY']
+
   validates_numericality_of :emergency_contact_phone, only_integer: true, if: lambda { self.emergency_contact_phone.present? }
   validates_length_of :emergency_contact_phone, is: 10, if: lambda { self.emergency_contact_phone.present? }
 

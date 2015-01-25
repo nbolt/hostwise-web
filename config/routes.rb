@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     get   '/users/:id/activate' => 'users#activate', as: :activate
     put   '/users/:id/activated' => 'users#activated'
     put   '/users/:id/avatar' => 'users#avatar'
+    post  '/payments/add' => 'payments#add'
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do

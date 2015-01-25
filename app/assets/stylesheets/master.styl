@@ -2033,6 +2033,7 @@ form
       margin-right: 10px
   .container
     margin: 20px 0
+    overflow: hidden
     width: 100%
     h1
       margin: 30px 0 10px
@@ -2051,32 +2052,13 @@ form
         left: 30px
         position: absolute
         top: 8px
-      .vr
-        border-left: 1px solid light-grey
-        display: inline-block
-        height: 720px
-        margin-top: 50px
+      a
+        color: primary-color-1
+        text-decoration: none
       .section
         display: inline-block
         padding: 50px 30px
         vertical-align: top
-        &.avatar
-          width: 158px
-          text-align: center
-          img
-            border-radius: 50%
-            height: 100px
-            width: 100px
-          .file-upload
-            color: primary-color-1
-            cursor: pointer
-            font-size: 15px
-            font-weight: bold
-            margin: 0 auto 30px
-        &.info
-          width: 280px
-        &.pwd
-          width: 280px
         .row
           margin: 20px 0
           &:first-child
@@ -2086,12 +2068,20 @@ form
               width: 48%
               &.right
                 margin-left: 10px
+        .cb
+          margin-top: 44px
+          label
+            color: black
+            font-size: 12px
+            font-weight: normal
+            &:before
+              top: 0
       input
         width: 100%
       label
         color: primary-color-1
         display: block
-        font-size: 15px
+        font-size: 14px
         font-weight: bold
         margin-bottom: 5px
         text-align: left
@@ -2117,4 +2107,56 @@ form
         font-size: 13px
         text-align: left
         width: 100%
-
+    .steps
+      width: 1800px
+      transition: margin-left .6s ease
+      .step
+        display: inline-block
+        vertical-align: top
+        width: 900px
+        &.one
+          form
+            .vr
+              border-left: 1px solid light-grey
+              display: inline-block
+              height: 720px
+              margin-top: 50px
+            hr
+              border: 0
+              border-top: 1px solid light-grey
+              margin: 40px 0
+            .section
+              &.avatar
+                width: 158px
+                text-align: center
+                img
+                  border-radius: 50%
+                  height: 100px
+                  width: 100px
+                .file-upload
+                  color: primary-color-1
+                  cursor: pointer
+                  font-size: 15px
+                  font-weight: bold
+                  margin: 0 auto 30px
+              &.info
+                width: 280px
+              &.pwd
+                width: 280px
+        &.two
+          h6
+            font-size: 13px
+            font-weight: normal
+            text-align: right
+            a
+              color: primary-color-4
+              font-size: 15px
+              text-decoration: none
+          form
+            .section
+              display: inline-block
+              padding: 50px 30px
+              vertical-align: top
+            button
+              margin-top: 24px
+              width: 200px

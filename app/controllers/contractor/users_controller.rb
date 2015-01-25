@@ -55,26 +55,26 @@ class Contractor::UsersController < Contractor::AuthController
   def activated
     user = User.load_from_activation_token(params[:id])
     user.assign_attributes user_params
+    user.step = 'contractor_profile'
+    user.phone_confirmed = true #hack for now
 
-    profile = ContractorProfile.new
-    profile.assign_attributes profile_params
-    profile.position = :trainee
+    if user.valid?
+      profile = ContractorProfile.new
+      profile.assign_attributes profile_params
+      profile.position = :trainee
 
-    if profile.valid?
-      profile.save
-      user.step = 'contractor_profile'
-      user.phone_confirmed = true #hack for now
-      user.contractor_profile = profile
-
-      if user.save
+      if profile.valid?
+        profile.save
+        user.contractor_profile = profile
+        user.save
         user.activate!
         auto_login user
-        render json: { success: true, redirect_to: contractor_jobs_path }
+        render json: { success: true }
       else
-        render json: { success: false, message: user.errors.full_messages[0] }
+        render json: { success: false, message: profile.errors.full_messages[0] }
       end
     else
-      render json: { success: false, message: profile.errors.full_messages[0] }
+      render json: { success: false, message: user.errors.full_messages[0] }
     end
   end
 
@@ -98,6 +98,7 @@ class Contractor::UsersController < Contractor::AuthController
 
   def profile_params
     params.require(:contractor_profile).permit(:address1, :address2, :zip, :emergency_contact_first_name,
-                                               :emergency_contact_last_name, :emergency_contact_phone)
+                                               :emergency_contact_last_name, :emergency_contact_phone,
+                                               :ssn, :dob, :driver_license)
   end
 end
