@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
 
+  include PgSearch
+
   before_validation :format_phone_number
 
   has_many :properties, dependent: :destroy
@@ -12,6 +14,8 @@ class User < ActiveRecord::Base
   has_one  :contractor_profile, dependent: :destroy
 
   as_enum :role, admin: 0, host: 1, contractor: 2
+
+  pg_search_scope :search_contractors, against: [:email, :first_name, :last_name, :phone_number], associated_against: {contractor_profile: [:address1, :city, :zip]}, using: { tsearch: { prefix: true } }
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile'}
   validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
@@ -29,8 +33,6 @@ class User < ActiveRecord::Base
   after_create :create_stripe_customer, :create_balanced_customer
 
   attr_accessor :step
-
-  scope :contractors, -> { where(role_cd: 2) }
 
   def name
     first_name + ' ' + last_name
@@ -66,6 +68,12 @@ class User < ActiveRecord::Base
     fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
     fanout.publish_async 'jobs', {}
     true
+  end
+
+  def self.contractors(term = nil)
+    results = User.where(role_cd: 2)
+    return results.search_contractors(term) if term.present?
+    results
   end
 
   private

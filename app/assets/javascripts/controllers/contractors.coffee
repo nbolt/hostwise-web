@@ -1,5 +1,7 @@
 ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
 
+  promise = null
+
   $scope.form = {email: '', first_name: '', last_name: '', phone_number: ''}
 
   $scope.$on 'fetch_contractors', ->
@@ -7,14 +9,6 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $t
       $scope.users = rsp
 
   $scope.$emit 'fetch_contractors'
-
-  $scope.sorters = ->
-    {
-    dropdownCssClass: 'sorters'
-    minimumResultsForSearch: -1
-    data: [{id:'sort_by',text:'Sort By'},{id:'name',text:'Name'},{id:'status',text:'Status'},{id:'recently_joined',text:'Recently Joined'}]
-    initSelection: (el, cb) -> cb {id:'sort_by',text:'Sort By'}
-    }
 
   $scope.show_signup = ->
     ngDialog.open template: 'sign-up', className: 'auth'
@@ -27,6 +21,12 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $t
         window.location = window.location.href
       else
         flash('failure', rsp.message, '.default')
+
+  $scope.$watch 'search', (n,o) -> if o
+    $timeout.cancel promise
+    promise = $timeout (->
+      $http.get('/data/contractors', {params: {term: n}}).success (rsp) -> $scope.users = rsp if $scope.users
+    ), 400
 
   flash = (type, msg, id) ->
     el = angular.element(id + ' .flash')

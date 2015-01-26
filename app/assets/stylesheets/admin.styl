@@ -1,39 +1,52 @@
 .contractors
   .header
-    margin-bottom: 20px
+    margin-bottom: 30px
+    position: relative
     .button
-      display: inline-block
+      position: absolute
+      right: 0
+      top: 0
       width: 180px
-    .select2-container
-      float: right
-      width: 180px
-      .select2-choice
-        background: white !important
-        position: relative
-        border-radius: 1px
-        &::after
-          typicons()
-          content: '\e049'
-          position: absolute
-          right: 4px
-          top: 12px
-          transform: rotate(90deg)
-      > a
-        margin-top: -4px
+    .fa
+      margin-right: 10px
+  .pagination
+    background-color: white
+    ul
+      margin: 0
+      padding: 30px 0 10px
+  .highlight
+    background-color: white
+    padding: 10px 0 40px
+    .total
+      border-right: 1px solid light-grey
+      margin: 0 40px 0 70px
+      padding-right: 40px
+      strong
+        color: primary-color-1
+        margin-left: 15px
+    .search
+      .fa
+        color: dark-grey
+      input
+        border: 0
+    hr
+      border: 0
+      border-top: 1px solid light-grey
   table
+    background-color: white
     font-size: 14px
     width: 100%
     th, td
       padding: 10px
       text-align: left
-    th
-      color: dark-grey
-    td
-      background-color: white
     tr
-      border-top: 3px solid light-grey
+      border-top: 1px solid light-grey
       &:first-child
         border-top: 0
+    td
+      &.position
+        color: yellow
+        text-transform: uppercase
     .avatar
       border-radius: 50%
       height: 35px

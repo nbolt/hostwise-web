@@ -1,27 +1,49 @@
 .contractors ng:controller='contractors'
   .header
+    h2
+      .fa.fa-list
+      | Contractors
     a.button.teal href='' ng:click='show_signup()' Create Contractor
-    input type='hidden' ui-select2='sorters()' ng:model='sorter'
+  .highlight
+    span.total
+      | Total Contractors
+      strong
+        | {{users.length}}
+    span.search
+      i.fa.fa-search
+      input type='text' placeholder='Search' ng:model='search'
+    hr
   table cellpadding='0' cellspacing='0'
     tbody
       tr.days
         th
-        th Name/Location
+        th Name
+        th City
+        th Joined
         th Email
         th Phone Number
         th Position
-        th Joined
-      tr ng:repeat='user in users'
+        th Next Service
+        th Jobs Completed
+      tr dir-paginate='user in users | itemsPerPage: 20'
         td
           img.avatar ng:src='{{::user.avatar}}'
         td
           | {{user.name}}
         td
+          | {{user.contractor_profile.city}}
+        td
+          span ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
+        td
           | {{user.email}}
         td
           | {{user.phone_number}}
-        td
+        td.position
           | {{user.contractor_profile.position}}
         td
-          span ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
+          | &nbsp;
+        td
+          | &nbsp;
+  .pagination
+    dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
 = render 'signup'

@@ -29,4 +29,7 @@ class DataController < ApplicationController
     render json: jobs.group_by(&:date).sort_by{|d|d}.reverse.to_json(methods: [:cost], include: {property: {methods: [:short_address, :primary_photo]}})
   end
 
+  def contractors
+    render json: User.contractors(params[:term]).to_json(include: [contractor_profile: {methods: [:position]}], methods: [:avatar, :name, :role])
+  end
 end
