@@ -36,6 +36,8 @@ html
       function stripe_loaded(){Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}")}
       function mapbox_loaded(){L.mapbox.accessToken = "#{ENV['MAPBOX_TOKEN']}"}
 
+    = render 'common/live_chat'
+
     - if Rails.env == 'production'
       javascript:
         init_segmentio()

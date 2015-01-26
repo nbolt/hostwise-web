@@ -12,6 +12,11 @@ HelpCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       else
         flash('failure', rsp.message)
 
+  $scope.chat = ->
+    angular.element('.zopim').first().toggle()
+    angular.element('.zopim').last().toggle()
+    return true
+
   flash = (type, msg) ->
     el = angular.element('form .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)

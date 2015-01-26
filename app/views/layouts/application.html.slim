@@ -30,6 +30,8 @@ html
       }
       Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}")
 
+    = render 'common/live_chat'
+
     - if Rails.env == 'production'
       javascript:
         init_segmentio()
@@ -61,7 +63,6 @@ html
           "app_id": "y2g99hzz"
         }
 
-
   body ng:controller='app'
     header ng:controller='modal'
       nav
@@ -78,9 +79,6 @@ html
             | | Porter for
             span &nbsp;Hosts
     = yield
-    = render 'common/signin_modal'
-    = render 'common/signup_modal'
-    = render 'common/forgotpwd_modal'
     footer ng:controller='modal'
       div
         div.left
@@ -101,3 +99,6 @@ html
             | Made with
             .fa.fa-heart
             | in Venice, CA
+  = render 'common/signin_modal'
+  = render 'common/signup_modal'
+  = render 'common/forgotpwd_modal'
