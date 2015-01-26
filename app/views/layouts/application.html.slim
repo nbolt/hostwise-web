@@ -17,7 +17,6 @@ html
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'css_imports'
     = javascript_include_tag :application, 'data-turbolinks-track' => true
-    = javascript_include_tag 'https://js.stripe.com/v2'
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700', async: true
     = csrf_meta_tags
     = yield :head
@@ -28,7 +27,6 @@ html
         analytics=analytics||[];(function(){var e=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group"],t=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var n=0;n<e.length;n++)analytics[e[n]]=t(e[n])})(),analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)};
         analytics.load("#{ENV['SEGMENT_KEY']}")
       }
-      Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}")
 
     = render 'common/live_chat'
 

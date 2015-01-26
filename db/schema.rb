@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150124044334) do
+ActiveRecord::Schema.define(version: 20150126214008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,13 +55,12 @@ ActiveRecord::Schema.define(version: 20150124044334) do
   add_index "cities", ["county_id"], name: "index_cities_on_county_id", using: :btree
 
   create_table "contractor_jobs", force: :cascade do |t|
-    t.integer  "booking_id"
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "job_id"
   end
 
-  add_index "contractor_jobs", ["booking_id"], name: "index_contractor_jobs_on_booking_id", using: :btree
   add_index "contractor_jobs", ["user_id"], name: "index_contractor_jobs_on_user_id", using: :btree
 
   create_table "contractor_profiles", force: :cascade do |t|
@@ -78,9 +77,9 @@ ActiveRecord::Schema.define(version: 20150124044334) do
     t.string   "emergency_contact_last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "ssn"
+    t.string   "encrypted_ssn"
     t.string   "dob"
-    t.string   "driver_license"
+    t.string   "encrypted_driver_license"
     t.string   "delivery_point_barcode"
   end
 
@@ -92,6 +91,13 @@ ActiveRecord::Schema.define(version: 20150124044334) do
   end
 
   add_index "counties", ["state_id"], name: "index_counties_on_state_id", using: :btree
+
+  create_table "jobs", force: :cascade do |t|
+    t.integer  "status_cd"
+    t.integer  "booking_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "messages", force: :cascade do |t|
     t.integer  "user_id"
@@ -210,7 +216,6 @@ ActiveRecord::Schema.define(version: 20150124044334) do
   add_foreign_key "booking_services", "services"
   add_foreign_key "bookings", "payments"
   add_foreign_key "bookings", "properties"
-  add_foreign_key "contractor_jobs", "bookings"
   add_foreign_key "contractor_jobs", "users"
   add_foreign_key "payments", "users"
 end

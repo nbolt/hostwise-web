@@ -17,7 +17,7 @@ class DataController < ApplicationController
   end
 
   def jobs
-    jobs = Booking.all
+    jobs = Job.all
     case params[:scope]
     when 'open'
       jobs = jobs.open(current_user)
@@ -26,7 +26,8 @@ class DataController < ApplicationController
     when 'past'
       jobs = jobs.past(current_user)
     end
-    render json: jobs.group_by(&:date).sort_by{|d|d}.reverse.to_json(methods: [:cost], include: {property: {methods: [:short_address, :primary_photo]}})
+    jobs = jobs.group_by{|j| j.booking.date}.sort_by{|d|d}.reverse
+    render json: jobs.to_json(include: {booking: {methods: :cost, include: {property: {methods: [:short_address, :primary_photo]}}}})
   end
 
   def contractors

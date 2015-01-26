@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :avatars, autosave: true, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :contractor_jobs, class_name: 'ContractorJobs'
-  has_many :jobs, through: :contractor_jobs, source: :booking
+  has_many :jobs, through: :contractor_jobs
   has_one  :contractor_profile, dependent: :destroy
 
   as_enum :role, admin: 0, host: 1, contractor: 2
@@ -46,14 +46,14 @@ class User < ActiveRecord::Base
     end
   end
 
-  def claim_job booking
-    if booking.contractors.count == booking.size
+  def claim_job job
+    if job.contractors.count == job.size
       false
     else
-      booking.contractors.push self
-      if booking.contractors.count == booking.size
-        booking.scheduled!
-        booking.save
+      job.contractors.push self
+      if job.contractors.count == job.size
+        job.scheduled!
+        job.save
       end
       fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
       fanout.publish_async 'jobs', {}
@@ -61,10 +61,10 @@ class User < ActiveRecord::Base
     end
   end
 
-  def drop_job booking
-    booking.contractors.delete self
-    booking.open!
-    booking.save
+  def drop_job job
+    job.contractors.delete self
+    job.open!
+    job.save
     fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
     fanout.publish_async 'jobs', {}
     true

@@ -19,25 +19,25 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
       initSelection: (el, cb) ->
     }
 
-  $scope.claim = (booking) ->
-    $http.post("/jobs/#{booking.id}/claim").success (rsp) ->
+  $scope.claim = (job) ->
+    $http.post("/jobs/#{job.id}/claim").success (rsp) ->
       if rsp.success
-        angular.element("#job-#{booking.id}").fadeOut()
+        angular.element("#job-#{job.id}").fadeOut()
         $timeout((->refresh_jobs()),600)
       else
         refresh_jobs()
 
-  $scope.drop = (booking) ->
-    $http.post("/jobs/#{booking.id}/drop").success (rsp) ->
+  $scope.drop = (job) ->
+    $http.post("/jobs/#{job.id}/drop").success (rsp) ->
       if rsp.success
-        angular.element("#job-#{booking.id}").fadeOut()
+        angular.element("#job-#{job.id}").fadeOut()
         $timeout((->refresh_jobs()),600)
       else
         refresh_jobs()
 
   refresh_jobs = ->
     _($scope.tabs).each (tab) ->
-      $http.get('/data/jobs', {params: {scope: tab.name}}).success (rsp) ->
+      $http.get('/data/jobs', {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
         if tab.name == 'open' && !tab.days # there's a better way to do this
           angular.element('.tab-content .tab:eq(0)').addClass 'active'
         tab.days = rsp

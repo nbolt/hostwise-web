@@ -18,6 +18,7 @@ end
 group :development do
   gem 'binding_of_caller'
   gem 'better_errors'
+  gem 'pry-byebug'
 end
 
 group :production do
@@ -43,7 +44,7 @@ gem 'faraday', '~> 0.8.9'
 gem 'twilio-ruby'
 gem 'smartystreets'
 gem 'simplecov'
-gem 'sorcery', git: 'https://github.com/NoamB/sorcery.git'
+gem 'sorcery'
 gem 'appsignal'
 gem 'pg_search'
 gem 'httparty'
