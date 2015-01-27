@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     put   '/users/:id/activated' => 'users#activated'
     put   '/users/:id/avatar' => 'users#avatar'
     post  '/payments/add' => 'payments#add'
+    post  '/background_checks' => 'background_checks#create'
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do
@@ -57,6 +58,8 @@ Rails.application.routes.draw do
   get '/signout' => 'home#signout', as: :signout
   get '/pricing' => 'home#pricing', as: :pricing
   get '/faq' => 'home#faq', as: :faq
+
+  post '/notifications/background_check' => 'notifications#background_check', as: :background_check_notification
 
   match '/:action' => 'home', via: [:get, :post]
   match '/:controller/:action', via: [:get, :post]

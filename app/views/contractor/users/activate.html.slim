@@ -1,4 +1,4 @@
-.contractor-signup ng:controller='contractor-signup'
+.contractor-account ng:controller='contractor-account'
   .page-title
     .fa.fa-cog
     | Contractor Sign Up
@@ -57,7 +57,7 @@
               input type='text' required='' maxlength='15' ng:model='contractor_profile.driver_license'
             .row
               label Date of Birth
-              input type='text' required='' ng:model='contractor_profile.dob' ui:mask='99/99/9999' placeholder='DD/MM/YYYY'
+              input type='text' required='' ng:model='contractor_profile.dob' ui:mask='99/99/9999' placeholder='MM/DD/YYYY'
             .cb
               input type='checkbox' id='tos' ng:model='user.tos' ng:true-value="'yes'" ng:false-value="'no'"
               label for='tos'

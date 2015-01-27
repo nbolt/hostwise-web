@@ -435,6 +435,7 @@ DEPENDENCIES
   rails
   rails_12factor
   responders
+  rest-client
   rmagick
   rr
   sass-rails

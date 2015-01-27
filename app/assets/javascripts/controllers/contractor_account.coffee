@@ -1,4 +1,4 @@
-ContractorSignUpCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $timeout, $upload) ->
+ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $timeout, $upload) ->
 
   $scope.contractor_profile = {}
   $scope.bank = {}
@@ -17,12 +17,30 @@ ContractorSignUpCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http
           if rsp.success
             scroll 0
             angular.element('.steps').css('margin-left', -900)
+            submit_background_check()
           else
             flash 'failure', rsp.message
       else
         flash 'failure', 'Please accept our terms & conditions'
     else
       flash 'failure', 'Please fill in all required fields'
+
+  $scope.update_account = (step) ->
+    $http.put('/user/update', {
+      user: $scope.user
+      step: step
+    }).success (rsp) ->
+      if rsp.success
+        message = 'Contact info'
+        if step is 'password'
+          message = 'Password'
+          $scope.user.password = ''
+          $scope.user.password_confirmation = ''
+          $scope.user.current_password = ''
+        message += ' updated successfully!'
+        flash 'info', message
+      else
+        flash 'failure', rsp.message
 
   $scope.add_bank_account = ->
     if validate(2)
@@ -51,6 +69,9 @@ ContractorSignUpCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http
           flash 'failure', rsp.message
       )
 
+  submit_background_check = ->
+    $http.post('/background_checks').success (rsp) ->
+
   validate = (step) ->
     cls = (if step is 1 then '.step.one form' else '.step.two form')
     return !(_(angular.element(cls).find('input[required]')).filter((el) -> angular.element(el).val() == '')[0])
@@ -73,4 +94,4 @@ ContractorSignUpCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http
 
 ]
 
-app = angular.module('porter').controller('contractor-signup', ContractorSignUpCtrl)
+app = angular.module('porter').controller('contractor-account', ContractorAccountCtrl)

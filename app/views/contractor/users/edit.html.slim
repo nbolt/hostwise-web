@@ -1,40 +1,69 @@
-.container
+.contractor-account ng:controller='contractor-account'
   .page-title
     .fa.fa-cog
-    | Account Settings
-  .account-container ng::controller='account'
-    .avatar ng::controller='avatar'
-      img ng:src='{{::user.avatar}}'
-      .file-upload ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
-      .flash
-    h2 ng:bind='::user.name'
-    form
-      .flash
-      .section
-        .title Contact Info
-        .row.two
-          input type='text' placeholder='First Name' ng:model='user.first_name'
-          input type='text' placeholder='Last Name' ng:model='user.last_name'
-        .row
-          input type='email' placeholder='Email Address' ng:model='user.email'
-        .row
-          input type='text' placeholder='Mobile Number' ng:model='user.phone_number'
-        .row
-          button.teal ng:click="update('info')"
-            .icon
-              span.fa.fa-rotate-right
-            .text Save Changes
-      .vr
-      .section
-        .title Change Password
-        .row
-          input type='password' placeholder='Current Password' ng:model='user.current_password'
-        .row
-          input type='password' placeholder='New Password' ng:model='user.password'
-        .row
-          input type='password' placeholder='Confirm New Password' ng:model='user.password_confirmation'
-        .row
-          button.teal ng:click="update('password')"
-            .icon
-              span.fa.fa-rotate-right
-            .text Update Password
+    | My Profile
+  .container
+    .steps
+      .step.one
+        form
+          .flash
+          .section.avatar
+            .file-upload ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
+            img ng:src='{{::user.avatar}}'
+          .vr
+          .section.info
+            .row.two
+              label Your Name
+              input type='text' required='' ng:model='user.first_name'
+              input.right type='text' required='' ng:model='user.last_name'
+              .caption First Name
+              .caption.right Last Name
+            .row
+              label Email
+              input type='email' required='' ng:model='user.email'
+            .row
+              label Mobile Phone
+              input type='text' required='' ng:model='user.phone_number'
+            .row
+              label Alternate Phone (optional)
+              input type='text' ng:model='user.secondary_phone'
+            .row
+              label Address
+              input type='text' required='' ng:model='contractor_profile.address1'
+              .caption Address Line 1
+            .row.two
+              input type='text' ng:model='contractor_profile.address2'
+              input.right type='text' maxlength=5 required='' ng:model='contractor_profile.zip'
+              .caption Unit # (optional)
+              .caption.right Zip Code
+            .row.two
+              label Emergency Contact Person
+              input type='text' ng:model='contractor_profile.emergency_contact_first_name'
+              input.right type='text' ng:model='contractor_profile.emergency_contact_last_name'
+              .caption First Name
+              .caption.right Last Name
+            .row
+              input type='text' ng:model='contractor_profile.emergency_contact_phone'
+              .caption Emergency Contact Phone Number
+            .row
+              button.teal ng:click="update_account()"
+                .icon
+                  span.fa.fa-rotate-right
+                .text Save Changes
+          .vr
+          .section.pwd
+            .row
+              label Create Password
+              input type='password' required='' ng:model='user.current_password'
+              .caption Current Password 
+            .row
+              input type='password' required='' ng:model='user.password'
+              .caption New Password
+            .row
+              input type='password' required='' ng:model='user.password_confirmation'
+              .caption Confirm New Password
+            .row
+              button.teal ng:click="setup_account()"
+                .icon
+                  span.fa.fa-rotate-right
+                .text Update Password
