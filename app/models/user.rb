@@ -27,8 +27,8 @@ class User < ActiveRecord::Base
   validates_numericality_of :phone_number, only_integer: true, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
   validates_length_of :phone_number, is: 10, if: lambda { step == 'step2' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
 
-  validates_numericality_of :secondary_phone, only_integer: true, if: lambda { self.secondary_phone.present? && step == 'contractor_profile' }
-  validates_length_of :secondary_phone, is: 10, if: lambda { self.secondary_phone.present? && step == 'contractor_profile' }
+  validates_numericality_of :secondary_phone, only_integer: true, if: lambda { self.secondary_phone.present? }
+  validates_length_of :secondary_phone, is: 10, if: lambda { self.secondary_phone.present? }
 
   after_create :create_stripe_customer, :create_balanced_customer
 

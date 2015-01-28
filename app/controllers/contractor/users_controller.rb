@@ -4,8 +4,26 @@ class Contractor::UsersController < Contractor::AuthController
   def update
     user = current_user
     if params[:step] == 'info'
-      user.step = 'edit_info'
-      user.assign_attributes(user_params)
+      user.step = 'contractor_info'
+      user.assign_attributes user_params
+      if user.valid?
+        user.save
+        profile = user.contractor_profile
+        edit_profile_params = params[:user][:contractor_profile]
+        profile.address1 = edit_profile_params[:address1]
+        profile.address2 = edit_profile_params[:address2]
+        profile.zip = edit_profile_params[:zip]
+        profile.emergency_contact_first_name = edit_profile_params[:emergency_contact_first_name]
+        profile.emergency_contact_last_name = edit_profile_params[:emergency_contact_last_name]
+        profile.emergency_contact_phone = edit_profile_params[:emergency_contact_phone]
+        if profile.save
+          render json: { success: true }
+        else
+          render json: { success: false, message: profile.errors.full_messages[0] }
+        end
+      else
+        render json: { success: false, message: user.errors.full_messages[0] }
+      end
     elsif params[:step] == 'password'
       user.step = 'edit_password'
       unless params[:user][:current_password].present?
@@ -18,14 +36,18 @@ class Contractor::UsersController < Contractor::AuthController
       end
       params[:user].delete :current_password #clear unpermitted param
       user.assign_attributes(user_params)
+      if user.save
+        render json: { success: true }
+      else
+        render json: { success: false, message: user.errors.full_messages[0] }
+      end
     elsif params[:step] == 'photo'
       user.avatars.build(photo: params[:file]) # need to background this
-    end
-
-    if user.save
-      render json: { success: true }
-    else
-      render json: { success: false, message: user.errors.full_messages[0] }
+      if user.save
+        render json: { success: true }
+      else
+        render json: { success: false, message: user.errors.full_messages[0] }
+      end
     end
   end
 
@@ -60,7 +82,7 @@ class Contractor::UsersController < Contractor::AuthController
 
     if user.valid?
       profile = ContractorProfile.new
-      profile.assign_attributes profile_params
+      profile.assign_attributes new_profile_params
       profile.position = :trainee
 
       if profile.valid?
@@ -96,7 +118,7 @@ class Contractor::UsersController < Contractor::AuthController
                                  :phone_number, :secondary_phone)
   end
 
-  def profile_params
+  def new_profile_params
     params.require(:contractor_profile).permit(:address1, :address2, :zip, :emergency_contact_first_name,
                                                :emergency_contact_last_name, :emergency_contact_phone,
                                                :ssn, :dob, :driver_license)

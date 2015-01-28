@@ -31,7 +31,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $htt
       step: step
     }).success (rsp) ->
       if rsp.success
-        message = 'Contact info'
+        message = 'Your profile'
         if step is 'password'
           message = 'Password'
           $scope.user.password = ''
@@ -56,8 +56,9 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $htt
   $scope.$watch 'files', ->
     if $scope.files.length
       file = $scope.files[0]
+      post_url = if activation() then '/users/' + $scope.token + '/avatar' else '/user/update'
       $scope.upload = $upload.upload(
-        url: '/users/' + $scope.token + '/avatar'
+        url: post_url
         data:
           step: 'photo'
         method: 'PUT'
@@ -71,6 +72,9 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $htt
 
   submit_background_check = ->
     $http.post('/background_checks').success (rsp) ->
+
+  activation = ->
+    return angular.element('.activate').length
 
   validate = (step) ->
     cls = (if step is 1 then '.step.one form' else '.step.two form')
