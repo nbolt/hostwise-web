@@ -2162,3 +2162,81 @@ form
             button
               margin-top: 24px
               width: 200px
+
+.availability-container
+  margin: 40px auto 0
+  overflow: hidden
+  form
+    position: relative
+    text-align: center
+    .section
+      background-color: white
+      padding: 50px 30px
+    button
+      float: right
+      height: 40px
+      position: relative
+      .icon
+        background-color: primary-color-6
+        display: inline-block
+        height: 40px
+        left: 0
+        position: absolute
+        top: 0
+        width: 40px
+        .fa
+          line-height: 40px
+      .text
+        margin-left: 30px
+    .flash
+      left: 30px
+      position: absolute
+      top: 7px
+    .day
+      display: inline-block
+      margin: 0 10px
+      input[type=checkbox]
+        display: none
+      label
+        border: 1px solid light-grey
+        border-radius: 3px
+        color: dark-grey
+        cursor: pointer
+        display: inline-block
+        font-size: 13px
+        font-weight: bold
+        padding: 10px
+        text-align: center
+        text-transform: uppercase
+        width: 50px
+        &:before
+          content: ""
+          display: inline-block
+          margin-right: 0
+        &.checked
+          background-color: primary-color-4
+          border: 1px solid primary-color-4
+          color: white
+    .caption
+      border-top: 1px solid light-grey
+      margin-top: 50px
+      padding-top: 30px
+      text-align: left
+      > div
+        display: inline-block
+        span
+          color: dark-grey
+          display: inline-block
+          font-size: 15px
+          margin: 2px 0 0 5px
+          vertical-align: top
+        .box
+          border: 1px solid light-grey
+          border-radius: 3px
+          display: inline-block
+          height: 25px
+          width: 25px
+          &.opened
+            background-color: primary-color-4
+            border: 1px solid primary-color-4
+            margin-left: 30px

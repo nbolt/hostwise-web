@@ -1,0 +1,40 @@
+.container
+  .page-title
+    .fa.fa-calendar
+    | Availability
+  .availability-container ng::controller='availability'
+    form ng:init='init()'
+      .section
+        .flash
+        .day
+          input type='checkbox' id='mon' ng:change="change('mon')" ng:model='form.mon'
+          label for='mon' Mon
+        .day
+          input type='checkbox' id='tues' ng:change="change('tues')" ng:model='form.tues'
+          label for='tues' Tues
+        .day
+          input type='checkbox' id='wed' ng:change="change('wed')" ng:model='form.wed'
+          label for='wed' Wed
+        .day
+          input type='checkbox' id='thurs' ng:change="change('thurs')" ng:model='form.thurs'
+          label for='thurs' Thurs
+        .day
+          input type='checkbox' id='fri' ng:change="change('fri')" ng:model='form.fri'
+          label for='fri' Fri
+        .day
+          input type='checkbox' id='sat' ng:change="change('sat')" ng:model='form.sat'
+          label for='sat' Sat
+        .day
+          input type='checkbox' id='sun' ng:change="change('sun')" ng:model='form.sun'
+          label for='sun' Sun
+        .caption
+          div
+            .box
+            span Unavailable
+          div
+            .box.opened
+            span Available
+      button.teal ng:click='save()'
+        .icon
+          span.fa.fa-rotate-right
+        .text Save

@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :contractor_jobs, class_name: 'ContractorJobs'
   has_many :jobs, through: :contractor_jobs
   has_one  :contractor_profile, dependent: :destroy
+  has_one  :availability, dependent: :destroy
 
   as_enum :role, admin: 0, host: 1, contractor: 2
 

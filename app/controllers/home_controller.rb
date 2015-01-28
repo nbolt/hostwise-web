@@ -21,7 +21,7 @@ class HomeController < ApplicationController
       if current_user.host?
         render json: current_user.to_json(include: [:payments, properties: {methods: [:nickname, :short_address, :primary_photo, :full_address], include: [:bookings]}], methods: [:avatar, :name, :role])
       elsif current_user.contractor?
-        render json: current_user.to_json(include: [:contractor_profile, :payments], methods: [:avatar, :name, :role])
+        render json: current_user.to_json(include: [:contractor_profile, :payments, :availability], methods: [:avatar, :name, :role])
       elsif current_user.admin?
         render json: current_user.to_json(methods: [:avatar, :name, :role])
       end

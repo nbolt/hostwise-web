@@ -44,6 +44,8 @@ Rails.application.routes.draw do
     post  '/payments/add' => 'payments#add'
     put   '/payments/delete' => 'payments#delete'
     post  '/background_checks' => 'background_checks#create'
+    get   '/availability' => 'availability#index'
+    post  '/availability/add' => 'availability#add'
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do
