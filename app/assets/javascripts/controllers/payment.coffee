@@ -22,44 +22,53 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
 
   $scope.add_payment = ->
     if $scope.payment_method.id == 'credit-card'
-      Stripe.createToken
-        number: angular.element(".payment-tab.credit-card input[data-stripe=number]").val()
-        cvc: angular.element(".payment-tab.credit-card input[data-stripe=cvc]").val()
-        exp_month: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[0]
-        exp_year: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[1]
-      , (_, rsp) ->
-        if rsp.error
-          flash "failure", rsp.error.message
-        else
-          $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method}).success (rsp) ->
-            if rsp.success
-              $scope.card = {}
-              $scope.bank = {}
-              $scope.$emit 'fetch_user'
-              ngDialog.closeAll()
-            else
-              flash 'failure', rsp.message
+      $scope.add_credit_card()
     else
-      balanced.bankAccount.create $scope.bank, (rsp) ->
-        if rsp.status_code != 201
-          flash 'failure', rsp.errors[0].description
-        else
-          $http.post('/payments/add',{balanced_id:rsp.bank_accounts[0].id,payment_method:$scope.payment_method}).success (rsp) ->
-            if rsp.success
-              $scope.card = {}
-              $scope.bank = {}
-              $scope.$emit 'fetch_user'
-              ngDialog.closeAll()
+      $scope.add_bank_account()
 
   $scope.$watch 'payment_method', (n,o) -> if o
     angular.element('.payment.modal .content .payment-tab').removeClass 'active'
     if n.id == 'credit-card'
-      angular.element('.payment.modal .content.payment-tab.credit-card').addClass 'active'
+      angular.element('.payment.modal .content .payment-tab.credit-card').addClass 'active'
     else
       angular.element('.payment.modal .content .payment-tab.ach').addClass 'active'
 
-  $scope.open = ->
-    ngDialog.open template: 'add-payment-modal', className: 'payment', scope: $scope
+  $scope.open = (bank_only) ->
+    if bank_only
+      ngDialog.open template: 'add-bank-account-modal', className: 'payment bank-acconut', scope: $scope
+    else
+      ngDialog.open template: 'add-payment-modal', className: 'payment', scope: $scope
+
+  $scope.add_credit_card = ->
+    Stripe.createToken
+      number: angular.element(".payment-tab.credit-card input[data-stripe=number]").val()
+      cvc: angular.element(".payment-tab.credit-card input[data-stripe=cvc]").val()
+      exp_month: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[0]
+      exp_year: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[1]
+    , (_, rsp) ->
+      if rsp.error
+        flash "failure", rsp.error.message
+      else
+        $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method}).success (rsp) ->
+          if rsp.success
+            $scope.card = {}
+            $scope.bank = {}
+            $scope.$emit 'fetch_user'
+            ngDialog.closeAll()
+          else
+            flash 'failure', rsp.message
+
+  $scope.add_bank_account = ->
+    balanced.bankAccount.create $scope.bank, (rsp) ->
+      if rsp.status_code != 201
+        flash 'failure', rsp.errors[0].description
+      else
+        $http.post('/payments/add',{balanced_id:rsp.bank_accounts[0].id,payment_method:$scope.payment_method}).success (rsp) ->
+          if rsp.success
+            $scope.card = {}
+            $scope.bank = {}
+            $scope.$emit 'fetch_user'
+            ngDialog.closeAll()
 
   flash = (type, msg, parent) ->
     el = angular.element('.payment.modal .flash')

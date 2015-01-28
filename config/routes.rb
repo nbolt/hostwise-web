@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
     post  '/message' => 'users#message'
-    get   '/payments' => 'payments#index', as: :payments
+    get   '/payments' => 'payments#index'
     post  '/payments/add' => 'payments#add'
     put   '/payments/delete' => 'payments#delete'
     match '/users/:action' => 'users', via: [:get, :post]
@@ -40,7 +40,9 @@ Rails.application.routes.draw do
     get   '/users/:id/activate' => 'users#activate', as: :activate
     put   '/users/:id/activated' => 'users#activated'
     put   '/users/:id/avatar' => 'users#avatar'
+    get   '/payments' => 'payments#index'
     post  '/payments/add' => 'payments#add'
+    put   '/payments/delete' => 'payments#delete'
     post  '/background_checks' => 'background_checks#create'
   end
 
