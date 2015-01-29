@@ -5,6 +5,9 @@ HomeCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.bathrooms = 0
   $scope.price = '0.00'
 
+  $http.get('/cost').success (rsp) ->
+    $scope.cost = rsp
+
   $scope.expand = (target) ->
     angular.element('.' + target).slideDown(600)
     return true
@@ -38,11 +41,13 @@ HomeCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     cal_price $scope.option, $scope.bedrooms, $scope.bathrooms
 
   cal_price = (option, bedrooms, bathrooms) -> #need to replace the formula
-    if option is 'house'
-      $scope.cost = bedrooms * 15 + bathrooms * 10
-    else if option is 'condo'
-      $scope.cost = bedrooms * 13 + bathrooms * 8
-    $scope.price = $scope.cost.toFixed(2)
+    cost = $scope.cost[option][bedrooms][bathrooms]
+    if cost
+      $scope.price = cost.toFixed(2)
+    else if bedrooms is 0 && bathrooms is 0
+      $scope.price = '0.00'
+    else
+      $scope.price = 'call us'
 
 ]
 

@@ -16,6 +16,10 @@ class HomeController < ApplicationController
     redirect_to root_path
   end
 
+  def cost
+    render json: PRICING.to_json
+  end
+
   def user
     if logged_in?
       if current_user.host?

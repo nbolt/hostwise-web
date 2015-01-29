@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   get '/signout' => 'home#signout', as: :signout
   get '/pricing' => 'home#pricing', as: :pricing
   get '/faq' => 'home#faq', as: :faq
+  get '/cost' => 'home#cost'
 
   post '/notifications/background_check' => 'notifications#background_check', as: :background_check_notification
 
