@@ -9,61 +9,108 @@ script#booking-modal type="text/ng-template"
         .content.cal ng:if='!exists()'
           .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
         .content
-          .services ng:if='exists()'
-            .service.cleaning
-              img.icon src='/images/book_clean.png'
-              .text Cleaning
-              label.switch.red
-                input type='checkbox' toggle-service='cleaning'
-                i
-            .service.linens
-              img.icon src='/images/book_linens.png'
-              .text Linens & Towels
-              label.switch.red
-                input type='checkbox' toggle-service='linens'
-                i
-            .service.restocking
-              img.icon src='/images/book_restock.png'
-              .text Restocking
-              label.switch.red
-                input type='checkbox' toggle-service='restocking'
-                i
-          .services ng:if='!exists()'
-            .service.cleaning
-              img.icon src='/images/book_clean_grey.png'
-              .text Cleaning
-              label.switch.red
-                input type='checkbox' toggle-service='cleaning'
-                i
-            .service.linens
-              img.icon src='/images/book_linens_grey.png'
-              .text Linens & Towels
-              label.switch.red
-                input type='checkbox' toggle-service='linens'
-                i
-            .service.restocking
-              img.icon src='/images/book_restock_grey.png'
-              .text Restocking
-              label.switch.red
-                input type='checkbox' toggle-service='restocking'
-                i
-          .extra
-            .title Extra Services
-            .service
-              .text Pool Area
-              label.switch.red
-                input type='checkbox' toggle-service='pool'
-                i
-            .service
-              .text Balcony / Patio
-              label.switch.red
-                input type='checkbox' toggle-service='patio'
-                i
-            .service
-              .text Exterior Windows
-              label.switch.red
-                input type='checkbox' toggle-service='windows'
-                i
+          .content-side-container ng:if='exists()'
+            .content-side.details
+              .setup ng:show='setup()'
+                .right
+                  .price $45
+                .left
+                  .text Property Setup Fee
+                  .question ?
+              .days
+                .day collapse='' ng:repeat='day in days'
+                  .total
+                    .arrow
+                      .typcn.typcn-chevron-right
+                    .text Jan 4, 2015
+                    .price ${{day.total}}
+                  .day-services
+                    .service ng:show='day.cleaning'
+                      .text Cleaning
+                      .price ${{day.cleaning}}
+                    .service ng:show='day.linens'
+                      .text Linens & Towels
+                      .price ${{day.linens}}
+                    .service ng:show='day.restocking'
+                      .text Restocking
+                      .price ${{day.restocking}}
+              .total
+                .text Total
+                .price ${{total()}}
+            .content-side
+              .services
+                .service.cleaning
+                  img.icon src='/images/book_clean.png'
+                  .text Cleaning
+                  label.switch.red
+                    input type='checkbox' toggle-service='cleaning'
+                    i
+                .service.linens
+                  img.icon src='/images/book_linens.png'
+                  .text Linens & Towels
+                  label.switch.red
+                    input type='checkbox' toggle-service='linens'
+                    i
+                .service.restocking
+                  img.icon src='/images/book_restock.png'
+                  .text Restocking
+                  label.switch.red
+                    input type='checkbox' toggle-service='restocking'
+                    i
+              .extra
+                .title Extra Services
+                .service
+                  .text Pool Area
+                  label.switch.red
+                    input type='checkbox' toggle-service='pool'
+                    i
+                .service
+                  .text Balcony / Patio
+                  label.switch.red
+                    input type='checkbox' toggle-service='patio'
+                    i
+                .service
+                  .text Exterior Windows
+                  label.switch.red
+                    input type='checkbox' toggle-service='windows'
+                    i
+          div ng:if='!exists()'
+            .services
+              .service.cleaning
+                img.icon src='/images/book_clean_grey.png'
+                .text Cleaning
+                label.switch.red
+                  input type='checkbox' toggle-service='cleaning'
+                  i
+              .service.linens
+                img.icon src='/images/book_linens_grey.png'
+                .text Linens & Towels
+                label.switch.red
+                  input type='checkbox' toggle-service='linens'
+                  i
+              .service.restocking
+                img.icon src='/images/book_restock_grey.png'
+                .text Restocking
+                label.switch.red
+                  input type='checkbox' toggle-service='restocking'
+                  i
+            .extra
+              .title Extra Services
+              .service
+                .text Pool Area
+                label.switch.red
+                  input type='checkbox' toggle-service='pool'
+                  i
+              .service
+                .text Balcony / Patio
+                label.switch.red
+                  input type='checkbox' toggle-service='patio'
+                  i
+              .service
+                .text Exterior Windows
+                label.switch.red
+                  input type='checkbox' toggle-service='windows'
+                  i
         .content.payment ng:if='exists()'
           div ng:show="payment_screen() == 'existing'"
             .payment-title Select Payment Method
@@ -113,7 +160,7 @@ script#booking-modal type="text/ng-template"
             .button.teal ng:click='next()' Next
         .foot ng:show='exists()'
           .left
-            .button.grey View Details
+            .button.grey ng:click='details()' View Details
             .text
               | Do you wish to
               span ng:click='to_booking_cancellation()'  cancel this service date?
@@ -128,6 +175,32 @@ script#booking-modal type="text/ng-template"
             .button.teal ng:click='update()' Save
       .content-group ng:if='!exists()'
         .content.details
+          .setup ng:show='setup()'
+            .right
+              .price $45
+            .left
+              .text Property Setup Fee
+              .question ?
+          .days
+            .day collapse='' ng:repeat='day in days'
+              .total
+                .arrow
+                  .typcn.typcn-chevron-right
+                .text Jan 4, 2015
+                .price ${{day.total}}
+              .day-services
+                .service ng:show='day.cleaning'
+                  .text Cleaning
+                  .price ${{day.cleaning}}
+                .service ng:show='day.linens'
+                  .text Linens & Towels
+                  .price ${{day.linens}}
+                .service ng:show='day.restocking'
+                  .text Restocking
+                  .price ${{day.restocking}}
+          .total
+            .text Total
+            .price ${{total()}}
         .content.payment
           div ng:show="payment_screen() == 'existing'"
             .payment-title Select Payment Method

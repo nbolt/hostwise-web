@@ -1,6 +1,7 @@
 BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', ($scope, $http, $timeout, $q, $window, ngDialog) ->
 
   last_payment = null
+  $scope.days = []
   $scope.flashing = false
 
   unless $scope.payment.id
@@ -22,11 +23,34 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
 
   $scope.next = ->
     angular.element('.booking.modal .content-container').css 'margin-left', -976
+    $scope.days = []
+    _($scope.chosen_dates).each (v,k) ->
+      day = {}
+      day.total = 129
+      _($scope.selected_services).each (v,k) ->
+        day[k] = 49 if v
+      $scope.days.push day
+    null
+
+  $scope.details = ->
+    if angular.element('.content-side-container').css('margin-left') == '0px'
+      angular.element('.content-side-container').css 'margin-left', -488
+    else
+      angular.element('.content-side-container').css 'margin-left', 0
+    $scope.days = []
+    _($scope.chosen_dates).each (v,k) ->
+      day = {}
+      day.total = 129
+      _($scope.selected_services).each (v,k) ->
+        day[k] = 49 if v
+      $scope.days.push day
     null
 
   $scope.change_dates = ->
     angular.element('.booking.modal .content-container').css 'margin-left', 0
     null
+
+  $scope.setup = -> true
 
   $scope.total = ->
     total = 0

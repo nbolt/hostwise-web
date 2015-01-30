@@ -1577,6 +1577,14 @@ form
           background-color: #F7F7F7
           &:first-child
             background-color: white
+          .content-side-container
+            width: 976px
+            margin-left: -488px
+            transition: margin-left .6s ease-in-out
+            .content-side
+              display: inline-block
+              vertical-align: top
+              width: 488px
           .buttons
             margin: 25px auto
             .cancel
@@ -1685,8 +1693,61 @@ form
                 outline: none
             .row.two
               .field
-                  display: inline-block
-                  vertical-align: top
+                display: inline-block
+                vertical-align: top
+          &.details, .content-side.details
+            padding: 80px 60px 0
+            box-sizing: border-box
+            .days
+              height: 250px
+              overflow: scroll
+              .day
+                .total
+                  border-top: thin solid #ccc
+                  border-bottom: thin solid #ccc
+                  padding: 10px 0
+                  margin-top: 20px
+                  font-weight: 700
+                  .price
+                    color: #E1625C
+                .day-services
+                  margin: 15px 0 20px
+                  max-height: 192px
+                  overflow: hidden
+                  transition: max-height .6s ease-in-out
+                  .service
+                    margin: 10px 0
+            > .total
+              border-top: 2px solid teal
+              border-bottom: 2px solid teal
+              padding: 8px 0
+              .text
+                font-weight: 700
+                upcase()
+            .text, .price, .question, .arrow
+              display: inline-block
+              vertical-align: top
+            .arrow
+              transform: rotate(90deg)
+              margin-right: 5px
+              &:hover
+                cursor: pointer
+            .question
+              background-color: #e1e1e1
+              border-radius: 50%
+              width: 20px
+              height: 20px
+              box-sizing: border-box
+              padding: 1px 7px
+              font-size: .8em
+              margin: 1px 0 0 10px
+              &:hover
+                cursor: pointer
+            .price
+              float: right
+              font-weight: 700
+            .setup
+              font-weight: 700
           &.confirmation
             display: none
             width: 976px
