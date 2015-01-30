@@ -17,6 +17,12 @@ class User < ActiveRecord::Base
 
   as_enum :role, admin: 0, host: 1, contractor: 2
 
+  has_settings do |s|
+    s.key :new_open_job, defaults: { sms: true, email: true }
+    s.key :job_claim_confirmation, defaults: { sms: true, email: true }
+    s.key :service_reminder, defaults: { sms: true, email: true }
+  end
+
   pg_search_scope :search_contractors, against: [:email, :first_name, :last_name, :phone_number], associated_against: {contractor_profile: [:address1, :city, :zip]}, using: { tsearch: { prefix: true } }
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile'}
@@ -46,6 +52,10 @@ class User < ActiveRecord::Base
     else
       avatars.last.photo.url
     end
+  end
+
+  def notification_settings
+    to_settings_hash
   end
 
   def claim_job job

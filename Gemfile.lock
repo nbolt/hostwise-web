@@ -223,6 +223,8 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     lazy_loader (2.0.20140328.22.37.12)
+    ledermann-rails-settings (2.3.0)
+      activerecord (>= 3.1)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -423,6 +425,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   kaminari
+  ledermann-rails-settings
   mandrill_mailer
   minitest-rails
   pg

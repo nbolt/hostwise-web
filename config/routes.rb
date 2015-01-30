@@ -49,6 +49,8 @@ Rails.application.routes.draw do
     post  '/background_checks' => 'background_checks#create'
     get   '/availability' => 'availability#index'
     post  '/availability/add' => 'availability#add'
+    get   '/notifications' => 'notifications#index'
+    put   '/notifications/update' => 'notifications#update'
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do
