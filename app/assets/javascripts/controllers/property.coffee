@@ -56,6 +56,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
         ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
         date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')+1}", 'YYYY D MM'
         $scope.selected_date = date
+        $scope.selected_date_text = date.format('ddd, MMM D')
         $scope.chosen_dates["#{date.month()}-#{date.year()}"] = [date.date()]
         $scope.selected_services = {cleaning:false,linens:false,restocking:false}
         $scope.selected_booking = $this.attr 'booking'

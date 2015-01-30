@@ -1464,6 +1464,7 @@ form
         transition: background-color 1s ease-in-out, height 1s ease-in-out
         &.red
           background-color: red
+        &.red-transition
           transition: background-color .6s ease-in-out
         .icon
           position: absolute
@@ -1698,16 +1699,19 @@ form
               background-color: teal
               .foot
                 background-color: teal
+              .check-icon
+                background-color: dark-teal
             &.red
               background-color: red
               .foot
                 background-color: red
+              .check-icon
+                background-color: dark-red
             .check-icon
               font-size: 5em
               border-radius: 50%
               width: 100px
               height: 100px
-              background-color: dark-teal
               margin: 40px auto 20px
               overflow: auto
               .typcn
@@ -1720,6 +1724,12 @@ form
               padding: 20px 0
               margin: 20px auto
               width: 350px
+              > .text
+                font-size: 1.4em
+                font-weight: 600
+              .date
+                font-size: 3em
+                font-weight: 700
               .check
                 width: 174px
                 display: inline-block
@@ -1736,6 +1746,23 @@ form
               margin: 40px auto
               font-size: 1.1em
               line-height: 1.8em
+            .farewell
+              font-size: 1.5em
+            .actions
+              margin-top: 30px
+              .action
+                display: inline-block
+                vertical-align: top
+                font-size: 3em
+                border-radius: 50%
+                border: 2px solid white
+                height: 50px
+                width: 50px
+                margin: 0 15px
+                .typcn
+                  margin-top: -11px
+                &:hover
+                  cursor: pointer
           .services
             text-align: center
             margin-top: 30px

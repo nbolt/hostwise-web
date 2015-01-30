@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150126214008) do
+ActiveRecord::Schema.define(version: 20150128192528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "user_id"
+    t.boolean  "mon",        default: false
+    t.boolean  "tues",       default: false
+    t.boolean  "wed",        default: false
+    t.boolean  "thurs",      default: false
+    t.boolean  "fri",        default: false
+    t.boolean  "sat",        default: false
+    t.boolean  "sun",        default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "availabilities", ["user_id"], name: "index_availabilities_on_user_id", using: :btree
 
   create_table "avatars", force: :cascade do |t|
     t.string   "photo"
@@ -22,6 +37,16 @@ ActiveRecord::Schema.define(version: 20150126214008) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "background_checks", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "order_id"
+    t.integer  "status_cd"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "background_checks", ["user_id"], name: "index_background_checks_on_user_id", using: :btree
 
   create_table "booking_services", force: :cascade do |t|
     t.integer  "booking_id"
@@ -212,6 +237,8 @@ ActiveRecord::Schema.define(version: 20150126214008) do
 
   add_index "zips", ["city_id"], name: "index_zips_on_city_id", using: :btree
 
+  add_foreign_key "availabilities", "users"
+  add_foreign_key "background_checks", "users"
   add_foreign_key "booking_services", "bookings"
   add_foreign_key "booking_services", "services"
   add_foreign_key "bookings", "payments"

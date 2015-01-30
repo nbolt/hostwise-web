@@ -116,7 +116,7 @@ script#booking-modal type="text/ng-template"
             .button.grey View Details
             .text
               | Do you wish to
-              span ng:click='confirm_cancellation()'  cancel this service date?
+              span ng:click='to_booking_cancellation()'  cancel this service date?
           .right
             .total
               .text.dollar
@@ -187,3 +187,22 @@ script#booking-modal type="text/ng-template"
               .text CHECK-OUT
           .subtext Don't forget! Please make sure your guests check-out by 10am so our Porters can have time to get in and out before your next guests arrive.
         .content.confirmation.red
+          .check-icon
+            .typcn.typcn-flash
+          .title-text Are you sure you want to cancel this job?
+          .check-container
+            .text Service Date
+            .date ng:bind='::selected_date_text'
+          .actions
+            .action.cancel ng:click='cancel_cancellation()'
+              .typcn.typcn-times
+            .action.confirm ng:click='confirm_cancellation()'
+              .typcn.typcn-tick
+      .content-group
+        .content.confirmation.red
+          .check-icon
+            .typcn.typcn-flash
+          .title-text Job Cancelled
+          .check-container
+            .text ng:bind='::selected_date_text'
+          .farewell We hope to see you again!

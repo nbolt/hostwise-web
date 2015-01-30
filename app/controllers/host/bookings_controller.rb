@@ -7,17 +7,21 @@ class Host::BookingsController < Host::AuthController
   end
 
   def update
-    booking.payment = Payment.find params[:payment]
-    booking.services.each do |service|
-      booking.services.delete service unless params[:services].find {|s| service.name == s}
-    end
-    params[:services].each do |service|
-      booking.services.push Service.where(name: service)[0] unless booking.services.find {|s| service == s.name}
-    end
-    if booking.save
-      render json: { success: true }
+    if params[:services]
+      booking.payment = Payment.find params[:payment]
+      booking.services.each do |service|
+        booking.services.delete service unless params[:services].find {|s| service.name == s}
+      end
+      params[:services].each do |service|
+        booking.services.push Service.where(name: service)[0] unless booking.services.find {|s| service == s.name}
+      end
+      if booking.save
+        render json: { success: true }
+      else
+        render json: { success: false }
+      end
     else
-      render json: { success: false }
+      render json: { success: false, message: 'Please select at least one service' }
     end
   end
 
