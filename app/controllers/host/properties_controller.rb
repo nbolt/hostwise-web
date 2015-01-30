@@ -35,15 +35,22 @@ class Host::PropertiesController < Host::AuthController
   end
 
   def book
-    booking = property.bookings.build(date: params[:date][:moment])
-    booking.payment = Payment.find params[:payment][:id]
-    params[:services].each do |service|
-      booking.services.push Service.where(name: service)[0]
-    end
-    if booking.save
-      render json: { success: true, id: booking.id }
+    if params[:dates]
+      params[:dates].each do |k,v|
+        v.each do |day|
+          month = k.split('-')[0].to_i + 1
+          year  = k.split('-')[1]
+          booking = property.bookings.build(date: Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d'))
+          booking.payment = Payment.find params[:payment]
+          params[:services].each do |service|
+            booking.services.push Service.where(name: service)[0]
+          end
+          booking.save # need to check for errors
+        end
+      end
+      render json: { success: true }
     else
-      render json: { success: false }
+      render json: { success: false, message: 'Please select at least one service date' }
     end
   end
 

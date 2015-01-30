@@ -7,7 +7,7 @@ class Host::BookingsController < Host::AuthController
   end
 
   def update
-    booking.payment = Payment.find params[:payment][:id]
+    booking.payment = Payment.find params[:payment]
     booking.services.each do |service|
       booking.services.delete service unless params[:services].find {|s| service.name == s}
     end

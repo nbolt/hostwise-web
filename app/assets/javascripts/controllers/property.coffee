@@ -1,12 +1,10 @@
-String.prototype.capitalize = -> this.charAt(0).toUpperCase() + this.slice(1)
-
 PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope', 'ngDialog', ($scope, $http, $window, $timeout, $upload, $rootScope, ngDialog) ->
 
   $scope.form = {}
-  $scope.selected_date = {}
+  $scope.chosen_dates = {}
   $scope.payment = {}
   $scope.selected_services = {cleaning:false,linens:false,restocking:false}
-  $scope.selected_booking = null
+  $scope.selected_date = null
   promises = {}
 
   $http.get($window.location.href + '.json').success (rsp) ->
@@ -16,8 +14,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     _($scope.property.bookings).each (booking) ->
       date = moment.utc booking.date
       booking.parsed_date = date.format('MMMM Do, YYYY')
-      angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
-      #angular.element('#property .section .input.property_type').select2 'data', rsp.property
+      angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
     $scope.form.bedrooms = { id: rsp.bedrooms.toString(), text: rsp.bedrooms.toString() }
     $scope.form.bathrooms = { id: rsp.bathrooms.toString(), text: rsp.bathrooms.toString() }
@@ -25,6 +22,23 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     $scope.form.full_beds = { id: rsp.full_beds.toString(), text: rsp.full_beds.toString() }
     $scope.form.queen_beds = { id: rsp.queen_beds.toString(), text: rsp.queen_beds.toString() }
     $scope.form.king_beds = { id: rsp.king_beds.toString(), text: rsp.king_beds.toString() }
+
+  $scope.modal_calendar_options =
+    {
+      selectable: true
+      clickable: true
+      disable_past: true
+      onchange: () ->
+        if $scope.property
+          _($scope.property.bookings).each (booking) ->
+            date = moment.utc(booking.date)
+            if $('.booking.modal')[0]
+              angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
+            else
+              $timeout((->
+                angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
+              ),100)
+    }
 
   $scope.calendar_options =
     {
@@ -36,17 +50,15 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
         if $scope.property
           _($scope.property.bookings).each (booking) ->
             date = moment.utc(booking.date)
-            angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+            angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
       onclick: ($this) ->
         ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
         date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')+1}", 'YYYY D MM'
-        $scope.selected_date.moment = date
-        $scope.selected_date.num = date.day()
-        $scope.selected_date.day_text = date.format('dddd,')
-        $scope.selected_date.date_text = date.format('MMM Do')
-        $scope.selected_booking = $this.attr('booking')
+        $scope.selected_date = date
+        $scope.chosen_dates["#{date.month()}-#{date.year()}"] = [date.date()]
         $scope.selected_services = {cleaning:false,linens:false,restocking:false}
+        $scope.selected_booking = $this.attr 'booking'
         if $scope.selected_booking
           $http.get("#{$window.location.href}/#{$scope.selected_booking}/show").success (rsp) ->
             payment_type = if rsp.payment.stripe_id then 'Card' else 'Bank'
@@ -94,6 +106,14 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
       el.css 'opacity', 0
       $timeout((->el.css 'opacity', 1),600)
     $timeout((->el.css 'opacity', 0),4000)
+
+  $scope.$on 'refresh_bookings', ->
+    $http.get($window.location.href + '.json').success (rsp) ->
+      $scope.property = rsp
+      _($scope.property.bookings).each (booking) ->
+        date = moment.utc booking.date
+        booking.parsed_date = date.format('MMMM Do, YYYY')
+        angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
   $scope.$watch 'files', (n,o) -> if n
     $upload.upload(

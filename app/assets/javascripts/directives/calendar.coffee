@@ -1,11 +1,12 @@
 app = angular.module('porter').directive('calendar', [->
   scope:
     options: '='
+    chosen_dates: '=dates'
   link: (scope, element, attrs) ->
     days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     _month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    scope.chosen_dates = {}
+    scope.chosen_dates = {} unless scope.chosen_dates
     options = scope.options
     
     gen_cal = (cal, month, year) ->

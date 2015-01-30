@@ -1,56 +1,11 @@
 PropertyHomeCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
 
   $scope.form = {}
-  $scope.selected_date = {}
-  $scope.payment = {}
-  $scope.selected_services = {cleaning:false,linens:false,restocking:false}
-  $scope.selected_booking = null
-
   $scope.filter = {id:'alphabetical',text:'Alphabetical'}
   $scope.sort = 'alphabetical'
   $scope.term = ''
 
   promise = null
-
-  $scope.calendar_options =
-    {
-      selectable: true
-      clickable: false
-      selected_class: 'booked'
-      disable_past: true
-      onchange: () ->
-        if $scope.property
-          _($scope.property.bookings).each (booking) ->
-            date = moment.utc(booking.date)
-            angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
-
-      onclick: ($this) ->
-        date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')+1}", 'YYYY D MM'
-        $scope.selected_date.moment = date
-        $scope.selected_date.num = date.day()
-        $scope.selected_date.day_text = date.format('dddd,')
-        $scope.selected_date.date_text = date.format('MMM Do')
-        $scope.selected_booking = $this.attr('booking')
-        $scope.selected_services = {cleaning:false,linens:false,restocking:false}
-        if $scope.selected_booking
-          $http.get("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/show").success (rsp) ->
-            payment_type = if rsp.payment.stripe_id then 'Card' else 'Bank'
-            $scope.payment.id = rsp.payment.id
-            $scope.payment.text = "#{payment_type} ending in #{rsp.payment.last4}"
-            _(rsp.services).each (service) ->
-              $scope.selected_services[service.name] = true
-              angular.element(".booking.modal .services .service.#{service.name}").addClass 'active'
-              angular.element(".booking.modal .services .service.#{service.name} input").attr 'checked', true
-        $timeout(->
-          angular.element('.booking.modal .content-container').css 'margin-left', -400
-          $timeout((->
-            angular.element('.booking.modal .content-container').css 'transition', 'none'
-            angular.element('.booking.modal .content-container').css 'margin-left', 0
-            angular.element('.booking.modal .content.side').removeClass 'active'
-            $timeout((->angular.element('.booking.modal .content-container').css 'transition', 'margin-left .5s ease-in-out'),100)
-          ), 500)
-        )
-    }
 
   $scope.$watch 'search', (n,o) -> if o
     $timeout.cancel promise
@@ -91,7 +46,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
       _($scope.property.bookings).each (booking) ->
         date = moment.utc booking.date
         booking.parsed_date = date.format('MMMM Do, YYYY')
-        angular.element("#calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+        angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
   $scope.exists = () ->
     if $scope.property.bookings

@@ -1,129 +1,189 @@
 script#booking-modal type="text/ng-template"
   .booking.modal ng:controller='booking_modal'
     .header
+      .icon
+        .typcn.typcn-calendar-outline
       .text Booking Confirmation
     .content-container
-      .content.side.calendar
-        #calendar calendar='' options='calendar_options'
-      .content.main
-        .head
-          .text
-            | {{selected_date.day_text}}
-            span
-              |  {{selected_date.date_text}}
-        .services
-          .service.cleaning
-            img.icon src='/images/book_clean.png'
-            .text Cleaning
-            label.switch.red
-              input type='checkbox' toggle-service='cleaning'
-              i
-          .service.linens
-            img.icon src='/images/book_linens.png'
-            .text Linens & Towels
-            label.switch.red
-              input type='checkbox' toggle-service='linens'
-              i
-          .service.restocking
-            img.icon src='/images/book_restock.png'
-            .text Restocking
-            label.switch.red
-              input type='checkbox' toggle-service='restocking'
-              i
-        .total
-          .details
-            .text View Details
-            .typcn.typcn-chevron-right
-          .text Total
-          .amount
-            | $
-            span ng:bind='total()'
-        .payment
-          .overlay ng:click='toPayment()'
-          .icon
-            .typcn.typcn-credit-card
-          .arrow
-            .typcn.typcn-chevron-right
-          input type='hidden' ui-select2='paymentHash()' ng:model='payment'
-        .buttons.one ng:hide='exists()'
-          .button.teal ng:click='book()'
-            .icon
-              .typcn.typcn-tick
-            .text Book
-        .buttons.one ng:show='exists()'
-          .button.teal ng:click='update()'
-            .icon
-              .typcn.typcn-arrow-sync
-            .text Update Booking
-          .cancel
-            | Do you wish to
-            span ng:click='cancel()'  cancel this job?
-      .content.side.payment
-        .head
-          .arrows
-            .arrow.prev ng:click='fromPayment()'
-              .typcn.typcn-chevron-left
-          .text Add Payment
-        .payment-method
-          .text Select Payment Method
-          input type='hidden' ui-select2='paymentMethodHash()' ng:model='payment_method' value='credit-card'
-        .payment-tab.ach
-          .field.name
-            .label Name On Account
-            input ng:model='bank.name'
-          .row.two
-            .field.account-number
-              .label Account Number
-              input ng:model='bank.account_number'
-            .field.routing-number
-              .label Routing Number
-              input ng:model='bank.routing_number'
-        .payment-tab.credit-card.active
-          .field.card-number
-            .label Card Number
-            input data-stripe='number' ng:model='card.number'
-          .row.two
-            .field.expiry
-              .label Expiry Date
-              input data-stripe='expiry' ui:mask='99/99' ng:model='card.expiry' placeholder='MM/YY'
-            .field.cvc
-              .label CV Code
-              input data-stripe='cvc' ng:model='card.cvc' placeholder='123'
-        .buttons.one
-          .button.teal ng:click='add_payment()'
-            .icon
-              .typcn.typcn-credit-card
-            .text Add Payment
-      .content.side.confirm_booking
-        .head
-          .text You're All Set
-        .check-icon
-          .typcn.typcn-tick
-        .date
-          | {{selected_date.day_text}} {{selected_date.date_text}}
-        .included
-          .title What's Included:
-          .text
-            | {{included_services()}}
-        .buttons.one
-          .button.teal ng:click='confirm_booking()'
-            .icon
-              .typcn.typcn-tick
-            .text OK
-      .content.side.confirm_cancellation
-        .head
-          .text Are you sure?
-        .check-icon
-          .typcn.typcn-times
-        .date
-          | {{selected_date.day_text}} {{selected_date.date_text}}
-        .text Are you sure you want to cancel?
-        .buttons.two
-          .button.teal ng:click='cancel_cancellation()'
-            .icon
-              .typcn.typcn-tick
-            .text Back
-          .button.red ng:click='confirm_cancellation()'
-            .icon
-              .typcn.typcn-times
-            .text Cancel
+      .content-group
+        .content.cal ng:if='!exists()'
+          .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
+        .content
+          .services ng:if='exists()'
+            .service.cleaning
+              img.icon src='/images/book_clean.png'
+              .text Cleaning
+              label.switch.red
+                input type='checkbox' toggle-service='cleaning'
+                i
+            .service.linens
+              img.icon src='/images/book_linens.png'
+              .text Linens & Towels
+              label.switch.red
+                input type='checkbox' toggle-service='linens'
+                i
+            .service.restocking
+              img.icon src='/images/book_restock.png'
+              .text Restocking
+              label.switch.red
+                input type='checkbox' toggle-service='restocking'
+                i
+          .services ng:if='!exists()'
+            .service.cleaning
+              img.icon src='/images/book_clean_grey.png'
+              .text Cleaning
+              label.switch.red
+                input type='checkbox' toggle-service='cleaning'
+                i
+            .service.linens
+              img.icon src='/images/book_linens_grey.png'
+              .text Linens & Towels
+              label.switch.red
+                input type='checkbox' toggle-service='linens'
+                i
+            .service.restocking
+              img.icon src='/images/book_restock_grey.png'
+              .text Restocking
+              label.switch.red
+                input type='checkbox' toggle-service='restocking'
+                i
+          .extra
+            .title Extra Services
+            .service
+              .text Pool Area
+              label.switch.red
+                input type='checkbox' toggle-service='pool'
+                i
+            .service
+              .text Balcony / Patio
+              label.switch.red
+                input type='checkbox' toggle-service='patio'
+                i
+            .service
+              .text Exterior Windows
+              label.switch.red
+                input type='checkbox' toggle-service='windows'
+                i
+        .content.payment ng:if='exists()'
+          div ng:show="payment_screen() == 'existing'"
+            .payment-title Select Payment Method
+            .payment-method.existing
+              .icon
+                .typcn.typcn-credit-card
+              .arrow
+                .typcn.typcn-chevron-right
+              input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
+          div ng:show="payment_screen() == 'new'"
+            .payment-title Add Payment Method
+            .payment-method
+              .arrow
+                .typcn.typcn-chevron-right
+              input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
+            .payment-tab.ach
+              .field.name
+                .label Name On Account
+                input ng:model='$parent.bank.name'
+              .row.two
+                .field.account-number
+                  .label Account Number
+                  input ng:model='$parent.bank.account_number'
+                .field.routing-number
+                  .label Routing Number
+                  input ng:model='$parent.bank.routing_number'
+            .payment-tab.credit-card.active
+              .field.card-number
+                .label Card Number
+                input data-stripe='number' ng:model='$parent.card.number'
+              .row.two
+                .field.expiry
+                  .label Expiry Date
+                  input data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
+                .field.cvc
+                  .label CV Code
+                  input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
+        .foot ng:hide='exists()'
+          .right
+            .total
+              .text.dollar
+                | $
+              .text.amount
+                | {{total()}}
+              .text.per
+                | / Service
+            .button.teal ng:click='next()' Next
+        .foot ng:show='exists()'
+          .left
+            .button.grey View Details
+            .text
+              | Do you wish to
+              span ng:click='confirm_cancellation()'  cancel this service date?
+          .right
+            .total
+              .text.dollar
+                | $
+              .text.amount
+                | {{total()}}
+              .text.per
+                | / Service
+            .button.teal ng:click='update()' Save
+      .content-group ng:if='!exists()'
+        .content.details
+        .content.payment
+          div ng:show="payment_screen() == 'existing'"
+            .payment-title Select Payment Method
+            .payment-method.existing
+              .icon
+                .typcn.typcn-credit-card
+              .arrow
+                .typcn.typcn-chevron-right
+              input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
+          div ng:show="payment_screen() == 'new'"
+            .payment-title Add Payment Method
+            .payment-method
+              .arrow
+                .typcn.typcn-chevron-right
+              input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
+            .payment-tab.ach
+              .field.name
+                .label Name On Account
+                input ng:model='$parent.bank.name'
+              .row.two
+                .field.account-number
+                  .label Account Number
+                  input ng:model='$parent.bank.account_number'
+                .field.routing-number
+                  .label Routing Number
+                  input ng:model='$parent.bank.routing_number'
+            .payment-tab.credit-card.active
+              .field.card-number
+                .label Card Number
+                input data-stripe='number' ng:model='$parent.card.number'
+              .row.two
+                .field.expiry
+                  .label Expiry Date
+                  input data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
+                .field.cvc
+                  .label CV Code
+                  input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
+        .foot
+          .left
+            .button.grey ng:click='change_dates()' Change Dates
+          .right
+            .button.teal.right
+              .icon
+                .typcn.typcn-tick
+              .text ng:click='book()' Confirm & Book Service
+      .content-group
+        .content.confirmation.teal
+          .check-icon
+            .typcn.typcn-input-checked
+          .title-text You're all set!
+          .check-container
+            .check.in
+              .time 10 AM
+              .text CHECK-IN
+            .check.out
+              .time 4 PM
+              .text CHECK-OUT
+          .subtext Don't forget! Please make sure your guests check-out by 10am so our Porters can have time to get in and out before your next guests arrive.
+        .content.confirmation.red

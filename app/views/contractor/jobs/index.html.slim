@@ -26,10 +26,11 @@
               .icon
                 .typcn.typcn-tick
               .text Claim Job
-            .button.red ng:click='drop(job)' ng:show="tab.name == 'upcoming'"
-              .icon
-                .typcn.typcn-times
-              .text Drop Job
+            a href='/jobs/{{job.id}}'
+              .button.teal ng:show="tab.name == 'upcoming'"
+                .icon
+                  .typcn.typcn-document-text
+                .text View Job
             .infos
               .info
                 .icon
