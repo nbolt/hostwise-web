@@ -67,3 +67,7 @@
                 .icon
                   span.fa.fa-rotate-right
                 .text Update Password
+  .deactivate
+    | Do you wish to
+    span ng:click='open_deactivation()'  deactivate your account?
+= render 'common/account_deactivation_modal'

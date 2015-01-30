@@ -1,4 +1,4 @@
-AccountCtrl = ['$scope', '$http', '$timeout', '$window', ($scope, $http, $timeout, $window) ->
+AccountCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
 
   $scope.update = (step) ->
     $http.put('/user/update', {
@@ -16,6 +16,18 @@ AccountCtrl = ['$scope', '$http', '$timeout', '$window', ($scope, $http, $timeou
         flash('info', message)
       else
         flash('failure', rsp.message)
+
+  $scope.open_deactivation = ->
+    ngDialog.open template: 'account-deactivation-modal', className: 'account', scope: $scope
+
+  $scope.cancel_deactivation = -> ngDialog.closeAll()
+
+  $scope.confirm_deactivation = ->
+    $http.post('/user/deactivate').success (rsp) ->
+      if rsp.success
+        window.location = '/'
+      else
+        flash 'failure', rsp.message
 
   flash = (type, msg) ->
     el = angular.element('.account-container form .flash')

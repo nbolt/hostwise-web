@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     post  '/properties/:slug' => 'properties#update'
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
+    post  '/user/deactivate' => 'users#deactivate'
     post  '/message' => 'users#message'
     get   '/payments' => 'payments#index'
     post  '/payments/add' => 'payments#add'
@@ -36,6 +37,7 @@ Rails.application.routes.draw do
     match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
+    post  '/user/deactivate' => 'users#deactivate'
     post  '/message' => 'users#message'
     get   '/users/:id/activate' => 'users#activate', as: :activate
     put   '/users/:id/activated' => 'users#activated'
@@ -52,6 +54,7 @@ Rails.application.routes.draw do
     get   '/' => 'home#index'
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
+    post  '/user/deactivate' => 'users#deactivate'
     get   '/contractors' => 'contractors#index'
     post   '/contractor/signup' => 'contractors#signup'
   end

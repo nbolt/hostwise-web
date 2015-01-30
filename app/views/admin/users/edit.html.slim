@@ -1,8 +1,8 @@
-.container
+.account-container ng::controller='account'
   .page-title
     .fa.fa-cog
     | Account Settings
-  .account-container ng::controller='account'
+  .container
     .avatar ng::controller='avatar'
       img ng:src='{{::user.avatar}}'
       .file-upload ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
@@ -38,3 +38,7 @@
             .icon
               span.fa.fa-rotate-right
             .text Update Password
+  .deactivate
+    | Do you wish to
+    span ng:click='open_deactivation()'  deactivate your account?
+= render 'common/account_deactivation_modal'

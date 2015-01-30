@@ -111,6 +111,12 @@ class Contractor::UsersController < Contractor::AuthController
     end
   end
 
+  def deactivate
+    current_user.deactivate!
+    logout
+    render json: { success: true }
+  end
+
   private
 
   def user_params

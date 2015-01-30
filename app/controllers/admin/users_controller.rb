@@ -27,6 +27,12 @@ class Admin::UsersController < Admin::AuthController
     end
   end
 
+  def deactivate
+    current_user.deactivate!
+    logout
+    render json: { success: true }
+  end
+
   private
 
   def user_params

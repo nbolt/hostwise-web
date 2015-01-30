@@ -1,4 +1,4 @@
-ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $http, $timeout, $upload) ->
+ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', ($scope, $http, $timeout, $upload, ngDialog) ->
 
   $scope.contractor_profile = {}
   $scope.bank = {}
@@ -52,6 +52,9 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', ($scope, $htt
             window.location = '/jobs' if rsp.success
     else
       flash 'failure', 'Please fill in all required fields'
+
+  $scope.open_deactivation = ->
+    ngDialog.open template: 'account-deactivation-modal', className: 'account', scope: $scope
 
   $scope.$watch 'files', ->
     if $scope.files.length

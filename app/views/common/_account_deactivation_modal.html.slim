@@ -1,0 +1,13 @@
+script#account-deactivation-modal type="text/ng-template"
+  .account.modal ng:controller='account'
+    .header
+      .text Deactivate Account
+    .content
+      .fa.fa-flash
+      .text Are you sure you want to deactivate your account? This cannot be undone.
+    .footer
+      .buttons
+        .button.white ng:click='cancel_deactivation()'
+          .text Cancel
+        .button.red ng:click='confirm_deactivation()'
+          .text Deactivate
