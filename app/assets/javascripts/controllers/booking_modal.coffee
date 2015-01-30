@@ -23,13 +23,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
 
   $scope.next = ->
     angular.element('.booking.modal .content-container').css 'margin-left', -976
-    $scope.days = []
-    _($scope.chosen_dates).each (v,k) ->
-      day = {}
-      day.total = 129
-      _($scope.selected_services).each (v,k) ->
-        day[k] = 49 if v
-      $scope.days.push day
+    calculate_pricing()
     null
 
   $scope.details = ->
@@ -37,13 +31,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
       angular.element('.content-side-container').css 'margin-left', -488
     else
       angular.element('.content-side-container').css 'margin-left', 0
-    $scope.days = []
-    _($scope.chosen_dates).each (v,k) ->
-      day = {}
-      day.total = 129
-      _($scope.selected_services).each (v,k) ->
-        day[k] = 49 if v
-      $scope.days.push day
+    calculate_pricing()
     null
 
   $scope.change_dates = ->
@@ -164,6 +152,15 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
       $scope.add_payment defer
     else
       defer.resolve $scope.payment.id
+
+  calculate_pricing = ->
+    $scope.days = []
+    _($scope.chosen_dates).each (v,k) ->
+      day = {}
+      day.total = 129
+      _($scope.selected_services).each (v,k) ->
+        day[k] = 49 if v
+      $scope.days.push day
 
   flash = (type, msg) ->
     unless $scope.flashing
