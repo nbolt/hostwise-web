@@ -7,6 +7,23 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
 
   promise = null
 
+  $scope.modal_calendar_options =
+    {
+      selectable: true
+      clickable: true
+      disable_past: true
+      onchange: () ->
+        if $scope.property
+          _($scope.property.bookings).each (booking) ->
+            date = moment.utc(booking.date)
+            if $('.booking.modal')[0]
+              angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
+            else
+              $timeout((->
+                angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
+              ),100)
+    }
+
   $scope.$watch 'search', (n,o) -> if o
     $timeout.cancel promise
     promise = $timeout (->

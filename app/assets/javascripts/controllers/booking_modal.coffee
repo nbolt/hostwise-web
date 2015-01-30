@@ -3,8 +3,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
   last_payment = null
   $scope.days = []
   $scope.flashing = false
+  $scope.selected_services = {cleaning:false,linens:false,restocking:false} unless $scope.selected_services
+  $scope.chosen_dates = {} unless $scope.chosen_dates
+  $scope.payment = {}
 
-  unless $scope.payment.id
+  unless $scope.payment && $scope.payment.id
     if $scope.user.payments && $scope.user.payments[0]
       payment = $scope.user.payments[0]
       payment_type = if payment.card_type then payment.card_type.capitalize() else 'Bank'
@@ -19,7 +22,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
     { id: payment.id, text: "#{payment_type} ending in #{payment.last4}" }
   payments_map.push { id: 'new', text: 'Add New Payment' }
 
-  $scope.payment_screen = -> if $scope.payment.id == 'new' then 'new' else 'existing'
+  $scope.payment_screen = -> if $scope.payment && $scope.payment.id == 'new' then 'new' else 'existing'
 
   $scope.next = ->
     angular.element('.booking.modal .content-container').css 'margin-left', -976
