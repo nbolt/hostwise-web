@@ -44,12 +44,17 @@
                 .input.nickname
                   .typcn.typcn-tick
                   input type='text' ng:model='form.nickname'
-            .row.one
+            .row.two
               .field.property_type
                 .label Property Type
                 .input.property_type
                   .typcn.typcn-tick
                   input type='hidden' ui-select2='property_type()' ng:model='form.property_type'
+              .field.rental_type
+                .label Rental Type
+                .input.rental_type
+                  .typcn.typcn-tick
+                  input type='hidden' ui-select2='rental_type()' ng:model='form.rental_type'
             .row.two
               .field.bedrooms
                 .label Bedrooms

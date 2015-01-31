@@ -35,10 +35,14 @@
               .label Nickname
               .field
                 input type='text' placeholder='Enter a name' ng:model='form.title'
-            .row.three
+            .row.two
               .label Info
               .field
-                input type='hidden' placeholder='Home Type' required='' ng:model='form.property_type' ui-select2='type()'
+                input type='hidden' placeholder='Home Type' required='' ng:model='form.property_type' ui-select2='property_type()'
+              .field
+                input type='hidden' placeholder='Rental Type' required='' ng:model='form.rental_type' ui-select2='rental_type()'
+            .row.two
+              .label
               .field
                 input type='hidden' placeholder='Bedroom(s)' required='' ng:model='form.bedrooms' ui-select2='rooms()'
               .field

@@ -17,6 +17,8 @@ class Host::PropertiesController < Host::AuthController
       property.assign_attributes property_params
     end
     property.property_type = params[:form][:property_type][:id] if params[:form] && params[:form][:property_type]
+    property.rental_type = params[:form][:rental_type][:id] if params[:form] && params[:form][:rental_type]
+
     if property.save
       render json: { success: true }
     else
@@ -82,6 +84,7 @@ class Host::PropertiesController < Host::AuthController
       property.active = true
 
       property.property_type = params[:form][:property_type][:id]
+      property.rental_type = params[:form][:rental_type][:id]
       property.bedrooms = params[:form][:bedrooms][:id]
       property.bathrooms = params[:form][:bathrooms][:id]
       property.twin_beds = params[:form][:twin_beds][:id]
@@ -122,7 +125,7 @@ class Host::PropertiesController < Host::AuthController
 
   def property_params
     params.require(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :bathrooms,
-                                :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type,
+                                :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type, :rental_type,
                                 :access_info, :parking_info, :additional_info, :trash_disposal)
   end
 

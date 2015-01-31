@@ -11,6 +11,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     $scope.property = rsp
     $scope.form     = rsp
     $scope.form.property_type = { id: rsp.property_type, text: rsp.property_type.capitalize() }
+    $scope.form.rental_type = { id: rsp.rental_type, text: rsp.rental_type.capitalize() }
+
     _($scope.property.bookings).each (booking) ->
       date = moment.utc booking.date
       booking.parsed_date = date.format('MMMM Do, YYYY')
@@ -131,6 +133,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
   $scope.$watch 'form.property_type', (n,o) -> if o
     update('property_type', {form: { property_type: n }})
 
+  $scope.$watch 'form.rental_type', (n,o) -> if o
+    update('rental_type', {form: { rental_type: n }})
+
   $scope.$watch 'form.bedrooms.id', (n,o) -> if o
     update('bedrooms', {form: { bedrooms: n }})
 
@@ -199,6 +204,14 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
       minimumResultsForSearch: -1
       data: [{id:'house',text:'House'},{id:'condo',text:'Condo'},{id:'apartment',text:'Apartment'}]
       initSelection: (el, cb) ->
+    }
+
+  $scope.rental_type = ->
+    {
+    dropdownCssClass: 'details'
+    minimumResultsForSearch: -1
+    data: [{id:'full-time',text:'Full-time'},{id:'part-time',text:'Part-time'}]
+    initSelection: (el, cb) ->
     }
 
 ]
