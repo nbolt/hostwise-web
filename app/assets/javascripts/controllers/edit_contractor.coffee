@@ -24,6 +24,21 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http,
       else
         flash 'failure', rsp.message
 
+  $scope.change_status = ->
+    $scope.selected_status = angular.element('.position').select2('data')
+    ngDialog.open template: 'change-status-modal', controller: 'edit-contractor', className: 'status', scope: $scope
+
+  $scope.cancel_status = ->
+    ngDialog.closeAll()
+
+  $scope.confirm_status = ->
+    $http.put("/contractors/#{$scope.id}/update", {
+      contractor: $scope.contractor
+      status: $scope.selected_status.text
+    }).success (rsp) ->
+      $scope.contractor = rsp
+      angular.element('.status .steps').css('margin-left', -360)
+
   $scope.open_deactivation = ->
     $scope.current_name = "#{$scope.contractor.first_name}'s"
     ngDialog.open template: 'account-deactivation-modal', controller: 'edit-contractor', className: 'account', scope: $scope
@@ -32,7 +47,8 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http,
     $scope.current_name = "#{$scope.contractor.first_name}'s"
     ngDialog.open template: 'account-reactivation-modal', controller: 'edit-contractor', className: 'account', scope: $scope
 
-  $scope.cancel_deactivation = -> ngDialog.closeAll()
+  $scope.cancel_deactivation = ->
+    ngDialog.closeAll()
 
   $scope.confirm_deactivation = ->
     $http.post("/contractors/#{$scope.id}/deactivate").success (rsp) ->

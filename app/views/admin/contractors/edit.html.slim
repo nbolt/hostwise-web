@@ -12,7 +12,7 @@
             .name
               | {{::contractor.name}}
             .row
-              input.position type='hidden' ng:model='contractor.contractor_profile.position' ui-select2='position()'
+              input.position type='hidden' ng:change='change_status()' ng:model='contractor.contractor_profile.position' ui-select2='position()'
             .location
               | {{::contractor.contractor_profile.city}}, {{::contractor.contractor_profile.state}}
           .vr
@@ -74,3 +74,4 @@
     | Do you wish to
     span ng:click='open_reactivation()'  reactivate {{contractor.first_name}}'s account?
     = render 'common/account_reactivation_modal'
+= render 'common/change_status_modal'

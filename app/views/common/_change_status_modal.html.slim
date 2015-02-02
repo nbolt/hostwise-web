@@ -1,0 +1,27 @@
+script#change-status-modal type="text/ng-template"
+  .status.modal
+    .steps
+      .step1
+        .fa.fa-flash
+        .text Confirm Status Change
+        .info
+          img ng:src='{{::contractor.avatar}}'
+          .name
+            | {{::contractor.name}}
+        .position
+          span
+            | {{contractor.contractor_profile.position.text}}
+          .fa.fa-long-arrow-right
+          | {{selected_status.text}}
+        .actions
+          .fa.fa-times ng:click='cancel_status()'
+          .fa.fa-check.confirm ng:click='confirm_status()'
+      .step2
+        .fa.fa-check
+        .text Changed Successfully
+        .info
+          img ng:src='{{::contractor.avatar}}'
+          .name
+            | {{::contractor.name}}
+        .position
+          | {{selected_status.text}}

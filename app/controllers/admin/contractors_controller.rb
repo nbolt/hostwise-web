@@ -32,28 +32,35 @@ class Admin::ContractorsController < Admin::AuthController
 
   def update
     user = User.find_by_id params[:id]
-    user.assign_attributes contractor_params
-    user.step = 'contractor_info'
 
-    if user.valid?
-      user.save
-      contractor_profile_params = params[:contractor][:contractor_profile]
-      profile = user.contractor_profile
-      profile.address1 = contractor_profile_params[:address1]
-      profile.address2 = contractor_profile_params[:address2]
-      profile.zip = contractor_profile_params[:zip]
-      profile.emergency_contact_first_name = contractor_profile_params[:emergency_contact_first_name]
-      profile.emergency_contact_last_name = contractor_profile_params[:emergency_contact_last_name]
-      profile.emergency_contact_phone = contractor_profile_params[:emergency_contact_phone]
-
-      if profile.valid?
-        profile.save
-        render json: { success: true }
-      else
-        render json: { success: false, message: profile.errors.full_messages[0] }
-      end
+    if params[:status].present?
+      user.contractor_profile.position = params[:status].downcase.to_sym
+      user.contractor_profile.save
+      render json: user.to_json(include: [:background_check, contractor_profile: {methods: [:position, :ssn, :driver_license, :current_position]}], methods: [:name, :avatar])
     else
-      render json: { success: false, message: user.errors.full_messages[0] }
+      user.assign_attributes contractor_params
+      user.step = 'contractor_info'
+
+      if user.valid?
+        user.save
+        contractor_profile_params = params[:contractor][:contractor_profile]
+        profile = user.contractor_profile
+        profile.address1 = contractor_profile_params[:address1]
+        profile.address2 = contractor_profile_params[:address2]
+        profile.zip = contractor_profile_params[:zip]
+        profile.emergency_contact_first_name = contractor_profile_params[:emergency_contact_first_name]
+        profile.emergency_contact_last_name = contractor_profile_params[:emergency_contact_last_name]
+        profile.emergency_contact_phone = contractor_profile_params[:emergency_contact_phone]
+
+        if profile.valid?
+          profile.save
+          render json: { success: true }
+        else
+          render json: { success: false, message: profile.errors.full_messages[0] }
+        end
+      else
+        render json: { success: false, message: user.errors.full_messages[0] }
+      end
     end
   end
 

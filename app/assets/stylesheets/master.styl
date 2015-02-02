@@ -1927,6 +1927,83 @@ form
               span
                 font-weight: 600
 
+.ngdialog.status
+  .ngdialog-close
+    color: dark-grey
+    margin-right: 6px
+    font-size: 1.5em
+    transition: opacity .5s ease-in-out
+    hover-darken()
+    &::before
+      typicons()
+      content: '\e057'
+  .ngdialog-content
+    color: dark-grey
+    width: 360px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .steps
+        width: 720px
+        transition: margin-left 0.6s ease
+        .step1,
+        .step2
+          display: inline-block
+          padding: 30px 20px
+          text-align: center
+          vertical-align: top
+          width: 320px
+          .text
+            font-size: 18px
+            font-weight: bold
+          .fa-flash,
+          .fa-check
+            background-color: yellow
+            border-radius: 50%
+            color: white
+            font-size: 35px
+            height: 50px
+            line-height: 50px
+            margin: 40px 0 20px
+            text-align: center
+            width: 50px
+          .fa-check
+            background-color: primary-color-1
+          .position
+            font-weight: bold
+            span
+              color: yellow
+            .fa
+              margin: 0 10px
+          .info
+            margin: 30px 0
+            img
+              border-radius: 50%
+              display: inline-block
+              width: 60px
+            .name
+              color: primary-color-1
+              display: inline-block
+              line-height: 60px
+              margin-left: 10px
+              vertical-align: top
+          .actions
+            margin-top: 30px
+            .fa
+              background-color: white
+              border: 2px solid
+              border-radius: 50%
+              cursor: pointer
+              font-size: 40px
+              height: 45px
+              line-height: 45px
+              margin: 0 5px
+              text-align: center
+              width: 45px
+              &.confirm
+                color: primary-color-1
+
 .cb
   input[type=checkbox]
     display: none
