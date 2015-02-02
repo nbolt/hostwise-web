@@ -1,4 +1,7 @@
 .contractors
+  a
+    color: primary-color-1
+    text-decoration: none
   .header
     margin-bottom: 30px
     position: relative
@@ -51,3 +54,34 @@
       border-radius: 50%
       height: 35px
       width: 35px
+
+.edit-contractor
+  .container
+    form
+      .select2-container
+        width: 150px
+        .select2-choice
+          background: white !important
+          position: relative
+          border-radius: 1px
+          &::after
+            typicons()
+            content: '\e049'
+            position: absolute
+            right: 4px
+            top: 12px
+            transform: rotate(90deg)
+        > a
+          margin-top: -1px
+      .section
+        .bgc
+          color: primary-color-1
+          font-size: 14px
+          margin-top: 50px
+          text-align: left
+          .fa
+            font-size: 25px
+            margin-right: 5px
+          span
+            line-height: 25px
+            vertical-align: top

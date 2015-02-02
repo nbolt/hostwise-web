@@ -1,0 +1,13 @@
+script#account-reactivation-modal type="text/ng-template"
+  .account.modal
+    .header
+      .text Reactivate Account
+    .content
+      .fa.fa-flash
+      .text Are you sure you want to reactivate {{current_name || 'your'}} account?
+    .footer
+      .buttons
+        .button.white ng:click='cancel_deactivation()'
+          .text Cancel
+        .button.red ng:click='confirm_reactivation()'
+          .text Reactivate

@@ -59,7 +59,11 @@ Rails.application.routes.draw do
     put   '/user/update' => 'users#update'
     post  '/user/deactivate' => 'users#deactivate'
     get   '/contractors' => 'contractors#index'
-    post   '/contractor/signup' => 'contractors#signup'
+    post  '/contractors/signup' => 'contractors#signup'
+    get   '/contractors/:id/edit' => 'contractors#edit'
+    put   '/contractors/:id/update' => 'contractors#update'
+    post  '/contractors/:id/deactivate' => 'contractors#deactivate'
+    post  '/contractors/:id/reactivate' => 'contractors#reactivate'
   end
 
   get '/user' => 'home#user'

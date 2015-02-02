@@ -14,7 +14,7 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $t
     ngDialog.open template: 'sign-up', className: 'auth'
 
   $scope.add_contractor = ->
-    $http.post('/contractor/signup', {
+    $http.post('/contractors/signup', {
       form: $scope.form
     }).success (rsp) ->
       if rsp.success

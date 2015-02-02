@@ -2,7 +2,7 @@ class Admin::ContractorsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.contractors.to_json(include: [contractor_profile: {methods: [:position]}], methods: [:name, :avatar]) }
+      format.json { render json: User.contractors.to_json(include: [contractor_profile: {methods: [:position]}], methods: [:name, :avatar, :next_job_date]) }
     end
   end
 
@@ -23,10 +23,58 @@ class Admin::ContractorsController < Admin::AuthController
     end
   end
 
+  def edit
+    respond_to do |format|
+      format.html
+      format.json { render json: User.find_by_id(params[:id]).to_json(include: [:background_check, contractor_profile: {methods: [:position, :ssn, :driver_license, :current_position]}], methods: [:name, :avatar]) }
+    end
+  end
+
+  def update
+    user = User.find_by_id params[:id]
+    user.assign_attributes contractor_params
+    user.step = 'contractor_info'
+
+    if user.valid?
+      user.save
+      contractor_profile_params = params[:contractor][:contractor_profile]
+      profile = user.contractor_profile
+      profile.address1 = contractor_profile_params[:address1]
+      profile.address2 = contractor_profile_params[:address2]
+      profile.zip = contractor_profile_params[:zip]
+      profile.emergency_contact_first_name = contractor_profile_params[:emergency_contact_first_name]
+      profile.emergency_contact_last_name = contractor_profile_params[:emergency_contact_last_name]
+      profile.emergency_contact_phone = contractor_profile_params[:emergency_contact_phone]
+
+      if profile.valid?
+        profile.save
+        render json: { success: true }
+      else
+        render json: { success: false, message: profile.errors.full_messages[0] }
+      end
+    else
+      render json: { success: false, message: user.errors.full_messages[0] }
+    end
+  end
+
+  def deactivate
+    User.find_by_id(params[:id]).deactivate!
+    render json: { success: true }
+  end
+
+  def reactivate
+    User.find_by_id(params[:id]).reactivate!
+    render json: { success: true }
+  end
+
   private
 
   def user_params
     params.require(:form).permit(:email, :password, :password_confirmation,
                                  :first_name, :last_name, :company, :phone_number)
+  end
+
+  def contractor_params
+    params.require(:contractor).permit(:email, :first_name, :last_name, :phone_number, :secondary_phone)
   end
 end

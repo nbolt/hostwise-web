@@ -23,13 +23,14 @@
         th Email
         th Phone Number
         th Position
+        th Status
         th Next Service
         th Jobs Completed
       tr dir-paginate='user in users | itemsPerPage: 20'
         td
           img.avatar ng:src='{{::user.avatar}}'
         td
-          | {{user.name}}
+          a href="/contractors/{{user.id}}/edit" {{user.name}}
         td
           | {{user.contractor_profile.city}}
         td
@@ -41,7 +42,9 @@
         td.position
           | {{user.contractor_profile.position}}
         td
-          | &nbsp;
+          | {{user.activation_state}}
+        td
+          span ng:bind="user.next_job_date | date:'MM/dd/yyyy':'UTC'"
         td
           | &nbsp;
   .pagination

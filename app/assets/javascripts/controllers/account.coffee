@@ -18,7 +18,7 @@ AccountCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
         flash('failure', rsp.message)
 
   $scope.open_deactivation = ->
-    ngDialog.open template: 'account-deactivation-modal', className: 'account', scope: $scope
+    ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'account', scope: $scope
 
   $scope.cancel_deactivation = -> ngDialog.closeAll()
 

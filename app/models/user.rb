@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :jobs, through: :contractor_jobs
   has_one  :contractor_profile, dependent: :destroy
   has_one  :availability, dependent: :destroy
+  has_one  :background_check, dependent: :destroy
 
   as_enum :role, admin: 0, host: 1, contractor: 2
 
@@ -86,6 +87,11 @@ class User < ActiveRecord::Base
     results = User.where(role_cd: 2)
     return results.search_contractors(term) if term.present?
     results
+  end
+
+  def next_job_date
+    jobs = self.jobs.upcoming self
+    return jobs.sort_by{|j| j.booking.date}.first.booking.date if jobs.present?
   end
 
   private
