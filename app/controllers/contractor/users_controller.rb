@@ -88,6 +88,7 @@ class Contractor::UsersController < Contractor::AuthController
       if profile.valid?
         profile.save
         user.contractor_profile = profile
+        user.availability = Availability.new({mon: true, tues: true, wed: true, thurs: true, fri: true, sat: true, sun: true})
         user.save
         user.activate!
         auto_login user
