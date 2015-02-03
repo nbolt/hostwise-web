@@ -1,5 +1,5 @@
 class Admin::HomeController < Admin::AuthController
   def index
-    render 'admin/index'
+    redirect_to '/contractors'
   end
 end

@@ -1,0 +1,47 @@
+.contractors ng:controller='customers'
+  .header
+    h2
+      .fa.fa-list
+      | Customers
+  .highlight
+    span.total
+      | Total Customers
+      strong
+        | {{users.length}}
+    span.search
+      i.fa.fa-search
+      input type='text' placeholder='Search' ng:model='search'
+    hr
+  table cellpadding='0' cellspacing='0'
+    tbody
+      tr.days
+        th
+        th Name
+        th Joined
+        th Email
+        th Phone Number
+        th Status
+        th Properties
+        th Next Service
+        th Jobs Booked
+      tr dir-paginate='user in users | itemsPerPage: 20'
+        td
+          img.avatar ng:src='{{::user.avatar}}'
+        td
+          a href="/hosts/{{user.id}}/edit" {{user.name}}
+        td
+          span ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
+        td
+          | {{user.email}}
+        td
+          | {{user.phone_number}}
+        td
+          | {{user.activation_state}}
+        td
+          | {{user.properties.length}}
+        td
+          span ng:bind="user.next_service_date | date:'MM/dd/yyyy':'UTC'"
+        td
+          | &nbsp;
+  .pagination
+    dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"

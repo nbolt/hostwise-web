@@ -64,6 +64,11 @@ Rails.application.routes.draw do
     put   '/contractors/:id/update' => 'contractors#update'
     post  '/contractors/:id/deactivate' => 'contractors#deactivate'
     post  '/contractors/:id/reactivate' => 'contractors#reactivate'
+    get   '/hosts' => 'hosts#index'
+    get   '/hosts/:id/edit' => 'hosts#edit'
+    put   '/hosts/:id/update' => 'hosts#update'
+    post  '/hosts/:id/deactivate' => 'hosts#deactivate'
+    post  '/hosts/:id/reactivate' => 'hosts#reactivate'
   end
 
   get '/user' => 'home#user'

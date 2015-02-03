@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   end
 
   pg_search_scope :search_contractors, against: [:email, :first_name, :last_name, :phone_number], associated_against: {contractor_profile: [:address1, :city, :zip]}, using: { tsearch: { prefix: true } }
+  pg_search_scope :search_hosts, against: [:email, :first_name, :last_name, :phone_number], using: { tsearch: { prefix: true } }
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile'}
   validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
@@ -44,7 +45,7 @@ class User < ActiveRecord::Base
   attr_accessor :step
 
   def name
-    first_name + ' ' + last_name
+    first_name + ' ' + last_name if first_name.present? && last_name.present?
   end
 
   def avatar
@@ -89,9 +90,20 @@ class User < ActiveRecord::Base
     results
   end
 
+  def self.hosts(term = nil)
+    results = User.where(role_cd: 1)
+    return results.search_hosts(term) if term.present?
+    results
+  end
+
   def next_job_date
     jobs = self.jobs.upcoming self
     return jobs.sort_by{|j| j.booking.date}.first.booking.date if jobs.present?
+  end
+
+  def next_service_date
+    bookings = Booking.upcoming(self)
+    return bookings.first.date unless bookings.empty?
   end
 
   private

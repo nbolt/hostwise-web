@@ -33,4 +33,8 @@ class DataController < ApplicationController
   def contractors
     render json: User.contractors(params[:term]).to_json(include: [contractor_profile: {methods: [:position]}], methods: [:avatar, :name, :role])
   end
+
+  def hosts
+    render json: User.hosts(params[:term]).to_json(include: [:properties], methods: [:name, :avatar, :role, :next_service_date])
+  end
 end

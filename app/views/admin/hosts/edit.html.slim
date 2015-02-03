@@ -1,0 +1,42 @@
+.edit-customer ng:controller='edit-customer'
+  .page-title
+    .fa.fa-user
+    | Customer Details
+  .container
+    .steps
+      .step.one
+        form
+          .flash
+          .section.avatar
+            img ng:src='{{::host.avatar}}'
+            .name
+              | {{::host.name}}
+          .vr
+          .section.info
+            .row.two
+              label Your Name
+              input type='text' ng:model='host.first_name'
+              input.right type='text' ng:model='host.last_name'
+              .caption First Name
+              .caption.right Last Name
+            .row
+              label Email
+              input type='email' ng:model='host.email'
+            .row
+              label Mobile Phone
+              input type='text' ng:model='host.phone_number'
+          .vr
+          .section.pwd
+            .row
+              button.teal ng:click='update_account()'
+                .icon
+                  span.fa.fa-rotate-right
+                .text Save Changes
+  .deactivate ng:show="host.activation_state == 'active'"
+    | Do you wish to
+    span ng:click='open_deactivation()'  deactivate {{host.first_name}}'s account?
+    = render 'common/account_deactivation_modal'
+  .reactivate ng:show="host.activation_state == 'deactivated'"
+    | Do you wish to
+    span ng:click='open_reactivation()'  reactivate {{host.first_name}}'s account?
+    = render 'common/account_reactivation_modal'

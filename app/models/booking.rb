@@ -9,6 +9,7 @@ class Booking < ActiveRecord::Base
   scope :pending, -> { includes(:services).where('services.id is null or bookings.payment_id is null').references(:services) }
   scope :active,  -> { includes(:services).where('services.id is not null and bookings.payment_id is not null').references(:services) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
+  scope :upcoming, -> (user) { includes(:property).references(:property).where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc) }
 
   before_save :create_job, on: :create
 
