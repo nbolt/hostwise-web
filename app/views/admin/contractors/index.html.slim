@@ -30,7 +30,8 @@
         td
           img.avatar ng:src='{{::user.avatar}}'
         td
-          a href="/contractors/{{user.id}}/edit" {{user.name}}
+          a ng:show="{{user.activation_state != 'pending'}}" href="/contractors/{{user.id}}/edit" {{user.name}}
+          span ng:show="{{user.activation_state == 'pending'}}" {{user.name}}
         td
           | {{user.contractor_profile.city}}
         td
