@@ -25,92 +25,49 @@ script#booking-modal type="text/ng-template"
                     .text Jan 4, 2015
                     .price ${{day.total}}
                   .day-services
-                    .service ng:show='day.cleaning'
-                      .text Cleaning
-                      .price ${{day.cleaning}}
-                    .service ng:show='day.linens'
-                      .text Linens & Towels
-                      .price ${{day.linens}}
-                    .service ng:show='day.restocking'
-                      .text Restocking
-                      .price ${{day.restocking}}
+                    - Service.all.each do |service|
+                      .service ng:show="day.#{service.name}"
+                        .text= service.display
+                        .price
+                          | $
+                          span ng:bind="day.#{service.name}"
               .total
                 .text Total
                 .price ${{total()}}
             .content-side
               .services
-                .service.cleaning
-                  img.icon src='/images/book_clean.png'
-                  .text Cleaning
-                  label.switch.red
-                    input type='checkbox' toggle-service='cleaning'
-                    i
-                .service.linens
-                  img.icon src='/images/book_linens.png'
-                  .text Linens & Towels
-                  label.switch.red
-                    input type='checkbox' toggle-service='linens'
-                    i
-                .service.restocking
-                  img.icon src='/images/book_restock.png'
-                  .text Restocking
-                  label.switch.red
-                    input type='checkbox' toggle-service='restocking'
-                    i
+                - Service.standard.each do |service|
+                  .service class="#{service.name}"
+                    img.icon src="/images/book_#{service.name}.png"
+                    .text= service.display
+                    label.switch.red
+                      input type='checkbox' toggle-service="#{service.name}"
+                      i
               .extra
                 .title Extra Services
-                .service
-                  .text Pool Area
-                  label.switch.red
-                    input type='checkbox' toggle-service='pool'
-                    i
-                .service
-                  .text Balcony / Patio
-                  label.switch.red
-                    input type='checkbox' toggle-service='patio'
-                    i
-                .service
-                  .text Exterior Windows
-                  label.switch.red
-                    input type='checkbox' toggle-service='windows'
-                    i
+                - Service.extra.each do |service|
+                  .service class="#{service.name}"
+                    .text= service.display
+                    label.switch.red
+                      input type='checkbox' toggle-service="#{service.name}"
+                      i
           div ng:if='!exists()'
             .services
-              .service.cleaning
-                img.icon src='/images/book_clean_grey.png'
-                .text Cleaning
-                label.switch.red
-                  input type='checkbox' toggle-service='cleaning'
-                  i
-              .service.linens
-                img.icon src='/images/book_linens_grey.png'
-                .text Linens & Towels
-                label.switch.red
-                  input type='checkbox' toggle-service='linens'
-                  i
-              .service.restocking
-                img.icon src='/images/book_restock_grey.png'
-                .text Restocking
-                label.switch.red
-                  input type='checkbox' toggle-service='restocking'
-                  i
+              - Service.standard.each do |service|
+                .service class="#{service.name}"
+                  img.icon src="/images/book_#{service.name}_grey.png"
+                  .text= service.display
+                  label.switch.red
+                    input type='checkbox' toggle-service="#{service.name}"
+                    i
             .extra
               .title Extra Services
-              .service
-                .text Pool Area
-                label.switch.red
-                  input type='checkbox' toggle-service='pool'
-                  i
-              .service
-                .text Balcony / Patio
-                label.switch.red
-                  input type='checkbox' toggle-service='patio'
-                  i
-              .service
-                .text Exterior Windows
-                label.switch.red
-                  input type='checkbox' toggle-service='windows'
-                  i
+              - Service.extra.each do |service|
+                .service class="#{service.name}"
+                  .text= service.display
+                  label.switch.red
+                    input type='checkbox' toggle-service="#{service.name}"
+                    i
         .content.payment ng:if='exists()'
           div ng:show="payment_screen() == 'existing'"
             .payment-title Select Payment Method
@@ -189,15 +146,12 @@ script#booking-modal type="text/ng-template"
                 .text Jan 4, 2015
                 .price ${{day.total}}
               .day-services
-                .service ng:show='day.cleaning'
-                  .text Cleaning
-                  .price ${{day.cleaning}}
-                .service ng:show='day.linens'
-                  .text Linens & Towels
-                  .price ${{day.linens}}
-                .service ng:show='day.restocking'
-                  .text Restocking
-                  .price ${{day.restocking}}
+                - Service.all.each do |service|
+                  .service ng:show="day.#{service.name}"
+                    .text= service.display
+                    .price
+                      | $
+                      span ng:bind="day.#{service.name}"
           .total
             .text Total
             .price ${{total()}}

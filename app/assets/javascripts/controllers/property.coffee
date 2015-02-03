@@ -3,7 +3,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
   $scope.form = {}
   $scope.chosen_dates = {}
   $scope.payment = {}
-  $scope.selected_services = {cleaning:false,linens:false,restocking:false}
+  $scope.selected_services = {}
   $scope.selected_date = null
   $scope.current_zip = null
   $scope.current_address1 = null
@@ -66,7 +66,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
         $scope.selected_date = date
         $scope.selected_date_text = date.format('ddd, MMM D')
         $scope.chosen_dates["#{date.month()}-#{date.year()}"] = [date.date()]
-        $scope.selected_services = {cleaning:false,linens:false,restocking:false}
+        $scope.selected_services = {}
         $scope.selected_booking = $this.attr 'booking'
         if $scope.selected_booking
           $http.get("#{$window.location.href}/#{$scope.selected_booking}/show").success (rsp) ->

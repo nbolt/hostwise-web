@@ -3,7 +3,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
   last_payment = null
   $scope.days = []
   $scope.flashing = false
-  $scope.selected_services = {cleaning:false,linens:false,restocking:false} unless $scope.selected_services
+  $scope.selected_services = {} unless $scope.selected_services
   $scope.chosen_dates = {} unless $scope.chosen_dates
   $scope.payment = {}
 
