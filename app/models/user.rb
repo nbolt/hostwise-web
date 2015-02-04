@@ -48,6 +48,13 @@ class User < ActiveRecord::Base
     first_name + ' ' + last_name if first_name.present? && last_name.present?
   end
 
+  def display_phone_number
+    first  = phone_number[0..2]
+    second = phone_number[3..5]
+    third  = phone_number[6..9]
+    "(#{first}) #{second}-#{third}"
+  end
+
   def avatar
     if avatars.empty?
       "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}.jpg?s=60&d=mm"

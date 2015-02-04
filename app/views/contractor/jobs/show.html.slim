@@ -1,0 +1,42 @@
+.container.contractor ng:controller='job'
+  .page-title
+    strong ng:bind='::job.date'
+  .row.one
+    .block.top-info
+      .photo
+        img ng:src='{{::job.booking.property.primary_photo}}'
+      .text.address
+        strong ng:bind='::job.booking.property.full_address'
+      .text.total
+        span Total
+        strong ${{::job.booking.cost}}
+  .row.uneven
+    .block.customer
+      .head
+        .right
+          .arrow
+            .typcn.typcn-chevron-right
+        .photo
+          img ng:src='{{::job.booking.property.user.avatar}}'
+        .text Customer Info
+      .info
+        .name ng:bind='::job.booking.property.user.name'
+        .number ng:bind='::job.booking.property.user.display_phone_number'
+    .block#map
+  .row.two
+    .block.instructions
+      .head
+        .right
+          .arrow
+            .typcn.typcn-chevron-right
+        .icon
+          .typcn.typcn-document-text
+        .text Property Instructions
+    .block.services
+      .head
+        .right
+          .arrow
+            .typcn.typcn-chevron-right
+        .icon
+          .typcn.typcn-document-text
+        .text Service Details

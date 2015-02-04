@@ -52,7 +52,11 @@ class Property < ActiveRecord::Base
   end
 
   def full_address
-    "#{address1} #{address2} #{city} #{state} #{zip}"
+    if address2
+      "#{address1} #{address2}, #{city}, #{state} #{zip}"
+    else
+      "#{address1}, #{city}, #{state} #{zip}"
+    end
   end
 
   def primary_photo

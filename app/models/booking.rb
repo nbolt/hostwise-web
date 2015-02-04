@@ -2,7 +2,7 @@ class Booking < ActiveRecord::Base
   belongs_to :property
   belongs_to :payment
 
-  has_one :job, autosave: true
+  has_one :job, autosave: true, dependent: :destroy
   has_many :booking_services, class_name: 'BookingServices', dependent: :destroy
   has_many :services, through: :booking_services
 

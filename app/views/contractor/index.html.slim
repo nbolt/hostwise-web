@@ -1,0 +1,60 @@
+.container.contractor ng:controller='contractor_dash'
+  .page-title
+    .icon
+      .typcn.typcn-home-outline
+    .text Dashboard
+
+  .welcome Welcome, {{user.first_name}}.
+  .message
+    .text ng:show='newbie()'
+      | Congratulations! You're all ready to start accepting jobs.
+
+  .schedule
+    .head
+      .right ng:bind='::today'
+      .text Today's Schedule
+    .no-upcoming ng:show='!user.jobs_today[0]'
+      .icon
+        .typcn.typcn-time
+      .text You don't have any upcoming jobs today
+    .distribution ng:show='user.jobs_today[0]'
+      .top
+        .right
+          .typcn.typcn-chevron-right
+        .icon
+          .typcn.typcn-time
+        .text 9:45 AM
+        .location Venice Distribution Center | 1020 Lake St, Venice, CA 90291
+      .bottom
+        .right
+          .button.teal
+            .icon
+              .typcn.typcn-tick
+            .text Done
+        .beds
+          .bed
+            .type King:
+            .num 1
+          .bed
+            .type Queen:
+            .num 2
+          .bed
+            .type Full:
+            .num 0
+          .bed
+            .type Twin:
+            .num 0
+    .jobs
+      .job ng:repeat='job in user.jobs_today'
+        .right
+          a href='/jobs/{{job.id}}'
+            .button.teal
+              .icon
+                .typcn.typcn-tick
+              .text View Job
+        .title Job {{$index}}
+        .address
+          .name ng:bind='::job.booking.property.user.name'
+          .address1 ng:bind='::job.booking.property.address1'
+          .address2
+            | {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}

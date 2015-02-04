@@ -34,7 +34,7 @@ html
       }
 
       function stripe_loaded(){Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}")}
-      function mapbox_loaded(){L.mapbox.accessToken = "#{ENV['MAPBOX_TOKEN']}"}
+      function mapbox_loaded(){window.loaded_mapbox = true; L.mapbox.accessToken = "#{ENV['MAPBOX_TOKEN']}"}
       function fanout_loaded(){window.faye_loaded = true}
 
     = render 'common/live_chat'
@@ -94,7 +94,7 @@ html
     #sidebar-container
       #sidebar
         .section
-          a href=''
+          a href='/'
             .title
               .icon
                 .fa.fa-home
