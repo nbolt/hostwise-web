@@ -10,7 +10,7 @@ class Property < ActiveRecord::Base
   has_many :bookings, autosave: true, dependent: :destroy
   has_many :property_photos, autosave: true, dependent: :destroy
 
-  before_validation :standardize_address, on: :create
+  before_validation :standardize_address
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
@@ -66,7 +66,7 @@ class Property < ActiveRecord::Base
   private
 
   def standardize_address
-    address = SmartyStreets::StreetAddressRequest.new(street: address1, street2: address2, city: city, state: state, zipcode: zip)
+    address = SmartyStreets::StreetAddressRequest.new(street: address1, street2: address2, zipcode: zip)
     rsp = SmartyStreets::StreetAddressApi.call(address)
     if rsp[0]
       address = rsp[0].to_hash

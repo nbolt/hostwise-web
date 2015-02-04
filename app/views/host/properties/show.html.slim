@@ -3,8 +3,8 @@
     .photo
       img image-on-load='property_image()' ng:src='{{image}}'
     .text
-      .title ng:bind='::property.nickname'
-      .address ng:bind='::property.short_address'
+      .title ng:bind='property.nickname'
+      .address ng:bind='property.short_address'
   #columns
     .column.cal
       .section.cal
@@ -26,7 +26,7 @@
             .typcn.typcn-chevron-right
           .icon
             .typcn.typcn-location-outline
-          .text ng:bind='::property.address1'
+          .text ng:bind='property.address1'
         .content-container.map
           #map
       .section.details
@@ -38,6 +38,18 @@
           .text Edit Details
         .content-container.details
           .content
+            .flash
+            .row.two
+              .field.zip
+                .label Zip
+                .input.zip
+                  .typcn.typcn-tick
+                  input type='text' ng:model='form.zip'
+              .field.address1
+                .label Street Name
+                .input.address1
+                  .typcn.typcn-tick
+                  input type='text' ng:model='form.address1'
             .row.one
               .field
                 .label Nickname

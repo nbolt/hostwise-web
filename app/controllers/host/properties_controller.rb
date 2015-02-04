@@ -24,9 +24,9 @@ class Host::PropertiesController < Host::AuthController
     else
       property.assign_attributes property_params
       if property.save
-        render json: { success: true }
+        render json: property.to_json(include: [:bookings, :property_photos], methods: [:nickname, :short_address, :primary_photo, :full_address])
       else
-        render json: { success: false }
+        render json: { success: false, message: property.errors.full_messages[0] }
       end
     end
   end

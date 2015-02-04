@@ -5,6 +5,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
   $scope.payment = {}
   $scope.selected_services = {cleaning:false,linens:false,restocking:false}
   $scope.selected_date = null
+  $scope.current_zip = null
+  $scope.current_address1 = null
+
   promises = {}
 
   $http.get($window.location.href + '.json').success (rsp) ->
@@ -24,6 +27,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     $scope.form.full_beds = { id: rsp.full_beds.toString(), text: rsp.full_beds.toString() }
     $scope.form.queen_beds = { id: rsp.queen_beds.toString(), text: rsp.queen_beds.toString() }
     $scope.form.king_beds = { id: rsp.king_beds.toString(), text: rsp.king_beds.toString() }
+    $scope.current_zip = $scope.form.zip
+    $scope.current_address1 = $scope.form.address1
     $scope.property_image($scope.property.property_photos[0].photo.url)
 
   $scope.modal_calendar_options =
@@ -84,19 +89,24 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     angular.element('#property .section').removeClass 'active'
     angular.element("#property .section.#{section}").addClass 'active'
     if section == 'map' && !angular.element('.leaflet-container')[0]
-      map = L.mapbox.map 'map', 'useporter.l02en9o9'
-      geocoder = L.mapbox.geocoder 'mapbox.places'
-      geocoder.query $scope.property.full_address, (err, data) ->
-        if data.latlng
-          map.setView([data.latlng[0], data.latlng[1]], 14)
-          L.marker([data.latlng[0], data.latlng[1]], {
-              icon: L.mapbox.marker.icon({
-                  'marker-size': 'large',
-                  'marker-symbol': 'building',
-                  'marker-color': '#35A9B1'
-              })
-          }).addTo map
+      $scope.map = L.mapbox.map 'map', 'useporter.l02en9o9'
+      $scope.markers = new L.LayerGroup().addTo($scope.map)
+      $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
+      refresh_map()
     null
+
+  refresh_map = ->
+    $scope.geocoder.query $scope.property.full_address, (err, data) ->
+      if data.latlng
+        $scope.map.setView([data.latlng[0], data.latlng[1]], 14)
+        $scope.markers.clearLayers() # always clear previous markers
+        L.marker([data.latlng[0], data.latlng[1]], {
+          icon: L.mapbox.marker.icon({
+            'marker-size': 'large',
+            'marker-symbol': 'building',
+            'marker-color': '#35A9B1'
+          })
+        }).addTo $scope.markers
 
   $scope.exists = () ->
     if $scope.property.bookings
@@ -129,6 +139,20 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     ).success (rsp) ->
       form_flash 'photo'
       $scope.property_image(rsp.image)
+
+  $scope.$watch 'form.zip', (n,o) -> if o
+    $scope.current_zip = n
+    $timeout.cancel promises.zip
+    promises.zip = $timeout((->
+      update('zip', {form: { zip: n, address1: $scope.current_address1 }})
+    ),2000)
+
+  $scope.$watch 'form.address1', (n,o) -> if o
+    $scope.current_address1 = n
+    $timeout.cancel promises.address1
+    promises.address1 = $timeout((->
+      update('address1', {form: { address1: n, zip: $scope.current_zip  }})
+    ),2000)
 
   $scope.$watch 'form.nickname', (n,o) -> if o
     $timeout.cancel promises.nickname
@@ -174,8 +198,10 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
 
   update = (field, params) ->
     $http.post($window.location.href, params).success (rsp) ->
-      if rsp.success
+      if rsp.id
+        $scope.property = rsp
         form_flash field
+        refresh_map() if field is 'zip' or field is 'address1'
       else
         flash('failure', rsp.message)
 
