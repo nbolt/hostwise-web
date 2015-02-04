@@ -9,7 +9,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
-    $scope.form     = rsp
+    $scope.form = rsp
     $scope.form.property_type = { id: rsp.property_type, text: rsp.property_type.capitalize() }
     $scope.form.rental_type = { id: rsp.rental_type, text: rsp.rental_type.capitalize() }
 
@@ -24,6 +24,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     $scope.form.full_beds = { id: rsp.full_beds.toString(), text: rsp.full_beds.toString() }
     $scope.form.queen_beds = { id: rsp.queen_beds.toString(), text: rsp.queen_beds.toString() }
     $scope.form.king_beds = { id: rsp.king_beds.toString(), text: rsp.king_beds.toString() }
+    $scope.property_image($scope.property.property_photos[0].photo.url)
 
   $scope.modal_calendar_options =
     {
@@ -118,11 +119,16 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
         booking.parsed_date = date.format('MMMM Do, YYYY')
         angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
+  $scope.property_image = (src) ->
+    $scope.image = src
+
   $scope.$watch 'files', (n,o) -> if n
     $upload.upload(
       url: $window.location.href
       file: n[0]
-    ).success (rsp) -> console.log rsp
+    ).success (rsp) ->
+      form_flash 'photo'
+      $scope.property_image(rsp.image)
 
   $scope.$watch 'form.nickname', (n,o) -> if o
     $timeout.cancel promises.nickname

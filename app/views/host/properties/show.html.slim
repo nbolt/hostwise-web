@@ -1,7 +1,7 @@
 #property ng:controller='property'
   #title
     .photo
-      img ng:src='{{::property.property_photos[0].photo.url}}'
+      img image-on-load='property_image()' ng:src='{{image}}'
     .text
       .title ng:bind='::property.nickname'
       .address ng:bind='::property.short_address'
@@ -91,8 +91,11 @@
             .row.one
               .field.photo
                 .label Select Photo
-                input#photo type='file' new-property-photo='' ng-file-select='' ng-model='files' style='width:210px;margin-right: 15px'
-                img.preview src='/images/1x1.png' width='38'
+                label.file-upload for='photo'
+                  | Browse
+                .input.photo
+                  .typcn.typcn-tick
+                  input#photo type='file' new-property-photo='' ng-file-select='' ng-model='files'
       .section.instructions
         .head ng:click="expand('instructions')"
           .arrow

@@ -804,12 +804,26 @@ form
               margin-bottom: 20px
               display: inline-block
               vertical-align: top
+              input[type=file]
+                display: none
+              .file-upload
+                background-color: primary-color-4
+                border-radius: 1px
+                color: white
+                cursor: pointer
+                display: inline-block
+                padding: 8px 34px
+                vertical-align: top
               .label
                 color: teal
                 font-weight: 600
               .input
                 position: relative
                 margin-top: 4px
+                &.photo .typcn
+                  left: 135px
+                  right: 0
+                  top: -43px
                 .typcn
                   position: absolute
                   top: 2px
