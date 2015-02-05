@@ -1,4 +1,6 @@
-AccountCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+AccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', ($scope, $http, $timeout, $upload, ngDialog) ->
+
+  $scope.files = []
 
   $scope.update = (step) ->
     $http.put('/user/update', {
@@ -13,9 +15,27 @@ AccountCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
           $scope.user.password_confirmation = ''
           $scope.user.current_password = ''
         message += ' updated successfully!'
-        flash('info', message)
+        flash 'info', message
       else
-        flash('failure', rsp.message)
+        flash 'failure', rsp.message
+
+  $scope.$watch 'files', ->
+    i = 0
+    while i < $scope.files.length
+      file = $scope.files[i]
+      $scope.upload = $upload.upload(
+        url: '/user/update'
+        data:
+          step: 'photo'
+        method: 'PUT'
+        file: file
+      ).success((rsp, status, headers, config) ->
+        if rsp.success
+          window.location = window.location.href
+        else
+          flash 'failure', rsp.message
+      )
+      i++
 
   $scope.open_deactivation = ->
     ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'account', scope: $scope

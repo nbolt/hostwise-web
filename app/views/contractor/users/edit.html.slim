@@ -10,6 +10,7 @@
           .section.avatar
             .file-upload ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
             img ng:src='{{::user.avatar}}'
+            .name ng:bind='::user.name'
           .vr
           .section.info
             .row.two

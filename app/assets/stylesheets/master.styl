@@ -2514,83 +2514,6 @@ form
       &.add-payment
         color: primary-color-1
 
-.account-container
-  margin: auto
-  width: 768px
-  .deactivate
-    margin-top: 20px
-    span
-      color: primary-color-4
-      cursor: pointer
-  .container
-    background-color: white
-    margin: 40px auto 0
-    overflow: hidden
-    padding: 30px
-    width: auto
-    h2
-      margin: 10px 0 0
-      text-align: center
-    .avatar
-      text-align: center
-      width: 100%
-      img
-        border-radius: 50%
-        height: 100px
-        width: 100px
-      .file-upload
-        color: primary-color-1
-        cursor: pointer
-        margin: 0 auto
-        width: 115px
-    form
-      margin: 0 auto
-      position: relative
-      text-align: center
-      width: 100%
-      .flash
-        left: 74px
-        position: absolute
-        top: 10px
-      .vr
-        border-left: 1px solid light-grey
-        display: inline-block
-        height: 193px
-        margin-top: 97px
-      .section
-        display: inline-block
-        padding: 30px
-        vertical-align: top
-        .title
-          color: primary-color-1
-          margin: 30px 0 10px
-          text-align: left
-        .row
-          position: relative
-          width: 250px
-          &.two input
-            width: 125px
-      input
-        margin: 5px 0
-        width: 250px
-      button
-        height: 40px
-        margin: 5px 0
-        position: relative
-        width: 100%
-        .text
-          margin-left: 30px
-        .icon
-          background-color: primary-color-6
-          display: inline-block
-          height: 40px
-          left: 0
-          position: absolute
-          top: 0
-          width: 40px
-          .fa
-            line-height: 40px
-
 .first-property
   .hero
     background-color: white
@@ -2690,7 +2613,8 @@ form
 
 .contractor-account,
 .edit-contractor,
-.edit-customer
+.edit-customer,
+.account-container
   margin: 100px auto
   width: 900px
   .page-title
@@ -2791,7 +2715,7 @@ form
             .vr
               border-left: 1px solid light-grey
               display: inline-block
-              height: 502px
+              height: 830px
               margin-top: 50px
             hr
               border: 0
@@ -2838,12 +2762,22 @@ form
               margin-top: 24px
               width: 200px
 
+.edit-contractor .container .steps .step.one
+  form
+    .vr
+      height: 532px
+
 .edit-customer .container .steps .step.one
   form
     button
       margin-top: 25px
     .vr
       height: 262px
+
+.account-container .container .steps .step.one
+  form
+    .vr
+      height: 365px
 
 .availability-container
   margin: 40px auto 0
