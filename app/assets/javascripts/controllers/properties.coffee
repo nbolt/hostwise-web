@@ -70,7 +70,10 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
       _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking
 
   refresh_properties = ->
-    $http.get('/data/properties', {params: {term: $scope.term, sort: $scope.sort}}).success (rsp) -> $scope.user.properties = rsp if $scope.user
+    $http.get('/data/properties', {params: {term: $scope.term, sort: $scope.sort}}).success (rsp) ->
+      $scope.user.properties = rsp if $scope.user
+      _($scope.user.properties).each (property) ->
+        property.next_service_date = moment(property.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if property.next_service_date
 
 ]
 

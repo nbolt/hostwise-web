@@ -1,29 +1,44 @@
 #home.container ng:controller='properties'
-  #search
-    i.fa.fa-search
-    input type='text' placeholder='Search your properties' ng:model='search'
-
   #welcome Welcome back, {{user.first_name}}.
 
-  #actions
-    .action
+  #search-bar
+    #search
+      i.fa.fa-search
+      input type='text' placeholder='Search your properties' ng:model='search'
+    #filters
       input type='hidden' ui-select2='filters()' ng:model='filter'
-    .action
-      a href='/properties/new'
-        .button.teal Add A New Property
 
   #properties
-    .property dir-paginate='property in user.properties | itemsPerPage: 10'
-      .photo
-        img ng:src='{{::property.primary_photo}}'
-      .title
-        .text ng:bind='::property.nickname'
-        a ng:href='/properties/{{property.slug}}' Manage Listing and Calendar
-      .button.teal ng:click='quick_add(property)'
+    .property ng:repeat='property in user.properties'
+      .top
+        .photo
+          img ng:src='{{::property.primary_photo}}'
+        .title
+          .name ng:bind='::property.nickname'
+          .address ng:bind='::property.full_address'
+        .button.teal ng:click='quick_add(property)'
+          .icon
+            .typcn.typcn-calendar-outline
+          .text Quick Book
+        a.manage ng:href='/properties/{{property.slug}}' Manage
+      .bottom
+        .next-service ng:show='property.next_service_date'
+          .icon
+            .typcn.typcn-calendar-outline
+          .text Next Service {{property.next_service_date}}
+        .left
+          .id
+            | ID&nbsp;
+            a ng:href='/properties/{{property.slug}}' ng:bind='property.id'
+          .rooms
+            .icon
+              .typcn.typcn-home-outline
+            .text
+              | {{property.bedrooms}}BD/{{property.bathrooms}}BA
+    a.new-property href='/properties/new'
+      .container
         .icon
-          .typcn.typcn-calendar-outline
-        .text Quick Add
-  .pagination
-    dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
+          .typcn.typcn-plus
+        .text Add New Property
 
 = render 'common/booking_modal'

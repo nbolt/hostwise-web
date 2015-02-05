@@ -11,6 +11,8 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
           $scope.user.payments = _($scope.user.payments).filter (payment) -> payment.status_cd == 1
           if $scope.user.role is 'host'
             $scope.user.properties = _($scope.user.properties).filter (property) -> property.active
+            _($scope.user.properties).each (property) ->
+              property.next_service_date = moment(property.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if property.next_service_date
           if $scope.user.role is 'contractor'
             $scope.user.jobs_today = _($scope.user.jobs).filter (job) -> moment(job.booking.date, 'YYYY-MM-DD').diff(moment(), 'days') == 0
 

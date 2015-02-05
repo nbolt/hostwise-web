@@ -24,6 +24,10 @@ class Property < ActiveRecord::Base
   rescue ActiveRecord::RecordNotFound
   end
 
+  def next_service_date
+    bookings.future.order(:date).first.then(:date)
+  end
+
   def self.search(term, sort=nil)
     if sort
       case sort
