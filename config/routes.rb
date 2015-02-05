@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     get   '/payments' => 'payments#index'
     post  '/payments/add' => 'payments#add'
     put   '/payments/delete' => 'payments#delete'
+    post  '/service_notifications/create' => 'service_notifications#create'
     match '/users/:action' => 'users', via: [:get, :post]
     match '/properties/:slug/:action' => 'properties', via: [:get, :post]
     match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]

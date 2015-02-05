@@ -9,14 +9,23 @@
         =image_tag 'icon_restocking.png'
   .form-container
     form
-      .section
+      .section.check
         .title Add Your First Property
         .flash
         .row
           .field
-            input type='text' placeholder='Zip' maxlength=5 required='' ng:model='form.zip'
-          .field
-            input type='text' placeholder='Street Name' required='' ng:model='form.address1'
+            input type='text' placeholder='Enter Zip' maxlength=5 required='' ng:model='zip'
           .field
             .button.red ng:click='submit()'
               .text Next
+      .section.notify
+        .title
+          .fa.fa-flash
+          | Oops! We're not in this area yet. Want us to notify you when we are?
+        .row
+           .field
+             .button.white ng:click='cancel()'
+              .text No
+           .field
+             .button.white ng:click='notify()'
+              .text Yes

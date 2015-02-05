@@ -46,3 +46,10 @@ unless Service.first
   Service.create(name: 'patio', display: 'Balcony / Patio', extra: true)
   Service.create(name: 'windows', display: 'Exterior Windows', extra: true)
 end
+
+unless ServiceZip.first
+  CSV.foreach "#{Rails.root}/db/data/service_zips.csv" do |row|
+    zip_code  = row[0]
+    ServiceZip.find_or_create_by!(zip: zip_code)
+  end
+end
