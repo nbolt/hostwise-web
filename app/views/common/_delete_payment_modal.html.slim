@@ -1,0 +1,18 @@
+script#delete-payment-modal type="text/ng-template"
+  .payment.modal
+    .header
+      .text Remove Payment Option
+    .flash
+    .content
+      .fa.fa-credit-card
+      .text
+        | Are you sure you want to permanently delete
+        strong.capitalize
+          |  {{payment_info}}
+        | ? This cannot be undone.
+    .footer
+      .buttons
+        .button.white ng:click='cancel_deletion()'
+          .text Cancel
+        .button.red ng:click='delete_payment({{payment_id}})'
+          .text Delete

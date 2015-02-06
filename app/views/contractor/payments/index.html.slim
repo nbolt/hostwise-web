@@ -9,7 +9,7 @@
         .fa.fa-bank
         .details
           span
-            | Checking Account {{::payment.last4}}
+            | Checking Account ending in {{::payment.last4}}
         .links
           a href='' confirmed-click='delete_payment({{::payment.id}})' ng-confirm-click="Remove bank account ending with {{::payment.last4}}?" Delete
       li.add-payment ng:if='user.payments.length == 0'

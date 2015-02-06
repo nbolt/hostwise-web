@@ -1467,6 +1467,9 @@ form
     position: relative
     .modal
       position: relative
+      .flash
+        border-radius: 0
+        width: 100%
   .ngdialog-close
     position: absolute
     right: 0
@@ -1551,6 +1554,8 @@ form
         .text
           color: dark-grey
           font-size: 15px
+          .capitalize
+            text-transform: capitalize
         .fa
           background-color: primary-color-4
           border-radius: 50%
@@ -2503,12 +2508,22 @@ form
       position: relative
       a
         color: primary-color-1
+        margin-left: 30px
         text-decoration: none
       div
         display: inline-block
+      .details
+        strong
+          font-weight: normal
+          text-transform: capitalize
       .links
         position: absolute
         right: 20px
+        .primary
+          background-color: light-grey
+          border-radius: 3px
+          color: dark-grey
+          padding: 5px 25px
       .fa
         font-size: 25px
         margin-right: 20px

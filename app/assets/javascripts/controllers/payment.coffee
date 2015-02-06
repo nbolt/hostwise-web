@@ -11,14 +11,28 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
     initSelection: (el, cb) -> cb {id:'credit-card', text:'Credit Card'}
     }
 
+  $scope.make_default = (id) ->
+    $http.put('/payments/default', {
+      payment_id: id
+    }).success (rsp) ->
+      $scope.$emit 'fetch_user'
+
+  $scope.open_deletion = (event) ->
+    $scope.payment_id = $(event.currentTarget).parent().attr('id').split('-')[1]
+    $scope.payment_info = $(event.currentTarget).parents('li').find('.details span').text().replace('ending in', '****')
+    ngDialog.open template: 'delete-payment-modal', controller: 'payment', className: 'account', scope: $scope
+
+  $scope.cancel_deletion = -> ngDialog.closeAll()
+
   $scope.delete_payment = (id) ->
     $http.put('/payments/delete', {
       payment_id: id
     }).success (rsp) ->
       if rsp.success
         $scope.$emit 'fetch_user'
+        ngDialog.closeAll()
       else
-        flash 'failure', rsp.message, true
+        flash 'failure', rsp.message
 
   $scope.add_payment = ->
     if $scope.payment_method.id == 'credit-card'
@@ -47,7 +61,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       exp_year: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[1]
     , (_, rsp) ->
       if rsp.error
-        flash "failure", rsp.error.message
+        flash 'failure', rsp.error.message
       else
         $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method}).success (rsp) ->
           if rsp.success

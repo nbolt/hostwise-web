@@ -1,5 +1,7 @@
 class Host::PaymentsController < Host::AuthController
   def add
+    first_payment = !current_user.payments.active.present?
+
     if params[:payment_method][:id] == 'credit-card'
       customer = Stripe::Customer.retrieve current_user.stripe_customer_id
       card = customer.cards.create(card: params[:stripe_id])
@@ -18,6 +20,8 @@ class Host::PaymentsController < Host::AuthController
                                                fingerprint: bank_account.fingerprint
                                              })
     end
+    payment.primary = true if first_payment
+
     if payment.save
       render json: { success: true, payment: payment }
     else
@@ -32,6 +36,11 @@ class Host::PaymentsController < Host::AuthController
     future_bookings = payment.bookings.select { |booking| booking.date > Date.today }
     if future_bookings.present?
       render json: { success: false, message: "There is at least one booking associated with this #{payment.card? ? 'credit card' : 'bank account'}" }
+      return
+    end
+
+    if payment.primary
+      render json: { success: false, message: "You can't delete your default payment" }
       return
     end
 
@@ -50,5 +59,19 @@ class Host::PaymentsController < Host::AuthController
     else
       render json: { success: false, message: "Error deleting #{payment.card? ? 'credit card' : 'bank account'}" }
     end
+  end
+
+  def default
+    payment = Payment.find_by_id(params[:payment_id])
+    payment.primary = true
+    payment.save
+
+    # make other active payment methods as non-default
+    current_user.payments.active.each do |p|
+      next if p.id == payment.id
+      p.update_attribute :primary, false
+    end
+
+    render nothing: true
   end
 end

@@ -1,20 +1,25 @@
 .container
   .page-title
-    .fa.fa-credit-card
+    .fa.fa-cog
     | Payment Preferences
   .payment-container ng::controller='payment'
     .flash
     ul
+      li.add-payment
+        .fa.fa-plus-circle
+        a href='' ng:click='open()' Add New Payment
       li ng:repeat='payment in user.payments'
         .fa.fa-credit-card
         .details
           span ng:if='payment.stripe_id'
-            | Card ending in {{::payment.last4}}
+            strong
+              | {{::payment.card_type}}
+            |  ending in {{::payment.last4}}
           span ng:if='payment.balanced_id'
-            | Checking Account {{::payment.last4}}
-        .links
-          a href='' confirmed-click='delete_payment({{::payment.id}})' ng-confirm-click="Remove {{payment.stripe_id ? 'credit card' : 'bank account'}} ending with {{::payment.last4}}?" Delete
-      li.add-payment
-        .fa.fa-plus-circle
-        a href='' ng:click='open()' Add New Payment
+            | Checking Account ending in {{::payment.last4}}
+        .links id='payment-{{::payment.id}}'
+          a href='' ng:click='make_default({{::payment.id}})' ng:hide='{{::payment.primary}}' Make Default
+          span.primary ng:show='{{::payment.primary}}' Default
+          a href='' ng:click='open_deletion($event)' Remove
 =render 'common/add_payment_modal'
+=render 'common/delete_payment_modal'
