@@ -88,6 +88,14 @@ class Contractor::UsersController < Contractor::AuthController
       if profile.valid?
         profile.save
         user.contractor_profile = profile
+
+        user.settings(:new_open_job).sms = true
+        user.settings(:new_open_job).email = true
+        user.settings(:job_claim_confirmation).sms = true
+        user.settings(:job_claim_confirmation).email = true
+        user.settings(:service_reminder).sms = true
+        user.settings(:service_reminder).email = true
+
         user.save
         user.activate!
         auto_login user

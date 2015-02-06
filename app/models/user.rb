@@ -19,11 +19,7 @@ class User < ActiveRecord::Base
 
   as_enum :role, admin: 0, host: 1, contractor: 2
 
-  has_settings do |s|
-    s.key :new_open_job, defaults: { sms: true, email: true }
-    s.key :job_claim_confirmation, defaults: { sms: true, email: true }
-    s.key :service_reminder, defaults: { sms: true, email: true }
-  end
+  has_settings :new_open_job, :job_claim_confirmation, :service_reminder, :booking_confirmation, :service_completion
 
   pg_search_scope :search_contractors, against: [:email, :first_name, :last_name, :phone_number], associated_against: {contractor_profile: [:address1, :city, :zip]}, using: { tsearch: { prefix: true } }
   pg_search_scope :search_hosts, against: [:email, :first_name, :last_name, :phone_number], using: { tsearch: { prefix: true } }

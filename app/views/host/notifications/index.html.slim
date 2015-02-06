@@ -1,0 +1,41 @@
+.container
+  .page-title
+    .fa.fa-cog
+    | Notification Preferences
+  .page-subtitle
+    | Select when you would like to receive notifications via SMS or/and email.
+  .notification-container ng::controller='notification'
+    form
+      .section
+        .flash
+        .header
+          span Sms
+          span Email
+        .row
+          .text Booking Confirmation
+          label.switch.red
+            input type='checkbox' toggle-notification='booking_confirmation_sms' ng:checked="user.notification_settings['booking_confirmation']['sms']"
+            i
+          label.switch.red
+            input type='checkbox' toggle-notification='booking_confirmation_email' ng:checked="user.notification_settings['booking_confirmation']['email']"
+            i
+        .row
+          .text Evening before service reminder
+          label.switch.red
+            input type='checkbox' toggle-notification='service_reminder_sms' ng:checked="user.notification_settings['service_reminder']['sms']"
+            i
+          label.switch.red
+            input type='checkbox' toggle-notification='service_reminder_email' ng:checked="user.notification_settings['service_reminder']['email']"
+            i
+        .row
+          .text Service Completion
+          label.switch.red
+            input type='checkbox' toggle-notification='service_completion_sms' ng:checked="user.notification_settings['service_completion']['sms']"
+            i
+          label.switch.red
+            input type='checkbox' toggle-notification='service_completion_email' ng:checked="user.notification_settings['service_completion']['email']"
+            i
+      button.teal ng:click='save()'
+        .icon
+          span.fa.fa-rotate-right
+        .text Save
