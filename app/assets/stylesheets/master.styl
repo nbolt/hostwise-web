@@ -530,13 +530,6 @@ form
     font-size: 2em
     .fa
       margin-right: 20px
-  .page-subtitle
-    font-size: 15px
-    margin-top: 10px
-
-.container.contractor
-  .page-title
-    font-size: 1.6em
     .icon, .text
       display: inline-block
       vertical-align: top
@@ -544,6 +537,13 @@ form
       margin-right: 15px
     .text
       margin-top: 2px
+  .page-subtitle
+    font-size: 15px
+    margin-top: 10px
+
+.container.contractor
+  .page-title
+    font-size: 1.6em
   .row
     margin-bottom: 25px
     .block
@@ -988,16 +988,20 @@ form
           color: teal
           &:hover
             cursor: pointer
+      #map
+        height: 240px
+        margin-bottom: 15px
       .section
         background-color: white
         border-radius: 1px
         overflow: hidden
+        margin-bottom: 15px
         .head
           padding: 15px
           color: #E8E9EA
           font-size: 1.25em
           text-align: center
-          border-bottom: 2px solid transparent
+          border-bottom: 2px solid light-grey
           transition: color .6s ease-in-out, border .6s ease-in-out
           .icon, .text, .arrow
             display: inline-block
@@ -1009,22 +1013,56 @@ form
             margin-top: -6px
           .arrow
             float: right
-            color: teal
             font-size: 1.25em
-            margin-top: -6px
+            color: darker-grey
+            margin-top: -3px
+            transform: rotate(90deg)
+          .text
+            color: darker-grey
           &:hover
             cursor: pointer
+        &.services
+          table
+            width: 92%
+            margin: 25px auto
+            thead
+              border-bottom: thin solid light-grey
+              tr
+                th
+                  text-align: left
+                  padding-bottom: 10px
+                  &.date
+                    width: 90px
+                  &.id
+                    width: 90px
+                  &.services
+                    width: 190px
+            tbody
+              tr
+                border-bottom: thin solid light-grey
+                td
+                  padding: 10px 0 6px
+                  color: dark-grey
+                  &.id a
+                    text-decoration: none
+                    color: teal
+                  img
+                    width: 22px
+                    height: 22px
+                    background-color: teal
+                    margin: 0 3px
         &.cal
           .head
             background-color: teal
             color: white
+            border-bottom: 0
+            .text
+              color: white
             .typcn
               color: white
         .content-container
           max-height: 0px
           transition: max-height .6s ease-in-out
-          #map
-            height: 300px
           .content
             padding: 15px
           .row
@@ -1088,22 +1126,6 @@ form
                 width: 150px
                 input
                   width: 100%
-        &.active
-          .head
-            border-bottom: 2px solid teal
-          .arrow
-            margin-top: -2px
-            .typcn
-              transform: rotate(90deg)
-          &.map
-            .content-container
-              max-height: 300px
-          &.details
-            .content-container
-              max-height: 660px
-          &.instructions
-            .content-container
-              max-height: 700px
 
 #jobs
   .tabs
@@ -1276,6 +1298,121 @@ form
           &.active.chosen.selecting
             background-color: white
 
+#properties .property, #property .property
+  background-color: white
+  margin: 10px auto
+  border-radius: 1px
+  .top
+    padding: 18px 32px
+  .bottom
+    border-top: 2px solid light-grey
+    font-size: .9em
+    .next-service
+      float: right
+      background-color: lighter-grey
+      width: 212px
+      height: 49px
+      .icon
+        font-size: 1.75em
+        margin: 3px 0 0 10px
+        color: #ccc
+      .text
+        font-weight: 600
+        margin: 13px 0 0 8px
+        color: #777
+    .left
+      padding: 15px 32px
+    .id, .rooms, .icon, .text
+      display: inline-block
+      vertical-align: top
+    .id
+      font-weight: 600
+      a
+        color: teal
+        text-decoration: none
+    .rooms
+      .typcn
+        color: #ccc
+        font-size: 1.1em
+        margin: -3px 5px 0 20px
+      .text
+        color: darker-grey
+  .button
+    color: white
+    text-align: left
+    display: inline-block
+    vertical-align: top
+    float: right
+    width: 180px
+    padding: 0
+    margin-top: 22px
+    .icon, .text
+      display: inline-block
+      vertical-align: top
+    .icon
+      background-color: light-teal
+      width: 40px
+      height: 40px
+      font-size: 1.6em
+      .typcn
+        margin-left: 8px
+    .text
+      text-align: center
+      font-size: 1.1em
+      margin-top: 7px
+      width: 140px
+    &:hover
+      cursor: pointer
+    &.teal
+      background-color: teal
+      &:hover
+        background-color: light-teal
+  .manage
+    float: right
+    font-size: .9em
+    color: teal
+    margin: 32px 15px 0 0
+  .photo, .title
+    display: inline-block
+    vertical-align: top
+  .photo
+    width: 80px
+    height: 80px
+    border-radius: 50%
+    background-color: light-grey
+    img
+      border-radius: 50%
+      height: 80px
+      width: 80px
+  .title
+    margin: 18px 0 0 15px
+    .name
+      font-weight: bold
+  a
+    color: black
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+      
+#property .property
+  margin-top: 25px
+  .beds, .bed, .text
+    display: inline-block
+    vertical-align: top
+  .beds
+    margin: 40px 0 0 100px
+    .text
+      font-weight: 600
+      margin-right: 10px
+    .bed
+      padding: 0 15px
+      border-right: thin solid light-grey
+      &:last-child
+        border-right: 0
+  .bottom
+    .id, .id a
+      color: #ccc
+
 #home
   #welcome
     font-size: 2em
@@ -1302,101 +1439,6 @@ form
           margin-right: 10px
           .typcn
             margin: -2px 0 0 2px
-    .property
-      background-color: white
-      margin: 10px auto
-      border-radius: 1px
-      .top
-        padding: 18px 32px
-      .bottom
-        border-top: 2px solid light-grey
-        font-size: .9em
-        .next-service
-          float: right
-          background-color: lighter-grey
-          width: 212px
-          height: 49px
-          .icon
-            font-size: 1.75em
-            margin: 3px 0 0 10px
-            color: #ccc
-          .text
-            font-weight: 600
-            margin: 13px 0 0 8px
-            color: #777
-        .left
-          padding: 15px 32px
-        .id, .rooms, .icon, .text
-          display: inline-block
-          vertical-align: top
-        .id
-          font-weight: 600
-          a
-            color: teal
-            text-decoration: none
-        .rooms
-          .typcn
-            color: #ccc
-            font-size: 1.1em
-            margin: -3px 5px 0 20px
-          .text
-            color: darker-grey
-      .button
-        color: white
-        text-align: left
-        display: inline-block
-        vertical-align: top
-        float: right
-        width: 180px
-        padding: 0
-        margin-top: 22px
-        .icon, .text
-          display: inline-block
-          vertical-align: top
-        .icon
-          background-color: light-teal
-          width: 40px
-          height: 40px
-          font-size: 1.6em
-          .typcn
-            margin-left: 8px
-        .text
-          text-align: center
-          font-size: 1.1em
-          margin-top: 7px
-          width: 140px
-        &:hover
-          cursor: pointer
-        &.teal
-          background-color: teal
-          &:hover
-            background-color: light-teal
-      .manage
-        float: right
-        font-size: .9em
-        color: teal
-        margin: 32px 15px 0 0
-      .photo, .title
-        display: inline-block
-        vertical-align: top
-      .photo
-        width: 80px
-        height: 80px
-        border-radius: 50%
-        background-color: light-grey
-        img
-          border-radius: 50%
-          height: 80px
-          width: 80px
-      .title
-        margin: 18px 0 0 15px
-        .name
-          font-weight: bold
-      a
-        color: black
-        text-decoration: none
-        &:hover
-          text-decoration: underline
 
 .card-entry
   border: thin solid #ccc

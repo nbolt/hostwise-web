@@ -12,14 +12,28 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
-    $scope.form = rsp
+    $scope.form = _(rsp).clone()
     $scope.form.property_type = { id: rsp.property_type, text: rsp.property_type.capitalize() }
     $scope.form.rental_type = { id: rsp.rental_type, text: rsp.rental_type.capitalize() }
+
+    $scope.property.next_service_date = moment(rsp.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if rsp.next_service_date
 
     _($scope.property.bookings).each (booking) ->
       date = moment.utc booking.date
       booking.parsed_date = date.format('MMMM Do, YYYY')
+      booking.parsed_date_short = date.format('MM/DD/YY')
       angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+
+    $scope.property.upcoming_bookings = _($scope.property.bookings).filter (booking) ->
+      moment(booking.date, 'YYYY-MM-DD').diff(moment(), 'days') > 0
+
+    $scope.property.past_bookings = _($scope.property.bookings).filter (booking) ->
+      moment(booking.date, 'YYYY-MM-DD').diff(moment(), 'days') < 0
+
+    $scope.map = L.mapbox.map 'map', 'useporter.l02en9o9'
+    $scope.markers = new L.LayerGroup().addTo($scope.map)
+    $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
+    refresh_map()
 
     $scope.form.bedrooms = { id: rsp.bedrooms.toString(), text: rsp.bedrooms.toString() }
     $scope.form.bathrooms = { id: rsp.bathrooms.toString(), text: rsp.bathrooms.toString() }
@@ -88,11 +102,6 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
   $scope.expand = (section) ->
     angular.element('#property .section').removeClass 'active'
     angular.element("#property .section.#{section}").addClass 'active'
-    if section == 'map' && !angular.element('.leaflet-container')[0]
-      $scope.map = L.mapbox.map 'map', 'useporter.l02en9o9'
-      $scope.markers = new L.LayerGroup().addTo($scope.map)
-      $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
-      refresh_map()
     null
 
   refresh_map = ->

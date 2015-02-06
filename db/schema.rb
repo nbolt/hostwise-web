@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203001025) do
+ActiveRecord::Schema.define(version: 20150205191601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,21 @@ ActiveRecord::Schema.define(version: 20150203001025) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "service_notifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "zip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "service_notifications", ["user_id"], name: "index_service_notifications_on_user_id", using: :btree
+
+  create_table "service_zips", force: :cascade do |t|
+    t.string   "zip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "services", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -259,4 +274,5 @@ ActiveRecord::Schema.define(version: 20150203001025) do
   add_foreign_key "bookings", "properties"
   add_foreign_key "contractor_jobs", "users"
   add_foreign_key "payments", "users"
+  add_foreign_key "service_notifications", "users"
 end
