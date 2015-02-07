@@ -22,6 +22,10 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
       date = moment.utc booking.date
       booking.parsed_date = date.format('MMMM Do, YYYY')
       booking.parsed_date_short = date.format('MM/DD/YY')
+      booking.display_services = _(booking.services).map((booking) -> booking.display).join(', ')
+      booking.display_full_services = booking.display_services
+      if booking.display_services.length > 24
+        booking.display_services = booking.display_services.slice(0,24) + '...'
       angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
     $scope.property.upcoming_bookings = _($scope.property.bookings).filter (booking) ->
