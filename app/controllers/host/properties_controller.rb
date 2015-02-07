@@ -70,6 +70,13 @@ class Host::PropertiesController < Host::AuthController
 
     case params[:stage]
       when 1
+        property = current_user.properties.build(property_params)
+        property.property_photos.build(photo: params[:file]) # need to background this
+        unless property.valid?
+          render json: { success: false, message: property.errors.full_messages[0] }
+          return
+        end
+
         # validate delivery_point_barcode and confirm with user if duplicate
         unless params[:extras][:validated]
           code = delivery_code(params[:form][:address1], params[:form][:address2], params[:form][:zip])
@@ -131,7 +138,7 @@ class Host::PropertiesController < Host::AuthController
   private
 
   def property_params
-    params.require(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :bathrooms,
+    params.require(:form).permit(:title, :address1, :address2, :zip, :phone_number, :bedrooms, :bathrooms,
                                  :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type, :rental_type,
                                  :access_info, :parking_info, :additional_info, :trash_disposal)
   end

@@ -3,9 +3,15 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
   $scope.num_steps = 3
   $scope.posting = false
   $scope.extras = {}
+  $scope.form = {}
+
+  $http.get('/user').success (rsp) ->
+    if rsp
+      $scope.user = rsp
+      $scope.form.phone_number = $scope.user.phone_number
 
   $scope.init = ->
-    $scope.form = {zip: getParam('zip')}
+    $scope.form.zip = getParam('zip')
 
   $scope.rooms = ->
     {
@@ -50,6 +56,14 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
 
   $scope.step = (n) ->
     if validate(n)
+      if n == 3
+        if !validate(1)
+          $scope.goto(1)
+          return
+        else if !validate(2)
+          $scope.goto(2)
+          return
+
       post = ->
         unless $scope.posting
           $scope.posting = true
@@ -90,9 +104,13 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
           success()
           $scope.extras = {}
         else
+          $scope.goto(1) if rsp.message.indexOf('address') > 0 or rsp.message.indexOf('photo') > 0
           flash(rsp.type || 'failure', rsp.message)
 
       post()
+    else
+      flash 'failure', 'Please fill in all required fields'
+      return true
 
   flash = (type, msg) ->
     angular.element('.property-form-container .step.active .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
@@ -113,7 +131,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
       when 3
         step_num = 'three'
     if _(angular.element('.step.' + step_num).find('input[required]')).filter((el) -> angular.element(el).val() == '')[0]
-      flash('failure', 'Please fill in all required fields')
       false
     else
       true

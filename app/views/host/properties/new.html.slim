@@ -48,7 +48,7 @@
             br
             .row
               label Property Contact Number
-              input type='text' ng:model='form.phone' value='{{::user.phone_number}}'
+              input type='text' ng:model='form.phone_number'
           .vr
           .section.action
             .row
@@ -118,14 +118,14 @@
             .row
               label Confirm Details
             hr
-            .row
+            .row ng:hide='!form.title'
               label Nickname
               | {{form.title}}
             .row
               label Address
               div
                 | {{form.address1}}
-              div
+              div ng:hide='!form.address2'
                 | Unit {{form.address2}}
               div
                 | {{form.zip}}

@@ -12,6 +12,9 @@ class Property < ActiveRecord::Base
 
   before_validation :standardize_address
 
+  validates_numericality_of :phone_number, only_integer: true, if: lambda { self.phone_number.present? }
+  validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
+
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :by_user, -> (user) { where(user_id: user.id) }
