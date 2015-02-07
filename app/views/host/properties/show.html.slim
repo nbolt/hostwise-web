@@ -69,7 +69,8 @@
               td ng:bind='::booking.parsed_date_short'
               td.id
                 a ng:href='/properties/{{::booking.id}}' ng:bind='::booking.id'
-              td.services ng:bind='::booking.display_services' ellipsis-services=''
+              td.services
+                .text ng:bind='::booking.display_services' ellipsis-services=''
               td ${{::booking.cost}}
       .section.past.services
         .head
