@@ -1,11 +1,11 @@
 NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scope, $http, $timeout, $upload, $location) ->
 
-  $scope.num_steps = 2
+  $scope.num_steps = 3
   $scope.posting = false
   $scope.extras = {}
 
   $scope.init = ->
-    $scope.form = {zip: getParam('zip'), address1: getParam('address1')}
+    $scope.form = {zip: getParam('zip')}
 
   $scope.rooms = ->
     {
@@ -39,11 +39,11 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
     initSelection: (el, cb) ->
     }
 
-  $scope.previous = (n) ->
-    angular.element('#property-form-container .flash').removeClass('info success failure').empty()
-    angular.element('#property-form-container .steps').css('margin-left', -((n-1) * 768))
-    angular.element('#property-form-container .steps .step.active').removeClass('active')
-    angular.element('#property-form-container .steps .step').eq(n-1).addClass('active')
+  $scope.goto = (n) ->
+    angular.element('.property-form-container .flash').removeClass('info success failure').empty()
+    angular.element('.property-form-container .steps').css('margin-left', -((n-1) * 900))
+    angular.element('.property-form-container .steps .step.active').removeClass('active')
+    angular.element('.property-form-container .steps .step').eq(n-1).addClass('active')
     angular.element('.step-nav .step').removeClass('active').eq(n-1).addClass('active')
     scroll 0
     return true
@@ -74,9 +74,9 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
 
       if n < $scope.num_steps
         success = ->
-          angular.element('#property-form-container .steps').css('margin-left', -(n * 768))
-          angular.element('#property-form-container .steps .step.active').removeClass('active')
-          angular.element('#property-form-container .steps .step').eq(n).addClass('active')
+          angular.element('.property-form-container .steps').css('margin-left', -(n * 900))
+          angular.element('.property-form-container .steps .step.active').removeClass('active')
+          angular.element('.property-form-container .steps .step').eq(n).addClass('active')
           angular.element('.step-nav .step.active').addClass('complete')
           angular.element('.step-nav .step').removeClass('active').eq(n).addClass('active')
           scroll 0
@@ -95,12 +95,12 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
       post()
 
   flash = (type, msg) ->
-    angular.element('#property-form-container .step.active .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
+    angular.element('.property-form-container .step.active .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
-      angular.element('#property-form-container .step.active .flash').css('opacity', 0)
+      angular.element('.property-form-container .step.active .flash').css('opacity', 0)
     ), 3000)
     $timeout((->
-      angular.element('#property-form-container .step.active .flash').removeClass('info success failure')
+      angular.element('.property-form-container .step.active .flash').removeClass('info success failure')
     ), 4000)
     scroll 0
 
@@ -110,6 +110,8 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
         step_num = 'one'
       when 2
         step_num = 'two'
+      when 3
+        step_num = 'three'
     if _(angular.element('.step.' + step_num).find('input[required]')).filter((el) -> angular.element(el).val() == '')[0]
       flash('failure', 'Please fill in all required fields')
       false

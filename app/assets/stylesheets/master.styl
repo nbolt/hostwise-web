@@ -760,7 +760,7 @@ form
     vertical-align: top
     background-color: white
     border-radius: 1px
-    width: 357px
+    width: 272px
     height: 40px
     margin-right: 6px
     color: light-grey
@@ -790,136 +790,13 @@ form
       font-size: 1.2em
       margin: 5px 40px 0 8px
 
-#property-form-container
-  overflow: hidden
-  margin: auto
-  border-radius: 1px
-  .steps
-    width: 2304px
-    transition: margin-left .6s ease
-    .step
-      width: 768px
-      display: inline-block
-      vertical-align: top
-      position: relative
-      form
-        .button
-          button
-            margin-right: 15px
-            width: 120px
-        .section
-          background-color: white
-          padding: 30px
-          position: relative
-          .flash
-            left: 200px
-            margin-right: 30px
-            position: absolute
-            top: 30px
-          .title
-            font-size: 1.5em
-            margin-bottom: 20px
-          .row
-            padding: 20px 0
-            .label
-              display: inline-block
-              vertical-align: top
-              font-weight: bold
-              margin-top: 8px
-              width: 110px
-            .file-upload
-              background-color: primary-color-4
-              border-radius: 1px
-              color: white
-              cursor: pointer
-              display: inline-block
-              margin-left: 15px
-              padding: 8px 34px
-              vertical-align: top
-            .preview
-              width: 38px
-              height: 38px
-              margin-left: 20px
-            &.two
-              .field
-                &:last-child
-                  margin-right: 0
-                .select2-container
-                  width: 262px
-            &.three
-              .field
-                width: 170px
-                &:last-child
-                  margin-right: 0
-                .select2-container
-                  width: 170px
-            &.four
-              .field
-                width: 124px
-                &:last-child
-                  margin-right: 0
-                .select2-container
-                  width: 124px
-            .field
-              width: 262px
-              display: inline-block
-              vertical-align: top
-              margin-left: 15px
-              &.zip
-                width: 120px
-              &.street
-                width: 404px
-              input
-                width: 100%
-              input[type=file]
-                display: none
-              textarea
-                border: thin solid light-grey
-                border-radius: 3px
-                box-sizing: border-box
-                height: 100px
-                padding: 8px 12px
-                width: 100%
-                &:focus
-                  outline: none
-      &.two
-        form .section
-          .title
-            margin-bottom: 30px
-          .row
-            margin: 20px 0
-            padding: 0
-            .label
-              text-align: right
-              width: 210px
-            .field
-              width: 400px
-  .services
-    .service
-      background-color: light-grey
-      width: 100px
-      height: 100px
-      display: inline-block
-      vertical-align: top
-      margin: 0 25px
-      border-radius: 99px
-      .text
-        text-align: center
-        width: 80px
-        margin: 25px auto
-      &:hover, &.active
-        background-color: red
-        color: white
-        cursor: pointer
-      &:hover.active
-        background-color: light-grey
-        color: black
-      &.selecting
-        background-color: light-grey !important
-        color: black
-      &.active.selecting
-        background-color: red !important
-        color: white
+.property-form-container
+  margin: 100px auto
+  width: 900px
+  .container
+    margin: 20px 0
+    overflow: hidden
+    width: 100%
   .tabs
     text-align: center
     .tab
@@ -931,21 +808,150 @@ form
         border-bottom: thin solid light-grey
       &:hover
         cursor: pointer
-  .payments
-    .payment
-      text-align: center
-      width: 300px
-      margin: 25px auto
-      padding: 10px
-      border-radius: 3px
-      background-color: #eee
-      label
-        margin: 0 10px
-      .brand
-        display: inline-block
-        vertical-align: top
-      &:hover
-        cursor: pointer
+  .steps
+    width: 2700px
+    transition: margin-left .6s ease
+    .step
+      width: 900px
+      display: inline-block
+      vertical-align: top
+      position: relative
+      &.two .vr
+        height: 280px
+      &.three .vr
+        height: 565px
+      form
+        background-color: white
+        margin: 0 auto
+        position: relative
+        width: 100%
+        .flash
+          left: 30px
+          position: absolute
+          top: 8px
+        a
+          color: primary-color-1
+          text-decoration: none
+        .vr
+          border-left: 1px solid light-grey
+          display: inline-block
+          height: 305px
+          margin-top: 50px
+        hr
+          border: 0
+          border-top: 1px solid light-grey
+          margin: 20px 0
+        .section
+          display: inline-block
+          padding: 50px 30px
+          vertical-align: top
+          .row
+            margin: 20px 0
+            &:first-child
+              margin-top: 0
+            &.two, &.four
+              > div
+                display: inline-block
+                margin-left: 15px
+                width: 47%
+                &:first-child
+                  margin-left: 0
+              input, .caption
+                width: 100%
+            &.beds
+              > div span
+                display: inline-block
+                width: 100px
+            .select2-container
+              width: 100%
+              a
+                color: black
+          .cb
+            margin-top: 44px
+            label
+              color: black
+              font-size: 12px
+              font-weight: normal
+              &:before
+                top: 0
+          &.avatar
+            width: 158px
+            text-align: center
+            .name
+              margin: 20px 0
+            .location
+              color: dark-grey
+              font-size: 14px
+            img
+              background-color: light-grey
+              border-radius: 50%
+              height: 100px
+              width: 100px
+            .file-upload
+              color: primary-color-1
+              cursor: pointer
+              font-size: 15px
+              font-weight: bold
+              margin: 0 auto 30px
+          &.info
+            width: 280px
+          &.action
+            width: 280px
+          &.home-type
+            width: 250px
+          &.bed-type
+            width: 528px
+            .row.two
+              > div
+                width: 150px
+            .row.four
+              > div
+                width: 100px
+          &.instructions
+            width: 400px
+          &.details
+            button
+              margin-top: 0
+        input
+          width: 100%
+        textarea
+          border: thin solid light-grey
+          border-radius: 3px
+          box-sizing: border-box
+          height: 100px
+          padding: 8px 12px
+          width: 100%
+          &:focus
+            outline: none
+        label
+          color: primary-color-1
+          display: block
+          font-size: 14px
+          font-weight: bold
+          margin-bottom: 5px
+          text-align: left
+        button
+          height: 40px
+          margin: 30px 0 0
+          position: relative
+          width: 280px
+          .text
+            margin-left: 30px
+          .icon
+            background-color: primary-color-6
+            display: inline-block
+            height: 40px
+            left: 0
+            position: absolute
+            top: 0
+            width: 40px
+            .fa
+              line-height: 40px
+        .caption
+          display: inline-block
+          font-size: 13px
+          text-align: left
+          width: 100%
 
 #property
   #title

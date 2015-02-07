@@ -69,47 +69,49 @@ class Host::PropertiesController < Host::AuthController
     end
 
     case params[:stage]
-    when 1
-      # validate delivery_point_barcode and confirm with user if duplicate
-      unless params[:extras][:validated]
-        code = delivery_code(params[:form][:address1], params[:form][:address2], params[:form][:zip])
-        if code
-          if Property.where(delivery_point_barcode: code)[0]
-            render json: { success: false, extras: {validated: true}, type: 'info', message: "Our records indicate you may already have a property at this address. Click 'Next' again if you still wish to continue." }
+      when 1
+        # validate delivery_point_barcode and confirm with user if duplicate
+        unless params[:extras][:validated]
+          code = delivery_code(params[:form][:address1], params[:form][:address2], params[:form][:zip])
+          if code
+            if Property.where(delivery_point_barcode: code)[0]
+              render json: { success: false, extras: {validated: true}, type: 'info', message: "Our records indicate you may already have a property at this address. Click 'Next' again if you still wish to continue." }
+              return
+            end
+          else
+            render json: { success: false, message: 'Invalid address' }
             return
           end
-        else
-          render json: { success: false, message: 'Invalid address' }
-          return
         end
-      end
-      render json: { success: true }
-    when 2
-      property = current_user.properties.build(property_params)
-      property.active = true
-
-      property.property_type = params[:form][:property_type][:id]
-      property.rental_type = params[:form][:rental_type][:id]
-      property.bedrooms = params[:form][:bedrooms][:id]
-      property.bathrooms = params[:form][:bathrooms][:id]
-      property.twin_beds = params[:form][:twin_beds][:id]
-      property.full_beds = params[:form][:full_beds][:id]
-      property.queen_beds = params[:form][:queen_beds][:id]
-      property.king_beds = params[:form][:king_beds][:id]
-      property.property_photos.build(photo: params[:file]) # need to background this
-
-      property.access_info = params[:form][:access_info]
-      property.trash_disposal = params[:form][:trash_disposal]
-      property.parking_info = params[:form][:parking_info]
-      property.additional_info = params[:form][:additional_info]
-
-      if property.save
-        current_user.save
-        UserMailer.property_confirmation(property).then(:deliver)
         render json: { success: true }
-      else
-        render json: { success: false, message: property.errors.full_messages[0] }
-      end
+      when 2
+        render json: { success: true }
+      when 3
+        property = current_user.properties.build(property_params)
+        property.active = true
+        property.property_photos.build(photo: params[:file]) # need to background this
+
+        property.property_type = params[:form][:property_type][:id]
+        property.rental_type = params[:form][:rental_type][:id]
+        property.bedrooms = params[:form][:bedrooms][:id]
+        property.bathrooms = params[:form][:bathrooms][:id]
+        property.twin_beds = params[:form][:twin_beds][:id]
+        property.full_beds = params[:form][:full_beds][:id]
+        property.queen_beds = params[:form][:queen_beds][:id]
+        property.king_beds = params[:form][:king_beds][:id]
+
+        property.access_info = params[:form][:access_info]
+        property.trash_disposal = params[:form][:trash_disposal]
+        property.parking_info = params[:form][:parking_info]
+        property.additional_info = params[:form][:additional_info]
+
+        if property.save
+          current_user.save
+          UserMailer.property_confirmation(property).then(:deliver)
+          render json: { success: true }
+        else
+          render json: { success: false, message: property.errors.full_messages[0] }
+        end
     end
   end
 
@@ -130,8 +132,8 @@ class Host::PropertiesController < Host::AuthController
 
   def property_params
     params.require(:form).permit(:title, :address1, :address2, :zip, :bedrooms, :bathrooms,
-                                :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type, :rental_type,
-                                :access_info, :parking_info, :additional_info, :trash_disposal)
+                                 :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type, :rental_type,
+                                 :access_info, :parking_info, :additional_info, :trash_disposal)
   end
 
   def delivery_code(address1, address2, zip)
