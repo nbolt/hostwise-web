@@ -38,7 +38,7 @@ AccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', ($scope, $h
       i++
 
   $scope.open_deactivation = ->
-    ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'account', scope: $scope
+    ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'warning', scope: $scope
 
   $scope.cancel_deactivation = -> ngDialog.closeAll()
 

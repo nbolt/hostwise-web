@@ -98,8 +98,8 @@
               td ${{::booking.cost}}
       .deactivate
         | Do you wish to
-        span ng:click='confirm_deactivation()' ng:show='property.active'  deactivate this property?
-        span ng:click='confirm_reactivation()' ng:hide='property.active'  reactivate this property?
+        span ng:click='open_deactivation()' ng:show='property.active'  deactivate this property?
+        span ng:click='open_reactivation()' ng:hide='property.active'  reactivate this property?
     .column.info
       #map
       /.section.details
@@ -214,5 +214,5 @@
             .text ng:bind='property.additional_info'
 
 = render 'common/booking_modal'
-= render 'common/deactivation_modal'
-= render 'common/reactivation_modal'
+= render 'common/property_deactivation_modal'
+= render 'common/property_reactivation_modal'

@@ -20,7 +20,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
   $scope.open_deletion = (event) ->
     $scope.payment_id = $(event.currentTarget).parent().attr('id').split('-')[1]
     $scope.payment_info = $(event.currentTarget).parents('li').find('.details span').text().replace('ending in', '****')
-    ngDialog.open template: 'delete-payment-modal', controller: 'payment', className: 'account', scope: $scope
+    ngDialog.open template: 'delete-payment-modal', controller: 'payment', className: 'warning', scope: $scope
 
   $scope.cancel_deletion = -> ngDialog.closeAll()
 

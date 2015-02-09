@@ -17,11 +17,11 @@ EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
 
   $scope.open_deactivation = ->
     $scope.current_name = "#{$scope.host.first_name}'s"
-    ngDialog.open template: 'account-deactivation-modal', controller: 'edit-customer', className: 'account', scope: $scope
+    ngDialog.open template: 'account-deactivation-modal', controller: 'edit-customer', className: 'warning', scope: $scope
 
   $scope.open_reactivation = ->
     $scope.current_name = "#{$scope.host.first_name}'s"
-    ngDialog.open template: 'account-reactivation-modal', controller: 'edit-customer', className: 'account', scope: $scope
+    ngDialog.open template: 'account-reactivation-modal', controller: 'edit-customer', className: 'warning', scope: $scope
 
   $scope.cancel_deactivation = ->
     ngDialog.closeAll()

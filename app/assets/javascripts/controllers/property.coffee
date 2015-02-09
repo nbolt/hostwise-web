@@ -102,11 +102,28 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
               angular.element(".booking.modal .services .service.#{service.name} input").attr 'checked', true
     }
 
+  $scope.open_deactivation = ->
+    ngDialog.open template: 'property-deactivation-modal', controller: 'property', className: 'warning', scope: $scope
+
+  $scope.open_reactivation = ->
+    ngDialog.open template: 'property-reactivation-modal', controller: 'property', className: 'warning', scope: $scope
+
+  $scope.cancel_deactivation = ->
+    ngDialog.closeAll()
+
   $scope.confirm_deactivation = ->
-    ngDialog.open template: 'deactivation-modal', className: 'booking', scope: $scope
+    $http.post("/properties/#{$scope.property.slug}/deactivate").success (rsp) ->
+      if rsp.success
+        window.location = '/'
+      else
+        flash 'failure', rsp.message
 
   $scope.confirm_reactivation = ->
-    ngDialog.open template: 'reactivation-modal', className: 'booking', scope: $scope
+    $http.post("/properties/#{$scope.property.slug}/reactivate").success (rsp) ->
+      if rsp.success
+        window.location = '/'
+      else
+        flash 'failure', rsp.message
 
   $scope.expand = (section) ->
     angular.element('#property .section').removeClass 'active'
