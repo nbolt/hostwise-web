@@ -103,9 +103,11 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     }
 
   $scope.open_deactivation = ->
+    $window.loaded_mapbox = false
     ngDialog.open template: 'property-deactivation-modal', controller: 'property', className: 'warning', scope: $scope
 
   $scope.open_reactivation = ->
+    $window.loaded_mapbox = false
     ngDialog.open template: 'property-reactivation-modal', controller: 'property', className: 'warning', scope: $scope
 
   $scope.cancel_deactivation = ->
