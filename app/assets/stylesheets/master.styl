@@ -441,6 +441,7 @@ form
           color: white
           display: inline-block
           height: 24px
+          line-height: 24px
           margin-left: 120px
           position: relative
           text-align: center
@@ -1523,11 +1524,19 @@ form
         border-radius: 0
         width: 100%
   .ngdialog-close
+    color: gray
+    font-size: 1.5em
+    margin-right: 6px
     position: absolute
     right: 0
     top: 0
+    transition: opacity .5s ease-in-out
+    hover-darken()
     &:hover
       cursor: pointer
+    &::before
+      typicons()
+      content: '\e057'
 
 .ngdialog.auth
   .ngdialog-content
@@ -1564,19 +1573,10 @@ form
       position: absolute
       right: 10px
       text-align: center
-      top: 15px
+      top: 12px
       width: 30px
 
 .ngdialog.account
-  .ngdialog-close
-    color: red
-    margin-right: 6px
-    font-size: 1.5em
-    transition: opacity .5s ease-in-out
-    hover-darken()
-    &::before
-      typicons()
-      content: '\e057'
   .ngdialog-content
     width: 400px
     margin-top: 60px
@@ -1620,15 +1620,6 @@ form
           width: 50px
 
 .ngdialog.payment
-  .ngdialog-close
-    color: white
-    margin-right: 6px
-    font-size: 1.5em
-    transition: opacity .5s ease-in-out
-    hover-darken()
-    &::before
-      typicons()
-      content: '\e057'
   .ngdialog-content
     width: 400px
     margin-top: 60px
@@ -1779,14 +1770,6 @@ form
               font-weight: 600
 
 .ngdialog.booking
-  .ngdialog-close
-    color: white
-    margin-right: 6px
-    font-size: 2em
-    transition: opacity .5s ease-in-out
-    &::before
-      typicons()
-      content: '\e057'
   .ngdialog-content
     width: 976px
     margin-top: 40px
@@ -2267,15 +2250,6 @@ form
                 font-weight: 600
 
 .ngdialog.status
-  .ngdialog-close
-    color: darker-gray
-    margin-right: 6px
-    font-size: 1.5em
-    transition: opacity .5s ease-in-out
-    hover-darken()
-    &::before
-      typicons()
-      content: '\e057'
   .ngdialog-content
     color: darker-gray
     width: 360px
