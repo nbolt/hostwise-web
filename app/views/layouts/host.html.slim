@@ -5,8 +5,9 @@ html
     = render 'common/meta'
 
     javascript:
-      function stripe_loaded() { Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}") }
-      function mapbox_loaded() { L.mapbox.accessToken = "#{ENV['MAPBOX_TOKEN']}" }
+      function stripe_loaded(){Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}")}
+      function mapbox_loaded(){window.loaded_mapbox = true; L.mapbox.accessToken = "#{ENV['MAPBOX_TOKEN']}"}
+      function fanout_loaded(){window.faye_loaded = true}
 
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'css_imports'

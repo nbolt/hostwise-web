@@ -1,4 +1,4 @@
-PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope', 'ngDialog', ($scope, $http, $window, $timeout, $upload, $rootScope, ngDialog) ->
+PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload', '$rootScope', 'ngDialog', ($scope, $http, $window, $timeout, $interval, $upload, $rootScope, ngDialog) ->
 
   $scope.form = {}
   $scope.chosen_dates = {}
@@ -34,10 +34,15 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$upload', '$rootScope
     $scope.property.past_bookings = _($scope.property.bookings).filter (booking) ->
       moment(booking.date, 'YYYY-MM-DD').diff(moment(), 'days') < 0
 
-    $scope.map = L.mapbox.map 'map', 'useporter.l02en9o9'
-    $scope.markers = new L.LayerGroup().addTo($scope.map)
-    $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
-    refresh_map()
+    load_mapbox = null
+    load_mapbox = $interval((->
+      if $window.loaded_mapbox
+        $interval.cancel(load_mapbox)
+        $scope.map = L.mapbox.map 'map', 'useporter.l02en9o9'
+        $scope.markers = new L.LayerGroup().addTo($scope.map)
+        $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
+        refresh_map()
+    ), 200)
 
     $scope.form.bedrooms = { id: rsp.bedrooms.toString(), text: rsp.bedrooms.toString() }
     $scope.form.bathrooms = { id: rsp.bathrooms.toString(), text: rsp.bathrooms.toString() }

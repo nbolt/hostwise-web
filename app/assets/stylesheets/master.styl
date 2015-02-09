@@ -481,7 +481,7 @@ form
     vertical-align: top
   #search
     margin-right: 10px
-    width: 558px
+    width: 766px
     position: relative
     i
       color: dark-gray
@@ -491,7 +491,7 @@ form
       font-size: 1.25em
     input
       width: 100%
-      padding: 12px 12px 12px 40px
+      padding: 13px 12px 14px 40px
       border-radius: 1px
       border: thin solid light-gray
       color: black
@@ -1298,12 +1298,21 @@ form
           &.active.chosen.selecting
             background-color: white
 
+#properties .property
+  &:hover
+    cursor: pointer
+    .right
+      background-color: lighter-gray
+      
 #properties .property, #property .property
   background-color: white
   margin: 10px auto
   border-radius: 1px
+  .right
+    width: 826px
   .top
-    padding: 18px 32px
+    padding: 18px
+    height: 65px
   .bottom
     border-top: 2px solid light-gray
     font-size: .9em
@@ -1311,32 +1320,27 @@ form
       float: right
       background-color: lighter-gray
       width: 212px
-      height: 49px
+      height: 47px
       .icon
         font-size: 1.75em
         margin: 3px 0 0 10px
         color: #ccc
       .text
-        font-weight: 600
-        margin: 13px 0 0 8px
-        color: #777
+        margin: 12px 0 0 8px
+        color: darker-gray
     .left
-      padding: 15px 32px
+      padding: 15px 18px
     .id, .rooms, .icon, .text
       display: inline-block
       vertical-align: top
     .id
-      font-weight: 600
-      a
-        color: teal
-        text-decoration: none
+      color: dark-gray
     .rooms
+      color: dark-gray
       .typcn
-        color: #ccc
+        color: dark-gray
         font-size: 1.1em
         margin: -3px 5px 0 20px
-      .text
-        color: heavy-gray
   .button
     color: white
     text-align: left
@@ -1345,7 +1349,7 @@ form
     float: right
     width: 180px
     padding: 0
-    margin-top: 22px
+    margin-top: 15px
     .icon, .text
       display: inline-block
       vertical-align: top
@@ -1371,23 +1375,27 @@ form
     float: right
     font-size: .9em
     color: teal
-    margin: 32px 15px 0 0
-  .photo, .title
+    margin: 25px 15px 0 0
+    display: none
+    &:hover
+      text-decoration: underline
+  .photo, .title, .right
     display: inline-block
     vertical-align: top
   .photo
-    width: 80px
-    height: 80px
-    border-radius: 50%
+    width: 150px
+    height: 150px
     background-color: light-gray
     img
-      border-radius: 50%
-      height: 80px
-      width: 80px
+      height: 100%
+      width: 100%
   .title
-    margin: 18px 0 0 15px
+    margin-top: 15px
     .name
       font-weight: bold
+    .address
+      margin-top: 4px
+      color: dark-gray
   a
     color: black
     text-decoration: none
@@ -1437,9 +1445,13 @@ form
     margin: 40px 0
   #properties
     margin-top: 10px
+    .property-link
+      display: block
+      color: #24272a
     .new-property
       text-decoration: none
       .container
+        transition: background-color .5s ease-in-out
         border: 2px solid white
         border-radius: 1px
         padding: 15px 25px
@@ -1457,6 +1469,8 @@ form
           margin-right: 10px
           .typcn
             margin: -2px 0 0 2px
+      &:hover .container
+        background-color: white
 
 .card-entry
   border: thin solid #ccc

@@ -6,42 +6,43 @@
   .property
     .edit
       .typcn.typcn-pencil
-    .top
-      .photo
-        img ng:src='{{::property.primary_photo}}'
-      .title
-        .name ng:bind='::property.nickname'
-        .address ng:bind='::property.full_address'
-      .beds
-        .text Beds
-        .bed ng:show='property.king_beds == 1'
-          | {{property.king_beds}} King
-        .bed ng:show='property.king_beds > 1'
-          | {{property.king_beds}} Kings
-        .bed ng:show='property.queen_beds == 1'
-          | {{property.queen_beds}} Queen
-        .bed ng:show='property.queen_beds > 1'
-          | {{property.queen_beds}} Queens
-        .bed ng:show='property.full_beds > 0'
-          | {{property.full_beds}} Full
-        .bed ng:show='property.twin_beds == 1'
-          | {{property.twin_beds}} Twin
-        .bed ng:show='property.twin_beds > 1'
-          | {{property.twin_beds}} Twins
-    .bottom
-      .next-service ng:show='property.next_service_date'
-        .icon
-          .typcn.typcn-calendar-outline
-        .text Next Service {{property.next_service_date}}
-      .left
-        .id
-          | ID&nbsp;
-          a ng:href='/properties/{{property.slug}}' ng:bind='property.id'
-        .rooms
+    .photo
+      img ng:src='{{::property.primary_photo}}'
+    .right
+      .top
+        .title
+          .name ng:bind='::property.nickname'
+          .address ng:bind='::property.full_address'
+        .beds
+          .text Beds
+          .bed ng:show='property.king_beds == 1'
+            | {{property.king_beds}} King
+          .bed ng:show='property.king_beds > 1'
+            | {{property.king_beds}} Kings
+          .bed ng:show='property.queen_beds == 1'
+            | {{property.queen_beds}} Queen
+          .bed ng:show='property.queen_beds > 1'
+            | {{property.queen_beds}} Queens
+          .bed ng:show='property.full_beds > 0'
+            | {{property.full_beds}} Full
+          .bed ng:show='property.twin_beds == 1'
+            | {{property.twin_beds}} Twin
+          .bed ng:show='property.twin_beds > 1'
+            | {{property.twin_beds}} Twins
+      .bottom
+        .next-service ng:show='property.next_service_date'
           .icon
-            .typcn.typcn-home-outline
-          .text
-            | {{property.bedrooms}}BD/{{property.bathrooms}}BA
+            .typcn.typcn-calendar-outline
+          .text Next Service {{property.next_service_date}}
+        .left
+          .id
+            | ID&nbsp;
+            a ng:href='/properties/{{property.slug}}' ng:bind='property.id'
+          .rooms
+            .icon
+              .typcn.typcn-home-outline
+            .text
+              | {{property.bedrooms}}BD/{{property.bathrooms}}BA
   #columns
     .column.cal
       .section.cal

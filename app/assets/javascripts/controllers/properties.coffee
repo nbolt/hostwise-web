@@ -1,4 +1,4 @@
-PropertyHomeCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scope, $http, $timeout, $window, ngDialog) ->
 
   $scope.form = {}
   $scope.filter = {id:'alphabetical',text:'Alphabetical'}
@@ -6,6 +6,8 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
   $scope.term = ''
 
   promise = null
+
+  $scope.toProperty = (property) -> $window.location = "/properties/#{property.slug}"
 
   $scope.modal_calendar_options =
     {
