@@ -16,7 +16,7 @@
           input type='password' placeholder='Password' required='' ng:model='form.password'
         .field
           input type='password' placeholder='Confirm Password' required='' ng:model='form.password_confirmation'
-        button.yellow ng:click='step(1)'
+        button.orange ng:click='step(1)'
           .text= t('auth.button.sign_up.step1')
     .step.two
       .title= t('auth.title.sign_up.step2')
@@ -35,7 +35,7 @@
           input type='text' placeholder='Company (Optional)' ng:model='form.company'
         .field
           input type='text' placeholder='Mobile Number' required='' ng:model='form.phone_number'
-        button.yellow ng:click='step(2)'
+        button.orange ng:click='step(2)'
           .text= t('auth.button.sign_up.step2')
     .step.three
       .title= t('auth.title.sign_up.step3')
@@ -49,5 +49,5 @@
       form
         .field
           input type='text' placeholder='Confirmation Code' required='' ng:model='form.confirmation_code'
-        button.yellow ng:click='step(3)'
+        button.orange ng:click='step(3)'
           .text= t('auth.button.sign_up.step3')

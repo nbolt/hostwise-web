@@ -1,31 +1,3 @@
-black = #24272A
-red = #E06358
-dark-red = #D15756
-green = #85A759
-dark-grey = #808080
-darker-grey = #5D5D5D
-light-grey = #E5E5E5
-lighter-grey = #EFEFEF
-light-blue = #7296BF
-light-navy = #B9C1D5
-navy = #2D3842
-dark-navy = #242A30
-teal = #35A9B1
-dark-teal = #2F969C
-light-teal = #48BBBC
-yellow = #F79F57
-
-facebook-blue = #3d599b
-twitter-blue  = #00abee
-
-primary-color-1 = #2BAAB0
-primary-color-2 = #2C3842
-primary-color-3 = #E6C15D
-primary-color-4 = #E36159
-primary-color-5 = #979FA9
-primary-color-6 = #3A4A61
-primary-color-7 = #59626A
-
 @keyframes fadein {
   from {opacity: 0}
   to   {opacity: 1}
@@ -46,7 +18,7 @@ input[type=text],
 input[type=email],
 input[type=password],
 input[type=file]
-  border: thin solid light-grey
+  border: thin solid light-gray
   border-radius: 3px
   box-shadow: none
   box-sizing: border-box
@@ -64,11 +36,11 @@ input[type=file]
   text-decoration: none
   hover-darken()
   &.teal
-    background-color: primary-color-1
+    background-color: teal
     .icon, &:hover
       background-color: light-teal
-  &.yellow
-    background-color: primary-color-3
+  &.orange
+    background-color: orange
     hover-darken()
   &.red
     background-color: dark-red
@@ -76,8 +48,8 @@ input[type=file]
       background-color: red
   &.white
     background-color: white
-    color: dark-grey
+    color: darker-gray
     &:hover
-      color: dark-grey
+      color: darker-gray
   &:hover
     color: white

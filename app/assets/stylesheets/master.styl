@@ -10,7 +10,7 @@ html, body, .body
   position: relative
 
 .body, .grey
-  background-color: light-grey
+  background-color: light-gray
 
 header
   padding: 10px 20px
@@ -57,7 +57,7 @@ header
           width: 60px
           height: 60px
       .name
-        color: dark-grey
+        color: darker-gray
         margin: 15px 20px 0 12px
         font-size: 1.2em
       .arrow
@@ -70,13 +70,13 @@ header
       margin: 0 10px
       position: relative
       .head-button
-        background-color: primary-color-1
+        background-color: teal
         padding: 8px 12px
         border-radius: 1px
         color: white
         hover-darken()
         &.login
-          background-color: primary-color-2
+          background-color: navy
           hover-darken()
       > a
         text-decoration: none
@@ -98,7 +98,7 @@ header
         width: 260px
         right: 1px
         .drop
-          background-color: dark-navy
+          background-color: navy
         .drop-arrow
           width: 0
           height: 0
@@ -109,19 +109,20 @@ header
         .links
           padding: 6px 0
           a
+            &:hover
+              background-color: lighter-navy
             .link
               margin: 8px 0 8px 15px
-              color: light-navy
-              border-bottom: thin solid transparent
+              color: dark-gray
             &:hover .link
-              border-bottom: thin solid light-navy
+              color: white
         &.properties
           overflow-y: scroll
           .search
             overflow: auto
             .input
               position: relative
-              background-color: #2D3842
+              background-color: lighter-navy
               margin-left: 12px
               box-sizing: border-box
               width: 220px
@@ -131,13 +132,13 @@ header
                 position: absolute
                 left: 16px
                 top: 10px
-                color: light-navy
+                color: white
               input
                 font-size: .9em
                 background: none
                 border: none
                 padding-left: 40px
-                color: light-navy
+                color: white
                 &:active, &:focus
                   outline: none
                   box-shadow: none
@@ -152,16 +153,15 @@ header
               .link
                 display: inline-block
                 vertical-align: top
-                color: light-navy
-                border-bottom: thin solid transparent
+                color: dark-gray
                 max-height: 23px
                 width: 220px
                 text-align: left
               &:hover .link
-                text-decoration: underline
+                color: white
 
 footer
-  background-color: primary-color-2
+  background-color: navy
   color: white
   padding: 70px 30px
   > div
@@ -216,7 +216,7 @@ footer
   transition: margin-left .4s ease-in-out
 
 .button.teal, button.teal
-  background-color: primary-color-1
+  background-color: teal
   padding: 8px 12px
   border-radius: 1px
   color: white
@@ -239,7 +239,7 @@ footer
 
 #sidebar-container
   z-index: 1
-  background-color: navy
+  background-color: light-navy
   position: fixed
   top: 85px
   min-height: 100%
@@ -261,11 +261,13 @@ footer
         height: 1px
       &:hover
         cursor: pointer
-        background-color: dark-navy
+        background-color: lighter-navy
       &.active
-        background-color: navy
+        background-color: lighter-navy
       > a
         color: white
+        &:active, &:focus
+          outline: none
       .title
         margin-bottom: 15px
         text-align: center
@@ -283,12 +285,12 @@ footer
       .arrow
         margin-top: 13px
       .drop-container
-        background-color: dark-navy
+        background-color: navy
         .search
           margin: 20px 0 10px
           .input
             position: relative
-            background-color: #2D3842
+            background-color: navy
             margin-left: 12px
             padding: 8px 12px
             box-sizing: border-box
@@ -315,25 +317,19 @@ footer
           a
             &:active, &:focus
               outline: none
+            &:hover
+              background-color: lighter-navy
             .link
               display: inline-block
               vertical-align: top
-              color: light-navy
-              border-bottom: thin solid transparent
+              color: dark-gray
               max-height: 23px
             &:hover .link
-              border-bottom: thin solid light-navy
+              color: white
 form
-  .button
-    .skip
-      color: light-blue
-      display: inline-block
-      margin-left: 25px
-      &:hover
-        cursor: pointer
   button
     border: 0
-    background-color: primary-color-1
+    background-color: teal
     color: white
     cursor: pointer
     width: 220px
@@ -350,21 +346,21 @@ form
     .text, .typcn
       display: inline-block
       vertical-align: top
-    &.yellow
-      background-color: primary-color-3
+    &.orange
+      background-color: orange
       hover-darken()
 
 .signup,
 .signin,
 .forgotpwd,
 .default
-  color: primary-color-5
+  color: dark-gray
   width: 450px
   margin: 140px auto 50px
   text-align: center
   position: relative
   .title
-    color: primary-color-2
+    color: navy
     font-size: 2em
     margin-bottom: 25px
     text-transform: uppercase
@@ -378,7 +374,7 @@ form
     text-align: left
     width: 324px
   a
-    color: primary-color-5
+    color: dark-gray
     text-decoration: none
   .create-account
     margin: 10px 0
@@ -386,15 +382,15 @@ form
       display: block
       font-size: 15px
     .button
-      background-color: light-grey
-      color: dark-grey
+      background-color: light-gray
+      color: darker-gray
       display: inline-block
       margin: 5px 0
       width: 300px
   .forgot-pwd
     font-size: 15px
   button
-    background-color: primary-color-3
+    background-color: orange
     font-weight: bold
     margin-bottom: 30px
     text-transform: uppercase
@@ -402,7 +398,7 @@ form
     hover_darken()
   .button
     background-color: white
-    color: dark-grey
+    color: darker-gray
     padding: 8px 12px
     border-radius: 1px
     hover-darken()
@@ -420,7 +416,7 @@ form
         &.three .caption
           margin-top: 45px
       .progress-container
-        background-color: primary-color-7
+        background-color: lighter-navy
         padding: 30px 0
       .progress
         margin: 0 auto
@@ -428,7 +424,7 @@ form
         width: 324px
         .typcn
           background-color: white
-          color: primary-color-1
+          color: teal
           font-size: 20px
           line-height: 20px
         hr
@@ -439,7 +435,7 @@ form
           width: 100%
           z-index: 1
         span
-          background-color: primary-color-7
+          background-color: lighter-navy
           border: 2px solid white
           border-radius: 50%
           color: white
@@ -453,7 +449,7 @@ form
           &.one
             margin-left: 0
           &.active
-            background-color: primary-color-1
+            background-color: teal
   .flash
     position: absolute
     top: -50px
@@ -477,7 +473,7 @@ form
   &.failure
     background-color: red
   &.info
-    background-color: yellow
+    background-color: orange
 
 .container
   width: 768px
@@ -492,7 +488,7 @@ form
     width: 558px
     position: relative
     i
-      color: primary-color-5
+      color: dark-gray
       position: absolute
       left: 12px
       top: 14px
@@ -501,7 +497,7 @@ form
       width: 100%
       padding: 12px 12px 12px 40px
       border-radius: 1px
-      border: thin solid light-grey
+      border: thin solid light-gray
       color: black
       box-sizing: border-box
       &:active, &:focus
@@ -553,7 +549,7 @@ form
       vertical-align: top
       .head
         padding: 12px 15px
-        border-bottom: thin solid light-grey
+        border-bottom: thin solid light-gray
         height: 40px
         .right
           float: right
@@ -639,14 +635,14 @@ form
   .schedule
     margin-top: 50px
     .head
-      border-bottom: thin solid darker-grey
+      border-bottom: thin solid heavy-gray
       padding-bottom: 10px
       margin-bottom: 20px
       font-weight: 700
       .right
         float: right
     .no-upcoming
-      background-color: yellow
+      background-color: orange
       padding: 12px 15px
       color: white
       border-radius: 1px
@@ -660,7 +656,7 @@ form
         margin-left: 5px
     .distribution
       .top
-        background-color: yellow
+        background-color: orange
         padding: 12px 15px
         color: white
         font-weight: 600
@@ -763,7 +759,7 @@ form
     width: 272px
     height: 40px
     margin-right: 6px
-    color: light-grey
+    color: light-gray
     border-bottom: 2px solid white
     padding: 6px 12px
     &:last-child
@@ -805,7 +801,7 @@ form
       margin: 10px 20px
       padding-bottom: 4px
       &.active
-        border-bottom: thin solid light-grey
+        border-bottom: thin solid light-gray
       &:hover
         cursor: pointer
   .steps
@@ -830,16 +826,16 @@ form
           position: absolute
           top: 8px
         a
-          color: primary-color-1
+          color: teal
           text-decoration: none
         .vr
-          border-left: 1px solid light-grey
+          border-left: 1px solid light-gray
           display: inline-block
           height: 305px
           margin-top: 50px
         hr
           border: 0
-          border-top: 1px solid light-grey
+          border-top: 1px solid light-gray
           margin: 20px 0
         .section
           display: inline-block
@@ -880,15 +876,15 @@ form
             .name
               margin: 20px 0
             .location
-              color: dark-grey
+              color: darker-gray
               font-size: 14px
             img
-              background-color: light-grey
+              background-color: light-gray
               border-radius: 50%
               height: 100px
               width: 100px
             .file-upload
-              color: primary-color-1
+              color: teal
               cursor: pointer
               font-size: 15px
               font-weight: bold
@@ -915,7 +911,7 @@ form
         input
           width: 100%
         textarea
-          border: thin solid light-grey
+          border: thin solid light-gray
           border-radius: 3px
           box-sizing: border-box
           height: 100px
@@ -924,7 +920,7 @@ form
           &:focus
             outline: none
         label
-          color: primary-color-1
+          color: teal
           display: block
           font-size: 14px
           font-weight: bold
@@ -938,7 +934,7 @@ form
           .text
             margin-left: 30px
           .icon
-            background-color: primary-color-6
+            background-color: light-navy
             display: inline-block
             height: 40px
             left: 0
@@ -1001,7 +997,7 @@ form
           color: #E8E9EA
           font-size: 1.25em
           text-align: center
-          border-bottom: 2px solid light-grey
+          border-bottom: 2px solid light-gray
           transition: color .6s ease-in-out, border .6s ease-in-out
           .icon, .text, .arrow
             display: inline-block
@@ -1014,11 +1010,11 @@ form
           .arrow
             float: right
             font-size: 1.25em
-            color: darker-grey
+            color: heavy-gray
             margin-top: -3px
             transform: rotate(90deg)
           .text
-            color: darker-grey
+            color: heavy-gray
           &:hover
             cursor: pointer
         &.services
@@ -1026,7 +1022,7 @@ form
             width: 92%
             margin: 25px auto
             thead
-              border-bottom: thin solid light-grey
+              border-bottom: thin solid light-gray
               tr
                 th
                   text-align: left
@@ -1039,11 +1035,11 @@ form
                     width: 190px
             tbody
               tr
-                border-bottom: thin solid light-grey
+                border-bottom: thin solid light-gray
                 transition: height .4s ease-in-out
                 td
                   padding: 10px 0 6px
-                  color: dark-grey
+                  color: darker-gray
                   vertical-align: top
                   &.id a
                     text-decoration: none
@@ -1092,7 +1088,7 @@ form
               input[type=file]
                 display: none
               .file-upload
-                background-color: primary-color-4
+                background-color: red
                 border-radius: 1px
                 color: white
                 cursor: pointer
@@ -1119,7 +1115,7 @@ form
                   transition: opacity .6s ease-in-out
                 textarea
                   width: 415px
-                  border: thin solid light-grey
+                  border: thin solid light-gray
                   border-radius: 1px
                   resize: none
                   padding: 10px
@@ -1173,8 +1169,8 @@ form
         display: block
       .day
         .head
-          color: darker-grey
-          border-bottom: 2px solid darker-grey
+          color: heavy-gray
+          border-bottom: 2px solid heavy-gray
           padding-bottom: 10px
           font-size: 1.25em
           font-weight: 700
@@ -1218,7 +1214,7 @@ form
               width: 80px
               height: 80px
               border-radius: 50%
-              background-color: light-grey
+              background-color: light-gray
               img
                 border-radius: 50%
                 height: 80px
@@ -1301,7 +1297,7 @@ form
             background-color: teal
             color: white
           &.active.chosen:hover
-            background-color: light-grey
+            background-color: light-gray
             color: #999
           &.active.chosen.selecting
             background-color: white
@@ -1313,11 +1309,11 @@ form
   .top
     padding: 18px 32px
   .bottom
-    border-top: 2px solid light-grey
+    border-top: 2px solid light-gray
     font-size: .9em
     .next-service
       float: right
-      background-color: lighter-grey
+      background-color: lighter-gray
       width: 212px
       height: 49px
       .icon
@@ -1344,7 +1340,7 @@ form
         font-size: 1.1em
         margin: -3px 5px 0 20px
       .text
-        color: darker-grey
+        color: heavy-gray
   .button
     color: white
     text-align: left
@@ -1387,7 +1383,7 @@ form
     width: 80px
     height: 80px
     border-radius: 50%
-    background-color: light-grey
+    background-color: light-gray
     img
       border-radius: 50%
       height: 80px
@@ -1414,7 +1410,7 @@ form
       margin-right: 10px
     .bed
       padding: 0 15px
-      border-right: thin solid light-grey
+      border-right: thin solid light-gray
       &:last-child
         border-right: 0
   .bottom
@@ -1489,7 +1485,7 @@ form
   border: none !important
   a
     background: none !important
-    border: thin solid light-grey !important
+    border: thin solid light-gray !important
     border-radius: 3px
     color: white
     box-shadow: none !important
@@ -1501,7 +1497,7 @@ form
 
 .select2-drop
   margin-top: 0px !important
-  border: thin solid light-grey !important
+  border: thin solid light-gray !important
   border-top: none !important
   .select2-result-label
     .state
@@ -1573,7 +1569,7 @@ form
 
 .ngdialog.account
   .ngdialog-close
-    color: primary-color-4
+    color: red
     margin-right: 6px
     font-size: 1.5em
     transition: opacity .5s ease-in-out
@@ -1588,11 +1584,11 @@ form
       background-color: white
       overflow: hidden
       .header
-        border-bottom: 1px solid primary-color-4
-        color: primary-color-4
+        border-bottom: 1px solid red
+        color: red
         padding: 20px
       .footer
-        background-color: light-grey
+        background-color: light-gray
         padding: 30px
         position: relative
         .buttons
@@ -1608,12 +1604,12 @@ form
         padding: 30px 20px
         text-align: center
         .text
-          color: dark-grey
+          color: darker-gray
           font-size: 15px
           .capitalize
             text-transform: capitalize
         .fa
-          background-color: primary-color-4
+          background-color: red
           border-radius: 50%
           color: white
           font-size: 35px
@@ -1662,7 +1658,7 @@ form
         &.success
           background-color: green
         &.info
-          background-color: yellow
+          background-color: orange
       .content
         display: inline-block
         vertical-align: top
@@ -1734,20 +1730,20 @@ form
                   width: 80px
         .payment-method
           margin-bottom: 25px
-          border-bottom: 2px solid light-grey
+          border-bottom: 2px solid light-gray
           padding-bottom: 25px
           .text
             margin-bottom: 10px
           .select2-container
             width: 200px
             > a
-              background: lighter-grey !important
-              color: darker-grey
-              border: thin solid light-grey
+              background: lighter-gray !important
+              color: heavy-gray
+              border: thin solid light-gray
               border-radius: 1px !important
         input
-          background: lighter-grey
-          border: thin solid light-grey
+          background: lighter-gray
+          border: thin solid light-gray
           margin: 10px 0 20px
           padding: 8px 12px
           border-radius: 1px
@@ -1764,13 +1760,13 @@ form
           text-align: center
           position: relative
           padding: 20px
-          border-bottom: 2px solid light-grey
+          border-bottom: 2px solid light-gray
           .arrows
             position: absolute
             top: 20px
             left: 30px
             right: 30px
-            color: darker-grey
+            color: heavy-gray
             .arrow
               &:hover
                 cursor: pointer
@@ -1830,7 +1826,7 @@ form
         &.success
           background-color: green
         &.info
-          background-color: yellow
+          background-color: orange
       .content-container
         width: 2928px
         height: 540px
@@ -1857,7 +1853,7 @@ form
                     cursor: pointer
               .button
                 background-color: white
-                color: darker-grey
+                color: heavy-gray
                 margin-top: 7px
                 width: 130px
                 &:hover
@@ -2001,7 +1997,7 @@ form
               margin-top: 35px
             .payment-method
               margin: 25px 0
-              border-bottom: 2px solid light-grey
+              border-bottom: 2px solid light-gray
               padding-bottom: 25px
               position: relative
               .icon, .arrow
@@ -2019,15 +2015,15 @@ form
               .select2-container
                 width: 100%
                 > a
-                  color: darker-grey
+                  color: heavy-gray
                   background: white !important
                   border: none !important
                   border-radius: 1px !important
               &.existing .select2-container > a
                 padding-left: 35px !important
             input
-              background: lighter-grey
-              border: thin solid light-grey
+              background: lighter-gray
+              border: thin solid light-gray
               margin: 10px 0 20px
               padding: 8px 12px
               border-radius: 1px
@@ -2104,7 +2100,7 @@ form
               .foot
                 background-color: teal
               .check-icon
-                background-color: dark-teal
+                background-color: light-teal
             &.red
               background-color: red
               .foot
@@ -2176,10 +2172,10 @@ form
                 display: inline-block
                 vertical-align: top
               .icon
-                background-color: primary-color-7
+                background-color: lighter-navy
               &.active
                 .icon
-                  background-color: primary-color-1
+                  background-color: teal
               .text
                 font-size: 1.25em
                 width: 160px
@@ -2240,8 +2236,8 @@ form
             .select2-container
               width: 100%
               > a
-                background: lighter-grey !important
-                color: darker-grey
+                background: lighter-gray !important
+                color: heavy-gray
                 font-weight: 600
                 border-radius: 1px
                 .select2-chosen
@@ -2252,13 +2248,13 @@ form
             text-align: center
             position: relative
             padding: 20px
-            border-bottom: 2px solid light-grey
+            border-bottom: 2px solid light-gray
             .arrows
               position: absolute
               top: 20px
               left: 30px
               right: 30px
-              color: darker-grey
+              color: heavy-gray
               .arrow
                 &:hover
                   cursor: pointer
@@ -2272,7 +2268,7 @@ form
 
 .ngdialog.status
   .ngdialog-close
-    color: dark-grey
+    color: darker-gray
     margin-right: 6px
     font-size: 1.5em
     transition: opacity .5s ease-in-out
@@ -2281,7 +2277,7 @@ form
       typicons()
       content: '\e057'
   .ngdialog-content
-    color: dark-grey
+    color: darker-gray
     width: 360px
     margin-top: 60px
     .modal
@@ -2302,7 +2298,7 @@ form
             font-weight: bold
           .fa-flash,
           .fa-check
-            background-color: yellow
+            background-color: orange
             border-radius: 50%
             color: white
             font-size: 35px
@@ -2312,11 +2308,11 @@ form
             text-align: center
             width: 50px
           .fa-check
-            background-color: primary-color-1
+            background-color: teal
           .position
             font-weight: bold
             span
-              color: yellow
+              color: orange
             .fa
               margin: 0 10px
           .info
@@ -2326,7 +2322,7 @@ form
               display: inline-block
               width: 60px
             .name
-              color: primary-color-1
+              color: teal
               display: inline-block
               line-height: 60px
               margin-left: 10px
@@ -2345,13 +2341,13 @@ form
               text-align: center
               width: 45px
               &.confirm
-                color: primary-color-1
+                color: teal
 
 .cb
   input[type=checkbox]
     display: none
     &:checked + label:before
-      color: dark-grey
+      color: darker-gray
       content: "\2713"
       font-size: 15px
       line-height: 15px
@@ -2364,7 +2360,7 @@ form
     padding-left: 25px
     position: relative
     &:before
-      border: 1px solid light-grey
+      border: 1px solid light-gray
       bottom: 1px
       content: ""
       display: inline-block
@@ -2387,14 +2383,14 @@ form
       &.active
         font-weight: bold
       &.disabled a
-        color: dark-grey
+        color: darker-gray
         cursor: not-allowed
       a
-        color: primary-color-1
+        color: teal
         font-size: 18px
         text-decoration: none
         &:hover
-          color: primary-color-2
+          color: navy
 
 .faq-container
   margin: 40px auto 0
@@ -2412,13 +2408,13 @@ form
       padding: 0
       position: relative
       .fa
-        color: dark-grey
+        color: darker-gray
         position: absolute
         right: 0
         top: 3px
     content
-      border-top: 1px solid light-grey
-      color: dark-grey
+      border-top: 1px solid light-gray
+      color: darker-gray
       display: none
       font-size: 15px
       margin-top: 20px
@@ -2431,7 +2427,7 @@ form
   margin: 40px auto 0
   overflow: hidden
   section
-    color: primary-color-1
+    color: teal
     display: inline-block
     margin-left: 12px
     vertical-align: top
@@ -2448,8 +2444,8 @@ form
       h2
         font-size: 18px
       h3
-        border-bottom: 1px solid light-grey
-        color: primary-color-5
+        border-bottom: 1px solid light-gray
+        color: dark-gray
         font-size: 13px
         margin: 40px 0 0
         padding-bottom: 30px
@@ -2471,7 +2467,7 @@ form
           text-align: left
           width: 50px
           &:first-child
-            border-right: 1px solid light-grey
+            border-right: 1px solid light-gray
             color: black
             font-weight: normal
             margin-right: 10px
@@ -2479,21 +2475,21 @@ form
             text-align: right
             width: 100px
         .header
-          border-bottom: 1px solid light-grey
+          border-bottom: 1px solid light-gray
           margin-bottom: 10px
           padding-bottom: 5px
       &.staging
         margin-top: 12px
         h2
-          color: dark-grey
+          color: darker-gray
     &.linen
-      color: primary-color-4
+      color: red
     &.toiletries
-      color: primary-color-3
+      color: orange
       img
         width: 100%
         &.bigelo
-          background-color: primary-color-3
+          background-color: orange
           padding: 15px
           width: 218px
 
@@ -2514,14 +2510,14 @@ form
       .fa
         margin-left: 3px
     textarea
-      border: thin solid light-grey
+      border: thin solid light-gray
       border-radius: 3px
       box-sizing: border-box
       height: 200px
       padding: 8px 12px
       width: 100%
     p
-      color: primary-color-1
+      color: teal
       margin: 0
   ul.links
     margin: 10px 0 0
@@ -2536,9 +2532,9 @@ form
       &:first-child
         margin-left: 0
       a
-        color: primary-color-1
+        color: teal
       .fa
-        border-right: 1px solid light-grey
+        border-right: 1px solid light-gray
         font-size: 25px
         padding-right: 10px
       span
@@ -2558,12 +2554,12 @@ form
     margin: 0
     padding: 0
     li
-      border: 1px solid light-grey
+      border: 1px solid light-gray
       margin-bottom: 5px
       padding: 20px
       position: relative
       a
-        color: primary-color-1
+        color: teal
         margin-left: 30px
         text-decoration: none
       div
@@ -2576,15 +2572,15 @@ form
         position: absolute
         right: 20px
         .primary
-          background-color: light-grey
+          background-color: light-gray
           border-radius: 3px
-          color: dark-grey
+          color: darker-gray
           padding: 5px 25px
       .fa
         font-size: 25px
         margin-right: 20px
       &.add-payment
-        color: primary-color-1
+        color: teal
 
 .first-property
   .hero
@@ -2615,7 +2611,7 @@ form
     .section
       padding: 50px 20px
       &.notify
-        background-color: primary-color-4
+        background-color: red
         color: white
         display: none
         height: 35px
@@ -2677,7 +2673,7 @@ form
     margin: 0
     padding: 0
     .select2-result
-      background-color: #5D5D5D
+      background-color: heavy-gray
       color: white
       border-top: thin solid white
       padding: 8px 12px
@@ -2697,7 +2693,7 @@ form
   .reactivate
     margin-top: 20px
     span
-      color: primary-color-4
+      color: red
       cursor: pointer
   .container
     margin: 20px 0
@@ -2706,7 +2702,7 @@ form
     h1
       margin: 30px 0 10px
     h3
-      color: dark-grey
+      color: darker-gray
       font-size: 16px
       font-weight: normal
       margin: 0 0 30px
@@ -2721,7 +2717,7 @@ form
         position: absolute
         top: 8px
       a
-        color: primary-color-1
+        color: teal
         text-decoration: none
       .section
         display: inline-block
@@ -2747,7 +2743,7 @@ form
       input
         width: 100%
       label
-        color: primary-color-1
+        color: teal
         display: block
         font-size: 14px
         font-weight: bold
@@ -2761,7 +2757,7 @@ form
         .text
           margin-left: 30px
         .icon
-          background-color: primary-color-6
+          background-color: light-navy
           display: inline-block
           height: 40px
           left: 0
@@ -2785,13 +2781,13 @@ form
         &.one
           form
             .vr
-              border-left: 1px solid light-grey
+              border-left: 1px solid light-gray
               display: inline-block
               height: 830px
               margin-top: 50px
             hr
               border: 0
-              border-top: 1px solid light-grey
+              border-top: 1px solid light-gray
               margin: 40px 0
             .section
               &.avatar
@@ -2800,14 +2796,14 @@ form
                 .name
                   margin: 20px 0
                 .location
-                  color: dark-grey
+                  color: darker-gray
                   font-size: 14px
                 img
                   border-radius: 50%
                   height: 100px
                   width: 100px
                 .file-upload
-                  color: primary-color-1
+                  color: teal
                   cursor: pointer
                   font-size: 15px
                   font-weight: bold
@@ -2822,7 +2818,7 @@ form
             font-weight: normal
             text-align: right
             a
-              color: primary-color-4
+              color: red
               font-size: 15px
               text-decoration: none
           form
@@ -2865,7 +2861,7 @@ form
       height: 40px
       position: relative
       .icon
-        background-color: primary-color-6
+        background-color: light-navy
         display: inline-block
         height: 40px
         left: 0
@@ -2886,9 +2882,9 @@ form
       input[type=checkbox]
         display: none
       label
-        border: 1px solid light-grey
+        border: 1px solid light-gray
         border-radius: 3px
-        color: dark-grey
+        color: darker-gray
         cursor: pointer
         display: inline-block
         font-size: 13px
@@ -2902,31 +2898,31 @@ form
           display: inline-block
           margin-right: 0
         &.checked
-          background-color: primary-color-4
-          border: 1px solid primary-color-4
+          background-color: red
+          border: 1px solid red
           color: white
     .caption
-      border-top: 1px solid light-grey
+      border-top: 1px solid light-gray
       margin-top: 50px
       padding-top: 30px
       text-align: left
       > div
         display: inline-block
         span
-          color: dark-grey
+          color: darker-gray
           display: inline-block
           font-size: 15px
           margin: 2px 0 0 5px
           vertical-align: top
         .box
-          border: 1px solid light-grey
+          border: 1px solid light-gray
           border-radius: 3px
           display: inline-block
           height: 25px
           width: 25px
           &.opened
-            background-color: primary-color-4
-            border: 1px solid primary-color-4
+            background-color: red
+            border: 1px solid red
             margin-left: 30px
 
 .notification-container
@@ -2943,7 +2939,7 @@ form
       height: 40px
       position: relative
       .icon
-        background-color: primary-color-6
+        background-color: light-navy
         display: inline-block
         height: 40px
         left: 0
@@ -2967,7 +2963,7 @@ form
         text-align: center
         width: 70px
     .row
-      border-top: 1px solid light-grey
+      border-top: 1px solid light-gray
       padding: 20px 0
       .text, label
         display: inline-block
