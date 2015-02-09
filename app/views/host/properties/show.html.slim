@@ -15,19 +15,19 @@
           .address ng:bind='::property.full_address'
         .beds
           .text Beds
-          .bed ng:show='property.king_beds == 1'
+          .bed ng:if='property.king_beds == 1'
             | {{property.king_beds}} King
-          .bed ng:show='property.king_beds > 1'
+          .bed ng:if='property.king_beds > 1'
             | {{property.king_beds}} Kings
-          .bed ng:show='property.queen_beds == 1'
+          .bed ng:if='property.queen_beds == 1'
             | {{property.queen_beds}} Queen
-          .bed ng:show='property.queen_beds > 1'
+          .bed ng:if='property.queen_beds > 1'
             | {{property.queen_beds}} Queens
-          .bed ng:show='property.full_beds > 0'
+          .bed ng:if='property.full_beds > 0'
             | {{property.full_beds}} Full
-          .bed ng:show='property.twin_beds == 1'
+          .bed ng:if='property.twin_beds == 1'
             | {{property.twin_beds}} Twin
-          .bed ng:show='property.twin_beds > 1'
+          .bed ng:if='property.twin_beds > 1'
             | {{property.twin_beds}} Twins
       .bottom
         .next-service ng:show='property.next_service_date'
@@ -188,32 +188,30 @@
           .icon
             .typcn.typcn-document-text
           .text Property Instructions
-        .content-container.instructions
+        .instruction ng:if='property.access_info'
+          .edit
+            .typcn.typcn-pencil
           .content
-            .row.one
-              .field
-                .label Access Information
-                .input.access
-                  .typcn.typcn-tick
-                  textarea rows='4' type='text' ng:model='form.access_info'
-            .row.one
-              .field
-                .label Trash Disposal
-                .input.trash
-                  .typcn.typcn-tick
-                  textarea rows='4' type='text' ng:model='form.trash_disposal'
-            .row.one
-              .field
-                .label Parking Information
-                .input.parking
-                  .typcn.typcn-tick
-                  textarea rows='4' type='text' ng:model='form.parking_info'
-            .row.one
-              .field
-                .label Additional Information
-                .input.additional
-                  .typcn.typcn-tick
-                  textarea rows='4' type='text' ng:model='form.additional_info'
+            .title Access Information
+            .text ng:bind='property.access_info'
+        .instruction ng:if='property.trash_disposal'
+          .edit
+            .typcn.typcn-pencil
+          .content
+            .title Trash Disposal
+            .text ng:bind='property.trash_disposal'
+        .instruction ng:if='property.parking_info'
+          .edit
+            .typcn.typcn-pencil
+          .content
+            .title Parking Information
+            .text ng:bind='property.parking_info'
+        .instruction ng:if='property.additional_info'
+          .edit
+            .typcn.typcn-pencil
+          .content
+            .title Additional Information
+            .text ng:bind='property.additional_info'
 
 = render 'common/booking_modal'
 = render 'common/deactivation_modal'
