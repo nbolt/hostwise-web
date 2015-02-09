@@ -209,10 +209,8 @@ footer
 
 .body
   width: 976px
-  margin: 130px 0
+  margin: 130px 0 0 130px
   position: relative
-  left: 50%
-  margin-left: -448px
   transition: margin-left .4s ease-in-out
 
 .button.teal, button.teal
@@ -475,10 +473,6 @@ form
     background-color: red
   &.info
     background-color: orange
-
-.container
-  width: 768px
-  margin: auto
 
 #search-bar
   #search, #filters
@@ -1401,6 +1395,7 @@ form
 
 #property .property
   margin-top: 25px
+  position: relative
   .beds, .bed, .text
     display: inline-block
     vertical-align: top
@@ -1417,6 +1412,23 @@ form
   .bottom
     .id, .id a
       color: #ccc
+  .edit
+    opacity: 0
+    position: absolute
+    right: 5px
+    top: 5px
+    background-color: #F3F3F3
+    width: 25px
+    height: 25px
+    border-radius: 1px
+    color: teal
+    transition: opacity .4s ease-in-out
+    .typcn
+      margin: 1px 0 0 5px
+    &:hover
+      cursor: pointer
+  &:hover .edit
+    opacity: 1
 
 #home
   #welcome
@@ -1463,7 +1475,7 @@ form
       display: inline-block
       .label
         font-size: .75em
-        color: grey
+        color: gray
         text-transform: uppercase
         font-weight: bold
         margin-bottom: 5px
