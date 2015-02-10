@@ -130,7 +130,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
         step_num = 'two'
       when 3
         step_num = 'three'
-    if _(angular.element('.step.' + step_num).find('input[required]')).filter((el) -> angular.element(el).val() == '')[0]
+    if _(angular.element('.step.' + step_num).find('input[required], textarea[required]')).filter((el) -> angular.element(el).val() == '')[0]
       false
     else
       true
