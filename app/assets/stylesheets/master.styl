@@ -204,7 +204,10 @@ footer
   padding: 0 50px
   position: relative
   transition: margin-left .4s ease-in-out
-  @media tablet
+  z-index: 0
+  @media landscape_tablet
+    margin-left: 80px
+  @media portrait_tablet
     margin-left: 80px
   @media phone
     margin-left: 80px
@@ -242,7 +245,9 @@ footer
   width: 220px
   transition: width .4s ease-in-out
   overflow: hidden
-  @media tablet
+  @media landscape_tablet
+    width: 80px
+  @media portrait_tablet
     width: 80px
   @media phone
     width: 80px
@@ -1008,6 +1013,8 @@ form
             color: heavy-gray
           &:hover
             cursor: pointer
+          @media portrait_tablet
+            font-size: 1em
         &.services
           .table
             max-height: 307px
@@ -1223,6 +1230,9 @@ form
         float: right
         .typcn::before
           content: '\e01a'
+    @media portrait_tablet
+      left: 20px
+      right: 20px
   .table
     text-align: center
     table
@@ -1262,6 +1272,12 @@ form
             color: #999
           &.active.chosen.selecting
             background-color: white
+          @media portrait_tablet
+            padding: 8px
+  @media landscape_tablet
+    padding: 10px
+  @media portrait_tablet
+    padding: 10px
 
 #properties .property
   &:hover
@@ -1279,6 +1295,7 @@ form
   .top
     padding: 18px
     height: 65px
+    position: relative
   .bottom
     border-top: 2px solid light-gray
     font-size: .9em
@@ -1312,6 +1329,9 @@ form
     vertical-align: top
     float: right
     margin-top: 15px
+    .text
+      @media portrait_tablet
+        padding: 0 10px
   .manage
     float: right
     font-size: .9em
@@ -1321,11 +1341,13 @@ form
     &:hover
       text-decoration: underline
   .photo
-    width: 150px
-    height: 150px
-    background-color: light-gray
+    padding: 10px
+    width: 130px
+    height: 130px
+    background-color: lighter-gray
     float: left
     img
+      border-radius: 50%
       height: 100%
       width: 100%
   .title
@@ -1350,7 +1372,9 @@ form
     display: inline-block
     vertical-align: top
   .beds
-    margin: 37px 0 0 100px
+    position: absolute
+    right: 20px
+    top: 50%
     .text
       font-weight: 600
       margin-right: 10px
@@ -1359,6 +1383,19 @@ form
       border-right: thin solid light-gray
       &:last-child
         border-right: 0
+    @media landscape_tablet
+      display: block
+      margin-top: 15px
+      position: static
+    @media portrait_tablet
+      display: block
+      margin-top: 15px
+      position: static
+  .title
+    @media landscape_tablet
+      margin-top: 0
+    @media portrait_tablet
+      margin-top: 0
   .bottom
     .id, .id a
       color: #ccc
