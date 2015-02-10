@@ -200,14 +200,14 @@ footer
 
 .body
   width: auto
-  margin: 130px 0 60px 250px
+  margin: 120px 0 60px 220px
   padding: 0 50px
   position: relative
   transition: margin-left .4s ease-in-out
   @media tablet
-    margin-left: 130px
+    margin-left: 80px
   @media phone
-    margin-left: 130px
+    margin-left: 80px
 
 .button.teal, button.teal
   background-color: teal
@@ -239,7 +239,7 @@ footer
   min-height: 100%
   left: 0
   bottom: 0
-  width: 250px
+  width: 220px
   transition: width .4s ease-in-out
   overflow: hidden
   @media tablet
@@ -247,7 +247,7 @@ footer
   @media phone
     width: 80px
   &:hover
-    width: 250px
+    width: 220px
   #sidebar
     color: white
     width: 250px
@@ -267,8 +267,7 @@ footer
         &:active, &:focus
           outline: none
       .title
-        margin-bottom: 15px
-        text-align: center
+        margin: 0 0 15px 28px
       .icon, .text
         display: inline-block
         vertical-align: top
@@ -473,13 +472,12 @@ form
     background-color: orange
 
 #search-bar
-  #search, #filters
-    display: inline-block
-    vertical-align: top
+  #filters
+    float: right
   #search
-    margin-right: 10px
-    width: 766px
+    padding-right: 10px
     position: relative
+    overflow: hidden
     i
       color: dark-gray
       position: absolute
@@ -963,12 +961,12 @@ form
         color: teal
         font-weight: 600
   #columns
-    margin-top: 25px
+    margin: 25px 0 50px
     .column
       display: inline-block
       vertical-align: top
-      width: 470px
-      margin-right: 35px
+      width: 48%
+      margin-right: 4%
       &:last-child
         margin-right: 0
       .deactivate
@@ -1011,6 +1009,9 @@ form
           &:hover
             cursor: pointer
         &.services
+          .table
+            max-height: 307px
+            overflow-y: scroll
           table
             width: 92%
             margin: 25px auto
@@ -1272,8 +1273,9 @@ form
   background-color: white
   margin: 10px auto
   border-radius: 1px
+  height: 150px
   .right
-    width: 826px
+    overflow: hidden
   .top
     padding: 18px
     height: 65px
@@ -1289,6 +1291,9 @@ form
       text-align: center
       .text
         color: darker-gray
+      .pf
+        color: dark-gray
+        margin-right: 10px
     .left
       padding: 15px 18px
     .id, .rooms, .text
@@ -1315,18 +1320,18 @@ form
     display: none
     &:hover
       text-decoration: underline
-  .photo, .title, .right
-    display: inline-block
-    vertical-align: top
   .photo
     width: 150px
     height: 150px
     background-color: light-gray
+    float: left
     img
       height: 100%
       width: 100%
   .title
     margin-top: 15px
+    display: inline-block
+    vertical-align: top
     .name
       font-weight: bold
     .address

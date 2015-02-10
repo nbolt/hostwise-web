@@ -2,11 +2,11 @@
   #welcome Welcome back, {{user.first_name}}.
 
   #search-bar
+    #filters
+      input type='hidden' ui-select2='filters()' ng:model='filter'
     #search
       i.fa.fa-search
       input type='text' placeholder='Search your properties' ng:model='search'
-    #filters
-      input type='hidden' ui-select2='filters()' ng:model='filter'
 
   #properties
     .property ng:repeat='property in user.properties' ng:click='toProperty(property)'
@@ -24,6 +24,7 @@
           .manage ng:href='/properties/{{property.slug}}' Manage
         .bottom
           .next-service ng:show='property.next_service_date'
+            .pf.icon-calendar
             .text Next Service&nbsp; {{property.next_service_date}}
           .left
             .id

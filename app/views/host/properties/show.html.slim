@@ -31,16 +31,14 @@
             | {{property.twin_beds}} Twins
       .bottom
         .next-service ng:show='property.next_service_date'
-          .icon
-            .typcn.typcn-calendar-outline
+          .pf.icon-calendar
           .text Next Service {{property.next_service_date}}
         .left
           .id
             | ID&nbsp;
             a ng:href='/properties/{{property.slug}}' ng:bind='property.id'
           .rooms
-            .icon
-              .typcn.typcn-home-outline
+            .pf.icon-house
             .text
               | {{property.bedrooms}}BD/{{property.bathrooms}}BA
   #columns
@@ -53,49 +51,51 @@
             .typcn.typcn-calendar-outline
           .text Add / Edit Service Dates
         .calendar calendar='' options='calendar_options' dates='__'
-      .section.upcoming.services
+      .section.upcoming.services ng:if='property.upcoming_bookings[0]'
         .head
           .arrow
             .typcn.typcn-chevron-right
           .icon
             .typcn.typcn-document-text
           .text Upcoming Services
-        table
-          thead
-            tr
-              th.date Date
-              th.id Job ID
-              th.services Services
-              th Total
-          tbody
-            tr ng:repeat='booking in property.upcoming_bookings'
-              td ng:bind='::booking.parsed_date_short'
-              td.id
-                a ng:href='/properties/{{::booking.id}}' ng:bind='::booking.id'
-              td.services
-                .text ng:bind='::booking.display_services' ellipsis-services=''
+        .table
+          table
+            thead
+              tr
+                th.date Date
+                th.id Job ID
+                th.services Services
+                th Total
+            tbody
+              tr ng:repeat='booking in property.upcoming_bookings'
+                td ng:bind='::booking.parsed_date_short'
+                td.id
+                  a ng:href='/properties/{{::booking.id}}' ng:bind='::booking.id'
+                td.services
+                  .text ng:bind='::booking.display_services' ellipsis-services=''
               td ${{::booking.cost}}
-      .section.past.services
+      .section.past.services ng:if='property.past_bookings[0]'
         .head
           .arrow
             .typcn.typcn-chevron-right
           .icon
             .typcn.typcn-document-text
           .text Past Services
-        table
-          thead
-            tr
-              th.date Date
-              th.id Job ID
-              th.services Services
-              th Total
-          tbody
-            tr ng:repeat='booking in property.past_bookings'
-              td ng:bind='::booking.parsed_date_short'
-              td.id
-                a ng:href='/properties/{{::booking.id}}' ng:bind='::booking.id'
-              td.services ng:bind='::booking.display_services' ellipsis-services=''
-              td ${{::booking.cost}}
+        .table
+          table
+            thead
+              tr
+                th.date Date
+                th.id Job ID
+                th.services Services
+                th Total
+            tbody
+              tr ng:repeat='booking in property.past_bookings'
+                td ng:bind='::booking.parsed_date_short'
+                td.id
+                  a ng:href='/properties/{{::booking.id}}' ng:bind='::booking.id'
+                td.services ng:bind='::booking.display_services' ellipsis-services=''
+                td ${{::booking.cost}}
       .deactivate
         | Do you wish to
         span ng:click='open_deactivation()' ng:show='property.active'  deactivate this property?

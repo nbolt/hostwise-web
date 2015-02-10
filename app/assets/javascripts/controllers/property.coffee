@@ -7,7 +7,6 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $scope.selected_date = null
   $scope.current_zip = null
   $scope.current_address1 = null
-
   promises = {}
 
   $http.get($window.location.href + '.json').success (rsp) ->
