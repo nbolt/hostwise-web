@@ -1,0 +1,91 @@
+@font-face {
+  font-family: 'pf-hosticons';
+  src: url('/type/pf-hosticons/pf-hosticons.eot?53072864');
+  src: url('/type/pf-hosticons/pf-hosticons.eot?53072864#iefix') format('embedded-opentype'),
+       url('/type/pf-hosticons/pf-hosticons.woff?53072864') format('woff'),
+       url('/type/pf-hosticons/pf-hosticons.ttf?53072864') format('truetype'),
+       url('/type/pf-hosticons/pf-hosticons.svg?53072864#pf-hosticons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'pf-hosticons';
+    src: url('../font/pf-hosticons.svg?53072864#pf-hosticons') format('svg');
+  }
+}
+*/
+
+.pf, [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "pf-hosticons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-account:before { content: '\e800'; } /* '' */
+.icon-pricing:before { content: '\e801'; } /* '' */
+.icon-faq:before { content: '\e802'; } /* '' */
+.icon-contact:before { content: '\e803'; } /* '' */
+.icon-profile:before { content: '\e804'; } /* '' */
+.icon-wallet:before { content: '\e805'; } /* '' */
+.icon-transactions:before { content: '\e806'; } /* '' */
+.icon-alert-warning:before { content: '\e807'; } /* '' */
+.icon-friends:before { content: '\e808'; } /* '' */
+.icon-calendar:before { content: '\e809'; } /* '' */
+.icon-alert-info:before { content: '\e80a'; } /* '' */
+.icon-alert-ok:before { content: '\e80b'; } /* '' */
+.icon-email:before { content: '\e80c'; } /* '' */
+.icon-contact-1:before { content: '\e80d'; } /* '' */
+.icon-close:before { content: '\e80e'; } /* '' */
+.icon-pin:before { content: '\e80f'; } /* '' */
+.icon-upload:before { content: '\e810'; } /* '' */
+.icon-pw:before { content: '\e811'; } /* '' */
+.icon-logout:before { content: '\e812'; } /* '' */
+.icon-subnav:before { content: '\e813'; } /* '' */
+.icon-apt:before { content: '\e814'; } /* '' */
+.icon-acc-close:before { content: '\e816'; } /* '' */
+.icon-acc-open:before { content: '\e817'; } /* '' */
+.icon-check:before { content: '\e818'; } /* '' */
+.icon-bowtie:before { content: '\e819'; } /* '' */
+.icon-serv-windows:before { content: '\e81a'; } /* '' */
+.icon-serv-patio:before { content: '\e81b'; } /* '' */
+.icon-serv-pool:before { content: '\e81c'; } /* '' */
+.icon-serv-toiletries:before { content: '\e81d'; } /* '' */
+.icon-serv-linens:before { content: '\e81e'; } /* '' */
+.icon-serv-cleaning:before { content: '\e81f'; } /* '' */
+.icon-cc:before { content: '\e820'; } /* '' */
+.icon-edit-pencil:before { content: '\e821'; } /* '' */
+.icon-edit-gear:before { content: '\e822'; } /* '' */
+.icon-alert-bolt:before { content: '\e823'; } /* '' */
+.icon-past:before { content: '\e824'; } /* '' */
+.icon-service:before { content: '\e825'; } /* '' */
+.icon-house:before { content: '\e826'; } /* '' */
+.icon-add:before { content: '\e827'; } /* '' */
