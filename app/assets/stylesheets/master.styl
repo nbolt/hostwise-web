@@ -62,23 +62,13 @@ header
         margin: 15px 10px 0 12px
         font-size: 1.2em
       .arrow
-        margin: 19px 40px 0 0
-        .typcn
-          transform: rotate(90deg)
+        font-size: 12px
+        margin: 21px 40px 0 0
     .link
       display: inline-block
       vertical-align: top
       margin: 0 10px
       position: relative
-      .head-button
-        background-color: teal
-        padding: 8px 12px
-        border-radius: 1px
-        color: white
-        hover-darken()
-        &.login
-          background-color: navy
-          hover-darken()
       > a
         text-decoration: none
         color: white
@@ -210,9 +200,13 @@ footer
 
 .body
   width: 976px
-  margin: 130px 0 0 130px
+  margin: 130px 0 60px 300px
   position: relative
   transition: margin-left .4s ease-in-out
+  @media tablet
+    margin-left: 130px
+  @media phone
+    margin-left: 130px
 
 .button.teal, button.teal
   background-color: teal
@@ -244,9 +238,13 @@ footer
   min-height: 100%
   left: 0
   bottom: 0
-  width: 80px
+  width: 250px
   transition: width .4s ease-in-out
   overflow: hidden
+  @media tablet
+    width: 80px
+  @media phone
+    width: 80px
   &:hover
     width: 250px
   #sidebar
@@ -270,7 +268,7 @@ footer
       .title
         margin-bottom: 15px
         text-align: center
-      .icon, .text, .arrow
+      .icon, .text
         display: inline-block
         vertical-align: top
       .icon
@@ -281,8 +279,6 @@ footer
         margin: 13px 0 0 28px
         text-align: left
         width: 125px
-      .arrow
-        margin-top: 13px
       .drop-container
         background-color: navy
         .search
@@ -1288,56 +1284,28 @@ form
       background-color: lighter-gray
       width: 212px
       height: 47px
-      .icon
-        font-size: 1.75em
-        margin: 3px 0 0 10px
-        color: #ccc
+      line-height: 47px
+      text-align: center
       .text
-        margin: 12px 0 0 8px
         color: darker-gray
     .left
       padding: 15px 18px
-    .id, .rooms, .icon, .text
+    .id, .rooms, .text
       display: inline-block
       vertical-align: top
     .id
       color: dark-gray
     .rooms
       color: dark-gray
-      .typcn
+      .pf
         color: dark-gray
         font-size: 1.1em
-        margin: -3px 5px 0 20px
-  .button
-    color: white
-    text-align: left
+        margin: 0 5px 0 20px
+  .icon-button
     display: inline-block
     vertical-align: top
     float: right
-    width: 180px
-    padding: 0
     margin-top: 15px
-    .icon, .text
-      display: inline-block
-      vertical-align: top
-    .icon
-      background-color: light-teal
-      width: 40px
-      height: 40px
-      font-size: 1.6em
-      .typcn
-        margin-left: 8px
-    .text
-      text-align: center
-      font-size: 1.1em
-      margin-top: 7px
-      width: 140px
-    &:hover
-      cursor: pointer
-    &.teal
-      background-color: teal
-      &:hover
-        background-color: light-teal
   .manage
     float: right
     font-size: .9em
@@ -1418,26 +1386,21 @@ form
     .new-property
       text-decoration: none
       .container
+        background-color: white
         transition: background-color .5s ease-in-out
-        border: 2px solid white
         border-radius: 1px
         padding: 15px 25px
         box-sizing: border-box
         color: teal
         margin-top: 15px
-        .icon, .text
+        .text
           display: inline-block
           vertical-align: top
-        .icon
-          width: 20px
-          height: 20px
-          border-radius: 50%
-          border: 2px solid teal
+        .pf
+          font-size: 20px
           margin-right: 10px
-          .typcn
-            margin: -2px 0 0 2px
       &:hover .container
-        background-color: white
+        background-color: lighter-gray
 
 .card-entry
   border: thin solid #ccc

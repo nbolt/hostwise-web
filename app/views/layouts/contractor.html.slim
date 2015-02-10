@@ -30,25 +30,19 @@ html
           a href='/'
             .title
               .icon
-                .fa.fa-home
+                .pf.icon-house
               .text Dashboard
-              .arrow
-                .typcn.typcn-chevron-right
         .section
           a href='/jobs'
             .title
               .icon
-                .fa.fa-list
+                .pf.icon-service
               .text Jobs
-              .arrow
-                .typcn.typcn-chevron-right
         .section sidebar-dropdown='250'
           .title
             .icon
-              .fa.fa-cog
+              .pf.icon-account
             .text Account
-            .arrow
-              .typcn.typcn-chevron-right
           .drop-container
             .links
               = render 'contractor/account_settings'
@@ -56,17 +50,13 @@ html
           a href='/faq'
             .title
               .icon
-                .fa.fa-info-circle
+                .pf.icon-faq
               .text FAQ
-              .arrow
-                .typcn.typcn-chevron-right
         .section
           a href='/help'
             .title
               .icon
-                .fa.fa-newspaper-o
+                .pf.icon-contact
               .text Contact Us
-              .arrow
-                .typcn.typcn-chevron-right
     .body slide-body=''
       = yield

@@ -31,23 +31,17 @@ html
               .icon
                 .pf.icon-house
               .text Properties
-              .arrow
-                .typcn.typcn-chevron-right
         .section
           a href="#{properties_new_path}"
             .title
               .icon
                 .pf.icon-add
               .text Add Property
-              .arrow
-                .typcn.typcn-chevron-right
         .section sidebar-dropdown='250'
           .title
             .icon
               .pf.icon-account
             .text Account
-            .arrow
-              .typcn.typcn-chevron-right
           .drop-container
             .links
               = render 'host/account_settings'
@@ -55,25 +49,19 @@ html
           a href='/pricing'
             .title
               .icon
-                .pf.icon-wallet
+                .pf.icon-pricing
               .text Pricing
-              .arrow
-                .typcn.typcn-chevron-right
         .section
           a href='/faq'
             .title
               .icon
                 .pf.icon-faq
               .text FAQ
-              .arrow
-                .typcn.typcn-chevron-right
         .section
           a href='/help'
             .title
               .icon
                 .pf.icon-contact
               .text Contact Us
-              .arrow
-                .typcn.typcn-chevron-right
     .body slide-body=''
       = yield

@@ -17,29 +17,25 @@
           .title
             .name ng:bind='::property.nickname'
             .address ng:bind='::property.full_address'
-          .button.teal ng:click='quick_add(property); $event.stopPropagation()'
+          .icon-button.teal ng:click='quick_add(property); $event.stopPropagation()'
             .icon
-              .typcn.typcn-calendar-outline
+              .pf.icon-calendar
             .text Quick Book
           .manage ng:href='/properties/{{property.slug}}' Manage
         .bottom
           .next-service ng:show='property.next_service_date'
-            .icon
-              .typcn.typcn-calendar-outline
             .text Next Service&nbsp; {{property.next_service_date}}
           .left
             .id
               | ID&nbsp;
               span ng:bind='property.id'
             .rooms
-              .icon
-                .typcn.typcn-home-outline
+              .pf.icon-house
               .text
                 | {{property.bedrooms}}BD/{{property.bathrooms}}BA
     a.new-property href='/properties/new'
       .container
-        .icon
-          .typcn.typcn-plus
+        .pf.icon-add
         .text Add New Property
 
 = render 'common/booking_modal'

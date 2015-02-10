@@ -5,15 +5,18 @@ header
         .drop-arrow
         .drop
           .links
-            = render 'host/account_settings'
+            = render "#{current_user.role}/account_settings"
       .name
         | Hi,&nbsp;
         strong ng:bind='::user.first_name'
       .arrow
-        .typcn.typcn-chevron-right
+        .pf.icon-acc-open
     - if current_user.host?
       .link.head-button ng:controller='property_search' properties-dropdown=''
-        .head-button Book Service
+        .icon-button.teal
+          .icon
+            .pf.icon-calendar
+          .text Book Service
         .drop-container.properties
           .drop-arrow
           .drop
@@ -23,7 +26,7 @@ header
                 input type='text' placeholder='Search Properties' ng:model='property_search'
             .links
               a ng:repeat='property in user.properties' ng:href='/properties/{{property.slug}}'
-                    .link ng:bind='::property.nickname' data-ellipsis=''
+                .link ng:bind='::property.nickname' data-ellipsis=''
   a href="#{root_path}"
     .logo
       img src='/images/porter-navy.png'
