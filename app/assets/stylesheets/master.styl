@@ -2497,11 +2497,14 @@ form
     li
       background-color: white
       display: inline-block
-      margin-left: 10px
-      padding: 20px
-      width: 209px
+      margin-left: 1%
+      width: 32.66%
       &:first-child
         margin-left: 0
+      > div
+        padding: 20px
+        @media portrait_tablet
+          padding: 5px
       a
         color: teal
       .fa
@@ -2514,6 +2517,9 @@ form
         margin-top: 2px
         padding-left: 10px
         vertical-align: top
+        @media portrait_tablet
+          font-size: 0.8em
+          margin-top: 5px
 
 .payment-container
   background-color: white
