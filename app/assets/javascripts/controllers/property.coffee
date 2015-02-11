@@ -50,7 +50,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     $scope.form.king_beds = { id: rsp.king_beds.toString(), text: rsp.king_beds.toString() }
     $scope.current_zip = $scope.form.zip
     $scope.current_address1 = $scope.form.address1
-    $scope.property_image($scope.property.property_photos[0].photo.url)
+    $scope.property_image($scope.property.primary_photo)
 
   $scope.modal_calendar_options =
     {

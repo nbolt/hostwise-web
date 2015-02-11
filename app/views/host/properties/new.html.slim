@@ -1,157 +1,160 @@
-.property-form-container ng:controller='new_property'
-  - if current_user.properties.empty?
-    .page-title Add Your First Property
-  - else
-    .page-title Add New Property
-
-  .step-nav
-    a.step.active href='' ng:click='goto(1)'
-      .icon.check
-        .typcn.typcn-input-checked
-      .icon.step-icon
-        .typcn.typcn-location-outline
-      .text Property Info
-    a.step href='' ng:click='goto(2)'
-      .icon.check
-        .typcn.typcn-input-checked
-      .icon.step-icon
-        .typcn.typcn-th-menu
-      .text Details
-    a.step href='' ng:click='goto(3)'
-      .icon.check
-        .typcn.typcn-input-checked
-      .icon.step-icon
-        .typcn.typcn-document-text
-      .text Instructions
-
-  .container
+.container ng:controller='new_property'
+  .page-title
+    .fa.fa-plus-circle
+    | Add New Property
+  .property-form-container
     .steps
       .step.one.active
+        a.step-nav.active href='' ng:click='goto(1)'
+          .icon.check
+            .typcn.typcn-input-checked
+          .icon.step-icon
+            .typcn.typcn-location-outline
+          .text Property Info
         form ng:init='init()'
           .flash
           .section.avatar
-            .file-upload new-property-photo='' ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
-            img.preview src='/images/1x1.png' 
+            div
+              .file-upload new-property-photo='' ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
+              img.preview src='/images/1x1.png' 
           .vr
           .section.info
-            .row
-              label Address
-              input type='text' required='' ng:model='form.address1'
-              .caption Address Line 1
-            .row.two
-              div
-                input type='text' ng:model='form.address2'
-                .caption Unit # (optional)
-              div
-                input type='text' maxlength=5 required='' ng:model='form.zip'
-                .caption Zip Code
-            br
-            .row
-              label Property Contact Number
-              input type='text' ng:model='form.phone_number' ui-mask='(999) 999-9999'
+            div
+              .row
+                label Address
+                input type='text' required='' ng:model='form.address1'
+                .caption Address Line 1
+              .row.two
+                div
+                  input type='text' ng:model='form.address2'
+                  .caption Unit # (optional)
+                div
+                  input type='text' maxlength=5 required='' ng:model='form.zip'
+                  .caption Zip Code
+              br
+              .row
+                label Property Contact Number
+                input type='text' ng:model='form.phone_number' ui-mask='(999) 999-9999'
           .vr
           .section.action
-            .row
-              label Nickname 
-              input type='text' ng:model='form.title'
-            .row
-              button.teal ng:click='step(1)'
-                .icon
-                  span.fa.fa-rotate-right
-                .text Next
+            div
+              .row
+                label Nickname 
+                input type='text' ng:model='form.title'
+              .row
+                button.teal ng:click='step(1)'
+                  .icon
+                    span.fa.fa-rotate-right
+                  .text Next
       .step.two
+        a.step-nav href='' ng:click='goto(2)'
+          .icon.check
+            .typcn.typcn-input-checked
+          .icon.step-icon
+            .typcn.typcn-th-menu
+          .text Details
         form
           .flash
           .section.home-type
-            .row
-              label Home Type
-              input type='hidden' placeholder='Select' required='' ng:model='form.property_type' ui-select2='property_type()'
-            .row
-              label Rental Type
-              input type='hidden' placeholder='Select' required='' ng:model='form.rental_type' ui-select2='rental_type()'
+            div
+              .row
+                label Home Type
+                input type='hidden' placeholder='Select' required='' ng:model='form.property_type' ui-select2='property_type()'
+              .row
+                label Rental Type
+                input type='hidden' placeholder='Select' required='' ng:model='form.rental_type' ui-select2='rental_type()'
           .vr
           .section.bed-type
-            .row.two
-              div
-                label Bedrooms
-                input type='hidden' placeholder='Select' required='' ng:model='form.bedrooms' ui-select2='rooms()'
-              div
-                label Bathrooms
-                input type='hidden' placeholder='Select' required='' ng:model='form.bathrooms' ui-select2='rooms()'
-            .row.four
-              div
-                label Bed Types
-                input type='hidden' placeholder='Select' required='' ng:model='form.king_beds' ui-select2='beds()'
-                .caption King
-              div
-                input type='hidden' placeholder='Select' required='' ng:model='form.queen_beds' ui-select2='beds()'
-                .caption Queen
-              div
-                input type='hidden' placeholder='Select' required='' ng:model='form.full_beds' ui-select2='beds()'
-                .caption Full
-              div
-                input type='hidden' placeholder='Select' required='' ng:model='form.twin_beds' ui-select2='beds()'
-                .caption Twin
-            .row
-              button.teal ng:click='step(2)'
-                .icon
-                  span.fa.fa-rotate-right
-                .text Next
+            div
+              .row.two
+                div
+                  label Bedrooms
+                  input type='hidden' placeholder='Select' required='' ng:model='form.bedrooms' ui-select2='rooms()'
+                div
+                  label Bathrooms
+                  input type='hidden' placeholder='Select' required='' ng:model='form.bathrooms' ui-select2='rooms()'
+              .row.four
+                div
+                  label Bed Types
+                  input type='hidden' placeholder='Select' required='' ng:model='form.king_beds' ui-select2='beds()'
+                  .caption King
+                div
+                  input type='hidden' placeholder='Select' required='' ng:model='form.queen_beds' ui-select2='beds()'
+                  .caption Queen
+                div
+                  input type='hidden' placeholder='Select' required='' ng:model='form.full_beds' ui-select2='beds()'
+                  .caption Full
+                div
+                  input type='hidden' placeholder='Select' required='' ng:model='form.twin_beds' ui-select2='beds()'
+                  .caption Twin
+              .row
+                button.teal ng:click='step(2)'
+                  .icon
+                    span.fa.fa-rotate-right
+                  .text Next
       .step.three
+        a.step-nav href='' ng:click='goto(3)'
+          .icon.check
+            .typcn.typcn-input-checked
+          .icon.step-icon
+            .typcn.typcn-document-text
+          .text Instructions
         form
           .flash
           .section.instructions
-            .row
-              label Access Information
-              textarea required='' placeholder='Dial 1111 on keypad to enter lobby. Will buzz you in remotely. Take elevator to 3rd floor. Spare key is under mat at apartment #301. Go to leasing office and ask them for a spare key if it is not there. Call karen at 310-555-1234 if needed.' ng:model='form.access_info' 
-            .row
-              label Trash Disposal
-              textarea required='' placeholder='Trash chute is located down the hallway. Turn right out of apartment door. Please separate trash and recyclables!' ng:model='form.trash_disposal'
-            .row
-              label Parking Information
-              textarea required='' placeholder='Street Parking. Meters only. Will cost a few $.' ng:model='form.parking_info'
-            .row
-              label Additional Information
-              textarea placeholder='Restocking supply closet is next to pantry on right. Please restock all toilet paper, paper towels, kleenex, all liquid soaps/detergents, and Q-tips.' ng:model='form.additional_info'
+            div
+              .row
+                label Access Information
+                textarea required='' placeholder='Dial 1111 on keypad to enter lobby. Will buzz you in remotely. Take elevator to 3rd floor. Spare key is under mat at apartment #301. Go to leasing office and ask them for a spare key if it is not there. Call karen at 310-555-1234 if needed.' ng:model='form.access_info' 
+              .row
+                label Trash Disposal
+                textarea required='' placeholder='Trash chute is located down the hallway. Turn right out of apartment door. Please separate trash and recyclables!' ng:model='form.trash_disposal'
+              .row
+                label Parking Information
+                textarea required='' placeholder='Street Parking. Meters only. Will cost a few $.' ng:model='form.parking_info'
+              .row
+                label Additional Information
+                textarea placeholder='Restocking supply closet is next to pantry on right. Please restock all toilet paper, paper towels, kleenex, all liquid soaps/detergents, and Q-tips.' ng:model='form.additional_info'
           .vr
           .section.details
-            .row
-              label Confirm Details
-            hr
-            .row ng:hide='!form.title'
-              label Nickname
-              | {{form.title}}
-            .row
-              label Address
-              div
-                | {{form.address1}}
-              div ng:hide='!form.address2'
-                | Unit {{form.address2}}
-              div
-                | {{form.zip}}
-            .row
-              label Size
-              | {{form.bedrooms.text}}BD/{{form.bathrooms.text}}BA {{form.property_type.text}}
-            .row
-              label Rental Type
-              | {{form.rental_type.text}}
-            .row.beds
-              label Beds
-              div
-                span King(s)
-                | {{form.king_beds.text}}
-              div
-                span Queen(s)
-                | {{form.queen_beds.text}}
-              div
-                span Full(s)
-                | {{form.full_beds.text}}
-              div
-                span Twin(s)
-                | {{form.twin_beds.text}}
-            hr
-            .row
-              button.teal ng:click='step(3)'
-                .icon
-                  span.fa.fa-rotate-right
-                .text Finish
+            div
+              .row
+                label Confirm Details
+              hr
+              .row ng:hide='!form.title'
+                label Nickname
+                | {{form.title}}
+              .row
+                label Address
+                div
+                  | {{form.address1}}
+                div ng:hide='!form.address2'
+                  | Unit {{form.address2}}
+                div
+                  | {{form.zip}}
+              .row
+                label Size
+                | {{form.bedrooms.text}}BD/{{form.bathrooms.text}}BA {{form.property_type.text}}
+              .row
+                label Rental Type
+                | {{form.rental_type.text}}
+              .row.beds
+                label Beds
+                div
+                  span King(s)
+                  | {{form.king_beds.text}}
+                div
+                  span Queen(s)
+                  | {{form.queen_beds.text}}
+                div
+                  span Full(s)
+                  | {{form.full_beds.text}}
+                div
+                  span Twin(s)
+                  | {{form.twin_beds.text}}
+              hr
+              .row
+                button.teal ng:click='step(3)'
+                  .icon
+                    span.fa.fa-rotate-right
+                  .text Finish

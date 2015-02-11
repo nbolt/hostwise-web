@@ -73,10 +73,10 @@ class Property < ActiveRecord::Base
   end
 
   def primary_photo
-    if property_photos.empty?
-      '' #will add a default placeholder later
-    else
+    if property_photos.present?
       property_photos.first.photo.url
+    else
+      '/images/generic_property_icon.png'
     end
   end
 

@@ -102,7 +102,7 @@ class Host::PropertiesController < Host::AuthController
         property = current_user.properties.build(property_params)
         property.step = 3
         property.active = true
-        property.property_photos.build(photo: params[:file]) # need to background this
+        property.property_photos.build(photo: params[:file]) if params[:file].present?
 
         property.property_type_cd = params[:form][:property_type][:id]
         property.rental_type_cd = params[:form][:rental_type][:id]
