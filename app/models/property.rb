@@ -17,7 +17,7 @@ class Property < ActiveRecord::Base
 
   validates_numericality_of :phone_number, only_integer: true, if: lambda { self.phone_number.present? }
   validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
-  validates_presence_of :access_info, :parking_info, :trash_disposal
+  validates_presence_of :access_info, :parking_info, :trash_disposal, if: lambda { step == 3 }
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
@@ -25,6 +25,8 @@ class Property < ActiveRecord::Base
   scope :by_alphabetical, -> { reorder('LOWER(title)') }
   scope :upcoming_bookings, -> { includes(:bookings).where('bookings.id is not null').order('bookings.created_at DESC').references(:bookings) }
   scope :recently_added, -> { reorder('created_at DESC') }
+
+  attr_accessor :step
 
   def self.find_by_slug slug
     friendly.find slug

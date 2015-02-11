@@ -100,6 +100,7 @@ class Host::PropertiesController < Host::AuthController
         render json: { success: true }
       when 3
         property = current_user.properties.build(property_params)
+        property.step = 3
         property.active = true
         property.property_photos.build(photo: params[:file]) # need to background this
 
