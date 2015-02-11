@@ -2932,13 +2932,14 @@ form
       position: absolute
       top: 7px
     .header
-      margin: 0 20px 10px 0
       text-align: right
       text-transform: uppercase
       span
         display: inline-block
         text-align: center
-        width: 70px
+        width: 8%
+        @media portrait_tablet
+          width: 10%
     .row
       border-top: 1px solid light-gray
       padding: 20px 0
@@ -2948,7 +2949,11 @@ form
         text-align: left
         vertical-align: top
       .text
-        width: 500px
+        width: 84%
+        @media portrait_tablet
+          width: 80%
       label
-        text-align: right
-        width: 70px
+        text-align: center
+        width: 8%
+        @media portrait_tablet
+          width: 10%
