@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150207051539) do
+ActiveRecord::Schema.define(version: 20150211001108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,7 +155,6 @@ ActiveRecord::Schema.define(version: 20150207051539) do
     t.string   "state",                  limit: 255
     t.string   "zip",                    limit: 255
     t.string   "country",                limit: 255
-    t.string   "property_type",          limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "delivery_point_barcode"
@@ -171,8 +170,9 @@ ActiveRecord::Schema.define(version: 20150207051539) do
     t.integer  "queen_beds"
     t.integer  "king_beds"
     t.boolean  "active",                             default: false
-    t.string   "rental_type"
     t.string   "phone_number"
+    t.integer  "rental_type_cd"
+    t.integer  "property_type_cd"
   end
 
   create_table "property_photos", force: :cascade do |t|

@@ -6,6 +6,9 @@ class Property < ActiveRecord::Base
 
   pg_search_scope :search_property, against: [:title, :address1, :city, :zip], using: { tsearch: { prefix: true } }
 
+  as_enum :rental_type, full_time: 0, part_time: 1
+  as_enum :property_type, house: 0, condo: 1, apartment: 2
+
   belongs_to :user
   has_many :bookings, autosave: true, dependent: :destroy
   has_many :property_photos, autosave: true, dependent: :destroy
@@ -78,19 +81,25 @@ class Property < ActiveRecord::Base
   private
 
   def standardize_address
-    address = SmartyStreets::StreetAddressRequest.new(street: address1, street2: address2, zipcode: zip)
-    rsp = SmartyStreets::StreetAddressApi.call(address)
-    if rsp[0]
-      address = rsp[0].to_hash
-      self.delivery_point_barcode = address[:delivery_point_barcode]
-      self.address1 = "#{address[:components][:primary_number]} #{address[:components][:street_name]} #{address[:components][:street_suffix]}"
-      self.address2 = "#{address[:components][:secondary_designator]} #{address[:components][:secondary_number]}" if address[:components][:secondary_designator]
-      self.zip = address[:components][:zipcode]
-      self.city = address[:components][:city_name]
-      self.state = address[:components][:state_abbreviation]
-    else
-      errors[:base] << 'Invalid address'
+    if address_changed?
+      address = SmartyStreets::StreetAddressRequest.new(street: address1, street2: address2, zipcode: zip)
+      rsp = SmartyStreets::StreetAddressApi.call(address)
+      if rsp[0]
+        address = rsp[0].to_hash
+        self.delivery_point_barcode = address[:delivery_point_barcode]
+        self.address1 = "#{address[:components][:primary_number]} #{address[:components][:street_predirection]} #{address[:components][:street_name]} #{address[:components][:street_suffix]}".squish
+        self.address2 = "#{address[:components][:secondary_designator]} #{address[:components][:secondary_number]}" if address[:components][:secondary_designator]
+        self.zip = address[:components][:zipcode]
+        self.city = address[:components][:city_name]
+        self.state = address[:components][:state_abbreviation]
+      else
+        errors[:base] << 'Invalid address'
+      end
     end
+  end
+
+  def address_changed?
+    address1_changed? || address2_changed? || city_changed? || state_changed? || zip_changed?
   end
 
   def slug_candidates

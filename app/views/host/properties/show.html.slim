@@ -4,7 +4,7 @@
       .typcn.typcn-document-text
     .text Property Detail
   .property
-    .edit
+    .edit ng:click='edit()'
       .typcn.typcn-pencil
     .photo
       img ng:src='{{::property.primary_photo}}'
@@ -102,85 +102,6 @@
         span ng:click='open_reactivation()' ng:hide='property.active'  reactivate this property?
     .column.info
       #map
-      /.section.details
-        /.head ng:click="expand('details')"
-        /  .arrow
-        /    .typcn.typcn-chevron-right
-        /  .icon
-        /    .typcn.typcn-th-menu
-        /  .text Edit Details
-        /.content-container.details
-        /  .content
-        /    .flash
-        /    .row.two
-        /      .field.zip
-        /        .label Zip
-        /        .input.zip
-        /          .typcn.typcn-tick
-        /          input type='text' ng:model='form.zip'
-        /      .field.address1
-        /        .label Street Name
-        /        .input.address1
-        /          .typcn.typcn-tick
-        /          input type='text' ng:model='form.address1'
-        /    .row.one
-        /      .field
-        /        .label Nickname
-        /        .input.nickname
-        /          .typcn.typcn-tick
-        /          input type='text' ng:model='form.nickname'
-        /    .row.two
-        /      .field.property_type
-        /        .label Property Type
-        /        .input.property_type
-        /          .typcn.typcn-tick
-        /          input type='hidden' ui-select2='property_type()' ng:model='form.property_type'
-        /      .field.rental_type
-        /        .label Rental Type
-        /        .input.rental_type
-        /          .typcn.typcn-tick
-        /          input type='hidden' ui-select2='rental_type()' ng:model='form.rental_type'
-        /    .row.two
-        /      .field.bedrooms
-        /        .label Bedrooms
-        /        .input.bedrooms
-        /          .typcn.typcn-tick
-        /          input type='hidden' ui-select2='rooms()' ng:model='form.bedrooms'
-        /      .field.bathrooms
-        /        .label Bathrooms
-        /        .input.bathrooms
-        /          .typcn.typcn-tick
-        /          input type='hidden' ui-select2='rooms()' ng:model='form.bathrooms'
-        /    .row.two
-        /      .field.twins
-        /        .label Twin Beds
-        /        .input.twins
-        /          .typcn.typcn-tick
-        /          input type='hidden' ui-select2='beds()' ng:model='form.twin_beds'
-        /      .field.fulls
-        /        .label Full Beds
-        /        .input.fulls
-        /          .typcn.typcn-tick
-        /          input type='hidden' ui-select2='beds()' ng:model='form.full_beds'
-        /    .row.two
-        /      .field.queens
-        /        .label Queen Beds
-        /        .input.queens
-        /          .typcn.typcn-tick
-        /          input type='hidden' ui-select2='beds()' ng:model='form.queen_beds'
-        /      .field.kings
-        /        .label King Beds
-        /        .input.kings
-        /          .typcn.typcn-tick
-        /          input type='hidden' ui-select2='beds()' ng:model='form.king_beds'
-        /    .row.one
-        /      .field.photo
-        /        .label Select Photo
-        /        label.file-upload for='photo'
-        /          | Browse
-        /        .input.photo
-        /          .typcn.typcn-tick
-        /          input#photo type='file' new-property-photo='' ng-file-select='' ng-model='files'
       .section.instructions
         .head ng:click="expand('instructions')"
           .arrow
@@ -213,6 +134,7 @@
             .title Additional Information
             .text ng:bind='property.additional_info'
 
+= render 'common/property_edit_modal'
 = render 'common/booking_modal'
 = render 'common/property_deactivation_modal'
 = render 'common/property_reactivation_modal'

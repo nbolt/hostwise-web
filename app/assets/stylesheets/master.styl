@@ -4,7 +4,7 @@ html
 html, body, .body
   min-height: 100%
   margin: 0
-  font-family: LatoRegular
+  font-family: Lato
   color: black
   font-size: 100%
   position: relative
@@ -1500,6 +1500,7 @@ form
   margin-top: 0px !important
   border: thin solid light-gray !important
   border-top: none !important
+  z-index: 10000 !important
   .select2-result-label
     .state
       font-size: .8em
@@ -1575,6 +1576,71 @@ form
       text-align: center
       top: 12px
       width: 30px
+
+.ngdialog.edit
+  .ngdialog-content
+    width: 600px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .header
+        border-bottom: 2px solid teal
+        color: teal
+        font-weight: 300
+        font-size: 1.75em
+        padding-bottom: 20px
+        margin: 25px
+      .footer
+        background-color: light-gray
+        height: 60px
+        .button
+          float: right
+          margin: 13px 25px 0
+      .content
+        margin: 25px
+        .columns
+          margin-top: 30px
+          .column
+            width: 260px
+            margin-right: 25px
+            display: inline-block
+            vertical-align: top
+            &:last-child
+              margin-right: 0
+            .section
+              .title
+                color: teal
+                font-weight: 600
+                margin-bottom: 10px
+              .row
+                &.one
+                  .field
+                    width: 250px
+                &.two
+                  .field
+                    width: 120px
+                    margin-right: 10px
+                    &:last-child
+                      margin-right: 0
+                .field
+                  margin-bottom: 20px
+                  display: inline-block
+                  vertical-align: top
+                  label
+                    display: block
+                    color: dark-gray
+                    font-size: .9em
+                    margin-top: 4px
+                  input
+                    width: 100%
+                  &.check
+                    width: 100px
+                    input
+                      width: 25px
+                    label
+                      display: inline-block
+
 
 .ngdialog.warning
   .ngdialog-content

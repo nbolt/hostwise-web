@@ -33,16 +33,16 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
-      data: [{id:'house',text:'House'},{id:'condo',text:'Condo'},{id:'apartment',text:'Apartment'}]
+      data: [{id:0,text:'House'},{id:1,text:'Condo'},{id:2,text:'Apartment'}]
       initSelection: (el, cb) ->
     }
 
   $scope.rental_type = ->
     {
-    dropdownCssClass: 'details'
-    minimumResultsForSearch: -1
-    data: [{id:'full-time',text:'Full-time'},{id:'part-time',text:'Part-time'}]
-    initSelection: (el, cb) ->
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      data: [{id:0,text:'Full-time'},{id:1,text:'Part-time'}]
+      initSelection: (el, cb) ->
     }
 
   $scope.goto = (n) ->

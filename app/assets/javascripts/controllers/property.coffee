@@ -12,8 +12,6 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
     $scope.form = _(rsp).clone()
-    $scope.form.property_type = { id: rsp.property_type, text: rsp.property_type.capitalize() }
-    $scope.form.rental_type = { id: rsp.rental_type, text: rsp.rental_type.capitalize() }
 
     $scope.property.next_service_date = moment(rsp.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if rsp.next_service_date
 
@@ -37,10 +35,11 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     load_mapbox = $interval((->
       if $window.loaded_mapbox
         $interval.cancel(load_mapbox)
-        $scope.map = L.mapbox.map 'map', 'useporter.l02en9o9'
-        $scope.markers = new L.LayerGroup().addTo($scope.map)
-        $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
-        refresh_map()
+        unless $scope.map
+          $scope.map = L.mapbox.map 'map', 'useporter.l02en9o9'
+          $scope.markers = new L.LayerGroup().addTo($scope.map)
+          $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
+          refresh_map()
     ), 200)
 
     $scope.form.bedrooms = { id: rsp.bedrooms.toString(), text: rsp.bedrooms.toString() }
@@ -101,12 +100,16 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
               angular.element(".booking.modal .services .service.#{service.name} input").attr 'checked', true
     }
 
+  $scope.update_property = ->
+    $http.post("/properties/#{$scope.property.slug}/update", {form: $scope.form}).success (rsp) -> ngDialog.closeAll()
+
+  $scope.edit = ->
+    ngDialog.open template: 'property-edit-modal', controller: 'property', className: 'edit', scope: $scope
+
   $scope.open_deactivation = ->
-    $window.loaded_mapbox = false
     ngDialog.open template: 'property-deactivation-modal', controller: 'property', className: 'warning', scope: $scope
 
   $scope.open_reactivation = ->
-    $window.loaded_mapbox = false
     ngDialog.open template: 'property-reactivation-modal', controller: 'property', className: 'warning', scope: $scope
 
   $scope.cancel_deactivation = ->
@@ -176,71 +179,6 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       form_flash 'photo'
       $scope.property_image(rsp.image)
 
-  $scope.$watch 'form.zip', (n,o) -> if o
-    $scope.current_zip = n
-    $timeout.cancel promises.zip
-    promises.zip = $timeout((->
-      update('zip', {form: { zip: n, address1: $scope.current_address1 }})
-    ),2000)
-
-  $scope.$watch 'form.address1', (n,o) -> if o
-    $scope.current_address1 = n
-    $timeout.cancel promises.address1
-    promises.address1 = $timeout((->
-      update('address1', {form: { address1: n, zip: $scope.current_zip  }})
-    ),2000)
-
-  $scope.$watch 'form.nickname', (n,o) -> if o
-    $timeout.cancel promises.nickname
-    promises.nickname = $timeout((->
-      update('nickname', {form: { title: n }})
-    ),2000)
-
-  $scope.$watch 'form.property_type', (n,o) -> if o
-    update('property_type', {form: { property_type: n }})
-
-  $scope.$watch 'form.rental_type', (n,o) -> if o
-    update('rental_type', {form: { rental_type: n }})
-
-  $scope.$watch 'form.bedrooms.id', (n,o) -> if o
-    update('bedrooms', {form: { bedrooms: n }})
-
-  $scope.$watch 'form.bathrooms.id', (n,o) -> if o
-    update('bathrooms', {form: { bathrooms: n }})
-
-  $scope.$watch 'form.twin_beds.id', (n,o) -> if o
-    update('twins', {form: { twin_beds: n }})
-
-  $scope.$watch 'form.full_beds.id', (n,o) -> if o
-    update('fulls', {form: { full_beds: n }})
-
-  $scope.$watch 'form.queen_beds.id', (n,o) -> if o
-    update('queens', {form: { queen_beds: n }})
-
-  $scope.$watch 'form.king_beds.id', (n,o) -> if o
-    update('kings', {form: { king_beds: n }})
-
-  $scope.$watch 'form.access_info', (n,o) -> if o
-    update('access', {form: { access_info: n }})
-
-  $scope.$watch 'form.trash_disposal', (n,o) -> if o
-    update('trash', {form: { trash_disposal: n }})
-
-  $scope.$watch 'form.parking_info', (n,o) -> if o
-    update('parking', {form: { parking_info: n }})
-
-  $scope.$watch 'form.additional_info', (n,o) -> if o
-    update('additional', {form: { additional_info: n }})
-
-  update = (field, params) ->
-    $http.post($window.location.href, params).success (rsp) ->
-      if rsp.id
-        $scope.property = rsp
-        form_flash field
-        refresh_map() if field is 'zip' or field is 'address1'
-      else
-        flash('failure', rsp.message)
-
   flash = (type, msg) ->
     angular.element('#property .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
@@ -270,16 +208,16 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
-      data: [{id:'house',text:'House'},{id:'condo',text:'Condo'},{id:'apartment',text:'Apartment'}]
+      data: [{id:0,text:'House'},{id:1,text:'Condo'},{id:2,text:'Apartment'}]
       initSelection: (el, cb) ->
     }
 
   $scope.rental_type = ->
     {
-    dropdownCssClass: 'details'
-    minimumResultsForSearch: -1
-    data: [{id:'full-time',text:'Full-time'},{id:'part-time',text:'Part-time'}]
-    initSelection: (el, cb) ->
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      data: [{id:0,text:'Full-time'},{id:1,text:'Part-time'}]
+      initSelection: (el, cb) ->
     }
 
 ]

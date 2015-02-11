@@ -1,0 +1,59 @@
+script#property-edit-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Property Details
+    .content
+      .columns
+        .column
+          .section
+            .title Address
+            .row.one
+              .field
+                input type='text' ng:model='form.address1'
+                label Address Line 1
+            .row.two
+              .field
+                input type='text' ng:model='form.address2'
+                label Unit #
+              .field
+                input type='text' ng:model='form.zip'
+                label Zip Code
+          .section
+            .title Property Contact Number
+            .row.one
+              .field
+                input type='text' ng:model='form.phone_number' ui-mask='(999) 999-9999'
+          .section
+            .title Nickname
+            .row.one
+              .field
+                input type='text' ng:model='form.nickname'
+        .column
+          .section
+            .title Rental Type
+            .row.two
+              .field.check
+                input type='radio' value='0' ng:model='form.rental_type_cd'
+                label Full-time
+              .field.check
+                input type='radio' value='1' ng:model='form.rental_type_cd'
+                label Part-time
+          .section
+            .title Bed Types
+            .row.two
+              .field.twins
+                input type='hidden' ui-select2='beds()' ng:model='form.twin_beds'
+                label Twin Beds
+              .field.fulls
+                input type='hidden' ui-select2='beds()' ng:model='form.full_beds'
+                label Full Beds
+            .row.two
+              .field.queens
+                input type='hidden' ui-select2='beds()' ng:model='form.queen_beds'
+                label Queen Beds
+              .field.kings
+                input type='hidden' ui-select2='beds()' ng:model='form.king_beds'
+                label King Beds
+    .footer
+      .buttons
+        .button.teal ng:click='update_property()' Save Changes

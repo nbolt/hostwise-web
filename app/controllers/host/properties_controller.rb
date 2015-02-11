@@ -10,8 +10,13 @@ class Host::PropertiesController < Host::AuthController
   end
 
   def update
-    property.property_type = params[:form][:property_type][:id] if params[:form] && params[:form][:property_type]
-    property.rental_type = params[:form][:rental_type][:id] if params[:form] && params[:form][:rental_type]
+    property.property_type_cd = params[:form][:property_type][:id] if params[:form] && params[:form][:property_type] && params[:form][:property_type][:id]
+    property.rental_type_cd = params[:form][:rental_type][:id] if params[:form] && params[:form][:rental_type] && params[:form][:rental_type][:id]
+
+    property.twin_beds = params[:form][:twin_beds][:id]
+    property.full_beds = params[:form][:full_beds][:id]
+    property.queen_beds = params[:form][:queen_beds][:id]
+    property.king_beds = params[:form][:king_beds][:id]
 
     if params[:file]
       property.property_photos.destroy_all
@@ -98,8 +103,8 @@ class Host::PropertiesController < Host::AuthController
         property.active = true
         property.property_photos.build(photo: params[:file]) # need to background this
 
-        property.property_type = params[:form][:property_type][:id]
-        property.rental_type = params[:form][:rental_type][:id]
+        property.property_type_cd = params[:form][:property_type][:id]
+        property.rental_type_cd = params[:form][:rental_type][:id]
         property.bedrooms = params[:form][:bedrooms][:id]
         property.bathrooms = params[:form][:bathrooms][:id]
         property.twin_beds = params[:form][:twin_beds][:id]
@@ -140,7 +145,7 @@ class Host::PropertiesController < Host::AuthController
   def property_params
     params.require(:form).permit(:title, :address1, :address2, :zip, :phone_number, :bedrooms, :bathrooms,
                                  :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type, :rental_type,
-                                 :access_info, :parking_info, :additional_info, :trash_disposal)
+                                 :access_info, :parking_info, :additional_info, :trash_disposal, :rental_type_cd)
   end
 
   def delivery_code(address1, address2, zip)
