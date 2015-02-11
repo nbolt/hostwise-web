@@ -205,6 +205,13 @@ footer
   position: relative
   transition: margin-left .4s ease-in-out
   z-index: 0
+  .container
+    .deactivate,
+    .reactivate
+      margin-top: 20px
+      span
+        color: red
+        cursor: pointer
   @media landscape_tablet
     margin-left: 80px
   @media portrait_tablet
@@ -2726,169 +2733,171 @@ form
 .edit-contractor,
 .edit-customer,
 .account-container
-  margin: 100px auto
-  width: 900px
-  .page-title
-    font-size: 25px
-    .fa
-      margin-right: 10px
-  .deactivate,
-  .reactivate
-    margin-top: 20px
-    span
-      color: red
-      cursor: pointer
-  .container
-    margin: 20px 0
-    overflow: hidden
+  margin: 40px auto 0
+  overflow: hidden
+  h1
+    margin: 30px 0 10px
+  h3
+    color: darker-gray
+    font-size: 16px
+    font-weight: normal
+    margin: 0 0 30px
+  form
+    background-color: white
+    margin: 0 auto
+    position: relative
+    text-align: center
     width: 100%
-    h1
-      margin: 30px 0 10px
-    h3
-      color: darker-gray
-      font-size: 16px
-      font-weight: normal
-      margin: 0 0 30px
-    form
-      background-color: white
-      margin: 0 auto
-      position: relative
-      text-align: center
-      width: 100%
-      .flash
-        left: 30px
-        position: absolute
-        top: 8px
-      a
-        color: teal
-        text-decoration: none
-      .section
-        display: inline-block
+    .flash
+      left: 30px
+      position: absolute
+      top: 8px
+    a
+      color: teal
+      text-decoration: none
+    .section
+      display: inline-block
+      vertical-align: top
+      > div
         padding: 50px 30px
-        vertical-align: top
-        .row
-          margin: 20px 0
-          &:first-child
-            margin-top: 0
-          &.two
-            input, .caption
-              width: 48%
-              &.right
-                margin-left: 10px
-        .cb
-          margin-top: 44px
-          label
-            color: black
-            font-size: 12px
-            font-weight: normal
-            &:before
-              top: 0
-      input
-        width: 100%
-      label
-        color: teal
-        display: block
-        font-size: 14px
-        font-weight: bold
-        margin-bottom: 5px
-        text-align: left
-      button
-        height: 40px
-        margin: 40px 0 0
-        position: relative
-        width: 100%
-        .text
-          margin-left: 30px
-        .icon
-          background-color: light-navy
-          display: inline-block
-          height: 40px
-          left: 0
-          position: absolute
-          top: 0
-          width: 40px
-          .fa
-            line-height: 40px
-      .caption
-        display: inline-block
-        font-size: 13px
-        text-align: left
-        width: 100%
-    .steps
-      width: 1800px
-      transition: margin-left .6s ease
-      .step
-        display: inline-block
-        vertical-align: top
-        width: 900px
-        &.one
-          form
-            .vr
-              border-left: 1px solid light-gray
-              display: inline-block
-              height: 830px
-              margin-top: 50px
-            hr
-              border: 0
-              border-top: 1px solid light-gray
-              margin: 40px 0
-            .section
-              &.avatar
-                width: 158px
-                text-align: center
-                .name
-                  margin: 20px 0
-                .location
-                  color: darker-gray
-                  font-size: 14px
-                img
-                  border-radius: 50%
-                  height: 100px
-                  width: 100px
-                .file-upload
-                  color: teal
-                  cursor: pointer
-                  font-size: 15px
-                  font-weight: bold
-                  margin: 0 auto 30px
-              &.info
-                width: 280px
-              &.pwd
-                width: 280px
+        @media portrait_tablet
+          padding: 50px 0
+      .row
+        margin: 20px auto
+        width: 80%
+        &:first-child
+          margin-top: 0
         &.two
-          h6
-            font-size: 13px
-            font-weight: normal
-            text-align: right
-            a
-              color: red
-              font-size: 15px
-              text-decoration: none
-          form
-            .section
-              display: inline-block
-              padding: 50px 30px
-              vertical-align: top
-            button
-              margin-top: 24px
-              width: 200px
+          input, .caption
+            width: 49%
+            &.right
+              margin-left: 2%
+      .cb
+        margin: 44px auto 0
+        width: 80%
+        label
+          color: black
+          font-size: 12px
+          font-weight: normal
+          &:before
+            top: 0
+    input
+      width: 100%
+    label
+      color: teal
+      display: block
+      font-size: 14px
+      font-weight: bold
+      margin-bottom: 5px
+      text-align: left
+    button
+      height: 40px
+      margin: 40px 0 0
+      position: relative
+      width: 100%
+      .text
+        margin-left: 30px
+      .icon
+        background-color: light-navy
+        display: inline-block
+        height: 40px
+        left: 0
+        position: absolute
+        top: 0
+        width: 40px
+        .fa
+          line-height: 40px
+    .caption
+      display: inline-block
+      font-size: 13px
+      text-align: left
+      width: 100%
+    @media portrait_tablet
+      font-size: 15px
+  .steps
+    .step
+      display: inline-block
+      vertical-align: top
+      width: 100%
+      &.one
+        form
+          .vr
+            border-left: 1px solid light-gray
+            display: inline-block
+            height: 780px
+            margin-top: 50px
+          hr
+            border: 0
+            border-top: 1px solid light-gray
+            margin: 40px 0
+          .section
+            &.avatar
+              width: 19%
+              text-align: center
+              .name
+                margin: 20px 0
+              .location
+                color: darker-gray
+                font-size: 14px
+              img
+                border-radius: 50%
+                height: 100px
+                width: 100px
+                @media portrait_tablet
+                  height: 80px
+                  width: 80px
+              .file-upload
+                color: teal
+                cursor: pointer
+                font-size: 15px
+                font-weight: bold
+                margin: 0 auto 30px
+            &.info
+              width: 40%
+            &.pwd
+              width: 40%
+      &.two
+        h6
+          font-size: 13px
+          font-weight: normal
+          text-align: right
+          a
+            color: red
+            font-size: 15px
+            text-decoration: none
+        form
+          .section
+            display: inline-block
+            vertical-align: top
+            width: 33.33%
+          button
+            margin-top: 20px
+            width: 80%
 
-.edit-contractor .container .steps .step.one
+.edit-contractor .steps .step.one
   form
     .vr
       height: 532px
 
-.edit-customer .container .steps .step.one
+.edit-customer .steps .step.one
   form
     button
       margin-top: 25px
     .vr
       height: 262px
 
-.account-container .container .steps .step.one
+.account-container .steps .step.one
   form
     .vr
       height: 365px
+
+.contractor-account.activate
+  width: 80%
+  .steps
+    .step.one .vr
+      height: 680px
+    .step.two
+      display: none
 
 .availability-container
   margin: 40px auto 0

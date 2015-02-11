@@ -16,7 +16,8 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', (
         }).success (rsp) ->
           if rsp.success
             scroll 0
-            angular.element('.steps').css('margin-left', -900)
+            angular.element('.steps .step.one').hide()
+            angular.element('.steps .step.two').show()
             submit_background_check()
           else
             flash 'failure', rsp.message

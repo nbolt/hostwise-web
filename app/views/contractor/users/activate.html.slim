@@ -1,8 +1,8 @@
-.contractor-account ng:controller='contractor-account'
+.container ng:controller='contractor-account'
   .page-title
     .fa.fa-cog
     | Contractor Sign Up
-  .container.activate
+  .contractor-account.activate
     .steps
       .step.one
         h1 Welcome to Porter for Hosts!
@@ -10,94 +10,100 @@
         form
           .flash
           .section.avatar
-            .file-upload ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
-            img ng:src='{{::user.avatar}}'
+            div
+              .file-upload ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
+              img ng:src='{{::user.avatar}}'
           .vr
           .section.info
-            .row.two
-              label Your Name
-              input type='text' required='' ng:model='user.first_name'
-              input.right type='text' required='' ng:model='user.last_name'
-              .caption First Name
-              .caption.right Last Name
-            .row
-              label Email
-              input type='email' required='' ng:model='user.email'
-            .row
-              label Mobile Phone
-              input type='text' required='' ng:model='user.phone_number'
-            .row
-              label Alternate Phone (optional)
-              input type='text' ng:model='user.secondary_phone'
-            .row
-              label Address
-              input type='text' required='' ng:model='contractor_profile.address1'
-              .caption Address Line 1
-            .row.two
-              input type='text' ng:model='contractor_profile.address2'
-              input.right type='text' maxlength=5 required='' ng:model='contractor_profile.zip'
-              .caption Unit # (optional)
-              .caption.right Zip Code
-            .row.two
-              label Emergency Contact Person
-              input type='text' ng:model='contractor_profile.emergency_contact_first_name'
-              input.right type='text' ng:model='contractor_profile.emergency_contact_last_name'
-              .caption First Name
-              .caption.right Last Name
-            .row
-              input type='text' ng:model='contractor_profile.emergency_contact_phone'
-              .caption Emergency Contact Phone Number
+            div
+              .row.two
+                label Your Name
+                input type='text' required='' ng:model='user.first_name'
+                input.right type='text' required='' ng:model='user.last_name'
+                .caption First Name
+                .caption.right Last Name
+              .row
+                label Email
+                input type='email' required='' ng:model='user.email'
+              .row
+                label Mobile Phone
+                input type='text' required='' ng:model='user.phone_number'
+              .row
+                label Alternate Phone (optional)
+                input type='text' ng:model='user.secondary_phone'
+              .row
+                label Address
+                input type='text' required='' ng:model='contractor_profile.address1'
+                .caption Address Line 1
+              .row.two
+                input type='text' ng:model='contractor_profile.address2'
+                input.right type='text' maxlength=5 required='' ng:model='contractor_profile.zip'
+                .caption Unit # (optional)
+                .caption.right Zip Code
+              .row.two
+                label Emergency Contact Person
+                input type='text' ng:model='contractor_profile.emergency_contact_first_name'
+                input.right type='text' ng:model='contractor_profile.emergency_contact_last_name'
+                .caption First Name
+                .caption.right Last Name
+              .row
+                input type='text' ng:model='contractor_profile.emergency_contact_phone'
+                .caption Emergency Contact Phone Number
           .vr
           .section.pwd
-            .row
-              label Social Security Number
-              input type='text' required='' ng:model='contractor_profile.ssn' ui:mask='999-99-9999' placeholder='xxx-xx-xxxx'
-            .row
-              label Driver's License Number
-              input type='text' required='' maxlength='15' ng:model='contractor_profile.driver_license'
-            .row
-              label Date of Birth
-              input type='text' required='' ng:model='contractor_profile.dob' ui:mask='99/99/9999' placeholder='MM/DD/YYYY'
-            .cb
-              input type='checkbox' id='tos' ng:model='user.tos' ng:true-value="'yes'" ng:false-value="'no'"
-              label for='tos'
-                | I have read and agree to the&nbsp;
-                a href='' terms & conditions
-                | &nbsp;and give permission to Porter, Inc to submit my personal information for background verification purposes.
-            hr
-            .row
-              label Create Password
-              input type='password' required='' ng:model='user.password'
-              .caption Password
-            .row
-              input type='password' required='' ng:model='user.password_confirmation'
-              .caption Confirm Password
-            .row
-              button.teal ng:click="setup_account()"
-                .icon
-                  span.fa.fa-rotate-right
-                .text Set Up My Account
+            div
+              .row
+                label Social Security Number
+                input type='text' required='' ng:model='contractor_profile.ssn' ui:mask='999-99-9999' placeholder='xxx-xx-xxxx'
+              .row
+                label Driver's License Number
+                input type='text' required='' maxlength='15' ng:model='contractor_profile.driver_license'
+              .row
+                label Date of Birth
+                input type='text' required='' ng:model='contractor_profile.dob' ui:mask='99/99/9999' placeholder='MM/DD/YYYY'
+              .cb
+                input type='checkbox' id='tos' ng:model='user.tos' ng:true-value="'yes'" ng:false-value="'no'"
+                label for='tos'
+                  | I have read and agree to the&nbsp;
+                  a href='' terms & conditions
+                  | &nbsp;and give permission to Porter, Inc to submit my personal information for background verification purposes.
+              hr
+              .row
+                label Create Password
+                input type='password' required='' ng:model='user.password'
+                .caption Password
+              .row
+                input type='password' required='' ng:model='user.password_confirmation'
+                .caption Confirm Password
+              .row
+                button.teal ng:click="setup_account()"
+                  .icon
+                    span.fa.fa-rotate-right
+                  .text Set Up My Account
       .step.two
         h1 You're almost done!
         h3 Add a bank account for direct deposit.
         form
           .flash
           .section
-            .row
-              label Name on Account
-              input type='text' required='' ng:model='bank.name'
+            div
+              .row
+                label Name on Account
+                input type='text' required='' ng:model='bank.name'
           .section
-            .row
-              label Routing Number
-              input type='text' required='' ng:model='bank.routing_number'
-            .row
-              label Account Number
-              input type='text' required='' ng:model='bank.account_number'
+            div
+              .row
+                label Routing Number
+                input type='text' required='' ng:model='bank.routing_number'
+              .row
+                label Account Number
+                input type='text' required='' ng:model='bank.account_number'
           .section
-            button.teal ng:click="add_bank_account()"
-              .icon
-                span.fa.fa-rotate-right
-              .text Save
+            div
+              button.teal ng:click="add_bank_account()"
+                .icon
+                  span.fa.fa-rotate-right
+                .text Save
         h6
           a href='/jobs' Skip this step, take me to my account
           br
