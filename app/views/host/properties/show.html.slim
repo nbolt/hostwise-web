@@ -69,8 +69,7 @@
             tbody
               tr ng:repeat='booking in property.upcoming_bookings'
                 td ng:bind='::booking.parsed_date_short'
-                td.id
-                  a ng:href='/properties/{{::booking.id}}' ng:bind='::booking.id'
+                td.id ng:bind='::booking.id'
                 td.services
                   .text ng:bind='::booking.display_services' ellipsis-services=''
                 td ${{::booking.cost}}
@@ -92,8 +91,7 @@
             tbody
               tr ng:repeat='booking in property.past_bookings'
                 td ng:bind='::booking.parsed_date_short'
-                td.id
-                  a ng:href='/properties/{{::booking.id}}' ng:bind='::booking.id'
+                td.id ng:bind='::booking.id'
                 td.services ng:bind='::booking.display_services' ellipsis-services=''
                 td ${{::booking.cost}}
       .deactivate
