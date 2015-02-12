@@ -210,6 +210,12 @@ GEM
     i18n (0.7.0)
     inflecto (0.0.2)
     ipaddress (0.8.0)
+    iron_core (1.0.5)
+      rest (>= 2.6.4)
+    iron_worker_ng (1.6.2)
+      bundler
+      iron_core (>= 1.0.0)
+      rubyzip (>= 1.0.0)
     jbuilder (2.2.6)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
@@ -246,6 +252,7 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
+    net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -316,11 +323,15 @@ GEM
     rake (10.4.2)
     responders (2.0.2)
       railties (>= 4.2.0.alpha, < 5)
+    rest (3.0.3)
+      net-http-persistent (>= 2.9.1)
+      netrc
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     rmagick (2.13.4)
     rr (1.1.2)
+    rubyzip (1.1.7)
     safe_yaml (1.0.4)
     sass (3.4.10)
     sass-rails (5.0.1)
@@ -422,6 +433,7 @@ DEPENDENCIES
   friendly_id
   geocoder
   httparty
+  iron_worker_ng
   jbuilder
   jquery-rails
   kaminari
