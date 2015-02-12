@@ -2,7 +2,7 @@ script#booking-modal type="text/ng-template"
   .booking.modal ng:controller='booking_modal'
     .header
       .icon
-        .typcn.typcn-calendar-outline
+        i.icon-calendar
       .text Booking Confirmation
     .content-container
       .content-group
@@ -36,34 +36,38 @@ script#booking-modal type="text/ng-template"
                 .price ${{total()}}
             .content-side
               .services
+                .title =t('booking.modal.services_title')
                 - Service.standard.each do |service|
                   .service class="#{service.name}"
-                    img.icon src="/images/book_#{service.name}.png"
+                    i.icon class="icon-serv-#{service.name}"
                     .text= service.display
                     label.switch.red
                       input type='checkbox' toggle-service="#{service.name}"
                       i
               .extra
-                .title Extra Services
+                .title =t('booking.modal.extras_title')
                 - Service.extra.each do |service|
                   .service class="#{service.name}"
+                    i.icon class="icon-serv-#{service.name}"
                     .text= service.display
                     label.switch.red
                       input type='checkbox' toggle-service="#{service.name}"
                       i
           div ng:if='!exists()'
             .services
+              .title =t('booking.modal.services_title')
               - Service.standard.each do |service|
                 .service class="#{service.name}"
-                  img.icon src="/images/book_#{service.name}_grey.png"
+                  i.icon class="icon-serv-#{service.name}"
                   .text= service.display
                   label.switch.red
                     input type='checkbox' toggle-service="#{service.name}"
                     i
             .extra
-              .title Extra Services
+              .title =t('booking.modal.extras_title')
               - Service.extra.each do |service|
                 .service class="#{service.name}"
+                  i.icon class="icon-serv-#{service.name}"
                   .text= service.display
                   label.switch.red
                     input type='checkbox' toggle-service="#{service.name}"

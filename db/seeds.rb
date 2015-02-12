@@ -41,7 +41,7 @@ end
 unless Service.first
   Service.create(name: 'cleaning', display: 'Cleaning', extra: false)
   Service.create(name: 'linens', display: 'Linens & Towels', extra: false)
-  Service.create(name: 'restocking', display: 'Restocking', extra: false)
+  Service.create(name: 'toiletries', display: 'Toiletries', extra: false)
   Service.create(name: 'pool', display: 'Pool Area', extra: true)
   Service.create(name: 'patio', display: 'Balcony / Patio', extra: true)
   Service.create(name: 'windows', display: 'Exterior Windows', extra: true)

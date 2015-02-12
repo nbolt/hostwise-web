@@ -39,3 +39,7 @@ en:
       update_pwd: 'Update Password'
     link:
       forgot_pwd: 'Forgot password?'
+  booking:
+    modal:
+      extras_title: 'Select Extras'
+      services_title: 'Select Services'
