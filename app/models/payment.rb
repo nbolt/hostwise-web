@@ -26,6 +26,6 @@ class Payment < ActiveRecord::Base
   end
 
   def set_card_type
-    self.card_type.gsub! '_', ' '
+    self.card_type.gsub! '_', ' ' if card_type
   end
 end

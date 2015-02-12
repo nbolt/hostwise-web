@@ -14,6 +14,7 @@ class Booking < ActiveRecord::Base
   scope :future, -> { where('date >= ?', Date.today) }
 
   before_save :create_job, on: :create
+  before_save :create_order
 
   def cost
     total = 0
@@ -31,6 +32,14 @@ class Booking < ActiveRecord::Base
 
   def create_job
     self.build_job(status_cd: 0)
+  end
+
+  def create_order
+    if payment.balanced_id && !balanced_order_id
+      customer = Balanced::Customer.fetch("/customers/#{booking.property.user.balanced_customer_id}")
+      order = customer.create_order(meta: {job_id: id})
+      self.balanced_order_id = order.id
+    end
   end
 
 end
