@@ -1,4 +1,4 @@
-BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', ($scope, $http, $timeout, $q, $window, ngDialog) ->
+BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope', 'ngDialog', ($scope, $http, $timeout, $q, $window, $rootScope, ngDialog) ->
 
   last_payment = null
   $scope.days = []
@@ -93,7 +93,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
           dates: $scope.chosen_dates
         }).success (rsp) ->
           if rsp.success
-            $scope.$emit 'refresh_bookings'
             $scope.to_booking_confirmation()
             null
           else
@@ -227,6 +226,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
       data: [{id:'credit-card', text:'Credit Card'},{id:'ach', text: 'ACH Bank Transfer'}]
       initSelection: (el, cb) -> cb {id:'credit-card', text:'Credit Card'}
     }
+
+  $rootScope.$on 'ngDialog.closing', (e, $dialog) ->
+    if $dialog.find('.ngdialog-content .modal .content.confirmation').hasClass('active')
+      $scope.$emit 'refresh_bookings'
 
   services_array = ->
     services = []

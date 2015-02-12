@@ -15,23 +15,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     $scope.property = rsp
     $scope.form = _(rsp).clone()
 
-    $scope.property.next_service_date = moment(rsp.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if rsp.next_service_date
-
-    _($scope.property.bookings).each (booking) ->
-      date = moment.utc booking.date
-      booking.parsed_date = date.format('MMMM Do, YYYY')
-      booking.parsed_date_short = date.format('MM/DD/YY')
-      booking.display_services = _(booking.services).map((booking) -> booking.display).join(', ')
-      booking.display_full_services = booking.display_services
-      if booking.display_services.length > 24
-        booking.display_services = booking.display_services.slice(0,24) + '...'
-      angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
-
-    $scope.property.upcoming_bookings = _($scope.property.bookings).filter (booking) ->
-      moment(booking.date, 'YYYY-MM-DD').diff(moment(), 'days') > 0
-
-    $scope.property.past_bookings = _($scope.property.bookings).filter (booking) ->
-      moment(booking.date, 'YYYY-MM-DD').diff(moment(), 'days') < 0
+    load_bookings(rsp)
 
     load_mapbox = null
     load_mapbox = $interval((->
@@ -150,6 +134,30 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     angular.element("#property .section.#{section}").addClass 'active'
     null
 
+  load_bookings = (rsp) ->
+    $scope.property.next_service_date = moment(rsp.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if rsp.next_service_date
+
+    _($scope.property.bookings).each (booking) ->
+      date = moment.utc booking.date
+      booking.parsed_date = date.format('MMMM Do, YYYY')
+      booking.parsed_date_short = date.format('MM/DD/YY')
+      booking.display_services = _(booking.services).map((booking) -> booking.display).join(', ')
+      booking.display_full_services = booking.display_services
+      if booking.display_services.length > 24
+        booking.display_services = booking.display_services.slice(0,24) + '...'
+      angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+
+    $scope.property.upcoming_bookings = _($scope.property.bookings).filter (booking) ->
+      moment(booking.date, 'YYYY-MM-DD').diff(moment().startOf('day'), 'days') > 0
+
+    $scope.property.past_bookings = _($scope.property.bookings).filter (booking) ->
+      moment(booking.date, 'YYYY-MM-DD').diff(moment().startOf('day'), 'days') < 0
+
+  $scope.$on 'refresh_bookings', ->
+    $http.get($window.location.href + '.json').success (rsp) ->
+      $scope.property = rsp
+      load_bookings(rsp)
+
   refresh_map = ->
     $scope.geocoder.query $scope.property.full_address, (err, data) ->
       if data.latlng
@@ -175,14 +183,6 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       el.css 'opacity', 0
       $timeout((->el.css 'opacity', 1),600)
     $timeout((->el.css 'opacity', 0),4000)
-
-  $scope.$on 'refresh_bookings', ->
-    $http.get($window.location.href + '.json').success (rsp) ->
-      $scope.property = rsp
-      _($scope.property.bookings).each (booking) ->
-        date = moment.utc booking.date
-        booking.parsed_date = date.format('MMMM Do, YYYY')
-        angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
   $scope.property_image = (src) ->
     $scope.image = src
