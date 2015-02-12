@@ -25,13 +25,13 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
   $scope.payment_screen = -> if $scope.payment && $scope.payment.id == 'new' then 'new' else 'existing'
 
   $scope.next = ->
-    angular.element('.booking.modal .content-container').css 'margin-left', -976
+    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
     calculate_pricing()
     null
 
   $scope.details = ->
     if angular.element('.content-side-container').css('margin-left') == '0px'
-      angular.element('.content-side-container').css 'margin-left', -488
+      angular.element('.content-side-container').css 'margin-left', margin_left()/2
     else
       angular.element('.content-side-container').css 'margin-left', 0
     calculate_pricing()
@@ -108,14 +108,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
   $scope.to_booking_confirmation = ->
     angular.element('.booking.modal .content.confirmation').removeClass 'active'
     angular.element('.booking.modal .content.confirmation.teal').addClass 'active'
-    angular.element('.booking.modal .content-container').css 'margin-left', -1952
+    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*2
     angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
     null
 
   $scope.to_booking_cancellation = ->
     angular.element('.booking.modal .content.confirmation').removeClass 'active'
     angular.element('.booking.modal .content.confirmation.red').addClass 'active'
-    angular.element('.booking.modal .content-container').css 'margin-left', -976
+    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
     angular.element('.booking.modal .header').addClass 'red red-transition'
     angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
     null
@@ -132,7 +132,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
       if rsp.success
         date = $scope.selected_date
         angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('booked').removeAttr 'booking'
-        angular.element('.booking.modal .content-container').css 'margin-left', -1952
+        angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*2
 
   $scope.update = ->
     defer = $q.defer()
@@ -144,7 +144,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
         if rsp.success
           angular.element('.booking.modal .content.confirmation').removeClass 'active'
           angular.element('.booking.modal .content.confirmation.teal').addClass 'active'
-          angular.element('.booking.modal .content-container').css 'margin-left', -976
+          angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
           angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
           null
         else
@@ -155,6 +155,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', 'ngDialog', 
       $scope.add_payment defer
     else
       defer.resolve $scope.payment.id
+
+  margin_left = ->
+    if angular.element('.booking.modal .content-container .content-group').width() < 768
+      -700
+    else
+      -976
 
   calculate_pricing = ->
     $scope.days = []

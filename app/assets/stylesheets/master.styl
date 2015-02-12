@@ -1859,6 +1859,8 @@ form
   .ngdialog-content
     width: 976px
     margin-top: 40px
+    @media portrait_tablet
+      width: 700px
     .modal
       background-color: white
       overflow: hidden
@@ -1902,9 +1904,13 @@ form
         height: 570px
         overflow: hidden
         transition: margin-left .5s ease-in-out
+        @media portrait_tablet
+          width: 2100px
         .content-group
           display: inline-block
           vertical-align: top
+          @media portrait_tablet
+            width: 700px
           .foot
             background-color: #EDEEF1
             height: 52px
@@ -1928,6 +1934,8 @@ form
                 width: 130px
                 &:hover
                   background-color: #FAFAFA
+                @media portrait_tablet
+                  width: auto
             .right
               float: right
               margin-right: 15px
@@ -1984,16 +1992,24 @@ form
           box-sizing: border-box
           margin: 0
           background-color: #F7F7F7
+          @media portrait_tablet
+            width: 50%
           &:first-child
             background-color: white
+            overflow: hidden
           .content-side-container
             width: 976px
             margin-left: -488px
             transition: margin-left .6s ease-in-out
+            @media portrait_tablet
+              width: 700px
+              margin-left: -350px
             .content-side
               display: inline-block
               vertical-align: top
               width: 488px
+              @media portrait_tablet
+                width: 350px
           .buttons
             margin: 25px auto
             .cancel
@@ -2042,7 +2058,7 @@ form
             &.active
               display: inline-block
           &.payment
-            padding: 35px
+            padding: 25px 40px
             .payment-tab
               display: none
               height: 238px
@@ -2064,7 +2080,6 @@ form
               color: teal
               font-weight: 700
               font-size: 1.1em
-              margin-top: 35px
             .payment-method
               margin: 25px 0
               border-bottom: 2px solid light-gray
@@ -2163,6 +2178,8 @@ form
             height: 570px
             text-align: center
             color: white
+            @media portrait_tablet
+              width: 700px
             &.active
               display: inline-block
             &.teal
@@ -2233,6 +2250,9 @@ form
                   margin-top: -11px
                 &:hover
                   cursor: pointer
+          .calendar
+            @media portrait_tablet
+              padding: 25px 40px
           .services, .extra
             margin: 25px 40px 0
             .title
