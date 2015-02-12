@@ -44,7 +44,7 @@ class AuthController < ApplicationController
         user.settings(:service_completion).email = true
 
         if user.save
-          TwilioJob.perform_later("+1#{user.phone_number}", "Welcome to Porter! You're confirmation code is: #{user.phone_confirmation}")
+          TwilioJob.perform_later("+1#{user.phone_number}", "Welcome to HostWise! You're confirmation code is: #{user.phone_confirmation}")
           UserMailer.welcome(user).then(:deliver)
           render json: { success: true }
         else

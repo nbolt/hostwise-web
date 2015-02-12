@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title= content_for?(:title) ? yield(:title) : 'Porter'
+    title= content_for?(:title) ? yield(:title) : 'HostWise'
     = render 'common/meta'
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'css_imports'
@@ -18,8 +18,8 @@ html
         .logo
           img src='/images/porter-navy.png'
           .text
-            | | Porter for
-            span &nbsp;Hosts
+            | | Host
+            span Wise
     = yield
     footer
       div
@@ -35,7 +35,7 @@ html
           .fa.fa-facebook
           .fa.fa-twitter
           div
-            | &copy; 2015 Porter, Inc. | All Rights Reserved
+            | &copy; 2015 HostWise, Inc. | All Rights Reserved
           div
             | Made with
             .fa.fa-heart

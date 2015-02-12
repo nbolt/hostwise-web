@@ -1,7 +1,7 @@
 class UserMailer < MandrillMailer::TemplateMailer
 
   default from: 'support@useporter.com'
-  default from_name: 'Porter'
+  default from_name: 'HostWise'
 
   DEFAULT_REPLY_TO = 'Porter<support@useporter.com>'
 
