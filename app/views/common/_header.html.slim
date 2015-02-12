@@ -10,12 +10,12 @@ header
         | Hi,&nbsp;
         strong ng:bind='::user.first_name'
       .arrow
-        .pf.icon-acc-open
+        i.icon-acc-open
     - if current_user.host?
       .link.head-button ng:controller='property_search' properties-dropdown=''
         .icon-button.teal
           .icon
-            .pf.icon-calendar
+            i.icon-calendar
           .text Book Service
         .drop-container.properties
           .drop-arrow

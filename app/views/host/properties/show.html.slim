@@ -31,14 +31,14 @@
             | {{property.twin_beds}} Twins
       .bottom
         .next-service ng:show='property.next_service_date'
-          .pf.icon-calendar
+          i.icon-calendar
           .text Next Service {{property.next_service_date}}
         .left
           .id
             | ID&nbsp;
             a ng:href='/properties/{{property.slug}}' ng:bind='property.id'
           .rooms
-            .pf.icon-house
+            i.icon-house
             .text
               | {{property.bedrooms}}BD/{{property.bathrooms}}BA
   #columns
@@ -48,7 +48,7 @@
           .arrow
             .typcn.typcn-chevron-right
           .icon
-            .pf.icon-calendar
+            i.icon-calendar
           .text Add / Edit Service Dates
         .calendar calendar='' options='calendar_options' dates='__'
       .section.upcoming.services ng:if='property.upcoming_bookings[0]'
