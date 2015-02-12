@@ -1,0 +1,9 @@
+script#property-trash-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Trash Disposal
+    .content
+      textarea rows='5' ng:model='form.trash_disposal'
+    .footer
+      .buttons
+        .button.teal ng:click='update_property()' Save Changes

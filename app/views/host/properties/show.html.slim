@@ -11,8 +11,8 @@
     .right
       .top
         .title
-          .name ng:bind='::property.nickname'
-          .address ng:bind='::property.full_address'
+          .name ng:bind='property.nickname'
+          .address ng:bind='property.full_address'
         .beds
           .text Beds
           .bed ng:if='property.king_beds == 1'
@@ -110,31 +110,35 @@
             .pf.icon-service
           .text Property Instructions
         .instruction ng:if='property.access_info'
-          .edit
+          .edit ng:click='edit_access()'
             .typcn.typcn-pencil
           .content
             .title Access Information
             .text ng:bind='property.access_info'
         .instruction ng:if='property.trash_disposal'
-          .edit
+          .edit ng:click='edit_trash()'
             .typcn.typcn-pencil
           .content
             .title Trash Disposal
             .text ng:bind='property.trash_disposal'
         .instruction ng:if='property.parking_info'
-          .edit
+          .edit ng:click='edit_parking()'
             .typcn.typcn-pencil
           .content
             .title Parking Information
             .text ng:bind='property.parking_info'
         .instruction ng:if='property.additional_info'
-          .edit
+          .edit ng:click='edit_additional()'
             .typcn.typcn-pencil
           .content
             .title Additional Information
             .text ng:bind='property.additional_info'
 
 = render 'common/property_edit_modal'
+= render 'common/property_access_modal'
+= render 'common/property_trash_modal'
+= render 'common/property_parking_modal'
+= render 'common/property_additional_modal'
 = render 'common/booking_modal'
 = render 'common/property_deactivation_modal'
 = render 'common/property_reactivation_modal'

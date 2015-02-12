@@ -87,7 +87,7 @@ header
         position: absolute
         top: 52px
         width: 260px
-        right: 1px
+        right: -2px
         .drop
           background-color: navy
         .drop-arrow
@@ -265,10 +265,6 @@ footer
     width: 250px
     .section
       padding-top: 15px
-      &::after
-        content: ''
-        display: block
-        height: 1px
       &:hover
         cursor: pointer
         background-color: lighter-navy
@@ -279,7 +275,7 @@ footer
         &:active, &:focus
           outline: none
       .title
-        margin: 0 0 15px 28px
+        padding: 0 0 24px 28px
       .icon, .text
         display: inline-block
         vertical-align: top
@@ -1336,7 +1332,7 @@ form
       .pf
         color: dark-gray
         font-size: 1.1em
-        margin: 0 5px 0 20px
+        margin: 0 10px 0 20px
   .icon-button
     display: inline-block
     vertical-align: top
@@ -1613,6 +1609,15 @@ form
           margin: 13px 25px 0
       .content
         margin: 25px
+        textarea
+          width: 100%
+          padding: 10px
+          box-sizing: border-box
+          resize: none
+          border: thin solid gray
+          border-radius: 1px
+          &:focus, &:active
+            outline: none
         .columns
           margin-top: 30px
           .column

@@ -1,0 +1,9 @@
+script#property-additional-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Additional Information
+    .content
+      textarea rows='5' ng:model='form.additional_info'
+    .footer
+      .buttons
+        .button.teal ng:click='update_property()' Save Changes

@@ -1,0 +1,9 @@
+script#property-access-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Access Information
+    .content
+      textarea rows='5' ng:model='form.access_info'
+    .footer
+      .buttons
+        .button.teal ng:click='update_property()' Save Changes

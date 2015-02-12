@@ -9,6 +9,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $scope.current_address1 = null
   promises = {}
 
+  $scope.$on 'refresh_property', -> $http.get($window.location.href + '.json').success (rsp) -> _($scope.property).extend rsp
+
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
     $scope.form = _(rsp).clone()
@@ -101,10 +103,24 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     }
 
   $scope.update_property = ->
-    $http.post("/properties/#{$scope.property.slug}/update", {form: $scope.form}).success (rsp) -> ngDialog.closeAll()
+    $http.post("/properties/#{$scope.property.slug}/update", {form: $scope.form}).success (rsp) ->
+      $scope.$emit 'refresh_property'
+      ngDialog.closeAll()
 
   $scope.edit = ->
     ngDialog.open template: 'property-edit-modal', controller: 'property', className: 'edit', scope: $scope
+
+  $scope.edit_access = ->
+    ngDialog.open template: 'property-access-modal', controller: 'property', className: 'edit', scope: $scope
+
+  $scope.edit_trash = ->
+    ngDialog.open template: 'property-trash-modal', controller: 'property', className: 'edit', scope: $scope
+
+  $scope.edit_parking = ->
+    ngDialog.open template: 'property-parking-modal', controller: 'property', className: 'edit', scope: $scope
+
+  $scope.edit_additional = ->
+    ngDialog.open template: 'property-additional-modal', controller: 'property', className: 'edit', scope: $scope
 
   $scope.open_deactivation = ->
     ngDialog.open template: 'property-deactivation-modal', controller: 'property', className: 'warning', scope: $scope
