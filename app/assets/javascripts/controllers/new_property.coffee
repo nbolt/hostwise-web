@@ -3,7 +3,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
   $scope.num_steps = 3
   $scope.posting = false
   $scope.extras = {}
-  $scope.form = {}
+  $scope.form = {rental_type_cd: 0}
 
   $http.get('/user').success (rsp) ->
     if rsp
@@ -34,14 +34,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
       data: [{id:0,text:'House'},{id:1,text:'Condo'},{id:2,text:'Apartment'}]
-      initSelection: (el, cb) ->
-    }
-
-  $scope.rental_type = ->
-    {
-      dropdownCssClass: 'details'
-      minimumResultsForSearch: -1
-      data: [{id:0,text:'Full-time'},{id:1,text:'Part-time'}]
       initSelection: (el, cb) ->
     }
 

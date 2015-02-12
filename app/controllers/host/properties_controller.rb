@@ -105,7 +105,7 @@ class Host::PropertiesController < Host::AuthController
         property.property_photos.build(photo: params[:file]) if params[:file].present?
 
         property.property_type_cd = params[:form][:property_type][:id]
-        property.rental_type_cd = params[:form][:rental_type][:id]
+        property.rental_type_cd = params[:form][:rental_type_cd]
         property.bedrooms = params[:form][:bedrooms][:id]
         property.bathrooms = params[:form][:bathrooms][:id]
         property.twin_beds = params[:form][:twin_beds][:id]
