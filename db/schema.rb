@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211001108) do
+ActiveRecord::Schema.define(version: 20150212083035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,6 +223,18 @@ ActiveRecord::Schema.define(version: 20150211001108) do
     t.datetime "updated_at"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.string   "stripe_charge_id"
+    t.string   "balanced_charge_id"
+    t.integer  "status_cd"
+    t.string   "failure_message"
+    t.integer  "booking_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "transactions", ["booking_id"], name: "index_transactions_on_booking_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                           limit: 255,                 null: false
     t.string   "crypted_password",                limit: 255,                 null: false
@@ -277,4 +289,5 @@ ActiveRecord::Schema.define(version: 20150211001108) do
   add_foreign_key "contractor_jobs", "users"
   add_foreign_key "payments", "users"
   add_foreign_key "service_notifications", "users"
+  add_foreign_key "transactions", "bookings"
 end

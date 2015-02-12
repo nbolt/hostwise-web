@@ -73,7 +73,7 @@
                   a ng:href='/properties/{{::booking.id}}' ng:bind='::booking.id'
                 td.services
                   .text ng:bind='::booking.display_services' ellipsis-services=''
-              td ${{::booking.cost}}
+                td ${{::booking.cost}}
       .section.past.services ng:if='property.past_bookings[0]'
         .head
           .arrow
