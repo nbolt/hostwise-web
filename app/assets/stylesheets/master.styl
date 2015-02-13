@@ -560,6 +560,8 @@ form
 .body
   .page-title
     font-size: 2em
+    @media phone
+      font-size: 1.7em
     .fa
       margin-right: 20px
     .icon, .text
@@ -2624,6 +2626,9 @@ form
     margin: 1% 1% 0 0
     vertical-align: top
     width: 32%
+    @media phone
+      margin: 10px 0
+      width: 100%
     .content
       background-color: white
       min-height: 200px
@@ -2649,6 +2654,10 @@ form
             color: black
             font-weight: normal
             text-align: right
+            @media phone
+              text-align: center
+          @media phone
+            width: 30%
       .home-type
         margin-top: 30px
         span
@@ -2664,6 +2673,10 @@ form
             padding-right: 2%
             text-align: right
             width: 45%
+            @media phone
+              margin-right: 4%
+              padding-right: 4%
+              width: 41%
         .header
           border-bottom: 1px solid light-gray
           margin-bottom: 10px
@@ -2689,6 +2702,8 @@ form
   .section
     background-color: white
     padding: 30px
+    @media phone
+      padding: 15px
     .flash
       margin: 5px 0
     .right
@@ -2719,6 +2734,10 @@ form
       width: 32.66%
       &:first-child
         margin-left: 0
+      @media phone
+        display: block
+        margin: 5px 0
+        width: 100%
       > div
         padding: 20px
         @media portrait_tablet
@@ -2766,6 +2785,11 @@ form
       .links
         position: absolute
         right: 20px
+        @media phone
+          display: block
+          margin-top: 20px
+          position: static
+          text-align: right
         .primary
           background-color: light-gray
           border-radius: 3px
@@ -2774,8 +2798,17 @@ form
       .fa
         font-size: 25px
         margin-right: 20px
+        @media phone
+          display: none
       &.add-payment
         color: teal
+        a
+          @media phone
+            margin-left: 0
+        .fa
+          @media phone
+            display: inline-block
+            margin-right: 10px
 
 .first-property
   .hero
@@ -2907,6 +2940,8 @@ form
         padding: 50px 30px
         @media portrait_tablet
           padding: 50px 0
+        @media phone
+          padding: 15px
       .row
         margin: 20px auto
         width: 80%
@@ -2940,6 +2975,8 @@ form
       margin: 40px 0 0
       position: relative
       width: 100%
+      @media phone
+        margin: 0
       .text
         margin-left: 30px
       .icon
@@ -2971,6 +3008,8 @@ form
             display: inline-block
             height: 780px
             margin-top: 50px
+            @media phone
+              display: none
           hr
             border: 0
             border-top: 1px solid light-gray
@@ -2979,6 +3018,8 @@ form
             &.avatar
               width: 19%
               text-align: center
+              @media phone
+                width: 100%
               .name
                 margin: 20px 0
               .location
@@ -2999,8 +3040,13 @@ form
                 margin: 0 auto 30px
             &.info
               width: 40%
+              @media phone
+                border-bottom: thin solid border-gray
+                width: 100%
             &.pwd
               width: 40%
+              @media phone
+                width: 100%
       &.two
         h6
           font-size: 13px
@@ -3131,10 +3177,14 @@ form
     .section
       background-color: white
       padding: 50px 30px
+      @media phone
+        padding: 30px 15px
     button
       float: right
       height: 40px
       position: relative
+      @media phone
+        width: 100%
       .icon
         background-color: light-navy
         display: inline-block
@@ -3160,6 +3210,9 @@ form
         width: 8%
         @media portrait_tablet
           width: 10%
+        @media phone
+          margin: 0
+          width: 15%
     .row
       border-top: 1px solid light-gray
       padding: 20px 0
@@ -3172,8 +3225,12 @@ form
         width: 84%
         @media portrait_tablet
           width: 80%
+        @media phone
+          width: 68%
       label
         text-align: center
         width: 8%
         @media portrait_tablet
           width: 10%
+        @media phone
+          width: 16%
