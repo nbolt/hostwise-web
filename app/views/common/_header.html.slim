@@ -27,9 +27,11 @@ header
             .links
               a ng:repeat='property in user.properties' ng:href='/properties/{{property.slug}}'
                 .link ng:bind='::property.nickname' data-ellipsis=''
-  a href="#{root_path}"
-    .logo
+  .logo
+    a href="#{root_path}"
       img src='/images/porter-navy.png'
+    .fa.fa-bars menu-dropdown=''
+    a href="#{root_path}"
       .text
         | | Host
         span Wise

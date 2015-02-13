@@ -8,6 +8,8 @@ html, body, .body
   color: black
   font-size: 100%
   position: relative
+  @media phone
+    font-size: 98%
 
 .body, .grey
   background-color: light-gray
@@ -24,6 +26,14 @@ header
     img
       vertical-align: top
       width: 64px
+    .fa
+      color: navy
+      cursor: pointer
+      display: none
+      font-size: 1.7em
+      margin: 21px 0 0 15px
+      @media phone
+        display: inline-block
     .text
       display: inline-block
       vertical-align: top
@@ -34,6 +44,8 @@ header
       upcase()
       span
         font-family: gotham-bold
+      @media phone
+        display: none
   nav
     float: right
     margin-top: 14px
@@ -42,6 +54,8 @@ header
       vertical-align: top
       margin-top: -10px
       position: relative
+      @media phone
+        margin-top: -7px
       &:hover
         cursor: pointer
         .drop-container
@@ -61,9 +75,14 @@ header
         color: navy
         margin: 15px 10px 0 12px
         font-size: 1.2em
+        @media phone
+          margin: 17px 5px 0 12px
+          font-size: 1.0em
       .arrow
         font-size: 12px
         margin: 21px 40px 0 0
+        @media phone
+          margin: 21px 0 0
     .link
       display: inline-block
       vertical-align: top
@@ -88,6 +107,8 @@ header
         top: 52px
         width: 260px
         right: 0px
+        @media phone
+          right: -25px
         .drop
           background-color: navy
         .drop-arrow
@@ -217,7 +238,8 @@ footer
   @media portrait_tablet
     margin-left: 80px
   @media phone
-    margin-left: 80px
+    margin: 80px 0 20px
+    padding: 10px
 
 .button.teal, button.teal
   background-color: teal
@@ -257,12 +279,17 @@ footer
   @media portrait_tablet
     width: 80px
   @media phone
-    width: 80px
+    display: none
+    width: auto
   &:hover
     width: 220px
+    @media phone
+      width: auto
   #sidebar
     color: white
     width: 250px
+    @media phone
+      width: 100%
     .section
       padding-top: 15px
       &:hover
@@ -287,6 +314,8 @@ footer
         margin: 17px 0 0 28px
         text-align: left
         width: 125px
+        @media phone
+          margin: 17px 0 0 17px
       .drop-container
         background-color: navy
         .search
@@ -502,12 +531,19 @@ form
       &:active, &:focus
         outline: none
         border: thin solid border-gray
+      @media phone
+        font-size: 0.9em
+        padding: 15px 12px 14px 33px
+    @media phone
+      padding-right: 3px
   .select2-container
     width: 200px
     .select2-choice
       background: white !important
       position: relative
       border-radius: 1px
+      @media phone
+        font-size: 0.9em
       &::after
         typicons()
         content: '\e049'
@@ -519,7 +555,8 @@ form
       height: 34px
       border-radius: 1px
       line-height: 34px
-
+    @media phone
+      width: auto
 .body
   .page-title
     font-size: 2em
@@ -1320,6 +1357,11 @@ form
       i
         color: dark-gray
         margin-right: 10px
+        @media phone
+          display: none
+      @media phone
+        padding: 0 10px
+        width: auto
     .left
       padding: 15px 18px
     .id, .rooms, .text
@@ -1359,6 +1401,8 @@ form
       border-radius: 50%
       height: 100%
       width: 100%
+    @media phone
+      display: none
   .title
     margin-top: 15px
     display: inline-block
@@ -1368,6 +1412,11 @@ form
     .address
       margin-top: 4px
       color: dark-gray
+      .city_state
+        @media phone
+          display: block
+    @media phone
+      margin-top: 5px
   a
     color: black
     text-decoration: none
@@ -1428,9 +1477,6 @@ form
     opacity: 1
 
 #home
-  #welcome
-    font-size: 2em
-    margin: 40px 0
   #properties
     margin-top: 10px
     .property-link
@@ -1442,7 +1488,9 @@ form
         background-color: white
         transition: background-color .5s ease-in-out
         border-radius: 1px
-        padding: 15px 25px
+        padding: 0 25px
+        height: 50px
+        line-height: 50px
         box-sizing: border-box
         color: teal
         margin-top: 15px

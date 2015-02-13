@@ -1,6 +1,4 @@
 #home.container ng:controller='properties'
-  #welcome Welcome back, {{user.first_name}}.
-
   #search-bar
     #filters
       input type='hidden' ui-select2='filters()' ng:model='filter'
@@ -16,7 +14,7 @@
         .top
           .title
             .name ng:bind='::property.nickname'
-            .address ng:bind='::property.full_address'
+            .address ng:bind-html='address(property)'
           .icon-button.teal ng:click='quick_add(property); $event.stopPropagation()'
             .icon
               i.icon-calendar

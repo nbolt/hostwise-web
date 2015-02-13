@@ -18,6 +18,7 @@
 //= require angular-file-upload
 //= require angular-carousel.min
 //= require angular-touch
+//= require angular-sanitize.min
 //= require dirPagination
 //= require mask
 //= require select2.min

@@ -71,6 +71,10 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     if $scope.property.bookings
       _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking
 
+  $scope.address = (property) ->
+    parts = property.full_address.split ','
+    return parts[0] + ", <span class='city_state'>" + parts[1] + ", " + parts[2] + "</span>"
+
   refresh_properties = ->
     $http.get('/data/properties', {params: {term: $scope.term, sort: $scope.sort}}).success (rsp) ->
       if $scope.user
