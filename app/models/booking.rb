@@ -82,7 +82,7 @@ class Booking < ActiveRecord::Base
 
   def create_order
     if payment.balanced_id && !balanced_order_id
-      customer = Balanced::Customer.fetch("/customers/#{booking.property.user.balanced_customer_id}")
+      customer = Balanced::Customer.fetch("/customers/#{property.user.balanced_customer_id}")
       order = customer.create_order(meta: {booking_id: id})
       self.balanced_order_id = order.id
     end
