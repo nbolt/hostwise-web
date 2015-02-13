@@ -9,7 +9,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $scope.current_address1 = null
   promises = {}
 
-  $scope.$on 'refresh_property', -> $http.get($window.location.href + '.json').success (rsp) -> _($scope.property).extend rsp
+  $scope.$on 'refresh_property', -> $http.get($window.location.href + '.json').success (rsp) ->
+    _($scope.property).extend rsp
+    $scope.property.next_service_date = moment(rsp.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if rsp.next_service_date
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
