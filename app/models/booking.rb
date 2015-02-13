@@ -7,10 +7,10 @@ class Booking < ActiveRecord::Base
   has_many :services, through: :booking_services
   has_many :transactions
 
-  scope :pending, -> { includes(:services).where('services.id is null or bookings.payment_id is null').references(:services) }
-  scope :active,  -> { includes(:services).where('services.id is not null and bookings.payment_id is not null').references(:services) }
+  scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
+  scope :active,  -> { where('services.id is not null and bookings.payment_id is not null').includes(:services).references(:services) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
-  scope :upcoming, -> (user) { includes(:property).references(:property).where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc) }
+  scope :upcoming, -> (user) { where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
   scope :future, -> { where('date >= ?', Date.today) }
 
   before_save :create_job, on: :create
@@ -85,7 +85,7 @@ class Booking < ActiveRecord::Base
   end
 
   def check_transaction
-    if transactions.last && transactions.last.successful?
+    if !completed? && transactions.last && transactions.order(created_at: :asc).last.successful?
       completed!
     end
   end

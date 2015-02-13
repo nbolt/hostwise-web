@@ -38,6 +38,25 @@ unless Zip.first
   end
 end
 
+CSV.foreach "#{Rails.root}/db/data/service_zips.csv" do |row|
+  code = row[0]
+  zip  = Zip.where(code: code)[0]
+  zip.update_attribute :serviced, true unless zip.serviced
+end
+
+CSV.foreach "#{Rails.root}/db/data/neighborhoods.csv" do |row|
+  name = row[0]
+  zips = row[1..-1]
+  neighborhood = Neighborhood.find_or_create_by(name: name)
+  zips.each do |z|
+    zip = Zip.find_or_create_by(code: z)
+    if neighborhood.zips.where(code: z).empty?
+      zip.neighborhood = neighborhood
+      zip.save
+    end
+  end
+end
+
 unless Service.first
   Service.create(name: 'cleaning', display: 'Cleaning', extra: false)
   Service.create(name: 'linens', display: 'Linens & Towels', extra: false)
@@ -45,11 +64,4 @@ unless Service.first
   Service.create(name: 'pool', display: 'Pool Area', extra: true)
   Service.create(name: 'patio', display: 'Balcony / Patio', extra: true)
   Service.create(name: 'windows', display: 'Exterior Windows', extra: true)
-end
-
-unless ServiceZip.first
-  CSV.foreach "#{Rails.root}/db/data/service_zips.csv" do |row|
-    zip_code  = row[0]
-    ServiceZip.find_or_create_by!(zip: zip_code)
-  end
 end

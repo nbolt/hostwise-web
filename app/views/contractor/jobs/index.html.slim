@@ -21,7 +21,7 @@
             .photo
               img ng:src='{{job.booking.property.primary_photo}}'
             .title
-              .text ng:bind='::job.booking.property.short_address'
+              .text ng:bind='::job.booking.property.neighborhood'
             .button.teal ng:click='claim(job)' ng:show="tab.name == 'open'"
               .icon
                 .typcn.typcn-tick

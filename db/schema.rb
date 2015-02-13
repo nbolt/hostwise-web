@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212214957) do
+ActiveRecord::Schema.define(version: 20150213010044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,12 @@ ActiveRecord::Schema.define(version: 20150212214957) do
     t.datetime "updated_at"
   end
 
+  create_table "neighborhoods", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "payments", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at",                               null: false
@@ -193,12 +199,6 @@ ActiveRecord::Schema.define(version: 20150212214957) do
   end
 
   add_index "service_notifications", ["user_id"], name: "index_service_notifications_on_user_id", using: :btree
-
-  create_table "service_zips", force: :cascade do |t|
-    t.string   "zip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "services", force: :cascade do |t|
     t.string   "name"
@@ -277,12 +277,15 @@ ActiveRecord::Schema.define(version: 20150212214957) do
 
   create_table "zips", force: :cascade do |t|
     t.integer  "city_id"
-    t.string   "code",       limit: 255
+    t.string   "code",            limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "serviced",                    default: false
+    t.integer  "neighborhood_id"
   end
 
   add_index "zips", ["city_id"], name: "index_zips_on_city_id", using: :btree
+  add_index "zips", ["neighborhood_id"], name: "index_zips_on_neighborhood_id", using: :btree
 
   add_foreign_key "availabilities", "users"
   add_foreign_key "background_checks", "users"
@@ -294,4 +297,5 @@ ActiveRecord::Schema.define(version: 20150212214957) do
   add_foreign_key "payments", "users"
   add_foreign_key "service_notifications", "users"
   add_foreign_key "transactions", "bookings"
+  add_foreign_key "zips", "neighborhoods"
 end

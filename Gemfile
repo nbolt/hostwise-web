@@ -37,6 +37,7 @@ end
 gem 'coveralls', require: false, group: :test
 gem 'pry-rails', groups: [:test, :development]
 
+gem "resque", "~> 2.0.0.pre.1", github: "resque/resque"
 gem 'stylus', github: 'lucasmazza/ruby-stylus', group: :assets
 gem 'rmagick', require: false
 gem 'faraday', '~> 0.8.9'
@@ -77,5 +78,3 @@ gem 'simple_enum'
 gem 'attr_encrypted'
 gem 'rest-client'
 gem 'ledermann-rails-settings'
-gem 'clockwork'
-gem 'iron_worker_ng'

@@ -13,7 +13,7 @@ class DataController < ApplicationController
   end
 
   def service_available
-    render json: ServiceZip.where(zip: params[:zip]).first
+    render json: Zip.serviced.where(code: params[:zip]).first
   end
 
   def payments
@@ -30,7 +30,7 @@ class DataController < ApplicationController
     when 'past'
       jobs = jobs.past(current_user)
     end
-    jobs = jobs.group_by{|j| j.booking.date}.sort_by{|d|d}.reverse
+    jobs = jobs.group_by{|j| j.booking.date}.sort_by{|d|d}
     render json: jobs.to_json(include: {booking: {methods: :cost, include: {property: {methods: [:short_address, :primary_photo]}}}})
   end
 

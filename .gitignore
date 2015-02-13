@@ -1,5 +1,7 @@
 *.rbc
+.*.swp
 capybara-*.html
+import_neighborhoods.rb
 .powenv
 .rspec
 .env
