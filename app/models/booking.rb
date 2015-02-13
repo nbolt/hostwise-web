@@ -70,6 +70,10 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  def last_transaction
+    transactions.order(created_at: :asc).last
+  end
+
   private
 
   def create_job
@@ -85,7 +89,7 @@ class Booking < ActiveRecord::Base
   end
 
   def check_transaction
-    if !completed? && transactions.last && transactions.order(created_at: :asc).last.successful?
+    if !completed? && last_transaction && last_transaction.successful?
       completed!
     end
   end
