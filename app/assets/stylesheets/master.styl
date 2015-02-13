@@ -1061,20 +1061,17 @@ form
         color: teal
         font-weight: 600
   #columns
-    margin: 25px 0 50px
+    margin: 25px 0
     .column
       display: inline-block
       vertical-align: top
       width: 48%
       margin-right: 4%
+      @media phone
+        margin-right: 0
+        width: 100%
       &:last-child
         margin-right: 0
-      .deactivate
-        margin-top: 20px
-        span
-          color: teal
-          &:hover
-            cursor: pointer
       #map
         height: 240px
         margin-bottom: 15px
@@ -1192,7 +1189,11 @@ form
               border-bottom: 0
             &:hover .edit
               opacity: 1
-
+  .deactivate
+    span
+      color: red
+      &:hover
+        cursor: pointer
 #jobs
   .tabs
     margin: 40px 0
@@ -1369,9 +1370,13 @@ form
             padding: 16px
           @media portrait_tablet
             padding: 8px
+          @media phone
+            padding: 5px
   @media landscape_tablet
     padding: 10px
   @media portrait_tablet
+    padding: 10px
+  @media phone
     padding: 10px
 
 #properties .property
@@ -1475,6 +1480,9 @@ form
 #property .property
   margin-top: 25px
   position: relative
+  @media phone
+    height: auto
+    font-size: 0.9em
   .beds, .bed, .text
     display: inline-block
     vertical-align: top
@@ -1490,11 +1498,17 @@ form
       border-right: thin solid light-gray
       &:last-child
         border-right: 0
+      @media phone
+        padding: 0 5px
     @media landscape_tablet
       display: block
       margin-top: 15px
       position: static
     @media portrait_tablet
+      display: block
+      margin-top: 15px
+      position: static
+    @media phone
       display: block
       margin-top: 15px
       position: static
@@ -1503,6 +1517,12 @@ form
       margin-top: 0
     @media portrait_tablet
       margin-top: 0
+    @media phone
+      display: block
+      margin-top: 0
+  .top
+    @media phone
+      height: auto
   .bottom
     .id, .id a
       color: border-gray

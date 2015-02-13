@@ -94,10 +94,6 @@
                 td.id ng:bind='::booking.id'
                 td.services ng:bind='::booking.display_services' ellipsis-services=''
                 td ${{::booking.cost}}
-      .deactivate
-        | Do you wish to
-        span ng:click='open_deactivation()' ng:show='property.active'  deactivate this property?
-        span ng:click='open_reactivation()' ng:hide='property.active'  reactivate this property?
     .column.info
       #map
       .section.instructions
@@ -131,7 +127,10 @@
           .content
             .title Additional Information
             .text ng:bind='property.additional_info'
-
+  .deactivate
+    | Do you wish to
+    span ng:click='open_deactivation()' ng:show='property.active'  deactivate this property?
+    span ng:click='open_reactivation()' ng:hide='property.active'  reactivate this property?
 = render 'common/property_edit_modal'
 = render 'common/property_access_modal'
 = render 'common/property_trash_modal'
