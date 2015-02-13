@@ -72,6 +72,19 @@ class Property < ActiveRecord::Base
     end
   end
 
+  def neighborhood
+    zip = Zip.where(code: self.zip)[0]
+    if zip
+      if zip.neighborhood && zip.neighborhood.name != city
+        "#{zip.neighborhood.name}, #{city}"
+      else
+        city
+      end
+    else
+      ''
+    end
+  end
+
   def primary_photo
     if property_photos.present?
       property_photos.first.photo.url
