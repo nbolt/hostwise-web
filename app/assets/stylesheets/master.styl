@@ -800,6 +800,8 @@ form
     border-bottom: 2px solid white
     padding: 6px 12px
     vertical-align: top
+    @media phone
+      width: auto
     &.active
       border-bottom: 3px solid teal
       .text
@@ -823,6 +825,8 @@ form
         font-size: 2em
         float: right
         margin-right: 20px
+        @media phone
+          margin-right: 0
     .text
       font-size: 1.2em
       margin: 0 40px 0 8px
@@ -860,6 +864,8 @@ form
           display: inline-block
           height: 305px
           margin-top: 50px
+          @media phone
+            display: none
         hr
           border: 0
           border-top: 1px solid light-gray
@@ -871,9 +877,13 @@ form
             padding: 50px 30px
             @media portrait_tablet
               padding: 50px 0
+            @media phone
+              padding: 0 20px
           .row
             margin: 20px auto
             width: 80%
+            @media phone
+              width: 95%
             &:first-child
               margin-top: 0
             &.two, &.four
@@ -908,6 +918,11 @@ form
           &.avatar
             width: 19%
             text-align: center
+            @media phone
+              border-bottom: thin solid border-gray
+              margin: 0 auto 20px
+              padding: 20px 0
+              width: 100%
             .name
               margin: 20px 0
             .location
@@ -929,22 +944,51 @@ form
               margin: 0 auto 30px
           &.info
             width: 40%
+            @media phone
+              width: 100%
           &.action
             width: 40%
+            @media phone
+              width: 100%
           &.home-type
             width: 35%
+            @media phone
+              margin: 20px 0
+              width: 100%
           &.bed-type
             width: 64%
+            @media phone
+              width: 100%
             .row.two
               > div
                 width: 49%
             .row.four
               > div
                 width: 23.5%
+                &:nth-child(odd)
+                  @media phone
+                    margin-left: 0
+                @media phone
+                  margin-bottom: 10px
+                  width: 49%
           &.instructions
             width: 50%
+            @media phone
+              margin: 20px 0
+              width: 100%
           &.details
             width: 49%
+            @media phone
+              width: 100%
+            hr
+              @media phone
+                display: none
+            .row
+              @media phone
+                display:none
+              &:last-child
+                @media phone
+                  display: block
             button
               margin-top: 0
         input
@@ -961,6 +1005,8 @@ form
           width: 100%
           &:focus
             outline: none
+          @media phone
+            height: 160px
         label
           color: teal
           display: block
@@ -973,6 +1019,9 @@ form
           margin: 30px 0 0
           position: relative
           width: 60%
+          @media phone
+            margin: 0
+            width: 100%
           .text
             margin-left: 30px
           .icon
