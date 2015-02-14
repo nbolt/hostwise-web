@@ -1,0 +1,130 @@
+#properties
+  margin-top: 10px
+  .property
+    background-color: white
+    margin: 12px auto
+    border-radius: 3px
+    height: 150px
+    box-shadow: gray_shadow
+    overflow: hidden
+    @media phone
+      height: auto
+    &:hover
+      cursor: pointer
+      .right
+        background-color: lighter-gray
+    .right
+      overflow: hidden
+    .top
+      padding: 18px
+      height: 65px
+      position: relative
+    .bottom
+      border-top: 2px solid light-gray
+      font-size: .9em
+      .next-service
+        float: right
+        background-color: lighter-gray
+        width: 212px
+        height: 47px
+        line-height: 47px
+        text-align: center
+        .text
+          color: darker-gray
+        i
+          color: dark-gray
+          margin-right: 10px
+          @media phone
+            display: none
+        @media phone
+          float: none
+          padding: 0 10px
+          width: 100%
+      .left
+        padding: 13px 18px
+      .id, .rooms, .text
+        display: inline-block
+        vertical-align: top
+      .id
+        color: dark-gray
+      .rooms
+        color: dark-gray
+        i
+          color: dark-gray
+          font-size: 1.1em
+          margin: 0 5px 0 20px
+    .icon-button
+      display: inline-block
+      vertical-align: top
+      float: right
+      margin-top: 15px
+      .text
+        @media portrait_tablet
+          padding: 0 10px
+    .manage
+      float: right
+      font-size: .9em
+      color: teal
+      margin: 25px 15px 0 0
+      display: none
+      &:hover
+        text-decoration: underline
+    .photo
+      padding: 10px
+      width: 100px
+      height: 100px
+      padding: 25px
+      background-color: lighter-gray
+      float: left
+      img
+        border-radius: 50%
+        height: 100%
+        width: 100%
+      @media phone
+        display: none
+    .title
+      margin-top: 15px
+      display: inline-block
+      vertical-align: top
+      .name
+        font-weight: bold
+      .address
+        margin-top: 4px
+        color: dark-gray
+        .city_state
+          @media portrait_tablet
+            display: block
+          @media phone
+            display: block
+      @media phone
+        margin-top: 5px
+    a
+      color: black
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+  .property-link
+    display: block
+    color: #24272a
+  .new-property
+    display: block
+    text-decoration: none
+    box-shadow: gray_shadow
+    .container
+      background-color: white
+      transition: background-color .5s ease-in-out
+      border-radius: 1px
+      padding: 0 25px
+      height: 50px
+      line-height: 50px
+      box-sizing: border-box
+      color: teal
+      margin-top: 15px
+      .text
+        display: inline-block
+        vertical-align: top
+      i
+        font-size: 20px
+        margin-right: 10px
+    &:hover .container
+      background-color: lighter-gray

@@ -1,0 +1,156 @@
+#property .property
+  background-color: white
+  margin: 25px auto 12px
+  border-radius: 3px
+  height: 150px
+  box-shadow: gray_shadow
+  overflow: hidden
+  position: relative
+  &:hover .edit
+    opacity: 1
+  @media phone
+    height: auto
+    font-size: 0.9em
+  .beds, .bed, .text
+    display: inline-block
+    vertical-align: top
+  .beds
+    position: absolute
+    right: 20px
+    top: 50%
+    .text
+      font-weight: 600
+      margin-right: 10px
+    .bed
+      padding: 0 15px
+      border-right: thin solid light-gray
+      &:last-child
+        border-right: 0
+      @media phone
+        padding: 0 5px
+    @media landscape_tablet
+      display: block
+      margin-top: 15px
+      position: static
+    @media portrait_tablet
+      display: block
+      margin-top: 15px
+      position: static
+    @media phone
+      display: block
+      margin-top: 15px
+      position: static
+  .right
+    overflow: hidden
+  .top
+    padding: 18px
+    height: 65px
+    position: relative
+    @media phone
+      height: auto
+  .bottom
+    border-top: 2px solid light-gray
+    font-size: .9em
+    .next-service
+      float: right
+      background-color: lighter-gray
+      width: 212px
+      height: 47px
+      line-height: 47px
+      text-align: center
+      .text
+        color: darker-gray
+      i
+        color: dark-gray
+        margin-right: 10px
+        @media phone
+          display: none
+      @media phone
+        padding: 0 10px
+        width: auto
+    .left
+      padding: 15px 18px
+    .id, .rooms, .text
+      display: inline-block
+      vertical-align: top
+    .id, .id a
+      color: border-gray
+    .id
+      color: dark-gray
+    .rooms
+      color: dark-gray
+      i
+        color: dark-gray
+        font-size: 1.1em
+        margin: 0 5px 0 20px
+  .icon-button
+    display: inline-block
+    vertical-align: top
+    float: right
+    margin-top: 15px
+    .text
+      @media portrait_tablet
+        padding: 0 10px
+  .manage
+    float: right
+    font-size: .9em
+    color: teal
+    margin: 25px 15px 0 0
+    display: none
+    &:hover
+      text-decoration: underline
+  .photo
+    padding: 10px
+    width: 100px
+    height: 100px
+    padding: 25px
+    background-color: lighter-gray
+    float: left
+    img
+      border-radius: 50%
+      height: 100%
+      width: 100%
+    @media phone
+      display: none
+  .title
+    margin-top: 15px
+    display: inline-block
+    vertical-align: top
+    .name
+      font-weight: bold
+    .address
+      margin-top: 4px
+      color: dark-gray
+      .city_state
+        @media portrait_tablet
+          display: block
+        @media phone
+          display: block
+    @media landscape_tablet
+      margin-top: 0
+    @media portrait_tablet
+      margin-top: 0
+    @media phone
+      display: block
+      margin-top: 0
+  .edit
+    opacity: 0
+    position: absolute
+    right: 5px
+    top: 5px
+    background-color: #F3F3F3
+    width: 25px
+    height: 25px
+    border-radius: 1px
+    color: teal
+    transition: opacity .4s ease-in-out
+    z-index: 1000
+    .typcn
+      margin: 1px 0 0 5px
+    &:hover
+      cursor: pointer
+  a
+    color: black
+    text-decoration: none
+    &:hover
+      text-decoration: underline

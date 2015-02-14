@@ -1,0 +1,933 @@
+.ngdialog
+  .ngdialog-content
+    background: white
+    color: #444
+    margin: auto
+    max-width: 100%
+    position: relative
+    .modal
+      position: relative
+      .flash
+        border-radius: 0
+        width: 100%
+  .ngdialog-close
+    color: gray
+    font-size: 1.5em
+    margin-right: 6px
+    position: absolute
+    right: 0
+    top: 0
+    transition: opacity .5s ease-in-out
+    hover-darken()
+    &:hover
+      cursor: pointer
+    &::before
+      typicons()
+      content: '\e057'
+
+.ngdialog.auth
+  .ngdialog-content
+    margin-top: 120px
+    width: 450px
+    .modal
+      .title
+        background-color: navy
+        color: white
+        font-size: 18px
+        margin: 0
+        padding: 15px 20px
+        text-align: left
+      .flash
+        border-radius: 0
+        top: 60px
+        width: 450px
+        margin-left: -225px
+      form
+        margin-top: 50px
+      .create-account
+        padding-bottom: 40px
+      &.signup .flash
+        top: 148px
+  .ngdialog-close
+    &:before
+      background: transparent
+      color: white
+      content: '\00D7'
+      font-size: 26px
+      font-weight: 400
+      height: 30px
+      line-height: 26px
+      position: absolute
+      right: 10px
+      text-align: center
+      top: 12px
+      width: 30px
+
+.ngdialog.edit
+  .ngdialog-content
+    width: 600px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .header
+        border-bottom: 2px solid teal
+        color: teal
+        font-weight: 300
+        font-size: 1.75em
+        padding-bottom: 20px
+        margin: 25px
+      .footer
+        background-color: light-gray
+        height: 60px
+        .button
+          float: right
+          margin: 13px 25px 0
+      .content
+        margin: 25px
+        textarea
+          width: 100%
+          padding: 10px
+          box-sizing: border-box
+          resize: none
+          border: thin solid gray
+          border-radius: 1px
+          &:focus, &:active
+            outline: none
+        .columns
+          margin-top: 30px
+          .column
+            width: 260px
+            margin-right: 25px
+            display: inline-block
+            vertical-align: top
+            &:last-child
+              margin-right: 0
+            .section
+              .title
+                color: teal
+                font-weight: 600
+                margin-bottom: 10px
+              .row
+                &.one
+                  .field
+                    width: 250px
+                &.two
+                  .field
+                    width: 120px
+                    margin-right: 10px
+                    &:last-child
+                      margin-right: 0
+                .field
+                  margin-bottom: 20px
+                  display: inline-block
+                  vertical-align: top
+                  label
+                    display: block
+                    color: dark-gray
+                    font-size: .9em
+                    margin-top: 4px
+                  input
+                    width: 100%
+                  &.check
+                    width: 100px
+                    input
+                      width: 25px
+                    label
+                      display: inline-block
+
+.ngdialog.warning
+  .ngdialog-content
+    width: 400px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .header
+        border-bottom: 1px solid red
+        color: red
+        padding: 20px
+      .footer
+        background-color: light-gray
+        padding: 30px
+        position: relative
+        .buttons
+          position: absolute
+          right: 15px
+          top: 12px
+          .button
+            display: inline-block
+            width: 100px
+            &.white
+              margin-right: 10px
+      .content
+        padding: 30px 20px
+        text-align: center
+        .text
+          color: darker-gray
+          font-size: 15px
+          .capitalize
+            text-transform: capitalize
+        .fa
+          background-color: red
+          border-radius: 50%
+          color: white
+          font-size: 35px
+          height: 50px
+          line-height: 50px
+          margin-bottom: 20px
+          text-align: center
+          width: 50px
+
+.ngdialog.payment
+  .ngdialog-content
+    width: 400px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .flash
+        border-radius: 0
+        height: 50px
+        left: 0
+        position: absolute
+        top: 0
+        width: 100%
+      .header
+        background-color: teal
+        color: white
+        font-size: 1.25em
+        padding: 10px
+        height: 50px
+        box-sizing: border-box
+        transition: background-color 1s ease-in-out, height 1s ease-in-out
+        .text
+          text-align: center
+          transition: opacity .5s ease-in-out
+        &.failure
+          background-color: red
+        &.success
+          background-color: green
+        &.info
+          background-color: orange
+      .content
+        display: inline-block
+        vertical-align: top
+        box-sizing: border-box
+        width: 350px
+        margin: 25px 0 0 25px
+        .buttons
+          margin: 25px auto
+          .cancel
+            text-align: center
+            margin-top: 10px
+            span
+              color: teal
+              &:hover
+                cursor: pointer
+          .button
+            margin: 0 10px
+            color: white
+            text-align: left
+            display: inline-block
+            vertical-align: top
+            padding: 0
+            .icon, .text
+              display: inline-block
+              vertical-align: top
+            .icon
+              background-color: light-teal
+              width: 40px
+              height: 40px
+              font-size: 1.6em
+              .typcn
+                margin-left: 8px
+              .fa
+                font-size: 20px
+                margin-left: 8px
+            .text
+              text-align: center
+              font-size: 1.25em
+              margin-top: 5px
+            &:hover
+              cursor: pointer
+            &.teal
+              background-color: teal
+              &:hover
+                background-color: light-teal
+          &.one
+            .button
+              width: 300px
+              display: block
+              margin: auto
+              border-radius: 1px
+              .text
+                width: 260px
+        .payment-tab
+          display: none
+          &.active
+            display: block
+          &.ach
+            .row.two
+              .field
+                width: 170px
+                input
+                  width: 120px
+          &.credit-card
+            .row.two
+              .field
+                width: 130px
+                input
+                  width: 80px
+        .payment-method
+          margin-bottom: 25px
+          border-bottom: 2px solid light-gray
+          padding-bottom: 25px
+          .text
+            margin-bottom: 10px
+          .select2-container
+            width: 200px
+            > a
+              background: lighter-gray !important
+              color: heavy-gray
+              border: thin solid light-gray
+              border-radius: 1px !important
+        input
+          background: lighter-gray
+          border: thin solid light-gray
+          margin: 10px 0 20px
+          padding: 8px 12px
+          border-radius: 1px
+          width: 210px
+          &:active, &:focus
+            outline: none
+        .row.two
+          .field
+            display: inline-block
+            vertical-align: top
+        .head
+          color: teal
+          font-size: 1.5em
+          text-align: center
+          position: relative
+          padding: 20px
+          border-bottom: 2px solid light-gray
+          .arrows
+            position: absolute
+            top: 20px
+            left: 30px
+            right: 30px
+            color: heavy-gray
+            .arrow
+              &:hover
+                cursor: pointer
+              &.prev
+                float: left
+              &.next
+                float: right
+          .text
+            span
+              font-weight: 600
+
+.ngdialog.booking
+  .ngdialog-content
+    width: 976px
+    margin-top: 40px
+    @media portrait_tablet
+      width: 700px
+    @media phone
+      width: 320px
+    margin-top: 40px
+    .modal
+      background-color: white
+      overflow: hidden
+      .header
+        background-color: teal
+        color: white
+        font-size: 1.25em
+        padding: 10px
+        height: 50px
+        box-sizing: border-box
+        transition: background-color 1s ease-in-out, height 1s ease-in-out
+        &.red
+          background-color: red
+        &.red-transition
+          transition: background-color .6s ease-in-out
+        .icon
+          position: absolute
+          background-color: light-teal
+          top: 0
+          left: 0
+          height: 50px
+          line-height: 50px
+          width: 50px
+          font-size: 1.6em
+          padding-left: 9px
+          box-sizing: border-box
+          transition: background-color 1s ease-in-out, opacity .5s ease-in-out
+        .text
+          text-align: center
+          transition: opacity .5s ease-in-out
+        &.failure
+          background-color: red
+          .icon
+            background-color: dark-red
+        &.success
+          background-color: green
+        &.info
+          background-color: orange
+      .content-container
+        width: 2928px
+        height: 570px
+        overflow: hidden
+        transition: margin-left .5s ease-in-out
+        @media portrait_tablet
+          width: 2100px
+        @media phone
+          height: auto
+          width: 960px
+        .content-group
+          display: inline-block
+          vertical-align: top
+          @media portrait_tablet
+            width: 700px
+          @media phone
+            width: 320px
+          .foot
+            background-color: #EDEEF1
+            height: 52px
+            .left
+              float: left
+              margin-left: 15px
+              @media phone
+                float: none
+              .button, .text
+                display: inline-block
+                vertical-align: top
+              > .text
+                margin: 16px 0 0 16px
+                font-size: .9em
+                span
+                  color: red
+                  &:hover
+                    cursor: pointer
+              .button
+                background-color: white
+                color: heavy-gray
+                margin-top: 7px
+                width: 130px
+                &:hover
+                  background-color: #FAFAFA
+                @media portrait_tablet
+                  width: auto
+                @media phone
+                  width: auto
+            .right
+              float: right
+              margin-right: 15px
+              @media phone
+                float: none
+                margin: 0
+                text-align: center
+              .total, .button
+                display: inline-block
+                vertical-align: top
+              .button
+                margin-top: 7px
+                width: 90px
+                .icon, .text
+                  display: inline-block
+                  vertical-align: top
+                &.right
+                  margin: 0
+                  padding: 0
+                  text-align: left
+                  margin-right: -15px
+                  width: 488px
+                  box-sizing: border-box
+                  height: 52px
+                  @media phone
+                    margin : 0
+                    width: 100%
+                  .icon
+                    box-sizing: border-box
+                    height: 52px
+                    width: 52px
+                    font-size: 2em
+                    padding-left: 10px
+                  .text
+                    width: 436px
+                    text-align: center
+                    font-weight: 600
+                    font-size: 1.2em
+                    margin-top: 12px
+                    @media phone
+                      margin-left: 22px
+                      width: auto
+              .total
+                margin-top: 4px
+                .text
+                  display: inline-block
+                  &.dollar, &.amount
+                    color: teal
+                  &.dollar
+                    vertical-align: top
+                    margin: 4px 2px 0 0
+                    font-size: 1.1em
+                  &.amount
+                    font-size: 2em
+                    font-weight: 600
+                  &.per
+                    vertical-align: bottom
+                    margin: 0 30px 4px 6px
+        .content
+          width: 488px
+          height: 518px
+          display: inline-block
+          vertical-align: top
+          box-sizing: border-box
+          margin: 0
+          background-color: #F7F7F7
+          @media portrait_tablet
+            width: 50%
+          @media phone
+            display: block
+            height: auto
+            margin: 0
+            width: 100%
+            padding: 5px
+          &:first-child
+            background-color: white
+            overflow: hidden
+          .content-side-container
+            width: 976px
+            margin-left: -488px
+            transition: margin-left .6s ease-in-out
+            @media portrait_tablet
+              width: 700px
+              margin-left: -350px
+            .content-side
+              display: inline-block
+              vertical-align: top
+              width: 488px
+              @media portrait_tablet
+                width: 350px
+          .buttons
+            margin: 25px auto
+            .cancel
+              text-align: center
+              margin-top: 10px
+              span
+                color: teal
+                &:hover
+                  cursor: pointer
+            .button
+              margin: 0 10px
+              color: white
+              text-align: left
+              display: inline-block
+              vertical-align: top
+              padding: 0
+              .icon, .text
+                display: inline-block
+                vertical-align: top
+              .icon
+                width: 40px
+                height: 40px
+                font-size: 1.6em
+                .typcn
+                  margin-left: 8px
+              .text
+                text-align: center
+                font-size: 1.25em
+                margin-top: 5px
+            &.one
+              .button
+                width: 300px
+                display: block
+                margin: auto
+                border-radius: 1px
+                .text
+                  width: 260px
+            &.two
+              width: 300px
+              .button
+                width: 130px
+                .text
+                  width: 90px
+          &.side
+            display: none
+            &.active
+              display: inline-block
+          &.payment
+            padding: 25px 40px
+            .payment-tab
+              display: none
+              height: 238px
+              &.active
+                display: block
+              &.ach
+                .row.two
+                  .field
+                    width: 170px
+                    input
+                      width: 120px
+              &.credit-card
+                .row.two
+                  .field
+                    width: 130px
+                    input
+                      width: 80px
+            .payment-title
+              color: teal
+              font-weight: 700
+              font-size: 1.1em
+            .payment-method
+              margin: 25px 0
+              border-bottom: 2px solid light-gray
+              padding-bottom: 25px
+              position: relative
+              .icon, .arrow
+                position: absolute
+                z-index: 10
+              .icon
+                font-size: 1.45em
+                left: 5px
+              .arrow
+                top: 8px
+                right: 12px
+                transform: rotate(90deg)
+              .text
+                margin-bottom: 10px
+              .select2-container
+                width: 100%
+                > a
+                  color: heavy-gray
+                  background: white !important
+                  border: none !important
+                  border-radius: 1px !important
+              &.existing .select2-container > a
+                padding-left: 35px !important
+            input
+              background: lighter-gray
+              border: thin solid light-gray
+              margin: 10px 0 20px
+              padding: 8px 12px
+              border-radius: 1px
+              width: 210px
+              &:active, &:focus
+                outline: none
+            .row.two
+              .field
+                display: inline-block
+                vertical-align: top
+          &.details, .content-side.details
+            padding: 80px 60px 0
+            box-sizing: border-box
+            @media phone
+              padding: 30px 20px
+            .days
+              height: 250px
+              overflow: scroll
+              .day
+                .total
+                  border-top: thin solid border-gray
+                  border-bottom: thin solid border-gray
+                  padding: 10px 0
+                  margin-top: 20px
+                  font-weight: 700
+                  .price
+                    color: #E1625C
+                .day-services
+                  margin: 15px 0 20px
+                  max-height: 192px
+                  overflow: hidden
+                  transition: max-height .6s ease-in-out
+                  .service
+                    margin: 10px 0
+            > .total
+              border-top: 2px solid teal
+              border-bottom: 2px solid teal
+              padding: 8px 0
+              @media phone
+                margin-top: 20px
+              .text
+                font-weight: 700
+                upcase()
+            .text, .price, .question, .arrow
+              display: inline-block
+              vertical-align: top
+            .arrow
+              transform: rotate(90deg)
+              margin-right: 5px
+              &:hover
+                cursor: pointer
+            .question
+              background-color: #e1e1e1
+              border-radius: 50%
+              width: 20px
+              height: 20px
+              box-sizing: border-box
+              padding: 1px 7px
+              font-size: .8em
+              margin: 1px 0 0 10px
+              &:hover
+                cursor: pointer
+            .price
+              float: right
+              font-weight: 700
+            .setup
+              font-weight: 700
+          &.confirmation
+            display: none
+            width: 976px
+            height: 570px
+            text-align: center
+            color: white
+            @media portrait_tablet
+              width: 700px
+            @media phone
+              width: 320px
+            &.active
+              display: inline-block
+            &.teal
+              background-color: teal
+              .foot
+                background-color: teal
+              .check-icon
+                background-color: light-teal
+            &.red
+              background-color: red
+              .foot
+                background-color: red
+              .check-icon
+                background-color: dark-red
+            .check-icon
+              font-size: 5em
+              border-radius: 50%
+              width: 100px
+              height: 100px
+              margin: 40px auto 20px
+              overflow: auto
+              .typcn
+                margin-top: -10px
+            .title-text
+              font-size: 1.5em
+            .check-container
+              border-top: thin solid white
+              border-bottom: thin solid white
+              padding: 20px 0
+              margin: 20px auto
+              width: 350px
+              > .text
+                font-size: 1.4em
+                font-weight: 600
+              .date
+                font-size: 3em
+                font-weight: 700
+              .check
+                width: 174px
+                display: inline-block
+                vertical-align: top
+                &.in
+                  border-right: thin solid white
+                .time
+                  font-weight: 700
+                  font-size: 1.8em
+                .text
+                  font-size: 1.1em
+            .subtext
+              width: 600px
+              margin: 40px auto
+              font-size: 1.1em
+              line-height: 1.8em
+            .farewell
+              font-size: 1.5em
+            .actions
+              margin-top: 30px
+              .action
+                display: inline-block
+                vertical-align: top
+                font-size: 3em
+                border-radius: 50%
+                border: 2px solid white
+                height: 50px
+                width: 50px
+                margin: 0 15px
+                .typcn
+                  margin-top: -11px
+                &:hover
+                  cursor: pointer
+          .calendar
+            @media portrait_tablet
+              padding: 25px 40px
+          .services, .extra
+            margin: 25px 40px 0
+            @media phone
+              margin: 25px 20px 0
+            .title
+              font-size: 1.1em
+              font-weight: 700
+              color: teal
+              border-bottom: thin solid border-gray
+              padding-bottom: 5px
+            .service
+              border-bottom: thin solid border-gray
+              padding: 10px 0
+              position: relative
+              &:last-child
+                @media phone
+                  border-bottom: 0
+              .icon, .text, label
+                display: inline-block
+                vertical-align: top
+              .icon
+                color: lighter-navy
+                border: 2px solid lighter-navy
+                border-radius: 50%
+                font-size: 1.75em
+                height: 40px
+                line-height: 40px
+                text-align: center
+                width: 40px
+              &.active
+                .icon
+                  border: 2px solid teal
+                  color: teal
+              .text
+                font-size: 1.15em
+                margin: 8px 0 0 20px
+              label
+                position: absolute
+                right: 10px
+                top: 20px
+          .payment
+            width: 300px
+            margin: 5px auto
+            position: relative
+            .overlay
+              position: absolute
+              top: 0
+              left: 0
+              right: 0
+              bottom: 0
+              z-index: 100000
+              display: none
+              &:hover
+                cursor: pointer
+            .icon, .arrow
+              position: absolute
+              z-index: 100
+              font-size: 1.25em
+              top: 4px
+            .icon
+              left: 10px
+            .arrow
+              right: 10px
+              margin-top: 2px
+              transform: rotate(90deg)
+            &.new
+              .overlay, .arrow
+                display: block
+                transform: rotate(0deg)
+                margin-top: 0
+            .select2-container
+              width: 100%
+              > a
+                background: lighter-gray !important
+                color: heavy-gray
+                font-weight: 600
+                border-radius: 1px
+                .select2-chosen
+                  margin-left: 25px
+          .head
+            color: teal
+            font-size: 1.5em
+            text-align: center
+            position: relative
+            padding: 20px
+            border-bottom: 2px solid light-gray
+            .arrows
+              position: absolute
+              top: 20px
+              left: 30px
+              right: 30px
+              color: heavy-gray
+              .arrow
+                &:hover
+                  cursor: pointer
+                &.prev
+                  float: left
+                &.next
+                  float: right
+            .text
+              span
+                font-weight: 600
+
+.ngdialog.status
+  .ngdialog-content
+    color: darker-gray
+    width: 360px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .steps
+        width: 720px
+        transition: margin-left 0.6s ease
+        .step1,
+        .step2
+          display: inline-block
+          padding: 30px 20px
+          text-align: center
+          vertical-align: top
+          width: 320px
+          .text
+            font-size: 18px
+            font-weight: bold
+          .fa-flash,
+          .fa-check
+            background-color: orange
+            border-radius: 50%
+            color: white
+            font-size: 35px
+            height: 50px
+            line-height: 50px
+            margin: 40px 0 20px
+            text-align: center
+            width: 50px
+          .fa-check
+            background-color: teal
+          .position
+            font-weight: bold
+            span
+              color: orange
+            .fa
+              margin: 0 10px
+          .info
+            margin: 30px 0
+            img
+              border-radius: 50%
+              display: inline-block
+              width: 60px
+            .name
+              color: teal
+              display: inline-block
+              line-height: 60px
+              margin-left: 10px
+              vertical-align: top
+          .actions
+            margin-top: 30px
+            .fa
+              background-color: white
+              border: 2px solid
+              border-radius: 50%
+              cursor: pointer
+              font-size: 40px
+              height: 45px
+              line-height: 45px
+              margin: 0 5px
+              text-align: center
+              width: 45px
+              &.confirm
+                color: teal
