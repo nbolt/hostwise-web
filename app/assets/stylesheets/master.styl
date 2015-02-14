@@ -290,6 +290,7 @@ footer
     display: none
     width: auto
     overflow: scroll
+    min-height: 0
   &:hover
     width: 220px
     @media phone
@@ -1344,6 +1345,10 @@ form
     .arrow
       font-size: 1.5em
       color: teal
+      @media portrait_tablet
+        font-size: 1.2em
+      @media phone
+        font-size: 1.2em
       &:hover
         cursor: pointer
       &.prev
@@ -1369,6 +1374,10 @@ form
             color: teal
             .month_name
               font-weight: 600
+            @media portrait_tablet
+              font-size: 1.2em
+            @media phone
+              font-size: 1.2em
           &.day_of_week
             color: #B3B3B3
             font-weight: bold
@@ -1689,6 +1698,8 @@ form
         color: teal
         margin-left: 30px
         text-decoration: none
+        @media phone
+          margin-left: 15px
       div
         display: inline-block
         line-height: 25px
