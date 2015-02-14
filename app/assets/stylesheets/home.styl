@@ -55,7 +55,7 @@
       margin: 50px 0 80px
       padding: 0
       li
-        margin: 0 20px
+        margin: 0 20px 30px
         position: relative
         width: 250px
         display: inline-block
@@ -89,15 +89,32 @@
     padding: 80px 30px 60px
     position: relative
     text-align: center
+    @media landscape_tablet
+      height: auto
+    @media portrait_tablet
+      height: auto
+    @media phone
+      height: auto
+      background-repeat: repeat
     ul
       margin: 80px 0 0
       padding: 0
+      @media landscape_tablet
+        margin: 40px 0 0
+      @media portrait_tablet
+        margin: 40px 0 0
       li
         margin: 0 20px 40px
         position: relative
         width: 450px
         display: inline-block
         vertical-align: top
+        @media landscape_tablet
+          margin: 0 20px 25px
+        @media portrait_tablet
+          margin: 0 20px 25px
+        @media phone
+          width: auto
         > div
           font-size: 15px
           font-weight: bold
@@ -117,6 +134,10 @@
     margin: 0 auto
     padding: 70px 30px
     width: 900px
+    @media portrait_tablet
+      width: auto
+    @media phone
+      width: auto
     .title
       margin-bottom: 70px
       text-align: left
@@ -125,10 +146,24 @@
       padding-right: 30px
       vertical-align: top
       width: 550px
+      @media portrait_tablet
+        width: auto
+      @media phone
+        width: auto
       .sliders
         margin-top: 30px
+        > div
+          display: inline-block
+          @media portrait_tablet
+            display: block
+          @media phone
+            display: block
         slider
           width: 330px
+          @media portrait_tablet
+            width: 200px
+          @media phone
+            width: 100%
           .bar
             background-color: dark-gray
           .handle
@@ -192,6 +227,10 @@
       display: inline-block
       float: right
       vertical-align: top
+      @media portrait_tablet
+        float: none
+      @media phone
+        float: none
       .price
         background-color: heavy-gray
         color: white
@@ -223,6 +262,10 @@
       margin: 0 auto
       position: relative
       width: 900px
+      @media portrait_tablet
+        width: auto
+      @media phone
+        width: auto
       .title
         margin: 5px 0 10px
         text-align: left
@@ -250,12 +293,18 @@
       height: 200px
       margin: 50px auto 0
       width: 900px
+      @media portrait_tablet
+        width: auto
+      @media phone
+        width: auto
       li
         color: darker-gray
         .text
           margin: 0 auto 30px
           text-align: center
           width: 600px
+          @media phone
+            width: auto
         .name
           font-size: 15px
           font-weight: bold

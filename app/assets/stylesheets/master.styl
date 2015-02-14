@@ -179,6 +179,10 @@ footer
   > div
     margin: 0 auto
     width: 900px
+    @media portrait_tablet
+      width: auto
+    @media phone
+      width: auto
     > div
       display: inline-block
       vertical-align: top
@@ -187,6 +191,10 @@ footer
       &.left
         font-size: 14px
         width: 600px
+        @media portrait_tablet
+          width: 400px
+        @media phone
+          width: auto
         a
           margin: 5px 0
           width: 80px
@@ -392,6 +400,8 @@ form
   margin: 140px auto 50px
   text-align: center
   position: relative
+  @media phone
+    width: auto
   .title
     color: navy
     font-size: 2em
@@ -402,10 +412,14 @@ form
     input
       box-sizing: content-box
       width: 300px
+      @media phone
+        width: 80%
   .cb
     margin: 0 auto 15px
     text-align: left
     width: 324px
+    @media phone
+      width: 80%
   a
     color: dark-gray
     text-decoration: none
@@ -420,6 +434,8 @@ form
       display: inline-block
       margin: 5px 0
       width: 300px
+      @media phone
+        width: 74%
   .forgot-pwd
     font-size: 15px
   button
@@ -429,6 +445,8 @@ form
     text-transform: uppercase
     width: 324px
     hover_darken()
+    @media phone
+      width: 80%
   .button
     background-color: white
     color: darker-gray
