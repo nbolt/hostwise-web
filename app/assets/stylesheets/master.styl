@@ -834,6 +834,7 @@ form
       margin: 0 40px 0 8px
   .steps
     .step
+      box-shadow: gray_shadow
       position: relative
       &.two
         form
@@ -1077,11 +1078,13 @@ form
       #map
         height: 240px
         margin-bottom: 15px
+        box-shadow: gray_shadow
       .section
         background-color: white
         border-radius: 1px
         overflow: hidden
         margin-bottom: 15px
+        box-shadow: gray_shadow
         .head
           padding: 15px
           color: #E8E9EA
@@ -1381,17 +1384,12 @@ form
   @media phone
     padding: 10px
 
-#properties .property
-  &:hover
-    cursor: pointer
-    .right
-      background-color: lighter-gray
-
 #properties .property, #property .property
   background-color: white
   margin: 10px auto
   border-radius: 1px
   height: 150px
+  box-shadow: gray_shadow
   .right
     overflow: hidden
   .top
@@ -1550,11 +1548,20 @@ form
 #home
   #properties
     margin-top: 10px
+    .property
+      &:hover
+        cursor: pointer
+        .right
+          background-color: lighter-gray
+      .bottom .left
+        padding: 13px 18px
     .property-link
       display: block
       color: #24272a
     .new-property
+      display: block
       text-decoration: none
+      box-shadow: gray_shadow
       .container
         background-color: white
         transition: background-color .5s ease-in-out
@@ -1979,6 +1986,9 @@ form
     margin-top: 40px
     @media portrait_tablet
       width: 700px
+    @media phone
+      width: 320px
+      margin-top: 40px
     .modal
       background-color: white
       overflow: hidden
@@ -2024,17 +2034,24 @@ form
         transition: margin-left .5s ease-in-out
         @media portrait_tablet
           width: 2100px
+        @media phone
+          height: auto
+          width: 960px
         .content-group
           display: inline-block
           vertical-align: top
           @media portrait_tablet
             width: 700px
+          @media phone
+            width: 320px
           .foot
             background-color: #EDEEF1
             height: 52px
             .left
               float: left
               margin-left: 15px
+              @media phone
+                float: none
               .button, .text
                 display: inline-block
                 vertical-align: top
@@ -2054,9 +2071,15 @@ form
                   background-color: #FAFAFA
                 @media portrait_tablet
                   width: auto
+                @media phone
+                  width: auto
             .right
               float: right
               margin-right: 15px
+              @media phone
+                float: none
+                margin: 0
+                text-align: center
               .total, .button
                 display: inline-block
                 vertical-align: top
@@ -2074,6 +2097,9 @@ form
                   width: 488px
                   box-sizing: border-box
                   height: 52px
+                  @media phone
+                    margin : 0
+                    width: 100%
                   .icon
                     box-sizing: border-box
                     height: 52px
@@ -2086,6 +2112,9 @@ form
                     font-weight: 600
                     font-size: 1.2em
                     margin-top: 12px
+                    @media phone
+                      margin-left: 22px
+                      width: auto
               .total
                 margin-top: 4px
                 .text
@@ -2112,6 +2141,12 @@ form
           background-color: #F7F7F7
           @media portrait_tablet
             width: 50%
+          @media phone
+            display: block
+            height: auto
+            margin: 0
+            width: 100%
+            padding: 5px
           &:first-child
             background-color: white
             overflow: hidden
@@ -2240,6 +2275,8 @@ form
           &.details, .content-side.details
             padding: 80px 60px 0
             box-sizing: border-box
+            @media phone
+              padding: 30px 20px
             .days
               height: 250px
               overflow: scroll
@@ -2263,6 +2300,8 @@ form
               border-top: 2px solid teal
               border-bottom: 2px solid teal
               padding: 8px 0
+              @media phone
+                margin-top: 20px
               .text
                 font-weight: 700
                 upcase()
@@ -2298,6 +2337,8 @@ form
             color: white
             @media portrait_tablet
               width: 700px
+            @media phone
+              width: 320px
             &.active
               display: inline-block
             &.teal
@@ -2373,6 +2414,8 @@ form
               padding: 25px 40px
           .services, .extra
             margin: 25px 40px 0
+            @media phone
+              margin: 25px 20px 0
             .title
               font-size: 1.1em
               font-weight: 700
@@ -2383,6 +2426,9 @@ form
               border-bottom: thin solid border-gray
               padding: 10px 0
               position: relative
+              &:last-child
+                @media phone
+                  border-bottom: 0
               .icon, .text, label
                 display: inline-block
                 vertical-align: top
@@ -2590,6 +2636,7 @@ form
   margin: 40px auto 0
   overflow: hidden
   section
+    box-shadow: gray_shadow
     background-color: white
     margin: 10px 0
     padding: 30px 20px
@@ -2621,6 +2668,7 @@ form
   margin: 40px auto 0
   overflow: hidden
   section
+    box-shadow: gray_shadow
     color: teal
     display: inline-block
     margin: 1% 1% 0 0
@@ -2700,6 +2748,7 @@ form
   margin: 40px auto 0
   border-radius: 1px
   .section
+    box-shadow: gray_shadow
     background-color: white
     padding: 30px
     @media phone
@@ -2729,6 +2778,7 @@ form
     list-style-type: none
     li
       background-color: white
+      box-shadow: gray_shadow
       display: inline-block
       margin-left: 1%
       width: 32.66%
@@ -2768,8 +2818,9 @@ form
     margin: 0
     padding: 0
     li
+      box-shadow: gray_shadow
       border: 1px solid light-gray
-      margin-bottom: 5px
+      margin-bottom: 10px
       padding: 20px
       position: relative
       a
@@ -2911,6 +2962,7 @@ form
 .edit-contractor,
 .edit-customer,
 .account-container
+  box-shadow: gray_shadow
   margin: 40px auto 0
   overflow: hidden
   h1
@@ -3172,6 +3224,7 @@ form
   margin: 40px auto 0
   overflow: hidden
   form
+    box-shadow: gray_shadow
     position: relative
     text-align: center
     .section

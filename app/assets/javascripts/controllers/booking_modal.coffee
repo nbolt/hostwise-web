@@ -156,7 +156,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
       defer.resolve $scope.payment.id
 
   margin_left = ->
-    if angular.element('.booking.modal .content-container .content-group').width() < 768
+    container_width = angular.element('.booking.modal .content-container .content-group').width()
+    if container_width < 481
+      -320
+    else if container_width < 768
       -700
     else
       -976
