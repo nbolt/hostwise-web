@@ -221,8 +221,8 @@ footer
 
 .body
   width: auto
-  margin: 120px 0 60px 220px
-  padding: 0 50px
+  margin: 120px 0 0 220px
+  padding: 0 50px 60px
   position: relative
   transition: margin-left .4s ease-in-out
   z-index: 0
@@ -551,6 +551,7 @@ form
         position: absolute
         right: 4px
         top: 17px
+        -webkit-transform: rotate(90deg)
         transform: rotate(90deg)
     > a
       height: 34px
@@ -596,6 +597,7 @@ form
           .arrow
             font-size: 1.1em
             margin-top: 19px
+            -webkit-transform: rotate(90deg)
             transform: rotate(90deg)
         .photo, .icon
           width: 40px
@@ -706,6 +708,7 @@ form
         .right
           float: right
           .typcn
+            -webkit-transform: rotate(90deg)
             transform: rotate(90deg)
         .icon
           font-size: 1.25em
@@ -792,21 +795,20 @@ form
   margin: 40px auto 0
   overflow: hidden
   .step-nav
-    display: block
+    border-radius: 3px
+    box-shadow: gray_shadow
     background-color: white
-    border-radius: 1px
-    width: 100%
-    height: 40px
+    display: block
     line-height: 40px
+    width: 100%
     color: light-gray
-    margin-bottom: 5px
-    border-bottom: 2px solid white
-    padding: 6px 12px
+    margin-bottom: 10px
     vertical-align: top
     @media phone
       width: auto
     &.active
       border-bottom: 3px solid teal
+      box-shadow: none
       .text
         color: black
       .step-icon
@@ -818,6 +820,8 @@ form
         color: white
       .step-icon
         color: white
+    > div
+      padding: 6px 12px
     .icon, .text
       display: inline-block
       vertical-align: top
@@ -827,7 +831,7 @@ form
       &.check
         font-size: 2em
         float: right
-        margin-right: 20px
+        margin-right: 10px
         @media phone
           margin-right: 0
     .text
@@ -835,7 +839,6 @@ form
       margin: 0 40px 0 8px
   .steps
     .step
-      box-shadow: gray_shadow
       position: relative
       &.two
         form
@@ -852,6 +855,8 @@ form
         .vr
           height: 635px
       form
+        box-shadow: gray_shadow
+        border-radius: 3px
         background-color: white
         margin: 0 auto
         position: relative
@@ -1107,6 +1112,7 @@ form
             font-size: 1.25em
             color: heavy-gray
             margin-top: -3px
+            -webkit-transform: rotate(90deg)
             transform: rotate(90deg)
           .text
             color: heavy-gray
@@ -1180,18 +1186,15 @@ form
             .edit
               opacity: 0
               position: absolute
-              right: 5px
-              top: 5px
-              background-color: #F3F3F3
-              width: 25px
-              height: 25px
+              right: 3px
+              top: 3px
+              background-color: lighter-gray
               border-radius: 1px
-              color: teal
+              color: darker-gray
               transition: opacity .4s ease-in-out
-              .typcn
-                margin: 1px 0 0 5px
-              &:hover
-                cursor: pointer
+              padding: 5px
+              cursor: pointer
+              font-size: 0.8em
             &:last-child .content
               border-bottom: 0
             &:hover .edit
@@ -1217,6 +1220,7 @@ form
         right: 8px
         z-index: 10
         .typcn
+          -webkit-transform: rotate(90deg)
           transform: rotate(90deg)
     .tab
       display: inline-block
@@ -1474,13 +1478,11 @@ form
   overflow: hidden
   section
     box-shadow: gray_shadow
+    border-radius: 3px
     background-color: white
+    cursor: pointer
     margin: 10px 0
     padding: 30px 20px
-    a
-      color: black
-      outline: none
-      text-decoration: none
     header
       font-weight: bold
       padding: 0
@@ -1506,6 +1508,8 @@ form
   overflow: hidden
   section
     box-shadow: gray_shadow
+    overflow: hidden
+    border-radius: 3px
     color: teal
     display: inline-block
     margin: 1% 1% 0 0
@@ -1586,6 +1590,7 @@ form
   border-radius: 1px
   .section
     box-shadow: gray_shadow
+    border-radius: 3px
     background-color: white
     padding: 30px
     @media phone
@@ -1616,6 +1621,7 @@ form
     li
       background-color: white
       box-shadow: gray_shadow
+      border-radius: 3px
       display: inline-block
       margin-left: 1%
       width: 32.66%
@@ -1656,6 +1662,7 @@ form
     padding: 0
     li
       box-shadow: gray_shadow
+      border-radius: 3px
       border: 1px solid light-gray
       margin-bottom: 10px
       padding: 20px
@@ -1666,6 +1673,8 @@ form
         text-decoration: none
       div
         display: inline-block
+        line-height: 25px
+        vertical-align: top
       .details
         strong
           font-weight: normal
@@ -1691,8 +1700,9 @@ form
       &.add-payment
         color: teal
         a
-          @media phone
-            margin-left: 0
+          line-height: 25px
+          margin-left: 0
+          vertical-align: top
         .fa
           @media phone
             display: inline-block
@@ -1800,6 +1810,7 @@ form
 .edit-customer,
 .account-container
   box-shadow: gray_shadow
+  border-radius: 3px
   margin: 40px auto 0
   overflow: hidden
   h1
@@ -2058,20 +2069,21 @@ form
             margin-left: 30px
 
 .notification-container
+  box-shadow: gray_shadow
+  border-radius: 3px
   margin: 40px auto 0
   overflow: hidden
   form
-    box-shadow: gray_shadow
     position: relative
-    text-align: center
+    text-align: right
     .section
       background-color: white
       padding: 50px 30px
       @media phone
         padding: 30px 15px
     button
-      float: right
       height: 40px
+      margin: 30px 0 0
       position: relative
       @media phone
         width: 100%

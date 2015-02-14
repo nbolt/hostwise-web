@@ -5,7 +5,7 @@
     .text Property Detail
   .property
     .edit ng:click='edit()'
-      .typcn.typcn-pencil
+      i.icon-edit-gear
     .photo
       img ng:src='{{::property.primary_photo}}'
     .right
@@ -105,25 +105,25 @@
           .text Property Instructions
         .instruction ng:if='property.access_info'
           .edit ng:click='edit_access()'
-            .typcn.typcn-pencil
+            i.icon-edit-gear
           .content
             .title Access Information
             .text ng:bind='property.access_info'
         .instruction ng:if='property.trash_disposal'
           .edit ng:click='edit_trash()'
-            .typcn.typcn-pencil
+            i.icon-edit-gear
           .content
             .title Trash Disposal
             .text ng:bind='property.trash_disposal'
         .instruction ng:if='property.parking_info'
           .edit ng:click='edit_parking()'
-            .typcn.typcn-pencil
+            i.icon-edit-gear
           .content
             .title Parking Information
             .text ng:bind='property.parking_info'
         .instruction ng:if='property.additional_info'
           .edit ng:click='edit_additional()'
-            .typcn.typcn-pencil
+            i.icon-edit-gear
           .content
             .title Additional Information
             .text ng:bind='property.additional_info'
