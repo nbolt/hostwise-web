@@ -281,6 +281,7 @@ footer
   @media phone
     display: none
     width: auto
+    overflow: scroll
   &:hover
     width: 220px
     @media phone
@@ -1079,9 +1080,10 @@ form
         height: 240px
         margin-bottom: 15px
         box-shadow: gray_shadow
+        border-radius: 3px
       .section
         background-color: white
-        border-radius: 1px
+        border-radius: 3px
         overflow: hidden
         margin-bottom: 15px
         box-shadow: gray_shadow
@@ -1386,10 +1388,11 @@ form
 
 #properties .property, #property .property
   background-color: white
-  margin: 10px auto
-  border-radius: 1px
+  margin: 12px auto
+  border-radius: 3px
   height: 150px
   box-shadow: gray_shadow
+  overflow: hidden
   .right
     overflow: hidden
   .top
@@ -1447,8 +1450,9 @@ form
       text-decoration: underline
   .photo
     padding: 10px
-    width: 130px
-    height: 130px
+    width: 100px
+    height: 100px
+    padding: 25px
     background-color: lighter-gray
     float: left
     img
@@ -1467,6 +1471,8 @@ form
       margin-top: 4px
       color: dark-gray
       .city_state
+        @media portrait_tablet
+          display: block
         @media phone
           display: block
     @media phone
@@ -1553,8 +1559,15 @@ form
         cursor: pointer
         .right
           background-color: lighter-gray
-      .bottom .left
-        padding: 13px 18px
+      .bottom
+        .next-service
+          @media phone
+            float: none
+            width: 100%
+        .left
+          padding: 13px 18px
+      @media phone
+        height: auto
     .property-link
       display: block
       color: #24272a
