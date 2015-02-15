@@ -929,8 +929,11 @@ form
               > div span
                 display: inline-block
                 width: 100px
-            &.check span
-              margin-right: 40px
+            &.check
+              > div
+                display: inline-block
+              span
+                margin-right: 40px
             .select2-container
               width: 100%
               a
@@ -1022,7 +1025,7 @@ form
         input
           width: 100%
         input[type=radio]
-          width: 10%
+          width: 30px
           margin-left: -6px
         textarea
           border: thin solid light-gray
