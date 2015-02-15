@@ -350,7 +350,7 @@
       width: 700px
     @media phone
       width: 320px
-    margin-top: 40px
+      margin-top: 0
     .modal
       background-color: white
       overflow: hidden
@@ -399,7 +399,7 @@
         @media portrait_tablet
           width: 2100px
         @media phone
-          height: 400px
+          height: 366px
           width: 960px
         .content-group
           display: inline-block
@@ -412,11 +412,11 @@
           &.static
             .content-body
               @media phone
-                height: 400px
+                height: 366px
                 overflow: hidden
           .content-body
             @media phone
-              height: 348px
+              height: 314px
               overflow: scroll
           .foot
             background-color: light-gray
@@ -761,7 +761,7 @@
             @media portrait_tablet
               width: 700px
             @media phone
-              height: 400px
+              height: 366px
               width: 320px
             &.active
               display: inline-block
@@ -777,10 +777,6 @@
                 background-color: red
               .check-icon
                 background-color: dark-red
-                @media phone
-                  font-size: 4em
-                  height: 80px
-                  width: 80px
               .title-text
                 @media phone
                   font-size: 1.2em
@@ -793,6 +789,9 @@
               margin: 40px auto 20px
               overflow: auto
               @media phone
+                font-size: 4em
+                height: 80px
+                width: 80px
                 margin-top: 0
             .title-text
               font-size: 1.5em
@@ -810,6 +809,8 @@
               .date
                 font-size: 3em
                 font-weight: 700
+                @media phone
+                  font-size: 2em
               .check
                 width: 174px
                 display: inline-block
@@ -837,6 +838,8 @@
               font-size: 1.5em
             .actions
               margin-top: 30px
+              @media phone
+                margin-top: 10px
               .action
                 display: inline-block
                 vertical-align: top
