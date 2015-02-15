@@ -31,7 +31,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
 
   $scope.details = ->
     if angular.element('.content-side-container').css('margin-left') == '0px'
-      angular.element('.content-side-container').css 'margin-left', margin_left()/2
+      if mobile()
+        angular.element('.content-side-container').css 'margin-left', margin_left()
+      else
+        angular.element('.content-side-container').css 'margin-left', margin_left()/2
     else
       angular.element('.content-side-container').css 'margin-left', 0
     calculate_pricing()
@@ -155,11 +158,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
     else
       defer.resolve $scope.payment.id
 
+  mobile = ->
+    angular.element('.booking.modal .content-container .content-group').width() <= 320
+
   margin_left = ->
     container_width = angular.element('.booking.modal .content-container .content-group').width()
     if container_width < 481
       -320
-    else if container_width < 768
+    else if container_width < 769
       -700
     else
       -976

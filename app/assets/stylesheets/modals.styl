@@ -221,6 +221,10 @@
         box-sizing: border-box
         width: 350px
         margin: 25px 0 0 25px
+        @media phone
+          margin: 0
+          padding: 15px
+          width: auto
         .buttons
           margin: 25px auto
           .cancel
@@ -262,7 +266,7 @@
                 background-color: light-teal
           &.one
             .button
-              width: 300px
+              width: 100%
               display: block
               margin: auto
               border-radius: 1px
@@ -340,6 +344,8 @@
   .ngdialog-content
     width: 976px
     margin-top: 40px
+    @media landscape_tablet
+      margin-top: 20px
     @media portrait_tablet
       width: 700px
     @media phone
@@ -352,7 +358,7 @@
         background-color: teal
         color: white
         font-size: 1.25em
-        padding: 10px
+        line-height: 50px
         height: 50px
         box-sizing: border-box
         transition: background-color 1s ease-in-out, height 1s ease-in-out
@@ -375,6 +381,8 @@
         .text
           text-align: center
           transition: opacity .5s ease-in-out
+          @media phone
+            margin-left: 20px
         &.failure
           background-color: red
           .icon
@@ -391,7 +399,7 @@
         @media portrait_tablet
           width: 2100px
         @media phone
-          height: auto
+          height: 400px
           width: 960px
         .content-group
           display: inline-block
@@ -400,20 +408,55 @@
             width: 700px
           @media phone
             width: 320px
-          .foot
-            background-color: #EDEEF1
-            height: 52px
-            .left
-              float: left
-              margin-left: 15px
+            overflow: scroll
+          &.static
+            .content-body
               @media phone
-                float: none
+                height: 400px
+                overflow: hidden
+          .content-body
+            @media phone
+              height: 348px
+              overflow: scroll
+          .foot
+            background-color: light-gray
+            height: 52px
+            position: relative
+            &.next
+              .right
+                right: 10px
+                @media phone
+                  width: 100%
+            &.save
+              .left
+                width: 60%
+              .right
+                width: 40%
+                right: 10px
+            .left
+              display: inline-block
+              width: 50%
+              left: 10px
+              position: absolute
+              top: 9px
+              @media phone
+                left: 0
+                width: 50%
               .button, .text
                 display: inline-block
                 vertical-align: top
+              .cancel
+                color: red
+                cursor: pointer
+                display: none
+                margin: 9px 0 0 5px
+                @media phone
+                  display: inline-block
               > .text
-                margin: 16px 0 0 16px
+                margin: 10px 0 0 16px
                 font-size: .9em
+                @media phone
+                  display: none
                 span
                   color: red
                   &:hover
@@ -421,26 +464,29 @@
               .button
                 background-color: white
                 color: heavy-gray
-                margin-top: 7px
+                margin: 0
                 width: 130px
                 &:hover
                   background-color: #FAFAFA
                 @media portrait_tablet
                   width: auto
                 @media phone
+                  margin-left: 10px
                   width: auto
             .right
-              float: right
-              margin-right: 15px
+              display: inline-block
+              width: 50%
+              position: absolute
+              right: 0
+              text-align: right
+              top: 0
               @media phone
-                float: none
-                margin: 0
-                text-align: center
+                width: 50%
               .total, .button
                 display: inline-block
                 vertical-align: top
               .button
-                margin-top: 7px
+                margin-top: 9px
                 width: 90px
                 .icon, .text
                   display: inline-block
@@ -449,28 +495,34 @@
                   margin: 0
                   padding: 0
                   text-align: left
-                  margin-right: -15px
                   width: 488px
                   box-sizing: border-box
                   height: 52px
+                  line-height: 52px
+                  @media portrait_tablet
+                    width: 100%
                   @media phone
                     margin : 0
                     width: 100%
                   .icon
                     box-sizing: border-box
-                    height: 52px
                     width: 52px
                     font-size: 2em
                     padding-left: 10px
+                    @media portrait_tablet
+                      width: 15%
+                    @media phone
+                      display: none
                   .text
                     width: 436px
                     text-align: center
                     font-weight: 600
                     font-size: 1.2em
-                    margin-top: 12px
+                    @media portrait_tablet
+                      width: 85%
                     @media phone
-                      margin-left: 22px
-                      width: auto
+                      height: 100%
+                      width: 100%
               .total
                 margin-top: 4px
                 .text
@@ -481,12 +533,18 @@
                     vertical-align: top
                     margin: 4px 2px 0 0
                     font-size: 1.1em
+                    @media phone
+                      display:none
                   &.amount
                     font-size: 2em
                     font-weight: 600
+                    @media phone
+                      display: none
                   &.per
                     vertical-align: bottom
                     margin: 0 30px 4px 6px
+                    @media phone
+                      display: none
         .content
           width: 488px
           height: 518px
@@ -502,7 +560,6 @@
             height: auto
             margin: 0
             width: 100%
-            padding: 5px
           &:first-child
             background-color: white
             overflow: hidden
@@ -513,12 +570,17 @@
             @media portrait_tablet
               width: 700px
               margin-left: -350px
+            @media phone
+              width: 640px
+              margin-left: -320px
             .content-side
               display: inline-block
               vertical-align: top
               width: 488px
               @media portrait_tablet
                 width: 350px
+              @media phone
+                width: 320px
           .buttons
             margin: 25px auto
             .cancel
@@ -603,6 +665,7 @@
               .arrow
                 top: 8px
                 right: 12px
+                -webkit-transform: rotate(90deg)
                 transform: rotate(90deg)
               .text
                 margin-bottom: 10px
@@ -652,6 +715,9 @@
                   transition: max-height .6s ease-in-out
                   .service
                     margin: 10px 0
+                  @media phone
+                    max-height: 0
+                    overflow: visible
             > .total
               border-top: 2px solid teal
               border-bottom: 2px solid teal
@@ -665,6 +731,7 @@
               display: inline-block
               vertical-align: top
             .arrow
+              -webkit-transform: rotate(90deg)
               transform: rotate(90deg)
               margin-right: 5px
               &:hover
@@ -694,6 +761,7 @@
             @media portrait_tablet
               width: 700px
             @media phone
+              height: 400px
               width: 320px
             &.active
               display: inline-block
@@ -709,6 +777,14 @@
                 background-color: red
               .check-icon
                 background-color: dark-red
+                @media phone
+                  font-size: 4em
+                  height: 80px
+                  width: 80px
+              .title-text
+                @media phone
+                  font-size: 1.2em
+                  padding: 0 20px
             .check-icon
               font-size: 5em
               border-radius: 50%
@@ -716,8 +792,8 @@
               height: 100px
               margin: 40px auto 20px
               overflow: auto
-              .typcn
-                margin-top: -10px
+              @media phone
+                margin-top: 0
             .title-text
               font-size: 1.5em
             .check-container
@@ -726,6 +802,8 @@
               padding: 20px 0
               margin: 20px auto
               width: 350px
+              @media phone
+                width: 100%
               > .text
                 font-size: 1.4em
                 font-weight: 600
@@ -736,6 +814,8 @@
                 width: 174px
                 display: inline-block
                 vertical-align: top
+                @media phone
+                  width: 49%
                 &.in
                   border-right: thin solid white
                 .time
@@ -748,6 +828,11 @@
               margin: 40px auto
               font-size: 1.1em
               line-height: 1.8em
+              @media phone
+                font-size: 0.9em
+                line-height: 1.5em
+                margin: 30px auto
+                width: 100%
             .farewell
               font-size: 1.5em
             .actions
@@ -762,16 +847,17 @@
                 width: 50px
                 margin: 0 15px
                 .typcn
-                  margin-top: -11px
+                  margin-top: -8px
                 &:hover
                   cursor: pointer
           .calendar
+            @media landscape_tablet
+              padding: 25px 40px
             @media portrait_tablet
               padding: 25px 40px
           .services, .extra
-            margin: 25px 40px 0
-            @media phone
-              margin: 25px 20px 0
+            margin: 0 40px
+            padding: 25px 0 0
             .title
               font-size: 1.1em
               font-weight: 700
@@ -804,6 +890,9 @@
               .text
                 font-size: 1.15em
                 margin: 8px 0 0 20px
+                @media phone
+                  font-size: 1em
+                  margin: 12px 0 0 12px
               label
                 position: absolute
                 right: 10px
@@ -832,10 +921,12 @@
             .arrow
               right: 10px
               margin-top: 2px
+              -webkit-transform: rotate(90deg)
               transform: rotate(90deg)
             &.new
               .overlay, .arrow
                 display: block
+                -webkit-transform: rotate(0deg)
                 transform: rotate(0deg)
                 margin-top: 0
             .select2-container
