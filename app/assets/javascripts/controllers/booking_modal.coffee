@@ -219,7 +219,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
     else
       angular.element('.booking.modal .content.payment .payment-tab.ach').addClass 'active'
 
-
   $scope.paymentHash = ->
     {
       dropdownCssClass: 'payment'

@@ -23,7 +23,7 @@ script#booking-modal type="text/ng-template"
                     .total
                       .arrow
                         .typcn.typcn-chevron-right
-                      .text Jan 4, 2015
+                      .text ng:bind='::selected_date_booking'
                       .price ${{day.total}}
                     .day-services
                       - Service.all.each do |service|
@@ -150,7 +150,7 @@ script#booking-modal type="text/ng-template"
                 .total
                   .arrow
                     .typcn.typcn-chevron-right
-                  .text Jan 4, 2015
+                  .text ng:bind='::selected_date_booking'
                   .price ${{day.total}}
                 .day-services
                   - Service.all.each do |service|
@@ -227,7 +227,7 @@ script#booking-modal type="text/ng-template"
             .title-text Are you sure you want to cancel this job?
             .check-container
               .text Service Date
-              .date ng:bind='::selected_date_text'
+              .date ng:bind='::selected_date_confirmation'
             .actions
               .action.cancel ng:click='cancel_cancellation()'
                 .typcn.typcn-times
@@ -240,5 +240,5 @@ script#booking-modal type="text/ng-template"
               .typcn.typcn-flash
             .title-text Job Cancelled
             .check-container
-              .text ng:bind='::selected_date_text'
+              .text ng:bind='::selected_date_confirmation'
             .farewell We hope to see you again!

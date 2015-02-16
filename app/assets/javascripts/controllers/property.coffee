@@ -73,7 +73,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
         date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')+1}", 'YYYY D MM'
         $scope.selected_date = date
-        $scope.selected_date_text = date.format('ddd, MMM D')
+        $scope.selected_date_confirmation = date.format('ddd, MMM D')
+        $scope.selected_date_booking = date.format('MMM D, YYYY')
         $scope.chosen_dates["#{date.month()}-#{date.year()}"] = [date.date()]
         $scope.selected_services = {}
         $scope.selected_booking = $this.attr 'booking'
@@ -84,8 +85,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
             $scope.payment.text = "#{payment_type} ending in #{rsp.payment.last4}"
             _(rsp.services).each (service) ->
               $scope.selected_services[service.name] = true
-              angular.element(".booking.modal .services .service.#{service.name}").addClass 'active'
-              angular.element(".booking.modal .services .service.#{service.name} input").attr 'checked', true
+              angular.element(".booking.modal .services .service.#{service.name}, .booking.modal .extra .service.#{service.name}").addClass 'active'
+              angular.element(".booking.modal .services .service.#{service.name} input, .booking.modal .extra .service.#{service.name} input").attr 'checked', true
     }
 
   $scope.update_property = ->
