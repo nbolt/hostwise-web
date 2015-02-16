@@ -6,7 +6,7 @@ class Job < ActiveRecord::Base
   as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4
 
   def self.open contractor
-    Job.where(status_cd: 0).where('contractor_jobs.user_id is null or contractor_jobs.user_id != ?', contractor.id).order('bookings.date ASC').includes(:contractor_jobs, :booking).references(:contractor_jobs, :booking)
+    Job.where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and bookings.date >= ?', contractor.id, Date.today).order('bookings.date ASC').includes(:contractor_jobs, :booking).references(:contractor_jobs, :booking)
   end
 
   def self.upcoming contractor
