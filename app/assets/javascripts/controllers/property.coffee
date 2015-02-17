@@ -167,10 +167,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         $scope.map.setView([data.latlng[0], data.latlng[1]], 14)
         $scope.markers.clearLayers() # always clear previous markers
         L.marker([data.latlng[0], data.latlng[1]], {
-          icon: L.mapbox.marker.icon({
-            'marker-size': 'large',
-            'marker-symbol': 'building',
-            'marker-color': '#35A9B1'
+          icon: L.icon({
+            iconUrl: '/images/pin.png',
+            iconSize: [28, 49],
           })
         }).addTo $scope.markers
 

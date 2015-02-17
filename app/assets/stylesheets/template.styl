@@ -137,3 +137,108 @@ input[type=file]
 .zopim
   @media phone
     display: none
+
+.calendar
+  position: relative
+  background-color: white
+  .month_header
+    background-color: lighter-gray
+    position: relative
+    height: 80px
+    line-height: 80px
+    text-align: center
+    .month
+      color: darker-gray
+      font-size: 1.3em
+      .month_name
+        font-weight: bold
+      @media portrait_tablet
+        font-size: 1.1em
+      @media phone
+        font-size: 1.1em
+    .arrow
+      border-radius: 3px
+      width: 40px
+      height: 40px
+      line-height: 40px
+      text-align: center
+      background-color: teal
+      position: absolute
+      top: 20px
+      z-index: 10
+      i
+        font-size: 1em
+        color: white
+      &:hover
+        cursor: pointer
+      &.prev
+        left: 20px
+        -webkit-transform: rotate(180deg)
+        transform: rotate(180deg)
+      &.next
+        right: 20px
+  .table
+    padding: 40px
+    text-align: center
+    @media portrait_tablet
+      padding: 20px
+    @media phone
+      padding: 10px
+    table
+      width: 100%
+      thead
+        th
+          &.day_of_week
+            color: dark-gray
+            font-weight: bold
+          &:hover
+            cursor: default
+      tbody
+        td
+          border-radius: 3px
+          padding: 20px
+          color: darker-gray
+          &:hover
+            cursor: default
+          &.inactive, &.past
+            color: light-gray
+          &.booked, &.chosen
+            background-color: teal
+            color: white
+          &.active:hover
+            cursor: pointer
+          &.active:hover, &.selecting
+            background-color: teal
+            color: white
+          &.active.chosen:hover
+            background-color: light-gray
+            color: darker-gray
+          &.active.chosen.selecting
+            background-color: white
+          @media landscape_tablet
+            padding: 12px
+          @media portrait_tablet
+            padding: 8px
+          @media phone
+            padding: 10px
+
+#map
+  height: 240px
+  margin-bottom: 15px
+  box-shadow: gray_shadow
+  border-radius: 3px
+  .leaflet-control-zoom
+    background-color: transparent
+    border: 0
+    a
+      background-size: 30px 30px
+      background-position: 0 0
+      border-bottom: 0
+      opacity: 1
+      width: 30px
+      height: 30px
+      &.leaflet-control-zoom-in
+        background-image: url('/images/plus.png')
+        margin-bottom: 2px
+      &.leaflet-control-zoom-out
+        background-image: url('/images/minus.png')

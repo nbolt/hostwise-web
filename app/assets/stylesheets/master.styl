@@ -1103,11 +1103,6 @@ form
         width: 100%
       &:last-child
         margin-right: 0
-      #map
-        height: 240px
-        margin-bottom: 15px
-        box-shadow: gray_shadow
-        border-radius: 3px
       .section
         background-color: white
         border-radius: 3px
@@ -1121,21 +1116,16 @@ form
           text-align: center
           border-bottom: 2px solid light-gray
           transition: color .6s ease-in-out, border .6s ease-in-out
+          position: relative
           .icon, .text, .arrow
             display: inline-block
             vertical-align: top
           .icon
-            margin-right: 10px
-            float: left
+            color: teal
             font-size: 1.25em
-            margin-top: -3px
-          .arrow
-            float: right
-            font-size: 1.25em
-            color: heavy-gray
-            margin-top: -3px
-            -webkit-transform: rotate(90deg)
-            transform: rotate(90deg)
+            position: absolute
+            left: 20px
+            top: 12px
           .text
             color: heavy-gray
           &:hover
@@ -1169,8 +1159,6 @@ form
                   padding: 10px 0 6px
                   color: darker-gray
                   vertical-align: top
-                  &.id
-                    color: teal
                   &.services
                     font-size: .9em
                     .text
@@ -1383,90 +1371,6 @@ form
                   font-size: 1.4em
                   margin-top: 10px
                   font-weight: 600
-
-.calendar
-  position: relative
-  background-color: white
-  padding: 25px 40px
-  .arrows
-    position: absolute
-    left: 55px
-    right: 55px
-    z-index: 10
-    .arrow
-      font-size: 1.5em
-      color: teal
-      @media portrait_tablet
-        font-size: 1.2em
-      @media phone
-        font-size: 1.2em
-      &:hover
-        cursor: pointer
-      &.prev
-        float: left
-        .typcn::before
-          content: '\e00d'
-      &.next
-        float: right
-        .typcn::before
-          content: '\e01a'
-    @media portrait_tablet
-      left: 20px
-      right: 20px
-  .table
-    text-align: center
-    table
-      width: 100%
-      thead
-        th
-          &.month
-            font-size: 1.5em
-            padding-bottom: 20px
-            color: teal
-            .month_name
-              font-weight: 600
-            @media portrait_tablet
-              font-size: 1.2em
-            @media phone
-              font-size: 1.2em
-          &.day_of_week
-            color: #B3B3B3
-            font-weight: bold
-          &:hover
-            cursor: default
-      tbody
-        td
-          padding: 20px
-          color: #999
-          &:hover
-            cursor: default
-          &.inactive, &.past
-            color: #E0E0E0
-          &.booked, &.chosen
-            background-color: teal
-            color: white
-          &.active:hover
-            cursor: pointer
-          &.active:hover, &.selecting
-            background-color: teal
-            color: white
-          &.active.chosen:hover
-            background-color: light-gray
-            color: #999
-          &.active.chosen.selecting
-            background-color: white
-          @media landscape_tablet
-            padding: 16px
-          @media portrait_tablet
-            padding: 8px
-          @media phone
-            padding: 5px
-  @media landscape_tablet
-    padding: 10px
-  @media portrait_tablet
-    padding: 10px
-  @media phone
-    padding: 10px
 
 .card-entry
   border: thin solid border-gray

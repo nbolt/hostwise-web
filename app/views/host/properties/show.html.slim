@@ -2,7 +2,7 @@
   .page-title
     .icon
       .typcn.typcn-document-text
-    .text Property Detail
+    .text Property Details
   .property
     .edit ng:click='edit()'
       i.icon-edit-gear
@@ -45,16 +45,12 @@
     .column.cal
       .section.cal
         .head
-          .arrow
-            .typcn.typcn-chevron-right
           .icon
             i.icon-calendar
           .text Book Service Date(s)
         .calendar calendar='' options='calendar_options' dates='__'
       .section.upcoming.services ng:if='property.upcoming_bookings[0]'
         .head
-          .arrow
-            .typcn.typcn-chevron-right
           .icon
             .pf.icon-service
           .text Upcoming Services
@@ -75,8 +71,6 @@
                 td ${{::booking.cost}}
       .section.past.services ng:if='property.past_bookings[0]'
         .head
-          .arrow
-            .typcn.typcn-chevron-right
           .icon
             .pf.icon-past
           .text Past Services
@@ -98,8 +92,6 @@
       #map
       .section.instructions
         .head ng:click="expand('instructions')"
-          .arrow
-            .typcn.typcn-chevron-right
           .icon
             .pf.icon-service
           .text Property Instructions
@@ -128,8 +120,8 @@
             .title Additional Information
             .text ng:bind='property.additional_info'
   .deactivate
-    | Do you wish to
-    span ng:click='open_deactivation()' ng:show='property.active'  deactivate this property?
+    | Do you wish to permanently
+    span ng:click='open_deactivation()' ng:show='property.active'  delete this property?
     span ng:click='open_reactivation()' ng:hide='property.active'  reactivate this property?
 = render 'common/property_edit_modal'
 = render 'common/property_access_modal'

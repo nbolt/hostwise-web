@@ -8,7 +8,7 @@ app = angular.module('porter').directive('calendar', [->
     _month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     scope.chosen_dates = {} unless scope.chosen_dates
     options = scope.options
-    
+
     gen_cal = (cal, month, year) ->
       calendar = element.find('table')
       calendar.find('thead th.month').attr('month', month)
@@ -23,8 +23,8 @@ app = angular.module('porter').directive('calendar', [->
 
       calendar.find('tbody').remove()
       calendar.find('thead').after('<tbody></tbody>')
-      calendar.find('.month_header .month_name').text(month_name)
-      calendar.find('.month_header .year').text(year)
+      element.find('.month_header .month_name').text(month_name)
+      element.find('.month_header .year').text(year)
 
       current_day = 0
       for row in [1..6]
@@ -90,16 +90,14 @@ app = angular.module('porter').directive('calendar', [->
 
 
   template: "
-    <div class='arrows'>
-      <div class='arrow prev'><div class='typcn'></div></div>
-      <div class='arrow next'><div class='typcn'></div></div>
+    <div class='month_header'>
+      <div class='month'><span class='month_name'></span>, <span class='year'></span></div>
+      <div class='arrow prev'><i class='icon-acc-close'></i></div>
+      <div class='arrow next'><i class='icon-acc-close'></i></div>
     </div>
     <div class='table'>
       <table>
         <thead>
-          <tr class='month_header'>
-            <th class='month' colspan='7'><span class='month_name'></span> <span class='year'></span></th>
-          </tr>
           <tr class='day_header'>
             <th class='day_of_week'>Su</th>
             <th class='day_of_week'>Mo</th>
