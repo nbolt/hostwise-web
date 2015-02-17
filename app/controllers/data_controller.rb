@@ -23,15 +23,26 @@ class DataController < ApplicationController
   def jobs
     jobs = Job.all
     case params[:scope]
-    when 'open'
-      jobs = jobs.open(current_user)
-    when 'upcoming'
-      jobs = jobs.upcoming(current_user)
-    when 'past'
-      jobs = jobs.past(current_user)
+      when 'open'
+        jobs = jobs.open(current_user)
+      when 'upcoming'
+        jobs = jobs.upcoming(current_user)
+      when 'past'
+        jobs = jobs.past(current_user)
     end
     jobs = jobs.group_by{|j| j.booking.date}.sort_by{|d|d}
     render json: jobs.to_json(include: {booking: {methods: :cost, include: {property: {methods: [:short_address, :primary_photo, :neighborhood]}}}})
+  end
+
+  def transactions
+    case params[:scope]
+      when 'completed'
+        transactions = Transaction.completed current_user
+        render json: transactions.to_json(include: {booking: {methods: :cost, include: [:payment, :services, property: {methods: :nickname}]}})
+      when 'upcoming'
+        bookings = Booking.upcoming current_user
+        render json: bookings.to_json(methods: :cost, include: [:payment, :services, property: {methods: :nickname}])
+    end
   end
 
   def contractors

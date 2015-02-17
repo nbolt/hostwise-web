@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     post  '/service_notifications/create' => 'service_notifications#create'
     get   '/notifications' => 'notifications#index'
     put   '/notifications/update' => 'notifications#update'
+    get   '/transactions' => 'transactions#index'
     match '/users/:action' => 'users', via: [:get, :post]
     match '/properties/:slug/:action' => 'properties', via: [:get, :post]
     match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]

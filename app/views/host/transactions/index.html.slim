@@ -1,0 +1,28 @@
+.container
+  .page-title
+    i.icon-transactions
+    | Transactions
+  .transaction-container ng::controller='transactions'
+    .tabs
+      .tab.completed.active ng:click="tab('completed')" Completed
+      .tab.upcoming ng:click="tab('upcoming')" Upcoming
+    .tab-content
+      .tab ng:repeat="tab in tabs" class='{{tab.name}}'
+        table cellpadding='0' cellspacing='0'
+          tbody
+            tr
+              th Date
+              th Property
+              th Services
+              th Payment
+              th Total
+            tr ng:repeat='transaction in tab.transactions'
+              td.date ng:bind="::transaction.date | date: 'MM/dd/yyyy':'UTC'"
+              td.property
+                | {{transaction.property}}
+              td.services
+                | {{transaction.services}}
+              td.payment
+                | **** {{transaction.payment}}
+              td.total
+                | ${{transaction.total}}
