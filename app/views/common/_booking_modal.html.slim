@@ -17,7 +17,7 @@ script#booking-modal type="text/ng-template"
                     .total
                       .arrow
                         .typcn.typcn-chevron-right
-                      .text ng:bind='::selected_date_booking'
+                      .text ng:bind='::day.date'
                       .price ${{day.total}}
                     .day-services
                       - Service.all.each do |service|
@@ -138,7 +138,7 @@ script#booking-modal type="text/ng-template"
                 .total
                   .arrow
                     .typcn.typcn-chevron-right
-                  .text ng:bind='::selected_date_booking'
+                  .text ng:bind='::day.date'
                   .price ${{day.total}}
                 .day-services
                   - Service.all.each do |service|

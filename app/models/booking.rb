@@ -13,7 +13,7 @@ class Booking < ActiveRecord::Base
   scope :upcoming, -> (user) { where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
   scope :future, -> { where('date >= ?', Date.today) }
 
-  before_save :create_job, on: :create
+  before_create :create_job
   before_save :create_order
   after_save :check_transaction
 
@@ -104,7 +104,7 @@ class Booking < ActiveRecord::Base
   end
 
   def create_order
-    if payment.balanced_id && !balanced_order_id
+    if payment && payment.balanced_id && !balanced_order_id
       customer = Balanced::Customer.fetch("/customers/#{property.user.balanced_customer_id}")
       order = customer.create_order(meta: {booking_id: id})
       self.balanced_order_id = order.id
