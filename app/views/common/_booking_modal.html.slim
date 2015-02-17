@@ -12,12 +12,6 @@ script#booking-modal type="text/ng-template"
           .content
             .content-side-container ng:if='exists()'
               .content-side.details
-                .setup ng:show='setup()'
-                  .right
-                    .price $45
-                  .left
-                    .text Property Setup Fee
-                    .question ?
                 .days
                   .day collapse='' ng:repeat='day in days'
                     .total
@@ -34,7 +28,7 @@ script#booking-modal type="text/ng-template"
                             span ng:bind="day.#{service.name}"
                 .total
                   .text Total
-                  .price ${{total()}}
+                  .price ${{total}}
               .content-side
                 .services
                   .title =t('booking.modal.services_title')
@@ -116,7 +110,7 @@ script#booking-modal type="text/ng-template"
               .text.dollar
                 | $
               .text.amount
-                | {{total()}}
+                | {{service_total}}
               .text.per
                 | / Service
             .button.teal ng:click='next()' Next
@@ -132,19 +126,13 @@ script#booking-modal type="text/ng-template"
               .text.dollar
                 | $
               .text.amount
-                | {{total()}}
+                | {{service_total}}
               .text.per
                 | / Service
             .button.teal ng:click='update()' Save
       .content-group ng:if='!exists()'
         .content-body
           .content.details
-            .setup ng:show='setup()'
-              .right
-                .price $45
-              .left
-                .text Property Setup Fee
-                .question ?
             .days
               .day collapse='' ng:repeat='day in days'
                 .total
@@ -161,7 +149,7 @@ script#booking-modal type="text/ng-template"
                         span ng:bind="day.#{service.name}"
             .total
               .text Total
-              .price ${{total()}}
+              .price ${{total}}
           .content.payment
             div ng:show="payment_screen() == 'existing'"
               .payment-title Select Payment Method

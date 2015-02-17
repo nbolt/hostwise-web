@@ -19,12 +19,35 @@ class Booking < ActiveRecord::Base
 
   as_enum :payment_status, pending: 0, completed: 1
 
-  def cost
+  def self.cost property, services
+    pool_service = Service.where(name: 'pool')[0]
+    pricing = PRICING[property.property_type.to_s][property.bedrooms][property.bathrooms]
     total = 0
+    rsp = {}
     services.each do |service|
-      total += 19
+      case service.name
+      when 'cleaning'
+        rsp[:cleaning] = pricing['cleaning']
+      when 'linens'
+        rsp[:linens] = pricing['linens']
+      when 'toiletries'
+        rsp[:toiletries] = pricing['toiletries']
+      when 'pool'
+        rsp[:pool] = PRICING['pool']
+      when 'patio'
+        rsp[:patio] = PRICING['patio'] unless services.index pool_service
+      when 'windows'
+        rsp[:windows] = PRICING['windows'] unless services.index pool_service
+      when 'preset'
+        rsp[:preset] = PRICING['preset']
+      end
     end
-    total
+    rsp[:cost] = rsp.reduce(0){|total, service| total + service[1]}
+    rsp
+  end
+
+  def cost
+    Booking.cost(property, services)[:cost]
   end
 
   def send_reminder

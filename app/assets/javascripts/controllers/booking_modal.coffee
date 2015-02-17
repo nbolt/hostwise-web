@@ -26,7 +26,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
 
   $scope.next = ->
     angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
-    calculate_pricing()
+    $scope.calculate_pricing()
     null
 
   $scope.details = ->
@@ -37,20 +37,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
         angular.element('.content-side-container').css 'margin-left', margin_left()/2
     else
       angular.element('.content-side-container').css 'margin-left', 0
-    calculate_pricing()
+    $scope.calculate_pricing()
     null
 
   $scope.change_dates = ->
     angular.element('.booking.modal .content-container').css 'margin-left', 0
     null
-
-  $scope.setup = -> true
-
-  $scope.total = ->
-    total = 0
-    _($scope.selected_services).each (selected, service) ->
-      total += 19 if selected
-    total
 
   $scope.add_payment = (defer) ->
     if $scope.payment_method.id == 'credit-card'
@@ -170,14 +162,20 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
     else
       -976
 
-  calculate_pricing = ->
+  $scope.calculate_pricing = ->
+    $scope.total = 0
     $scope.days = []
-    _($scope.chosen_dates).each (v,k) ->
-      day = {}
-      day.total = 129
-      _($scope.selected_services).each (v,k) ->
-        day[k] = 49 if v
-      $scope.days.push day
+    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services}).success (rsp) ->
+      _($scope.chosen_dates).each (v,k) ->
+        _(v).each (d) ->
+          day = {}
+          day.total = rsp.cost
+          $scope.total += day.total
+          $scope.service_total = rsp.cost
+          day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
+          _($scope.selected_services).each (v,k) ->
+            day[k] = rsp[k] if v
+          $scope.days.push day
 
   flash = (type, msg) ->
     unless $scope.flashing

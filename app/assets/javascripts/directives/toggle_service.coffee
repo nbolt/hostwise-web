@@ -6,4 +6,5 @@ app = angular.module('porter').directive('toggleService', [-> (scope, element, a
     else
       scope.selected_services[attrs.toggleService] = false
       scope.$apply -> element.parent().parent().removeClass 'active'
+    scope.calculate_pricing()
 ])

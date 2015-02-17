@@ -7,7 +7,7 @@ class Property < ActiveRecord::Base
   pg_search_scope :search_property, against: [:title, :address1, :city, :zip], using: { tsearch: { prefix: true } }
 
   as_enum :rental_type, full_time: 0, part_time: 1
-  as_enum :property_type, house: 0, condo: 1, apartment: 2
+  as_enum :property_type, house: 0, condo: 1
 
   belongs_to :user
   has_many :bookings, autosave: true, dependent: :destroy

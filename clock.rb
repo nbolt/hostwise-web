@@ -12,7 +12,7 @@ module Clockwork
         when 1
           booking.charge!
         when 2
-          # check if bank debit succeeded
+          # check if bank debit succeeded 
         end
       end
     when 'jobs.outstanding.process'

@@ -57,11 +57,10 @@ CSV.foreach "#{Rails.root}/db/data/neighborhoods.csv" do |row|
   end
 end
 
-unless Service.first
-  Service.create(name: 'cleaning', display: 'Cleaning', extra: false)
-  Service.create(name: 'linens', display: 'Linens & Towels', extra: false)
-  Service.create(name: 'toiletries', display: 'Toiletries', extra: false)
-  Service.create(name: 'pool', display: 'Pool Area', extra: true)
-  Service.create(name: 'patio', display: 'Balcony / Patio', extra: true)
-  Service.create(name: 'windows', display: 'Exterior Windows', extra: true)
-end
+Service.find_or_create_by(name: 'cleaning', display: 'Cleaning', extra: false)
+Service.find_or_create_by(name: 'linens', display: 'Linens & Towels', extra: false)
+Service.find_or_create_by(name: 'toiletries', display: 'Toiletries', extra: false)
+Service.find_or_create_by(name: 'pool', display: 'Pool Area', extra: true)
+Service.find_or_create_by(name: 'patio', display: 'Balcony / Patio', extra: true)
+Service.find_or_create_by(name: 'windows', display: 'Exterior Windows', extra: true)
+Service.find_or_create_by(name: 'preset', display: 'Pre-Set', hidden: true)

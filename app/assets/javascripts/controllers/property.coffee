@@ -226,7 +226,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
-      data: [{id:0,text:'House'},{id:1,text:'Condo'},{id:2,text:'Apartment'}]
+      data: [{id:0,text:'House'},{id:1,text:'Condo'}]
       initSelection: (el, cb) ->
     }
 

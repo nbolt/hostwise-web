@@ -128,6 +128,12 @@ class Host::PropertiesController < Host::AuthController
     end
   end
 
+  def booking_cost
+    services = params[:services].map {|s| Service.where(name: s)[0] if s[1]}.compact
+    cost = Booking.cost property, services
+    render json: cost
+  end
+
   def address
     code = delivery_code(params[:form][:address1], params[:form][:address2], params[:form][:zip])
     unless code
