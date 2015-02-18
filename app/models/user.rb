@@ -73,6 +73,8 @@ class User < ActiveRecord::Base
         job.scheduled!
         job.save
       end
+      job.handle_distribution_job self
+      Job.set_priorities self.jobs.on_date(job.booking.date).standard
       fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
       fanout.publish_async 'jobs', {}
       true
@@ -83,6 +85,9 @@ class User < ActiveRecord::Base
     job.contractors.delete self
     job.open!
     job.save
+    job.handle_distribution_job self
+    Job.set_priorities self.jobs.on_date(job.booking.date).standard
+    Job.set_priorities job.contractors[0].jobs.on_date(job.booking.date).standard if job.contractors[0]
     fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
     fanout.publish_async 'jobs', {}
     true

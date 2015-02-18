@@ -100,7 +100,8 @@ class Booking < ActiveRecord::Base
   private
 
   def create_job
-    self.build_job(status_cd: 0)
+    job = self.build_job(status_cd: 0)
+    job.size = 2 if property.bedrooms > 4
   end
 
   def create_order
