@@ -1027,3 +1027,71 @@
               width: 45px
               &.confirm
                 color: teal
+
+.ngdialog.export
+  .ngdialog-content
+    width: 400px
+    margin-top: 60px
+    .modal
+      background-color: white
+      overflow: hidden
+      .header
+        border-bottom: 2px solid teal
+        color: teal
+        font-weight: 300
+        font-size: 1.75em
+        padding-bottom: 20px
+        margin: 25px
+      .footer
+        background-color: light-gray
+        height: 60px
+        line-height: 60px
+        text-align: center
+        .icon-button
+          display: inline-block
+      .content
+        position: relative
+        .flash
+          border-radius: 0
+          left: 0
+          position: absolute
+          top: -22px
+          width: 100%
+        form
+          padding: 10px 25px
+          .row
+            margin: 20px 0
+            &:first-child
+              margin-top: 0
+          .calendar
+            border: thin solid light-gray
+            border-top: 0
+            display: none
+            .month_header
+              height: 50px
+              line-height: 50px
+              background-color: white
+              .month
+                color: teal
+                font-size: 1.2em
+              .arrow
+                background-color: transparent
+                top: 10px
+                width: 30px
+                height: 30px
+                line-height: 30px
+                &.prev
+                  margin-top: 2px
+                i
+                  color: teal
+            .table
+              font-size: 0.9em
+              padding: 10px
+              table
+                tbody
+                  td
+                    padding: 10px
+          input
+            border-radius: 0
+            margin-top: 5px
+            width: 100%

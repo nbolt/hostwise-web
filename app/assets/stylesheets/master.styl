@@ -1238,12 +1238,30 @@ form
     padding: 30px
     .tab
       display: none
+      position: relative
       &.active
         display: block
+      a
+        color: teal
+        text-decoration: none
+        &.download
+          font-size: 0.9em
+          position: absolute
+          right: 0
+          top: -40px
+          .fa
+            font-size: 1.2em
+            margin-right: 5px
       table
+        margin-top: 30px
         width: 100%
         th
           padding-bottom: 10px
+          a
+            color: black
+            i
+              color: light-gray
+              margin-left: 5px
         tr
           border-bottom: 1px solid border-gray
           text-align: left

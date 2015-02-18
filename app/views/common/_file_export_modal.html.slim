@@ -1,0 +1,21 @@
+script#file-export-modal type="text/ng-template"
+  .export.modal ng:controller='file-export'
+    .header
+      .text Export to CSV
+    .content
+      .flash
+      form
+        .row
+          label Date From
+          input type='text' placeholder='MM/DD/YYYY' ng:model='form.start_date' ng:click='calendar($event)'
+          .calendar calendar='' options='calendar_options1' dates='chosen_dates'
+        .row
+          label Date To
+          input type='text' placeholder='MM/DD/YYYY' ng:model='form.end_date' ng:click='calendar($event)'
+          .calendar calendar='' options='calendar_options2' dates='chosen_dates'
+    .footer
+      .buttons
+        a.icon-button.teal href='' ng:click='export()'
+          .icon
+            .fa.fa-share-square-o
+          .text Export

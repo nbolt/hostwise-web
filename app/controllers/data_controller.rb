@@ -1,4 +1,5 @@
 class DataController < ApplicationController
+  include CsvHelper
 
   def cities
     render json: City.search(params[:term]).to_json(methods: :state, include: :county)
@@ -37,11 +38,16 @@ class DataController < ApplicationController
   def transactions
     case params[:scope]
       when 'completed'
-        transactions = Transaction.completed current_user
-        render json: transactions.to_json(include: {booking: {methods: :cost, include: [:payment, :services, property: {methods: :nickname}]}})
+        transactions = Transaction.completed(current_user, params[:start_date], params[:end_date])
+        respond_to do |format|
+          format.json { render json: transactions.to_json(include: {booking: {methods: :cost, include: [:payment, :services, property: {methods: :nickname}]}}) }
+          format.csv { send_data transaction_csv(transactions), filename: "completed_transactions_#{params[:start_date].gsub('/', '_')}_#{params[:end_date].gsub('/', '_')}.csv" }
+        end
       when 'upcoming'
         bookings = Booking.upcoming current_user
-        render json: bookings.to_json(methods: :cost, include: [:payment, :services, property: {methods: :nickname}])
+        respond_to do |format|
+          format.json { render json: bookings.to_json(methods: :cost, include: [:payment, :services, property: {methods: :nickname}]) }
+        end
     end
   end
 

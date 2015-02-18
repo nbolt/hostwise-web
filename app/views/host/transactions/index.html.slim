@@ -8,15 +8,33 @@
       .tab.upcoming ng:click="tab('upcoming')" Upcoming
     .tab-content
       .tab ng:repeat="tab in tabs" class='{{tab.name}}'
+        a.download href='' ng:show="tab.name == 'completed'" ng:click='open_export()'
+          .fa.fa-download
+          | Export to CSV
         table cellpadding='0' cellspacing='0'
           tbody
             tr
-              th Date
-              th Property
-              th Services
-              th Payment
-              th Total
-            tr ng:repeat='transaction in tab.transactions'
+              th
+                a href='' ng:click="predicate = 'date'; reverse=!reverse"
+                  | Date
+                  i.icon-acc-open
+              th
+                a href='' ng:click="predicate = 'property'; reverse=!reverse"
+                  | Property
+                  i.icon-acc-open
+              th
+                a href='' ng:click="predicate = 'services'; reverse=!reverse"
+                  | Total
+                  i.icon-acc-open
+              th
+                a href='' ng:click="predicate = 'payment'; reverse=!reverse"
+                  | Payment
+                  i.icon-acc-open
+              th
+                a href='' ng:click="predicate = 'total'; reverse=!reverse"
+                  | Total
+                  i.icon-acc-open
+            tr ng:repeat='transaction in tab.transactions | orderBy:predicate:reverse'
               td.date ng:bind="::transaction.date | date: 'MM/dd/yyyy':'UTC'"
               td.property
                 | {{transaction.property}}
@@ -26,3 +44,4 @@
                 | **** {{transaction.payment}}
               td.total
                 | ${{transaction.total}}
+= render 'common/file_export_modal'

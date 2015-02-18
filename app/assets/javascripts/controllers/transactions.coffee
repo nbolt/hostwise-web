@@ -1,10 +1,10 @@
-TransactionsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
 
   $scope.tabs = [{name:'completed'},{name:'upcoming'}]
 
   $scope.$on 'fetch_transactions', ->
     _($scope.tabs).each (tab) ->
-      $http.get('/data/transactions', {params: {scope: tab.name}}).success (rsp) ->
+      $http.get('/data/transactions.json', {params: {scope: tab.name}}).success (rsp) ->
         tab.transactions = rsp
         if tab.name is 'completed'
           $scope.tab tab.name
@@ -31,7 +31,11 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     tab_content = angular.element('.transaction-container .tab-content')
     tab_content.find('.tab').removeClass 'active'
     tab_content.find(".tab.#{name}").addClass 'active'
+    $scope.current_tab = name
     return true
+
+  $scope.open_export = ->
+    ngDialog.open template: 'file-export-modal', className: 'export', scope: $scope
 
   booked_services = (services) ->
     arr = []
