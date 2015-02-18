@@ -87,7 +87,10 @@ class User < ActiveRecord::Base
     job.save
     job.handle_distribution_job self
     Job.set_priorities self.jobs.on_date(job.booking.date).standard
-    Job.set_priorities job.contractors[0].jobs.on_date(job.booking.date).standard if job.contractors[0]
+    if job.contractors[0]
+      job.handle_distribution_job job.contractors[0].jobs.on_date(job.booking.date).standard
+      Job.set_priorities job.contractors[0].jobs.on_date(job.booking.date).standard
+    end
     fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
     fanout.publish_async 'jobs', {}
     true
