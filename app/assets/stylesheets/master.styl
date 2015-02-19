@@ -1678,20 +1678,33 @@ form
           margin-left: 15px
       div
         display: inline-block
-        line-height: 25px
         vertical-align: top
       .details
+        margin-top: 3px
         strong
           font-weight: normal
           text-transform: capitalize
       .links
         position: absolute
         right: 20px
+        @media portrait_tablet
+          display: block
+          margin-top: 20px
+          position: static
+          text-align: right
         @media phone
           display: block
           margin-top: 20px
           position: static
           text-align: right
+        .icon-button
+          margin-top: -5px
+          .text
+            @media phone
+              display: inline-block
+          .icon
+            @media phone
+              display: none
         .primary
           background-color: light-gray
           border-radius: 3px
@@ -1700,6 +1713,12 @@ form
       .fa
         font-size: 25px
         margin-right: 20px
+        @media phone
+          display: none
+      .icon-cc, .icon-bank
+        display: inline-block
+        font-size: 25px
+        margin: -4px 20px 0
         @media phone
           display: none
       &.add-payment
@@ -1932,11 +1951,8 @@ form
                 font-size: 14px
               img
                 border-radius: 50%
-                height: 100px
-                width: 100px
-                @media portrait_tablet
-                  height: 80px
-                  width: 80px
+                height: 70px
+                width: 70px
               .file-upload
                 color: teal
                 cursor: pointer

@@ -1,18 +1,21 @@
 .container
   .page-title
-    .fa.fa-bank
+    .fa.fa-cog
     | Bank Account
   .payment-container ng::controller='payment'
     .flash
     ul
       li ng:repeat='payment in user.payments'
-        .fa.fa-bank
+        i.icon-bank
         .details
           span
-            | Checking Account ending in {{::payment.last4}}
-        .links
-          a href='' confirmed-click='delete_payment({{::payment.id}})' ng-confirm-click="Remove bank account ending with {{::payment.last4}}?" Delete
+            strong
+              | {{::payment.bank_name}}
+            |  - Account ending in {{::payment.last4}}
+        .links id='payment-{{::payment.id}}' ng:show='payment.status_cd == 1'
+          a href='' ng:click='open_deletion($event)' Remove
       li.add-payment ng:if='user.payments.length == 0'
         .fa.fa-plus-circle
         a href='' ng:click='open(true)' Add a bank account for direct deposit
 =render 'common/add_bank_account_modal'
+=render 'common/delete_payment_modal'

@@ -1,0 +1,33 @@
+script#ach-verification-modal type="text/ng-template"
+  .payment.modal ng:controller='payment'
+    .steps
+      .step.one.active
+        .header.active
+          .text Bank Account Verification
+        .flash
+        .content.center.verification
+          =t('ach.verification')
+          .row.two
+            .field
+              .label Deposit #1
+              input required='' ng:model='deposit1'
+            .field
+              .label Deposit #2
+              input required='' ng:model='deposit2'
+        .footer
+          .buttons
+            .button.white ng:click='close()'
+              .text Cancel
+            .button.teal ng:click='verify({{payment_id}})'
+              .text Verify
+      .step.two.hide
+        .header.active
+          .text Bank Account Verified Successfully
+        .content.center.verification
+          .icon
+            i.icon-check
+          .text You can now use this account as a payment method.
+        .footer
+          .buttons
+            .button.teal ng:click='close()'
+              .text Close

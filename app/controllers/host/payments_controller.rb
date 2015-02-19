@@ -9,7 +9,8 @@ class Host::PaymentsController < Host::AuthController
                                                stripe_id: card.id,
                                                last4: card.last4,
                                                card_type: card.brand.downcase.gsub(' ', '_'),
-                                               fingerprint: card.fingerprint
+                                               fingerprint: card.fingerprint,
+                                               status: :active
                                              })
     else
       bank_account = Balanced::BankAccount.fetch "/bank_accounts/#{params[:balanced_id]}"
@@ -19,7 +20,11 @@ class Host::PaymentsController < Host::AuthController
                                                balanced_id: bank_account.id,
                                                last4: bank_account.account_number.gsub('x',''),
                                                fingerprint: bank_account.fingerprint,
-                                               balanced_verification_id: verification.id
+                                               balanced_verification_id: verification.id,
+                                               bank_name: bank_account.bank_name,
+                                               holder_name: bank_account.name,
+                                               routing_number: bank_account.routing_number,
+                                               status: :pending
                                              })
     end
     payment.primary = true if first_payment
@@ -75,5 +80,25 @@ class Host::PaymentsController < Host::AuthController
     end
 
     render nothing: true
+  end
+
+  def verify
+    payment = Payment.find_by_id(params[:payment_id])
+    verified = false
+
+    begin
+      verification = Balanced::BankAccountVerification.fetch("/verifications/#{payment.balanced_verification_id}")
+      verification = verification.confirm(amount_1 = params[:deposit1].to_i, amount_2 = params[:deposit2].to_i)
+      verified = true if verification.verification_status == 'succeeded'
+    rescue
+      verified = false
+    end
+
+    if verified
+      payment.update_attribute :status, :active
+      render json: { success: true }
+    else
+      render json: { success: false, message: 'Failed to verify the deposit amounts.' }
+    end
   end
 end

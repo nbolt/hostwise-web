@@ -10,7 +10,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
   unless $scope.payment && $scope.payment.id
     if $scope.user.payments && $scope.user.payments[0]
       payment = $scope.user.payments[0]
-      payment_type = if payment.card_type then payment.card_type.capitalize() else 'Bank'
+      payment_type = if payment.card_type then payment.card_type.capitalize() else payment.bank_name.capitalize()
       $scope.payment.id = payment.id
       $scope.payment.text = "#{payment_type} ending in #{payment.last4}"
     else
@@ -18,7 +18,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
       $scope.payment.text = 'Add New Payment'
 
   payments_map = _($scope.user.payments).map (payment) ->
-    payment_type = if payment.card_type then payment.card_type.capitalize() else 'Bank'
+    payment_type = if payment.card_type then payment.card_type.capitalize() else payment.bank_name.capitalize()
     { id: payment.id, text: "#{payment_type} ending in #{payment.last4}" }
   payments_map.push { id: 'new', text: 'Add New Payment' }
 

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     post  '/payments/add' => 'payments#add'
     put   '/payments/delete' => 'payments#delete'
     put   '/payments/default' => 'payments#default'
+    post  '/payments/verify' => 'payments#verify'
     post  '/service_notifications/create' => 'service_notifications#create'
     get   '/notifications' => 'notifications#index'
     put   '/notifications/update' => 'notifications#update'

@@ -41,17 +41,21 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       $scope.add_bank_account()
 
   $scope.$watch 'payment_method', (n,o) -> if o
-    angular.element('.payment.modal .content .payment-tab').removeClass 'active'
+    el = angular.element('.payment.modal .steps .step.one')
+    el.find('.content .payment-tab').removeClass 'active'
+    el.find('.header').removeClass 'active'
     if n.id == 'credit-card'
-      angular.element('.payment.modal .content .payment-tab.credit-card').addClass 'active'
+      el.find('.content .payment-tab.credit-card').addClass 'active'
+      el.find('.header.credit-card').addClass 'active'
     else
-      angular.element('.payment.modal .content .payment-tab.ach').addClass 'active'
+      el.find('.content .payment-tab.ach').addClass 'active'
+      el.find('.header.ach').addClass 'active'
 
   $scope.open = (bank_only) ->
     if bank_only
-      ngDialog.open template: 'add-bank-account-modal', className: 'payment bank-acconut', scope: $scope
+      ngDialog.open template: 'add-bank-account-modal', className: 'success payment bank-acconut', scope: $scope
     else
-      ngDialog.open template: 'add-payment-modal', className: 'payment', scope: $scope
+      ngDialog.open template: 'add-payment-modal', className: 'success payment', scope: $scope
 
   $scope.add_credit_card = ->
     Stripe.createToken
@@ -82,7 +86,40 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
             $scope.card = {}
             $scope.bank = {}
             $scope.$emit 'fetch_user'
-            ngDialog.closeAll()
+            if $scope.user.role is 'host'
+              angular.element('.payment.modal .steps .step.one').removeClass('active').addClass('hide')
+              angular.element('.payment.modal .steps .step.two').removeClass('hide').addClass('active')
+            else
+              ngDialog.closeAll()
+
+  $scope.open_verify = (event) ->
+    $scope.payment_id = $(event.currentTarget).parent().attr('id').split('-')[1]
+    ngDialog.open template: 'ach-verification-modal', className: 'success payment', scope: $scope
+
+  $scope.verify = (id) ->
+    if validate()
+      $http.post('/payments/verify', {
+        payment_id: id
+        deposit1: $scope.deposit1,
+        deposit2: $scope.deposit2,
+      }).success (rsp) ->
+        if rsp.success
+          $scope.$emit 'fetch_user'
+          angular.element('.payment.modal .steps .step.one').removeClass('active').addClass('hide')
+          angular.element('.payment.modal .steps .step.two').removeClass('hide').addClass('active')
+        else
+          flash 'failure', rsp.message
+    else
+      flash 'failure', 'Please fill in all required fields'
+
+  $scope.close = ->
+    ngDialog.closeAll()
+
+  validate = ->
+    if _(angular.element('.payment.modal .step').find('input[required]')).filter((el) -> angular.element(el).val() == '')[0]
+      false
+    else
+      true
 
   flash = (type, msg, parent) ->
     el = angular.element('.payment.modal .flash')

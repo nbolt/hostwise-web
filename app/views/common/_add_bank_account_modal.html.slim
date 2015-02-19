@@ -1,22 +1,23 @@
 script#add-bank-account-modal type="text/ng-template"
   .payment.modal ng:controller='payment'
-    .header
-      .text ACH Bank Account
-    .flash
-    .content
-      .payment-tab.ach.active
-        .field.name
-          .label Name On Account
-          input ng:model='bank.name'
-        .row.two
-          .field.account-number
-            .label Account Number
-            input ng:model='bank.account_number'
-          .field.routing-number
-            .label Routing Number
-            input ng:model='bank.routing_number'
-      .buttons.one
-        .button.teal ng:click='add_bank_account()'
-          .icon
-            .fa.fa-bank
-          .text Add Bank Account
+    .steps
+      .step.one.active
+        .header.ach.active
+          .text Add ACH Payment
+        .flash
+        .content
+          .payment-tab.ach.active
+            .field.name
+              .label Name On Account
+              input ng:model='bank.name'
+            .row.two
+              .field.account-number
+                .label Account Number
+                input ng:model='bank.account_number'
+              .field.routing-number
+                .label Routing Number
+                input ng:model='bank.routing_number'
+        .footer
+          .buttons
+            .button.teal ng:click='add_bank_account()'
+              .text Add Bank Account

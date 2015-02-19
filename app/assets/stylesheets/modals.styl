@@ -1,7 +1,7 @@
 .ngdialog
   .ngdialog-content
     background: white
-    color: #444
+    color: darker-gray
     margin: auto
     max-width: 100%
     position: relative
@@ -141,7 +141,7 @@
                     label
                       display: inline-block
 
-.ngdialog.warning
+.ngdialog.warning, .ngdialog.success
   .ngdialog-content
     width: 400px
     margin-top: 60px
@@ -162,7 +162,7 @@
           top: 12px
           .button
             display: inline-block
-            width: 100px
+            width: auto
             &.white
               margin-right: 10px
       .content
@@ -184,96 +184,65 @@
           text-align: center
           width: 50px
 
+.ngdialog.success .ngdialog-content .modal .header
+  border-bottom: 1px solid teal
+  color: teal
+
 .ngdialog.payment
   .ngdialog-content
-    width: 400px
-    margin-top: 60px
     .modal
-      background-color: white
-      overflow: hidden
+      .steps
+        .step
+          vertical-align: top
+          &.active
+            height: auto
+            visibility: visible
+            opacity: 1
+            transition: height .8s ease-in-out
+          &.hide
+            height: 0
+            visibility: hidden
+            opacity: 0
+            transition-delay: 0s
+      .header
+        display: none
+        &.active
+          display: block
       .flash
-        border-radius: 0
-        height: 50px
-        left: 0
         position: absolute
         top: 0
+        left: 0
         width: 100%
-      .header
-        background-color: teal
-        color: white
-        font-size: 1.25em
-        padding: 10px
-        height: 50px
-        box-sizing: border-box
-        transition: background-color 1s ease-in-out, height 1s ease-in-out
-        .text
-          text-align: center
-          transition: opacity .5s ease-in-out
-        &.failure
-          background-color: red
-        &.success
-          background-color: green
-        &.info
-          background-color: orange
-      .content
-        display: inline-block
+        height: 60px
+        line-height: 60px
+        padding: 0 20px
         vertical-align: top
-        box-sizing: border-box
-        width: 350px
-        margin: 25px 0 0 25px
-        @media phone
-          margin: 0
-          padding: 15px
-          width: auto
-        .buttons
-          margin: 25px auto
-          .cancel
-            text-align: center
-            margin-top: 10px
-            span
-              color: teal
-              &:hover
-                cursor: pointer
-          .button
-            margin: 0 10px
+      .content
+        text-align: left
+        &.center
+          text-align: center
+        &.verification
+          .row.two
+            .field
+              margin-top: 30px
+              text-align: left
+              width: 50%
+              .label
+                color: teal
+                font-size: 0.95em
+              input
+                width: 75%
+          .icon
+            background-color: teal
+            border-radius: 50%
             color: white
-            text-align: left
             display: inline-block
-            vertical-align: top
-            padding: 0
-            .icon, .text
-              display: inline-block
-              vertical-align: top
-            .icon
-              background-color: light-teal
-              width: 40px
-              height: 40px
-              font-size: 1.6em
-              .typcn
-                margin-left: 8px
-              .fa
-                font-size: 20px
-                margin-left: 8px
-            .text
-              text-align: center
-              font-size: 1.25em
-              margin-top: 5px
-            &:hover
-              cursor: pointer
-            &.teal
-              background-color: teal
-              &:hover
-                background-color: light-teal
-          &.one
-            .button
-              width: 100%
-              display: block
-              margin: auto
-              border-radius: 1px
-              .text
-                width: 260px
-                @media phone
-                  width: 250px
+            font-size: 25px
+            height: 50px
+            line-height: 50px
+            margin-bottom: 20px
+            text-align: center
+            width: 50px
         .payment-tab
           display: none
           &.active
@@ -297,7 +266,7 @@
           .text
             margin-bottom: 10px
           .select2-container
-            width: 200px
+            width: 234px
             > a
               background: lighter-gray !important
               color: heavy-gray

@@ -8,6 +8,7 @@ AppCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       $http.get('/user').success (rsp) ->
         if rsp
           $scope.user = rsp
+          $scope.user.payment_prefs = _($scope.user.payments).filter (payment) -> payment.status_cd == 1 or payment.status_cd == 2
           $scope.user.payments = _($scope.user.payments).filter (payment) -> payment.status_cd == 1
           if $scope.user.role is 'host'
             $scope.user.properties = _($scope.user.properties).filter (property) -> property.active

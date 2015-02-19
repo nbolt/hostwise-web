@@ -3,9 +3,9 @@ class Payment < ActiveRecord::Base
 
   has_many :bookings, autosave: true
 
-  as_enum :status, active: 1, deleted: 0
+  as_enum :status, active: 1, deleted: 0, pending: 2
 
-  before_create :set_status, :set_card_type
+  before_create :set_card_type, :set_bank_name
 
   validates :fingerprint, uniqueness: true
 
@@ -21,11 +21,11 @@ class Payment < ActiveRecord::Base
 
   private
 
-  def set_status
-    self.status = :active
-  end
-
   def set_card_type
     self.card_type.gsub! '_', ' ' if card_type
+  end
+
+  def set_bank_name
+    self.bank_name.downcase! if bank_name
   end
 end
