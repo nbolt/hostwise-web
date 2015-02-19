@@ -601,6 +601,9 @@ form
     font-size: 1.6em
   .row
     margin-bottom: 25px
+    .blocks
+      display: inline-block
+      vertical-align: top
     .block
       background-color: white
       display: inline-block
@@ -645,6 +648,96 @@ form
             margin: 35px 0 10px
           .number
             color: teal
+      &.services
+        .services
+          margin: 20px 20px 30px
+          .title
+            color: teal
+            font-weight: 600
+            margin: 10px 0
+          .service
+            border-top: thin solid light-gray
+            padding: 10px 0
+            i
+              color: teal
+              margin-right: 10px
+            .name
+              display: inline-block
+              vertical-align: top
+      &.team
+        .teammate
+          padding: 20px
+          .icon, .name, .number
+            display: inline-block
+            vertical-align: top
+          .icon
+            margin-right: 10px
+          .number
+            float: right
+            color: teal
+          .name
+            font-weight: 600
+      &.actions
+        overflow: hidden
+        .viewports
+          width: 200%
+          transition: margin-left .6s ease-in-out
+          .viewport
+            width: 50%
+            vertical-align: top
+            display: inline-block
+            &.side
+              display: none
+            &.active
+              display: inline-block
+            &.disabled .arrived-button
+              background-color: #A6A6A6
+              &:hover
+                cursor: default
+        .arrived-button
+          background-color: teal
+          padding: 8px 12px
+          border-radius: 1px
+          color: white
+          hover-lighten(3%)
+          &:hover
+            cursor: pointer
+          .arrow
+            float: right
+          .icon
+            float: left
+          .text
+            text-align: center
+        .arrived-dropdown
+          max-height: 0
+          overflow: hidden
+          transition: max-height .4s ease-in-out
+        .bottom
+          background-color: white
+          .actions
+            padding: 20px
+            .action
+              height: 40px
+              color: white
+              text-align: center
+              overflow: auto
+              background-color: teal
+              .icon
+                width: 40px
+                height: 40px
+                background-color: light-teal
+                float: left
+                .typcn
+                  font-size: 1.75em
+                  margin-left: 2px
+              .text
+                margin-top: 9px
+                font-weight: 600
+              &.start
+                background-color: teal
+              &:hover
+                cursor: pointer
+                background-color: light-teal
     &.one
       .block
         width: 100%
@@ -656,13 +749,20 @@ form
         width: 49%
         &:first-child
           margin-right: 2%
+      .blocks
+        width 49%
+        .block
+          width: 100%
+          margin-bottom: 20px
     &.uneven
+      #map
+        margin-bottom: 0
       .head
         .text
           width: 190px
       .block
         width: 62%
-        height: 210px
+        height: 240px
         &:first-child
           width: 36%
           margin-right: 2%
@@ -704,6 +804,7 @@ form
       padding: 12px 15px
       color: white
       border-radius: 1px
+      margin-bottom: 15px
       .icon, .text
         display: inline-block
         vertical-align: top
@@ -714,7 +815,7 @@ form
         margin-left: 5px
     .distribution
       .top
-        background-color: orange
+        background-color: teal
         padding: 12px 15px
         color: white
         font-weight: 600
@@ -735,7 +836,9 @@ form
         .location
           margin-left: 50px
       .bottom
-        padding: 12px 15px
+        transition: max-height .4s ease-in-out
+        max-height: 80px
+        overflow: hidden
         background-color: white
         .right
           float: right
@@ -775,10 +878,18 @@ form
         background-color: white
         padding: 15px 25px
         margin-bottom: 10px
+        &.complete
+          background-color: teal
+          color: white
         .right
           float: right
           a
             text-decoration: none
+            .text
+              color: white
+              margin-top: 15px
+            &:hover .text
+              text-decoration: underline
             .button
               padding: 0
               text-align: left
@@ -1178,41 +1289,42 @@ form
               color: white
             .typcn
               color: white
-        &.instructions
-          .instruction
-            padding: 30px
-            padding-bottom: 0
-            position: relative
-            .content
-              border-bottom: thin solid teal
-            .title
-              color: teal
-              font-size: 1.1em
-              font-weight: 600
-            .text
-              margin: 15px 0 30px
-              color: darker-gray
-            .edit
-              opacity: 0
-              position: absolute
-              right: 3px
-              top: 3px
-              background-color: lighter-gray
-              border-radius: 1px
-              color: darker-gray
-              transition: opacity .4s ease-in-out
-              padding: 5px
-              cursor: pointer
-              font-size: 0.8em
-            &:last-child .content
-              border-bottom: 0
-            &:hover .edit
-              opacity: 1
   .deactivate
     span
       color: red
       &:hover
         cursor: pointer
+        
+.instructions
+  .instruction
+    padding: 30px
+    padding-bottom: 0
+    position: relative
+    .content
+      border-bottom: thin solid teal
+    .title
+      color: teal
+      font-size: 1.1em
+      font-weight: 600
+    .text
+      margin: 15px 0 30px
+      color: darker-gray
+    .edit
+      opacity: 0
+      position: absolute
+      right: 3px
+      top: 3px
+      background-color: lighter-gray
+      border-radius: 1px
+      color: darker-gray
+      transition: opacity .4s ease-in-out
+      padding: 5px
+      cursor: pointer
+      font-size: 0.8em
+    &:last-child .content
+      border-bottom: 0
+    &:hover .edit
+      opacity: 1
 
 .transaction-container
   margin: 40px auto 0

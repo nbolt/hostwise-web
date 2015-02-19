@@ -5,7 +5,7 @@ class Contractor::JobsController < Contractor::AuthController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: job.to_json(include: [booking: {methods: [:cost], include: [property: {include: {user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address]}]}]) }
+      format.json { render json: job.to_json(include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: [:services, property: {include: {user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address]}]}}) }
     end
   end
 
@@ -23,6 +23,11 @@ class Contractor::JobsController < Contractor::AuthController
     else
       render json: { success: false }
     end
+  end
+
+  def complete
+    job.update_attribute :status_cd, 3
+    render json: { success: true }
   end
 
 end

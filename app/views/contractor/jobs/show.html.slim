@@ -32,11 +32,87 @@
         .icon
           .typcn.typcn-document-text
         .text Property Instructions
-    .block.services
-      .head
-        .right
-          .arrow
-            .typcn.typcn-chevron-right
-        .icon
-          .typcn.typcn-document-text
-        .text Service Details
+      .instruction ng:if='::job.booking.property.access_info'
+        .content
+          .title Access Information
+          .text ng:bind='::job.booking.property.access_info'
+      .instruction ng:if='::job.booking.property.trash_disposal'
+        .content
+          .title Trash Disposal
+          .text ng:bind='::job.booking.property.trash_disposal'
+      .instruction ng:if='::job.booking.property.parking_info'
+        .content
+          .title Parking Information
+          .text ng:bind='::job.booking.property.parking_info'
+      .instruction ng:if='::job.booking.property.additional_info'
+        .content
+          .title Additional Information
+          .text ng:bind='::job.booking.property.additional_info'
+    .blocks
+      .block.services
+        .head
+          .right
+            .arrow
+              .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-document-text
+          .text Service Details
+        .services ng:show='job.standard_services[0]'
+          .title Services
+          .service ng:repeat='service in job.standard_services'
+            i.icon class="icon-serv-{{service.name}}"
+            .name ng:bind='::service.display'
+        .services ng:show='job.extra_services[0]'
+          .title Extra Services
+          .service ng:repeat='service in job.extra_services'
+            i.icon class="icon-serv-{{service.name}}"
+            .name ng:bind='::service.display'
+      .block.team ng:show='job.size > 1'
+        .head
+          .right
+            .arrow
+              .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-user
+          .text Team Information
+        .teammate ng:repeat='teammate in job.contractors'
+          .number ng:bind='::teammate.display_phone_number'
+          .icon
+            .typcn.typcn-user
+          .name ng:bind='::teammate.name'
+      .block.actions
+        .viewports ng:hide='current_job()'
+          .viewport.active.disabled
+            .arrived-button
+              .arrow
+                .typcn.typcn-media-play
+              .icon
+                .typcn.typcn-media-play
+              .text This job can't be started yet
+        .viewports ng:show='current_job()'
+          .viewport.actions.active
+            .arrived-button ng:click='arrived()'
+              .arrow
+                .typcn.typcn-media-play
+              .icon
+                .typcn.typcn-media-play
+              .text I've arrived at this job
+            .arrived-dropdown.bottom
+              .actions
+                .action.start ng:click='start()'
+                  .icon
+                    .typcn.typcn-tick
+                  .text Start this job
+          .viewport.side.start
+            .arrived-button ng:click='arrived()'
+              .arrow
+                .typcn.typcn-media-play
+              .icon
+                .typcn.typcn-media-play
+              .text Job started
+            .bottom
+              .actions
+                .action.complete ng:click='complete()'
+                  .icon
+                    .typcn.typcn-tick
+                  .text Complete & go to next job

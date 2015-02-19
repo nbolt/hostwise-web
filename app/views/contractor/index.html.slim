@@ -17,6 +17,10 @@
       .icon
         .typcn.typcn-time
       .text You don't have any upcoming jobs today
+    .no-upcoming ng:show="jobs_completed()"
+      .icon
+        .typcn.typcn-time
+      .text Congratulations! You're finished for the day.
     .distribution ng:show='user.distribution_job'
       .top
         .right
@@ -25,9 +29,9 @@
           .typcn.typcn-time
         .text 9:45 AM
         .location Venice Distribution Center | 1020 Lake St, Venice, CA 90291
-      .bottom
+      .bottom ng:hide='user.distribution_job.status_cd == 3'
         .right
-          .button.teal ng:click='done(0)'
+          .button.teal ng:click='done(user.distribution_job)'
             .icon
               .typcn.typcn-tick
             .text Done
@@ -45,10 +49,11 @@
             .type Twin:
             .num ng:bind='::user.distribution_job.twin_beds'
     .jobs
-      .job ng:repeat='job in user.jobs_today'
+      .job ng:repeat='job in user.jobs_today' ng:class="job.status_cd == 3 && 'complete'"
         .right
           a href='/jobs/{{job.id}}'
-            .button.teal
+            .text ng:show="job.status_cd == 3" View Completed Job
+            .button.teal ng:hide="job.status_cd == 3"
               .icon
                 .typcn.typcn-tick
               .text View Job
