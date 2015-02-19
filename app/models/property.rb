@@ -4,7 +4,7 @@ class Property < ActiveRecord::Base
 
   friendly_id :slug_candidates, use: :slugged
 
-  pg_search_scope :search_property, against: [:title, :address1, :city, :zip], using: { tsearch: { prefix: true } }
+  pg_search_scope :search_property, against: [:id, :title, :address1, :city, :zip], using: { tsearch: { prefix: true } }
 
   as_enum :rental_type, full_time: 0, part_time: 1
   as_enum :property_type, house: 0, condo: 1
