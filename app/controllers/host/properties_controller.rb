@@ -28,6 +28,7 @@ class Host::PropertiesController < Host::AuthController
       end
     else
       property.assign_attributes property_params
+      property.step = 3
       if property.save
         render json: property.to_json(include: [:bookings, :property_photos], methods: [:nickname, :short_address, :primary_photo, :full_address])
       else

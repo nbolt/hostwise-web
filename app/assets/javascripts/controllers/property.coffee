@@ -93,10 +93,19 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
               angular.element(".booking.modal .services .service.#{service.name} input, .booking.modal .extra .service.#{service.name} input").attr 'checked', true
     }
 
+  $scope.update_details = ->
+    if _(angular.element('.bed-types').find('input')).filter((el) -> parseInt(angular.element(el).val()) > 0).length is 0
+      flash 'failure', 'Please select at least one bed', true
+      return
+    $scope.update_property()
+
   $scope.update_property = ->
     $http.post("/properties/#{$scope.property.slug}/update", {form: $scope.form}).success (rsp) ->
-      $scope.$emit 'refresh_property'
-      ngDialog.closeAll()
+      if typeof rsp.success == 'undefined'
+        $scope.$emit 'refresh_property'
+        ngDialog.closeAll()
+      else
+        flash 'failure', rsp.message, true
 
   $scope.edit = ->
     ngDialog.open template: 'property-edit-modal', controller: 'property', className: 'edit', scope: $scope
@@ -201,13 +210,14 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       form_flash 'photo'
       $scope.property_image(rsp.image)
 
-  flash = (type, msg) ->
-    angular.element('#property .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
+  flash = (type, msg, modal) ->
+    el = if modal then angular.element('.modal .flash') else angular.element('#property .flash')
+    el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     $timeout((->
-      angular.element('#property .flash').css('opacity', 0).removeClass('info success failure')
+      el.css('opacity', 0).removeClass('info success failure')
     ), 3000)
     $timeout((->
-      angular.element('#property .flash').removeClass('info success failure')
+      el.removeClass('info success failure')
     ), 4000)
 
   $scope.rooms = ->

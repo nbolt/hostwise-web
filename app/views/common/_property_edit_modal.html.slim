@@ -3,6 +3,7 @@ script#property-edit-modal type="text/ng-template"
     .header
       .text Edit Property Details
     .content
+      .flash
       .columns
         .column
           .section
@@ -38,7 +39,7 @@ script#property-edit-modal type="text/ng-template"
               .field.check
                 input type='radio' value='1' ng:model='form.rental_type_cd'
                 label Part-time
-          .section
+          .section.bed-types
             .title Bed Types
             .row.two
               .field.twins
@@ -56,4 +57,4 @@ script#property-edit-modal type="text/ng-template"
                 label King Beds
     .footer
       .buttons
-        .button.teal ng:click='update_property()' Save Changes
+        .button.teal ng:click='update_details()' Save Changes

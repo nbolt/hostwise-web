@@ -4,6 +4,10 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
   $scope.posting = false
   $scope.extras = {}
   $scope.form = {rental_type_cd: 0}
+  $scope.form.twin_beds = {id:'0', text:'0'}
+  $scope.form.full_beds = {id:'0', text:'0'}
+  $scope.form.queen_beds = {id:'0', text:'0'}
+  $scope.form.king_beds = {id:'0', text:'0'}
 
   $http.get('/user').success (rsp) ->
     if rsp
@@ -120,6 +124,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
     if _(angular.element('.step.' + step(n)).find('input[required], textarea[required]')).filter((el) -> angular.element(el).val() == '')[0]
       false
     else
+      return false if n is 2 and _(angular.element('.step.' + step(n)).find('.bed-types input')).filter((el) -> parseInt(angular.element(el).val()) > 0).length is 0
       true
 
   step = (n) ->
