@@ -16,6 +16,8 @@ html, body, .body
 
 header
   padding: 2px 20px 2px 12px
+  -webkit-box-shadow: inset 0 -1px 0 0 #DCDEE2;
+  box-shadow: inset 0 -1px 0 0 #DCDEE2;
   background-color: white
   position: fixed
   top: 0
@@ -75,6 +77,8 @@ header
         color: navy
         margin: 15px 10px 0 12px
         font-size: 1.2em
+        strong
+          text-transform: capitalize
         @media phone
           margin: 17px 5px 0 12px
           font-size: 1.0em
@@ -280,7 +284,7 @@ footer
   z-index: 1
   background-color: light-navy
   position: fixed
-  top: 64px
+  top: 68px
   min-height: 100%
   left: 0
   bottom: 0
@@ -306,27 +310,30 @@ footer
     @media phone
       width: 100%
     .section
-      padding-top: 15px
+      padding: 0
       &:hover
         cursor: pointer
         background-color: lighter-navy
+        -webkit-box-shadow: 0 0 15px 0 rgba(0,0,0,0.25), inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.05)
+        box-shadow: 0 0 15px 0 rgba(0,0,0,0.25), inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.05)
       &.active
         background-color: lighter-navy
+        -webkit-box-shadow: 0 0 15px 0 rgba(0,0,0,0.25), inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.05)
+        box-shadow: 0 0 15px 0 rgba(0,0,0,0.25), inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.05)
       > a
         color: white
         &:active, &:focus
           outline: none
       .title
-        padding: 0 0 24px 28px
+        padding: 20px 0 20px 28px
       .icon, .text
         display: inline-block
         vertical-align: top
       .icon
-        margin-top: 11px
         i
           font-size: 1.5em
       .text
-        margin: 17px 0 0 28px
+        margin: 5px 0 0 28px
         text-align: left
         width: 125px
         @media phone
@@ -361,6 +368,8 @@ footer
                 opacity: 1
         .links
           padding: 8px 0
+          -webkit-box-shadow: inset  0 -10px 10px -10px rgba(0,0,0,0.25), inset 0 -1px 0 0 rgba(255,255,255,0.08)
+          box-shadow: inset  0 -10px 10px -10px rgba(0,0,0,0.25), inset 0 -1px 0 0 rgba(255,255,255,0.08)
           a
             &:active, &:focus
               outline: none
@@ -592,9 +601,9 @@ form
       width: auto
 .body
   .page-title
-    font-size: 2em
+    font-size: 1.5em
     @media phone
-      font-size: 1.7em
+      font-size: 1.4em
     .fa, i
       margin-right: 20px
     .icon, .text
@@ -1923,23 +1932,33 @@ form
     padding-right 20px
     transition all ease 0.2s
     border-radius 20px
-    box-shadow inset 0 0 1px rgba(0,0,0,.5)
+    font-family: "pf-hosticons"
+    text-align:center
+    background: dark-gray
     &:before
       display block
-      content ''
+      content '\e83e'
       width 20px
-      height 20px
+      height 16px
+      padding:4px 0 0 0
+      font-size:12px
+      color: dark-gray
       border-radius 20px
-      background white
-      box-shadow 0 1px 2px rgba(0,0,0,.5)
+      box-shadow inset 0 0 0 2px dark-gray, inset 0 0 0 10px white
+      
   :checked
     & + i
       padding-right 0
       padding-left 20px
+      &:before
+        content: '\e81a'
+        font-size:10px
+        color: teal
+        box-shadow inset 0 0 0 2px teal, inset 0 0 0 10px white
   &.red
     :checked
       & + i
-        box-shadow inset 0 0 1px rgba(0,0,0,.5), inset 0 0 60px teal
+        background-color: teal
 
 .select2-drop.payment
   z-index: 10000
