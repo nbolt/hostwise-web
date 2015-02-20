@@ -33,7 +33,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
     {
       dropdownCssClass: 'details'
       minimumResultsForSearch: -1
-      data: [{id:0,text:'House'},{id:2,text:'Condo'}]
+      data: [{id:0,text:'House'},{id:1,text:'Apartment/Condo'}]
       initSelection: (el, cb) ->
     }
 
