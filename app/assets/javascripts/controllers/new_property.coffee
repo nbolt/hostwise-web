@@ -93,12 +93,17 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
           angular.element('.property-form-container .step-nav.active').addClass('complete')
           angular.element('.property-form-container .step-nav').removeClass('active').eq(n).addClass('active')
       else
-        success = -> window.location = '/'
+        success = ->
+          angular.element('.property-form-container .steps').hide()
+          angular.element('.property-form-container .confirmation').show()
+          scroll 0
 
       success_wrap = (rsp) ->
         $scope.posting = false
         _($scope.extras).extend(rsp.extras)
         if rsp.success
+          if rsp.slug
+            $http.get("/properties/#{rsp.slug}.json").success (rsp) -> $scope.property = rsp
           success()
           $scope.extras = {}
         else
@@ -109,6 +114,15 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
     else
       flash 'failure', 'Please fill in all required fields'
       return true
+
+  $scope.address = (property) ->
+    if property
+      parts = property.full_address.split ','
+      return parts[0] + ", <span class='city_state'>" + parts[1] + ", " + parts[2] + "</span>"
+
+  $scope.add_property = -> window.location = '/properties/new'
+
+  $scope.toProperty = (property) -> window.location = "/properties/#{property.slug}"
 
   flash = (type, msg) ->
     angular.element('.property-form-container .step.active .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)

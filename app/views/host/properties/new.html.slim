@@ -166,3 +166,10 @@
                   .icon
                     span.fa.fa-rotate-right
                   .text Finish
+    .confirmation
+      .property ng:click='toProperty(property)'
+        =render '/host/properties/row'
+      a.new-property href='' ng:click="add_property()"
+        .container
+          i.icon-add
+          .text Add New Property

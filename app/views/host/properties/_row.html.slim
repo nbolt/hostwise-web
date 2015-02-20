@@ -1,0 +1,25 @@
+.photo
+  img ng:src='{{::property.primary_photo}}'
+.right
+  .top
+    .title
+      .name ng:bind='::property.nickname'
+      .address ng:bind-html='address(property)'
+    .icon-button.teal ng:click='quick_add(property); $event.stopPropagation()'
+      .icon
+        i.icon-calendar
+      .text Quick Book
+    .manage ng:href='/properties/{{property.slug}}' Manage
+  .bottom
+    .next-service ng:show='property.next_service_date'
+      i.icon-calendar
+      .text Next Service&nbsp; {{property.next_service_date}}
+    .left
+      .id
+        | ID&nbsp;
+        span ng:bind='property.id'
+      .rooms
+        i.icon-house ng:if='property.property_type_cd == 0'
+        i.icon-apt ng:if='property.property_type_cd == 1'
+        .text
+          | {{property.bedrooms}}BD/{{property.bathrooms}}BA

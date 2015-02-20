@@ -122,7 +122,7 @@ class Host::PropertiesController < Host::AuthController
         if property.save
           current_user.save
           UserMailer.property_confirmation(property).then(:deliver)
-          render json: { success: true }
+          render json: { success: true, slug: property.slug }
         else
           render json: { success: false, message: property.errors.full_messages[0] }
         end
