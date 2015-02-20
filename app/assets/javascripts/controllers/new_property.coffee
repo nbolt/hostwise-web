@@ -46,6 +46,8 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
     angular.element('.property-form-container .steps .step.active').removeClass('active').find('form').hide()
     angular.element('.property-form-container .steps .step').eq(n-1).addClass('active').find('form').show()
     angular.element('.property-form-container .step .step-nav').removeClass('active').eq(n-1).addClass('active')
+    pos = angular.element('.property-form-container .steps').find(".#{step(n)}").offset().top - 70
+    angular.element('body, html').scrollTo pos
     return true
 
   $scope.step = (n) ->
