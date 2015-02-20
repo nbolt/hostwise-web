@@ -19,8 +19,8 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
           if $scope.user.role is 'contractor'
             $scope.user.jobs_today = _($scope.user.jobs).filter (job) -> moment(job.booking.date, 'YYYY-MM-DD').diff(moment(), 'days') == 0
             $scope.user.distribution_job = _($scope.user.jobs_today).find (job) -> job.distribution
-            $scope.user.jobs_today = _($scope.user.jobs_today).reject (job) -> job.distribution
-            $scope.user.jobs_today = _($scope.user.jobs_today).sortBy (job) -> job.priority
+            $scope.user.standard_jobs = _($scope.user.jobs_today).reject (job) -> job.distribution
+            $scope.user.standard_jobs = _($scope.user.standard_jobs).sortBy (job) -> job.priority
           $scope.user_fetched.resolve()
 
   $scope.$emit 'fetch_user'

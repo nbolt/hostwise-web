@@ -81,7 +81,7 @@
             .typcn.typcn-user
           .name ng:bind='::teammate.name'
       .block.actions
-        .viewports ng:hide='current_job()'
+        .viewports ng:show='unfinished_job()'
           .viewport.active.disabled
             .arrived-button
               .arrow
@@ -89,6 +89,14 @@
               .icon
                 .typcn.typcn-media-play
               .text This job can't be started yet
+        .viewports ng:show='completed_job()'
+          .viewport.active.disabled
+            .arrived-button
+              .arrow
+                .typcn.typcn-media-play
+              .icon
+                .typcn.typcn-media-play
+              .text This job has already been completed
         .viewports ng:show='current_job()'
           .viewport.actions.active
             .arrived-button ng:click='arrived()'

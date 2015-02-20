@@ -26,20 +26,35 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', ($
     ), 200)
 
     $scope.current_job = ->
-      job = _($scope.user.jobs_today).find (job) -> job.priority == $scope.job.priority - 1
-      if job
-        if job.status_cd == 3
-          true
+      if $scope.user
+        if $scope.job.status_cd == 3
+          false
+        else
+          job = _($scope.user.jobs_today).find (job) -> job.priority == $scope.job.priority - 1
+          if job
+            if job.status_cd == 3
+              true
+            else
+              false
+          else
+            true
+      else
+        false
+
+    $scope.unfinished_job = ->
+      if $scope.user
+        job = _($scope.user.jobs_today).find (job) -> job.priority == $scope.job.priority - 1
+        if job
+          if job.status_cd == 3
+            false
+          else
+            true
         else
           false
       else
-        if $scope.user.distribution_job
-          if $scope.user.distribution_job.status_cd == 3
-            true
-          else
-            false
-        else
-          true
+        false
+
+    $scope.completed_job = -> $scope.job.status_cd == 3
 
     $scope.arrived = ->
       angular.element('.arrived-dropdown').css 'max-height', 80
