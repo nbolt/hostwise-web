@@ -38,6 +38,10 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
     }
 
   $scope.goto = (n) ->
+    if n is 3
+      return false if !validate(1) or !validate(2)
+    else if n is 2
+      return false if !validate(1)
     angular.element('.property-form-container .flash').removeClass('info success failure').empty()
     angular.element('.property-form-container .steps .step.active').removeClass('active').find('form').hide()
     angular.element('.property-form-container .steps .step').eq(n-1).addClass('active').find('form').show()
