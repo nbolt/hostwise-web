@@ -38,7 +38,8 @@
             | ID&nbsp;
             a ng:href='/properties/{{property.slug}}' ng:bind='property.id'
           .rooms
-            i.icon-house
+            i.icon-house ng:if='property.property_type_cd == 0'
+            i.icon-apt ng:if='property.property_type_cd == 1'
             .text
               | {{property.bedrooms}}BD/{{property.bathrooms}}BA
   #columns
