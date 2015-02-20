@@ -87,7 +87,7 @@ class Host::PropertiesController < Host::AuthController
           code = delivery_code(params[:form][:address1], params[:form][:address2], params[:form][:zip])
           if code
             if Property.where(delivery_point_barcode: code)[0]
-              render json: { success: false, extras: {validated: true}, type: 'info', message: "Our records indicate you may already have a property at this address. Click 'Next' again if you still wish to continue." }
+              render json: { success: false, extras: {validated: true}, type: 'info', message: 'You might have a property with this address already.' }
               return
             end
           else
