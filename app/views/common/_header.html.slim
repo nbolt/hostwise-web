@@ -11,7 +11,7 @@ header
         strong ng:bind='::user.first_name'
       .arrow
         i.icon-acc-open
-    - if current_user.host?
+    - if current_user.host? && current_user.properties.present?
       .link.head-button ng:controller='property_search' properties-dropdown=''
         .icon-button.teal
           .icon
