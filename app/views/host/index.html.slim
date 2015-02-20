@@ -3,8 +3,9 @@
     #filters
       input type='hidden' ui-select2='filters()' ng:model='filter'
     #search
-      i.fa.fa-search
+      i.icon-search
       input type='text' placeholder='Search your properties' ng:model='search'
+      i.icon-close ng:click='clear()'
 
   #properties
     .property ng:repeat='property in user.properties' ng:click='toProperty(property)'

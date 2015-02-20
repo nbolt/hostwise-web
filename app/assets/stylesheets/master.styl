@@ -140,11 +140,16 @@ header
               width: 220px
               border-radius: 20px
               margin: 15px auto 0
-              .fa
+              i
                 position: absolute
-                left: 16px
-                top: 10px
+                left: 15px
+                top: 7px
                 color: white
+                &.icon-close
+                  cursor: pointer
+                  display: none
+                  left: auto
+                  right: 10px
               input
                 font-size: .9em
                 background: none
@@ -539,8 +544,15 @@ form
       color: dark-gray
       position: absolute
       left: 12px
-      top: 14px
+      top: 12px
       font-size: 1.25em
+      &.icon-close
+        cursor: pointer
+        display: none
+        left: auto
+        right: 20px
+        @media phone
+          right: 10px
     input
       width: 100%
       padding: 13px 12px 14px 40px
@@ -1294,7 +1306,7 @@ form
       color: red
       &:hover
         cursor: pointer
-        
+
 .instructions
   .instruction
     padding: 30px

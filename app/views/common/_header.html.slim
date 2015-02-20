@@ -22,8 +22,9 @@ header
           .drop
             .search
               .input
-                .fa.fa-search
+                i.icon-search
                 input type='text' placeholder='Search Properties' ng:model='property_search'
+                i.icon-close ng:click='clear()'
             .links
               a ng:repeat='property in user.properties' ng:href='/properties/{{property.slug}}'
                 .link ng:bind='::property.nickname' data-ellipsis=''

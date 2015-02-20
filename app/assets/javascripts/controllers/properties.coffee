@@ -32,10 +32,17 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
       $scope.term = n
       refresh_properties()
     ), 400
+    el = angular.element('#search-bar #search .icon-close')
+    if n
+      el.show()
+    else
+      el.hide()
 
   $scope.$watch 'filter', (n,o) -> if o
     $scope.sort = n.id
     refresh_properties()
+
+  $scope.clear = -> $scope.search = ''
 
   $scope.page_changed = (n) ->
     angular.element('body, html').animate
