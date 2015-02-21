@@ -1,26 +1,22 @@
 .first-property.container ng:controller='first_property'
-  .hero
-    ul
-      li
-        =image_tag 'icon_cleaning.png'
-      li
-        =image_tag 'icon_linens.png'
-      li
-        =image_tag 'icon_restocking.png'
+  .title
+    img src='/images/first_time_pin.png'
+    div Add your first property
   .form-container
     form
       .section.check
-        .title Add Your First Property
         .flash
         .row
           .field
             input type='text' placeholder='Enter Zip' maxlength=5 required='' ng:model='zip'
           .field
-            .button.red ng:click='submit()'
+            .icon-button.teal ng:click='submit()'
+              .icon
+                i.icon-check
               .text Next
       .section.notify
+        i.icon-alert-warning
         .title
-          .fa.fa-flash
           | Oops! We're not in this area yet. Want us to notify you when we are?
         .row
            .field

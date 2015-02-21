@@ -21,7 +21,8 @@ html
     = yield :head
     = render 'common/analytics'
 
-  body.grey ng:controller='app'
+  - class_name = first_property? ? 'first-property-body' : 'grey'
+  body class="#{class_name}" ng:controller='app'
     = render 'common/header'
     #sidebar-container
       #sidebar
