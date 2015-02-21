@@ -1916,6 +1916,8 @@ form
     font-size: 2em
     font-weight: bold
     margin-bottom: 20px
+    @media phone
+      font-size: 1.5em
     div
       display: inline-block
       line-height: 54px
@@ -1932,6 +1934,8 @@ form
       display: inline-block
       width: 50%
       vertical-align: top
+      @media phone
+        width: 48%
     .icon-button
       margin-left: 20px
       width: auto
@@ -1961,7 +1965,7 @@ form
       @media portrait_tablet
         padding: 50px
       @media phone
-        padding: 50px 20px
+        padding: 50px 10px
       &.notify
         border-radius: 0 0 3px 3px
         background-color: teal
