@@ -42,6 +42,8 @@
             i.icon-apt ng:if='property.property_type_cd == 1'
             .text
               | {{property.bedrooms}}BD/{{property.bathrooms}}BA
+  .photo
+    img ng:src='{{::property.primary_photo}}'
   #columns
     .column.cal
       .section.cal
