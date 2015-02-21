@@ -61,12 +61,20 @@
           table
             thead
               tr
-                th.date Date
-                th.id Job ID
-                th.services Services
-                th Total
+                th.date
+                  a href='' ng:click="predicate = 'parsed_date_short'; reverse=!reverse"
+                    | Date
+                th.id
+                  a href='' ng:click="predicate = 'id'; reverse=!reverse"
+                    | Job ID
+                th.services
+                  a href='' ng:click="predicate = 'display_services'; reverse=!reverse"
+                    | Services
+                th
+                  a href='' ng:click="predicate = 'cost'; reverse=!reverse"
+                    | Total
             tbody
-              tr ng:repeat='booking in property.upcoming_bookings'
+              tr ng:repeat='booking in property.upcoming_bookings | orderBy:predicate:reverse'
                 td ng:bind='::booking.parsed_date_short'
                 td.id ng:bind='::booking.id'
                 td.services
@@ -81,12 +89,20 @@
           table
             thead
               tr
-                th.date Date
-                th.id Job ID
-                th.services Services
-                th Total
+                th.date
+                  a href='' ng:click="predicate = 'parsed_date_short'; reverse=!reverse"
+                    | Date
+                th.id
+                  a href='' ng:click="predicate = 'id'; reverse=!reverse"
+                    | Job ID
+                th.services
+                  a href='' ng:click="predicate = 'display_services'; reverse=!reverse"
+                    | Services
+                th
+                  a href='' ng:click="predicate = 'cost'; reverse=!reverse"
+                    | Total
             tbody
-              tr ng:repeat='booking in property.past_bookings'
+              tr ng:repeat='booking in property.past_bookings | orderBy:predicate:reverse'
                 td ng:bind='::booking.parsed_date_short'
                 td.id ng:bind='::booking.id'
                 td.services ng:bind='::booking.display_services' ellipsis-services=''
