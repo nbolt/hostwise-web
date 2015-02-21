@@ -210,14 +210,18 @@ input[type=file]
             cursor: default
           &.inactive, &.past
             color: light-gray
-          &.booked, &.chosen
+          &.chosen
             background-color: teal
             color: white
+          &.booked
+            color: teal
+            font-weight: bold
           &.active:hover
             cursor: pointer
           &.active:hover, &.selecting
             background-color: teal
             color: white
+            transition: background-color .4s ease-in-out
           &.active.chosen:hover
             background-color: light-gray
             color: darker-gray
