@@ -16,6 +16,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       payment_id: id
     }).success (rsp) ->
       $scope.$emit 'fetch_user'
+      flash 'ok', 'Changes updated successfully!', true
 
   $scope.open_deletion = (event) ->
     $scope.payment_id = $(event.currentTarget).parent().attr('id').split('-')[1]
@@ -122,14 +123,21 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       true
 
   flash = (type, msg, parent) ->
-    el = angular.element('.payment.modal .flash')
-    el = angular.element('.payment-container .flash') if parent
-    el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
+    if parent
+      classes = 'info ok warning bolt exclamation question'
+      el = angular.element('.payment-container .alert')
+      el.removeClass(classes).addClass(type).css('opacity', 1)
+      el.find('i').removeClass().addClass("icon-alert-#{type}")
+      el.find('.title').text msg
+    else
+      classes = 'info success failure'
+      el = angular.element('.payment.modal .flash')
+      el.removeClass(classes).addClass(type).css('opacity', 1).text(msg)
     $timeout((->
       el.css('opacity', 0)
     ), 3000)
     $timeout((->
-      el.removeClass('info success failure')
+      el.removeClass(classes)
     ), 4000)
 
 ]

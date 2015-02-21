@@ -254,3 +254,44 @@ input[type=file]
         margin-bottom: 2px
       &.leaflet-control-zoom-out
         background-image: url('/images/minus.png')
+
+.alert
+  font-size: 1em
+  opacity: 0
+  transition: opacity .6s ease, height .6s ease
+  color: white
+  display: block
+  height: 50px
+  line-height: 50px
+  padding: 0
+  margin: 5px 0
+  position: relative
+  text-align: left
+  width: 100%
+  i
+    width: 50px
+    display: inline-block
+    font-size: 1.5em
+    height: 50px
+    text-align: center
+  .title
+    font-weight: normal
+    margin: 0 10px
+    display: inline-block
+    vertical-align: top
+  &.info
+    background-color: teal
+    i
+      background-color: light-teal
+  &.ok
+    background-color: dark-green
+    i
+      background-color: green
+  &.warning, &.bolt
+    background-color: dark-red
+    i
+      background-color: red
+  &.exclamation, &.question
+    background-color: dark-orange
+    i
+      background-color: orange
