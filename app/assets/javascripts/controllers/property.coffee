@@ -128,6 +128,17 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $scope.open_reactivation = ->
     ngDialog.open template: 'property-reactivation-modal', controller: 'property', className: 'warning', scope: $scope
 
+  $scope.toggle = (event) =>
+    id = if $(event.currentTarget).parents('.section').hasClass('services') then '.table' else '.instruction'
+    content = $(event.currentTarget).parents('.section').find(id)
+    $(event.currentTarget).removeClass('icon-acc-close icon-acc-open')
+    if content.is(':visible')
+      $(event.currentTarget).addClass('icon-acc-close')
+    else
+      $(event.currentTarget).addClass('icon-acc-open')
+    content.toggle()
+    return true
+
   $scope.cancel_deactivation = ->
     ngDialog.closeAll()
 

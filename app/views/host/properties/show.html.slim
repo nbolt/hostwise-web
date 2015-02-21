@@ -56,7 +56,11 @@
         .head
           .icon
             .pf.icon-service
-          .text Upcoming Services
+          .text
+            strong ng:bind="{{property.upcoming_bookings.length}}"
+            |  Upcoming Services
+          .arrow
+            i.icon-acc-open ng:click='toggle($event)'
         .table
           table
             thead
@@ -84,7 +88,11 @@
         .head
           .icon
             .pf.icon-past
-          .text Past Services
+          .text
+            strong ng:bind="{{property.past_bookings.length}}"
+            |  Past Services
+          .arrow
+            i.icon-acc-open ng:click='toggle($event)'
         .table
           table
             thead
@@ -114,6 +122,8 @@
           .icon
             .pf.icon-service
           .text Property Instructions
+          .arrow
+            i.icon-acc-open ng:click='toggle($event)'
         .instruction ng:if='property.access_info'
           .edit ng:click='edit_access()'
             i.icon-edit-gear
