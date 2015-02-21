@@ -9,8 +9,7 @@
           div
             .icon.check
               .typcn.typcn-input-checked
-            .icon.step-icon
-              .typcn.typcn-location-outline
+            .icon.step-icon 1
             .text Property Info
         form ng:init='init()'
           .flash
@@ -52,8 +51,7 @@
           div
             .icon.check
               .typcn.typcn-input-checked
-            .icon.step-icon
-              .typcn.typcn-th-menu
+            .icon.step-icon 2
             .text Details
         form
           .flash
@@ -104,8 +102,7 @@
           div
             .icon.check
               .typcn.typcn-input-checked
-            .icon.step-icon
-              .typcn.typcn-document-text
+            .icon.step-icon 3
             .text Instructions
         form
           .flash
@@ -167,9 +164,11 @@
                     span.fa.fa-rotate-right
                   .text Finish
     .confirmation
+      .flash
       .property ng:click='toProperty(property)'
         =render '/host/properties/row'
       a.new-property href='' ng:click="add_property()"
         .container
           i.icon-add
           .text Add New Property
+= render 'common/booking_modal'

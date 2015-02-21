@@ -1,4 +1,4 @@
-NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scope, $http, $timeout, $upload, $location) ->
+NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDialog', ($scope, $http, $timeout, $upload, $location, ngDialog) ->
 
   $scope.num_steps = 3
   $scope.posting = false
@@ -19,26 +19,26 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
 
   $scope.rooms = ->
     {
-      dropdownCssClass: 'details'
-      minimumResultsForSearch: -1
-      data: [{id:'0',text:'0'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'}]
-      initSelection: (el, cb) ->
+    dropdownCssClass: 'details'
+    minimumResultsForSearch: -1
+    data: [{id:'0',text:'0'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'}]
+    initSelection: (el, cb) ->
     }
 
   $scope.beds = ->
     {
-      dropdownCssClass: 'details'
-      minimumResultsForSearch: -1
-      data: [{id:'0',text:'0'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'}]
-      initSelection: (el, cb) ->
+    dropdownCssClass: 'details'
+    minimumResultsForSearch: -1
+    data: [{id:'0',text:'0'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'}]
+    initSelection: (el, cb) ->
     }
 
   $scope.property_type = ->
     {
-      dropdownCssClass: 'details'
-      minimumResultsForSearch: -1
-      data: [{id:0,text:'House'},{id:1,text:'Apartment/Condo'}]
-      initSelection: (el, cb) ->
+    dropdownCssClass: 'details'
+    minimumResultsForSearch: -1
+    data: [{id:0,text:'House'},{id:1,text:'Apartment/Condo'}]
+    initSelection: (el, cb) ->
     }
 
   $scope.goto = (n) ->
@@ -96,7 +96,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
         success = ->
           angular.element('.property-form-container .steps').hide()
           angular.element('.property-form-container .confirmation').show()
-          scroll 0
+          flash 'success', 'Property added successfully!', angular.element('.property-form-container .confirmation .flash')
 
       success_wrap = (rsp) ->
         $scope.posting = false
@@ -124,13 +124,41 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', ($scop
 
   $scope.toProperty = (property) -> window.location = "/properties/#{property.slug}"
 
-  flash = (type, msg) ->
-    angular.element('.property-form-container .step.active .flash').removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
+  $scope.quick_add = (property) ->
+    $scope.redirect_to = '/'
+    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
+    $scope.property = property
+
     $timeout((->
-      angular.element('.property-form-container .step.active .flash').css('opacity', 0)
+      angular.element('.booking.modal .content.side').removeClass 'active'
+      angular.element('.booking.modal .content.side.calendar').addClass 'active'
+    ),100)
+
+  $scope.modal_calendar_options =
+  {
+    selectable: true
+    clickable: true
+    disable_past: true
+    onchange: () ->
+      if $scope.property
+        _($scope.property.bookings).each (booking) ->
+          date = moment.utc(booking.date)
+          if $('.booking.modal')[0]
+            angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
+          else
+            $timeout((->
+              angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
+            ),100)
+  }
+
+  flash = (type, msg, el) ->
+    el = angular.element('.property-form-container .step.active .flash') if !el
+    el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
+    $timeout((->
+      el.css('opacity', 0)
     ), 3000)
     $timeout((->
-      angular.element('.property-form-container .step.active .flash').removeClass('info success failure')
+      el.removeClass('info success failure')
     ), 4000)
     scroll 0
 

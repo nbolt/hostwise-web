@@ -961,7 +961,8 @@ form
       box-shadow: none
       .text
         color: black
-      .step-icon
+      .icon.step-icon
+        border: thin solid teal
         color: teal
     &.complete
       background-color: teal
@@ -984,6 +985,15 @@ form
         margin-right: 10px
         @media phone
           margin-right: 0
+      &.step-icon
+        border-radius: 50%
+        border: thin solid light-gray
+        font-size: 1.3em
+        height: 30px
+        line-height: 30px
+        margin-top: 4px
+        text-align: center
+        width: 30px
     .text
       font-size: 1.2em
       margin: 0 40px 0 8px
@@ -1203,6 +1213,16 @@ form
           width: 100%
   .confirmation
     display: none
+    position: relative
+    .flash
+      border-radius: 3px 3px 0 0
+      display: block
+      height: 40px
+      left: 0
+      padding: 15px
+      position: absolute
+      top: -18px
+      width: 100%
 
 #property
   #title

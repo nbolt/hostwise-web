@@ -1,4 +1,4 @@
-BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope', 'ngDialog', ($scope, $http, $timeout, $q, $window, $rootScope, ngDialog) ->
+BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog', ($scope, $http, $timeout, $q, $rootScope, ngDialog) ->
 
   last_payment = null
   $scope.days = []
@@ -236,6 +236,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$window', '$rootScope'
   $rootScope.$on 'ngDialog.closing', (e, $dialog) ->
     if $dialog.find('.ngdialog-content .modal .content.confirmation').hasClass('active')
       $scope.$emit 'refresh_bookings'
+      window.location = $scope.redirect_to if $scope.redirect_to
 
   services_array = ->
     services = []
