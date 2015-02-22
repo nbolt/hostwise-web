@@ -10,6 +10,8 @@ class Host::PropertiesController < Host::AuthController
   end
 
   def update
+    params[:form] = JSON.parse params[:form] if params[:form].class == String
+
     property.property_type_cd = params[:form][:property_type][:id] if params[:form] && params[:form][:property_type] && params[:form][:property_type][:id]
     property.rental_type_cd = params[:form][:rental_type][:id] if params[:form] && params[:form][:rental_type] && params[:form][:rental_type][:id]
 
@@ -18,22 +20,20 @@ class Host::PropertiesController < Host::AuthController
     property.queen_beds = params[:form][:queen_beds][:id]
     property.king_beds = params[:form][:king_beds][:id]
 
+    property.assign_attributes property_params
+    property.step = 3
     if params[:file]
-      property.property_photos.destroy_all
       property.property_photos.build(photo: params[:file])
-      if property.save
-        render json: { success: true, image: property.property_photos.first.photo.url }
-      else
-        render json: { success: false }
+      if property.valid?
+        property.property_photos.destroy_all #make sure the uploaded photo is good before deleting previous one
+        property.property_photos.build(photo: params[:file])
       end
+    end
+
+    if property.save
+      render json: property.to_json(include: [:bookings, :property_photos], methods: [:nickname, :short_address, :primary_photo, :full_address])
     else
-      property.assign_attributes property_params
-      property.step = 3
-      if property.save
-        render json: property.to_json(include: [:bookings, :property_photos], methods: [:nickname, :short_address, :primary_photo, :full_address])
-      else
-        render json: { success: false, message: property.errors.full_messages[0] }
-      end
+      render json: { success: false, message: property.errors.full_messages[0] }
     end
   end
 

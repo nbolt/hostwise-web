@@ -55,6 +55,10 @@ script#property-edit-modal type="text/ng-template"
               .field.kings
                 input type='hidden' ui-select2='beds()' ng:model='form.king_beds'
                 label King Beds
+          .section.avatar
+            .row
+              img.preview ng:src='{{::image}}'
+              .file-upload new-property-photo='' ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
     .footer
       .buttons
         .button.teal ng:click='update_details()' Save Changes

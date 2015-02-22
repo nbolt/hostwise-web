@@ -7,7 +7,7 @@
     .edit ng:click='edit()'
       i.icon-edit-gear
     .photo
-      img ng:src='{{::property.primary_photo}}'
+      img image-on-load='property_image()' ng:src='{{image}}'
     .right
       .top
         .title
@@ -43,7 +43,7 @@
             .text
               | {{property.bedrooms}}BD/{{property.bathrooms}}BA
   .photo
-    img ng:src='{{::property.primary_photo}}'
+    img image-on-load='property_image()' ng:src='{{image}}'
   #columns
     .column.cal
       .section.cal

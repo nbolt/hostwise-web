@@ -100,12 +100,25 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     $scope.update_property()
 
   $scope.update_property = ->
-    $http.post("/properties/#{$scope.property.slug}/update", {form: $scope.form}).success (rsp) ->
-      if typeof rsp.success == 'undefined'
-        $scope.$emit 'refresh_property'
-        ngDialog.closeAll()
-      else
-        flash 'failure', rsp.message, true
+    post_url = "/properties/#{$scope.property.slug}/update"
+    if $scope.files && $scope.files[0]
+      $upload.upload(
+        url: post_url
+        file: $scope.files[0]
+        data:
+          form: $scope.form
+      ).success (rsp) ->
+        if typeof rsp.success == 'undefined'
+          $window.location = $window.location.href
+        else
+          flash 'failure', rsp.message, true
+    else
+      $http.post(post_url, {form: $scope.form}).success (rsp) ->
+        if typeof rsp.success == 'undefined'
+          $scope.$emit 'refresh_property'
+          ngDialog.closeAll()
+        else
+          flash 'failure', rsp.message, true
 
   $scope.edit = ->
     ngDialog.open template: 'property-edit-modal', controller: 'property', className: 'edit', scope: $scope
@@ -201,25 +214,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     if $scope.property.bookings
       _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking
 
-  form_flash = (field) ->
-    el = angular.element(".input.#{field} .typcn")
-    if el.css('opacity') == '0'
-      el.css 'opacity', 1
-    else
-      el.css 'opacity', 0
-      $timeout((->el.css 'opacity', 1),600)
-    $timeout((->el.css 'opacity', 0),4000)
-
   $scope.property_image = (src) ->
     $scope.image = src
-
-  $scope.$watch 'files', (n,o) -> if n
-    $upload.upload(
-      url: $window.location.href
-      file: n[0]
-    ).success (rsp) ->
-      form_flash 'photo'
-      $scope.property_image(rsp.image)
 
   flash = (type, msg, modal) ->
     el = if modal then angular.element('.modal .flash') else angular.element('#property .flash')
