@@ -73,14 +73,10 @@ script#booking-modal type="text/ng-template"
               .payment-method.existing
                 .icon
                   .typcn.typcn-credit-card
-                .arrow
-                  .typcn.typcn-chevron-right
                 input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
             div ng:show="payment_screen() == 'new'"
               .payment-title Add Payment Method
               .payment-method
-                .arrow
-                  .typcn.typcn-chevron-right
                 input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
               .payment-tab.ach
                 .field.name
@@ -156,14 +152,10 @@ script#booking-modal type="text/ng-template"
               .payment-method.existing
                 .icon
                   .typcn.typcn-credit-card
-                .arrow
-                  .typcn.typcn-chevron-right
                 input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
             div ng:show="payment_screen() == 'new'"
               .payment-title Add Payment Method
               .payment-method
-                .arrow
-                  .typcn.typcn-chevron-right
                 input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
               .payment-tab.ach
                 .field.name

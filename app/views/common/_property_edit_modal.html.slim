@@ -33,12 +33,12 @@ script#property-edit-modal type="text/ng-template"
           .section
             .title Rental Type
             .row.two
-              .field.check
-                input type='radio' value='0' ng:model='form.rental_type_cd'
-                label Full-time
-              .field.check
-                input type='radio' value='1' ng:model='form.rental_type_cd'
-                label Part-time
+              .field.radio
+                input type='radio'  id='full-time' value='0' ng:model='form.rental_type_cd'
+                label for='full-time' Full-time
+              .field.radio
+                input type='radio' id='part-time' value='1' ng:model='form.rental_type_cd'
+                label for='part-time' Part-time
           .section.bed-types
             .title Bed Types
             .row.two

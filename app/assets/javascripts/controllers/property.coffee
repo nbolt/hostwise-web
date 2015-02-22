@@ -243,22 +243,6 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       initSelection: (el, cb) ->
     }
 
-  $scope.property_type = ->
-    {
-      dropdownCssClass: 'details'
-      minimumResultsForSearch: -1
-      data: [{id:0,text:'House'},{id:1,text:'Apartment/Condo'}]
-      initSelection: (el, cb) ->
-    }
-
-  $scope.rental_type = ->
-    {
-      dropdownCssClass: 'details'
-      minimumResultsForSearch: -1
-      data: [{id:0,text:'Full-time'},{id:1,text:'Part-time'}]
-      initSelection: (el, cb) ->
-    }
-
 ]
 
 app = angular.module('porter').controller('property', PropertyCtrl)

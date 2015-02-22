@@ -114,6 +114,18 @@ input[type=file]
   border-bottom: 2px solid white
   padding-bottom: 0 !important
   border: none !important
+  .select2-choice
+    background: white !important
+    position: relative
+    border-radius: 1px
+    &::after
+      font-family: 'pf-hosticons'
+      font-size: 0.7em
+      content: '\e819'
+      color: gray
+      position: absolute
+      right: 7px
+      top: 7px
   a
     background: none !important
     border: thin solid light-gray !important
@@ -295,3 +307,57 @@ input[type=file]
     background-color: dark-orange
     i
       background-color: orange
+
+.cb
+  input[type=checkbox]
+    display: none
+    &:checked + label:before
+      color: darker-gray
+      content: "\2713"
+      font-size: 15px
+      line-height: 15px
+      text-align: center
+  label
+    cursor: pointer
+    display: inline-block
+    font-size: 13px
+    margin-right: 15px
+    padding-left: 25px
+    position: relative
+    &:before
+      border: 1px solid light-gray
+      bottom: 1px
+      content: ""
+      display: inline-block
+      height: 16px
+      left: 0
+      margin-right: 10px
+      position: absolute
+      width: 16px
+
+.radio
+  input[type=radio]
+    display: none
+    &:checked + label:before
+      font-family: 'FontAwesome'
+      font-size: 13px
+      content: "\f111"
+      color: teal
+      line-height: 15px
+      text-align: center
+  label
+    cursor: pointer
+    display: inline-block
+    font-size: 13px
+    margin: 0 15px 0 0
+    padding-left: 25px
+    position: relative
+    &:before
+      border: 2px solid teal
+      content: ""
+      display: inline-block
+      height: 15px
+      left: 0
+      position: absolute
+      width: 15px
+      border-radius: 50%

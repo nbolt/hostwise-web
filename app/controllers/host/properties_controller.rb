@@ -12,9 +12,6 @@ class Host::PropertiesController < Host::AuthController
   def update
     params[:form] = JSON.parse params[:form] if params[:form].class == String
 
-    property.property_type_cd = params[:form][:property_type][:id] if params[:form] && params[:form][:property_type] && params[:form][:property_type][:id]
-    property.rental_type_cd = params[:form][:rental_type][:id] if params[:form] && params[:form][:rental_type] && params[:form][:rental_type][:id]
-
     property.twin_beds = params[:form][:twin_beds][:id]
     property.full_beds = params[:form][:full_beds][:id]
     property.queen_beds = params[:form][:queen_beds][:id]
@@ -105,7 +102,7 @@ class Host::PropertiesController < Host::AuthController
         property.active = true
         property.property_photos.build(photo: params[:file]) if params[:file].present?
 
-        property.property_type_cd = params[:form][:property_type][:id]
+        property.property_type_cd = params[:form][:property_type_cd]
         property.rental_type_cd = params[:form][:rental_type_cd]
         property.bedrooms = params[:form][:bedrooms][:id]
         property.bathrooms = params[:form][:bathrooms][:id]
@@ -152,8 +149,8 @@ class Host::PropertiesController < Host::AuthController
 
   def property_params
     params.require(:form).permit(:title, :address1, :address2, :zip, :phone_number, :bedrooms, :bathrooms,
-                                 :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type, :rental_type,
-                                 :access_info, :parking_info, :additional_info, :trash_disposal, :rental_type_cd)
+                                 :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type_cd, :rental_type_cd,
+                                 :access_info, :parking_info, :additional_info, :trash_disposal)
   end
 
   def delivery_code(address1, address2, zip)

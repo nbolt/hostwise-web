@@ -3,7 +3,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
   $scope.num_steps = 3
   $scope.posting = false
   $scope.extras = {}
-  $scope.form = {rental_type_cd: 0}
+  $scope.form = {rental_type_cd: 0, property_type_cd: 0}
   $scope.form.twin_beds = {id:'0', text:'0'}
   $scope.form.full_beds = {id:'0', text:'0'}
   $scope.form.queen_beds = {id:'0', text:'0'}
@@ -30,14 +30,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
     dropdownCssClass: 'details'
     minimumResultsForSearch: -1
     data: [{id:'0',text:'0'},{id:'1',text:'1'},{id:'2',text:'2'},{id:'3',text:'3'},{id:'4',text:'4'},{id:'5',text:'5'}]
-    initSelection: (el, cb) ->
-    }
-
-  $scope.property_type = ->
-    {
-    dropdownCssClass: 'details'
-    minimumResultsForSearch: -1
-    data: [{id:0,text:'House'},{id:1,text:'Apartment/Condo'}]
     initSelection: (el, cb) ->
     }
 

@@ -57,17 +57,22 @@
           .flash
           .section.home-type
             div
-              .row
+              .row.check
                 label Home Type
-                input type='hidden' placeholder='Select' required='' ng:model='form.property_type' ui-select2='property_type()'
+                .radio
+                  input type='radio' id='house' value='0' ng:model='form.property_type_cd'
+                  label for='house' House
+                .radio
+                  input type='radio' id='condo' value='1' ng:model='form.property_type_cd'
+                  label for='condo' Apt/Condo
               .row.check
                 label Rental Type
-                div
-                  input type='radio' value='0' ng:model='form.rental_type_cd'
-                  span Full-time
-                div
-                  input type='radio' value='1' ng:model='form.rental_type_cd'
-                  span Part-time
+                .radio
+                  input type='radio' id='full-time' value='0' ng:model='form.rental_type_cd'
+                  label for='full-time' Full-time
+                .radio
+                  input type='radio' id='part-time' value='1' ng:model='form.rental_type_cd'
+                  label for='part-time' Part-time
           .vr
           .section.bed-type
             div
