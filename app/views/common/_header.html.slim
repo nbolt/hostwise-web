@@ -1,3 +1,4 @@
+- show_book_service = current_user.host? && current_user.properties.present?
 header
   nav ng:controller='modal'
     #user.link.hover
@@ -11,7 +12,7 @@ header
         strong ng:bind='::user.first_name'
       .arrow
         i.icon-acc-open
-    - if current_user.host? && current_user.properties.present?
+    - if show_book_service
       .link.head-button ng:controller='property_search' properties-dropdown=''
         .icon-button.teal
           .icon
@@ -26,7 +27,7 @@ header
                 input type='text' placeholder='Search Properties' ng:model='property_search'
                 i.icon-close ng:click='clear()'
             .links
-              a ng:repeat='property in user.properties' ng:href='/properties/{{property.slug}}'
+              a ng:repeat='property in user.properties' ng:click='quick_add(property); $event.stopPropagation()'
                 .link ng:bind='::property.nickname' data-ellipsis=''
   .logo
     a href="#{root_path}"
@@ -36,3 +37,4 @@ header
       .text
         | | Host
         span Wise
+= render 'common/booking_modal' if show_book_service
