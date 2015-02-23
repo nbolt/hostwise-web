@@ -36,8 +36,8 @@ html, body, .body
 
 header
   padding: 2px 20px 2px 12px
-  -webkit-box-shadow: inset 0 -1px 0 0 #DCDEE2;
-  box-shadow: inset 0 -1px 0 0 #DCDEE2;
+  -webkit-box-shadow: inset 0 -1px 0 0 gray
+  box-shadow: inset 0 -1px 0 0 gray
   background-color: white
   position: fixed
   top: 0
@@ -76,12 +76,9 @@ header
       vertical-align: top
       margin-top: -10px
       position: relative
+      cursor: pointer
       @media phone
         margin-top: -7px
-      &:hover
-        cursor: pointer
-        .drop-container
-          max-height: 260px
       .avatar, .name, .arrow
         display: inline-block
         vertical-align: top
@@ -117,11 +114,6 @@ header
       > a
         text-decoration: none
         color: white
-      &:hover
-        cursor: pointer
-      &.hover:hover
-        .drop-container
-          max-height: 260px
       &.head-button
         .drop-container
           top: 42px
