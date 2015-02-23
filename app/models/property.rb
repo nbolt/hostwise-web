@@ -89,7 +89,7 @@ class Property < ActiveRecord::Base
     if property_photos.present?
       property_photos.first.photo.url
     else
-      '/images/generic_property_icon.png'
+      '/images/generic_property_with_circle.png'
     end
   end
 
