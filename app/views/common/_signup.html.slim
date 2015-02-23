@@ -34,7 +34,7 @@
         .field
           input type='text' placeholder='Company (Optional)' ng:model='form.company'
         .field
-          input type='text' placeholder='Mobile Number' required='' ng:model='form.phone_number'
+          input type='text' placeholder='(###) ###-####' required='' ng:model='form.phone_number' ui-mask='(999) 999-9999'
         button.orange ng:click='step(2)'
           .text= t('auth.button.sign_up.step2')
     .step.three
