@@ -31,9 +31,9 @@
           .section.pwd
             div
               .row
-                button.teal ng:click='update_account()'
+                .icon-button.teal ng:click='update_account()'
                   .icon
-                    span.fa.fa-rotate-right
+                    i.icon-refresh
                   .text Save Changes
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to

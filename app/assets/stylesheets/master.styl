@@ -128,6 +128,13 @@ header
           right: -25px
           .drop-arrow
             margin-left: 166px
+      .icon-button
+        width: 170px
+        @media phone
+          width: 40px
+        .text
+          @media phone
+            display: none
       .drop-container
         position: absolute
         top: 52px
@@ -280,15 +287,6 @@ footer
     margin: 80px 0 20px
     padding: 10px
 
-.button.teal, button.teal
-  background-color: teal
-  padding: 8px 12px
-  border-radius: 1px
-  color: white
-  a
-    text-decoration: none
-    color: white
-
 .drop-container
   max-height: 0
   overflow: hidden
@@ -359,7 +357,7 @@ footer
         text-align: left
         width: 125px
         @media phone
-          margin: 17px 0 0 17px
+          margin: 5px 0 0 17px
       .drop-container
         background-color: navy
         .search
@@ -953,6 +951,7 @@ form
 .property-form-container
   margin: 40px auto 0
   overflow: hidden
+  color: dark-gray
   .step-nav
     border-radius: 3px
     box-shadow: gray_shadow
@@ -960,7 +959,7 @@ form
     display: block
     line-height: 40px
     width: 100%
-    color: light-gray
+    color: dark-gray
     margin-bottom: 10px
     vertical-align: top
     @media phone
@@ -968,36 +967,40 @@ form
     &.active
       border-bottom: 3px solid teal
       box-shadow: none
-      .text
-        color: black
+      .text, .icon
+        color: darker-gray
       .icon.step-icon
-        border: thin solid teal
-        color: teal
+        border: 2px solid darker-gray
     &.complete
       background-color: teal
       color: white
-      .text
+      .text, .icon
         color: white
-      .step-icon
-        color: white
+      .icon.icon-alert-ok
+        color: light-teal
+        display: inline-block
+      .icon.step-icon
+        border: 2px solid white
     > div
       padding: 6px 12px
     .icon, .text
       display: inline-block
       vertical-align: top
+      color: gray
     .icon
       font-size: 1.9em
       margin-top: -3px
-      &.check
+      &.icon-alert-ok
+        display: none
         font-size: 2em
         float: right
-        margin-right: 10px
+        margin: 0 10px 0
         @media phone
           margin-right: 0
       &.step-icon
         border-radius: 50%
-        border: thin solid light-gray
-        font-size: 1.3em
+        border: 2px solid gray
+        font-size: 1.2em
         height: 30px
         line-height: 30px
         margin-top: 4px
@@ -1082,11 +1085,15 @@ form
             &.check
               > div
                 display: inline-block
+                vertical-align: top
                 width: 40%
                 @media landscape_tablet
                   width: 50%
                 @media portrait_tablet
                   width: 50%
+            .icon-button .text
+              @media phone
+                display: inline-block
             .select2-container
               width: 100%
               a
@@ -1131,6 +1138,8 @@ form
               margin: 0 auto 30px
           &.info
             width: 40%
+            .caption
+              display: none
             @media phone
               width: 100%
           &.action
@@ -1146,6 +1155,10 @@ form
             width: 64%
             @media phone
               width: 100%
+            .icon-button
+              width: 300px
+              @media phone
+                width: 100%
             .row.two
               > div
                 width: 49%
@@ -1201,26 +1214,6 @@ form
           font-weight: bold
           margin-bottom: 5px
           text-align: left
-        button
-          height: 40px
-          margin: 30px 0 0
-          position: relative
-          width: 60%
-          @media phone
-            margin: 0
-            width: 100%
-          .text
-            margin-left: 30px
-          .icon
-            background-color: light-navy
-            display: inline-block
-            height: 40px
-            left: 0
-            position: absolute
-            top: 0
-            width: 40px
-            .fa
-              line-height: 40px
         .caption
           display: inline-block
           font-size: 13px
@@ -1403,13 +1396,17 @@ form
 
 .transaction-container
   margin: 40px auto 0
+  @media portrait_tablet
+    width: 700px
+  @media phone
+    width: 700px
   .tabs
     .tab
       border-radius: 3px 3px 0 0
       display: inline-block
       vertical-align: top
       margin-right: 10px
-      background-color: gray
+      background-color: light-gray
       padding: 15px
       width: 150px
       text-align: center
@@ -1444,11 +1441,14 @@ form
         width: 100%
         th
           padding-bottom: 10px
+          vertical-align: top
           a
             color: black
             i
               color: light-gray
               margin-left: 5px
+              @media portrait_tablet
+                display: none
         tr
           border-bottom: 1px solid border-gray
           text-align: left
@@ -1749,11 +1749,10 @@ form
       margin: 5px 0
     .right
       text-align: right
-    button
-      margin-bottom: 0
-      width: 100px
-      .fa
-        margin-left: 3px
+    .icon-button
+      display: inline-block
+      margin-top: 20px
+      width: 150px
     textarea
       border: thin solid light-gray
       border-radius: 3px
@@ -1849,12 +1848,7 @@ form
           text-align: right
         .icon-button
           margin-top: -5px
-          .text
-            @media phone
-              display: inline-block
-          .icon
-            @media phone
-              display: none
+          width: 220px
         .primary
           background-color: light-gray
           border-radius: 3px
@@ -2104,25 +2098,6 @@ form
       font-weight: bold
       margin-bottom: 5px
       text-align: left
-    button
-      height: 40px
-      margin: 40px 0 0
-      position: relative
-      width: 100%
-      @media phone
-        margin: 0
-      .text
-        margin-left: 30px
-      .icon
-        background-color: light-navy
-        display: inline-block
-        height: 40px
-        left: 0
-        position: absolute
-        top: 0
-        width: 40px
-        .fa
-          line-height: 40px
     .caption
       display: inline-block
       font-size: 13px
@@ -2156,6 +2131,8 @@ form
                 width: 100%
               .name
                 margin: 20px 0
+                text-transform: capitalize
+                font-weight: bold
               .location
                 color: darker-gray
                 font-size: 14px
@@ -2230,22 +2207,11 @@ form
     .section
       background-color: white
       padding: 50px 30px
-    button
+    .icon-button
+      display: inline-block
+      width: 150px
       float: right
-      height: 40px
-      position: relative
-      .icon
-        background-color: light-navy
-        display: inline-block
-        height: 40px
-        left: 0
-        position: absolute
-        top: 0
-        width: 40px
-        .fa
-          line-height: 40px
-      .text
-        margin-left: 30px
+      margin-top: 20px
     .flash
       left: 30px
       position: absolute
@@ -2312,24 +2278,13 @@ form
       padding: 50px 30px
       @media phone
         padding: 30px 15px
-    button
-      height: 40px
-      margin: 30px 0 0
-      position: relative
+    .icon-button
+      display: inline-block
+      margin: 20px 10px 0
+      width: 150px
       @media phone
+        margin: 20px 0 0
         width: 100%
-      .icon
-        background-color: light-navy
-        display: inline-block
-        height: 40px
-        left: 0
-        position: absolute
-        top: 0
-        width: 40px
-        .fa
-          line-height: 40px
-      .text
-        margin-left: 30px
     .flash
       left: 30px
       position: absolute

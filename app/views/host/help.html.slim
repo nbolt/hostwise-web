@@ -10,9 +10,10 @@
         .field
           textarea placeholder='Send us a message...' ng:model='form.message'
         .right
-          button.teal ng:click='send()'
+          .icon-button.teal ng:click='send()'
+            .icon
+              .fa.fa-paper-plane
             .text Send
-            .fa.fa-paper-plane
     ul.links
       li
         div

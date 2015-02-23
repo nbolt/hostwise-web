@@ -35,7 +35,7 @@
           label.switch.red
             input type='checkbox' toggle-notification='service_reminder_email' ng:checked="user.notification_settings['service_reminder']['email']"
             i
-      button.teal ng:click='save()'
-        .icon
-          span.fa.fa-rotate-right
-        .text Save
+        .icon-button.teal ng:click='save()'
+          .icon
+            i.icon-refresh
+          .text Save

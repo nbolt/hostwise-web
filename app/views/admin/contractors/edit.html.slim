@@ -62,9 +62,9 @@
                 label Driver's License
                 input type='text' placeholder='Driver License' disabled='disabled' ng:model='contractor.contractor_profile.driver_license'
               .row
-                button.teal ng:click='update_account()'
+                .icon-button.teal ng:click='update_account()'
                   .icon
-                    span.fa.fa-rotate-right
+                    i.icon-refresh
                   .text Save Changes
               .bgc
                 div ng-attr-class="{{contractor.background_check && contractor.background_check.status_cd == 2 && 'fa fa-check-circle-o' || 'fa fa-times-circle-o' }}"

@@ -49,9 +49,9 @@
                 input type='text' ng:model='user.contractor_profile.emergency_contact_phone'
                 .caption Emergency Contact Phone Number
               .row
-                button.teal ng:click="update_account('info')"
+                .icon-button.teal ng:click="update_account('info')"
                   .icon
-                    span.fa.fa-rotate-right
+                    i.icon-refresh
                   .text Save Changes
           .vr
           .section.pwd
@@ -67,9 +67,9 @@
                 input type='password' placeholder='Confirm New Password' ng:model='user.password_confirmation'
                 .caption Confirm New Password
               .row
-                button.teal ng:click="update_account('password')"
+                .icon-button.teal ng:click="update_account('password')"
                   .icon
-                    span.fa.fa-rotate-right
+                    i.icon-refresh
                   .text Update Password
   .deactivate
     | Do you wish to

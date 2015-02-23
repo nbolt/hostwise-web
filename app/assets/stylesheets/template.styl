@@ -33,6 +33,15 @@ input[type=file]
   &:focus
     outline: none
 
+.button.teal, button.teal
+  background-color: teal
+  padding: 8px 12px
+  border-radius: 1px
+  color: white
+  a
+    text-decoration: none
+    color: white
+
 .button
   border-radius: 1px
   color: white
@@ -67,28 +76,32 @@ input[type=file]
 
 .icon-button
   border-radius: 3px
+  cursor: pointer
   color: white
   height: 40px
   line-height: 40px
   padding: 0
-  text-align: center
-  .icon, .text
-    display: inline-block
-    vertical-align: top
+  text-align: left
+  text-decoration: none
+  position: relative
   .icon
     border-radius: 3px 0 0 3px
     border-right: thin solid rgba(255, 255, 255, 0.25)
-    padding: 0 10px
     font-size: 1.3em
+    position: absolute
+    left: 0
+    width: 40px
+    text-align: center
     -webkit-box-shadow:inset -1px 0 0 0 rgba(255,255,255,0.25)
     box-shadow: inset -1px 0 0 0 rgba(255,255,255,0.25)
     @media phone
       border-radius: 3px
   .text
     font-size: 1em
-    padding: 0 20px
-    @media phone
-      display: none
+    text-align: center
+    width: 100%
+    position: absolute
+    left: 20px
   &:hover
     cursor: pointer
   &:active
@@ -96,6 +109,7 @@ input[type=file]
       -webkit-box-shadow:inset 10px 0 20px -10px rgba(0,0,0,0.25)
       box-shadow: inset 10px 0 20px -10px rgba(0,0,0,0.25)
       background-color: teal
+      left: 0
   &.teal
     background-color: teal
     .icon, &:hover

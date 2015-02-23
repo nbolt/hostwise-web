@@ -61,9 +61,12 @@
       vertical-align: top
       float: right
       margin-top: 15px
+      width: 170px
+      @media phone
+        width: 40px
       .text
-        @media portrait_tablet
-          padding: 0 10px
+        @media phone
+          display: none
     .manage
       float: right
       font-size: .9em

@@ -76,9 +76,9 @@
                 input type='password' required='' ng:model='user.password_confirmation'
                 .caption Confirm Password
               .row
-                button.teal ng:click="setup_account()"
+                .icon-button.teal ng:click="setup_account()"
                   .icon
-                    span.fa.fa-rotate-right
+                    i.icon-refresh
                   .text Set Up My Account
       .step.two
         h1 You're almost done!
@@ -100,9 +100,9 @@
                 input type='text' required='' ng:model='bank.account_number'
           .section
             div
-              button.teal ng:click="add_bank_account()"
+              .icon-button.teal ng:click="add_bank_account()"
                 .icon
-                  span.fa.fa-rotate-right
+                  i.icon-refresh
                 .text Save
         h6
           a href='/jobs' Skip this step, take me to my account

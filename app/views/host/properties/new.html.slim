@@ -1,14 +1,13 @@
 .container ng:controller='new_property'
   .page-title
     .fa.fa-plus-circle
-    | Add New Property
+    | Add Property
   .property-form-container
     .steps
       .step.one.active
         a.step-nav.active href='' ng:click='goto(1)'
           div
-            .icon.check
-              .typcn.typcn-input-checked
+            .icon.icon-alert-ok
             .icon.step-icon 1
             .text Property Info
         form ng:init='init()'
@@ -22,35 +21,34 @@
             div
               .row
                 label Address
-                input type='text' required='' ng:model='form.address1'
+                input type='text' required='' placeholder='Street Address' ng:model='form.address1'
                 .caption Address Line 1
               .row.two
                 div
-                  input type='text' ng:model='form.address2'
+                  input type='text' placeholder='Apt/Unit/#' ng:model='form.address2'
                   .caption Unit # (optional)
                 div
-                  input type='text' maxlength=5 required='' ng:model='form.zip'
+                  input type='text' maxlength=5 required='' placeholder='Zip Code' ng:model='form.zip'
                   .caption Zip Code
               br
               .row
                 label Property Contact Number
-                input type='text' ng:model='form.phone_number' ui-mask='(999) 999-9999'
+                input type='text' placeholder='(###) ###-####' ng:model='form.phone_number' ui-mask='(999) 999-9999'
           .vr
           .section.action
             div
               .row
-                label Nickname 
-                input type='text' ng:model='form.title'
+                label Property Nickname 
+                input type='text' placeholder='i.e. Venice Loft, San Diego Apt, etc.' ng:model='form.title'
               .row
-                button.teal ng:click='step(1)'
+                .icon-button.teal ng:click='step(1)'
                   .icon
-                    span.fa.fa-rotate-right
+                    i.icon-check
                   .text Next
       .step.two
         a.step-nav href='' ng:click='goto(2)'
           div
-            .icon.check
-              .typcn.typcn-input-checked
+            .icon.icon-alert-ok
             .icon.step-icon 2
             .text Details
         form
@@ -87,26 +85,25 @@
                 div
                   label Bed Types
                   input type='hidden' placeholder='Select' required='' ng:model='form.king_beds' ui-select2='beds()'
-                  .caption King
+                  .caption King(s)
                 div
                   input type='hidden' placeholder='Select' required='' ng:model='form.queen_beds' ui-select2='beds()'
-                  .caption Queen
+                  .caption Queen(s)
                 div
                   input type='hidden' placeholder='Select' required='' ng:model='form.full_beds' ui-select2='beds()'
-                  .caption Full
+                  .caption Full(s)
                 div
                   input type='hidden' placeholder='Select' required='' ng:model='form.twin_beds' ui-select2='beds()'
-                  .caption Twin
+                  .caption Twin(s)
               .row
-                button.teal ng:click='step(2)'
+                .icon-button.teal ng:click='step(2)'
                   .icon
-                    span.fa.fa-rotate-right
+                    i.icon-check
                   .text Next
       .step.three
         a.step-nav href='' ng:click='goto(3)'
           div
-            .icon.check
-              .typcn.typcn-input-checked
+            .icon.icon-alert-ok
             .icon.step-icon 3
             .text Instructions
         form
@@ -144,7 +141,7 @@
                   | {{form.zip}}
               .row
                 label Size
-                | {{form.bedrooms.text}}BD/{{form.bathrooms.text}}BA {{form.property_type.text}}
+                | {{form.bedrooms.text}}BD/{{form.bathrooms.text}}BA {{form.property_type_cd == '0' ? 'House' : 'Apt/Condo'}}
               .row
                 label Rental Type
                 | {{form.rental_type_cd == '0' ? 'Full-time' : 'Part-time'}}
@@ -164,9 +161,9 @@
                   | {{form.twin_beds.text}}
               hr
               .row
-                button.teal ng:click='step(3)'
+                .icon-button.teal ng:click='step(3)'
                   .icon
-                    span.fa.fa-rotate-right
+                    i.icon-check
                   .text Finish
     .confirmation
       .flash
