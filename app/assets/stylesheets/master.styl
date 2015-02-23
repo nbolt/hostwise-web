@@ -15,8 +15,8 @@ html, body, .body
   background-color: gray
 
 .first-property-body
-  background: url('/images/first_time_graphic.png') no-repeat scroll 220px -200px #CED2D8
-  height: 1280px
+  background: url('/images/first_time_graphic.png') no-repeat scroll 220px 0 #CED2D8
+  background-size: 1688px 640px
   .body
     background-color: transparent
     padding: 0 200px
@@ -28,11 +28,11 @@ html, body, .body
       padding: 0 10px
       margin-top: 100px
   @media landscape_tablet
-    background-position: 80px -200px
+    background-position: 80px 0
   @media portrait_tablet
-    background-position: 80px -200px
+    background-position: 80px 0
   @media phone
-    background-position: 0 -500px
+    background-position: 0 0
 
 header
   padding: 2px 20px 2px 12px
@@ -1885,11 +1885,14 @@ form
     margin-bottom: 20px
     @media phone
       font-size: 1.5em
-    div
+    div, img
       display: inline-block
-      line-height: 54px
       margin-left: 10px
-      vertical-align: top
+      vertical-align: middle
+    img
+      width: 19px
+      height: 27px
+      margin-left: 0
   .form-container
     background-color: rgba(255, 255, 255, 0.6)
     text-align: center
