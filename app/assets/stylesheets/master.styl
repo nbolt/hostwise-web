@@ -1662,9 +1662,13 @@ form
     border-radius: 3px
     color: teal
     display: inline-block
-    margin: 1% 1% 0 0
+    margin: 10px 10px 0 0
     vertical-align: top
-    width: 32%
+    width: 300px
+    @media landscape_tablet
+      width: 250px
+    @media portrait_tablet
+      width: 250px
     @media phone
       margin: 10px 0
       width: 100%
