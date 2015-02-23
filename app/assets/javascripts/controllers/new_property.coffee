@@ -42,8 +42,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
     angular.element('.property-form-container .steps .step.active').removeClass('active').find('form').hide()
     angular.element('.property-form-container .steps .step').eq(n-1).addClass('active').find('form').show()
     angular.element('.property-form-container .step .step-nav').removeClass('active').eq(n-1).addClass('active')
-    pos = angular.element('.property-form-container .steps').find(".#{step(n)}").offset().top - 70
-    angular.element('body, html').scrollTo pos
+    scrollToAccordion n
     return true
 
   $scope.step = (n) ->
@@ -84,6 +83,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
           angular.element('.property-form-container .steps .step').eq(n).addClass('active').find('form').show()
           angular.element('.property-form-container .step-nav.active').addClass('complete')
           angular.element('.property-form-container .step-nav').removeClass('active').eq(n).addClass('active')
+          scrollToAccordion n
       else
         success = ->
           angular.element('.property-form-container .steps').hide()
@@ -170,6 +170,9 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
       when 3
         step_num = 'three'
     return step_num
+
+  scrollToAccordion = (n) ->
+    scroll angular.element('.property-form-container .steps').find(".#{step(n)}").offset().top - 70
 
   scroll = (position) ->
     angular.element('body, html').animate
