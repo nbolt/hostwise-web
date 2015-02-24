@@ -103,12 +103,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     $scope.total = 0
     $scope.days = []
     $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services}).success (rsp) ->
+      $scope.service_total = rsp.cost
       _($scope.chosen_dates).each (v,k) ->
         _(v).each (d) ->
           day = {}
           day.total = rsp.cost
           $scope.total += day.total
-          $scope.service_total = rsp.cost
           day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
           _($scope.selected_services).each (v,k) ->
             day[k] = rsp[k] if v
@@ -247,6 +247,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.included_services = -> _(services_array()).join(', ')
 
   $scope.calculate_pricing() unless $scope.selected_services && $scope.selected_booking
+
+  $scope.$on 'calculate_pricing', -> $scope.calculate_pricing()
 
 ]
 
