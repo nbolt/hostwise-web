@@ -28,38 +28,53 @@
         .icon
           .typcn.typcn-time
         .text 9:45 AM
-        .location Venice Distribution Center | 1020 Lake St, Venice, CA 90291
+        .location
+          | | &nbsp;Distribution Center
       .bottom ng:hide='user.distribution_job.status_cd == 3'
-        .right
-          .button.teal ng:click='done(user.distribution_job)'
-            .icon
-              .typcn.typcn-tick
-            .text Done
-        .beds
-          .bed
-            .type King:
-            .num ng:bind='::user.distribution_job.king_beds'
-          .bed
-            .type Queen:
-            .num ng:bind='::user.distribution_job.queen_beds'
-          .bed
-            .type Full:
-            .num ng:bind='::user.distribution_job.full_beds'
-          .bed
-            .type Twin:
-            .num ng:bind='::user.distribution_job.twin_beds'
-    .jobs
-      .job ng:repeat='job in user.standard_jobs' ng:class="job.status_cd == 3 && 'complete'"
-        .right
-          a href='/jobs/{{job.id}}'
-            .text ng:show="job.status_cd == 3" View Completed Job
-            .button.teal ng:hide="job.status_cd == 3"
+        .pad
+          .right
+            .button.teal ng:click='done(user.distribution_job)'
               .icon
                 .typcn.typcn-tick
-              .text View Job
-        .title Job {{$index+1}}
-        .address
-          .name ng:bind='::job.booking.property.user.name'
-          .address1 ng:bind='::job.booking.property.address1'
-          .address2
-            | {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
+              .text Done
+          .supplies
+            .text Supplies:
+            .supply ng:show='::user.distribution_job.king_beds'
+              .type King:
+              .num ng:bind='::user.distribution_job.king_beds'
+            .supply ng:show='::user.distribution_job.queen_beds'
+              .type Queen:
+              .num ng:bind='::user.distribution_job.queen_beds'
+            .supply ng:show='::user.distribution_job.full_beds'
+              .type Full:
+              .num ng:bind='::user.distribution_job.full_beds'
+            .supply ng:show='::user.distribution_job.twin_beds'
+              .type Twin:
+              .num ng:bind='::user.distribution_job.twin_beds'
+            .supply ng:show='::user.distribution_job.toiletries'
+              .type Toiletry Kits:
+              .num ng:bind='::user.distribution_job.toiletries'
+    .jobs
+      .job ng:repeat='job in user.standard_jobs' ng:class="job.status_cd == 3 && 'complete'"
+        .title
+          .icon
+            .typcn.typcn-time
+          .text Job {{$index+1}}
+          .column
+        .right
+          .top
+            a href='/jobs/{{job.id}}'
+              .text.completed ng:show="job.status_cd == 3" View Completed Job
+              .button.teal ng:hide="job.status_cd == 3"
+                .icon
+                  .typcn.typcn-tick
+                .text View Job
+            .address
+              .name ng:bind='::job.booking.property.user.name'
+              .address1
+                | {{::job.booking.property.address1}}, {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
+          .bottom
+            .right
+              .icon
+                .typcn.typcn-credit-card
+              .pricing $75

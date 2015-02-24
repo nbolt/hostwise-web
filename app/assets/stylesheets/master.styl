@@ -856,67 +856,89 @@ form
         .text
           margin-left: 5px
         .location
-          margin-left: 50px
+          margin-left: 10px
       .bottom
         transition: max-height .4s ease-in-out
         max-height: 80px
         overflow: hidden
         background-color: white
+        .pad
+          padding: 24px
         .right
           float: right
           .button
             padding: 0
             text-align: left
-            width: 125px
-            margin-top: -5px
+            width: 135px
+            margin-top: -10px
             .icon, .text
               display: inline-block
               vertical-align: top
             .icon
-              width: 30px
-              height: 30px
-              font-size: 1.5em
+              width: 40px
+              height: 40px
+              font-size: 1.6em
               .typcn
-                margin: -3px 0 0 3px
+                margin: 2px 0 0 7px
             .text
               width: 95px
               text-align: center
-              margin-top: 4px
-        .beds
-          .bed
+              margin-top: 9px
+        .supplies
+          color: #A6A6A6
+          .type, .num, .text
+            display: inline-block
+            vertical-align: top
+          .text
+            font-weight: 600
+            margin-right: 25px
+          .supply
             margin: 0 23px 0 7px
             display: inline-block
             vertical-align: top
-            .type, .num
-              display: inline-block
-              vertical-align: top
             .type
-              font-weight: 700
+              color: teal
             .num
               margin-left: 8px
     .jobs
       margin-top: 15px
       .job
         background-color: white
-        padding: 15px 25px
         margin-bottom: 10px
-        &.complete
-          background-color: teal
-          color: white
-        .right
-          float: right
+        height: 116px
+        .bottom
+          border-top: 2px solid lighter-gray
+          height: 40px
+          overflow: hidden
+          .right
+            float: right
+            background-color: lighter-gray
+            height: 40px
+            padding: 8px 20px
+            box-sizing: border-box
+            color: #7F8389
+            .icon, .pricing
+              display: inline-block
+              vertical-align: top
+            .pricing
+              font-weight: 600
+            .icon
+              font-size: 1.25em
+              margin: -4px 6px 0 0
+        .top
           a
             text-decoration: none
-            .text
+            float: right
+            .text.completed
               color: white
-              margin-top: 15px
+              margin: 45px 25px 0 0
             &:hover .text
               text-decoration: underline
             .button
               padding: 0
               text-align: left
               width: 135px
-              margin-top: 8px
+              margin: 17px
               .icon, .text
                 display: inline-block
                 vertical-align: top
@@ -934,13 +956,40 @@ form
           display: inline-block
           vertical-align: top
         .title
-          font-weight: 700
-          margin-top: 17px
+          float: left
+          .text, .column, .icon
+            display: inline-block
+            vertical-align: top
+          .icon
+            font-size: 1.3em
+            margin: 39px 8px 0 22px
+            color: #D3D3D3
+          .text
+            font-weight: 700
+            margin-top: 45px
+          .column
+            background: linear-gradient(left, 0% white, lighter-gray)
+            height: 116px
+            width: 32px
         .address
-          margin-left: 46px
+          margin: 20px
           font-size: .9em
           .name
             font-weight: 600
+          .address1
+            color: dark-gray
+        &.complete
+          background-color: teal
+          color: white
+          .address1, .title .icon
+            color: white
+          .bottom
+            display: none
+          .address
+            margin-top: 36px
+            font-size: 1em
+          .column
+            background: linear-gradient(left, 0% teal, #32A6AB)
 
 .property-form-container
   margin: 40px auto 0
