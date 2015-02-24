@@ -19,7 +19,7 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   def welcome(user)
     mandrill do
-      mandrill_mail template: 'welcome',
+      mandrill_mail template: 'signup-success',
                     subject: 'Thank you for joining our community!',
                     to: {email: user.email, name: user.name},
                     inline_css: true,
@@ -30,7 +30,7 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   def booking_reminder(booking)
     mandrill do
-      mandrill_mail template: 'appointment-reminder',
+      mandrill_mail template: '1-service-reminder-24h-before',
                     subject: 'Just a friendly reminder about your services tomorrow.',
                     to: {email: booking.property.user.email, name: booking.property.user.name},
                     vars: {'ADDR' => booking.property.short_address},
@@ -43,7 +43,7 @@ class UserMailer < MandrillMailer::TemplateMailer
   def booking_confirmation(booking)
     mandrill do
       appt_date = booking.date.strftime('%b %e/%Y')
-      mandrill_mail template: 'booking-confirmation',
+      mandrill_mail template: 'service-confirmation',
                     subject: "Your services have been booked on #{appt_date} at #{booking.property.short_address}",
                     to: {email: booking.property.user.email, name: booking.property.user.name},
                     vars: {'ADDR' => booking.property.short_address,
@@ -68,7 +68,7 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   def service_completed(property)
     mandrill do
-      mandrill_mail template: 'service-completed',
+      mandrill_mail template: '0-service-completed-payment-collected',
                     subject: "Your services have been completed at #{property.short_address}",
                     to: {email: property.user.email, name: property.user.name},
                     vars: {'ADDR' => property.short_address},

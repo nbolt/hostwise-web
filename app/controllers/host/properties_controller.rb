@@ -56,6 +56,7 @@ class Host::PropertiesController < Host::AuthController
             booking.services.push Service.where(name: service)[0]
           end
           booking.save # need to check for errors
+          UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
         end
       end
       render json: { success: true }
@@ -118,7 +119,7 @@ class Host::PropertiesController < Host::AuthController
 
         if property.save
           current_user.save
-          UserMailer.property_confirmation(property).then(:deliver)
+          UserMailer.property_confirmation(property).then(:deliver) if current_user.settings(:property_added).email
           render json: { success: true, slug: property.slug }
         else
           render json: { success: false, message: property.errors.full_messages[0] }

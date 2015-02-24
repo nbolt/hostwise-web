@@ -27,6 +27,7 @@ class Job < ActiveRecord::Base
   def start!
     in_progress!
     save
+    TwilioJob.perform_later("+1#{self.booking.property.user.phone_number}", "Porter arrived at #{self.booking.property.short_address}") if self.booking.property.user.settings(:porter_arrived).sms
   end
 
   def complete!
