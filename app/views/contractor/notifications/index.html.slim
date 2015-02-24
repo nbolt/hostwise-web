@@ -6,36 +6,51 @@
     | Select when you would like to receive notifications via SMS or/and email.
   .notification-container ng::controller='notification'
     form
-      .section
+      .section.email
         .flash
         .header
-          span Sms
+          span Email Notification Settings
           span Email
         .row
           .text New open job
-          label.switch.red
-            input type='checkbox' toggle-notification='new_open_job_sms' ng:checked="user.notification_settings['new_open_job']['sms']"
-            i
           label.switch.red
             input type='checkbox' toggle-notification='new_open_job_email' ng:checked="user.notification_settings['new_open_job']['email']"
             i
         .row
           .text Job claim confirmation
           label.switch.red
-            input type='checkbox' toggle-notification='job_claim_confirmation_sms' ng:checked="user.notification_settings['job_claim_confirmation']['sms']"
-            i
-          label.switch.red
             input type='checkbox' toggle-notification='job_claim_confirmation_email' ng:checked="user.notification_settings['job_claim_confirmation']['email']"
             i
         .row
-          .text Evening before service reminder
-          label.switch.red
-            input type='checkbox' toggle-notification='service_reminder_sms' ng:checked="user.notification_settings['service_reminder']['sms']"
-            i
+          .text Service Reminder
           label.switch.red
             input type='checkbox' toggle-notification='service_reminder_email' ng:checked="user.notification_settings['service_reminder']['email']"
             i
-        .icon-button.teal ng:click='save()'
+        .icon-button.teal ng:click="save('email')"
+          .icon
+            i.icon-refresh
+          .text Save
+      .section.sms
+        .flash
+        .header
+          span SMS Notification Settings
+          span SMS
+        .row
+          .text New open job
+          label.switch.red
+            input type='checkbox' toggle-notification='new_open_job_sms' ng:checked="user.notification_settings['new_open_job']['sms']"
+            i
+        .row
+          .text Job claim confirmation
+          label.switch.red
+            input type='checkbox' toggle-notification='job_claim_confirmation_sms' ng:checked="user.notification_settings['job_claim_confirmation']['sms']"
+            i
+        .row
+          .text Service Reminder
+          label.switch.red
+            input type='checkbox' toggle-notification='service_reminder_sms' ng:checked="user.notification_settings['service_reminder']['sms']"
+            i
+        .icon-button.teal ng:click="save('sms')"
           .icon
             i.icon-refresh
           .text Save

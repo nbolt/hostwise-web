@@ -6,36 +6,51 @@
     | Select when you would like to receive notifications via SMS or/and email.
   .notification-container ng::controller='notification'
     form
-      .section
+      .section.email
         .flash
         .header
-          span Sms
+          span Email Notification Settings
           span Email
         .row
-          .text Booking Confirmation
+          .text Property Added
           label.switch.red
-            input type='checkbox' toggle-notification='booking_confirmation_sms' ng:checked="user.notification_settings['booking_confirmation']['sms']"
+            input type='checkbox' toggle-notification='property_added_email' ng:checked="user.notification_settings['property_added']['email']"
             i
+        .row
+          .text Booking Confirmation
           label.switch.red
             input type='checkbox' toggle-notification='booking_confirmation_email' ng:checked="user.notification_settings['booking_confirmation']['email']"
             i
         .row
-          .text Evening before service reminder
-          label.switch.red
-            input type='checkbox' toggle-notification='service_reminder_sms' ng:checked="user.notification_settings['service_reminder']['sms']"
-            i
-          label.switch.red
-            input type='checkbox' toggle-notification='service_reminder_email' ng:checked="user.notification_settings['service_reminder']['email']"
-            i
-        .row
-          .text Service Completion
-          label.switch.red
-            input type='checkbox' toggle-notification='service_completion_sms' ng:checked="user.notification_settings['service_completion']['sms']"
-            i
+          .text Job Completed
           label.switch.red
             input type='checkbox' toggle-notification='service_completion_email' ng:checked="user.notification_settings['service_completion']['email']"
             i
-        .icon-button.teal ng:click='save()'
+        .row
+          .text Service Reminder
+          label.switch.red
+            input type='checkbox' toggle-notification='service_reminder_email' ng:checked="user.notification_settings['service_reminder']['email']"
+            i
+        .icon-button.teal ng:click="save('email')"
+          .icon
+            i.icon-refresh
+          .text Save
+      .section.sms
+        .flash
+        .header
+          span SMS Notification Settings
+          span SMS
+        .row
+          .text Job Completed
+          label.switch.red
+            input type='checkbox' toggle-notification='service_completion_sms' ng:checked="user.notification_settings['service_completion']['sms']"
+            i
+        .row
+          .text Porter Arrived
+          label.switch.red
+            input type='checkbox' toggle-notification='porter_arrived_sms' ng:checked="user.notification_settings['porter_arrived']['sms']"
+            i
+        .icon-button.teal ng:click="save('sms')"
           .icon
             i.icon-refresh
           .text Save

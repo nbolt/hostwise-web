@@ -36,12 +36,12 @@ class AuthController < ApplicationController
         user.assign_attributes(user_params)
         user.phone_confirmation = rand(1000..9999)
 
-        user.settings(:booking_confirmation).sms = true
+        user.settings(:property_added).email = true
         user.settings(:booking_confirmation).email = true
-        user.settings(:service_reminder).sms = true
         user.settings(:service_reminder).email = true
-        user.settings(:service_completion).sms = true
         user.settings(:service_completion).email = true
+        user.settings(:service_completion).sms = true
+        user.settings(:porter_arrived).sms = true
 
         if user.save
           TwilioJob.perform_later("+1#{user.phone_number}", "Welcome to HostWise! You're confirmation code is: #{user.phone_confirmation}")
