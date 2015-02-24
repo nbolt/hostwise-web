@@ -229,7 +229,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     {
       dropdownCssClass: 'payment'
       minimumResultsForSearch: -1
-      data: [{id:'credit-card', text:'Credit Card'},{id:'ach', text: 'ACH Bank Transfer'}]
+      data: [{id:'credit-card', text:'Credit Card'}]
       initSelection: (el, cb) -> cb {id:'credit-card', text:'Credit Card'}
     }
 
