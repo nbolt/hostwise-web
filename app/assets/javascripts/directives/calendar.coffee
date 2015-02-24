@@ -80,11 +80,11 @@ app = angular.module('porter').directive('calendar', [->
           if options.clickable
             if $this.hasClass('chosen')
               $this.removeClass('chosen')
-              scope.chosen_dates[key] = scope.chosen_dates[key].filter (d) -> d != $this.attr('day')
+              scope.chosen_dates[key] = scope.chosen_dates[key].filter (d) -> d != parseInt $this.attr('day')
             else
               $this.addClass('chosen')
               scope.chosen_dates[key] = [] unless scope.chosen_dates[key] && scope.chosen_dates[key][0]
-              scope.chosen_dates[key].push $this.attr('day')
+              scope.chosen_dates[key].push(parseInt $this.attr('day'))
       )
     )
 
