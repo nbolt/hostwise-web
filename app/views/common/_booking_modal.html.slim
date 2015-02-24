@@ -56,7 +56,7 @@ script#booking-modal type="text/ng-template"
                     i.icon class="icon-serv-#{service.name}"
                     .text= service.display
                     label.switch.red
-                      input type='checkbox' toggle-service="#{service.name}"
+                      input checked='true' type='checkbox' toggle-service="#{service.name}"
                       i
               .extra
                 .title =t('booking.modal.extras_title')

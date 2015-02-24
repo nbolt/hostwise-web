@@ -91,7 +91,23 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
               $scope.selected_services[service.name] = true
               angular.element(".booking.modal .services .service.#{service.name}, .booking.modal .extra .service.#{service.name}").addClass 'active'
               angular.element(".booking.modal .services .service.#{service.name} input, .booking.modal .extra .service.#{service.name} input").attr 'checked', true
+            $scope.calculate_pricing()
     }
+
+  $scope.calculate_pricing = ->
+    $scope.total = 0
+    $scope.days = []
+    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services}).success (rsp) ->
+      _($scope.chosen_dates).each (v,k) ->
+        _(v).each (d) ->
+          day = {}
+          day.total = rsp.cost
+          $scope.total += day.total
+          $scope.service_total = rsp.cost
+          day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
+          _($scope.selected_services).each (v,k) ->
+            day[k] = rsp[k] if v
+          $scope.days.push day
 
   $scope.update_details = ->
     if _(angular.element('.bed-types').find('input')).filter((el) -> parseInt(angular.element(el).val()) > 0).length is 0

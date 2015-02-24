@@ -3,7 +3,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   last_payment = null
   $scope.days = []
   $scope.flashing = false
-  $scope.selected_services = {} unless $scope.selected_services
+  $scope.selected_services = {cleaning:true,linens:true,toiletries:true} unless $scope.selected_services && $scope.selected_booking
   $scope.chosen_dates = {} unless $scope.chosen_dates
   $scope.payment = {}
 
@@ -99,6 +99,21 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       else
         defer.resolve $scope.payment.id
 
+  $scope.calculate_pricing = ->
+    $scope.total = 0
+    $scope.days = []
+    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services}).success (rsp) ->
+      _($scope.chosen_dates).each (v,k) ->
+        _(v).each (d) ->
+          day = {}
+          day.total = rsp.cost
+          $scope.total += day.total
+          $scope.service_total = rsp.cost
+          day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
+          _($scope.selected_services).each (v,k) ->
+            day[k] = rsp[k] if v
+          $scope.days.push day
+
   $scope.to_booking_confirmation = ->
     angular.element('.booking.modal .content.confirmation').removeClass 'active'
     angular.element('.booking.modal .content.confirmation.teal').addClass 'active'
@@ -161,21 +176,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       -700
     else
       -976
-
-  $scope.calculate_pricing = ->
-    $scope.total = 0
-    $scope.days = []
-    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services}).success (rsp) ->
-      _($scope.chosen_dates).each (v,k) ->
-        _(v).each (d) ->
-          day = {}
-          day.total = rsp.cost
-          $scope.total += day.total
-          $scope.service_total = rsp.cost
-          day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
-          _($scope.selected_services).each (v,k) ->
-            day[k] = rsp[k] if v
-          $scope.days.push day
 
   flash = (type, msg) ->
     unless $scope.flashing
@@ -246,7 +246,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
 
   $scope.included_services = -> _(services_array()).join(', ')
 
-  $scope.calculate_pricing()
+  $scope.calculate_pricing() unless $scope.selected_services && $scope.selected_booking
 
 ]
 
