@@ -24,6 +24,18 @@ class Job < ActiveRecord::Base
     Job.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('bookings.date ASC').includes(:contractor_jobs, :booking).references(:contractor_jobs, :booking)
   end
 
+  def payout
+    (booking.cost * 0.7).round(2)
+  end
+
+  def payout_integer
+    (booking.cost * 0.7).round(2).to_s.split('.')[0].to_i
+  end
+
+  def payout_fractional
+    (booking.cost * 0.7).round(2).to_s.split('.')[1].to_i
+  end
+
   def start!
     in_progress!
     save

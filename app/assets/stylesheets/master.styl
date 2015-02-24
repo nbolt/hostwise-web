@@ -910,6 +910,14 @@ form
           border-top: 2px solid lighter-gray
           height: 40px
           overflow: hidden
+          color: dark-gray
+          .contractors, .rooms, .text
+            display: inline-block
+            vertical-align: top
+          .contractors, .rooms
+            margin: 8px 0 0 20px
+            i
+              margin-right: 6px
           .right
             float: right
             background-color: lighter-gray
@@ -917,11 +925,17 @@ form
             padding: 8px 20px
             box-sizing: border-box
             color: #7F8389
+            width: 113px
             .icon, .pricing
               display: inline-block
               vertical-align: top
             .pricing
               font-weight: 600
+              padding-bottom: 3px
+              span
+                font-size: .8em
+              &.special
+                border-bottom: 2px solid gold
             .icon
               font-size: 1.25em
               margin: -4px 6px 0 0
@@ -962,11 +976,11 @@ form
             vertical-align: top
           .icon
             font-size: 1.3em
-            margin: 39px 8px 0 22px
+            margin: 42px 8px 0 22px
             color: #D3D3D3
           .text
             font-weight: 700
-            margin-top: 45px
+            margin-top: 48px
           .column
             background: linear-gradient(left, 0% white, lighter-gray)
             height: 116px
@@ -974,14 +988,13 @@ form
         .address
           margin: 20px
           font-size: .9em
+          color: dark-gray
           .name
             font-weight: 600
-          .address1
-            color: dark-gray
         &.complete
           background-color: teal
           color: white
-          .address1, .title .icon
+          .address1, .title .icon, .name
             color: white
           .bottom
             display: none

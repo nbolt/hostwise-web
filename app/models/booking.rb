@@ -21,17 +21,21 @@ class Booking < ActiveRecord::Base
 
   def self.cost property, services
     pool_service = Service.where(name: 'pool')[0]
-    pricing = PRICING[property.property_type.to_s][property.bedrooms][property.bathrooms]
     total = 0
     rsp = {}
     services.each do |service|
       case service.name
       when 'cleaning'
-        rsp[:cleaning] = pricing['cleaning']
+        rsp[:cleaning] = PRICING[property.property_type.to_s][property.bedrooms][property.bathrooms]
       when 'linens'
-        rsp[:linens] = pricing['linens']
+        rsp[:linens] ||= 0
+        property.king_beds.times  { rsp[:linens] += PRICING['king_linens']  }
+        property.queen_beds.times { rsp[:linens] += PRICING['queen_linens'] }
+        property.full_beds.times  { rsp[:linens] += PRICING['full_linens']  }
+        property.twin_beds.times  { rsp[:linens] += PRICING['twin_linens']  }
       when 'toiletries'
-        rsp[:toiletries] = pricing['toiletries']
+        rsp[:toiletries] ||= 0
+        property.beds.times  { rsp[:toiletries] += PRICING['toiletries']  }
       when 'pool'
         rsp[:pool] = PRICING['pool']
       when 'patio'

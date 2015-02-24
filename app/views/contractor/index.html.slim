@@ -74,7 +74,18 @@
               .address1
                 | {{::job.booking.property.address1}}, {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
           .bottom
+            .rooms
+              i.icon-house ng:if='job.booking.property.property_type_cd == 0'
+              i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
+              .text
+                | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
+            .contractors
+              i.icon-person
+              .text ng:bind='::job.size'
             .right
               .icon
                 .typcn.typcn-credit-card
-              .pricing $75
+              .pricing
+                | ${{::job.payout_integer}}
+                span ng:hide='job.payout_fractional == 0'
+                  | .{{::job.payout_fractional}}

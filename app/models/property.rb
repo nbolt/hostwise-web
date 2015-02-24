@@ -72,6 +72,10 @@ class Property < ActiveRecord::Base
     end
   end
 
+  def beds
+    king_beds + queen_beds + full_beds + twin_beds
+  end
+
   def neighborhood
     zip = Zip.where(code: self.zip)[0]
     if zip

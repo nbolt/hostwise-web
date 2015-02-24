@@ -246,6 +246,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
 
   $scope.included_services = -> _(services_array()).join(', ')
 
+  $scope.calculate_pricing()
+
 ]
 
 app = angular.module('porter').controller('booking_modal', BookingModalCtrl)
