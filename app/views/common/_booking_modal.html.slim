@@ -15,6 +15,7 @@ script#booking-modal type="text/ng-template"
           .content
             .content-side-container ng:if='exists()'
               .content-side.details
+                .invoice Invoice
                 .days
                   .day collapse='' ng:repeat='day in days'
                     .total
@@ -132,6 +133,7 @@ script#booking-modal type="text/ng-template"
       .content-group ng:if='!exists()'
         .content-body
           .content.details
+            .invoice Invoice
             .days
               .day collapse='' ng:repeat='day in days'
                 .total
@@ -188,7 +190,7 @@ script#booking-modal type="text/ng-template"
           .right
             .button.teal.right
               .icon
-                .typcn.typcn-tick
+                i.icon-check
               .text ng:click='book()' Confirm & Book
       .content-group.static
         .content-body
