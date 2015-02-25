@@ -59,11 +59,17 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       ngDialog.open template: 'add-payment-modal', className: 'success payment', scope: $scope
 
   $scope.add_credit_card = ->
+    exp_date = angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val()
+    exp_month = exp_date.split("/")[0]
+    exp_year = exp_date.split("/")[1]
+    if exp_date is 'MM/YY'
+      exp_month = ''
+      exp_year =  ''
     Stripe.createToken
       number: angular.element(".payment-tab.credit-card input[data-stripe=number]").val()
       cvc: angular.element(".payment-tab.credit-card input[data-stripe=cvc]").val()
-      exp_month: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[0]
-      exp_year: angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val().split("/")[1]
+      exp_month: exp_month
+      exp_year: exp_year
     , (_, rsp) ->
       if rsp.error
         flash 'failure', rsp.error.message
