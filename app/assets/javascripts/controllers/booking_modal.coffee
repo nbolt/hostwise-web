@@ -25,8 +25,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.payment_screen = -> if $scope.payment && $scope.payment.id == 'new' then 'new' else 'existing'
 
   $scope.next = ->
-    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
-    $scope.calculate_pricing()
+    if !services_array()[0]
+      flash 'failure', 'Please select at least one service'
+    else
+      angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
+      $scope.calculate_pricing()
     null
 
   $scope.details = ->
@@ -77,27 +80,24 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.confirm_cancellation = -> ngDialog.closeAll()
 
   $scope.book = ->
-    if !services_array()[0]
-      flash 'failure', 'Please select at least one service'
-    else
-      defer = $q.defer()
-      defer.promise.then((id) ->
-        $http.post("/properties/#{$scope.property.slug}/book", {
-          payment: id
-          services: services_array()
-          dates: $scope.chosen_dates
-        }).success (rsp) ->
-          if rsp.success
-            $scope.to_booking_confirmation()
-            null
-          else
-            flash 'failure', rsp.message
-      )
+    defer = $q.defer()
+    defer.promise.then((id) ->
+      $http.post("/properties/#{$scope.property.slug}/book", {
+        payment: id
+        services: services_array()
+        dates: $scope.chosen_dates
+      }).success (rsp) ->
+        if rsp.success
+          $scope.to_booking_confirmation()
+          null
+        else
+          flash 'failure', rsp.message
+    )
 
-      if $scope.payment.id == 'new'
-        $scope.add_payment defer
-      else
-        defer.resolve $scope.payment.id
+    if $scope.payment.id == 'new'
+      $scope.add_payment defer
+    else
+      defer.resolve $scope.payment.id
 
   $scope.calculate_pricing = ->
     $scope.total = 0
