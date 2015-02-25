@@ -29,6 +29,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       flash 'failure', 'Please select at least one service'
     else
       angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
+      update_header 2
       $scope.calculate_pricing()
     null
 
@@ -45,6 +46,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
 
   $scope.change_dates = ->
     angular.element('.booking.modal .content-container').css 'margin-left', 0
+    update_header 1
     null
 
   $scope.add_payment = (defer) ->
@@ -118,21 +120,21 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     angular.element('.booking.modal .content.confirmation').removeClass 'active'
     angular.element('.booking.modal .content.confirmation.teal').addClass 'active'
     angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*2
-    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
+    update_header 3
     null
 
   $scope.to_booking_cancellation = ->
     angular.element('.booking.modal .content.confirmation').removeClass 'active'
     angular.element('.booking.modal .content.confirmation.red').addClass 'active'
     angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
-    angular.element('.booking.modal .header').addClass 'red red-transition'
+    angular.element('.booking.modal .header').addClass 'white white-transition'
     angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
     null
 
   $scope.cancel_cancellation = ->
     angular.element('.booking.modal .content-container').css 'margin-left', 0
-    angular.element('.booking.modal .header').removeClass 'red'
-    $timeout((->angular.element('.booking.modal .header').removeClass 'red-transition'),600)
+    angular.element('.booking.modal .header').removeClass 'white'
+    $timeout((->angular.element('.booking.modal .header').removeClass 'white-transition'),600)
     angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 1
     null
 
@@ -154,7 +156,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           angular.element('.booking.modal .content.confirmation').removeClass 'active'
           angular.element('.booking.modal .content.confirmation.teal').addClass 'active'
           angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
-          angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
+          update_header 3
           null
         else
           flash 'failure', rsp.message
@@ -243,6 +245,15 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     _($scope.selected_services).each (selected, service) ->
       services.push service if selected
     services
+
+  update_header = (step) ->
+    title = 'Select Date(s) & Services'
+    switch step
+      when 2
+        title = 'Confirm Booking & Payment'
+      when 3
+        title = 'Booking Confirmed'
+    angular.element('.booking.modal .header .text').text title
 
   $scope.included_services = -> _(services_array()).join(', ')
 

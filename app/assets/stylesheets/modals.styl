@@ -360,9 +360,9 @@
         height: 50px
         box-sizing: border-box
         transition: background-color 1s ease-in-out, height 1s ease-in-out
-        &.red
-          background-color: red
-        &.red-transition
+        &.white
+          background-color: white
+        &.white-transition
           transition: background-color .6s ease-in-out
         .icon
           position: absolute
@@ -750,7 +750,7 @@
             width: 976px
             height: 570px
             text-align: center
-            color: white
+            position: relative
             @media portrait_tablet
               width: 700px
             @media phone
@@ -758,41 +758,41 @@
               width: 320px
             &.active
               display: inline-block
-            &.teal
-              background-color: teal
-              .foot
-                background-color: teal
-              .check-icon
-                background-color: light-teal
             &.red
-              background-color: red
+              background-color: white
               .foot
-                background-color: red
-              .check-icon
+                display: none
+              .icon-alert-bolt
                 background-color: dark-red
-              .title-text
-                @media phone
-                  font-size: 1.2em
-                  padding: 0 20px
-            .check-icon
-              font-size: 5em
+              .check-container .date
+                color: black
+            .icon-check, .icon-alert-bolt
+              background-color: teal
+              color: white
+              display: block
+              font-size: 3em
               border-radius: 50%
-              width: 100px
-              height: 100px
+              width: 80px
+              height: 80px
+              line-height: 80px
               margin: 40px auto 20px
               overflow: auto
-              @media phone
-                font-size: 4em
-                height: 80px
-                width: 80px
-                margin-top: 0
             .title-text
               font-size: 1.5em
+            .foot
+              background-color: light-gray
+              height: 52px
+              bottom: 0
+              height: 52px
+              position: absolute
+              width: 100%
+              .button
+                margin-right: 10px
             .check-container
               border-top: thin solid white
               border-bottom: thin solid white
               padding: 20px 0
-              margin: 20px auto
+              margin: 30px auto
               width: 350px
               @media phone
                 width: 100%
@@ -813,6 +813,7 @@
                 &.in
                   border-right: thin solid white
                 .time
+                  color: black
                   font-weight: 700
                   font-size: 1.8em
                 .text
@@ -842,8 +843,10 @@
                 height: 50px
                 width: 50px
                 margin: 0 15px
-                .typcn
-                  margin-top: -8px
+                .icon-alert-ok
+                  color: teal
+                .icon-close
+                  color: gray
                 &:hover
                   cursor: pointer
           .services, .extra

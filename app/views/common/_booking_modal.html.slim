@@ -3,7 +3,10 @@ script#booking-modal type="text/ng-template"
     .header
       .icon
         i.icon-calendar
-      .text Booking Confirmation
+      .text ng:if='!exists()'
+        | Select Date(s) & Services
+      .text ng:if='exists()'
+        | Confirm Booking & Payment
     .content-container
       .content-group
         .content-body
@@ -190,8 +193,7 @@ script#booking-modal type="text/ng-template"
       .content-group.static
         .content-body
           .content.confirmation.teal
-            .check-icon
-              .typcn.typcn-input-checked
+            i.icon-check
             .title-text You're all set!
             .check-container
               .check.in
@@ -201,23 +203,25 @@ script#booking-modal type="text/ng-template"
                 .time 4 PM
                 .text CHECK-OUT
             .subtext Don't forget! Please make sure your guests check-out by 10am so our cleaners have time to get in and out before your next guests arrive.
+            .foot
+              .right
+                .button.white
+                  .text ng:click='confirm_booking()' Close
           .content.confirmation.red
-            .check-icon
-              .typcn.typcn-flash
-            .title-text Are you sure you want to cancel this job?
+            i.icon-alert-bolt
+            .title-text Are you sure you wish to cancel this job?
             .check-container
               .text Service Date
               .date ng:bind='::selected_date_confirmation'
             .actions
               .action.cancel ng:click='cancel_cancellation()'
-                .typcn.typcn-times
+                i.icon-close
               .action.confirm ng:click='confirm_cancellation()'
-                .typcn.typcn-tick
+                i.icon-alert-ok
       .content-group.static
         .content-body
           .content.confirmation.red
-            .check-icon
-              .typcn.typcn-flash
+            i.icon-alert-bolt
             .title-text Job Cancelled
             .check-container
               .text ng:bind='::selected_date_confirmation'
