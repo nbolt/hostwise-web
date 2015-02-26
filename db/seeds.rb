@@ -63,4 +63,4 @@ Service.find_or_create_by(name: 'toiletries', display: 'Toiletries', extra: fals
 Service.find_or_create_by(name: 'pool', display: 'Pool Area', extra: true)
 Service.find_or_create_by(name: 'patio', display: 'Balcony / Patio', extra: true)
 Service.find_or_create_by(name: 'windows', display: 'Exterior Windows', extra: true)
-Service.find_or_create_by(name: 'preset', display: 'Pre-Set', hidden: true)
+Service.find_or_create_by(name: 'preset', display: 'Staging', hidden: true)

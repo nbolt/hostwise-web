@@ -17,7 +17,12 @@ class Booking < ActiveRecord::Base
   before_save :create_order
   after_save :check_transaction
 
+  as_enum :status, deleted: 0, active: 1, cancelled: 2
   as_enum :payment_status, pending: 0, completed: 1
+
+  def self.default_scope
+    where status_cd: 1
+  end
 
   def self.cost property, services
     pool_service = Service.where(name: 'pool')[0]
@@ -25,25 +30,25 @@ class Booking < ActiveRecord::Base
     rsp = {}
     services.each do |service|
       case service.name
-      when 'cleaning'
-        rsp[:cleaning] = PRICING[property.property_type.to_s][property.bedrooms][property.bathrooms]
-      when 'linens'
-        rsp[:linens] ||= 0
-        property.king_beds.times  { rsp[:linens] += PRICING['king_linens']  }
-        property.queen_beds.times { rsp[:linens] += PRICING['queen_linens'] }
-        property.full_beds.times  { rsp[:linens] += PRICING['full_linens']  }
-        property.twin_beds.times  { rsp[:linens] += PRICING['twin_linens']  }
-      when 'toiletries'
-        rsp[:toiletries] ||= 0
-        property.beds.times  { rsp[:toiletries] += PRICING['toiletries']  }
-      when 'pool'
-        rsp[:pool] = PRICING['pool']
-      when 'patio'
-        rsp[:patio] = PRICING['patio'] unless services.index pool_service
-      when 'windows'
-        rsp[:windows] = PRICING['windows'] unless services.index pool_service
-      when 'preset'
-        rsp[:preset] = PRICING['preset']
+        when 'cleaning'
+          rsp[:cleaning] = PRICING[property.property_type.to_s][property.bedrooms][property.bathrooms]
+        when 'linens'
+          rsp[:linens] ||= 0
+          property.king_beds.times  { rsp[:linens] += PRICING['king_linens']  }
+          property.queen_beds.times { rsp[:linens] += PRICING['queen_linens'] }
+          property.full_beds.times  { rsp[:linens] += PRICING['full_linens']  }
+          property.twin_beds.times  { rsp[:linens] += PRICING['twin_linens']  }
+        when 'toiletries'
+          rsp[:toiletries] ||= 0
+          property.beds.times  { rsp[:toiletries] += PRICING['toiletries']  }
+        when 'pool'
+          rsp[:pool] = PRICING['pool']
+        when 'patio'
+          rsp[:patio] = PRICING['patio'] unless services.index pool_service
+        when 'windows'
+          rsp[:windows] = PRICING['windows'] unless services.index pool_service
+        when 'preset'
+          rsp[:preset] = PRICING['preset']
       end
     end
     rsp[:cost] = rsp.reduce(0){|total, service| total + service[1]}
@@ -51,6 +56,7 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
+    return PRICING['cancellation'] if cancelled?
     Booking.cost(property, services)[:cost]
   end
 
@@ -62,20 +68,27 @@ class Booking < ActiveRecord::Base
     if completed?
       false
     elsif payment.stripe_id
+      amount = cost * 100
       begin
+        metadata = {}
+        if cancelled?
+          metadata[:cancellation] = true
+        else
+          metadata[:job_id] = job.id
+        end
         rsp = Stripe::Charge.create(
-          amount: cost * 100,
+          amount: amount,
           currency: 'usd',
           customer: property.user.stripe_customer_id,
           card: payment.stripe_id,
           statement_descriptor: "HostWise #{id}"[0..21], # 22 characters max
-          metadata: { job_id: job.id }
+          metadata: metadata
         )
-        transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: cost * 100)
+        transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount)
         save
       rescue Stripe::CardError => e
         err  = e.json_body[:error]
-        transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: cost * 100)
+        transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount)
         false
       end
     elsif payment.balanced_id
@@ -83,11 +96,12 @@ class Booking < ActiveRecord::Base
       if verification.verification_status == 'succeeded'
         bank_account = Balanced::BankAccount.fetch("/bank_accounts/#{payment.balanced_id}")
         order = Balanced::Order.fetch("/orders/#{balanced_order_id}")
+        amount = cost * 100
         rsp = order.debit_from(
           source: bank_account,
-          amount: cost * 100
+          amount: amount
         )
-        transactions.create(balanced_charge_id: rsp.id, status_cd: 2, amount: booking.cost * 100)
+        transactions.create(balanced_charge_id: rsp.id, status_cd: 2, amount: amount)
         save
       else
         false
@@ -99,6 +113,12 @@ class Booking < ActiveRecord::Base
 
   def last_transaction
     transactions.order(created_at: :asc).last
+  end
+
+  def same_day_cancellation
+    day = (self.date.to_date - Date.today).to_i
+    return true if day == 0 || (day <= 1 && Time.now.hour >= 12)
+    return false
   end
 
   private

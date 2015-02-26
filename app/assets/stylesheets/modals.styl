@@ -531,18 +531,12 @@
                     vertical-align: top
                     margin: 4px 2px 0 0
                     font-size: 1.1em
-                    @media phone
-                      display:none
                   &.amount
                     font-size: 2em
                     font-weight: 600
-                    @media phone
-                      display: none
                   &.per
                     vertical-align: bottom
                     margin: 0 30px 4px 6px
-                    @media phone
-                      display: none
         .content
           width: 488px
           height: 518px
@@ -768,8 +762,19 @@
                 display: none
               .icon-alert-bolt
                 background-color: dark-red
-              .check-container .date
-                color: black
+              .check-container
+                .date
+                  color: black
+                &.cancellation
+                  display: none
+                  .text, .fee
+                    color: dark-red
+                    font-weight: bold
+                  .fee
+                    font-size: 2em
+                    margin-top: 5px
+                  .caption
+                    margin-top: 30px
             .icon-check, .icon-alert-bolt
               background-color: teal
               color: white

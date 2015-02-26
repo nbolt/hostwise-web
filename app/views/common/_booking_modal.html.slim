@@ -212,9 +212,14 @@ script#booking-modal type="text/ng-template"
           .content.confirmation.red
             i.icon-alert-bolt
             .title-text Are you sure you wish to cancel this job?
-            .check-container
+            .check-container.ok
               .text Service Date
               .date ng:bind='::selected_date_confirmation'
+            .check-container.cancellation
+              .text Cancellation Fee
+              .fee ${{pricing.cancellation}}
+              .caption
+                | To avoid a fee, cancelling 24 hours in advance incurs no extra charge
             .actions
               .action.cancel ng:click='cancel_cancellation()'
                 i.icon-close

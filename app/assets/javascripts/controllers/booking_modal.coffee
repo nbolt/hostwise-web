@@ -6,6 +6,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.selected_services = {cleaning:true,linens:true,toiletries:true} unless $scope.selected_services && $scope.selected_booking
   $scope.chosen_dates = {} unless $scope.chosen_dates
   $scope.payment = {}
+  $scope.same_day_cancellation = false
 
   unless $scope.payment && $scope.payment.id
     if $scope.user.payments && $scope.user.payments[0]
@@ -107,6 +108,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     else
       defer.resolve $scope.payment.id
 
+  $scope.load_pricing = ->
+    $http.get('/cost').success (rsp) ->
+      $scope.pricing = rsp
+
   $scope.calculate_pricing = ->
     $scope.total = 0
     $scope.days = []
@@ -130,11 +135,20 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     null
 
   $scope.to_booking_cancellation = ->
-    angular.element('.booking.modal .content.confirmation').removeClass 'active'
-    angular.element('.booking.modal .content.confirmation.red').addClass 'active'
-    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
-    angular.element('.booking.modal .header').addClass 'white white-transition'
-    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
+    $http.get("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/same_day_cancellation").success (rsp) ->
+      $scope.same_day_cancellation = rsp.same_day_cancellation
+      angular.element('.booking.modal .content.confirmation').removeClass 'active'
+      el = angular.element('.booking.modal .content.confirmation.red')
+      el.addClass 'active'
+      if $scope.same_day_cancellation
+        el.find('.check-container.ok').hide()
+        el.find('.check-container.cancellation').show()
+      else
+        el.find('.check-container.ok').show()
+        el.find('.check-container.cancellation').hide()
+      angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
+      angular.element('.booking.modal .header').addClass 'white white-transition'
+      angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
     null
 
   $scope.cancel_cancellation = ->
@@ -145,7 +159,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     null
 
   $scope.confirm_cancellation = ->
-    $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/cancel").success (rsp) ->
+    $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/cancel", {
+      apply_fee: $scope.same_day_cancellation
+    }).success (rsp) ->
       if rsp.success
         date = $scope.selected_date
         angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('booked').removeAttr 'booking'
@@ -266,6 +282,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.calculate_pricing() unless $scope.selected_services && $scope.selected_booking
 
   $scope.$on 'calculate_pricing', -> $scope.calculate_pricing()
+
+  $scope.load_pricing() unless $scope.pricing
 
 ]
 

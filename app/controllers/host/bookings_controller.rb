@@ -26,12 +26,23 @@ class Host::BookingsController < Host::AuthController
   end
 
   def cancel
-    booking.destroy
-    if booking.destroyed?
-      render json: { success: true }
+    if params[:apply_fee]
+      if booking.update_attribute :status, :cancelled
+        booking.charge!
+        render json: { success: true }
+      else
+        render json: { success: false }
+      end
     else
-      render json: { success: false }
+      if booking.update_attribute :status, :deleted
+        render json: { success: true }
+      else
+        render json: { success: false }
+      end
     end
   end
 
+  def same_day_cancellation
+    render json: { same_day_cancellation: booking.same_day_cancellation }
+  end
 end

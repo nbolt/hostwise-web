@@ -1,3 +1,7 @@
+cancellation: 25
+late_next_day: 25
+late_same_day: 25
+staging: 100
 pool: 50
 patio: 10
 windows: 10
