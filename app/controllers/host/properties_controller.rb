@@ -48,7 +48,7 @@ class Host::PropertiesController < Host::AuthController
     if params[:dates]
       params[:dates].each do |k,v|
         v.each do |day|
-          month = k.split('-')[0].to_i + 1
+          month = k.split('-')[0]
           year  = k.split('-')[1]
           booking = property.bookings.build(date: Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d'))
           booking.payment = Payment.find params[:payment]

@@ -76,7 +76,9 @@ app = angular.module('porter').directive('calendar', [->
         $this.on('mouseleave.selecting', ->
           $this.off('mouseleave.selecting')
           $this.removeClass('selecting')
-          key = "#{$this.attr('month')}-#{$this.attr('year')}"
+          month = parseInt($this.attr('month')) + 1
+          year  = $this.attr('year')
+          key = "#{month}-#{year}"
           if options.clickable
             if $this.hasClass('chosen')
               $this.removeClass('chosen')

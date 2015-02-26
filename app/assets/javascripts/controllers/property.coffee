@@ -75,7 +75,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
 
       onclick: ($this) ->
         ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
-        date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')+1}", 'YYYY D MM'
+        date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
         $scope.selected_date = date
         $scope.selected_date_confirmation = date.format('ddd, MMM D')
         $scope.selected_date_booking = date.format('MMM D, YYYY')
