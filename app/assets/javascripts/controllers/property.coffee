@@ -4,6 +4,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $scope.chosen_dates = {}
   $scope.payment = {}
   $scope.selected_services = {}
+  $scope.init_month = {}
   $scope.selected_date = null
   $scope.current_zip = null
   $scope.current_address1 = null
@@ -80,7 +81,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         $scope.selected_date_confirmation = date.format('ddd, MMM D')
         $scope.selected_date_booking = date.format('MMM D, YYYY')
         $scope.chosen_dates = {}
-        $scope.chosen_dates["#{date.month()}-#{date.year()}"] = [date.date()]
+        $scope.chosen_dates["#{date.month()+1}-#{date.year()}"] = [date.date()]
+        $timeout((->$scope.$broadcast 'calendar.month', date.month()+1, date.year()),25)
         $scope.selected_services = {}
         $scope.selected_booking = $this.attr 'booking'
         if $scope.selected_booking

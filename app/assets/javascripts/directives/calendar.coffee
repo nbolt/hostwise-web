@@ -14,11 +14,11 @@ app = angular.module('porter').directive('calendar', [->
       calendar.find('thead th.month').attr('month', month)
       calendar.find('thead th.month').attr('year', year)
       first_day = new Date(year, month, 1).getDay()
-      month_name = months[month]
-      month_days = _month_days[month]
-      month_days = if month == 1 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) then 29 else month_days
-      prev_month_days = if month == 0 then _month_days[11] else _month_days[month-1]
-      prev_month_days = if month == 2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) then 29 else prev_month_days
+      month_name = months[month-1]
+      month_days = _month_days[month-1]
+      month_days = if month == 2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) then 29 else month_days
+      prev_month_days = if month == 1 then _month_days[11] else _month_days[month-2]
+      prev_month_days = if month == 3 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) then 29 else prev_month_days
       num_rows = if month_days + first_day > 35 then 6 else if first_day == 0 && month_days == 28 then 4 else 5
 
       calendar.find('tbody').remove()
@@ -52,13 +52,13 @@ app = angular.module('porter').directive('calendar', [->
 
     gen_cals = (dir) ->
       if dir is 'prev'
-        scope.month = scope.month == 0 && 11 || scope.month-1
-        scope.year = scope.month == 11 && scope.year-1 || scope.year
+        scope.month = scope.month == 1 && 12 || scope.month-1
+        scope.year = scope.month == 12 && scope.year-1 || scope.year
       else if dir is 'next'
-        scope.month = if scope.month == 11 then 0 else scope.month+1
-        scope.year = scope.month == 0 && scope.year+1 || scope.year
+        scope.month = if scope.month == 12 then 1 else scope.month+1
+        scope.year = scope.month == 1 && scope.year+1 || scope.year
       else
-        scope.month = moment().month()
+        scope.month = moment().month() + 1
         scope.year = moment().year()
       gen_cal(0, scope.month, scope.year)
       options.onchange() if options.onchange
@@ -76,9 +76,7 @@ app = angular.module('porter').directive('calendar', [->
         $this.on('mouseleave.selecting', ->
           $this.off('mouseleave.selecting')
           $this.removeClass('selecting')
-          month = parseInt($this.attr('month')) + 1
-          year  = $this.attr('year')
-          key = "#{month}-#{year}"
+          key = "#{$this.attr('month')}-#{$this.attr('year')}"
           if options.clickable
             if $this.hasClass('chosen')
               $this.removeClass('chosen')
@@ -89,6 +87,12 @@ app = angular.module('porter').directive('calendar', [->
               scope.chosen_dates[key].push(parseInt $this.attr('day'))
       )
     )
+
+    scope.$on 'calendar.month', (_, month, year) ->
+      scope.month = month
+      scope.year  = year
+      gen_cal(0, scope.month, scope.year)
+      options.onchange() if options.onchange
 
 
   template: "
