@@ -617,6 +617,97 @@ form
   .page-subtitle
     font-size: 15px
     margin-top: 10px
+    
+.container.trainee
+  .select-dates
+    width: 260px
+    border-radius: 1px
+    color: white
+    .icon, .text
+      display: inline-block
+      vertical-align: top
+    .icon
+      width: 50px
+      height: 50px
+      .typcn
+        font-size: 2.1em
+        margin: 1px 0 0 8px
+    .text
+      width: 210px
+      text-align: center
+      padding: 14px 0 15px
+      font-size: 1.1em
+      font-weight: 600
+    &.inactive
+      background-color: #999
+      .icon
+        background-color: #B3B3B3
+    &.active
+      background-color: teal
+      .icon, &:hover .text
+        background-color: light-teal
+    &:hover
+      cursor: pointer
+  .dates
+    margin: 25px 0
+    width: 640px
+    border-bottom: thin solid #999
+    padding-bottom: 5px
+    .date
+      display: inline-block
+      vertical-align: top
+      width: 140px
+      height: 190px
+      margin: 0 20px 20px 0
+      border-radius: 1px
+      .top
+        background-color: white
+        height: 150px
+        padding: 18px
+        box-sizing: border-box
+        text-align: center
+        .day
+          font-size: 2.4em
+          font-weight: 600
+        .month
+          font-size: 1.6em
+          text-transform: uppercase
+          margin-bottom: 10px
+        .time
+          font-size: 1.1em
+          font-weight: 600
+      .bottom
+        background-color: teal
+        height: 40px
+        color: white
+        .icon, .text
+          display: inline-block
+          vertical-align: top
+        .icon
+          width: 40px
+          height: 40px
+          background-color: light-teal
+          .typcn
+            font-size: 1.8em
+            margin-left: 6px
+        .text
+          text-align: center
+          font-size: 1.1em
+          width: 100px
+          margin-top: 9px
+      &.active:hover, &.chosen
+        cursor: pointer
+        .top
+          background-color: dark-teal
+          color: white
+        .bottom
+          .text
+            display: none
+          .icon
+            width: 100%
+            text-align: center
+      &.inactive
+        opacity: 0.3
 
 .container.contractor
   .page-title
@@ -1581,11 +1672,11 @@ form
                 height: 40px
                 font-size: 1.6em
                 .typcn
-                  margin-left: 8px
+                  margin: 2px 0 0 8px
               .text
                 text-align: center
                 font-size: 1.25em
-                margin-top: 5px
+                margin-top: 7px
                 width: 160px
               &:hover
                 cursor: pointer

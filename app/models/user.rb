@@ -18,11 +18,14 @@ class User < ActiveRecord::Base
   has_many :service_notifications, dependent: :destroy
 
   as_enum :role, admin: 0, host: 1, contractor: 2
+  as_enum :status, trainee: 1, contractor: 2, trainer: 3
 
   has_settings :new_open_job, :job_claim_confirmation, :service_reminder, :booking_confirmation, :service_completion, :porter_arrived, :property_added
 
   pg_search_scope :search_contractors, against: [:email, :first_name, :last_name, :phone_number], associated_against: {contractor_profile: [:address1, :city, :zip]}, using: { tsearch: { prefix: true } }
   pg_search_scope :search_hosts, against: [:email, :first_name, :last_name, :phone_number], using: { tsearch: { prefix: true } }
+
+  scope :trainers, -> { where(status_cd: 3) }
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile'}
   validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
@@ -65,7 +68,11 @@ class User < ActiveRecord::Base
   end
 
   def claim_job job
+    jobs_today = self.jobs.on_date(job.booking.date)
+    training_job = jobs_today.where(training:true)[0]
     if job.contractors.count == job.size
+      false
+    elsif training_job && job.size > 1
       false
     else
       job.contractors.push self
@@ -74,7 +81,7 @@ class User < ActiveRecord::Base
         job.save
       end
       job.handle_distribution_job self
-      Job.set_priorities self.jobs.on_date(job.booking.date).standard
+      Job.set_priorities jobs_today.standard
       fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
       fanout.publish_async 'jobs', {}
       true
@@ -82,19 +89,23 @@ class User < ActiveRecord::Base
   end
 
   def drop_job job
-    job.contractors.delete self
-    job.open!
-    job.save
-    job.handle_distribution_job self
-    Job.set_priorities self.jobs.on_date(job.booking.date).standard
-    if job.contractors[0]
-      jobs = job.contractors[0].jobs.on_date(job.booking.date).standard
-      job.handle_distribution_job jobs
-      Job.set_priorities jobs
+    if job.training
+      false
+    else
+      job.contractors.delete self
+      job.open!
+      job.save
+      job.handle_distribution_job self
+      Job.set_priorities self.jobs.on_date(job.booking.date).standard
+      if job.contractors[0]
+        jobs = job.contractors[0].jobs.on_date(job.booking.date).standard
+        job.handle_distribution_job jobs
+        Job.set_priorities jobs
+      end
+      fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
+      fanout.publish_async 'jobs', {}
+      true
     end
-    fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
-    fanout.publish_async 'jobs', {}
-    true
   end
 
   def self.contractors(term = nil)

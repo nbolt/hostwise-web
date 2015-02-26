@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223215932) do
+ActiveRecord::Schema.define(version: 20150225173958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20150223215932) do
     t.integer  "twin_beds"
     t.integer  "size",         default: 1
     t.integer  "toiletries"
+    t.boolean  "training",     default: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -279,6 +280,7 @@ ActiveRecord::Schema.define(version: 20150223215932) do
     t.string   "activation_state"
     t.string   "activation_token"
     t.datetime "activation_token_expires_at"
+    t.integer  "status_cd",                                   default: 1
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree

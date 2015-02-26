@@ -5,6 +5,8 @@ class Job < ActiveRecord::Base
 
   as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4
 
+  scope :trainers, -> { where('user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }
+  scope :future, -> { where('date >= ?', Time.now.utc).includes(:booking).references(:booking) }
   scope :on_date, ->(date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day).includes(:booking).references(:booking) }
   scope :today, -> { on_date(Time.now.utc) }
   scope :distribution, -> { where(distribution: true) }
@@ -59,21 +61,25 @@ class Job < ActiveRecord::Base
     if single_jobs[0]
       distribution_job = user.jobs.create(distribution: true, status_cd: 1, priority: 0, booking_id: booking.id) unless distribution_job
       single_jobs.each do |job|
-        supplies[:king_beds] += job.booking.property.king_beds
-        supplies[:queen_beds] += job.booking.property.queen_beds
-        supplies[:full_beds] += job.booking.property.full_beds
-        supplies[:twin_beds] += job.booking.property.twin_beds
-        supplies[:toiletries] += 1 if job.booking.services.index Service.where(name: 'toiletries')[0]
+        if job.booking.services.index Service.where(name: 'linens')[0]
+          supplies[:king_beds] += job.booking.property.king_beds
+          supplies[:queen_beds] += job.booking.property.queen_beds
+          supplies[:full_beds] += job.booking.property.full_beds
+          supplies[:twin_beds] += job.booking.property.twin_beds
+        end
+        job.booking.property.beds.times { supplies[:toiletries] += 1 } if job.booking.services.index Service.where(name: 'toiletries')[0]
       end
     end
 
     if team_job && team_job.contractors.count == 1
       distribution_job = user.jobs.create(distribution: true, status_cd: 1, priority: 0, booking_id: booking.id) unless distribution_job
-      supplies[:king_beds] += team_job.booking.property.king_beds
-      supplies[:queen_beds] += team_job.booking.property.queen_beds
-      supplies[:full_beds] += team_job.booking.property.full_beds
-      supplies[:twin_beds] += team_job.booking.property.twin_beds
-      supplies[:toiletries] += 1 if job.booking.services.index Service.where(name: 'toiletries')[0]
+      if team_job.booking.services.index Service.where(name: 'linens')[0]
+        supplies[:king_beds] += team_job.booking.property.king_beds
+        supplies[:queen_beds] += team_job.booking.property.queen_beds
+        supplies[:full_beds] += team_job.booking.property.full_beds
+        supplies[:twin_beds] += team_job.booking.property.twin_beds
+      end
+      team_job.booking.property.beds.times { supplies[:toiletries] += 1 } if team_job.booking.services.index Service.where(name: 'toiletries')[0]
     end
 
     if standard_jobs.empty?
@@ -90,7 +96,10 @@ class Job < ActiveRecord::Base
 
   def self.set_priorities jobs
     team_job = jobs.team[0]
-    team_job.update_attribute :priority, 1 if team_job
+    if team_job
+      jobs.where(priority:1).each {|job| job.update_attribute :priority, 0}
+      team_job.update_attribute :priority, 1
+    end
     num = jobs.map(&:priority).max
     jobs.where(priority:0).each_with_index do |job, index|
       job.update_attribute :priority, index + num + 1

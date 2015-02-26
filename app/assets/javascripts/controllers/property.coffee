@@ -79,6 +79,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         $scope.selected_date = date
         $scope.selected_date_confirmation = date.format('ddd, MMM D')
         $scope.selected_date_booking = date.format('MMM D, YYYY')
+        $scope.chosen_dates = {}
         $scope.chosen_dates["#{date.month()}-#{date.year()}"] = [date.date()]
         $scope.selected_services = {}
         $scope.selected_booking = $this.attr 'booking'

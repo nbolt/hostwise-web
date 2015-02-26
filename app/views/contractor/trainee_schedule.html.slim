@@ -1,4 +1,4 @@
-.container.contractor ng:controller='contractor_dash'
+.container.contractor ng:controller='trainee_schedule'
   .page-title
     .icon
       .typcn.typcn-home-outline
@@ -6,22 +6,17 @@
 
   .welcome Welcome, {{user.first_name}}.
   .message
-    .text ng:show='newbie()'
-      | Congratulations! You're all ready to start accepting jobs.
+    .text Here's your training schedule:
 
-  .schedule ng:show='user.jobs'
+  .schedule ng:repeat='training in user.training_jobs'
     .head
-      .right ng:bind='::today'
-      .text Today's Schedule
-    .header-message ng:show='!user.jobs_today[0]'
-      .icon
-        .typcn.typcn-time
-      .text You don't have any upcoming jobs today
-    .header-message ng:show="jobs_completed()"
+      .right ng:bind='::training.date'
+      .text Training Day {{$index+1}}
+    .header-message ng:show="jobs_completed(training)"
       .icon
         .typcn.typcn-time
       .text Congratulations! You're finished for the day.
-    .distribution ng:show='user.distribution_job'
+    .distribution
       .top
         .right
           .typcn.typcn-chevron-right
@@ -30,32 +25,32 @@
         .text 9:45 AM
         .location
           | | &nbsp;Distribution Center
-      .bottom ng:hide='user.distribution_job.status_cd == 3'
+      .bottom ng:hide='training.distribution_job.status_cd == 3'
         .pad
           .right
-            .button.teal ng:click='done(user.distribution_job)'
+            .button.teal ng:click='done(training.distribution_job)'
               .icon
                 .typcn.typcn-tick
               .text Done
           .supplies
             .text Supplies:
-            .supply ng:show='::user.distribution_job.king_beds'
+            .supply ng:show='::training.distribution_job.king_beds'
               .type King:
-              .num ng:bind='::user.distribution_job.king_beds'
-            .supply ng:show='::user.distribution_job.queen_beds'
+              .num ng:bind='::training.distribution_job.king_beds'
+            .supply ng:show='::training.distribution_job.queen_beds'
               .type Queen:
-              .num ng:bind='::user.distribution_job.queen_beds'
-            .supply ng:show='::user.distribution_job.full_beds'
+              .num ng:bind='::training.distribution_job.queen_beds'
+            .supply ng:show='::training.distribution_job.full_beds'
               .type Full:
-              .num ng:bind='::user.distribution_job.full_beds'
-            .supply ng:show='::user.distribution_job.twin_beds'
+              .num ng:bind='::training.distribution_job.full_beds'
+            .supply ng:show='::training.distribution_job.twin_beds'
               .type Twin:
-              .num ng:bind='::user.distribution_job.twin_beds'
-            .supply ng:show='::user.distribution_job.toiletries'
+              .num ng:bind='::training.distribution_job.twin_beds'
+            .supply ng:show='::training.distribution_job.toiletries'
               .type Toiletry Kits:
-              .num ng:bind='::user.distribution_job.toiletries'
+              .num ng:bind='::training.distribution_job.toiletries'
     .jobs
-      .job ng:repeat='job in user.standard_jobs' ng:class="job.status_cd == 3 && 'complete'"
+      .job ng:repeat='job in training.jobs' ng:class="job.status_cd == 3 && 'complete'"
         .title
           .icon
             .typcn.typcn-time
