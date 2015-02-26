@@ -4,7 +4,6 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $scope.chosen_dates = {}
   $scope.payment = {}
   $scope.selected_services = {}
-  $scope.init_month = {}
   $scope.selected_date = null
   $scope.current_zip = null
   $scope.current_address1 = null
@@ -55,10 +54,10 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
           _($scope.property.bookings).each (booking) ->
             date = moment.utc(booking.date)
             if $('.booking.modal')[0]
-              angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive booked').attr('booking', booking.id)
+              angular.element(".booking.modal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive booked').attr('booking', booking.id)
             else
               $timeout((->
-                angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
+                angular.element(".booking.modal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
               ),100)
     }
 
@@ -72,7 +71,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         if $scope.property
           _($scope.property.bookings).each (booking) ->
             date = moment.utc(booking.date)
-            angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+            angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
       onclick: ($this) ->
         ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
@@ -189,7 +188,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       booking.display_full_services = booking.display_services
       if booking.display_services.length > 24
         booking.display_services = booking.display_services.slice(0,24) + '...'
-      angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+      angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
     $scope.property.upcoming_bookings = _($scope.property.bookings).filter (booking) ->
       moment(booking.date, 'YYYY-MM-DD').diff(moment().startOf('day'), 'days') > 0

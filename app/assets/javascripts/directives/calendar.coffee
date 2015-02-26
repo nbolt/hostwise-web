@@ -37,7 +37,7 @@ app = angular.module('porter').directive('calendar', [->
              else if current_day >= month_days
               ++current_day
               'class="inactive day">' + (current_day - month_days)
-             else if options.disable_past && moment().diff(new Date(year, month, current_day), 'days') > 0
+             else if options.disable_past && moment().diff(new Date(year, month-1, current_day), 'days') > 0
               ++current_day
               'class="past day">' + current_day
              else
