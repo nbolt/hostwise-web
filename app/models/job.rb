@@ -30,7 +30,7 @@ class Job < ActiveRecord::Base
   def payout
     if booking
       payout = 0
-      pricing = Booking.cost booking.property, booking.services, booking.late_next_day, booking.late_same_day
+      pricing = Booking.cost booking.property, booking.services, booking.late_next_day, booking.late_same_day, booking.no_access_fee
       payout += (pricing[:cleaning] * 0.7).round(2)
       payout += 50 if pricing[:preset]
       payout += 35 if pricing[:pool]
