@@ -7,6 +7,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.chosen_dates = {} unless $scope.chosen_dates
   $scope.payment = {}
   $scope.same_day_cancellation = false
+  $scope.same_day_booking = ''
+  $scope.next_day_booking = ''
 
   unless $scope.payment && $scope.payment.id
     if $scope.user.payments && $scope.user.payments[0]
@@ -95,6 +97,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
         payment: id
         services: services_array()
         dates: $scope.chosen_dates
+        late_next_day: $scope.next_day_booking
+        late_same_day: $scope.same_day_booking
       }).success (rsp) ->
         if rsp.success
           $scope.to_booking_confirmation()
@@ -121,8 +125,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
         _(v).each (d) ->
           day = {}
           day.total = rsp.cost
-          $scope.total += day.total
           day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
+          if day.date == $scope.next_day_booking
+            day.next_day_booking = $scope.pricing.late_next_day
+            day.total += $scope.pricing.late_next_day
+          if day.date == $scope.same_day_booking
+            day.same_day_booking = $scope.pricing.late_same_day
+            day.total += $scope.pricing.late_same_day
+          $scope.total += day.total
           _($scope.selected_services).each (v,k) ->
             day[k] = rsp[k] if v
           $scope.days.push day
@@ -132,6 +142,36 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     angular.element('.booking.modal .content.confirmation.teal').addClass 'active'
     angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*2
     update_header 3
+    null
+
+  $scope.to_late_day_confirmation = (type) ->
+    angular.element('.booking.modal .content.confirmation').removeClass 'active'
+    angular.element(".booking.modal .content.confirmation.red.#{type}").addClass 'active'
+    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*2
+    angular.element('.booking.modal .header').addClass 'white white-transition'
+    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
+
+  $scope.cancel_late_day_booking = ->
+    date = $scope.selected_date
+    el = angular.element(".booking.modal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]")
+    el.removeClass('chosen')
+    key = "#{el.attr('month')}-#{el.attr('year')}"
+    $scope.chosen_dates[key] = $scope.chosen_dates[key].filter (d) -> d != parseInt el.attr('day')
+    $scope.to_booking_selection()
+
+  $scope.confirm_next_day_booking = ->
+    $scope.next_day_booking = $scope.selected_date.format('MMM D, YYYY')
+    $scope.to_booking_selection()
+
+  $scope.confirm_same_day_booking = ->
+    $scope.same_day_booking = $scope.selected_date.format('MMM D, YYYY')
+    $scope.to_booking_selection()
+
+  $scope.to_booking_selection = ->
+    angular.element('.booking.modal .content-container').css 'margin-left', 0
+    angular.element('.booking.modal .header').removeClass 'white'
+    $timeout((->angular.element('.booking.modal .header').removeClass 'white-transition'),600)
+    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 1
     null
 
   $scope.to_booking_cancellation = ->
@@ -149,13 +189,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
       angular.element('.booking.modal .header').addClass 'white white-transition'
       angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
-    null
-
-  $scope.cancel_cancellation = ->
-    angular.element('.booking.modal .content-container').css 'margin-left', 0
-    angular.element('.booking.modal .header').removeClass 'white'
-    $timeout((->angular.element('.booking.modal .header').removeClass 'white-transition'),600)
-    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 1
     null
 
   $scope.confirm_cancellation = ->
@@ -285,6 +318,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
 
   $scope.load_pricing() unless $scope.pricing
 
+  $scope.$on 'next_day_confirmation', -> $scope.to_late_day_confirmation 'next-day'
+  $scope.$on 'same_day_confirmation', -> $scope.to_late_day_confirmation 'same-day'
 ]
 
 app = angular.module('porter').controller('booking_modal', BookingModalCtrl)

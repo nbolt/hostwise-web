@@ -24,6 +24,16 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
               $timeout((->
                 angular.element(".booking.modal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').attr('booking', booking.id)
               ),100)
+
+      onclick: ($this) ->
+        return if $this.hasClass('chosen')
+        $scope.selected_date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
+        days_diff = $scope.selected_date.diff(moment.utc().startOf('day'), 'days')
+        hour = moment().hours()
+        if days_diff == 0 and hour >= 10 #same day booking after 10am
+          $scope.$broadcast 'same_day_confirmation'
+        else if days_diff == 1 and hour >= 22 #next day booking after 10pm
+          $scope.$broadcast 'next_day_confirmation'
     }
 
   $scope.$watch 'search', (n,o) -> if o
@@ -72,7 +82,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
       _($scope.property.bookings).each (booking) ->
         date = moment.utc booking.date
         booking.parsed_date = date.format('MMMM Do, YYYY')
-        angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+        angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').addClass('booked').attr('booking', booking.id)
         $scope.$broadcast 'calculate_pricing'
 
   $scope.exists = () ->

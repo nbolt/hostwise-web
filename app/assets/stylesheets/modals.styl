@@ -697,13 +697,11 @@
                   padding: 10px 0
                   margin-top: 20px
                   font-weight: 700
-                  .price
-                    color: #E1625C
                 .day-services
                   max-height: 192px
                   overflow: hidden
                   transition: max-height .6s ease-in-out
-                  .service
+                  .service, .late
                     margin: 10px 0
                   @media phone
                     max-height: 0
@@ -722,9 +720,8 @@
               display: inline-block
               vertical-align: top
             .arrow
-              -webkit-transform: rotate(90deg)
-              transform: rotate(90deg)
-              margin-right: 5px
+              font-size: 0.8em
+              margin: 2px 10px 0
               &:hover
                 cursor: pointer
             .question
@@ -740,7 +737,6 @@
                 cursor: pointer
             .price
               float: right
-              font-weight: 700
             .setup
               font-weight: 700
           &.confirmation
@@ -760,7 +756,7 @@
               background-color: white
               .foot
                 display: none
-              .icon-alert-bolt
+              .icon-alert-bolt, .icon-calendar
                 background-color: dark-red
               .check-container
                 .date
@@ -775,11 +771,20 @@
                     margin-top: 5px
                   .caption
                     margin-top: 30px
-            .icon-check, .icon-alert-bolt
+            &.next-day, &.same-day
+              .check-container
+                .fee
+                  color: darker-gray
+                  font-weight: bold
+                  font-size: 2em
+                  margin-top: 5px
+                .caption
+                  margin-top: 30px
+            .icon-check, .icon-alert-bolt, .icon-calendar
               background-color: teal
               color: white
               display: block
-              font-size: 3em
+              font-size: 2.5em
               border-radius: 50%
               width: 80px
               height: 80px

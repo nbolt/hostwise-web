@@ -20,7 +20,7 @@ script#booking-modal type="text/ng-template"
                   .day collapse='' ng:repeat='day in days'
                     .total
                       .arrow
-                        .typcn.typcn-chevron-right
+                        i.icon-acc-open
                       .text ng:bind='::day.date'
                       .price ${{day.total}}
                     .day-services
@@ -56,7 +56,7 @@ script#booking-modal type="text/ng-template"
               .services
                 .title =t('booking.modal.services_title')
                 - Service.standard.each do |service|
-                  .service class="#{service.name}"
+                  .service.active class="#{service.name}"
                     i.icon class="icon-serv-#{service.name}"
                     .text= service.display
                     label.switch.red
@@ -138,10 +138,20 @@ script#booking-modal type="text/ng-template"
               .day collapse='' ng:repeat='day in days'
                 .total
                   .arrow
-                    .typcn.typcn-chevron-right
+                    i.icon-acc-open
                   .text ng:bind='::day.date'
                   .price ${{day.total}}
                 .day-services
+                  .late ng:show="day.next_day_booking"
+                    .text Late Day Booking Fee
+                    .price
+                      | $
+                      span ng:bind="day.next_day_booking"
+                  .late ng:show="day.same_day_booking"
+                    .text Same Day Booking Fee
+                    .price
+                      | $
+                      span ng:bind="day.same_day_booking"
                   - Service.all.each do |service|
                     .service ng:show="day.#{service.name}"
                       .text= service.display
@@ -218,10 +228,9 @@ script#booking-modal type="text/ng-template"
             .check-container.cancellation
               .text Cancellation Fee
               .fee ${{pricing.cancellation}}
-              .caption
-                | To avoid a fee, cancelling 24 hours in advance incurs no extra charge
+              .caption To avoid a fee, cancelling 24 hours in advance incurs no extra charge
             .actions
-              .action.cancel ng:click='cancel_cancellation()'
+              .action.cancel ng:click='to_booking_selection()'
                 i.icon-close
               .action.confirm ng:click='confirm_cancellation()'
                 i.icon-alert-ok
@@ -233,3 +242,27 @@ script#booking-modal type="text/ng-template"
             .check-container
               .text ng:bind='::selected_date_confirmation'
             .farewell We hope to see you again!
+      .content-group.static
+        .content-body
+          .content.confirmation.red.next-day
+            i.icon-calendar
+            .title-text Late Next-Day Booking
+            .check-container
+              .fee ${{pricing.late_next_day}}
+              .caption Our Porters will arrive by 4.30PM at the latest
+            .actions
+              .action.cancel ng:click='cancel_late_day_booking()'
+                i.icon-close
+              .action.confirm ng:click='confirm_next_day_booking()'
+                i.icon-alert-ok
+          .content.confirmation.red.same-day
+            i.icon-calendar
+            .title-text Same Day Booking
+            .check-container
+              .fee ${{pricing.late_same_day}}
+              .caption We'll do our best to send someone as soon as possible but we cannot guarantee arrival time.
+            .actions
+              .action.cancel ng:click='cancel_late_day_booking()'
+                i.icon-close
+              .action.confirm ng:click='confirm_same_day_booking()'
+                i.icon-alert-ok

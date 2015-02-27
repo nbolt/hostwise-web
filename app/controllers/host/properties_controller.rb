@@ -50,7 +50,14 @@ class Host::PropertiesController < Host::AuthController
         v.each do |day|
           month = k.split('-')[0]
           year  = k.split('-')[1]
-          booking = property.bookings.build(date: Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d'))
+          date = Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d')
+          booking = property.bookings.build(date: date)
+          if params[:late_next_day].present?
+            booking.late_next_day = true if date.strftime('%b %-d, %Y') == params[:late_next_day]
+          end
+          if params[:late_same_day].present?
+            booking.late_same_day = true if date.strftime('%b %-d, %Y') == params[:late_same_day]
+          end
           booking.payment = Payment.find params[:payment]
           params[:services].each do |service|
             booking.services.push Service.where(name: service)[0]
