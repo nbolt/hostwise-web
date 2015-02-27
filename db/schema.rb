@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150227011152) do
+ActiveRecord::Schema.define(version: 20150227231011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20150227011152) do
     t.integer  "payment_status_cd", default: 0
     t.boolean  "late_next_day",     default: false
     t.boolean  "late_same_day",     default: false
+    t.boolean  "no_access_fee"
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
