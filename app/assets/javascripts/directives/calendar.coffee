@@ -8,6 +8,7 @@ app = angular.module('porter').directive('calendar', [->
     _month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     scope.chosen_dates = {} unless scope.chosen_dates
     options = scope.options
+    first_gen = true
 
     gen_cal = (cal, month, year) ->
       calendar = element.find('table')
@@ -57,6 +58,10 @@ app = angular.module('porter').directive('calendar', [->
       else if dir is 'next'
         scope.month = if scope.month == 12 then 1 else scope.month+1
         scope.year = scope.month == 1 && scope.year+1 || scope.year
+      else if first_gen && options.init_month && options.init_year
+        first_gen = false
+        scope.month = options.init_month
+        scope.year  = options.init_year
       else
         scope.month = moment().month() + 1
         scope.year = moment().year()
@@ -87,12 +92,6 @@ app = angular.module('porter').directive('calendar', [->
               scope.chosen_dates[key].push(parseInt $this.attr('day'))
       )
     )
-
-    scope.$on 'calendar.month', (_, month, year) ->
-      scope.month = month
-      scope.year  = year
-      gen_cal(0, scope.month, scope.year)
-      options.onchange() if options.onchange
 
 
   template: "

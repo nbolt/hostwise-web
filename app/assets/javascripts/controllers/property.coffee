@@ -81,7 +81,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         $scope.selected_date_booking = date.format('MMM D, YYYY')
         $scope.chosen_dates = {}
         $scope.chosen_dates["#{date.month()+1}-#{date.year()}"] = [date.date()]
-        $timeout((->$scope.$broadcast 'calendar.month', date.month()+1, date.year()),25)
+        $scope.modal_calendar_options.init_month = date.month() + 1
+        $scope.modal_calendar_options.init_year  = date.year()
         $scope.selected_services = {}
         $scope.selected_booking = $this.attr 'booking'
         if $scope.selected_booking
