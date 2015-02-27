@@ -72,13 +72,13 @@ script#booking-modal type="text/ng-template"
                       input type='checkbox' toggle-service="#{service.name}"
                       i
           .content.payment ng:if='exists()'
-            div ng:show="payment_screen() == 'existing'"
+            div.existing-payment
               .payment-title Select Payment Method
               .payment-method.existing
                 .icon
                   .typcn.typcn-credit-card
                 input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
-            div ng:show="payment_screen() == 'new'"
+            div.new-payment
               .payment-title Add Payment Method
               .payment-method
                 input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
@@ -104,6 +104,7 @@ script#booking-modal type="text/ng-template"
                   .field.cvc
                     .label CV Code
                     input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
+              a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
         .foot.next ng:hide='exists()'
           .right
             .total
@@ -162,13 +163,13 @@ script#booking-modal type="text/ng-template"
               .text Total
               .price ${{total}}
           .content.payment
-            div ng:show="payment_screen() == 'existing'"
+            div.existing-payment
               .payment-title Select Payment Method
               .payment-method.existing
                 .icon
                   .typcn.typcn-credit-card
                 input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
-            div ng:show="payment_screen() == 'new'"
+            div.new-payment
               .payment-title Add Payment Method
               .payment-method
                 input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
@@ -194,6 +195,7 @@ script#booking-modal type="text/ng-template"
                   .field.cvc
                     .label CV Code
                     input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
+              a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
         .foot
           .left
             .button.grey ng:click='change_dates()' Change Dates

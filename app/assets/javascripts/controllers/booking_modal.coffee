@@ -5,10 +5,15 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.flashing = false
   $scope.selected_services = {cleaning:true,linens:true,toiletries:true} unless $scope.selected_services && $scope.selected_booking
   $scope.chosen_dates = {} unless $scope.chosen_dates
-  $scope.payment = {}
+  $scope.payment = {} unless $scope.payment
   $scope.same_day_cancellation = false
   $scope.same_day_booking = ''
   $scope.next_day_booking = ''
+
+  $scope.payment_screen = (type) ->
+    angular.element('.booking.modal .content.payment > div').hide()
+    angular.element(".booking.modal .content.payment .#{type}-payment").show()
+    null
 
   unless $scope.payment && $scope.payment.id
     if $scope.user.payments && $scope.user.payments[0]
@@ -25,12 +30,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     { id: payment.id, text: "#{payment_type} ending in #{payment.last4}" }
   payments_map.push { id: 'new', text: 'Add New Payment' }
 
-  $scope.payment_screen = -> if $scope.payment && $scope.payment.id == 'new' then 'new' else 'existing'
-
   $scope.next = ->
     if !services_array()[0]
       flash 'failure', 'Please select at least one service'
     else
+      if $scope.payment.id is 'new'
+        $scope.payment_screen 'new'
+      else
+        $scope.payment_screen 'existing'
       angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
       update_header 2
       $scope.calculate_pricing()
@@ -289,11 +296,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       ), 4000)
 
   $scope.$watch 'payment', (n,o) -> if o
+    angular.element('.booking.modal .content.payment > div').hide()
     if n.id == 'new'
-      angular.element('.booking.modal .content  > .payment').addClass 'new'
+      angular.element('.booking.modal .content.payment .new-payment').show()
     else
       last_payment = n.id
-      angular.element('.booking.modal .content > .payment').removeClass 'new'
+      angular.element('.booking.modal .content.payment .existing-payment').show()
 
   $scope.$watch 'payment_method', (n,o) -> if o
     angular.element('.booking.modal .content.payment .payment-tab').removeClass 'active'
