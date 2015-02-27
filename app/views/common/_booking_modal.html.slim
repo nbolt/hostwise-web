@@ -7,7 +7,7 @@ script#booking-modal type="text/ng-template"
         | Select Date(s) & Services
       .text ng:if='exists()'
         | Confirm Booking & Payment
-    .content-container
+    .content-container ng:class="exists() && 'exist'"
       .content-group
         .content-body
           .content.cal ng:if='!exists()'
@@ -219,7 +219,7 @@ script#booking-modal type="text/ng-template"
               .right
                 .button.white
                   .text ng:click='confirm_booking()' Close
-          .content.confirmation.red
+          .content.confirmation.red.cancel
             i.icon-alert-bolt
             .title-text Are you sure you wish to cancel this job?
             .check-container.ok
@@ -236,7 +236,7 @@ script#booking-modal type="text/ng-template"
                 i.icon-alert-ok
       .content-group.static
         .content-body
-          .content.confirmation.red
+          .content.confirmation.red.cancelled
             i.icon-alert-bolt
             .title-text Job Cancelled
             .check-container
@@ -265,4 +265,15 @@ script#booking-modal type="text/ng-template"
               .action.cancel ng:click='cancel_late_day_booking()'
                 i.icon-close
               .action.confirm ng:click='confirm_same_day_booking()'
+                i.icon-alert-ok
+          .content.confirmation.red.staging
+            i.icon-house
+            .title-text Do you only need a staging?
+            .check-container
+              .fee ${{pricing.staging}}
+              .caption We'll "spot check" cleaned and set the property with our linens, towels, and toiletries.
+            .actions
+              .action.cancel ng:click='cancel_staging()'
+                i.icon-close
+              .action.confirm ng:click='confirm_staging()'
                 i.icon-alert-ok

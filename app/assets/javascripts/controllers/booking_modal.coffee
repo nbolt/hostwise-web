@@ -151,23 +151,16 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     angular.element('.booking.modal .header').addClass 'white white-transition'
     angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
 
-  $scope.cancel_late_day_booking = ->
-    date = $scope.selected_date
-    el = angular.element(".booking.modal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]")
-    el.removeClass('chosen')
-    key = "#{el.attr('month')}-#{el.attr('year')}"
-    $scope.chosen_dates[key] = $scope.chosen_dates[key].filter (d) -> d != parseInt el.attr('day')
-    $scope.to_booking_selection()
-
-  $scope.confirm_next_day_booking = ->
-    $scope.next_day_booking = $scope.selected_date.format('MMM D, YYYY')
-    $scope.to_booking_selection()
-
-  $scope.confirm_same_day_booking = ->
-    $scope.same_day_booking = $scope.selected_date.format('MMM D, YYYY')
-    $scope.to_booking_selection()
+  $scope.to_staging_confirmation = ->
+    angular.element('.booking.modal .content.confirmation').removeClass 'active'
+    angular.element('.booking.modal .content.confirmation.red.staging').addClass 'active'
+    m = if angular.element('.booking.modal .content-container').hasClass('exist') then 1 else 2
+    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*m
+    angular.element('.booking.modal .header').addClass 'white white-transition'
+    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
 
   $scope.to_booking_selection = ->
+    angular.element('.booking.modal .content.confirmation').removeClass 'active'
     angular.element('.booking.modal .content-container').css 'margin-left', 0
     angular.element('.booking.modal .header').removeClass 'white'
     $timeout((->angular.element('.booking.modal .header').removeClass 'white-transition'),600)
@@ -178,7 +171,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     $http.get("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/same_day_cancellation").success (rsp) ->
       $scope.same_day_cancellation = rsp.same_day_cancellation
       angular.element('.booking.modal .content.confirmation').removeClass 'active'
-      el = angular.element('.booking.modal .content.confirmation.red')
+      el = angular.element('.booking.modal .content.confirmation.red.cancel')
       el.addClass 'active'
       if $scope.same_day_cancellation
         el.find('.check-container.ok').hide()
@@ -191,14 +184,49 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
     null
 
+  $scope.cancel_late_day_booking = ->
+    date = $scope.selected_date
+    el = angular.element(".booking.modal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]")
+    el.removeClass('chosen')
+    key = "#{el.attr('month')}-#{el.attr('year')}"
+    $scope.chosen_dates[key] = $scope.chosen_dates[key].filter (d) -> d != parseInt el.attr('day')
+    $scope.to_booking_selection()
+
+  $scope.cancel_staging = ->
+    $scope.selected_services['cleaning'] = true
+    $scope.selected_services['preset'] = false
+    el = angular.element('.booking.modal .content .services .service.cleaning')
+    el.find('input').prop 'checked', true
+    el.addClass 'active'
+    $scope.calculate_pricing()
+    $scope.to_booking_selection()
+
+  $scope.confirm_staging = ->
+    $scope.selected_services['preset'] = true
+    $scope.calculate_pricing()
+    $scope.to_booking_selection()
+
+  $scope.confirm_next_day_booking = ->
+    $scope.next_day_booking = $scope.selected_date.format('MMM D, YYYY')
+    $scope.to_booking_selection()
+
+  $scope.confirm_same_day_booking = ->
+    $scope.same_day_booking = $scope.selected_date.format('MMM D, YYYY')
+    $scope.to_booking_selection()
+
   $scope.confirm_cancellation = ->
     $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/cancel", {
       apply_fee: $scope.same_day_cancellation
     }).success (rsp) ->
       if rsp.success
         date = $scope.selected_date
-        angular.element(".column.cal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('booked').removeAttr 'booking'
-        angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*2
+        angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").removeClass('booked').removeAttr 'booking'
+        angular.element('.booking.modal .content.confirmation').removeClass 'active'
+        angular.element('.booking.modal .content.confirmation.red.cancelled').addClass 'active'
+        m = if angular.element('.booking.modal .content-container').hasClass('exist') then 1 else 2
+        angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*m
+        angular.element('.booking.modal .header').addClass 'white white-transition'
+        angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
 
   $scope.update = ->
     defer = $q.defer()
