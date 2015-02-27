@@ -26,7 +26,7 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def complete
-    job.update_attribute :status_cd, 3
+    job.complete!
     if current_user.status == :trainee
       current_user.update_attribute :status_cd, 2 if current_user.jobs.where(training:true).count == current_user.jobs.where(training:true,status_cd:3).count
     end

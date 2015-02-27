@@ -24,7 +24,7 @@ class Booking < ActiveRecord::Base
     where status_cd: 1
   end
 
-  def self.cost property, services
+  def self.cost property, services, late_next_day = false, late_same_day = false
     pool_service = Service.where(name: 'pool')[0]
     total = 0
     rsp = {}
@@ -52,12 +52,14 @@ class Booking < ActiveRecord::Base
       end
     end
     rsp[:cost] = rsp.reduce(0){|total, service| total + service[1]}
+    rsp[:cost] += PRICING['late_next_day'] if late_next_day
+    rsp[:cost] += PRICING['late_same_day'] if late_same_day
     rsp
   end
 
   def cost
     return PRICING['cancellation'] if cancelled?
-    Booking.cost(property, services)[:cost]
+    Booking.cost(property, services, late_next_day, late_same_day)[:cost]
   end
 
   def send_reminder
