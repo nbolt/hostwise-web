@@ -37,7 +37,8 @@ app = angular.module('porter').directive('calendar', [->
               'class="inactive day">' + (prev_month_days - ((first_day-1) - i))
              else if current_day >= month_days
               ++current_day
-              'class="inactive day">' + (current_day - month_days)
+              #'class="inactive day">' + (current_day - month_days)
+              'day="' + current_day + '" month="' + month + '" year="' + year + '" class="active day">' + (current_day - month_days)
              else if options.disable_past && moment().diff(new Date(year, month-1, current_day+1), 'days') > 0
               ++current_day
               'class="past day">' + current_day
@@ -48,8 +49,11 @@ app = angular.module('porter').directive('calendar', [->
         calendar.find('tbody').append '</tr>'
 
       key = "#{month}-#{year}"
-      _(scope.chosen_dates[key]).each (day) ->
-        calendar.find("td.day.active[day='#{day}']").addClass('chosen')
+      _(scope.chosen_dates).each (v,k) ->
+        _(v).each (day) ->
+          month = k.split('-')[0]
+          year  = k.split('-')[1]
+          calendar.find("td.day.active[month=#{month}][year=#{year}][day=#{day}]").addClass('chosen')
 
     gen_cals = (dir) ->
       if dir is 'prev'
