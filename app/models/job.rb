@@ -39,7 +39,7 @@ class Job < ActiveRecord::Base
       payout += 20 if booking.late_next_day
       payout += 20 if booking.late_same_day
       payout += 20 if booking.no_access_fee
-      payout
+      payout / size
     end
   end
 
