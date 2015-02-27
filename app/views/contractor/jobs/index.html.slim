@@ -4,34 +4,56 @@
       .typcn.typcn-document-text
     .text Jobs
   .tabs
-    .filters
-      input type='hidden' ui-select2='filters()' ng:model='filter'
-    .tab.open.active ng:click="tab('open')" Open
-    .tab.upcoming ng:click="tab('upcoming')" Upcoming
-    .tab.past ng:click="tab('past')" Past
+    /.filters
+    /  input type='hidden' ui-select2='filters()' ng:model='filter'
+    .tab.open.active ng:click="tab('open')" Open ({{tabs[0].count}})
+    .tab.upcoming ng:click="tab('upcoming')" Upcoming ({{tabs[1].count}})
+    .tab.past ng:click="tab('past')" Past ({{tabs[2].count}})
   .tab-content
     .tab ng:repeat="tab in tabs" class='{{tab.name}}'
       .day ng:repeat="day in tab.days"
         .head
           .text ng:bind='::day[2].date_text'
-        .jobs ng:repeat='job in day[1]'
-          .job id='job-{{job.id}}'
-            .photo
+        .jobs 
+          .job id='job-{{job.id}}' ng:repeat='job in day[1]'
+            .photo ng:show="tab.name != 'upcoming'"
               img ng:src='{{job.booking.property.primary_photo}}'
-            .title
-              .text ng:bind='::job.booking.property.neighborhood'
-            .button.teal ng:click='claim(job)' ng:show="tab.name == 'open'"
+              .column
+            .title ng:show="tab.name == 'upcoming'"
               .icon
-                .typcn.typcn-tick
-              .text Claim Job
-            a href='/jobs/{{job.id}}'
-              .button.teal ng:show="tab.name == 'upcoming'"
-                .icon
-                  .typcn.typcn-document-text
-                .text View Job
-            .infos
-              .info
-                .icon
-                  .typcn.typcn-credit-card
-                .text
-                  | ${{job.booking.cost}}
+                .typcn.typcn-time
+              .text Job {{$index+1}}
+              .column
+            .right
+              .top
+                .button.teal ng:click='claim(job)' ng:show="tab.name == 'open'"
+                  .icon
+                    .typcn.typcn-tick
+                  .text Claim Job
+                a href='/jobs/{{job.id}}' ng:show="tab.name == 'upcoming' || tab.name == 'past'"
+                  .button.teal
+                    .icon
+                      .typcn.typcn-document-text
+                    .text View Job
+                .neighborhood.address ng:show="tab.name == 'open'"
+                  .name ng:bind='::job.booking.property.neighborhood'
+                .address ng:show="tab.name == 'upcoming' || tab.name == 'past'"
+                  .name ng:bind='::job.booking.property.user.name'
+                  .address1
+                    | {{::job.booking.property.address1}}, {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
+              .bottom
+                .rooms
+                  i.icon-house ng:if='job.booking.property.property_type_cd == 0'
+                  i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
+                  .text
+                    | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
+                .contractors
+                  i.icon-person
+                  .text ng:bind='::job.size'
+                .right
+                  .icon
+                    .typcn.typcn-credit-card
+                  .pricing
+                    | ${{::job.payout_integer}}
+                    span ng:hide='job.payout_fractional == 0'
+                      | .{{::job.payout_fractional}}

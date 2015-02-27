@@ -126,7 +126,7 @@ class Booking < ActiveRecord::Base
   private
 
   def create_job
-    job = self.build_job(status_cd: 0)
+    job = self.build_job(status_cd: 0, date: date)
     job.size = 2 if property.bedrooms > 4
   end
 

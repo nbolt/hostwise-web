@@ -7,7 +7,7 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
     _(rsp).each (job) ->
       date = {}
       date.job = job.id
-      date.moment = moment.utc job.booking.date
+      date.moment = moment.utc job.date
       date.day = date.moment.format 'D'
       date.month = date.moment.format 'MMM'
       date.time = '9:45 AM'
@@ -42,7 +42,7 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
           _(rsp).each (job) ->
             date = {}
             date.job = job.id
-            date.moment = moment.utc job.booking.date
+            date.moment = moment.utc job.date
             date.day = date.moment.format 'D'
             date.month = date.moment.format 'MMM'
             date.time = '9:45 AM'

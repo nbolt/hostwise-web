@@ -2,12 +2,13 @@ class Job < ActiveRecord::Base
   belongs_to :booking
   has_many :contractor_jobs, class_name: 'ContractorJobs'
   has_many :contractors, through: :contractor_jobs, source: :user
+  has_many :payouts
 
   as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4
 
-  scope :trainers, -> { where('user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }
+  scope :trainers, -> { where('contractor_jobs.user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }
   scope :future, -> { where('date >= ?', Time.now.utc).includes(:booking).references(:booking) }
-  scope :on_date, ->(date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day).includes(:booking).references(:booking) }
+  scope :on_date, ->(date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { on_date(Time.now.utc) }
   scope :distribution, -> { where(distribution: true) }
   scope :standard, -> { where(distribution: false) }
@@ -15,38 +16,45 @@ class Job < ActiveRecord::Base
   scope :team, -> { where('size > 1') }
 
   def self.open contractor
-    Job.where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and bookings.date >= ?', contractor.id, Date.today).order('bookings.date ASC').includes(:contractor_jobs, :booking).references(:contractor_jobs, :booking)
+    Job.standard.where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   end
 
   def self.upcoming contractor
-    Job.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('bookings.date ASC').includes(:contractor_jobs, :booking).references(:contractor_jobs, :booking)
+    Job.standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   end
 
   def self.past contractor
-    Job.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('bookings.date ASC').includes(:contractor_jobs, :booking).references(:contractor_jobs, :booking)
+    Job.standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   end
 
   def payout
-    (booking.cost * 0.7).round(2)
+    if booking
+      (booking.cost * 0.7).round(2)
+    end
   end
 
   def payout_integer
-    (booking.cost * 0.7).round(2).to_s.split('.')[0].to_i
+    payout.to_s.split('.')[0].to_i if booking
   end
 
   def payout_fractional
-    (booking.cost * 0.7).round(2).to_s.split('.')[1].to_i
+    payout.to_s.split('.')[1].to_i if booking
   end
 
   def start!
     in_progress!
     save
-    TwilioJob.perform_later("+1#{self.booking.property.user.phone_number}", "Porter arrived at #{self.booking.property.short_address}") if self.booking.property.user.settings(:porter_arrived).sms
+    TwilioJob.perform_later("+1#{self.booking.property.user.phone_number}", "HostWise arrived at #{self.booking.property.short_address}") if self.booking.property.user.settings(:porter_arrived).sms
   end
 
   def complete!
     completed!
-    booking.charge!
+    if booking
+      booking.charge!
+      contractors.each do |contractor|
+        contractor.payouts.create(job_id: self.id, amount: payout * 100)
+      end
+    end
     save
   end
 
@@ -59,7 +67,7 @@ class Job < ActiveRecord::Base
     supplies = {king_beds:0,queen_beds:0,full_beds:0,twin_beds:0,toiletries:0}
 
     if single_jobs[0]
-      distribution_job = user.jobs.create(distribution: true, status_cd: 1, priority: 0, booking_id: booking.id) unless distribution_job
+      distribution_job = user.jobs.create(distribution: true, status_cd: 1, priority: 0, date: booking.date) unless distribution_job
       single_jobs.each do |job|
         if job.booking.services.index Service.where(name: 'linens')[0]
           supplies[:king_beds] += job.booking.property.king_beds
@@ -72,7 +80,7 @@ class Job < ActiveRecord::Base
     end
 
     if team_job && team_job.contractors.count == 1
-      distribution_job = user.jobs.create(distribution: true, status_cd: 1, priority: 0, booking_id: booking.id) unless distribution_job
+      distribution_job = user.jobs.create(distribution: true, status_cd: 1, priority: 0, date: booking.date) unless distribution_job
       if team_job.booking.services.index Service.where(name: 'linens')[0]
         supplies[:king_beds] += team_job.booking.property.king_beds
         supplies[:queen_beds] += team_job.booking.property.queen_beds

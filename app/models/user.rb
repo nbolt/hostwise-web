@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   has_one  :availability, dependent: :destroy
   has_one  :background_check, dependent: :destroy
   has_many :service_notifications, dependent: :destroy
+  has_many :payouts
 
   as_enum :role, admin: 0, host: 1, contractor: 2
   as_enum :status, trainee: 1, contractor: 2, trainer: 3
@@ -67,8 +68,16 @@ class User < ActiveRecord::Base
     to_settings_hash
   end
 
+  def earnings
+    payouts.where(status_cd: 1).reduce(0){|acc, payout| acc + payout.amount} / 100.0
+  end
+
+  def unpaid
+    payouts.where(status_cd: 0).reduce(0){|acc, payout| acc + payout.amount} / 100.0
+  end
+
   def claim_job job
-    jobs_today = self.jobs.on_date(job.booking.date)
+    jobs_today = self.jobs.on_date(job.date)
     training_job = jobs_today.where(training:true)[0]
     if job.contractors.count == job.size
       false
@@ -96,9 +105,9 @@ class User < ActiveRecord::Base
       job.open!
       job.save
       job.handle_distribution_job self
-      Job.set_priorities self.jobs.on_date(job.booking.date).standard
+      Job.set_priorities self.jobs.on_date(job.date).standard
       if job.contractors[0]
-        jobs = job.contractors[0].jobs.on_date(job.booking.date).standard
+        jobs = job.contractors[0].jobs.on_date(job.date).standard
         job.handle_distribution_job jobs
         Job.set_priorities jobs
       end
@@ -122,7 +131,7 @@ class User < ActiveRecord::Base
 
   def next_job_date
     jobs = self.jobs.upcoming self
-    return jobs.sort_by{|j| j.booking.date}.first.booking.date if jobs.present?
+    return jobs.sort_by{|j| j.date}.first.booking.date if jobs.present?
   end
 
   def next_service_date

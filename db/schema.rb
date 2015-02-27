@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225173958) do
+ActiveRecord::Schema.define(version: 20150227011152) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,11 +62,13 @@ ActiveRecord::Schema.define(version: 20150225173958) do
     t.integer  "property_id"
     t.integer  "payment_id"
     t.datetime "date"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "status_cd"
     t.string   "balanced_order_id"
     t.integer  "payment_status_cd", default: 0
+    t.boolean  "late_next_day",     default: false
+    t.boolean  "late_same_day",     default: false
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -133,6 +135,7 @@ ActiveRecord::Schema.define(version: 20150225173958) do
     t.integer  "size",         default: 1
     t.integer  "toiletries"
     t.boolean  "training",     default: false
+    t.datetime "date"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -166,6 +169,15 @@ ActiveRecord::Schema.define(version: 20150225173958) do
   end
 
   add_index "payments", ["user_id"], name: "index_payments_on_user_id", using: :btree
+
+  create_table "payouts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "job_id"
+    t.integer  "status_cd",  default: 0
+    t.integer  "amount"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "properties", force: :cascade do |t|
     t.integer  "user_id"

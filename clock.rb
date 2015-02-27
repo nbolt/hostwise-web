@@ -25,4 +25,6 @@ module Clockwork
 
   every(1.day, 'payments.process', :at => '00:00')
   every(1.day, 'jobs.outstanding.process', :at => '00:00')
+
+  every(1.week, 'payouts.process', :at => 'Wednesday 20:00')
 end

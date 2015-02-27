@@ -14,13 +14,17 @@
       .right ng:bind='::today'
       .text Today's Schedule
     .header-message ng:show='!user.jobs_today[0]'
-      .icon
-        .typcn.typcn-time
-      .text You don't have any upcoming jobs today
+      .right
+        a href='/jobs' Claim jobs
+      .left
+        .icon
+          .typcn.typcn-time
+        .text You don't have any upcoming jobs today
     .header-message ng:show="jobs_completed()"
-      .icon
-        .typcn.typcn-time
-      .text Congratulations! You're finished for the day.
+      .left
+        .icon
+          .typcn.typcn-time
+        .text Congratulations! You're finished for the day.
     .distribution ng:show='user.distribution_job'
       .top
         .right
@@ -81,7 +85,7 @@
                 | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
             .contractors
               i.icon-person
-              .text ng:bind='::job.contractors.length'
+              .text ng:bind='::job.contractor_count'
             .right
               .icon
                 .typcn.typcn-credit-card
@@ -89,3 +93,20 @@
                 | ${{::job.payout_integer}}
                 span ng:hide='job.payout_fractional == 0'
                   | .{{::job.payout_fractional}}
+  .earnings
+    .total.earning
+      .top
+        i.icon-pay-total
+        .text Total Earnings
+      .bottom
+        .amount
+          | $
+          span ng:bind='::user.earnings'
+    .unpaid.earning
+      .top
+        i.icon-earnings
+        .text Total Unpaid Earnings
+      .bottom
+        .amount
+          | $
+          span ng:bind='::user.unpaid'

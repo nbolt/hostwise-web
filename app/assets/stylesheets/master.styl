@@ -710,6 +710,127 @@ form
         opacity: 0.3
 
 .container.contractor
+  .jobs
+    margin-top: 15px
+    .job
+      background-color: white
+      margin-bottom: 10px
+      height: 116px
+      .bottom
+        border-top: 2px solid lighter-gray
+        height: 40px
+        overflow: hidden
+        color: dark-gray
+        .contractors, .rooms, .text
+          display: inline-block
+          vertical-align: top
+        .contractors, .rooms
+          margin: 8px 0 0 20px
+          i
+            margin-right: 6px
+        .right
+          float: right
+          background-color: lighter-gray
+          height: 40px
+          padding: 8px 20px
+          box-sizing: border-box
+          color: #7F8389
+          width: 113px
+          .icon, .pricing
+            display: inline-block
+            vertical-align: top
+          .pricing
+            font-weight: 600
+            padding-bottom: 3px
+            span
+              font-size: .8em
+            &.special
+              border-bottom: 2px solid gold
+          .icon
+            font-size: 1.25em
+            margin: -4px 6px 0 0
+      .top
+        height: 74px
+        a
+          text-decoration: none
+          float: right
+          .text.completed
+            color: white
+            margin: 45px 25px 0 0
+          &:hover .text
+            text-decoration: underline
+        .button
+          padding: 0
+          text-align: left
+          width: 135px
+          margin: 17px
+          float: right
+          .icon, .text
+            display: inline-block
+            vertical-align: top
+          .icon
+            width: 40px
+            height: 40px
+            font-size: 1.6em
+            .typcn
+              margin: 2px 0 0 7px
+          .text
+            width: 95px
+            text-align: center
+            margin-top: 9px
+      .title, .address
+        display: inline-block
+        vertical-align: top
+      .column
+        background: linear-gradient(left, 0% white, lighter-gray)
+        height: 116px
+        width: 32px
+        float: right
+      .photo
+        float: left
+        width: 121px
+        height: 116px
+        img
+          width: 80px
+          margin: 16px 0 0 20px
+          border-radius: 50%
+        .column
+          width: 20px
+      .title
+        float: left
+        .text, .icon
+          display: inline-block
+          vertical-align: top
+        .icon
+          font-size: 1.3em
+          margin: 42px 8px 0 22px
+          color: #D3D3D3
+        .text
+          font-weight: 700
+          margin-top: 48px
+      .address
+        margin: 20px
+        font-size: .9em
+        color: dark-gray
+        .name
+          color: heavy-gray
+          font-weight: 600
+      .neighborhood
+        margin-top: 28px
+        font-size: 1em
+        color: heavy-gray
+      &.complete
+        background-color: teal
+        color: white
+        .address1, .title .icon, .name
+          color: white
+        .bottom
+          display: none
+        .address
+          margin-top: 36px
+          font-size: 1em
+        .column
+          background: linear-gradient(left, 0% teal, #32A6AB)
   .page-title
     font-size: 1.6em
   .row
@@ -904,7 +1025,7 @@ form
     font-size: 2em
     margin: 50px 0 15px
   .schedule
-    margin-top: 50px
+    margin: 50px 0 25px
     .head
       border-bottom: thin solid heavy-gray
       padding-bottom: 10px
@@ -914,10 +1035,22 @@ form
         float: right
     .header-message
       background-color: orange
-      padding: 12px 15px
       color: white
       border-radius: 1px
       margin-bottom: 15px
+      .left
+        padding: 12px 15px
+      .right
+        float: right
+        background-color: dark-gold
+        height: 44px
+        width: 120px
+        padding-top: 11px
+        box-sizing: border-box
+        text-align: center
+        a
+          color: white
+          text-decoration: none
       .icon, .text
         display: inline-block
         vertical-align: top
@@ -991,109 +1124,38 @@ form
               color: teal
             .num
               margin-left: 8px
-    .jobs
-      margin-top: 15px
-      .job
-        background-color: white
-        margin-bottom: 10px
-        height: 116px
-        .bottom
-          border-top: 2px solid lighter-gray
-          height: 40px
-          overflow: hidden
-          color: dark-gray
-          .contractors, .rooms, .text
-            display: inline-block
-            vertical-align: top
-          .contractors, .rooms
-            margin: 8px 0 0 20px
-            i
-              margin-right: 6px
-          .right
-            float: right
-            background-color: lighter-gray
-            height: 40px
-            padding: 8px 20px
-            box-sizing: border-box
-            color: #7F8389
-            width: 113px
-            .icon, .pricing
-              display: inline-block
-              vertical-align: top
-            .pricing
-              font-weight: 600
-              padding-bottom: 3px
-              span
-                font-size: .8em
-              &.special
-                border-bottom: 2px solid gold
-            .icon
-              font-size: 1.25em
-              margin: -4px 6px 0 0
-        .top
-          a
-            text-decoration: none
-            float: right
-            .text.completed
-              color: white
-              margin: 45px 25px 0 0
-            &:hover .text
-              text-decoration: underline
-            .button
-              padding: 0
-              text-align: left
-              width: 135px
-              margin: 17px
-              .icon, .text
-                display: inline-block
-                vertical-align: top
-              .icon
-                width: 40px
-                height: 40px
-                font-size: 1.6em
-                .typcn
-                  margin: 2px 0 0 7px
-              .text
-                width: 95px
-                text-align: center
-                margin-top: 9px
-        .title, .address
+  .earnings
+    padding-top: 25px
+    border-top: thin solid heavy-gray
+    .earning
+      display: inline-block
+      vertical-align: top
+      background-color: white
+      width: 49%
+      &:first-child
+        margin-right: 2%
+      .top
+        border-bottom: thin solid gray
+        padding: 15px
+        box-sizing: border-box
+        i, .text
           display: inline-block
           vertical-align: top
-        .title
-          float: left
-          .text, .column, .icon
-            display: inline-block
-            vertical-align: top
-          .icon
-            font-size: 1.3em
-            margin: 42px 8px 0 22px
-            color: #D3D3D3
-          .text
-            font-weight: 700
-            margin-top: 48px
-          .column
-            background: linear-gradient(left, 0% white, lighter-gray)
-            height: 116px
-            width: 32px
-        .address
-          margin: 20px
-          font-size: .9em
+        i
+          color: teal
+          margin-right: 10px
+          font-size: 1.25em
+        .text
           color: dark-gray
-          .name
-            font-weight: 600
-        &.complete
-          background-color: teal
-          color: white
-          .address1, .title .icon, .name
-            color: white
-          .bottom
-            display: none
-          .address
-            margin-top: 36px
-            font-size: 1em
-          .column
-            background: linear-gradient(left, 0% teal, #32A6AB)
+          font-weight: 600
+          font-size: 1.1em
+          margin-top: 3px
+      .bottom
+        padding: 15px
+        .amount
+          color: teal
+          font-size: 1.5em
+          font-weight: 600
 
 .property-form-container
   margin: 40px auto 0
@@ -1625,7 +1687,7 @@ form
       display: inline-block
       vertical-align: top
       margin-right: 10px
-      background-color: gray
+      background-color: white
       padding: 15px
       width: 150px
       text-align: center
@@ -1634,6 +1696,7 @@ form
         cursor: pointer
       &.active, &:hover
         background-color: white
+        border-bottom: 2px solid teal
   .tab-content
     margin-top: 25px
     .tab
@@ -1641,6 +1704,7 @@ form
       &.active
         display: block
       .day
+        margin-bottom: 50px
         .head
           color: heavy-gray
           border-bottom: 2px solid heavy-gray
@@ -1648,70 +1712,6 @@ form
           font-size: 1.25em
           font-weight: 700
           margin-bottom: 20px
-        .jobs
-          .job
-            background-color: white
-            padding: 18px 32px
-            margin: 5px auto 80px
-            border-radius: 1px
-            .button
-              margin: 0 10px
-              color: white
-              text-align: left
-              display: inline-block
-              vertical-align: top
-              float: right
-              width: 200px
-              padding: 0
-              margin-top: 22px
-              .icon, .text
-                display: inline-block
-                vertical-align: top
-              .icon
-                width: 40px
-                height: 40px
-                font-size: 1.6em
-                .typcn
-                  margin: 2px 0 0 8px
-              .text
-                text-align: center
-                font-size: 1.25em
-                margin-top: 7px
-                width: 160px
-              &:hover
-                cursor: pointer
-            .photo, .title, .infos
-              display: inline-block
-              vertical-align: top
-            .photo
-              width: 80px
-              height: 80px
-              border-radius: 50%
-              background-color: light-gray
-              img
-                border-radius: 50%
-                height: 80px
-                width: 80px
-            .title
-              margin: 28px 0 0 15px
-              .text
-                font-weight: bold
-                font-size: 1.1em
-            .infos
-              float: right
-              margin: 15px 30px 0 0
-              .info
-                .icon, .text
-                  display: inline-block
-                  vertical-align: top
-                .icon
-                  font-size: 2em
-                  margin-right: 5px
-                  color: #D3D3D3
-                .text
-                  font-size: 1.4em
-                  margin-top: 10px
-                  font-weight: 600
 
 .card-entry
   border: thin solid border-gray

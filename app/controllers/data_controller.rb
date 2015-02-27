@@ -31,8 +31,8 @@ class DataController < ApplicationController
       when 'past'
         jobs = jobs.past(current_user)
     end
-    jobs = jobs.group_by{|j| j.booking.date}.sort_by{|d|d}
-    render json: jobs.to_json(methods: [:payout_rounded], include: {booking: {methods: :cost, include: {property: {methods: [:short_address, :primary_photo, :neighborhood]}}}})
+    jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|d|d}
+    render json: jobs.to_json(methods: [:payout_integer, :payout_fractional], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :primary_photo, :neighborhood]}}}})
   end
 
   def transactions

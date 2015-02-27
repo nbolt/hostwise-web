@@ -13,9 +13,10 @@
       .right ng:bind='::training.date'
       .text Training Day {{$index+1}}
     .header-message ng:show="jobs_completed(training)"
-      .icon
-        .typcn.typcn-time
-      .text Congratulations! You're finished for the day.
+      .left
+        .icon
+          .typcn.typcn-time
+        .text Congratulations! You're finished for the day.
     .distribution
       .top
         .right
@@ -76,7 +77,7 @@
                 | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
             .contractors
               i.icon-person
-              .text ng:bind='::job.contractors.length'
+              .text ng:bind='::job.contractor_count'
             .right
               .icon
                 .typcn.typcn-credit-card
@@ -84,3 +85,20 @@
                 | ${{::job.payout_integer}}
                 span ng:hide='job.payout_fractional == 0'
                   | .{{::job.payout_fractional}}
+  .earnings
+    .total.earning
+      .top
+        i.icon-pay-total
+        .text Total Earnings
+      .bottom
+        .amount
+          | $
+          span ng:bind='::user.earnings'
+    .unpaid.earning
+      .top
+        i.icon-earnings
+        .text Total Unpaid Earnings
+      .bottom
+        .amount
+          | $
+          span ng:bind='::user.unpaid'

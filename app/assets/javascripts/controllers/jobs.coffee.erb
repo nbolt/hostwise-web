@@ -41,9 +41,10 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
         if tab.name == 'open' && !tab.days # there's a better way to do this
           angular.element('.tab-content .tab:eq(0)').addClass 'active'
         tab.days = rsp
+        tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
         _(tab.days).each (day) ->
           day.push {}
-          date = moment.utc(day[0],"YYYY-MM-DD")
+          date = moment.utc(day[0],"MM-DD-YY")
           date_text = date.format("ddd, MMM D")
           if date.month() == moment().month()
             if date.date() == moment().date()
