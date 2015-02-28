@@ -47,6 +47,7 @@ PropertySearchCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($sc
     $timeout((->
       angular.element('.booking.modal .content.side').removeClass 'active'
       angular.element('.booking.modal .content.side.calendar').addClass 'active'
+      $scope.$broadcast 'booking_selection'
     ),100)
 
     $http.get("/properties/#{property.slug}.json").success (rsp) ->

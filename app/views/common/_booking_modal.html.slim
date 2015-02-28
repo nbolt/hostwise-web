@@ -1,66 +1,41 @@
 script#booking-modal type="text/ng-template"
   .booking.modal ng:controller='booking_modal'
-    .header
-      .icon
-        i.icon-calendar
-      .text ng:if='!exists()'
-        | Select Date(s) & Services
-      .text ng:if='exists()'
-        | Confirm Booking & Payment
     .content-container ng:class="exists() && 'exist'"
-      .content-group
-        .content-body
-          .content.cal ng:if='!exists()'
-            .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
-          .content
-            .content-side-container ng:if='exists()'
-              .content-side.details
-                .invoice Invoice
-                .days
-                  .day collapse='' ng:repeat='day in days'
-                    .total
-                      .arrow
-                        i.icon-acc-open
-                      .text ng:bind='::day.date'
-                      .price ${{day.total}}
-                    .day-services
-                      - Service.all.each do |service|
-                        .service ng:show="day.#{service.name}"
-                          .text= service.display
-                          .price
-                            | $
-                            span ng:bind="day.#{service.name}"
-                .total
-                  .text Total
-                  .price ${{total}}
-              .content-side
-                .services
-                  .title =t('booking.modal.services_title')
-                  - Service.standard.each do |service|
-                    .service class="#{service.name}"
-                      i.icon class="icon-serv-#{service.name}"
-                      .text= service.display
-                      label.switch.red
-                        input type='checkbox' toggle-service="#{service.name}"
-                        i
-                .extra
-                  .title =t('booking.modal.extras_title')
-                  - Service.extra.each do |service|
-                    .service class="#{service.name}"
-                      i.icon class="icon-serv-#{service.name}"
-                      .text= service.display
-                      label.switch.red
-                        input type='checkbox' toggle-service="#{service.name}"
-                        i
-            div ng:if='!exists()'
+      .content-group.existing ng:if='exists()'
+        .header
+          .icon
+            i.icon-calendar
+          .text Confirm Booking & Payment
+        .content
+          .content-side-container
+            .content-side.details
+              .invoice Invoice
+              .days
+                .day collapse='' ng:repeat='day in days'
+                  .total
+                    .arrow
+                      i.icon-acc-open
+                    .text ng:bind='::day.date'
+                    .price ${{day.total}}
+                  .day-services
+                    - Service.all.each do |service|
+                      .service ng:show="day.#{service.name}"
+                        .text= service.display
+                        .price
+                          | $
+                          span ng:bind="day.#{service.name}"
+              .total
+                .text Total
+                .price ${{total}}
+            .content-side.services
               .services
                 .title =t('booking.modal.services_title')
                 - Service.standard.each do |service|
-                  .service.active class="#{service.name}"
+                  .service class="#{service.name}"
                     i.icon class="icon-serv-#{service.name}"
                     .text= service.display
                     label.switch.red
-                      input checked='true' type='checkbox' toggle-service="#{service.name}"
+                      input type='checkbox' toggle-service="#{service.name}"
                       i
               .extra
                 .title =t('booking.modal.extras_title')
@@ -71,54 +46,44 @@ script#booking-modal type="text/ng-template"
                     label.switch.red
                       input type='checkbox' toggle-service="#{service.name}"
                       i
-          .content.payment ng:if='exists()'
-            div.existing-payment
-              .payment-title Select Payment Method
-              .payment-method.existing
-                .icon
-                  .typcn.typcn-credit-card
-                input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
-            div.new-payment
-              .payment-title Add Payment Method
-              .payment-method
-                input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
-              .payment-tab.ach
-                .field.name
-                  .label Name On Account
-                  input ng:model='$parent.bank.name'
-                .row.two
-                  .field.account-number
-                    .label Account Number
-                    input ng:model='$parent.bank.account_number'
-                  .field.routing-number
-                    .label Routing Number
-                    input ng:model='$parent.bank.routing_number'
-              .payment-tab.credit-card.active
-                .field.card-number
-                  .label Card Number
-                  input data-stripe='number' ng:model='$parent.card.number'
-                .row.two
-                  .field.expiry
-                    .label Expiry Date
-                    input data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
-                  .field.cvc
-                    .label CV Code
-                    input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
-              a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
-        .foot.next ng:hide='exists()'
-          .right
-            .total
-              .text.dollar
-                | $
-              .text.amount
-                | {{service_total}}
-              .text.per
-                | / Service
-            .button.teal ng:click='next()' Next
-        .foot.save ng:show='exists()'
+        .content.payment
+          div.existing-payment
+            .payment-title Select Payment Method
+            .payment-method.existing
+              .icon
+                .typcn.typcn-credit-card
+              input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
+          div.new-payment
+            .payment-title Add Payment Method
+            .payment-method
+              input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
+            .payment-tab.ach
+              .field.name
+                .label Name On Account
+                input ng:model='$parent.bank.name'
+              .row.two
+                .field.account-number
+                  .label Account Number
+                  input ng:model='$parent.bank.account_number'
+                .field.routing-number
+                  .label Routing Number
+                  input ng:model='$parent.bank.routing_number'
+            .payment-tab.credit-card.active
+              .field.card-number
+                .label Card Number
+                input data-stripe='number' ng:model='$parent.card.number'
+              .row.two
+                .field.expiry
+                  .label Expiry Date
+                  input data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
+                .field.cvc
+                  .label CV Code
+                  input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
+            a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
+        .foot.save
           .left
             .button.grey ng:click='details()' View Details
-            .cancel ng:click='to_booking_cancellation()' Cancel
+            .cancel ng:click='to_booking_cancellation()' Cancel this service date?
             .text
               | Do you wish to
               span ng:click='to_booking_cancellation()'  cancel this service date?
@@ -131,71 +96,111 @@ script#booking-modal type="text/ng-template"
               .text.per
                 | / Service
             .button.teal ng:click='update()' Save
-      .content-group ng:if='!exists()'
-        .content-body
-          .content.details
-            .invoice Invoice
-            .days
-              .day collapse='' ng:repeat='day in days'
-                .total
-                  .arrow
-                    i.icon-acc-open
-                  .text ng:bind='::day.date'
-                  .price ${{day.total}}
-                .day-services
-                  .late ng:show="day.next_day_booking"
-                    .text Late Day Booking Fee
-                    .price
-                      | $
-                      span ng:bind="day.next_day_booking"
-                  .late ng:show="day.same_day_booking"
-                    .text Same Day Booking Fee
-                    .price
-                      | $
-                      span ng:bind="day.same_day_booking"
-                  - Service.all.each do |service|
-                    .service ng:show="day.#{service.name}"
-                      .text= service.display
-                      .price
-                        | $
-                        span ng:bind="day.#{service.name}"
+      .content-group.step-one ng:if='!exists()'
+        .header
+          .icon
+            i.icon-calendar
+          .text Select Date(s) & Services
+        .content.cal
+          .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
+        .content
+          div ng:if='!exists()'
+            .services
+              .title =t('booking.modal.services_title')
+              - Service.standard.each do |service|
+                .service.active class="#{service.name}"
+                  i.icon class="icon-serv-#{service.name}"
+                  .text= service.display
+                  label.switch.red
+                    input checked='true' type='checkbox' toggle-service="#{service.name}"
+                    i
+            .extra
+              .title =t('booking.modal.extras_title')
+              - Service.extra.each do |service|
+                .service class="#{service.name}"
+                  i.icon class="icon-serv-#{service.name}"
+                  .text= service.display
+                  label.switch.red
+                    input type='checkbox' toggle-service="#{service.name}"
+                    i
+        .foot.next
+          .right
             .total
-              .text Total
-              .price ${{total}}
-          .content.payment
-            div.existing-payment
-              .payment-title Select Payment Method
-              .payment-method.existing
-                .icon
-                  .typcn.typcn-credit-card
-                input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
-            div.new-payment
-              .payment-title Add Payment Method
-              .payment-method
-                input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
-              .payment-tab.ach
-                .field.name
-                  .label Name On Account
-                  input ng:model='$parent.bank.name'
-                .row.two
-                  .field.account-number
-                    .label Account Number
-                    input ng:model='$parent.bank.account_number'
-                  .field.routing-number
-                    .label Routing Number
-                    input ng:model='$parent.bank.routing_number'
-              .payment-tab.credit-card.active
-                .field.card-number
-                  .label Card Number
-                  input data-stripe='number' ng:model='$parent.card.number'
-                .row.two
-                  .field.expiry
-                    .label Expiry Date
-                    input data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
-                  .field.cvc
-                    .label CV Code
-                    input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
-              a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
+              .text.dollar
+                | $
+              .text.amount
+                | {{service_total}}
+              .text.per
+                | / Service
+            .button.teal ng:click='next()' Next
+      .content-group.step-two ng:if='!exists()'
+        .header
+          .icon
+            i.icon-calendar
+          .text Confirm Booking & Payment
+        .content.details
+          .invoice Invoice
+          .days
+            .day collapse='' ng:repeat='day in days'
+              .total
+                .arrow
+                  i.icon-acc-open
+                .text ng:bind='::day.date'
+                .price ${{day.total}}
+              .day-services
+                .late ng:show="day.next_day_booking"
+                  .text Late Day Booking Fee
+                  .price
+                    | $
+                    span ng:bind="day.next_day_booking"
+                .late ng:show="day.same_day_booking"
+                  .text Same Day Booking Fee
+                  .price
+                    | $
+                    span ng:bind="day.same_day_booking"
+                - Service.all.each do |service|
+                  .service ng:show="day.#{service.name}"
+                    .text= service.display
+                    .price
+                      | $
+                      span ng:bind="day.#{service.name}"
+          .total
+            .text Total
+            .price ${{total}}
+        .content.payment
+          div.existing-payment
+            .payment-title Select Payment Method
+            .payment-method.existing
+              .icon
+                .typcn.typcn-credit-card
+              input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
+          div.new-payment
+            .payment-title Add Payment Method
+            .payment-method
+              input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
+            .payment-tab.ach
+              .field.name
+                .label Name On Account
+                input ng:model='$parent.bank.name'
+              .row.two
+                .field.account-number
+                  .label Account Number
+                  input ng:model='$parent.bank.account_number'
+                .field.routing-number
+                  .label Routing Number
+                  input ng:model='$parent.bank.routing_number'
+            .payment-tab.credit-card.active
+              .field.card-number
+                .label Card Number
+                input data-stripe='number' ng:model='$parent.card.number'
+              .row.two
+                .field.expiry
+                  .label Expiry Date
+                  input data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
+                .field.cvc
+                  .label CV Code
+                  input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
+            a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
         .foot
           .left
             .button.grey ng:click='change_dates()' Change Dates
@@ -206,78 +211,82 @@ script#booking-modal type="text/ng-template"
               .icon.check
                 i.icon-check
               .text ng:click='book()' Confirm & Book
-      .content-group.static
-        .content-body
-          .content.confirmation.teal
-            i.icon-check
-            .title-text You're all set!
-            .check-container
-              .check.in
-                .time 10 AM
-                .text CHECK-IN
-              .check.out
-                .time 4 PM
-                .text CHECK-OUT
-            .subtext Don't forget! Please make sure your guests check-out by 10am so our cleaners have time to get in and out before your next guests arrive.
-            .foot
-              .right
-                .button.white
-                  .text ng:click='confirm_booking()' Close
-          .content.confirmation.red.cancel
-            i.icon-alert-bolt
-            .title-text Are you sure you wish to cancel this job?
-            .check-container.ok
-              .text Service Date
-              .date ng:bind='::selected_date_confirmation'
-            .check-container.cancellation
-              .text Cancellation Fee
-              .fee ${{pricing.cancellation}}
-              .caption To avoid a fee, cancelling 24 hours in advance incurs no extra charge
-            .actions
-              .action.cancel ng:click='to_booking_selection()'
-                i.icon-close
-              .action.confirm ng:click='confirm_cancellation()'
-                i.icon-alert-ok
-      .content-group.static
-        .content-body
-          .content.confirmation.red.cancelled
-            i.icon-alert-bolt
-            .title-text Job Cancelled
-            .check-container
-              .text ng:bind='::selected_date_confirmation'
-            .farewell We hope to see you again!
-      .content-group.static
-        .content-body
-          .content.confirmation.red.next-day
+      .content-group.static.booked
+        .header
+          .icon
             i.icon-calendar
-            .title-text Late Next-Day Booking
-            .check-container
-              .fee ${{pricing.late_next_day}}
-              .caption Our Porters will arrive by 4.30PM at the latest
-            .actions
-              .action.cancel ng:click='cancel_late_day_booking()'
-                i.icon-close
-              .action.confirm ng:click='confirm_next_day_booking()'
-                i.icon-alert-ok
-          .content.confirmation.red.same-day
-            i.icon-calendar
-            .title-text Same Day Booking
-            .check-container
-              .fee ${{pricing.late_same_day}}
-              .caption We'll do our best to send someone as soon as possible but we cannot guarantee arrival time.
-            .actions
-              .action.cancel ng:click='cancel_late_day_booking()'
-                i.icon-close
-              .action.confirm ng:click='confirm_same_day_booking()'
-                i.icon-alert-ok
-          .content.confirmation.red.staging
-            i.icon-house
-            .title-text Do you only need a staging?
-            .check-container
-              .fee ${{pricing.staging}}
-              .caption We'll "spot check" cleaned and set the property with our linens, towels, and toiletries.
-            .actions
-              .action.cancel ng:click='cancel_staging()'
-                i.icon-close
-              .action.confirm ng:click='confirm_staging()'
-                i.icon-alert-ok
+          .text Booking Confirmed
+        .content.confirmation.teal
+          i.icon-check
+          .title-text You're all set!
+          .check-container
+            .check.in
+              .time 10 AM
+              .text CHECK-IN
+            .check.out
+              .time 4 PM
+              .text CHECK-OUT
+          .subtext Don't forget! Please make sure your guests check-out by 10am so our cleaners have time to get in and out before your next guests arrive.
+          .foot
+            .right
+              .button.white
+                .text ng:click='confirm_booking()' Close
+      .content-group.static.cancel
+        .content.confirmation.red
+          i.icon-alert-bolt
+          .title-text Are you sure you wish to cancel this job?
+          .check-container.ok
+            .text Service Date
+            .date ng:bind='::selected_date_confirmation'
+          .check-container.cancellation
+            .text Cancellation Fee
+            .fee ${{pricing.cancellation}}
+            .caption To avoid a fee, cancelling 24 hours in advance incurs no extra charge
+          .actions
+            .action.cancel ng:click='to_booking_selection()'
+              i.icon-close
+            .action.confirm ng:click='confirm_cancellation()'
+              i.icon-alert-ok
+      .content-group.static.cancelled
+        .content.confirmation.red
+          i.icon-alert-bolt
+          .title-text Job Cancelled
+          .check-container
+            .text ng:bind='::selected_date_confirmation'
+          .farewell We hope to see you again!
+      .content-group.static.next-day
+        .content.confirmation.red
+          i.icon-calendar
+          .title-text Late Next-Day Booking
+          .check-container
+            .fee ${{pricing.late_next_day}}
+            .caption Our Porters will arrive by 4.30PM at the latest
+          .actions
+            .action.cancel ng:click='cancel_late_day_booking()'
+              i.icon-close
+            .action.confirm ng:click='confirm_next_day_booking()'
+              i.icon-alert-ok
+      .content-group.static.same-day
+        .content.confirmation.red
+          i.icon-calendar
+          .title-text Same Day Booking
+          .check-container
+            .fee ${{pricing.late_same_day}}
+            .caption We'll do our best to send someone as soon as possible but we cannot guarantee arrival time.
+          .actions
+            .action.cancel ng:click='cancel_late_day_booking()'
+              i.icon-close
+            .action.confirm ng:click='confirm_same_day_booking()'
+              i.icon-alert-ok
+      .content-group.static.staging
+        .content.confirmation.red
+          i.icon-house
+          .title-text Do you only need a staging?
+          .check-container
+            .fee ${{pricing.staging}}
+            .caption We'll "spot check" cleaned and set the property with our linens, towels, and toiletries.
+          .actions
+            .action.cancel ng:click='cancel_staging()'
+              i.icon-close
+            .action.confirm ng:click='confirm_staging()'
+              i.icon-alert-ok

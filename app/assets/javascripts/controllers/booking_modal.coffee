@@ -39,25 +39,13 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
         $scope.payment_screen 'new'
       else
         $scope.payment_screen 'existing'
-      angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
-      update_header 2
+      $scope.slide 'step-two'
       $scope.calculate_pricing()
     null
 
   $scope.details = ->
-    if angular.element('.content-side-container').css('margin-left') == '0px'
-      if mobile()
-        angular.element('.content-side-container').css 'margin-left', margin_left()
-      else
-        angular.element('.content-side-container').css 'margin-left', margin_left()/2
-    else
-      angular.element('.content-side-container').css 'margin-left', 0
+    angular.element('.content-side-container .content-side').toggle()
     $scope.calculate_pricing()
-    null
-
-  $scope.change_dates = ->
-    angular.element('.booking.modal .content-container').css 'margin-left', 0
-    update_header 1
     null
 
   $scope.add_payment = (defer) ->
@@ -94,9 +82,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
             if rsp.success
               $scope.$emit 'fetch_user'
               defer.resolve rsp.payment.id if defer
-
-  $scope.confirm_booking = -> ngDialog.closeAll()
-  $scope.confirm_cancellation = -> ngDialog.closeAll()
 
   $scope.book = ->
     unless $scope.booking
@@ -153,51 +138,37 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
             day[k] = rsp[k] if v
           $scope.days.push day
 
-  $scope.to_booking_confirmation = ->
-    angular.element('.booking.modal .content.confirmation').removeClass 'active'
-    angular.element('.booking.modal .content.confirmation.teal').addClass 'active'
-    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*2
-    update_header 3
+  $scope.slide = (type) ->
+    angular.element('.booking.modal .content-container .content-group').css {'opacity': 0, 'display': 'none'}
+    angular.element(".booking.modal .content-container .content-group.#{type}").css {'opacity': 1, 'display': 'block'}
+    #angular.element('html, body').scrollTop 0
     null
 
-  $scope.to_late_day_confirmation = (type) ->
-    angular.element('.booking.modal .content.confirmation').removeClass 'active'
-    angular.element(".booking.modal .content.confirmation.red.#{type}").addClass 'active'
-    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*2
-    angular.element('.booking.modal .header').addClass 'white white-transition'
-    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
-
-  $scope.to_staging_confirmation = ->
-    angular.element('.booking.modal .content.confirmation').removeClass 'active'
-    angular.element('.booking.modal .content.confirmation.red.staging').addClass 'active'
-    m = if angular.element('.booking.modal .content-container').hasClass('exist') then 1 else 2
-    angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*m
-    angular.element('.booking.modal .header').addClass 'white white-transition'
-    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
+  $scope.confirm_booking = -> ngDialog.closeAll()
+  $scope.confirm_cancellation = -> ngDialog.closeAll()
+  $scope.change_dates = -> $scope.slide 'step-one'
+  $scope.to_booking_confirmation = -> $scope.slide 'booked'
+  $scope.to_late_day_confirmation = (type) -> $scope.slide type
+  $scope.to_staging_confirmation = -> $scope.slide 'staging'
+  $scope.to_existing_booking = -> $scope.slide 'existing'
 
   $scope.to_booking_selection = ->
-    angular.element('.booking.modal .content.confirmation').removeClass 'active'
-    angular.element('.booking.modal .content-container').css 'margin-left', 0
-    angular.element('.booking.modal .header').removeClass 'white'
-    $timeout((->angular.element('.booking.modal .header').removeClass 'white-transition'),600)
-    angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 1
-    null
+    if angular.element('.booking.modal .content-container').hasClass('exist')
+      $scope.slide 'existing'
+    else
+      $scope.slide 'step-one'
 
   $scope.to_booking_cancellation = ->
     $http.get("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/same_day_cancellation").success (rsp) ->
       $scope.same_day_cancellation = rsp.same_day_cancellation
-      angular.element('.booking.modal .content.confirmation').removeClass 'active'
-      el = angular.element('.booking.modal .content.confirmation.red.cancel')
-      el.addClass 'active'
+      $scope.slide 'cancel'
+      el = angular.element('.booking.modal .content-container .content-group.cancel')
       if $scope.same_day_cancellation
         el.find('.check-container.ok').hide()
         el.find('.check-container.cancellation').show()
       else
         el.find('.check-container.ok').show()
         el.find('.check-container.cancellation').hide()
-      angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
-      angular.element('.booking.modal .header').addClass 'white white-transition'
-      angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
     null
 
   $scope.cancel_late_day_booking = ->
@@ -237,12 +208,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       if rsp.success
         date = $scope.selected_date
         angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").removeClass('booked').removeAttr 'booking'
-        angular.element('.booking.modal .content.confirmation').removeClass 'active'
-        angular.element('.booking.modal .content.confirmation.red.cancelled').addClass 'active'
-        m = if angular.element('.booking.modal .content-container').hasClass('exist') then 1 else 2
-        angular.element('.booking.modal .content-container').css 'margin-left', margin_left()*m
-        angular.element('.booking.modal .header').addClass 'white white-transition'
-        angular.element('.booking.modal .header .icon, .booking.modal .header .text').css 'opacity', 0
+        $scope.slide 'cancelled'
 
   $scope.update = ->
     defer = $q.defer()
@@ -252,11 +218,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
         services: services_array()
       }).success (rsp) ->
         if rsp.success
-          angular.element('.booking.modal .content.confirmation').removeClass 'active'
-          angular.element('.booking.modal .content.confirmation.teal').addClass 'active'
-          angular.element('.booking.modal .content-container').css 'margin-left', margin_left()
-          update_header 3
-          null
+          $scope.to_booking_confirmation()
         else
           flash 'failure', rsp.message
     )
@@ -266,39 +228,30 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     else
       defer.resolve $scope.payment.id
 
-  mobile = ->
-    angular.element('.booking.modal .content-container .content-group').width() <= 320
-
-  margin_left = ->
-    container_width = angular.element('.booking.modal .content-container .content-group').width()
-    if container_width < 481
-      -320
-    else if container_width < 769
-      -700
-    else
-      -976
-
   flash = (type, msg) ->
     unless $scope.flashing
       $scope.flashing = true
-      orig_msg = angular.element('.booking.modal .header .text').text()
+      content_group_el = angular.element('.booking.modal .content-group').filter(':visible')
+      header_el = content_group_el.find('.header')
+      text_el = header_el.find('.text')
+      orig_msg = text_el.text()
       #angular.element('.ngdialog-close').css 'opacity', 0
-      angular.element('.booking.modal .header .text').css 'opacity', 0
-      angular.element('.booking.modal .header').addClass type
+      text_el.css 'opacity', 0
+      header_el.addClass type
       if msg.length > 80
-        angular.element('.booking.modal .header').css 'height', 74
+        header_el.css 'height', 74
       $timeout((->
-        angular.element('.booking.modal .header .text').text msg
-        angular.element('.booking.modal .header .text').css 'opacity', 1
+        text_el.text msg
+        text_el.css 'opacity', 1
       ), 500)
       $timeout((->
-        angular.element('.booking.modal .header').removeClass type
-        angular.element('.booking.modal .header .text').css 'opacity', 0
+        header_el.removeClass type
+        text_el.css 'opacity', 0
         if msg.length > 37
-          angular.element('.booking.modal .header').css 'height', 50
+          header_el.css 'height', 50
         $timeout((->
-          angular.element('.booking.modal .header .text').text orig_msg
-          angular.element('.booking.modal .header .text').css 'opacity', 1
+          text_el.text orig_msg
+          text_el.css 'opacity', 1
           #angular.element('.ngdialog-close').css 'opacity', 1
           $scope.flashing = false
         ), 500)
@@ -336,9 +289,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     }
 
   $rootScope.$on 'ngDialog.closing', (e, $dialog) ->
-    if $dialog.find('.ngdialog-content .modal .content.confirmation').hasClass('active')
+    el = $dialog.find('.ngdialog-content .modal .content-group').filter(':visible')
+    if el.hasClass('booked') or el.hasClass('cancelled')
       $scope.$emit 'refresh_bookings'
-      window.location = $scope.redirect_to if $scope.redirect_to
+    window.location = $scope.redirect_to if $scope.redirect_to
 
   services_array = ->
     services = []
@@ -346,25 +300,17 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       services.push service if selected
     services
 
-  update_header = (step) ->
-    title = 'Select Date(s) & Services'
-    switch step
-      when 2
-        title = 'Confirm Booking & Payment'
-      when 3
-        title = 'Booking Confirmed'
-    angular.element('.booking.modal .header .text').text title
-
   $scope.included_services = -> _(services_array()).join(', ')
 
   $scope.calculate_pricing() unless $scope.selected_services && $scope.selected_booking
 
-  $scope.$on 'calculate_pricing', -> $scope.calculate_pricing()
-
   $scope.load_pricing() unless $scope.pricing
 
+  $scope.$on 'calculate_pricing', -> $scope.calculate_pricing()
   $scope.$on 'next_day_confirmation', -> $scope.to_late_day_confirmation 'next-day'
   $scope.$on 'same_day_confirmation', -> $scope.to_late_day_confirmation 'same-day'
+  $scope.$on 'booking_selection', -> $scope.to_booking_selection()
+  $scope.$on 'existing_booking', -> $scope.to_existing_booking()
 ]
 
 app = angular.module('porter').controller('booking_modal', BookingModalCtrl)

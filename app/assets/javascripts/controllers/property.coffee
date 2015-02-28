@@ -104,6 +104,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
               $scope.selected_services[service.name] = true
               angular.element(".booking.modal .services .service.#{service.name}, .booking.modal .extra .service.#{service.name}").addClass 'active'
               angular.element(".booking.modal .services .service.#{service.name} input, .booking.modal .extra .service.#{service.name} input").attr 'checked', true
+            $timeout((->$scope.$broadcast 'existing_booking'),100)
             $scope.$broadcast 'calculate_pricing'
         else
           days_diff = $scope.selected_date.diff(moment.utc().startOf('day'), 'days')
@@ -112,6 +113,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
             $timeout((->$scope.$broadcast 'same_day_confirmation'),25)
           else if days_diff == 1 and hour >= 22 #next day booking after 10pm
             $timeout((->$scope.$broadcast 'next_day_confirmation'),25)
+          else
+            $timeout((->$scope.$broadcast 'booking_selection'),100)
     }
 
   $scope.update_details = ->

@@ -125,6 +125,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
     $timeout((->
       angular.element('.booking.modal .content.side').removeClass 'active'
       angular.element('.booking.modal .content.side.calendar').addClass 'active'
+      $scope.$broadcast 'booking_selection'
     ),100)
 
   $scope.modal_calendar_options =
