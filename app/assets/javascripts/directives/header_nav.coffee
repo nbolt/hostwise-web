@@ -6,7 +6,4 @@ app = angular.module('porter').directive('headerNav', [-> (scope, element, attrs
       menu.css('max-height', 260)
     else
       menu.css('max-height', 0)
-
-    menu.on 'mouseleave', ->
-      menu.css('max-height', 0)
 ])

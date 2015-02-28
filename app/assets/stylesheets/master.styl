@@ -15,7 +15,7 @@ html, body, .body
   background-color: gray
 
 .first-property-body
-  background: url('/images/first_time_graphic.png') no-repeat scroll 220px 0 #CED2D8
+  background: url('/images/first_time_graphic.png') no-repeat scroll 240px 0 #CED2D8
   background-size: 1688px 640px
   .body
     background-color: transparent
@@ -115,6 +115,7 @@ header
         text-decoration: none
         color: white
       &.head-button
+        display: none
         .drop-container
           top: 42px
           right: -25px
@@ -137,7 +138,7 @@ header
         @media phone
           right: -25px
         .drop
-          background-color: navy
+          background-color: darker-navy
         .drop-arrow
           width: 0
           height: 0
@@ -146,13 +147,20 @@ header
           border-bottom: 10px solid navy
           margin-left: 204px
         .links
-          padding: 6px 0
+          padding: 8px 0
           a
+            &:active, &:focus
+              outline: none
             &:hover
-              background-color: lighter-navy
-            .link
-              margin: 8px 0 8px 15px
-              color: dark-gray
+              background-color: black
+            i, .link
+              color: light-blue-gray
+              display: inline-block
+              max-height: 23px
+              line-height: 23px
+              vertical-align: top
+            i
+              margin: 8px 0 8px 30px
             &:hover .link
               color: white
         &.properties
@@ -164,7 +172,7 @@ header
               background-color: lighter-navy
               margin-left: 12px
               box-sizing: border-box
-              width: 220px
+              width: 240px
               border-radius: 20px
               margin: 15px auto 0
               i
@@ -199,7 +207,7 @@ header
                 vertical-align: top
                 color: dark-gray
                 max-height: 23px
-                width: 220px
+                width: 240px
                 text-align: left
               &:hover .link
                 color: white
@@ -261,7 +269,7 @@ footer
 
 .body
   width: auto
-  margin: 120px 0 0 220px
+  margin: 120px 0 0 240px
   padding: 0 50px 60px
   position: relative
   transition: margin-left .4s ease-in-out
@@ -296,13 +304,13 @@ footer
 
 #sidebar-container
   z-index: 1
-  background-color: light-navy
+  background-color: navy
   position: fixed
   top: 68px
   min-height: 100%
   left: 0
   bottom: 0
-  width: 220px
+  width: 240px
   transition: width .4s ease-in-out
   overflow: hidden
   @media landscape_tablet
@@ -315,25 +323,21 @@ footer
     overflow: scroll
     min-height: 0
   &:hover
-    width: 220px
+    width: 240px
     @media phone
       width: auto
   #sidebar
     color: white
-    width: 250px
+    width: 240px
     @media phone
       width: 100%
     .section
       padding: 0
       &:hover
         cursor: pointer
-        background-color: lighter-navy
-        -webkit-box-shadow: 0 0 15px 0 rgba(0,0,0,0.25), inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.05)
-        box-shadow: 0 0 15px 0 rgba(0,0,0,0.25), inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.05)
+        background-color: black
       &.active
-        background-color: lighter-navy
-        -webkit-box-shadow: 0 0 15px 0 rgba(0,0,0,0.25), inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.05)
-        box-shadow: 0 0 15px 0 rgba(0,0,0,0.25), inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.05)
+        background-color: black
       > a
         color: white
         &:active, &:focus
@@ -353,7 +357,7 @@ footer
         @media phone
           margin: 5px 0 0 17px
       .drop-container
-        background-color: navy
+        background-color: darker-navy
         .search
           margin: 20px 0 10px
           .input
@@ -388,11 +392,19 @@ footer
             &:active, &:focus
               outline: none
             &:hover
-              background-color: lighter-navy
+              background-color: black
+            i
+              color: light-blue-gray
+              display: inline-block
+              max-height: 23px
+              line-height: 23px
+              margin: 5px 0 8px 30px
+              @media phone
+                margin-left: 10px
             .link
               display: inline-block
               vertical-align: top
-              color: dark-gray
+              color: light-blue-gray
               max-height: 23px
             &:hover .link
               color: white
@@ -566,9 +578,9 @@ form
     i
       color: dark-gray
       position: absolute
-      left: 12px
+      left: 15px
       top: 12px
-      font-size: 1.25em
+      font-size: 1em
       &.icon-close
         cursor: pointer
         display: none
@@ -578,14 +590,14 @@ form
           right: 10px
     input
       width: 100%
-      padding: 13px 12px 14px 40px
-      border-radius: 1px
-      border: thin solid light-gray
+      padding: 13px 12px 14px 46px
+      border-radius: 3px
+      border: 0
       color: black
       box-sizing: border-box
+      font-size: 14px
       &:active, &:focus
         outline: none
-        border: thin solid border-gray
       @media phone
         font-size: 0.9em
         padding: 15px 12px 14px 33px
@@ -593,10 +605,14 @@ form
       padding-right: 3px
   .select2-container
     width: 200px
-    > a
+    a
+      border: 0 !important
+      padding: 5px 12px !important
       height: 34px
-      border-radius: 1px
+      border-radius: 3px
       line-height: 34px
+      font-size: 14px
+      color: dark-gray
     @media phone
       width: auto
 
@@ -617,7 +633,7 @@ form
   .page-subtitle
     font-size: 15px
     margin-top: 10px
-    
+
 .container.trainee
   .select-dates
     width: 260px
@@ -1167,7 +1183,7 @@ form
     line-height: 40px
     width: 100%
     color: dark-gray
-    margin-bottom: 10px
+    margin-bottom: 5px
     vertical-align: top
     @media phone
       width: auto
@@ -1207,18 +1223,22 @@ form
       &.step-icon
         border-radius: 50%
         border: 2px solid gray
-        font-size: 1.2em
-        height: 30px
-        line-height: 30px
-        margin-top: 4px
+        font-size: 0.8em
+        height: 20px
+        line-height: 20px
+        margin-top: 9px
         text-align: center
-        width: 30px
+        width: 20px
+        font-weight: bold
     .text
       font-size: 1.2em
       margin: 0 40px 0 8px
   .steps
     .step
       position: relative
+      &.one
+        .vr
+          height: 265px
       &.two
         form
           display: none
@@ -1340,7 +1360,7 @@ form
             .file-upload
               color: teal
               cursor: pointer
-              font-size: 15px
+              font-size: 14px
               font-weight: bold
               margin: 0 auto 30px
           &.info
@@ -1419,7 +1439,7 @@ form
           display: block
           font-size: 14px
           font-weight: bold
-          margin-bottom: 5px
+          margin-bottom: 10px
           text-align: left
         .caption
           display: inline-block
@@ -1500,6 +1520,7 @@ form
             color: heavy-gray
             strong
               color: teal
+              margin-right: 5px
           .arrow
             border-left: thin solid light-gray
             padding-left: 20px
@@ -1523,6 +1544,7 @@ form
               border-bottom: thin solid light-gray
               tr
                 th
+                  font-size: 14px
                   text-align: left
                   padding-bottom: 10px
                   a
@@ -1539,9 +1561,10 @@ form
                 border-bottom: thin solid light-gray
                 transition: height .4s ease-in-out
                 td
-                  padding: 10px 0 6px
-                  color: darker-gray
+                  padding: 15px 0
+                  color: dark-gray
                   vertical-align: top
+                  font-size: 14px
                   &.services
                     font-size: .9em
                     .text
@@ -2253,10 +2276,10 @@ body .select2-drop-mask
       display: block
       font-size: 14px
       font-weight: bold
-      margin-bottom: 5px
+      margin-bottom: 10px
       text-align: left
     .caption
-      display: inline-block
+      display: none
       font-size: 13px
       text-align: left
       width: 100%
@@ -2300,7 +2323,7 @@ body .select2-drop-mask
               .file-upload
                 color: teal
                 cursor: pointer
-                font-size: 15px
+                font-size: 14px
                 font-weight: bold
                 margin: 0 auto 30px
             &.info

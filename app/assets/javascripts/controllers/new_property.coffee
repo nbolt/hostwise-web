@@ -88,6 +88,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
         success = ->
           angular.element('.property-form-container .steps').hide()
           angular.element('.property-form-container .confirmation').show()
+          angular.element('.page-title').hide()
           flash 'success', 'Property added successfully!', angular.element('.property-form-container .confirmation .flash')
 
       success_wrap = (rsp) ->
