@@ -80,7 +80,7 @@
               .text ng:bind='::job.contractor_count'
             .right
               .icon
-                .typcn.typcn-credit-card
+                i.icon-payout
               .pricing
                 | ${{::job.payout_integer}}
                 span ng:hide='job.payout_fractional == 0'

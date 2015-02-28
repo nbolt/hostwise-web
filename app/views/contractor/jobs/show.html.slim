@@ -2,14 +2,50 @@
   .page-title
     strong ng:bind='::job.date'
   .row.one
-    .block.top-info
-      .photo
-        img ng:src='{{::job.booking.property.primary_photo}}'
-      .text.address
-        strong ng:bind='::job.booking.property.full_address'
-      .text.total
-        span Total
-        strong ${{::job.booking.cost}}
+    .block.top-info.jobs
+      .job id='job-{{job.id}}'
+        .photo
+          img ng:src='{{job.booking.property.primary_photo}}'
+          .column
+        .right
+          .top
+            .neighborhood.address
+              .name
+                | {{::job.booking.property.address1}}, {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
+            .beds remove-div=''
+              .text Beds
+              .bed ng:if='job.booking.property.king_beds > 0'
+                span King
+                | &nbsp; {{::job.booking.property.king_beds}}
+                .div |
+              .bed ng:if='job.booking.property.queen_beds > 0'
+                span Queen
+                | &nbsp; {{::job.booking.property.queen_beds}}
+                .div |
+              .bed ng:if='job.booking.property.full_beds > 0'
+                span Full
+                | &nbsp; {{::job.booking.property.full_beds}}
+                .div |
+              .bed ng:if='job.booking.property.twin_beds > 0'
+                span Twin
+                | &nbsp; {{::job.booking.property.twin_beds}}
+                .div |
+          .bottom
+            .rooms
+              i.icon-house ng:if='job.booking.property.property_type_cd == 0'
+              i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
+              .text
+                | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
+            .contractors
+              i.icon-person
+              .text ng:bind='::job.size'
+            .right
+              .icon
+                i.icon-payout
+              .pricing
+                | ${{::job.payout_integer}}
+                span ng:hide='job.payout_fractional == 0'
+                  | .{{::job.payout_fractional}}
   .row.uneven
     .block.customer
       .head
@@ -67,7 +103,7 @@
           .service ng:repeat='service in job.extra_services'
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
-      .block.team ng:show='job.size > 1'
+      .block.team ng:show='job.contractor_count > 1'
         .head
           .right
             .arrow

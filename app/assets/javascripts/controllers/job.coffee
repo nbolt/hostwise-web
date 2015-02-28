@@ -1,10 +1,14 @@
-JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', ($scope, $http, $timeout, $interval, $window, ngDialog) ->
+JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialog', ($scope, $http, $timeout, $interval, $window, $q, ngDialog) ->
+
+  $scope.jobQ = $q.defer()
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
+    $scope.job.contractor_count = $scope.job.contractors.length
     $scope.job.date = moment(rsp.booking.date, 'YYYY-MM-DD').format 'ddd, MMM D'
     $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
     $scope.job.extra_services = _(rsp.booking.services).filter (s) -> s.extra
+    $timeout -> $scope.jobQ.resolve()
     $scope.user_fetched.promise.then -> $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
 
     load_mapbox = null

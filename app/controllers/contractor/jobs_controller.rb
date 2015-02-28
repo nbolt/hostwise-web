@@ -5,7 +5,7 @@ class Contractor::JobsController < Contractor::AuthController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: job.to_json(include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: [:services, property: {include: {user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address]}]}}) }
+      format.json { render json: job.to_json(methods: [:payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: [:services, property: {include: {user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address]}]}}) }
     end
   end
 
