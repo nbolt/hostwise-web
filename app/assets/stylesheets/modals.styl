@@ -496,6 +496,8 @@
                   @media phone
                     margin : 0
                     width: 100%
+                  .spin
+                    display: none
                   .icon
                     box-sizing: border-box
                     width: 52px
@@ -515,6 +517,35 @@
                     @media phone
                       height: 100%
                       width: 100%
+                  &.loading
+                    .icon
+                      position: relative
+                      height: 52px
+                      &.check
+                        display: none
+                      &.spin
+                        display: inline-block
+                        .spinner
+                          width: 30px
+                          height: 30px
+                          border: 5px solid white
+                          position: absolute
+                          left: 50%
+                          margin-left: -20px
+                          top: 50%
+                          margin-top: -20px
+                          border-radius: 50%
+                          &::after
+                            content: ''
+                            position: absolute
+                            width: 40px
+                            height: 10px
+                            background: light-teal
+                            top: 10px
+                            left: -5px
+                            animation: spin 1.2s infinite
+                            -webkit-animation: spin 1.2s infinite
+                            -moz-animation: spin 1.2s infinite
               .total
                 margin-top: 4px
                 .text

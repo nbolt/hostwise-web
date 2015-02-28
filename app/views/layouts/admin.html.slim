@@ -20,7 +20,7 @@ html
     = yield :head
     = render 'common/analytics'
 
-  body.grey ng:controller='app'
+  body.grey ng:controller='app' ng-cloak=''
     =render 'common/header'
     #sidebar-container
       #sidebar

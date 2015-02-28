@@ -7,9 +7,9 @@ class Job < ActiveRecord::Base
   as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4
 
   scope :trainers, -> { where('contractor_jobs.user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }
-  scope :future, -> { where('date >= ?', Time.now.utc).includes(:booking).references(:booking) }
+  scope :future, -> { where('date >= ?', Time.now).includes(:booking).references(:booking) }
   scope :on_date, ->(date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
-  scope :today, -> { on_date(Time.now.utc) }
+  scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }

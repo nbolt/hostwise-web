@@ -200,8 +200,10 @@ script#booking-modal type="text/ng-template"
           .left
             .button.grey ng:click='change_dates()' Change Dates
           .right
-            .button.teal.right
-              .icon
+            .button.teal.right#book
+              .icon.spin
+                .spinner
+              .icon.check
                 i.icon-check
               .text ng:click='book()' Confirm & Book
       .content-group.static

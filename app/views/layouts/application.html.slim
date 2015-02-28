@@ -11,7 +11,7 @@ html
     = yield :head
     = render 'common/analytics'
 
-  body ng:controller='app'
+  body ng:controller='app' ng-cloak=''
     header ng:controller='modal'
       nav
         .link
@@ -20,12 +20,9 @@ html
         .link
           a href='' ng-click='show_signup()'
             .button.teal Sign Up
-      a href="#{root_path}"
-        .logo
-          img src='/images/porter-navy.png'
-          .text
-            | | Host
-            span Wise
+      .logo
+        a href="#{root_path}"
+          img src='/images/header.png'
     = yield
     footer ng:controller='modal'
       div

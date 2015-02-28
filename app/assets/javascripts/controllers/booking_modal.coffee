@@ -9,6 +9,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.same_day_cancellation = false
   $scope.same_day_booking = ''
   $scope.next_day_booking = ''
+  $scope.booking = false
 
   $scope.payment_screen = (type) ->
     angular.element('.booking.modal .content.payment > div').hide()
@@ -98,26 +99,34 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.confirm_cancellation = -> ngDialog.closeAll()
 
   $scope.book = ->
-    defer = $q.defer()
-    defer.promise.then((id) ->
-      $http.post("/properties/#{$scope.property.slug}/book", {
-        payment: id
-        services: services_array()
-        dates: $scope.chosen_dates
-        late_next_day: $scope.next_day_booking
-        late_same_day: $scope.same_day_booking
-      }).success (rsp) ->
-        if rsp.success
-          $scope.to_booking_confirmation()
-          null
-        else
-          flash 'failure', rsp.message
-    )
+    unless $scope.booking
+      $scope.booking = true
+      defer = $q.defer()
+      defer.promise.then(((id) ->
+        angular.element('#book').addClass 'loading'
+        $http.post("/properties/#{$scope.property.slug}/book", {
+          payment: id
+          services: services_array()
+          dates: $scope.chosen_dates
+          late_next_day: $scope.next_day_booking
+          late_same_day: $scope.same_day_booking
+        }).success (rsp) ->
+          $scope.booking = false
+          angular.element('#book').removeClass 'loading'
+          if rsp.success
+            $scope.to_booking_confirmation()
+            null
+          else
+            flash 'failure', rsp.message
+      ), ->
+        $scope.booking = false
+        angular.element('#book').removeClass 'loading'
+      )
 
-    if $scope.payment.id == 'new'
-      $scope.add_payment defer
-    else
-      defer.resolve $scope.payment.id
+      if $scope.payment.id == 'new'
+        $scope.add_payment defer
+      else
+        defer.resolve $scope.payment.id
 
   $scope.load_pricing = ->
     $http.get('/cost').success (rsp) ->

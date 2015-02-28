@@ -12,14 +12,11 @@ html
     = yield :head
     = render 'common/analytics'
 
-  body.grey ng:controller='app'
+  body.grey ng:controller='app' ng-cloak=''
     header
-      a href="#{root_path}"
-        .logo
-          img src='/images/porter-navy.png'
-          .text
-            | | Host
-            span Wise
+      .logo
+        a href="#{root_path}"
+          img src='/images/header.png'
     = yield
     footer
       div

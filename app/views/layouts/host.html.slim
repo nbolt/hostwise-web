@@ -22,7 +22,7 @@ html
     = render 'common/analytics'
 
   - class_name = first_property? ? 'first-property-body' : 'grey'
-  body class="#{class_name}" ng:controller='app'
+  body class="#{class_name}" ng:controller='app' ng-cloak=''
     = render 'common/header'
     #sidebar-container
       #sidebar

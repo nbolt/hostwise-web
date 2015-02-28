@@ -31,10 +31,6 @@ header
                 .link ng:bind='::property.nickname' data-ellipsis=''
   .logo
     a href="#{root_path}"
-      img src='/images/porter-navy.png'
+      img src='/images/header.png'
     .fa.fa-bars menu-dropdown=''
-    a href="#{root_path}"
-      .text
-        | | Host
-        span Wise
 = render 'common/booking_modal' if show_book_service
