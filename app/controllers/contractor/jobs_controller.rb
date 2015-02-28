@@ -9,6 +9,11 @@ class Contractor::JobsController < Contractor::AuthController
     end
   end
 
+  def begin
+    job.update_attribute :status_cd, 2
+    render json: { success: true }
+  end
+
   def claim
     if current_user.claim_job job
       render json: { success: true }

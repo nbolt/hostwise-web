@@ -5,7 +5,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialo
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
     $scope.job.contractor_count = $scope.job.contractors.length
-    $scope.job.date = moment(rsp.booking.date, 'YYYY-MM-DD').format 'ddd, MMM D'
+    $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
     $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
     $scope.job.extra_services = _(rsp.booking.services).filter (s) -> s.extra
     $timeout -> $scope.jobQ.resolve()
@@ -29,34 +29,28 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialo
             }).addTo map
     ), 200)
 
-    $scope.current_job = ->
+    $scope.job_status = ->
       if $scope.user
         if $scope.job.status_cd == 3
-          false
+          'completed'
+        else if $scope.job.status_cd == 2
+          'in_progress'
         else
-          job = _($scope.user.jobs_today).find (job) -> job.priority == $scope.job.priority - 1
-          if job
-            if job.status_cd == 3
-              true
+          date = moment($scope.job.date, 'YYYY-MM-DD')
+          today = date.date() == moment().date() && date.month() == moment().month() && date.year() == moment().year()
+          if today
+            job = _($scope.user.jobs_today).find (job) -> job.priority == $scope.job.priority - 1
+            if job
+              if job.status_cd == 3
+                'active'
+              else
+                'blocked'
             else
-              false
+              'active'
           else
-            true
+            'blocked'
       else
-        false
-
-    $scope.unfinished_job = ->
-      if $scope.user
-        job = _($scope.user.jobs_today).find (job) -> job.priority == $scope.job.priority - 1
-        if job
-          if job.status_cd == 3
-            false
-          else
-            true
-        else
-          false
-      else
-        false
+        'blocked'
 
     $scope.completed_job = -> $scope.job.status_cd == 3
 
@@ -65,6 +59,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialo
       null
 
     $scope.start = ->
+      $http.post("/jobs/#{$scope.job.id}/begin")
       angular.element('.viewports').css 'margin-left', '-100%'
       angular.element('.viewport.side').removeClass 'active'
       angular.element('.viewport.start').addClass 'active'

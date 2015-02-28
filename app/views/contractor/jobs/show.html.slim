@@ -1,6 +1,6 @@
 .container.contractor ng:controller='job'
   .page-title
-    strong ng:bind='::job.date'
+    strong ng:bind='::job.date_text'
   .row.one
     .block.top-info.jobs
       .job id='job-{{job.id}}'
@@ -38,7 +38,7 @@
                 | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
             .contractors
               i.icon-person
-              .text ng:bind='::job.size'
+              .text ng:bind='::job.contractor_count'
             .right
               .icon
                 i.icon-payout
@@ -117,46 +117,61 @@
             .typcn.typcn-user
           .name ng:bind='::teammate.name'
       .block.actions
-        .viewports ng:show='unfinished_job()'
-          .viewport.active.disabled
-            .arrived-button
-              .arrow
-                .typcn.typcn-media-play
-              .icon
-                .typcn.typcn-media-play
-              .text This job can't be started yet
-        .viewports ng:show='completed_job()'
-          .viewport.active.disabled
-            .arrived-button
-              .arrow
-                .typcn.typcn-media-play
-              .icon
-                .typcn.typcn-media-play
-              .text This job has already been completed
-        .viewports ng:show='current_job()'
-          .viewport.actions.active
-            .arrived-button ng:click='arrived()'
-              .arrow
-                .typcn.typcn-media-play
-              .icon
-                .typcn.typcn-media-play
-              .text I've arrived at this job
-            .arrived-dropdown.bottom
-              .actions
-                .action.start ng:click='start()'
-                  .icon
-                    .typcn.typcn-tick
-                  .text Start this job
-          .viewport.side.start
-            .arrived-button ng:click='arrived()'
-              .arrow
-                .typcn.typcn-media-play
-              .icon
-                .typcn.typcn-media-play
-              .text Job started
-            .bottom
-              .actions
-                .action.complete ng:click='complete()'
-                  .icon
-                    .typcn.typcn-tick
-                  .text Complete & go to next job
+        div ng:switch='job_status()'
+          .viewports ng:switch-when='blocked'
+            .viewport.active.disabled
+              .arrived-button
+                .arrow
+                  .typcn.typcn-media-play
+                .icon
+                  .typcn.typcn-media-play
+                .text This job can't be started yet
+          .viewports ng:switch-when='completed'
+            .viewport.active.disabled
+              .arrived-button
+                .arrow
+                  .typcn.typcn-media-play
+                .icon
+                  .typcn.typcn-media-play
+                .text This job has already been completed
+          .viewports ng:switch-when='in_progress'
+            .viewport.active
+              .arrived-button ng:click='arrived()'
+                .arrow
+                  .typcn.typcn-media-play
+                .icon
+                  .typcn.typcn-media-play
+                .text Job started
+              .bottom.active
+                .actions
+                  .action.complete ng:click='complete()'
+                    .icon
+                      .typcn.typcn-tick
+                    .text Complete & go to next job
+          .viewports ng:switch-default=''
+            .viewport.actions.active
+              .arrived-button ng:click='arrived()'
+                .arrow
+                  .typcn.typcn-media-play
+                .icon
+                  .typcn.typcn-media-play
+                .text I've arrived at this job
+              .arrived-dropdown.bottom
+                .actions
+                  .action.start ng:click='start()'
+                    .icon
+                      .typcn.typcn-tick
+                    .text Start this job
+            .viewport.side.start
+              .arrived-button ng:click='arrived()'
+                .arrow
+                  .typcn.typcn-media-play
+                .icon
+                  .typcn.typcn-media-play
+                .text Job started
+              .bottom
+                .actions
+                  .action.complete ng:click='complete()'
+                    .icon
+                      .typcn.typcn-tick
+                    .text Complete & go to next job
