@@ -119,7 +119,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
 
   $scope.quick_add = (property) ->
     $scope.redirect_to = '/'
-    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
+    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope, closeByDocument: false
     $scope.property = property
 
     $timeout((->

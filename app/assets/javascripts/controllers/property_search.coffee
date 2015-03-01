@@ -41,7 +41,7 @@ PropertySearchCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($sc
   }
 
   $scope.quick_add = (property) ->
-    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
+    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope, closeByDocument: false
     $scope.property = property
 
     $timeout((->

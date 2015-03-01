@@ -72,7 +72,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     }
 
   $scope.quick_add = (property) ->
-    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
+    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope, closeByDocument: false
     $scope.property = property
     $scope.chosen_dates = {}
 
@@ -103,7 +103,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
             angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
       onclick: ($this) ->
-        ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
+        ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope, closeByDocument: false
         date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
         $scope.selected_date = date
         $scope.selected_date_confirmation = date.format('ddd, MMM D')

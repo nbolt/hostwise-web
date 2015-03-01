@@ -69,7 +69,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     }
 
   $scope.quick_add = (property) ->
-    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
+    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope, closeByDocument: false
     $scope.property = property
 
     $timeout((->
