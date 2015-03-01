@@ -3,6 +3,7 @@ NotificationCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.save = (pref) ->
     $http.put('/notifications/update', {
       user: $scope.user
+      type: pref
     }).success (rsp) ->
       flash 'info', 'Your changes have been saved!', pref if rsp.success
 
