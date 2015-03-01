@@ -4,7 +4,13 @@
     color: darker-gray
     margin: auto
     max-width: 100%
-    position: relative
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    -webkit-transform: translate(-50%, -50%)
+    -moz-transform: translate(-50%, -50%)
+    -ms-transform: translate(-50%, -50%)
     .modal
       position: relative
       .flash
@@ -28,11 +34,11 @@
 
 .ngdialog.auth
   .ngdialog-content
-    margin-top: 120px
     width: 450px
     @media phone
       width: auto
     .modal
+      margin: 0 auto
       .title
         background-color: navy
         color: white
@@ -66,13 +72,12 @@
       position: absolute
       right: 10px
       text-align: center
-      top: 12px
+      top: 3px
       width: 30px
 
 .ngdialog.edit
   .ngdialog-content
     width: 600px
-    margin-top: 60px
     .modal
       background-color: white
       overflow: hidden
@@ -176,7 +181,6 @@
 .ngdialog.warning, .ngdialog.success
   .ngdialog-content
     width: 400px
-    margin-top: 60px
     .modal
       background-color: white
       overflow: hidden
@@ -344,9 +348,6 @@
 .ngdialog.booking
   .ngdialog-content
     width: 976px
-    margin-top: 40px
-    @media landscape_tablet
-      margin-top: 20px
     @media portrait_tablet
       width: 700px
     @media phone
@@ -1048,7 +1049,6 @@
   .ngdialog-content
     color: darker-gray
     width: 360px
-    margin-top: 60px
     .modal
       background-color: white
       overflow: hidden
@@ -1115,7 +1115,6 @@
 .ngdialog.export
   .ngdialog-content
     width: 400px
-    margin-top: 60px
     .modal
       background-color: white
       overflow: hidden
