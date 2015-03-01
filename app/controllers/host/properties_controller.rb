@@ -45,7 +45,6 @@ class Host::PropertiesController < Host::AuthController
   end
 
   def book
-    sleep 5
     if params[:dates]
       params[:dates].each do |k,v|
         v.each do |day|
