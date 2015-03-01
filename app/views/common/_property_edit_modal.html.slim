@@ -58,7 +58,9 @@ script#property-edit-modal type="text/ng-template"
           .section.avatar
             .row
               img.preview ng:src='{{::image}}'
-              .file-upload new-property-photo='' ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
+              .file-upload new-property-photo='' ng-file-select='' ng-model='files' ng-multiple='false'
+                i.icon-upload
+                | Upload Photo
     .footer
       .buttons
         .button.teal ng:click='update_details()' Save Changes

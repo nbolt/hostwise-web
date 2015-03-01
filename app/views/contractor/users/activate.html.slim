@@ -11,7 +11,9 @@
           .flash
           .section.avatar
             div
-              .file-upload ng-file-select='' ng-model='files' ng-multiple='false'  Upload Photo
+              .file-upload ng-file-select='' ng-model='files' ng-multiple='false'
+                i.icon-upload
+                | Upload Photo
               img ng:src='{{::user.avatar}}'
           .vr
           .section.info
