@@ -74,6 +74,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $scope.quick_add = (property) ->
     ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
     $scope.property = property
+    $scope.chosen_dates = {}
 
     $timeout((->
       angular.element('.booking.modal .content.side').removeClass 'active'
@@ -128,9 +129,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
           days_diff = $scope.selected_date.diff(moment.utc().startOf('day'), 'days')
           hour = moment().hours()
           if days_diff == 0 and hour >= 10 #same day booking after 10am
-            $timeout((->$scope.$broadcast 'same_day_confirmation'),25)
+            $timeout((->$scope.$broadcast 'same_day_confirmation'),100)
           else if days_diff == 1 and hour >= 22 #next day booking after 10pm
-            $timeout((->$scope.$broadcast 'next_day_confirmation'),25)
+            $timeout((->$scope.$broadcast 'next_day_confirmation'),100)
           else
             $timeout((->$scope.$broadcast 'booking_selection'),100)
     }
