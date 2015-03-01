@@ -89,13 +89,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       $scope.booking = true
       defer = $q.defer()
       defer.promise.then(((id) ->
-        angular.element('#book').addClass 'loading'
+        #angular.element('#book').addClass 'loading'
         $http.post("/properties/#{$scope.property.slug}/book", {
           payment: id
           services: services_array()
           dates: $scope.chosen_dates
           late_next_day: $scope.next_day_booking
           late_same_day: $scope.same_day_booking
+          spinner: true
         }).success (rsp) ->
           $scope.booking = false
           angular.element('#book').removeClass 'loading'
@@ -106,7 +107,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
             flash 'failure', rsp.message
       ), ->
         $scope.booking = false
-        angular.element('#book').removeClass 'loading'
+        #angular.element('#book').removeClass 'loading'
       )
 
       if $scope.payment.id == 'new'

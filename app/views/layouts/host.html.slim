@@ -23,6 +23,9 @@ html
 
   - class_name = first_property? ? 'first-property-body' : 'grey'
   body class="#{class_name}" ng:controller='app' ng-cloak=''
+    #spin-overlay
+      .overlay
+      .loader.more
     = render 'common/header'
     #sidebar-container
       #sidebar

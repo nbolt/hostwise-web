@@ -378,3 +378,91 @@ input[type=file]
       position: absolute
       width: 15px
       border-radius: 50%
+
+.loader
+  top: 50%
+  
+.loader, .loader:before, .loader:after {
+  display: inline-block;
+  width: 100%;
+  height: 10px;
+  position: absolute;
+  z-index: 100000;
+  animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-opacity 2s ease-in-out infinite alternate;
+  -webkit-animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-opacity 2s ease-in-out infinite alternate;
+  -moz-animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-opacity 2s ease-in-out infinite alternate;
+  background: linear-gradient(right, teal 0px, teal 10px, transparent 10px)  no-repeat 0px 0px / 10px 10px;
+  content: ' ';
+}
+.loader {
+  animation-delay: .1s;
+  -webkit-animation-delay: .1s;
+  -moz-animation-delay: .1s;
+}
+.loader:after {
+  animation-delay: .2s;
+  -webkit-animation-delay: .2s;
+  -moz-animation-delay: .2s;
+}
+.loader.more:before, .loader.more:after {
+  content: ' ■';
+  color: teal;
+  top: 0;
+  line-height: 6px;
+  font-size: 22px;
+  font-family: "Times New Roman";
+  vertical-align: top;
+  animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-font 4s cubic-bezier(.1,.85,.9,.15) infinite !important;
+  -webkit-animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-font 4s cubic-bezier(.1,.85,.9,.15) infinite !important;
+  -moz-animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-font 4s cubic-bezier(.1,.85,.9,.15) infinite !important;
+}
+.loader.more:before {
+  animation-delay: 0s,.2s !important;
+  -webkit-animation-delay: 0s,.2s !important;
+  -moz-animation-delay: 0s,.2s !important;
+}
+.loader.more {
+  overflow: hidden;
+  opacity: 0;
+  animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-opacity 2s ease-in-out infinite alternate;
+  -webkit-animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-opacity 2s ease-in-out infinite alternate;
+  -moz-animation: loading 4s cubic-bezier(.1,.85,.9,.15) infinite, loading-opacity 2s ease-in-out infinite alternate;
+  animation-delay: .6s,.4s !important;
+  -webkit-animation-delay: .6s,.4s !important;
+  -moz-animation-delay: .6s,.4s !important;
+}
+.loader.more:after {
+  animation-delay: .4s,.8s !important;
+  -webkit-animation-delay: .4s,.8s !important;
+  -moz-animation-delay: .4s,.8s !important;
+}      
+
+@keyframes loading-opacity {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: -50% 0px;
+  }
+  100% {
+    background-position: 150% 0px;
+  }
+}
+
+@keyframes loading-font {
+  0% {
+    text-indent: calc(-50% - 5px);
+  }
+  100% {
+    text-indent: calc(150% - 10px);
+  }
+}
