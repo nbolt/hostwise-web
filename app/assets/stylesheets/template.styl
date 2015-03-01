@@ -32,7 +32,7 @@ input[type=file]
   padding: 8px 12px
   &:focus
     outline: none
-    
+
 .pagination
   margin-bottom: 20px
   text-align: center
@@ -246,7 +246,7 @@ input[type=file]
       tbody
         td
           border-radius: 3px
-          padding: 4% 3%
+          padding: 20px
           color: darker-gray
           &:hover
             cursor: default
@@ -258,14 +258,14 @@ input[type=file]
             background-color: teal
             color: white
           &.booked
-            color: teal
+            color: darker-gray
+            background-color: light-gray
             font-weight: bold
           &.active:hover
             cursor: pointer
           &.active:hover, &.selecting
             background-color: teal
             color: white
-            transition: background-color 0.9s ease-out
           &.active.chosen:hover
             background-color: light-gray
             color: darker-gray
@@ -396,7 +396,7 @@ input[type=file]
 
 .loader
   top: 50%
-  
+
 .loader, .loader:before, .loader:after {
   display: inline-block;
   width: 100%;
@@ -450,7 +450,7 @@ input[type=file]
   animation-delay: .4s,.8s !important;
   -webkit-animation-delay: .4s,.8s !important;
   -moz-animation-delay: .4s,.8s !important;
-}      
+}
 
 @keyframes loading-opacity {
   0% {
