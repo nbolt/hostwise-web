@@ -79,6 +79,16 @@ header
       vertical-align: top
       width: 146px
       margin: 17px 0 0 15px
+      &.hw
+        @media phone
+          display: none
+      &.owl
+        display: none
+        @media phone
+          width: 30px
+          display: inline-block
+      @media phone
+        margin-left: 0
     .fa
       color: navy
       cursor: pointer
