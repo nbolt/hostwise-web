@@ -40,6 +40,9 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
           $scope.user_fetched.resolve()
 
   $scope.$emit 'fetch_user'
+  
+  angular.element('body').on 'click', ->
+    angular.element('#user .drop-container').css 'max-height', 0 if angular.element('#user .drop-container').css('max-height') != '0px'
 
 ]
 
