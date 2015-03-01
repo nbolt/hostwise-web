@@ -32,6 +32,21 @@ input[type=file]
   padding: 8px 12px
   &:focus
     outline: none
+    
+.pagination
+  margin-bottom: 20px
+  text-align: center
+  .action
+    display: inline-block
+    vertical-align: top
+    margin: 0 6px
+    a
+      color: teal
+      text-decoration: none
+      &:active, &:focus
+        outline: none
+    &.active
+      font-weight: 600
 
 .button.teal, button.teal
   background-color: teal
@@ -231,7 +246,7 @@ input[type=file]
       tbody
         td
           border-radius: 3px
-          padding: 20px
+          padding: 4% 3%
           color: darker-gray
           &:hover
             cursor: default

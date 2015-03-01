@@ -83,12 +83,13 @@
                   a href='' ng:click="predicate = 'cost'; reverse=!reverse"
                     | Total
             tbody
-              tr ng:class="$index % 2 != 0 && 'gray'" ng:repeat='booking in property.upcoming_bookings track by $index | orderBy:predicate:reverse'
+              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.upcoming_bookings | itemsPerPage: 6' pagination-id='upcoming'
                 td ng:bind='::booking.parsed_date_short'
                 td.id ng:bind='::booking.id'
                 td.services
                   .text ng:bind='::booking.display_services' ellipsis-services=''
                 td ${{::booking.cost}}
+        dir-pagination-controls pagination-id='upcoming' template-url='/templates/pagination.tpl.html'
       .section.past.services ng:if='property.past_bookings[0]'
         .head
           .icon
@@ -116,11 +117,13 @@
                   a href='' ng:click="predicate = 'cost'; reverse=!reverse"
                     | Total
             tbody
-              tr ng:class="$index % 2 != 0 && 'gray'" ng:repeat='booking in property.past_bookings track by $index | orderBy:predicate:reverse'
+              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.past_bookings | itemsPerPage: 6' pagination-id='past'
                 td ng:bind='::booking.parsed_date_short'
                 td.id ng:bind='::booking.id'
-                td.services ng:bind='::booking.display_services' ellipsis-services=''
+                td.services
+                  .text ng:bind='::booking.display_services' ellipsis-services=''
                 td ${{::booking.cost}}
+        dir-pagination-controls pagination-id='past' template-url='/templates/pagination.tpl.html'
     .column.info
       #map
       .section.instructions
