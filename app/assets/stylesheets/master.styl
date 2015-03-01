@@ -10,14 +10,14 @@ html, body, .body
   position: relative
   @media phone
     font-size: 98%
-    
+
 body
   display: inline-block
   width: 100%
 
 .body, .grey
   background-color: gray
-  
+
 #spin-overlay
   position: fixed
   top: 0
@@ -1547,6 +1547,7 @@ form
               color: teal
               margin-right: 5px
           .arrow
+            display: none
             border-left: thin solid light-gray
             padding-left: 20px
             position: absolute
@@ -1554,8 +1555,6 @@ form
             i
               color: dark-gray
               font-size: 0.8em
-          &:hover
-            cursor: pointer
           @media portrait_tablet
             font-size: 1em
         &.services
