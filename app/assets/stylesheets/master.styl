@@ -1535,6 +1535,36 @@ form
           @media portrait_tablet
             font-size: 1em
         &.services
+          .book
+            color: white
+            height: 50px
+            line-height: 50px
+            @media portrait_tablet
+              font-size: 0.8em
+            @media phone
+              font-size: 0.9em
+            .msg, a
+              display: inline-block
+              vertical-align: top
+            .msg
+              width: 66%
+              padding: 0 2%
+              background-color: light-teal
+              i
+                font-size: 1.5em
+              span
+                display: inline-block
+                margin-left: 10px
+                vertical-align: top
+            a
+              width: 30%
+              color: white
+              text-decoration: none
+              background-color: teal
+              font-weight: bold
+              text-align: center
+              &:hover
+                background-color: light-teal
           .table
             max-height: 307px
             overflow-y: scroll
@@ -1542,12 +1572,11 @@ form
             width: 92%
             margin: 25px auto
             thead
-              border-bottom: thin solid light-gray
               tr
                 th
                   font-size: 14px
                   text-align: left
-                  padding-bottom: 10px
+                  padding: 0 10px 10px
                   a
                     color: heavy-gray
                     text-decoration: none
@@ -1559,10 +1588,11 @@ form
                     width: 190px
             tbody
               tr
-                border-bottom: thin solid light-gray
                 transition: height .4s ease-in-out
+                &.gray
+                  background-color: lighter-gray
                 td
-                  padding: 15px 0
+                  padding: 15px 10px
                   color: dark-gray
                   vertical-align: top
                   font-size: 14px

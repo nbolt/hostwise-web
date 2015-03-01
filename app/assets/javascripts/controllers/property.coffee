@@ -71,6 +71,24 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
           $scope.$broadcast 'next_day_confirmation'
     }
 
+  $scope.quick_add = (property) ->
+    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope
+    $scope.property = property
+
+    $timeout((->
+      angular.element('.booking.modal .content.side').removeClass 'active'
+      angular.element('.booking.modal .content.side.calendar').addClass 'active'
+      $scope.$broadcast 'booking_selection'
+    ),100)
+
+    $http.get("/properties/#{property.slug}.json").success (rsp) ->
+      $scope.property = rsp
+      _($scope.property.bookings).each (booking) ->
+        date = moment.utc booking.date
+        booking.parsed_date = date.format('MMMM Do, YYYY')
+        angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').addClass('booked').attr('booking', booking.id)
+        $scope.$broadcast 'calculate_pricing'
+
   $scope.calendar_options =
     {
       selectable: true

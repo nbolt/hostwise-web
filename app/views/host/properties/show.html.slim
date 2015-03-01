@@ -1,8 +1,7 @@
 #property ng:controller='property'
   .page-title
-    .icon
-      .typcn.typcn-document-text
-    .text Property Details
+    .fa.fa-tasks
+    | Property Details
   .property
     .edit ng:click='edit()'
       i.icon-edit-gear
@@ -52,16 +51,22 @@
             i.icon-calendar
           .text Book Service Date(s)
         .calendar calendar='' options='calendar_options' dates='__'
-      .section.upcoming.services ng:if='property.upcoming_bookings[0]'
+      .section.upcoming.services
         .head
           .icon
             .pf.icon-service
           .text
-            strong ng:bind="{{property.upcoming_bookings.length}}"
+            strong
+              | {{property.upcoming_bookings.length}}
             |  Upcoming Services
           .arrow
             i.icon-acc-open ng:click='toggle($event)'
-        .table
+        .book ng:if='!property.upcoming_bookings[0]'
+          .msg
+            i.icon-alert-exclamation
+            span No upcoming service dates
+          a href='' ng:click='quick_add(property)' Book Service
+        .table ng:if='property.upcoming_bookings[0]'
           table
             thead
               tr
@@ -78,7 +83,7 @@
                   a href='' ng:click="predicate = 'cost'; reverse=!reverse"
                     | Total
             tbody
-              tr ng:repeat='booking in property.upcoming_bookings | orderBy:predicate:reverse'
+              tr ng:class="$index % 2 != 0 && 'gray'" ng:repeat='booking in property.upcoming_bookings track by $index | orderBy:predicate:reverse'
                 td ng:bind='::booking.parsed_date_short'
                 td.id ng:bind='::booking.id'
                 td.services
@@ -89,7 +94,8 @@
           .icon
             .pf.icon-past
           .text
-            strong ng:bind="{{property.past_bookings.length}}"
+            strong
+              | {{property.past_bookings.length}}
             |  Past Services
           .arrow
             i.icon-acc-open ng:click='toggle($event)'
@@ -110,7 +116,7 @@
                   a href='' ng:click="predicate = 'cost'; reverse=!reverse"
                     | Total
             tbody
-              tr ng:repeat='booking in property.past_bookings | orderBy:predicate:reverse'
+              tr ng:class="$index % 2 != 0 && 'gray'" ng:repeat='booking in property.past_bookings track by $index | orderBy:predicate:reverse'
                 td ng:bind='::booking.parsed_date_short'
                 td.id ng:bind='::booking.id'
                 td.services ng:bind='::booking.display_services' ellipsis-services=''

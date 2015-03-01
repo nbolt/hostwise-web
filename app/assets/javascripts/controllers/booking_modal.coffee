@@ -10,6 +10,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.same_day_booking = ''
   $scope.next_day_booking = ''
   $scope.booking = false
+  $scope.refresh_booking = false
 
   $scope.payment_screen = (type) ->
     angular.element('.booking.modal .content.payment > div').hide()
@@ -141,7 +142,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.slide = (type) ->
     angular.element('.booking.modal .content-container .content-group').css {'opacity': 0, 'display': 'none'}
     angular.element(".booking.modal .content-container .content-group.#{type}").css {'opacity': 1, 'display': 'block'}
-    #angular.element('html, body').scrollTop 0
+    $scope.refresh_booking = true if type is 'cancelled' or type is 'booked'
     null
 
   $scope.confirm_booking = -> ngDialog.closeAll()
@@ -289,9 +290,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     }
 
   $rootScope.$on 'ngDialog.closing', (e, $dialog) ->
-    el = $dialog.find('.ngdialog-content .modal .content-group').filter(':visible')
-    if el.hasClass('booked') or el.hasClass('cancelled')
-      $scope.$emit 'refresh_bookings'
+    $scope.$emit 'refresh_bookings' if $scope.refresh_booking
     window.location = $scope.redirect_to if $scope.redirect_to
 
   services_array = ->
