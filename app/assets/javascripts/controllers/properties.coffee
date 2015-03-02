@@ -7,6 +7,10 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
 
   promise = null
 
+  $scope.init = ->
+    alert 'ok', 'Property added successfully!' if getParam('f') is '1'
+    null
+
   $scope.toProperty = (property) -> $window.location = "/properties/#{property.slug}"
 
   $scope.modal_calendar_options =
@@ -100,6 +104,22 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
         $scope.user.properties = rsp if $scope.user
         _($scope.user.properties).each (property) ->
           property.next_service_date = moment(property.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if property.next_service_date
+
+  getParam = (name) ->
+    decodeURIComponent name[1] if name = (new RegExp("[?&]" + encodeURIComponent(name) + "=([^&]*)")).exec(location.search)
+
+  alert = (type, msg) ->
+    classes = 'info ok warning bolt exclamation question'
+    el = angular.element('#properties .alert')
+    el.removeClass(classes).addClass(type).css('opacity', 1)
+    el.find('i').removeClass().addClass("icon-alert-#{type}")
+    el.find('.title').text msg
+    $timeout((->
+      el.css('opacity', 0)
+    ), 3000)
+    $timeout((->
+      el.removeClass(classes)
+    ), 4000)
 
 ]
 

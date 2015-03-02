@@ -98,11 +98,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
           angular.element('.property-form-container .step-nav').removeClass('active').eq(n).addClass('active')
           scrollToAccordion n
       else
-        success = ->
-          angular.element('.property-form-container .steps').hide()
-          angular.element('.property-form-container .confirmation').show()
-          angular.element('.page-title').hide()
-          alert 'ok', 'Property added successfully!'
+        success = -> window.location = '/?f=1'
 
       success_wrap = (rsp) ->
         $scope.posting = false
@@ -168,20 +164,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
       else if days_diff == 1 and hour >= 22 #next day booking after 10pm
         $scope.$broadcast 'next_day_confirmation'
   }
-
-  alert = (type, msg) ->
-    classes = 'info ok warning bolt exclamation question'
-    el = angular.element('.property-form-container .confirmation .alert')
-    el.removeClass(classes).addClass(type).css('opacity', 1)
-    el.find('i').removeClass().addClass("icon-alert-#{type}")
-    el.find('.title').text msg
-    $timeout((->
-      el.css('opacity', 0)
-    ), 3000)
-    $timeout((->
-      el.removeClass(classes)
-    ), 4000)
-    scroll 0
 
   flash = (type, msg, el) ->
     el = angular.element('.property-form-container .step.active .flash') if !el
