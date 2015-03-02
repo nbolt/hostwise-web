@@ -84,7 +84,6 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
         date = moment.utc booking.date
         booking.parsed_date = date.format('MMMM Do, YYYY')
         angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').addClass('booked').attr('booking', booking.id)
-        $scope.$broadcast 'calculate_pricing'
 
   $scope.exists = () ->
     if $scope.property.bookings

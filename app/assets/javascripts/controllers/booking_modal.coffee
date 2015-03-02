@@ -3,7 +3,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   last_payment = null
   $scope.days = []
   $scope.flashing = false
-  $scope.selected_services = {}
+  $scope.selected_services = {} unless $scope.selected_booking
   $scope.chosen_dates = {} unless $scope.chosen_dates
   $scope.payment = {} unless $scope.payment
   $scope.same_day_cancellation = false
@@ -12,10 +12,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.booking = false
   $scope.refresh_booking = false
 
-  $http.get('/last_services').success (rsp) ->
-    _(rsp).each (service) ->
-      angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
-      $scope.selected_services[service.name] = true
+  unless $scope.selected_booking
+    $http.get('/last_services').success (rsp) ->
+      _(rsp).each (service) ->
+        angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
+        $scope.selected_services[service.name] = true
+        $scope.calculate_pricing()
 
   $scope.payment_screen = (type) ->
     angular.element('.booking.modal .content.payment > div').hide()
@@ -339,8 +341,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     !chosen
 
   $scope.included_services = -> _(services_array()).join(', ')
-
-  $scope.calculate_pricing() unless $scope.selected_services && $scope.selected_booking
 
   $scope.load_pricing() unless $scope.pricing
 
