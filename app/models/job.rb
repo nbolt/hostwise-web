@@ -51,6 +51,10 @@ class Job < ActiveRecord::Base
     payout.to_s.split('.')[1].to_i if booking
   end
 
+  def next_job contractor
+    contractor.jobs.on_date(self.date).where('priority > ?', self.priority).order(:priority)[0]
+  end
+
   def start!
     in_progress!
     save
@@ -66,6 +70,10 @@ class Job < ActiveRecord::Base
       end
     end
     save
+    contractors.each do |contractor|
+      job = self.next_job(contractor)
+      TwilioJob.perform_later("+1#{job.booking.property.user.phone_number}", 'HostWise is en route to service your property') if job.present? && job.booking.property.user.settings(:porter_en_route).sms
+    end
   end
 
   def handle_distribution_job user

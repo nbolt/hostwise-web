@@ -46,9 +46,14 @@
             input type='checkbox' toggle-notification='service_completion_sms' ng:checked="user.notification_settings['service_completion']['sms']"
             i
         .row
-          .text Porter Arrived
+          .text Housekeeper Arrived
           label.switch.red
             input type='checkbox' toggle-notification='porter_arrived_sms' ng:checked="user.notification_settings['porter_arrived']['sms']"
+            i
+        .row
+          .text Housekeeper En Route
+          label.switch.red
+            input type='checkbox' toggle-notification='porter_en_route_sms' ng:checked="user.notification_settings['porter_en_route']['sms']"
             i
         .icon-button.teal ng:click="save('sms')"
           .icon

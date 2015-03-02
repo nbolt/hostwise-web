@@ -42,6 +42,7 @@ class AuthController < ApplicationController
         user.settings(:service_completion).email = true
         user.settings(:service_completion).sms = true
         user.settings(:porter_arrived).sms = true
+        user.settings(:porter_en_route).sms = true
 
         if user.save
           TwilioJob.perform_later("+1#{user.phone_number}", "Welcome to HostWise! You're confirmation code is: #{user.phone_confirmation}")
