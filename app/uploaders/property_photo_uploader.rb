@@ -26,6 +26,7 @@ class PropertyPhotoUploader < CarrierWave::Uploader::Base
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
   # end
 
+  process :auto_orient
   process resize_to_fill: [768, 768]
   process convert: 'png'
 
@@ -51,4 +52,9 @@ class PropertyPhotoUploader < CarrierWave::Uploader::Base
     end
   end
 
+  def auto_orient
+    manipulate! do |img|
+      img = img.auto_orient
+    end
+  end
 end

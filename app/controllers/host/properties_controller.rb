@@ -34,6 +34,18 @@ class Host::PropertiesController < Host::AuthController
     end
   end
 
+  def upload
+    if params[:file]
+      property = Property.new
+      property.property_photos.build(photo: params[:file])
+      if property.valid?
+        render json: { success: true, image: property.property_photos.first.photo.url }
+      else
+        render json: { success: false, message: property.errors.full_messages[0] }
+      end
+    end
+  end
+
   def deactivate
     property.update_attribute :active, false
     render json: { success: true }

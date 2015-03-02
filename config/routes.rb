@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     get   '/properties/first' => 'properties#first'
     post  '/properties/address' => 'properties#address'
     post  '/properties/build' => 'properties#build'
+    post  '/properties/upload' => 'properties#upload'
     get   '/properties/:slug' => 'properties#show'
     post  '/properties/:slug' => 'properties#update'
     get   '/user/edit' => 'users#edit'

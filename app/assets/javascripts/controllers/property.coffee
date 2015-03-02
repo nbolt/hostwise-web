@@ -163,6 +163,17 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         else
           flash 'failure', rsp.message, true
 
+  $scope.$watch 'files', ->
+    if $scope.files && $scope.files[0]
+      $upload.upload(
+        url: '/properties/upload'
+        file: $scope.files[0]
+      ).success (rsp) ->
+        if rsp.success
+          angular.element('.preview').attr('src', rsp.image)
+        else
+          flash 'failure', rsp.message, true
+
   $scope.edit = ->
     ngDialog.open template: 'property-edit-modal', controller: 'property', className: 'edit', scope: $scope
 

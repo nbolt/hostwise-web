@@ -45,6 +45,17 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
     scrollToAccordion n
     return true
 
+  $scope.$watch 'files', ->
+    if $scope.files && $scope.files[0]
+      $upload.upload(
+        url: '/properties/upload'
+        file: $scope.files[0]
+      ).success (rsp) ->
+        if rsp.success
+          angular.element('.preview').attr('src', rsp.image)
+        else
+          flash 'failure', rsp.message
+
   $scope.step = (n) ->
     if validate(n)
       if n == 3

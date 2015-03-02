@@ -38,6 +38,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   #   process :resize_to_fit => [50, 50]
   # end
 
+  process :auto_orient
   process resize_to_fill: [100, 100]
   process convert: 'png'
 
@@ -58,4 +59,9 @@ class AvatarUploader < CarrierWave::Uploader::Base
     end
   end
 
+  def auto_orient
+    manipulate! do |img|
+      img = img.auto_orient
+    end
+  end
 end
