@@ -70,7 +70,7 @@ class Host::PropertiesController < Host::AuthController
           if params[:late_same_day].present?
             booking.late_same_day = true if date.strftime('%b %-d, %Y') == params[:late_same_day]
           end
-          unless Booking.by_user(current_user)[0]
+          unless Booking.active.by_user(current_user)[0]
             booking.first_booking_discount = true
           end
           booking.payment = Payment.find params[:payment]
@@ -161,7 +161,7 @@ class Host::PropertiesController < Host::AuthController
   def booking_cost
     services = params[:services].map {|s| Service.where(name: s)[0] if s[1]}.compact
     cost = Booking.cost property, services
-    cost[:first_booking_discount] = if Booking.by_user(current_user)[0] then false else true end
+    cost[:first_booking_discount] = if Booking.active.by_user(current_user)[0] then false else true end
     render json: cost
   end
 

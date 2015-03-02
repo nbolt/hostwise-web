@@ -44,7 +44,7 @@ class Host::UsersController < Host::AuthController
   end
 
   def last_services
-    booking = Booking.by_user(current_user).order(:created_at)[-1]
+    booking = Booking.active.by_user(current_user).order(:created_at)[-1]
     if booking
       if booking.services.where(name: 'preset')[0]
         render json: Service.standard

@@ -7,7 +7,7 @@ module Clockwork
   handler do |job|
     case job
     when 'payments.process'
-      Booking.where(payment_status_cd: 0).each do |booking|
+      Booking.where(payment_status_cd: 0, status_cd: 3).each do |booking|
         case booking.last_transaction.status_cd
         when 1
           booking.charge!
