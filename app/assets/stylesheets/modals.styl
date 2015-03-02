@@ -1200,13 +1200,14 @@
             margin-top: 5px
             width: 100%
             
-.ngdialog-content
-  @media phone
-    height: 100%
-    .modal
+.ngdialog.full
+  .ngdialog-content
+    @media phone
       height: 100%
-      .footer
-        position: absolute !important
-        bottom: 0
-        left: 0
-        right: 0
+      .modal
+        height: 100%
+        .footer
+          position: absolute !important
+          bottom: 0
+          left: 0
+          right: 0

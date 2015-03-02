@@ -21,7 +21,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
   $scope.open_deletion = (event) ->
     $scope.payment_id = $(event.currentTarget).parent().attr('id').split('-')[1]
     $scope.payment_info = $(event.currentTarget).parents('li').find('.details span').text().replace('ending in', '****')
-    ngDialog.open template: 'delete-payment-modal', controller: 'payment', className: 'warning', scope: $scope
+    ngDialog.open template: 'delete-payment-modal', controller: 'payment', className: 'warning full', scope: $scope
 
   $scope.cancel_deletion = -> ngDialog.closeAll()
 
@@ -54,9 +54,9 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
 
   $scope.open = (bank_only) ->
     if bank_only
-      ngDialog.open template: 'add-bank-account-modal', className: 'success payment bank-acconut', scope: $scope
+      ngDialog.open template: 'add-bank-account-modal', className: 'success payment bank-acconut full', scope: $scope
     else
-      ngDialog.open template: 'add-payment-modal', className: 'success payment', scope: $scope
+      ngDialog.open template: 'add-payment-modal', className: 'success payment full', scope: $scope
 
   $scope.add_credit_card = ->
     exp_date = angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val()
@@ -109,7 +109,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
 
   $scope.open_verify = (event) ->
     $scope.payment_id = $(event.currentTarget).parent().attr('id').split('-')[1]
-    ngDialog.open template: 'ach-verification-modal', className: 'success payment', scope: $scope
+    ngDialog.open template: 'ach-verification-modal', className: 'success payment full', scope: $scope
 
   $scope.verify = (id) ->
     if validate()

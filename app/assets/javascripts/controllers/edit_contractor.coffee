@@ -26,7 +26,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http,
 
   $scope.change_status = ->
     $scope.selected_status = angular.element('.position').select2('data')
-    ngDialog.open template: 'change-status-modal', controller: 'edit-contractor', className: 'status', scope: $scope
+    ngDialog.open template: 'change-status-modal', controller: 'edit-contractor', className: 'status full', scope: $scope
 
   $scope.cancel_status = ->
     ngDialog.closeAll()
@@ -41,11 +41,11 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http,
 
   $scope.open_deactivation = ->
     $scope.current_name = "#{$scope.contractor.first_name}'s"
-    ngDialog.open template: 'account-deactivation-modal', controller: 'edit-contractor', className: 'warning', scope: $scope
+    ngDialog.open template: 'account-deactivation-modal', controller: 'edit-contractor', className: 'warning full', scope: $scope
 
   $scope.open_reactivation = ->
     $scope.current_name = "#{$scope.contractor.first_name}'s"
-    ngDialog.open template: 'account-reactivation-modal', controller: 'edit-contractor', className: 'warning', scope: $scope
+    ngDialog.open template: 'account-reactivation-modal', controller: 'edit-contractor', className: 'warning full', scope: $scope
 
   $scope.cancel_deactivation = ->
     ngDialog.closeAll()

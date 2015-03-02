@@ -11,9 +11,9 @@ ModalCtrl = ['$scope', '$timeout', 'ngDialog', ($scope, $timeout, ngDialog) ->
   openDialog = (id) ->
     if angular.element('.ngdialog')[0]
       ngDialog.closeAll()
-      $timeout((->ngDialog.open template: id, className: 'auth'),600)
+      $timeout((->ngDialog.open template: id, className: 'auth full'),600)
     else
-      ngDialog.open template: id, className: 'auth'
+      ngDialog.open template: id, className: 'auth full'
 ]
 
 app = angular.module('porter').controller('modal', ModalCtrl)

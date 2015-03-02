@@ -11,7 +11,7 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $t
   $scope.$emit 'fetch_contractors'
 
   $scope.show_signup = ->
-    ngDialog.open template: 'sign-up', className: 'auth'
+    ngDialog.open template: 'sign-up', className: 'auth full'
 
   $scope.add_contractor = ->
     $http.post('/contractors/signup', {

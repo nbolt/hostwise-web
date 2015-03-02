@@ -178,22 +178,22 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     ngDialog.open template: 'property-edit-modal', controller: 'property', className: 'edit', scope: $scope
 
   $scope.edit_access = ->
-    ngDialog.open template: 'property-access-modal', controller: 'property', className: 'edit', scope: $scope
+    ngDialog.open template: 'property-access-modal', controller: 'property', className: 'edit full', scope: $scope
 
   $scope.edit_trash = ->
-    ngDialog.open template: 'property-trash-modal', controller: 'property', className: 'edit', scope: $scope
+    ngDialog.open template: 'property-trash-modal', controller: 'property', className: 'edit full', scope: $scope
 
   $scope.edit_parking = ->
-    ngDialog.open template: 'property-parking-modal', controller: 'property', className: 'edit', scope: $scope
+    ngDialog.open template: 'property-parking-modal', controller: 'property', className: 'edit full', scope: $scope
 
   $scope.edit_additional = ->
-    ngDialog.open template: 'property-additional-modal', controller: 'property', className: 'edit', scope: $scope
+    ngDialog.open template: 'property-additional-modal', controller: 'property', className: 'edit full', scope: $scope
 
   $scope.open_deactivation = ->
-    ngDialog.open template: 'property-deactivation-modal', controller: 'property', className: 'warning', scope: $scope
+    ngDialog.open template: 'property-deactivation-modal', controller: 'property', className: 'warning full', scope: $scope
 
   $scope.open_reactivation = ->
-    ngDialog.open template: 'property-reactivation-modal', controller: 'property', className: 'warning', scope: $scope
+    ngDialog.open template: 'property-reactivation-modal', controller: 'property', className: 'warning full', scope: $scope
 
   $scope.toggle = (event) =>
     id = if $(event.currentTarget).parents('.section').hasClass('services') then '.table' else '.instruction'

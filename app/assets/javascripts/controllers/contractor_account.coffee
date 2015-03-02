@@ -55,7 +55,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', (
       flash 'failure', 'Please fill in all required fields'
 
   $scope.open_deactivation = ->
-    ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'warning', scope: $scope
+    ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'warning full', scope: $scope
 
   $scope.$watch 'files', ->
     if $scope.files.length

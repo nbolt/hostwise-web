@@ -35,7 +35,7 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
     return true
 
   $scope.open_export = ->
-    ngDialog.open template: 'file-export-modal', className: 'export', scope: $scope
+    ngDialog.open template: 'file-export-modal', className: 'export full', scope: $scope
 
   booked_services = (services) ->
     arr = []
