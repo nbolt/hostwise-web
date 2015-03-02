@@ -93,6 +93,6 @@ class UserMailer < MandrillMailer::TemplateMailer
   private
 
   def mandrill
-    yield if Rails.env.production? || Rails.env.staging?
+    yield if Rails.env.production?
   end
 end
