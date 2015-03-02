@@ -21,7 +21,7 @@ script#booking-modal type="text/ng-template"
                     .service.discount ng:show="day.first_booking_discount"
                       .text First Booking Discount
                       .price
-                        | ($
+                        | (-$
                         span ng:bind="day.first_booking_discount"
                         | )
                     - Service.all.each do |service|
@@ -118,7 +118,7 @@ script#booking-modal type="text/ng-template"
                   i.icon class="icon-serv-#{service.name}"
                   .text= service.display
                   label.switch.red
-                    input checked='true' type='checkbox' toggle-service="#{service.name}"
+                    input type='checkbox' toggle-service="#{service.name}"
                     i
             .extra
               .title =t('booking.modal.extras_title')
@@ -157,7 +157,7 @@ script#booking-modal type="text/ng-template"
                 .service.discount ng:show="day.first_booking_discount"
                   .text First Booking Discount
                   .price
-                    | ($
+                    | (-$
                     span ng:bind="day.first_booking_discount"
                     | )
                 .late ng:show="day.next_day_booking"

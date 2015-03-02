@@ -43,6 +43,19 @@ class Host::UsersController < Host::AuthController
     render json: { success: true }
   end
 
+  def last_services
+    booking = Booking.by_user(current_user).order(:created_at)[-1]
+    if booking
+      if booking.services.where(name: 'preset')[0]
+        render json: Service.standard
+      else
+        render json: booking.services
+      end
+    else
+      render json: Service.standard
+    end
+  end
+
   private
 
   def user_params
