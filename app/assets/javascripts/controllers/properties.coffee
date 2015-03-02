@@ -30,7 +30,8 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
         $scope.selected_date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
         days_diff = $scope.selected_date.diff(moment.utc().startOf('day'), 'days')
         hour = moment().hours()
-        if days_diff == 0 and hour >= 10 #same day booking after 10am
+        minute = moment().minutes()
+        if days_diff == 0 and hour <= 14 and minute <= 59 #same day booking before 3pm
           $scope.$broadcast 'same_day_confirmation'
         else if days_diff == 1 and hour >= 22 #next day booking after 10pm
           $scope.$broadcast 'next_day_confirmation'
