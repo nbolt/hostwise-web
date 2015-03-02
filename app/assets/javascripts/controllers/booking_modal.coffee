@@ -193,6 +193,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
 
   $scope.confirm_staging = ->
     $scope.selected_services['preset'] = true
+    $scope.selected_services['linens'] = true
+    $scope.selected_services['toiletries'] = true
+    angular.element('.ngdialog .service.linens input, .ngdialog .service.toiletries input').prop 'checked', true
     $scope.calculate_pricing()
     $scope.to_booking_selection()
 
@@ -275,6 +278,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       angular.element('.booking.modal .content.payment .payment-tab.credit-card').addClass 'active'
     else
       angular.element('.booking.modal .content.payment .payment-tab.ach').addClass 'active'
+
+  $scope.$watch 'selected_services.linens', (n,o) ->
+    if !n && $scope.selected_services['preset']
+      $scope.selected_services['preset'] = false
+      $scope.selected_services['cleaning'] = true
+      angular.element('.ngdialog .service.cleaning input').prop 'checked', true
 
   $scope.paymentHash = ->
     {
