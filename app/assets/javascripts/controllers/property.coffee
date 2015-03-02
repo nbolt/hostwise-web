@@ -187,6 +187,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   $scope.edit_parking = ->
     ngDialog.open template: 'property-parking-modal', controller: 'property', className: 'edit full', scope: $scope
 
+  $scope.edit_restocking = ->
+    ngDialog.open template: 'property-restocking-modal', controller: 'property', className: 'edit full', scope: $scope
+
   $scope.edit_additional = ->
     ngDialog.open template: 'property-additional-modal', controller: 'property', className: 'edit full', scope: $scope
 

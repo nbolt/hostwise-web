@@ -151,6 +151,12 @@
           .content
             .title Parking Information
             .text ng:bind='property.parking_info'
+        .instruction ng:if='property.restocking_info'
+          .edit ng:click='edit_restocking()'
+            i.icon-edit-gear
+          .content
+            .title Restocking Instructions
+            .text ng:bind='property.restocking_info'
         .instruction ng:if='property.additional_info'
           .edit ng:click='edit_additional()'
             i.icon-edit-gear
@@ -165,6 +171,7 @@
 = render 'common/property_access_modal'
 = render 'common/property_trash_modal'
 = render 'common/property_parking_modal'
+= render 'common/property_restocking_modal'
 = render 'common/property_additional_modal'
 = render 'common/booking_modal'
 = render 'common/property_deactivation_modal'

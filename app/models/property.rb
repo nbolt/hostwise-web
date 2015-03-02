@@ -17,7 +17,7 @@ class Property < ActiveRecord::Base
 
   validates_numericality_of :phone_number, only_integer: true, if: lambda { self.phone_number.present? }
   validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
-  validates_presence_of :access_info, :parking_info, :trash_disposal, if: lambda { step == 3 }
+  validates_presence_of :access_info, :parking_info, :trash_disposal, :restocking_info, if: lambda { step == 3 }
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }

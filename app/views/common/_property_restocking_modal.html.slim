@@ -1,0 +1,10 @@
+script#property-restocking-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Restocking Instructions
+    .content
+      .flash
+      textarea rows='5' ng:model='form.restocking_info'
+    .footer
+      .buttons
+        .button.teal ng:click='update_property()' Save Changes

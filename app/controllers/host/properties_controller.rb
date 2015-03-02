@@ -145,6 +145,7 @@ class Host::PropertiesController < Host::AuthController
         property.access_info = params[:form][:access_info]
         property.trash_disposal = params[:form][:trash_disposal]
         property.parking_info = params[:form][:parking_info]
+        property.restocking_info = params[:form][:restocking_info]
         property.additional_info = params[:form][:additional_info]
 
         if property.save
@@ -182,7 +183,7 @@ class Host::PropertiesController < Host::AuthController
   def property_params
     params.require(:form).permit(:title, :address1, :address2, :zip, :phone_number, :bedrooms, :bathrooms,
                                  :twin_beds, :full_beds, :queen_beds, :king_beds, :property_type_cd, :rental_type_cd,
-                                 :access_info, :parking_info, :additional_info, :trash_disposal)
+                                 :access_info, :parking_info, :additional_info, :trash_disposal, :restocking_info)
   end
 
   def delivery_code(address1, address2, zip)
