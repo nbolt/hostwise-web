@@ -35,6 +35,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.next = ->
     if !services_array()[0]
       flash 'failure', 'Please select at least one service'
+    else if no_dates()
+      flash 'failure', 'Please select at least one date'
     else
       if $scope.payment.id is 'new'
         $scope.payment_screen 'new'
@@ -299,6 +301,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     _($scope.selected_services).each (selected, service) ->
       services.push service if selected
     services
+
+  no_dates = ->
+    chosen = false
+    _($scope.chosen_dates).each (v,k) ->
+      chosen = true if v.length > 0
+    !chosen
 
   $scope.included_services = -> _(services_array()).join(', ')
 
