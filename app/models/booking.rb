@@ -10,9 +10,10 @@ class Booking < ActiveRecord::Base
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
   scope :active,  -> { where('services.id is not null and bookings.payment_id is not null').includes(:services).references(:services) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
-  scope :upcoming, -> (user) { where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
+  scope :upcoming, -> (user) { active.where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
   scope :future, -> { where('date >= ?', Date.today) }
   scope :by_user, -> (user) { where('user_id = ?', user.id).includes(property: [:user]).references(:user) }
+  scope :active, -> { where(status_cd: 1) }
 
   before_create :create_job
   before_save :create_order
@@ -20,10 +21,6 @@ class Booking < ActiveRecord::Base
 
   as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3
   as_enum :payment_status, pending: 0, completed: 1
-
-  def self.default_scope
-    where status_cd: 1
-  end
 
   def self.cost property, services, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
     pool_service = Service.where(name: 'pool')[0]

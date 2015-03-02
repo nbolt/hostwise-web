@@ -40,7 +40,7 @@ class Host::PaymentsController < Host::AuthController
     payment = Payment.find_by_id(params[:payment_id])
 
     # check if future booking exists with this payment
-    future_bookings = payment.bookings.select { |booking| booking.date > Date.today }
+    future_bookings = payment.bookings.active.select { |booking| booking.date > Date.today }
     if future_bookings.present?
       render json: { success: false, message: "There is at least one booking associated with this #{payment.card? ? 'credit card' : 'bank account'}" }
       return

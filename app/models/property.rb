@@ -11,6 +11,7 @@ class Property < ActiveRecord::Base
 
   belongs_to :user
   has_many :bookings, autosave: true, dependent: :destroy
+  has_many :active_bookings, -> { where(status_cd: 1) }, autosave: true, dependent: :destroy, class_name: 'Booking'
   has_many :property_photos, autosave: true, dependent: :destroy
 
   before_validation :standardize_address
@@ -23,7 +24,7 @@ class Property < ActiveRecord::Base
   scope :inactive, -> { where(active: false) }
   scope :by_user, -> (user) { where(user_id: user.id) }
   scope :by_alphabetical, -> { reorder('LOWER(title)') }
-  scope :upcoming_bookings, -> { includes(:bookings).where('bookings.id is not null').order('bookings.created_at DESC').references(:bookings) }
+  scope :upcoming_bookings, -> { where('bookings.id is not null').order('bookings.created_at DESC').includes(:active_bookings).references(:active_bookings) }
   scope :recently_added, -> { reorder('created_at DESC') }
 
   attr_accessor :step
@@ -34,7 +35,7 @@ class Property < ActiveRecord::Base
   end
 
   def next_service_date
-    bookings.future.order(:date).first.then(:date)
+    bookings.active.future.order(:date).first.then(:date)
   end
 
   def self.search(term, sort=nil)
