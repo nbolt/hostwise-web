@@ -11,6 +11,13 @@
     -webkit-transform: translate(-50%, -50%)
     -moz-transform: translate(-50%, -50%)
     -ms-transform: translate(-50%, -50%)
+    @media phone
+      top: 0
+      left: 0
+      transform: translate(0, 0)
+      -webkit-transform: translate(0, 0)
+      -moz-transform: translate(0, 0)
+      -ms-transform: translate(0, 0)
     .modal
       position: relative
       .flash
@@ -36,7 +43,7 @@
   .ngdialog-content
     width: 450px
     @media phone
-      width: auto
+      width: 100%
     .modal
       margin: 0 auto
       .title
@@ -78,13 +85,6 @@
 .ngdialog.edit
   .ngdialog-content
     width: 600px
-    @media phone
-      top: 0
-      left: 0
-      transform: translate(0, 0)
-      -webkit-transform: translate(0, 0)
-      -moz-transform: translate(0, 0)
-      -ms-transform: translate(0, 0)
     .modal
       background-color: white
       overflow: hidden

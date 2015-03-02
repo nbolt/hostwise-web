@@ -537,14 +537,17 @@ form
   .form-container
     overflow: hidden
     .steps
-      width: 1350px
-      transition: margin-left .6s ease
+      width: 100%
       .caption
         font-size: 15px
       .step
         width: 450px
-        display: inline-block
+        display: none
         vertical-align: top
+        @media phone
+          width: 100%
+        &.active
+          display: block
         &.three .caption
           margin-top: 45px
       .progress-container
