@@ -231,7 +231,7 @@ script#booking-modal type="text/ng-template"
         .content.confirmation.teal
           i.icon-check
           .title-text You're all set!
-          .check-container
+          .check-container.border
             .check.in
               .time 10 AM
               .text CHECK-IN
@@ -247,12 +247,13 @@ script#booking-modal type="text/ng-template"
         .content.confirmation.red
           i.icon-alert-bolt
           .title-text Are you sure you wish to cancel this job?
-          .check-container.ok
+          .check-container.border.ok
             .text Service Date
             .date ng:bind='::selected_date_confirmation'
           .check-container.cancellation
-            .text Cancellation Fee
-            .fee ${{pricing.cancellation}}
+            .border
+              .text Cancellation Fee
+              .fee ${{pricing.cancellation}}
             .caption To avoid a fee, cancelling 24 hours in advance incurs no extra charge
           .actions
             .action.cancel ng:click='to_booking_selection()'
@@ -263,7 +264,7 @@ script#booking-modal type="text/ng-template"
         .content.confirmation.red
           i.icon-alert-bolt
           .title-text Job Cancelled
-          .check-container
+          .check-container.border
             .text ng:bind='::selected_date_confirmation'
           .farewell We hope to see you again!
       .content-group.static.next-day
@@ -271,7 +272,7 @@ script#booking-modal type="text/ng-template"
           i.icon-calendar
           .title-text Late Next-Day Booking
           .check-container
-            .fee ${{pricing.late_next_day}}
+            .fee.border ${{pricing.late_next_day}}
             .caption Our Porters will arrive by 4.30PM at the latest
           .actions
             .action.cancel ng:click='cancel_late_day_booking()'
@@ -283,7 +284,7 @@ script#booking-modal type="text/ng-template"
           i.icon-calendar
           .title-text Same Day Booking
           .check-container
-            .fee ${{pricing.late_same_day}}
+            .fee.border ${{pricing.late_same_day}}
             .caption We'll do our best to send someone as soon as possible but we cannot guarantee arrival time.
           .actions
             .action.cancel ng:click='cancel_late_day_booking()'
@@ -295,7 +296,7 @@ script#booking-modal type="text/ng-template"
           i.icon-house
           .title-text Do you only need a staging?
           .check-container
-            .fee ${{pricing.staging}}
+            .fee.border ${{pricing.staging}}
             .caption We'll "spot check" cleaned and set the property with our linens, towels, and toiletries.
           .actions
             .action.cancel ng:click='cancel_staging()'
