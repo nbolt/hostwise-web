@@ -285,6 +285,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       $scope.selected_services['cleaning'] = true
       angular.element('.ngdialog .service.cleaning input').prop 'checked', true
 
+  $scope.$watch 'selected_services.preset', (n,o) ->
+    if n
+      angular.element('.ngdialog .service.cleaning .text').text 'Staging'
+    else
+      angular.element('.ngdialog .service.cleaning .text').text 'Cleaning'
+
   $scope.paymentHash = ->
     {
       dropdownCssClass: 'payment'
