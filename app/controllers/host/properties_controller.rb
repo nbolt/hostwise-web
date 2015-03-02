@@ -118,7 +118,15 @@ class Host::PropertiesController < Host::AuthController
         end
         render json: { success: true }
       when 2
-        render json: { success: true }
+        property = current_user.properties.build(property_params)
+        property.property_type_cd = params[:form][:property_type_cd]
+        property.bedrooms = params[:form][:bedrooms][:id]
+        property.bathrooms = params[:form][:bathrooms][:id]
+        if PRICING.chain(property.property_type.to_s, property.bedrooms, property.bathrooms)
+          render json: { success: true }
+        else
+          render json: { success: false, message: "Sorry, looks like we aren't setup for properties of this configuration. Please call support." }
+        end
       when 3
         property = current_user.properties.build(property_params)
         property.step = 3
