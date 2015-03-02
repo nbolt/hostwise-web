@@ -131,7 +131,7 @@ class User < ActiveRecord::Base
 
   def next_job_date
     jobs = self.jobs.upcoming self
-    return jobs.sort_by{|j| j.date}.first.booking.date if jobs.present?
+    return jobs.sort_by{|j| j.date}[0].chain(:booking, :date) if jobs.present?
   end
 
   def next_service_date

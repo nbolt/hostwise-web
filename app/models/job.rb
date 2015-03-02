@@ -64,10 +64,11 @@ class Job < ActiveRecord::Base
   def complete!
     completed!
     if booking
-      booking.charge!
       contractors.each do |contractor|
         contractor.payouts.create(job_id: self.id, amount: payout * 100)
       end
+      booking.update_attribute :status_cd, 3
+      booking.charge!
     end
     save
     contractors.each do |contractor|
