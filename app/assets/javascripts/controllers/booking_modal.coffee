@@ -148,8 +148,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           $scope.days.push day
 
   $scope.slide = (type) ->
-    angular.element('.booking.modal .content-container .content-group').css {'opacity': 0, 'display': 'none'}
-    angular.element(".booking.modal .content-container .content-group.#{type}").css {'opacity': 1, 'display': 'block'}
+    angular.element('.booking.modal .content-container .content-group').css 'opacity', 0
+    $timeout((->
+      angular.element('.booking.modal .content-container .content-group').css 'display', 'none'
+      angular.element(".booking.modal .content-container .content-group.#{type}").css 'display', 'block'
+      $timeout((->angular.element(".booking.modal .content-container .content-group.#{type}").css 'opacity', 1),50)
+    ), 400)
     $scope.refresh_booking = true if type is 'cancelled' or type is 'booked'
     null
 
