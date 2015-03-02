@@ -2,11 +2,11 @@ app = angular.module('porter').directive('ellipsisServices', ['$timeout', ($time
   link: (scope, element, attr) ->
     element.hover(
         (->
-          element.text scope.booking.display_full_services
-          element.css 'max-height', 76
+          element.find('.text').text scope.booking.display_full_services
+          element.find('.text').css 'max-height', 76
       ),(->
-          $timeout((->element.text scope.booking.display_services),400)
-          element.css 'max-height', 20
+          $timeout((->element.find('.text').text scope.booking.display_services),400)
+          element.find('.text').css 'max-height', 20
       )
     )
 ])

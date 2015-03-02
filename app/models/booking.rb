@@ -12,6 +12,7 @@ class Booking < ActiveRecord::Base
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
   scope :upcoming, -> (user) { where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
   scope :future, -> { where('date >= ?', Date.today) }
+  scope :by_user, -> (user) { where('user_id = ?', user.id).includes(property: [:user]).references(:user) }
 
   before_create :create_job
   before_save :create_order
@@ -24,7 +25,7 @@ class Booking < ActiveRecord::Base
     where status_cd: 1
   end
 
-  def self.cost property, services, late_next_day = false, late_same_day = false, no_access_fee = false
+  def self.cost property, services, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
     pool_service = Service.where(name: 'pool')[0]
     total = 0
     rsp = {}
@@ -55,12 +56,17 @@ class Booking < ActiveRecord::Base
     rsp[:cost] += PRICING['late_next_day'] if late_next_day
     rsp[:cost] += PRICING['late_same_day'] if late_same_day
     rsp[:cost] += PRICING['no_access_fee'] if no_access_fee
+    if first_booking_discount
+      rsp[:first_booking_discount] = PRICING['first_booking_discount']
+      rsp[:cost] -= rsp[:first_booking_discount]
+      rsp[:cost] = 0 if rsp[:cost] < 0
+    end
     rsp
   end
 
   def cost
     return PRICING['cancellation'] if cancelled?
-    Booking.cost(property, services, late_next_day, late_same_day)[:cost]
+    Booking.cost(property, services, first_booking_discount, late_next_day, late_same_day, no_access_fee)[:cost]
   end
 
   def send_reminder

@@ -18,6 +18,12 @@ script#booking-modal type="text/ng-template"
                     .text ng:bind='::day.date'
                     .price ${{day.total}}
                   .day-services
+                    .service.discount ng:show="day.first_booking_discount"
+                      .text First Booking Discount
+                      .price
+                        | ($
+                        span ng:bind="day.first_booking_discount"
+                        | )
                     - Service.all.each do |service|
                       .service ng:show="day.#{service.name}"
                         .text= service.display
@@ -148,6 +154,12 @@ script#booking-modal type="text/ng-template"
                 .text ng:bind='::day.date'
                 .price ${{day.total}}
               .day-services
+                .service.discount ng:show="day.first_booking_discount"
+                  .text First Booking Discount
+                  .price
+                    | ($
+                    span ng:bind="day.first_booking_discount"
+                    | )
                 .late ng:show="day.next_day_booking"
                   .text Late Day Booking Fee
                   .price

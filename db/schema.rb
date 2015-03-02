@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150227231011) do
+ActiveRecord::Schema.define(version: 20150302152410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,14 +62,15 @@ ActiveRecord::Schema.define(version: 20150227231011) do
     t.integer  "property_id"
     t.integer  "payment_id"
     t.datetime "date"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.integer  "status_cd"
     t.string   "balanced_order_id"
-    t.integer  "payment_status_cd", default: 0
-    t.boolean  "late_next_day",     default: false
-    t.boolean  "late_same_day",     default: false
+    t.integer  "payment_status_cd",      default: 0
+    t.boolean  "late_next_day",          default: false
+    t.boolean  "late_same_day",          default: false
     t.boolean  "no_access_fee"
+    t.boolean  "first_booking_discount", default: false
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree

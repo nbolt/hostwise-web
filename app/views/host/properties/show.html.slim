@@ -83,11 +83,11 @@
                   a href='' ng:click="predicate = 'cost'; reverse=!reverse"
                     | Total
             tbody
-              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.upcoming_bookings | itemsPerPage: 5' pagination-id='upcoming'
+              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.upcoming_bookings | itemsPerPage: 5' pagination-id='upcoming' ellipsis-services=''
                 td ng:bind='::booking.parsed_date_short'
                 td.id ng:bind='::booking.id'
                 td.services
-                  .text ng:bind='::booking.display_services' ellipsis-services=''
+                  .text ng:bind='::booking.display_services'
                 td ${{::booking.cost}}
         dir-pagination-controls pagination-id='upcoming' template-url='/templates/pagination.tpl.html'
       .section.past.services ng:if='property.past_bookings[0]'
