@@ -22,6 +22,9 @@ app = angular.module('porter').directive('calendar', [->
       prev_month_days = if month == 3 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) then 29 else prev_month_days
       num_rows = if month_days + first_day > 35 then 6 else if first_day == 0 && month_days == 28 then 4 else 5
 
+      prev_month = if month == 1 then 12 else month - 1
+      prev_year  = if month == 12 then year - 1 else year
+
       calendar.find('tbody').remove()
       calendar.find('thead').after('<tbody></tbody>')
       element.find('.month_header .month_name').text(month_name)
@@ -34,14 +37,16 @@ app = angular.module('porter').directive('calendar', [->
           day = (current_day + 1) + '-' + month + '-' + year
           html = '<td ' +
             (if row == 1 && i < first_day
-              'class="inactive day">' + (prev_month_days - ((first_day-1) - i))
+              'day="' + (prev_month_days - ((first_day-1) - i)) + '" month="' + prev_month + '" year="' + prev_year + '" class="active day">' + (prev_month_days - ((first_day-1) - i))
              else if current_day >= month_days
               ++current_day
-              #'class="inactive day">' + (current_day - month_days)
               _month = if month == 12 then 1 else month+1
               _year = month == 1 && year+1 || year
               'day="' + (current_day - month_days) + '" month="' + _month + '" year="' + _year + '" class="active day">' + (current_day - month_days)
-             else if options.disable_past && moment().diff(new Date(year, month-1, current_day+1), 'days') > 0
+             else if options.disable_past && moment().diff(new Date(year, month-1, current_day+2), 'days') > 0
+              ++current_day
+              'class="past day">' + current_day
+             else if options.disable_past && moment().hour() >= 15 && moment().diff(new Date(year, month-1, current_day+1), 'days') > 0
               ++current_day
               'class="past day">' + current_day
              else
