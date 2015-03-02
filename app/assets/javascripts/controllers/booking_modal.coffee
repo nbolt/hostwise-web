@@ -102,7 +102,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           angular.element('#book').removeClass 'loading'
           if rsp.success
             $scope.to_booking_confirmation()
-            $scope.$broadcast 'fetch_user'
+            $scope.$emit 'fetch_user'
             null
           else
             flash 'failure', rsp.message
