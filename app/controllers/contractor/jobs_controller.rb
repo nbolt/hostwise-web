@@ -35,9 +35,11 @@ class Contractor::JobsController < Contractor::AuthController
     if current_user.status == :trainee
       current_user.update_attribute :status_cd, 2 if current_user.jobs.where(training:true).count == current_user.jobs.where(training:true,status_cd:3).count
     end
-    property = job.booking.property
-    UserMailer.service_completed(property).then(:deliver) if property.user.settings(:service_completion).email
-    TwilioJob.perform_later("+1#{property.user.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
+    if job.booking
+      property = job.booking.property
+      UserMailer.service_completed(property).then(:deliver) if property.user.settings(:service_completion).email
+      TwilioJob.perform_later("+1#{property.user.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
+    end
     render json: { success: true }
   end
 
