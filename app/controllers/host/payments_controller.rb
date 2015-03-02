@@ -88,7 +88,10 @@ class Host::PaymentsController < Host::AuthController
 
     begin
       verification = Balanced::BankAccountVerification.fetch("/verifications/#{payment.balanced_verification_id}")
-      verification = verification.confirm(amount_1 = params[:deposit1].to_i, amount_2 = params[:deposit2].to_i)
+      verification = verification.confirm(
+        amount_1 = (params[:deposit1].to_f * 100).to_i,
+        amount_2 = (params[:deposit2].to_f * 100).to_i
+      )
       verified = true if verification.verification_status == 'succeeded'
     rescue
       verified = false
