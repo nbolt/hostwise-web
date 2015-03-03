@@ -151,6 +151,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         file: $scope.files[0]
         data:
           form: $scope.form
+        headers:
+          spinner: true
       ).success (rsp) ->
         if typeof rsp.success == 'undefined'
           $window.location = $window.location.href
@@ -169,6 +171,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       $upload.upload(
         url: '/properties/upload'
         file: $scope.files[0]
+        headers:
+          spinner: true
       ).success (rsp) ->
         if rsp.success
           angular.element('.preview').attr('src', rsp.image)

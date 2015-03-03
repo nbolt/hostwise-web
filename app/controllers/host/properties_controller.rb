@@ -22,7 +22,7 @@ class Host::PropertiesController < Host::AuthController
     if params[:file]
       property.property_photos.build(photo: params[:file])
       if property.valid?
-        property.property_photos.destroy_all #make sure the uploaded photo is good before deleting previous one
+        property.property_photos.destroy_all # make sure the uploaded photo is good before deleting previous one
         property.property_photos.build(photo: params[:file])
       end
     end

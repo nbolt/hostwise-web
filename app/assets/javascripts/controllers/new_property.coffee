@@ -50,6 +50,8 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
       $upload.upload(
         url: '/properties/upload'
         file: $scope.files[0]
+        headers:
+          spinner: true
       ).success (rsp) ->
         if rsp.success
           angular.element('.preview').attr('src', rsp.image)
