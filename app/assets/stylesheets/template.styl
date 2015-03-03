@@ -310,7 +310,7 @@ input[type=file]
   opacity: 0
   transition: opacity .6s ease, height .6s ease
   color: white
-  display: block
+  display: none
   height: 50px
   line-height: 50px
   padding: 0
@@ -318,6 +318,9 @@ input[type=file]
   position: relative
   text-align: left
   width: 100%
+  &.active
+    display: block
+    opacity: 1
   i
     width: 50px
     display: inline-block

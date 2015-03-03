@@ -111,14 +111,14 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
   alert = (type, msg) ->
     classes = 'info ok warning bolt exclamation question'
     el = angular.element('#properties .alert')
-    el.removeClass(classes).addClass(type).css('opacity', 1)
+    el.removeClass(classes).addClass("active #{type}")
     el.find('i').removeClass().addClass("icon-alert-#{type}")
     el.find('.title').text msg
     $timeout((->
       el.css('opacity', 0)
     ), 3000)
     $timeout((->
-      el.removeClass(classes)
+      el.removeClass(classes + ' active')
     ), 4000)
 
 ]
