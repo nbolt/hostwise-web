@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :payments, autosave: true, dependent: :destroy
   has_many :avatars, autosave: true, dependent: :destroy
   has_many :messages, dependent: :destroy
-  has_many :contractor_jobs, class_name: 'ContractorJobs'
+  has_many :contractor_jobs, class_name: 'ContractorJobs', dependent: :destroy
   has_many :jobs, through: :contractor_jobs
   has_one  :contractor_profile, dependent: :destroy
   has_one  :availability, dependent: :destroy
@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
         job.save
       end
       job.handle_distribution_job self
-      Job.set_priorities jobs_today.standard
+      Job.set_priorities jobs_today.standard, self
       fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
       fanout.publish_async 'jobs', {}
       true
@@ -105,11 +105,11 @@ class User < ActiveRecord::Base
       job.open!
       job.save
       job.handle_distribution_job self
-      Job.set_priorities self.jobs.on_date(job.date).standard
+      Job.set_priorities self.jobs.on_date(job.date).standard, self
       if job.contractors[0]
         jobs = job.contractors[0].jobs.on_date(job.date).standard
         job.handle_distribution_job jobs
-        Job.set_priorities jobs
+        Job.set_priorities jobs, job.contractors[0]
       end
       fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
       fanout.publish_async 'jobs', {}

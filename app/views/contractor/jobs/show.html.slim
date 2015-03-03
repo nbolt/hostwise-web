@@ -121,7 +121,7 @@
             .typcn.typcn-user
           .name ng:bind='::teammate.name'
       .block.actions
-        div ng:switch='job_status()'
+        div ng:switch='job_status'
           .viewports ng:switch-when='blocked'
             .viewport.active.disabled
               .arrived-button

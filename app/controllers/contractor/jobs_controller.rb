@@ -40,7 +40,28 @@ class Contractor::JobsController < Contractor::AuthController
       UserMailer.service_completed(property).then(:deliver) if property.user.settings(:service_completion).email
       TwilioJob.perform_later("+1#{property.user.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
     end
-    render json: { success: true }
+    render json: { success: true, next_job: job.next_job(current_user).then(:id) }
+  end
+
+  def status
+    if job.status == :completed
+      render json: { success: true, status: 'completed' }
+    elsif job.status == :in_progress
+      render json: { success: true, status: 'in_progress' }
+    elsif job.date == Time.now.to_date
+      prev_job = job.previous_job current_user
+      if prev_job
+        if prev_job.status == :completed
+          render json: { success: true, status: 'active' }
+        else
+          render json: { success: true, status: 'blocked' }
+        end
+      else
+        render json: { success: true, status: 'active' }
+      end
+    else
+      render json: { success: true, status: 'blocked' }
+    end
   end
 
 end

@@ -125,6 +125,10 @@ class Contractor::UsersController < Contractor::AuthController
     render json: { success: true }
   end
 
+  def jobs_today
+    render json: current_user.jobs.on_date(Time.now).ordered(current_user).to_json(methods: [:payout_rounded, :payout_integer, :payout_fractional], include: [booking: {include: [property: {include: [user: {methods: [:name]}]}]}])
+  end
+
   private
 
   def user_params

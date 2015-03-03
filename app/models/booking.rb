@@ -73,6 +73,8 @@ class Booking < ActiveRecord::Base
   def charge!
     if completed?
       false
+    elsif cost == 0
+      true
     elsif payment.stripe_id
       amount = cost * 100
       begin
@@ -143,7 +145,7 @@ class Booking < ActiveRecord::Base
   end
 
   def check_transaction
-    if !completed? && last_transaction && last_transaction.successful?
+    if !completed? && last_transaction && last_transaction.successful? || cost == 0
       completed!
     end
   end

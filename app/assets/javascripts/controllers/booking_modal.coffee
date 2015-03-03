@@ -50,10 +50,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       else
         $scope.payment_screen 'existing'
       $scope.slide 'step-two'
+      $scope.calculate_pricing()
     null
 
   $scope.details = ->
     angular.element('.content-side-container .content-side').toggle()
+    $scope.calculate_pricing()
     null
 
   $scope.add_payment = (defer) ->

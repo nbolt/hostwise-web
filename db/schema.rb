@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150302152410) do
+ActiveRecord::Schema.define(version: 20150303192929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,10 +61,10 @@ ActiveRecord::Schema.define(version: 20150302152410) do
   create_table "bookings", force: :cascade do |t|
     t.integer  "property_id"
     t.integer  "payment_id"
-    t.datetime "date"
+    t.date     "date"
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
-    t.integer  "status_cd"
+    t.integer  "status_cd",              default: 1
     t.string   "balanced_order_id"
     t.integer  "payment_status_cd",      default: 0
     t.boolean  "late_next_day",          default: false
@@ -87,9 +87,10 @@ ActiveRecord::Schema.define(version: 20150302152410) do
 
   create_table "contractor_jobs", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "job_id"
+    t.integer  "priority",   default: 0
   end
 
   add_index "contractor_jobs", ["user_id"], name: "index_contractor_jobs_on_user_id", using: :btree
@@ -128,7 +129,6 @@ ActiveRecord::Schema.define(version: 20150302152410) do
     t.integer  "booking_id"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.integer  "priority",     default: 0
     t.boolean  "distribution", default: false
     t.integer  "king_beds"
     t.integer  "queen_beds"
@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(version: 20150302152410) do
     t.integer  "size",         default: 1
     t.integer  "toiletries"
     t.boolean  "training",     default: false
-    t.datetime "date"
+    t.date     "date"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -208,6 +208,7 @@ ActiveRecord::Schema.define(version: 20150302152410) do
     t.string   "phone_number"
     t.integer  "rental_type_cd"
     t.integer  "property_type_cd"
+    t.string   "restocking_info"
   end
 
   create_table "property_photos", force: :cascade do |t|

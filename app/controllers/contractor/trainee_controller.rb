@@ -1,7 +1,7 @@
 class Contractor::TraineeController < Contractor::AuthController
   
   def available_jobs
-    jobs = Job.standard.future.trainers.where(training:false,priority:1).order('bookings.date').to_a.uniq{|job| job.date}
+    jobs = Job.standard.future.trainers.first_jobs.order('bookings.date').to_a.uniq{|job| job.date}
     render json: jobs[0..7].to_json(include: :booking)
   end
 
@@ -13,7 +13,7 @@ class Contractor::TraineeController < Contractor::AuthController
       jobs.each do |job|
         job.update_attribute :training, true
         job.contractors.push current_user
-        distribution_job = current_user.jobs.build(distribution: true, status_cd: 1, priority: 0, date: job.date)
+        distribution_job = current_user.jobs.build(distribution: true, status_cd: 1, date: job.date)
         if distribution_job.booking.services.index Service.where(name: 'linens')[0]
           distribution_job.king_beds = job.booking.property.king_beds
           distribution_job.queen_beds = job.booking.property.queen_beds

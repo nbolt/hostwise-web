@@ -1,6 +1,7 @@
 JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialog', ($scope, $http, $timeout, $interval, $window, $q, ngDialog) ->
 
   $scope.jobQ = $q.defer()
+  $scope.job_status = 'blocked'
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
@@ -29,49 +30,28 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialo
             }).addTo map
     ), 200)
 
-    $scope.job_status = ->
-      if $scope.user
-        if $scope.job.status_cd == 3
-          'completed'
-        else if $scope.job.status_cd == 2
-          'in_progress'
-        else
-          date = moment($scope.job.date, 'YYYY-MM-DD')
-          today = date.date() == moment().date() && date.month() == moment().month() && date.year() == moment().year()
-          if today
-            job = _($scope.user.jobs_today).find (job) -> job.priority == $scope.job.priority - 1
-            if job
-              if job.status_cd == 3
-                'active'
-              else
-                'blocked'
-            else
-              'active'
-          else
-            'blocked'
+  $http.get($window.location.href + '/status').success (rsp) -> $scope.job_status = rsp.status
+
+
+  $scope.completed_job = -> $scope.job.status_cd == 3
+
+  $scope.arrived = ->
+    angular.element('.arrived-dropdown').css 'max-height', 80
+    null
+
+  $scope.start = ->
+    $http.post("/jobs/#{$scope.job.id}/begin")
+    angular.element('.viewports').css 'margin-left', '-100%'
+    angular.element('.viewport.side').removeClass 'active'
+    angular.element('.viewport.start').addClass 'active'
+    null
+
+  $scope.complete = ->
+    $http.post("/jobs/#{$scope.job.id}/complete").success (rsp) ->
+      if rsp.next_job
+        $window.location = "/jobs/#{rsp.next_job}"
       else
-        'blocked'
-
-    $scope.completed_job = -> $scope.job.status_cd == 3
-
-    $scope.arrived = ->
-      angular.element('.arrived-dropdown').css 'max-height', 80
-      null
-
-    $scope.start = ->
-      $http.post("/jobs/#{$scope.job.id}/begin")
-      angular.element('.viewports').css 'margin-left', '-100%'
-      angular.element('.viewport.side').removeClass 'active'
-      angular.element('.viewport.start').addClass 'active'
-      null
-
-    $scope.complete = ->
-      $http.post("/jobs/#{$scope.job.id}/complete").success (rsp) ->
-        job = _($scope.user.jobs_today).find (job) -> job.priority == $scope.job.priority + 1
-        if job
-          $window.location = "/jobs/#{job.id}"
-        else
-          $window.location = '/'
+        $window.location = '/'
 
 ]
 

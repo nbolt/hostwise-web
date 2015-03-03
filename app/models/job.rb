@@ -1,19 +1,21 @@
 class Job < ActiveRecord::Base
   belongs_to :booking
-  has_many :contractor_jobs, class_name: 'ContractorJobs'
+  has_many :contractor_jobs, class_name: 'ContractorJobs', dependent: :destroy
   has_many :contractors, through: :contractor_jobs, source: :user
   has_many :payouts
 
   as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4
 
+  scope :first_jobs, -> { where('contractor_jobs.priority = 1').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :trainers, -> { where('contractor_jobs.user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }
   scope :future, -> { where('bookings.date >= ?', Time.now).includes(:booking).references(:booking) }
-  scope :on_date, ->(date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
+  scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
+  scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
 
   def self.open contractor
     Job.standard.where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
@@ -25,6 +27,18 @@ class Job < ActiveRecord::Base
 
   def self.past contractor
     Job.standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
+  end
+
+  def priority contractor
+    ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority
+  end
+
+  def next_job contractor
+    contractor.jobs.on_date(date).where('contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
+  end
+
+  def previous_job contractor
+    contractor.jobs.on_date(date).where('contractor_jobs.priority < ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[-1]
   end
 
   def payout
@@ -49,10 +63,6 @@ class Job < ActiveRecord::Base
 
   def payout_fractional
     payout.to_s.split('.')[1].to_i if booking
-  end
-
-  def next_job contractor
-    contractor.jobs.on_date(self.date).where('priority > ?', self.priority).order(:priority)[0]
   end
 
   def start!
@@ -86,7 +96,7 @@ class Job < ActiveRecord::Base
     supplies = {king_beds:0,queen_beds:0,full_beds:0,twin_beds:0,toiletries:0}
 
     if single_jobs[0]
-      distribution_job = user.jobs.create(distribution: true, status_cd: 1, priority: 0, date: booking.date) unless distribution_job
+      distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: booking.date) unless distribution_job
       single_jobs.each do |job|
         if job.booking.services.index Service.where(name: 'linens')[0]
           supplies[:king_beds] += job.booking.property.king_beds
@@ -99,7 +109,7 @@ class Job < ActiveRecord::Base
     end
 
     if team_job && team_job.contractors.count == 1
-      distribution_job = user.jobs.create(distribution: true, status_cd: 1, priority: 0, date: booking.date) unless distribution_job
+      distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: booking.date) unless distribution_job
       if team_job.booking.services.index Service.where(name: 'linens')[0]
         supplies[:king_beds] += team_job.booking.property.king_beds
         supplies[:queen_beds] += team_job.booking.property.queen_beds
@@ -121,15 +131,26 @@ class Job < ActiveRecord::Base
     end
   end
 
-  def self.set_priorities jobs
+  def self.set_priorities jobs, contractor
     team_job = jobs.team[0]
     if team_job
-      jobs.where(priority:1).each {|job| job.update_attribute :priority, 0}
-      team_job.update_attribute :priority, 1
+      contractor_job = contractor.contractor_jobs.where(job_id: team_job.id)[0]
+      contractor_job.update_attribute :priority, 1
+      jobs.each do |job|
+        contractor_job = contractor.contractor_jobs.where(job_id: job.id)[0]
+        contractor_job.update_attribute :priority, 0 if contractor_job.priority == 1
+      end
     end
-    num = jobs.map(&:priority).max
-    jobs.where(priority:0).each_with_index do |job, index|
-      job.update_attribute :priority, index + num + 1
+    num = jobs.map{|job| contractor.contractor_jobs.where(job_id: job.id)[0].priority}.max
+    
+    unprioritized_jobs = jobs.select do |job|
+      contractor_job = contractor.contractor_jobs.where(job_id: job.id)[0]
+      contractor_job.priority == 0
+    end
+    
+    unprioritized_jobs.each_with_index do |job, index|
+      contractor_job = contractor.contractor_jobs.where(job_id: job.id)[0]
+      contractor_job.update_attribute :priority, num + index + 1
     end
   end
 end

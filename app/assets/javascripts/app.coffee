@@ -13,10 +13,13 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
           $scope.user.payment_prefs = _($scope.user.payments).filter (payment) -> payment.status_cd == 1 or payment.status_cd == 2
           $scope.user.payment_prefs = _($scope.user.payment_prefs).sortBy (payment) -> payment.id
           $scope.user.payments = _($scope.user.payments).filter (payment) -> payment.status_cd == 1
+          if $scope.user.role is 'admin'
+            $scope.user_fetched.resolve()
           if $scope.user.role is 'host'
             $scope.user.properties = _($scope.user.properties).filter (property) -> property.active
             _($scope.user.properties).each (property) ->
               property.next_service_date = moment(property.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if property.next_service_date
+            $scope.user_fetched.resolve()
           if $scope.user.role is 'contractor'
             $scope.user.earnings = $scope.user.earnings.toFixed 2
             $scope.user.unpaid = $scope.user.unpaid.toFixed 2
@@ -30,14 +33,13 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
                 training.distribution_job = _(jobs).filter((job) -> job.distribution)[0]
                 training.date = moment(training.jobs[0].booking.date, 'YYYY-MM-DD').format 'ddd, MMM D'
                 $scope.user.training_jobs.push training
+              $scope.user_fetched.resolve()
             else
-              $scope.user.jobs_today = _($scope.user.jobs).filter (job) ->
-                date = moment(job.date, 'YYYY-MM-DD')
-                date.date() == moment().date() && date.month() == moment().month() && date.year() == moment().year()
-              $scope.user.distribution_job = _($scope.user.jobs_today).find (job) -> job.distribution
-              $scope.user.standard_jobs = _($scope.user.jobs_today).reject (job) -> job.distribution
-              $scope.user.standard_jobs = _($scope.user.standard_jobs).sortBy (job) -> job.priority
-          $scope.user_fetched.resolve()
+              $http.get('/user/jobs_today').success (rsp) ->
+                $scope.user.jobs_today = rsp
+                $scope.user.distribution_job = _($scope.user.jobs_today).find (job) -> job.distribution
+                $scope.user.standard_jobs = _($scope.user.jobs_today).reject (job) -> job.distribution
+                $scope.user_fetched.resolve()
 
   $scope.$emit 'fetch_user'
   
