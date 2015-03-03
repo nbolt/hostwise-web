@@ -31,6 +31,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
             attributionControl: false)
           $scope.markers = new L.LayerGroup().addTo($scope.map)
           $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
+          $scope.map.zoomControl.removeFrom($scope.map); $scope.map.dragging.disable(); $scope.map.touchZoom.disable(); $scope.map.doubleClickZoom.disable(); $scope.map.scrollWheelZoom.disable()
           refresh_map()
     ), 200)
 
