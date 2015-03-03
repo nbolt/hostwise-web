@@ -1394,9 +1394,6 @@ form
                   width: 50%
                 @media portrait_tablet
                   width: 50%
-            .icon-button .text
-              @media phone
-                display: inline-block
             .select2-container
               width: 100%
               a
@@ -1630,6 +1627,9 @@ form
               text-align: center
               &:hover
                 background-color: light-teal
+              @media phone
+                &:hover
+                  background-color: teal
           table
             width: 92%
             margin: 25px auto
@@ -2182,19 +2182,6 @@ form
         width: 48%
     .icon-button
       margin-left: 20px
-      width: auto
-      position: relative
-      .icon
-        position: absolute
-        top: 0
-        left: 0
-        i
-          width: 25px
-      .text
-        left: 10px
-        display: inline-block
-      &:active .text
-        left: 0
     input
       color: teal
       width: 100%
