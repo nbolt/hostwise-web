@@ -4,7 +4,7 @@ class Host::PaymentsController < Host::AuthController
 
     if params[:payment_method][:id] == 'credit-card'
       customer = Stripe::Customer.retrieve current_user.stripe_customer_id
-      card = customer.cards.create(card: params[:stripe_id])
+      card = customer.sources.create(card: params[:stripe_id])
       payment = current_user.payments.create({
                                                stripe_id: card.id,
                                                last4: card.last4,
@@ -53,7 +53,7 @@ class Host::PaymentsController < Host::AuthController
 
     if payment.card?
       customer = Stripe::Customer.retrieve(payment.user.stripe_customer_id)
-      rsp = customer.cards.retrieve(payment.stripe_id).delete
+      rsp = customer.sources.retrieve(payment.stripe_id).delete
     elsif payment.bank?
       bank_account = Balanced::BankAccount.fetch "/bank_accounts/#{payment.balanced_id}"
       rsp = bank_account.destroy

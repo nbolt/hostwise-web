@@ -88,7 +88,7 @@ class Booking < ActiveRecord::Base
           amount: amount,
           currency: 'usd',
           customer: property.user.stripe_customer_id,
-          card: payment.stripe_id,
+          source: payment.stripe_id,
           statement_descriptor: "HostWise #{id}"[0..21], # 22 characters max
           metadata: metadata
         )
