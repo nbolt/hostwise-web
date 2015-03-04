@@ -43,10 +43,10 @@ app = angular.module('porter').directive('calendar', [->
               _month = if month == 12 then 1 else month+1
               _year = month == 1 && year+1 || year
               'day="' + (current_day - month_days) + '" month="' + _month + '" year="' + _year + '" class="active day">' + (current_day - month_days)
-             else if options.disable_past && moment().diff(new Date(year, month-1, current_day+2), 'days') > 0
+             else if options.disable_past && moment().diff(new Date(year, month-1, current_day+1), 'days') > 0
               ++current_day
               'class="past day">' + current_day
-             else if options.disable_past && moment().hour() >= 15 && moment().diff(new Date(year, month-1, current_day+1), 'days') > 0
+             else if options.disable_past && moment().hour() >= 15 && moment().diff(new Date(year, month-1, current_day), 'days') > 0
               ++current_day
               'class="past day">' + current_day
              else
