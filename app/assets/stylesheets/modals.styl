@@ -1213,3 +1213,51 @@
           bottom: 0
           left: 0
           right: 0
+
+.ngdialog.full-pricing
+  .ngdialog-content
+    width: 800px
+    @media portrait_tablet
+      width: 100%
+    @media phone
+      width: 100%
+    .modal
+      background-color: white
+      .header
+        text-align: center
+        margin-top: 50px
+        font-size: 1.5em
+        color: teal
+      .footer
+        text-align: center
+        margin-bottom: 50px
+        font-size: 0.9em
+        @media phone
+          line-height: 1.5em
+        span
+          color: teal
+      .content
+        padding: 30px 50px
+        @media portrait_tablet
+          padding: 30px 0
+        @media phone
+          padding: 30px 0
+        > div
+          width: 23.24%
+          padding: 0 5%
+          display: inline-block
+          border-left: thin solid #f1f1f1
+          @media phone
+            width: 90%
+            display: block
+            border-left: 0
+          &:first-child
+            border-left: 0
+        table
+          text-transform: uppercase
+          font-size: 0.875em
+          width: 100%
+          td
+            padding: 10px 0
+            .fa
+              font-size: 1.2em

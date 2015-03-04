@@ -1,4 +1,4 @@
-section#banner-pricing.pl-panel
+section#banner-pricing.pl-panel ng:controller='pricing'
   .container
     .heading-container
       h1.teal Simple, Transparent Pricing
@@ -54,8 +54,8 @@ section#banner-pricing.pl-panel
           p.gray.alignleft
             | Is your property already clean and just in need of prepping for your next guest?
             span.teal style="float:right;"
-              strong $100
-          a.btn.outlined href="javascript:;"  View Full Pricing
+              strong ${{pricing.staging}}
+          a.btn.outlined href='' ng:click='view_pricing()' View Full Pricing
       #p-linens.col.span_4_of_12
         .p-content
           h4.navy Linens &amp; Towels
@@ -70,22 +70,22 @@ section#banner-pricing.pl-panel
                 td Twin
                 td.alignright
                   span.red
-                    strong $13
+                    strong ${{pricing.twin_linens}}
               tr
                 td Full
                 td.alignright
                   span.red
-                    strong $15
+                    strong ${{pricing.full_linens}}
               tr
                 td Queen
                 td.alignright
                   span.red
-                    strong $15
+                    strong ${{pricing.queen_linens}}
               tr
                 td King
                 td.alignright
                   span.red
-                    strong $16
+                    strong ${{pricing.king_linens}}
           h5.dark-gray.alignleft Each Set Includes:
           table.p-details.gray
             tbody
@@ -131,7 +131,7 @@ section#banner-pricing.pl-panel
                 td Toiletry Set
                 td.alignright
                   span.yellow
-                    strong $10
+                    strong ${{pricing.toiletries}}
           img#logo-cob alt=("C.O. Bigelow") src="/hw_images/logo_cob.png"
           h5.dark-gray.alignleft Each Set Includes:
           table.p-details.gray
@@ -156,3 +156,4 @@ section#banner-pricing.pl-panel
           p.gray Toilet paper, trash bags, dish soap, etc.
           h5.teal Coming Soon!
       .col.span_4_of_12
+= render 'common/full_pricing_modal'
