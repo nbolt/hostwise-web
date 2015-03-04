@@ -6,6 +6,7 @@ AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.signin = ->
     $http.post('/auth/signin', {
       form: $scope.form
+      spinner: true
     }).success (rsp) ->
       if rsp.success
         window.location = rsp.redirect_to

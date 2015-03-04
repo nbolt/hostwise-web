@@ -17,7 +17,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialo
       if $window.loaded_mapbox
         $interval.cancel(load_mapbox)
         map = L.mapbox.map 'map', 'useporter.l02en9o9'
-        map.zoomControl.removeFrom(map); map.dragging.disable(); map.touchZoom.disable(); map.doubleClickZoom.disable(); map.scrollWheelZoom.disable()
+        map.dragging.disable(); map.touchZoom.disable(); map.doubleClickZoom.disable(); map.scrollWheelZoom.disable()
         geocoder = L.mapbox.geocoder 'mapbox.places'
         geocoder.query $scope.job.booking.property.full_address, (err, data) ->
           if data.latlng

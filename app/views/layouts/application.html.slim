@@ -12,6 +12,12 @@ html
     = render 'common/analytics'
 
   body.pl ng:controller='app' ng-cloak=''
+    #spin-overlay
+      .overlay
+      .spinner
+        .one
+        .two
+        .three
     .home ng:controller='modal'
       = render 'common/pl_header'
       = yield
