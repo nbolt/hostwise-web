@@ -64,4 +64,6 @@ app = angular.module('porter', ['ngCookies',
     $httpProvider.interceptors.push 'spinner'
   ]
 
-angular.element(document).on 'ready page:load', -> angular.bootstrap('body', ['porter'])
+angular.element(document).on 'ready page:load', ->
+  angular.bootstrap('body', ['porter'])
+  analytics.page()
