@@ -973,6 +973,10 @@ ul.faq-categories li a{
   color:#fff;
 }
 
+ul.faq-categories li a:active, ul.faq-categories li a:focus {
+  outline: none;
+}
+
 ul.faq-categories li a strong{
   font-weight:300;
 }
@@ -998,6 +1002,10 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   color:#2c3842;
   line-height:1.5em;
   border:1px solid #e5e5e5;
+}
+
+.question:hover {
+  cursor: pointer;
 }
 
 .question::after{
