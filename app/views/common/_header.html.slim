@@ -7,7 +7,7 @@ header
         .drop
           .links
             = render "#{current_user.role}/account_settings"
-      .name
+      .name ng:show='user'
         | Hi,&nbsp;
         strong ng:bind='::user.first_name'
       .arrow
