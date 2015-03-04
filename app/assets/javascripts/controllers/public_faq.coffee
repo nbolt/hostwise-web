@@ -10,12 +10,17 @@ PublicFaqCtrl = ['$scope', '$http', ($scope, $http) ->
       count: _($scope.faqs).reduce(((acc, faq) -> acc + faq.questions.length), 0)
       questions: _(_($scope.faqs).map((faq) -> faq.questions)).flatten()
 
-    $scope.chosen_faq = $scope.faqs[0]
+    $scope.chosen_faq = _($scope.faqs[0]).clone()
+    $scope.chosen_faq.questions = _($scope.faqs[0].questions).clone()
 
   $scope.active = (faq) -> faq.name == $scope.chosen_faq.name && 'active' || ''
 
   $scope.toggle = (faq) ->
-    $scope.chosen_faq = _($scope.faqs).find (f) -> f.name == faq.name
+    $scope.chosen_faq = _(_($scope.faqs).find (f) -> f.name == faq.name).clone()
+    $scope.chosen_faq.questions = _($scope.chosen_faq.questions).clone()
+
+  $scope.search = ->
+    $scope.chosen_faq.questions = _($scope.chosen_faq.questions).filter (faq) -> faq.question.match($scope.term) || faq.answer.match($scope.term)
 
 ]
 
