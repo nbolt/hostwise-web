@@ -15,7 +15,7 @@ html
   body.grey ng:controller='app' ng-cloak=''
     header
       .logo
-        a href="http://www.#{request.domain}"
+        a href="#{root_path}"
           img.hw src='/images/header.png'
           img.owl src='/images/owl.png'
     = yield
