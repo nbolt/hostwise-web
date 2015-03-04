@@ -47,6 +47,9 @@ table {
   border-spacing: 0;
 }
 
+.pl ul {
+  padding:0;
+}
 
 /*--------------------------------*\
 ****** 12-COL RESPONSIVE GRID ******
@@ -135,7 +138,7 @@ table {
 /*  GO FULL WIDTH AT LESS THAN 768 PIXELS */
 
 @media only screen and (max-width: 768px) {
-  .col {
+  .pl .col {
     margin: 1% 0 1% 0%;
   }
 }
@@ -427,7 +430,7 @@ ul.pl-main-nav li a.active{
   }
 
   ul.pl-main-nav li a{
-    display:inline;
+    display:inline-block;
     padding:0;
   }
 
@@ -440,6 +443,7 @@ ul.pl-main-nav li a.active{
   .pl-account-nav{
     width:100%;
     margin:0;
+    padding:0;
     float:none;
     overflow:hidden;
   }
@@ -518,6 +522,7 @@ ul.pl-main-nav li a.active{
   border:1px solid #e5e5e5;
   border-radius:3px;
   color:#75818f;
+  box-sizing: inherit;
 }
 
 .pl-form .textfield:focus, .pl-form .textarea:focus{
@@ -527,6 +532,22 @@ ul.pl-main-nav li a.active{
 
 .pl-form .textarea{
   height:80px;
+}
+
+@media only screen and (max-width: 768px) {
+
+  .pl-form .textfield, .pl-form .textarea{
+    width:90%;
+  }
+
+}
+
+@media only screen and (max-width: 480px) {
+
+  .pl-form .textfield, .pl-form .textarea{
+    width:90%;
+  }
+
 }
 
 .pl-form .btn{
@@ -670,6 +691,12 @@ ul.pl-main-nav li a.active{
 
 #testimonials{
   text-align:center;
+}
+
+.t-slider ul, .t-slider li {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 .t-slider ul li { float: left; }
