@@ -145,6 +145,8 @@ Place.all.each do |place|
       access_info: place.entry_infomation,
       trash_disposal: place.trash_disposal,
       additional_info: place.add_instruction,
+      parking_info: '?',
+      restocking_info: '?',
       bedrooms: bedrooms,
       bathrooms: place.details['bathrooms'],
       king_beds: place.details['beds']['king'],
