@@ -21,6 +21,7 @@ PublicFaqCtrl = ['$scope', '$http', ($scope, $http) ->
 
   $scope.search = ->
     $scope.chosen_faq.questions = _($scope.chosen_faq.questions).filter (faq) -> faq.question.match($scope.term) || faq.answer.match($scope.term)
+    angular.element('body').scrollTo( angular.element("#faq"), 600 )
 
 ]
 
