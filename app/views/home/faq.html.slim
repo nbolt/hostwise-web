@@ -23,3 +23,8 @@ div ng:controller='public_faq'
       .question ng:repeat='faq in chosen_faq.questions' toggle-faq=''
         span ng:bind='faq.question'
         .answer ng:bind-html='faq.answer'
+      hr.dark
+      h2.dark-gray style="font-weight:400;"
+        | Still have questions?
+        strong &nbsp;Call a real local human being!
+      a.btn.outlined href="tel:18666674085"  1 (866) 667-4085

@@ -194,7 +194,7 @@ body.pl{font-family:'Lato', sans-serif;}
 .pl h3{font-size:1.125em; text-transform:uppercase; font-weight:400; line-height:1.5em; margin:0.25em 0;}
 .pl h4{font-size:1.5em; text-transform:uppercase; font-weight:400; line-height:1.5em; margin:0.5em 0;}
 .pl h5{font-size:0.875em; text-transform: uppercase; font-weight:700; line-height:1.5em; margin:0.5em 0;}
-.pl h6{font-size:1.125em; font-weight:300; line-height:1.5em;}
+.pl h6{font-size:1.125em; font-weight:300; line-height:1.5em;margin:0;}
 
 .pl p{font-size:0.875em; font-weight:300; line-height:1.5em; margin:0.5em 0 1em 0;}
 
@@ -989,7 +989,15 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
 /* QUESTIONS & ANSWERS */
 
 #faq{
-  text-align:left;
+  background:url(/hw_images/bg_faq.jpg) bottom left no-repeat;
+}
+
+#faq .outlined{
+  width:auto;
+  padding:1em 2em;
+  display:inline-block;
+  font-size:24px;
+  letter-spacing:0;
 }
 
 .question{
@@ -1001,7 +1009,8 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   font-weight:300;
   color:#2c3842;
   line-height:1.5em;
-  border:1px solid #e5e5e5;
+  text-align:left;
+  border:1px solid #e5e5e5 ;
 }
 
 .question:hover {
