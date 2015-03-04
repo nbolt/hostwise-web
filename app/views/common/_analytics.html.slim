@@ -23,12 +23,7 @@ javascript:
         createdAt: "#{ current_user.created_at }",
         firstName: "#{ current_user.first_name }",
         lastName: "#{ current_user.last_name }"
-      }//, {
-       // integrations: {
-       //     Intercom : {
-       //         user_hash : "#{ OpenSSL::HMAC.hexdigest('sha256', ENV['INTERCOM_SECRET'], current_user.id.to_s) }"
-       //     }
-       // }
+      }
     )
 
     window.intercomSettings = {
