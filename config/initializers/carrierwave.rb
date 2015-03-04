@@ -10,7 +10,7 @@ CarrierWave.configure do |config|
       aws_secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
       region: ENV['S3_BUCKET']
     }
-    config.fog_directory = "porter-for-hosts-#{Rails.env}"
+    config.fog_directory = "hostwise-#{Rails.env}"
     config.fog_public = true
   end
 end
