@@ -1,108 +1,126 @@
-.home ng:controller='home'
-  .hero ng:controller='modal'
-    .title Get Your Property Cleaned Today, For Free.
-    .subtitle We'll bring hotel quality linens, towels, and top-notch cleaners to ensure your guests receive a 5 Star experience -- every time.
-    a.button.orange href='' ng-click='show_signup()' Book It For Free
-    .note + $49 one-time property setup
-  .arrow-down
-  .services
-    .title Save Time & Maximize Revenue
-    .subtitle We handle all the dirty work so you can more time for [ x ]
-    ul
-      li
-        =image_tag 'icon_cleaning.png'
-        div Cleaning & Staging
-        span Our highly-trained, professional cleaners all have 2+ years of experience and do amazing work.
-      li
-        =image_tag 'icon_linens.png'
-        div Linens & Towels
-        span High quality luxury linens and towels, commercially pressed and delivered to your property.
-      li
-        =image_tag 'icon_restocking.png'
-        div Restocking Supplies
-        span We've partnered with C.O. Bigelow to provide your guests with super high quality toiletries.
-    a.button.teal href='' ng-click="expand('how-it-works')" See How It Works
-  .how-it-works
-    .title It's As Easy As 1-2-3
-    .subtitle Lorem ipsum dolor sit amet conseceteur doli consuale
-    ul
-      li
-        =image_tag 'hiw_1.png'
-        div 1. Add a Property
-        span Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor.
-      li
-        =image_tag 'hiw_2.png'
-        div 2. Book Services
-        span Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor.
-      li
-        =image_tag 'hiw_3.png'
-        div 3. Grow Your Portfolio
-        span Lorem ipsum dolor sit amet conseceteur doli consuale. Lorem ipsum dolor.
-  .features
-    .title We're changing the short term rental game
-    ul
-      li
-        =image_tag 'feature_od.png'
-        div On demand, same day service
-        span Last minute bookings? Our ops team is ready to get your property in tip-top shape in time for your next guest.
-      li
-        =image_tag 'feature_hotel.png'
-        div Never lose a guest to a hotel again
-        span We're bringing the best parts of the hotel experience to your short-term rentals.
-      li
-        =image_tag 'feature_save.png'
-        div Your guest pay for it
-        span We've used big-data to determine the cleaning fees you should be charging, so there's cost to you.
-      li
-        =image_tag 'feature_stars.png'
-        div 5 star cleaning ratings -- Every time
-        span Our 37-point luxury hotel cleaning checklist ensures your guests arrive impressed and always leave happy.
-  .pricing
-    .title Simple & Transparent Pricing
-    .input
-      .options
-        a.circle href='' ng-click='house()'
-          .house.active
-        .label House
-        a.circle href='' ng-click='condo()'
-          .condo
-        .label Apartment/Condo
-      .sliders
-        div
-          slider ceiling='5' floor='0' ng-model='bedrooms'
-          .selection
-            .arrow-left
-            span.bedrooms 0
-            | Bedrooms
-        div
-          slider ceiling='5' floor='0' ng-model='bathrooms'
-          .selection
-            .arrow-left
-            span.bathrooms 0
-            | Bathrooms
-    .details
-      .price
-        span $
-        input type='' ng-model='price'
-        br
-        | + $49 one-time property setup
-      a.button.teal href='' View Full Pricing
-  .offer ng:controller='modal'
-    .details
-      .subtitle
-        strong Don't forget...
-      .title Your first service is on us.
-      .subtitle We're confident that you'll love us so your first service is complementary.
-      a.button.orange href='' ng-click='show_signup()' Book It Today
-  .testimonials
-    .title What Our Hosts Are Saying
-    .subtitle Lorem ipsum dolor sit amet conseceteur doli consuale
-    ul.carousel1.ng-scope rn-carousel='' rn-carousel-buffered='' rn-carousel-controls='' rn-carousel-index='carouselIndex'
-      li ng-repeat=('t in testimonials')
-        .text
-          | {{::t.text}}
-        img ng:src="{{::t.thumb}}"
-        .name
-          | {{::t.name}}
-        .company
-          | {{::t.company}}
+section#banner.pl-panel
+  .container
+    h1.white Hotel Housekeeping for Short-Term Rentals
+    h6.white Professional cleaning, luxury linens, towels, and guest toiletries ensure a 5 Star Cleaning rating. Every time.
+    hr.light
+    a.btn.primary href='' ng:click='show_signup()'  Try HostWise for Free
+section#services.pl-panel
+  .container
+    h2.teal Fully Automate Your Turnover
+    h6.gray Never manage the check-out/check-in window ever again.
+    hr.dark
+    .section.group
+      .col.span_4_of_12
+        img.icon-service alt="Housekeeping" src="/hw_images/service_housekeeping.png"
+        hr.dark.small
+        .padded-content
+          h3.navy Housekeeping
+          p.gray We vet, background-check, and test our housekeepers using a proprietary hospitality cleaning checklist
+      .col.span_4_of_12
+        img.icon-service alt=("Linens &amp; Towels") src="/hw_images/service_linens.png"
+        hr.dark.small
+        .padded-content
+          h3.navy Linens &amp; Towels
+          p.gray HostWise hotel-grade linens &amp; towels are commercially laundered, pressed, and deployed in your properties at guest checkout.
+      .col.span_4_of_12
+        img.icon-service alt=("Guest Toiletries") src="/hw_images/service_toiletries.png"
+        hr.dark.small
+        .padded-content
+          h3.navy Guest Toiletries
+          p.gray We stage your property with guest toiletries by C.O. Bigelow, paper products, soaps, and any other consumables you request.
+section#features.pl-panel
+  .container
+    .section.group
+      .col.span_8_of_12
+        h2.white We're changing the game for short-term rental hosts
+        hr.dark
+        .features-list
+          .feature
+            .f-icon
+              i.icon-od
+            .f-text
+              h3.white On-Demand, Same day service
+              p.white Last minute booking? No problem. Our team is on call 7 days a week.
+          .feature
+            .f-icon
+              i.icon-fees
+            .f-text
+              h3.white Guests Cover the Cleaning Fees
+              p.white We use big-data to match our pricing to average cleaning fees from the best hosts across the country. 100% of costs should be passed through.
+          .feature
+            .f-icon
+              i.icon-hotel
+            .f-text
+              h3.white Never lose a guest to a hotel again
+              p.white Cleanliness is the #1 reason why guests choose hotels.
+          .feature
+            .f-icon
+              i.icon-stars
+            .f-text
+              h3.white 5 star cleaning ratings. Guaranteed.
+              p.white Drop below a 5 star rating and booking inquiries decrease by 40%. Stay relevant in search results with HostWise.
+      .col.span_4_of_12
+        #trust-safety
+          h2.white Trust &amp; Safety
+          hr.dark
+          .ts-item
+            .ts-icon
+              i.icon-guarantee.yellow
+            h3.white Guaranteed
+            p.white 100% satisfaction guarantee
+          hr.dark.small
+          .ts-item
+            .ts-icon
+              i.icon-insurance.yellow
+            h3.white Insurance
+            p.white $1mm coverage per job.
+          hr.dark.small
+          .ts-item
+            .ts-icon
+              i.icon-bg.yellow
+            h3.white Background Checked
+            p.white Third-party background checks
+section#testimonials.pl-panel
+  .container
+    h2.teal What our hosts are saying
+    h6.gray No need to take our word for it, let our customers tell you why they love us.
+    hr.dark
+    .t-slider
+      ul
+        li
+          | "HostWise enabled me to double the size of my short-term rental portfolio by automating my property turns."
+          hr.dark.small
+          .t-head
+            img alt=("Hank L.") src="/hw_images/test_hank.jpg"
+          .t-name
+            strong Hank L.
+            br
+            | rentfitter.com
+        li
+          | "HostWise handles the most difficult, expensive, and time consuming part of hosting&mdash;cleaning &amp; laundry"
+          hr.dark.small
+          .t-head
+            img alt=("Scott S.") src="/hw_images/test_scott.jpg"
+          .t-name
+            strong Scott S.
+            br
+            | rentingyourplace.com
+        li
+          | "Luxury rental management requires a "back of the house" expert to manage property turnovers. HostWise is the ONLY partner we'd work with."
+          hr.dark.small
+          .t-head
+            img alt="Luxpads" src="/hw_images/test_luxpads.jpg"
+          .t-name
+            strong Luxpads Luxury Rentals
+            br
+            | luxpads.com
+section#more-time.pl-panel
+  .container
+    h2.teal
+      | More time for
+      br
+      | (
+      span.x
+      | )
+    hr.dark
+    a.btn.primary href='' ng:click='show_signup()'  Get back your time

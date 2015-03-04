@@ -11,40 +11,11 @@ html
     = yield :head
     = render 'common/analytics'
 
-  body ng:controller='app' ng-cloak=''
-    header ng:controller='modal'
-      nav
-        .link
-          a href='' ng-click='show_signin()'
-            .button.navy Login
-        .link
-          a href='' ng-click='show_signup()'
-            .button.teal Sign Up
-      .logo
-        a href="http://www.#{request.domain}"
-          img.hw src='/images/header.png'
-          img.owl src='/images/owl.png'
-    = yield
-    footer ng:controller='modal'
-      div
-        div.left
-          a href=''
-            | FAQ
-          a href=''
-            | Contact
-          p
-            | Are you a contractor?
-            strong  Work with us!
-        div.right
-          .fa.fa-facebook
-          .fa.fa-twitter
-          a.button.teal href='' ng-click='show_signup()' Sign Up Free
-          div
-            | &copy; 2015 HostWise, Inc. | All Rights Reserved
-          div
-            | Made with
-            .fa.fa-heart
-            | in Venice, CA
+  body.pl ng:controller='app' ng-cloak=''
+    .home ng:controller='modal'
+      = render 'common/pl_header'
+      = yield
+      = render 'common/pl_footer'
   = render 'common/signin_modal'
   = render 'common/signup_modal'
   = render 'common/forgotpwd_modal'

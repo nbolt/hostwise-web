@@ -1,0 +1,35 @@
+section#banner-contact.pl-panel
+  .container
+    h1.white Have A Question? Just Wanna Chat?
+    h6.white We have real, alive, local human beings standing by to help.
+    hr.light
+    .contact-form
+      form.pl-form action="" name=""
+        label for="fname"
+          | Your Name
+        .section.group
+          .col.span_5_of_12
+            input#fname.textfield name="fname" placeholder=("First Name") type="text"
+          .col.span_7_of_12
+            input#lname.textfield name="lname" placeholder=("Last Name") type="text"
+        .section.group
+          .col.span_5_of_12
+            label for="phone"
+              | Phone Number
+              input#phone.textfield name="phone" placeholder=("(555) 555-1234") type="text"
+          .col.span_7_of_12
+            label for="email"
+              | Email Address
+              input#email.textfield name="email" placeholder="you@hostwise.com" type="text"
+        .section.group
+          .col.span_12_of_12
+            label for="message"
+              | Your Message
+              textarea#message.textarea name="message"
+        a.btn.secondary href="javascript:;" Submit
+        small.gray
+          | By submitting your information, you indicate that you have read and agree to our&nbsp;
+          a href="/terms" Terms of Service
+          | &nbsp;and&nbsp;
+          a href="/privacy" Privacy Policy
+          | .

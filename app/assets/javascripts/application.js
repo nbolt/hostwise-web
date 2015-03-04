@@ -28,6 +28,9 @@
 //= require slider
 //= require jquery.scrollTo
 //= require jquery.cookie
+//= require unslider.min
+//= require typed
+//= require hw
 //= require app
 //= require_tree ./controllers
 //= require_tree .
