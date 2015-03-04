@@ -2,12 +2,12 @@ deployment:
   staging:
     branch: develop
     commands:
-      - git push git@heroku.com:porter-dev.git $CIRCLE_SHA1:master
-      - heroku run rake db:migrate --app porter-dev
+      - git push git@heroku.com:hostwise-staging.git $CIRCLE_SHA1:master
+      - heroku run rake db:migrate --app hostwise-staging
       # - bundle exec rake quay:build:develop
   production:
     branch: master
     commands:
-       - git push git@heroku.com:porter-prod.git $CIRCLE_SHA1:master
-       - heroku run rake db:migrate --app porter-prod
+       - git push git@heroku.com:hostwise.git $CIRCLE_SHA1:master
+       - heroku run rake db:migrate --app hostwise
        # - bundle exec rake quay:build:master
