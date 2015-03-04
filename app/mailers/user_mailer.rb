@@ -31,8 +31,8 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   def welcome(user)
     mandrill do
-      mandrill_mail template: 'signup-success',
-                    subject: 'Thank you for joining our community!',
+      mandrill_mail template: 'welcome',
+                    subject: 'Welcome to HostWise!',
                     to: {email: user.email, name: user.name},
                     inline_css: true,
                     async: true,
@@ -42,10 +42,14 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   def booking_reminder(booking)
     mandrill do
-      mandrill_mail template: '1-service-reminder-24h-before',
-                    subject: 'Just a friendly reminder about your services tomorrow.',
+      date = booking.date.strftime('%A, %b %e')
+      mandrill_mail template: 'service-reminder',
+                    subject: "[HostWise] Reminder: Service Tomorrow #{date}",
                     to: {email: booking.property.user.email, name: booking.property.user.name},
-                    vars: {'ADDR' => booking.property.short_address},
+                    vars: {'ADDRESS' => booking.property.short_address,
+                           'SERVICES' => booking.services.map(&:display).join(', '),
+                           'PROP_SIZE' => "#{booking.property.bedrooms}BD/#{booking.property.bathrooms}BA #{booking.property.property_type.titleize}",
+                           'DATE' => date},
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
@@ -55,10 +59,13 @@ class UserMailer < MandrillMailer::TemplateMailer
   def booking_confirmation(booking)
     mandrill do
       appt_date = booking.date.strftime('%b %e/%Y')
-      mandrill_mail template: 'service-confirmation',
-                    subject: "Your services have been booked on #{appt_date} at #{booking.property.short_address}",
+      mandrill_mail template: 'booking-confirmation',
+                    subject: "[HostWise] Booking Confirmed on #{appt_date} for #{booking.property.nickname}",
                     to: {email: booking.property.user.email, name: booking.property.user.name},
-                    vars: {'ADDR' => booking.property.short_address,
+                    vars: {'NICKNAME' => booking.property.nickname,
+                           'PROP_SIZE' => "#{booking.property.bedrooms}BD/#{booking.property.bathrooms}BA #{booking.property.property_type}",
+                           'SERVICES' => booking.services.map(&:display).join(', '),
+                           'PRICE' => "$#{booking.cost}",
                            'DATE' => appt_date},
                     inline_css: true,
                     async: true,
@@ -68,10 +75,12 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   def property_confirmation(property)
     mandrill do
-      mandrill_mail template: 'property-confirmation',
-                    subject: "You've added a new propery at #{property.short_address}",
+      mandrill_mail template: 'property-added',
+                    subject: "[HostWise] Property Added Successfully. What's Next?",
                     to: {email: property.user.email, name: property.user.name},
-                    vars: {'ADDR' => property.short_address},
+                    vars: {'ADDRESS' => property.short_address,
+                           'NICKNAME' => property.nickname,
+                           'PROP_SIZE' => "#{property.bedrooms}BD/#{property.bathrooms}BA #{property.property_type}"},
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
@@ -105,6 +114,6 @@ class UserMailer < MandrillMailer::TemplateMailer
   private
 
   def mandrill
-    yield if Rails.env.production?
+    yield if Rails.env.production? || Rails.env.staging?
   end
 end
