@@ -1,7 +1,7 @@
-section#banner-contact.pl-panel
+section#banner-contact.pl-panel ng:controller='contact'
   .container
     h1.white Have A Question? Just Wanna Chat?
-    h6.white We have real, alive, local human beings standing by to help.
+    h6.white We have real, local human beings standing by to help.
     hr.light
     .contact-form
       form.pl-form action="" name=""
@@ -9,27 +9,28 @@ section#banner-contact.pl-panel
           | Your Name
         .section.group
           .col.span_5_of_12
-            input#fname.textfield name="fname" placeholder=("First Name") type="text"
+            input#fname.textfield name="fname" placeholder=("First Name") type="text" ng:model='form.first_name'
           .col.span_7_of_12
-            input#lname.textfield name="lname" placeholder=("Last Name") type="text"
+            input#lname.textfield name="lname" placeholder=("Last Name") type="text" ng:model='form.last_name'
         .section.group
           .col.span_5_of_12
             label for="phone"
               | Phone Number
-              input#phone.textfield name="phone" placeholder=("(555) 555-1234") type="text"
+              input#phone.textfield name="phone" placeholder=("(555) 555-1234") type="text" ng:model='form.phone_number'
           .col.span_7_of_12
             label for="email"
               | Email Address
-              input#email.textfield name="email" placeholder="you@hostwise.com" type="text"
+              input#email.textfield name="email" placeholder="you@hostwise.com" type="text" ng:model='form.email'
         .section.group
           .col.span_12_of_12
             label for="message"
               | Your Message
-              textarea#message.textarea name="message"
-        a.btn.secondary href="javascript:;" Submit
+              textarea#message.textarea name="message" ng:model='form.message'
+        a.btn.secondary href="javascript:;" ng:click='submit()' Submit
         small.gray
           | By submitting your information, you indicate that you have read and agree to our&nbsp;
           a href="/terms" Terms of Service
           | &nbsp;and&nbsp;
           a href="/privacy" Privacy Policy
           | .
+      .confirmation Thanks for your message! We'll get back to you as soon as possible.

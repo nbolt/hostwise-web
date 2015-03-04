@@ -1,9 +1,21 @@
 class UserMailer < MandrillMailer::TemplateMailer
 
-  default from: 'support@useporter.com'
+  default from: 'support@hostwise.com'
   default from_name: 'HostWise'
 
-  DEFAULT_REPLY_TO = 'Porter<support@useporter.com>'
+  DEFAULT_REPLY_TO = 'HostWise <support@hostwise.com>'
+
+  def contact_email(email, message, first_name, last_name, phone_number)
+    mandrill do
+      mandrill_mail template: 'contact-email',
+                    subject: "Message from #{first_name} #{last_name}",
+                    to: {email: 'support@hostwise.com'},
+                    vars: {'MESSAGE' => message, 'NAME' => "#{first_name} #{last_name}", 'NUMBER' => phone_number},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => "#{first_name} #{last_name} <#{email}>"}
+    end
+  end
 
   def reset_password_email(user, url)
     mandrill do

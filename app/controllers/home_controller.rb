@@ -20,6 +20,11 @@ class HomeController < ApplicationController
     render json: PRICING.to_json
   end
 
+  def contact_email
+    UserMailer.contact_email(params[:form][:email], params[:form][:message], params[:form][:first_name], params[:form][:last_name], params[:form][:phone_number]).then(:deliver)
+    render json: { success: true }
+  end
+
   def user
     if logged_in?
       case current_user.role_cd

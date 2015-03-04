@@ -95,6 +95,7 @@ Rails.application.routes.draw do
   get '/privacy' => 'home#privacy', as: :privacy
 
   post '/notifications/background_check' => 'notifications#background_check', as: :background_check_notification
+  post '/contact_email' => 'home#contact_email'
 
   match '/:action' => 'home', via: [:get, :post]
   match '/:controller/:action', via: [:get, :post]

@@ -1042,6 +1042,15 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
 ************** CONTACT *************
 \*--------------------------------*/
 
+.confirmation {
+  color: #75818f;
+  opacity: 0;
+  margin-top: 40px;
+  transition: opacity .6s ease-in-out;
+  -moz-transition: opacity .6s ease-in-out;
+  -webkit-transition: opacity .6s ease-in-out;
+}
+
 #banner-contact{
   background:url(/hw_images/bg_contact.jpg) center top no-repeat fixed;
   background-size:cover;
@@ -1051,7 +1060,7 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   width:86%;
   max-width:480px;
   margin:0 auto;
-  padding:7%;
+  padding:7% 7% 4%;
   text-align:left;
   background:#fff;
 }
