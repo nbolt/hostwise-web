@@ -52,7 +52,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       disable_past: true
       onchange: () ->
         if $scope.property
-          _($scope.property.bookings).each (booking) ->
+          _($scope.property.active_bookings).each (booking) ->
             date = moment.utc(booking.date)
             if $('.booking.modal')[0]
               angular.element(".booking.modal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive booked').attr('booking', booking.id)
@@ -86,7 +86,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
 
     $http.get("/properties/#{property.slug}.json").success (rsp) ->
       $scope.property = rsp
-      _($scope.property.bookings).each (booking) ->
+      _($scope.property.active_bookings).each (booking) ->
         date = moment.utc booking.date
         booking.parsed_date = date.format('MMMM Do, YYYY')
         angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').addClass('booked').attr('booking', booking.id)
@@ -99,7 +99,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       disable_past: true
       onchange: () ->
         if $scope.property
-          _($scope.property.bookings).each (booking) ->
+          _($scope.property.active_bookings).each (booking) ->
             date = moment.utc(booking.date)
             angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
@@ -240,7 +240,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   load_bookings = (rsp) ->
     $scope.property.next_service_date = moment(rsp.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if rsp.next_service_date
 
-    _($scope.property.bookings).each (booking) ->
+    _($scope.property.active_bookings).each (booking) ->
       date = moment.utc booking.date
       booking.parsed_date = date.format('MMMM Do, YYYY')
       booking.parsed_date_short = date.format('MM/DD/YY')
@@ -250,12 +250,12 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         booking.display_services = booking.display_services.slice(0,18) + '...'
       angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
-    $scope.property.upcoming_bookings = _($scope.property.bookings).filter (booking) ->
+    $scope.property.upcoming_bookings = _($scope.property.active_bookings).filter (booking) ->
       moment(booking.date, 'YYYY-MM-DD').diff(moment().startOf('day'), 'days') > 0
     $scope.property.upcoming_bookings = _($scope.property.upcoming_bookings).sortBy (booking) -> booking.id
 
 
-    $scope.property.past_bookings = _($scope.property.bookings).filter (booking) ->
+    $scope.property.past_bookings = _($scope.property.active_bookings).filter (booking) ->
       moment(booking.date, 'YYYY-MM-DD').diff(moment().startOf('day'), 'days') < 0
     $scope.property.past_bookings = _($scope.property.past_bookings).sortBy (booking) -> booking.id
 
@@ -277,8 +277,8 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         }).addTo $scope.markers
 
   $scope.exists = () ->
-    if $scope.property.bookings
-      _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking
+    if $scope.property.active_bookings
+      _($scope.property.active_bookings).find (b) -> b.id.toString() == $scope.selected_booking
 
   $scope.property_image = (src) ->
     $scope.image = src
