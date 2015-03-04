@@ -498,7 +498,7 @@ ul.pl-main-nav li a.active{
 }
 
 .banner-generic{
-  background:url(/hw_images/bg_blue.png) repeat fixed;
+  background:url(/hw_images/bg_blue.png) repeat;
 }
 
 /* FORMS */
@@ -812,7 +812,7 @@ ul.pl-main-nav li a.active{
 /* MISSION */
 
 #mission-list{
-  background:url(/hw_images/bg_teal.png) repeat fixed;
+  background:url(/hw_images/bg_teal.png) repeat;
 }
 
 #mission-list i{
@@ -910,7 +910,7 @@ ul.pl-main-nav li a.active{
 \*--------------------------------*/
 
 #banner-faq{
-  background:url(/hw_images/bg_blue.png) repeat fixed;
+  background:url(/hw_images/bg_blue.png) repeat;
 }
 
 .faq-search{
@@ -1061,7 +1061,7 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
 }
 
 #banner-contact{
-  background:url(/hw_images/bg_contact.jpg) center top no-repeat fixed;
+  background:url(/hw_images/bg_contact.jpg) center top no-repeat;
   background-size:cover;
 }
 
