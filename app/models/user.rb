@@ -139,8 +139,6 @@ class User < ActiveRecord::Base
     return bookings.first.date unless bookings.empty?
   end
 
-  private
-
   def create_stripe_customer
     StripeCustomerJob.perform_later self
   end
@@ -148,6 +146,8 @@ class User < ActiveRecord::Base
   def create_balanced_customer
     BalancedCustomerJob.perform_later self
   end
+
+  private
 
   def format_phone_number
     self.phone_number = phone_number.strip.gsub(' ', '').delete("()-.+") if phone_number.present?
