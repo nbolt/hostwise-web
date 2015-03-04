@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   before_filter do
-    redirect_to "#{request.protocol}#{request.domain}:#{request.port}#{request.fullpath}" if !logged_in? && !request.subdomain.empty? || request.subdomain != 'www'
+    redirect_to "#{request.protocol}#{request.domain}:#{request.port}#{request.fullpath}" if !logged_in? && !request.subdomain.empty? && request.subdomain != 'www'
   end
 
   def index
