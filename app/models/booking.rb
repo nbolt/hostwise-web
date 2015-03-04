@@ -16,8 +16,7 @@ class Booking < ActiveRecord::Base
   scope :active, -> { where(status_cd: 1) }
 
   before_create :create_job
-  before_save :create_order
-  after_save :check_transaction
+  before_save :create_order, :check_transaction
 
   as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3
   as_enum :payment_status, pending: 0, completed: 1
