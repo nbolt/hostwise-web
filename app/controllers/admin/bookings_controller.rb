@@ -3,9 +3,13 @@ require 'csv'
 class Admin::BookingsController < Admin::AuthController
   
   def index
-    @bookings = Booking.all
-    @bookings = @bookings.search(params[:search]) if params[:search] && !params[:search].empty?
-    @bookings = @bookings.order(params[:sort]).reverse
+    if params[:id]
+      @bookings = [Booking.find(params[:id])]
+    else
+      @bookings = Booking.all
+      @bookings = @bookings.search(params[:search]) if params[:search] && !params[:search].empty?
+      @bookings = @bookings.order(params[:sort]).reverse
+    end
 
     respond_to do |format|
       format.html

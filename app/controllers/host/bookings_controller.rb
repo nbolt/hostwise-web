@@ -26,6 +26,7 @@ class Host::BookingsController < Host::AuthController
   end
 
   def cancel
+    UserMailer.cancelled_booking_notification(booking).then(:deliver)
     if params[:apply_fee]
       if booking.update_attribute :status, :cancelled
         booking.charge!

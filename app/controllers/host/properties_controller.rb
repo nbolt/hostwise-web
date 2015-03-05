@@ -80,6 +80,7 @@ class Host::PropertiesController < Host::AuthController
           end
           booking.save # need to check for errors
           bookings.push booking
+          UserMailer.new_booking_notification(booking).then(:deliver)
           UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
         end
       end
