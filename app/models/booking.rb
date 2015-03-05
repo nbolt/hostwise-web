@@ -18,7 +18,7 @@ class Booking < ActiveRecord::Base
   before_create :create_job
   before_save :create_order, :check_transaction
 
-  as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3
+  as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3, manual: 4
   as_enum :payment_status, pending: 0, completed: 1
 
   def self.cost property, services, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
@@ -131,8 +131,10 @@ class Booking < ActiveRecord::Base
   private
 
   def create_job
-    job = self.build_job(status_cd: 0, date: date)
-    job.size = 2 if property.bedrooms > 4
+    if status_cd != 4
+      job = self.build_job(status_cd: 0, date: date)
+      job.size = 2 if property.bedrooms > 4
+    end
   end
 
   def create_order
