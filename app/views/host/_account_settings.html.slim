@@ -10,6 +10,6 @@ a href='/transactions'
 a href='/notifications'
   i.icon-alert-warning
   .link Notification Settings
-a href="#{signout_url}"
+a href="#{request.protocol}#{request.domain}:#{request.port}#{signout_path}"
   i.icon-logout
   .link Logout
