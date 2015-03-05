@@ -12,7 +12,7 @@ class Contractor::AuthController < ApplicationController
   end
 
   def not_authenticated
-    redirect_to '/signin'
+    redirect_to root_url + 'signin'
   end
 
 end

@@ -1,8 +1,4 @@
 class HomeController < ApplicationController
-  before_filter do
-    redirect_to "#{root_url}#{request.fullpath}" if !logged_in? && !request.subdomain.empty? && request.subdomain != 'www'
-  end
-
   def index
     redirect_to subdomain: current_user.role.to_s, controller: 'home', action: 'index' if logged_in?
   end
