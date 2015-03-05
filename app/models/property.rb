@@ -12,6 +12,8 @@ class Property < ActiveRecord::Base
   belongs_to :user
   has_many :bookings, autosave: true, dependent: :destroy
   has_many :active_bookings, -> { where(status_cd: [1,4]) }, autosave: true, dependent: :destroy, class_name: 'Booking'
+  has_many :future_bookings, -> { where('date >= ?', Date.today).where(status_cd: [1,4]).order(:date) }, class_name: 'Booking'
+  has_many :past_bookings, -> { where(status_cd: 3).order(:date) }, class_name: 'Booking'
   has_many :property_photos, autosave: true, dependent: :destroy
 
   before_validation :standardize_address
