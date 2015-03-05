@@ -16,12 +16,24 @@ class HomeController < ApplicationController
     redirect_to root_url
   end
 
+  def pricing
+    render 'common/_pricing'
+  end
+
+  def faq
+    render 'common/_faq'
+  end
+
   def cost
     render json: PRICING.to_json
   end
 
   def contact_email
-    UserMailer.contact_email(params[:form][:email], params[:form][:message], params[:form][:first_name], params[:form][:last_name], params[:form][:phone_number]).then(:deliver)
+    if logged_in?
+      UserMailer.contact_email("Customer Support: #{params[:form][:description]}", current_user.email, params[:form][:message], current_user.first_name, current_user.last_name, current_user.phone_number).then(:deliver)
+    else
+      UserMailer.contact_email('Customer Support', params[:form][:email], params[:form][:message], params[:form][:first_name], params[:form][:last_name], params[:form][:phone_number]).then(:deliver)
+    end
     render json: { success: true }
   end
 

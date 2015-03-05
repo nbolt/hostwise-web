@@ -1,17 +1,27 @@
-FaqCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+FaqCtrl = ['$scope', '$http', ($scope, $http) ->
 
-  $scope.expand = (q) ->
-    elh = angular.element('.h' + q)
-    elc = angular.element('.c' + q)
-    if elc.hasClass('active')
-      elc.removeClass('active')
-      elc.slideUp 400
-      elh.find('.fa').removeClass('fa-chevron-down').addClass('fa-chevron-right')
-    else
-      elc.addClass('active')
-      elc.slideDown 400
-      elh.find('.fa').removeClass('fa-chevron-right').addClass('fa-chevron-down')
-    return true
+  $http.get('/data/faq.yml').success (rsp) ->
+    $scope.faqs = jsyaml.load(rsp)
+    _($scope.faqs).each (faq) -> faq.count = faq.questions.length
+
+    $scope.faqs.unshift
+      name: 'all'
+      display: 'All'
+      count: _($scope.faqs).reduce(((acc, faq) -> acc + faq.questions.length), 0)
+      questions: _(_($scope.faqs).map((faq) -> faq.questions)).flatten()
+
+    $scope.chosen_faq = _($scope.faqs[0]).clone()
+    $scope.chosen_faq.questions = _($scope.faqs[0].questions).clone()
+
+  $scope.active = (faq) -> faq.name == $scope.chosen_faq.name && 'active' || ''
+
+  $scope.toggle = (faq) ->
+    $scope.chosen_faq = _(_($scope.faqs).find (f) -> f.name == faq.name).clone()
+    $scope.chosen_faq.questions = _($scope.chosen_faq.questions).clone()
+
+  $scope.search = ->
+    $scope.chosen_faq.questions = _($scope.chosen_faq.questions).filter (faq) -> faq.question.match($scope.term) || faq.answer.match($scope.term)
+    angular.element('body').scrollTo( angular.element("#faq"), 600 )
 
 ]
 

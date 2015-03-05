@@ -16,7 +16,7 @@ class Host::HomeController < Host::AuthController
     render 'host/pricing'
   end
 
-  def help
-    render 'host/help'
+  def contact
+    render 'common/_contact'
   end
 end

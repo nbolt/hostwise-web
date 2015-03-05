@@ -1,0 +1,31 @@
+.pl
+  section#banner-contact.pl-panel ng:controller='contact'
+    .container
+      h1.white Have A Question? Just Wanna Chat?
+      h6.white We have real, local human beings standing by to help.
+      hr.light
+      .contact-form
+        form.pl-form action="" name=""
+          label for="description"
+            | Description
+          .section.group
+            .col.span_12_of_12
+              input#description.textfield name="description" placeholder=("Give us a brief description") type="text" ng:model='form.description'
+          .section.group
+            .col.span_12_of_12
+              label for="message"
+                | Message
+                textarea#message.textarea name="message" placeholder=("Tell us what's going on and we'll be in touch within 24 hours.") ng:model='form.message'
+          a.btn.secondary href="javascript:;" ng:click='submit()' Submit
+          small.gray
+            | By submitting your information, you indicate that you have read and agree to our&nbsp;
+            a href="/terms" Terms of Service
+            | &nbsp;and&nbsp;
+            a href="/privacy" Privacy Policy
+            | .
+        .pl-confirmation Thanks for your message! We'll get back to you as soon as possible.
+      .call
+        img src='/hw_images/phone.png'
+        | Or give us a call at&nbsp;
+        strong.teal
+          | 1 (866) 667-4085

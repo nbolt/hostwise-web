@@ -1,0 +1,30 @@
+div ng:controller='faq'
+  section#banner-faq.pl-panel
+    .container
+      h1.white Sometimes you just need a little help from your friends
+      h6.white Quickly search or select a category to find answers to some common questions. We're here to help!
+      hr.light
+      form.faq-search action="#"
+        .section.group
+          .col.span_2_of_12 &nbsp;
+          .col.span_6_of_12 style="position:relative;"
+            i.fa.fa-search style=("position:absolute; top:20px; left:25px; color:#fff;")
+            input#search-field name="search" placeholder=("You have questions, we have answers!") type="text" ng:model='term'
+          .col.span_2_of_12
+            a.btn.pl-search href="javascript:;" ng:click='search()' Search
+          .col.span_2_of_12 &nbsp;
+      ul.faq-categories
+        li ng:repeat='faq in faqs' ng:class='active(faq)'
+          a href="javascript:;" ng:click='toggle(faq)'
+            strong ng:bind='::faq.display'
+            | ({{faq.count}})
+  section#faq.pl-panel
+    .container
+      .question ng:repeat='faq in chosen_faq.questions' toggle-faq=''
+        span ng:bind='faq.question'
+        .answer ng:bind-html='faq.answer'
+      hr.dark
+      h2.dark-gray style="font-weight:400;"
+        | Still have questions?
+        strong &nbsp;Call a real local human being!
+      a.btn.outlined href="tel:18666674085"  1 (866) 667-4085

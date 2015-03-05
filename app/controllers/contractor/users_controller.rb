@@ -51,16 +51,6 @@ class Contractor::UsersController < Contractor::AuthController
     end
   end
 
-  def message
-    message = current_user.messages.create({body: params[:form][:message]})
-    if message.save
-      #TODO: forward the message to support@useporter.com
-      render json: { success: true }
-    else
-      render json: { success: false, message: message.errors.full_messages[0] }
-    end
-  end
-
   def activate
     user = User.load_from_activation_token(params[:id])
     if user

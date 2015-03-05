@@ -22,7 +22,7 @@ html
     = yield :head
     = render 'common/analytics'
 
-  body.grey ng:controller='app' ng-cloak=''
+  body class="#{body_class}" ng:controller='app' ng-cloak=''
     #spin-overlay
       .overlay
       .spinner
@@ -53,13 +53,7 @@ html
             .links
               = render 'contractor/account_settings'
         .section
-          a href='/faq'
-            .title
-              .icon
-                i.icon-faq
-              .text FAQ
-        .section
-          a href='/help'
+          a href='/contact'
             .title
               .icon
                 i.icon-contact

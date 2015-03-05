@@ -27,11 +27,11 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
-  def contact_email(email, message, first_name, last_name, phone_number)
+  def contact_email(subject, email, message, first_name, last_name, phone_number)
     mandrill do
       mandrill_mail template: 'contact-email',
-                    subject: "Message from #{first_name} #{last_name}",
-                    to: {email: 'support@hostwise.com'},
+                    subject: subject,
+                    to: {email: Rails.application.config.support_notification_email},
                     vars: {'MESSAGE' => message, 'NAME' => "#{first_name} #{last_name}", 'NUMBER' => phone_number},
                     inline_css: true,
                     async: true,
@@ -136,7 +136,7 @@ class UserMailer < MandrillMailer::TemplateMailer
   def launch_email(user, url)
     mandrill do
       mandrill_mail template: 'launch-announcement',
-                    subject: 'The new HostWise is here!',
+                    subject: "It's official! Porter is now HostWise.",
                     to: {email: user.email},
                     vars: {'RESET_LINK' => url},
                     inline_css: true,

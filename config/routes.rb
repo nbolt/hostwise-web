@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     get   '/' => 'home#index'
     get   '/pricing' => 'home#pricing', as: :host_pricing
     get   '/faq' => 'home#faq', as: :host_faq
-    get   '/help' => 'home#help', as: :host_help
+    get   '/contact' => 'home#contact', as: :host_contact
     get   '/properties/new'   => 'properties#new'
     get   '/properties/first' => 'properties#first'
     post  '/properties/address' => 'properties#address'
@@ -22,7 +22,6 @@ Rails.application.routes.draw do
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
     post  '/user/deactivate' => 'users#deactivate'
-    post  '/message' => 'users#message'
     get   '/payments' => 'payments#index'
     post  '/payments/add' => 'payments#add'
     put   '/payments/delete' => 'payments#delete'
@@ -40,8 +39,7 @@ Rails.application.routes.draw do
 
   scope module: 'contractor', constraints: { subdomain: 'contractor' } do
     get   '/' => 'home#index'
-    get   '/faq' => 'home#faq', as: :contractor_faq
-    get   '/help' => 'home#help', as: :contractor_help
+    get   '/contact' => 'home#contact', as: :contractor_contact
     get   '/jobs' => 'jobs#index', as: :contractor_jobs
     get   '/jobs/:id' => 'jobs#show'
     match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
@@ -49,7 +47,6 @@ Rails.application.routes.draw do
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
     post  '/user/deactivate' => 'users#deactivate'
-    post  '/message' => 'users#message'
     get   '/users/:id/activate' => 'users#activate', as: :activate
     put   '/users/:id/activated' => 'users#activated'
     put   '/users/:id/avatar' => 'users#avatar'

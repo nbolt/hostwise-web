@@ -31,7 +31,7 @@ Rails.application.configure do
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
-  
+
   # Generate digests for assets URLs.
   config.assets.digest = true
 
@@ -80,4 +80,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.booking_notification_email = 'bookings@hostwise.com'
+  config.support_notification_email = 'support@hostwise.com'
 end

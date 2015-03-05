@@ -12,11 +12,7 @@ class Contractor::HomeController < Contractor::AuthController
     end
   end
 
-  def faq
-    render 'contractor/faq'
-  end
-
-  def help
-    render 'contractor/help'
+  def contact
+    render 'common/_contact'
   end
 end

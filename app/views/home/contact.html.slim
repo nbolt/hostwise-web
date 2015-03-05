@@ -25,7 +25,7 @@ section#banner-contact.pl-panel ng:controller='contact'
           .col.span_12_of_12
             label for="message"
               | Your Message
-              textarea#message.textarea name="message" ng:model='form.message'
+              textarea#message.textarea name="message" placeholder=("Tell us what's going on and we'll be in touch within 24 hours.") ng:model='form.message'
         a.btn.secondary href="javascript:;" ng:click='submit()' Submit
         small.gray
           | By submitting your information, you indicate that you have read and agree to our&nbsp;
@@ -34,3 +34,8 @@ section#banner-contact.pl-panel ng:controller='contact'
           a href="/privacy" Privacy Policy
           | .
       .pl-confirmation Thanks for your message! We'll get back to you as soon as possible.
+    .call
+      img src='/hw_images/phone.png'
+      | Or give us a call at&nbsp;
+      strong.teal
+        | 1 (866) 667-4085

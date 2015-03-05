@@ -1001,6 +1001,8 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
 }
 
 .question{
+  background-color:#fff;
+  opacity:0.9;
   margin:0 0 25px 0;
   padding:1em 2em;
   overflow:hidden;
@@ -1063,6 +1065,26 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
 #banner-contact{
   background:url(/hw_images/bg_contact.jpg) center top no-repeat;
   background-size:cover;
+}
+
+#banner-contact .call{
+  margin-top: 50px;
+  color: #979fa9;
+  height: 44px;
+  line-height: 44px;
+  vertical-align: top;
+}
+
+#banner-contact strong{
+  display: inline-block;
+  height: 44px;
+  line-height: 44px;
+  vertical-align: top;
+}
+
+#banner-contact .call img{
+  width: 44px;
+  margin-right: 20px;
 }
 
 .contact-form{

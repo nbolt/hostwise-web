@@ -21,8 +21,7 @@ html
     = yield :head
     = render 'common/analytics'
 
-  - class_name = first_property? ? 'first-property-body' : 'grey'
-  body class="#{class_name}" ng:controller='app' ng-cloak=''
+  body class="#{body_class}" ng:controller='app' ng-cloak=''
     #spin-overlay
       .overlay
       .spinner
@@ -65,7 +64,7 @@ html
                 i.icon-faq
               .text FAQ
         .section
-          a href='/help'
+          a href='/contact'
             .title
               .icon
                 i.icon-contact

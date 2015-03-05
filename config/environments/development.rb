@@ -41,4 +41,5 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.booking_notification_email = 'staging-notifications@hostwise.com'
+  config.support_notification_email = 'staging-notifications@hostwise.com'
 end
