@@ -30,7 +30,7 @@ class Host::UsersController < Host::AuthController
   def message
     message = current_user.messages.create({body: params[:form][:message]})
     if message.save
-      #TODO: forward the message to support@useporter.com
+      UserMailer.contact_email(message.user.email, message.body, message.user.first_name, message.user.last_name, message.user.phone_number).then(:deliver)
       render json: { success: true }
     else
       render json: { success: false, message: message.errors.full_messages[0] }
