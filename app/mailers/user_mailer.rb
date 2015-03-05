@@ -133,7 +133,7 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
-  def new_hostwise_email(user, url)
+  def launch_email(user, url)
     mandrill do
       mandrill_mail template: 'launch-announcement',
                     subject: 'The new HostWise is here!',
