@@ -11,9 +11,10 @@
     span.search
       i.icon-search
       input type='text' placeholder='Search' ng:model='search'
-    span.sort
-      i.icon-details style='margin-right:10px'
+    span.sort style='margin-right: 15px'
       input type='hidden' ui-select2='sortHash()' ng:model='sort'
+    span.sort
+      input type='hidden' ui-select2='filterHash()' ng:model='filter'
     span.export style='float:right;margin-right: 25px;margin-top: 10px'
       a href='javascript:void(0)' ng:click='export()' Export these bookings
     hr

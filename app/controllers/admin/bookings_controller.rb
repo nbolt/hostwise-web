@@ -7,6 +7,10 @@ class Admin::BookingsController < Admin::AuthController
       @bookings = [Booking.find(params[:id])]
     else
       @bookings = Booking.all
+      case params[:filter]
+      when 'active'
+        @bookings = @bookings.where(status_cd: [1,4])
+      end
       @bookings = @bookings.search(params[:search]) if params[:search] && !params[:search].empty?
       @bookings = @bookings.order(params[:sort]).reverse
     end
