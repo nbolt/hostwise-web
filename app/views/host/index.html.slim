@@ -7,7 +7,7 @@
       input type='text' placeholder='Search your properties' ng:model='search'
       i.icon-close ng:click='clear()'
 
-  #properties ng:init='init()'
+  #properties ng:init='init()' ng:show='show_properties'
     = render 'common/alert'
     .property ng:repeat='property in user.properties' ng:click='toProperty(property)'
       =render '/host/properties/row'

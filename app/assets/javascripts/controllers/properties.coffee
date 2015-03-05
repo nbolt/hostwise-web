@@ -4,6 +4,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
   $scope.filter = {id:'alphabetical',text:'Alphabetical'}
   $scope.sort = 'alphabetical'
   $scope.term = ''
+  $scope.show_properties = false
 
   promise = null
 
@@ -101,6 +102,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
   refresh_properties = ->
     $http.get('/data/properties', {params: {term: $scope.term, sort: $scope.sort}}).success (rsp) ->
       if $scope.user
+        $scope.show_properties = true
         $scope.user.properties = rsp if $scope.user
         _($scope.user.properties).each (property) ->
           property.next_service_date = moment(property.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if property.next_service_date
@@ -120,6 +122,8 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     $timeout((->
       el.removeClass(classes + ' active')
     ), 4000)
+
+  $scope.user_fetched.promise.then -> refresh_properties()
 
   $scope.$on 'refresh_properties', -> refresh_properties()
 
