@@ -1,6 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.action_mailer.default_url_options = { :host => "www.hostwise-staging.com", protocol: 'http' }
+  config.action_mailer.default_url_options = { host: 'www.hostwise-staging.com', protocol: 'http' }
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -28,7 +29,7 @@ Rails.application.configure do
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
-  
+
   # Generate digests for assets URLs.
   config.assets.digest = true
 
@@ -75,4 +76,6 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.booking_notification_email = 'staging-notifications@hostwise.com'
 end

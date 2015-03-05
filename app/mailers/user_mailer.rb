@@ -6,16 +6,10 @@ class UserMailer < MandrillMailer::TemplateMailer
   DEFAULT_REPLY_TO = 'HostWise <support@hostwise.com>'
 
   def cancelled_booking_notification booking
-    if Rails.env.production?
-      to = 'bookings@hostwise.com'
-    else
-      to = 'staging-notifications@hostwise.com'
-    end
-
     mandrill do
       mandrill_mail template: 'cancelled-booking-notification',
                     subject: "[Hosts] Delete Appointment #{booking.date.strftime}",
-                    to: {email: to},
+                    to: {email: Rails.application.config.booking_notification_email},
                     vars: {'ID' => booking.id},
                     inline_css: true,
                     async: true
@@ -23,16 +17,10 @@ class UserMailer < MandrillMailer::TemplateMailer
   end
 
   def new_booking_notification booking
-    if Rails.env.production?
-      to = 'bookings@hostwise.com'
-    else
-      to = 'staging-notifications@hostwise.com'
-    end
-
     mandrill do
       mandrill_mail template: 'new-booking-notification',
                     subject: "Turn Needed on #{booking.date.strftime}",
-                    to: {email: to},
+                    to: {email: Rails.application.config.booking_notification_email},
                     vars: {'ID' => booking.id},
                     inline_css: true,
                     async: true
