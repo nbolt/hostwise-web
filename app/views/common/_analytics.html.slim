@@ -7,14 +7,14 @@ javascript:
 
 = render 'common/live_chat'
 
-- if Rails.env == 'production'
+- if Rails.env.production?
   javascript:
     init_segmentio()
 - else
   javascript:
     analytics={};analytics.track=function(){};analytics.identify=function(){};analytics.page=function(){}
 
-- if Rails.env == 'production' && logged_in?
+- if Rails.env.production? && logged_in?
   javascript:
     analytics.identify("#{ current_user.id }", {
         name: "#{ current_user.name }",
@@ -24,4 +24,16 @@ javascript:
         firstName: "#{ current_user.first_name }",
         lastName: "#{ current_user.last_name }"
       }
+    ), {
+        integrations: {
+            Intercom : {
+                user_hash : "#{ OpenSSL::HMAC.hexdigest('sha256', ENV['INTERCOM_SECRET'], current_user.id.to_s) }"
+            }
+        }
     )
+
+    window.intercomSettings = {
+      "widget": {
+        "activator": "#intercom" },
+      "app_id": "#{ENV['INTERCOM_ID']}"
+    }

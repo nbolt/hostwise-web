@@ -1,7 +1,7 @@
 BookingsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
   promise = null
-  $scope.sort = {id:'created_at',text:'Created'}
+  $scope.sort = {id:'id',text:'ID'}
   $scope.filter = {id:'all',text:'All'}
   $scope.search = ''
 
@@ -23,7 +23,7 @@ BookingsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     {
       dropdownCssClass: 'sort'
       minimumResultsForSearch: -1
-      data: [{id:'created_at',text:'Created'},{id:'date',text:'Date'}]
+      data: [{id:'id',text:'ID'},{id:'date',text:'Date'}]
       initSelection: (el, cb) ->
     }
 
@@ -31,7 +31,7 @@ BookingsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
     {
       dropdownCssClass: 'filter'
       minimumResultsForSearch: -1
-      data: [{id:'all',text:'All'},{id:'active',text:'Active'}]
+      data: [{id:'all',text:'All'},{id:'active',text:'Active'},{id:'future',text:'Future'}]
       initSelection: (el, cb) ->
     }
 

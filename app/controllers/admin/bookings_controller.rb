@@ -10,9 +10,12 @@ class Admin::BookingsController < Admin::AuthController
       case params[:filter]
       when 'active'
         @bookings = @bookings.where(status_cd: [1,4])
+      when 'future'
+        @bookings = @bookings.where(status_cd: [1,4]).future
       end
       @bookings = @bookings.search(params[:search]) if params[:search] && !params[:search].empty?
-      @bookings = @bookings.order(params[:sort]).reverse
+      @bookings = @bookings.order(params[:sort])
+      @bookings = @bookings.reverse if params[:sort] && params[:sort] == 'id'
     end
 
     respond_to do |format|
