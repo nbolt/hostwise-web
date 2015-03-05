@@ -13,7 +13,7 @@ class Booking < ActiveRecord::Base
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
   scope :active,  -> { where('services.id is not null and bookings.payment_id is not null').includes(:services).references(:services) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
-  scope :upcoming, -> (user) { active.where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
+  scope :upcoming, -> (user) { where(status_cd: [1,4]).where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
   scope :future, -> { where('date >= ?', Date.today) }
   scope :by_user, -> (user) { where('user_id = ?', user.id).includes(property: [:user]).references(:user) }
   scope :active, -> { where(status_cd: 1) }
