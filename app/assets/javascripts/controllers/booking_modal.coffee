@@ -110,7 +110,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           angular.element('#book').removeClass 'loading'
           if rsp.success
             $scope.to_booking_confirmation()
-            $scope.$emit 'fetch_user'
+            $scope.$emit 'refresh_properties'
             bookings = JSON.parse rsp.bookings
             _(bookings).each (booking) ->
               analytics.track('Booking', {

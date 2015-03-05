@@ -121,6 +121,8 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
       el.removeClass(classes + ' active')
     ), 4000)
 
+  $scope.$on 'refresh_properties', -> refresh_properties()
+
 ]
 
 app = angular.module('porter').controller('properties', PropertyHomeCtrl)
