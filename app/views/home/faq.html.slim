@@ -6,13 +6,13 @@ div ng:controller='public_faq'
       hr.light
       form.faq-search action="#"
         .section.group
-          .col.span_2_of_12
+          .col.span_2_of_12 &nbsp;
           .col.span_6_of_12 style="position:relative;"
             i.fa.fa-search style=("position:absolute; top:20px; left:25px; color:#fff;")
             input#search-field name="search" placeholder=("You have questions, we have answers!") type="text" ng:model='term'
           .col.span_2_of_12
             a.btn.pl-search href="javascript:;" ng:click='search()' Search
-          .col.span_2_of_12
+          .col.span_2_of_12 &nbsp;
       ul.faq-categories
         li ng:repeat='faq in faqs' ng:class='active(faq)'
           a href="javascript:;" ng:click='toggle(faq)'
