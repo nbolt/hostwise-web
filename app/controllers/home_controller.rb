@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   before_filter do
-    redirect_to "#{request.protocol}#{request.domain}:#{request.port}#{request.fullpath}" if !logged_in? && !request.subdomain.empty? && request.subdomain != 'www'
+    redirect_to "#{root_url}#{request.fullpath}" if !logged_in? && !request.subdomain.empty? && request.subdomain != 'www'
   end
 
   def index
@@ -17,7 +17,7 @@ class HomeController < ApplicationController
 
   def signout
     logout
-    redirect_to "#{request.protocol}#{request.domain}:#{request.port}"
+    redirect_to root_url
   end
 
   def cost
