@@ -58,6 +58,7 @@ class Host::PropertiesController < Host::AuthController
 
   def book
     if params[:dates]
+      bookings = []
       params[:dates].each do |k,v|
         v.each do |day|
           month = k.split('-')[0]
@@ -78,10 +79,11 @@ class Host::PropertiesController < Host::AuthController
             booking.services.push Service.where(name: service)[0]
           end
           booking.save # need to check for errors
+          bookings.push booking
           UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
         end
       end
-      render json: { success: true }
+      render json: { success: true, bookings: bookings.to_json(methods: :cost) }
     else
       render json: { success: false, message: 'Please select at least one service date' }
     end

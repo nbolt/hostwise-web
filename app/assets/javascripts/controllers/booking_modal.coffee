@@ -111,6 +111,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           if rsp.success
             $scope.to_booking_confirmation()
             $scope.$emit 'fetch_user'
+            bookings = JSON.parse rsp.bookings
+            _(bookings).each (booking) ->
+              analytics.track
+                userId: $scope.user.id
+                event: 'Booking'
+                properties:
+                  booking_id: booking.id
+                  revenue: booking.cost
             null
           else
             flash 'failure', rsp.message
