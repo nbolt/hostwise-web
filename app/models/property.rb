@@ -35,7 +35,7 @@ class Property < ActiveRecord::Base
   end
 
   def next_service_date
-    bookings.active.future.order(:date).first.then(:date)
+    bookings.where(status_cd: [1,4]).future.order(:date).first.then(:date)
   end
 
   def self.search(term, sort=nil)
