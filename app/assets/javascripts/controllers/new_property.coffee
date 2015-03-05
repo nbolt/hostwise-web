@@ -88,6 +88,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
                 stage: n
                 form: $scope.form
                 extras: $scope.extras
+                spinner: true
             ).success success_wrap
 
       if n < $scope.num_steps
