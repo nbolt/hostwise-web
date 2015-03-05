@@ -79,6 +79,7 @@ Rails.application.routes.draw do
     put   '/hosts/:id/update' => 'hosts#update'
     post  '/hosts/:id/deactivate' => 'hosts#deactivate'
     post  '/hosts/:id/reactivate' => 'hosts#reactivate'
+    get   '/bookings' => 'bookings#index'
   end
 
   get '/user' => 'home#user'

@@ -1,0 +1,42 @@
+.contractors ng:controller='bookings'
+  .header
+    h2
+      .fa.fa-list
+      | Bookings
+  .highlight
+    span.total
+      | Total Bookings
+      strong
+        | {{bookings.length}}
+    span.search
+      i.icon-search
+      input type='text' placeholder='Search' ng:model='search'
+    span.sort
+      i.icon-details style='margin-right:10px'
+      input type='hidden' ui-select2='sortHash()' ng:model='sort'
+    span.export style='float:right;margin-right: 25px;margin-top: 10px'
+      a href='javascript:void(0)' ng:click='export()' Export these bookings
+    hr
+  table cellpadding='0' cellspacing='0'
+    tbody
+      tr.days
+        th ID
+        th Name
+        th Property
+        th Date
+        th Status
+        th Email
+        th Phone Number
+      tr dir-paginate='booking in bookings | itemsPerPage: 20'
+        td
+          a ng:href="/bookings/{{booking.id}}" ng:bind='::booking.id'
+        td
+          a ng:href="/users/{{booking.property.user.id}}" ng:bind='::booking.property.user.name'
+        td
+          a ng:href="/properties/{{booking.property.id}}" ng:bind='::booking.property.nickname'
+        td ng:bind='::booking.date'
+        td ng:bind='::booking.status'
+        td ng:bind='::booking.property.user.email'
+        td ng:bind='::booking.property.user.phone_number'
+  .pagination
+    dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"

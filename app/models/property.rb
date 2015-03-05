@@ -11,7 +11,7 @@ class Property < ActiveRecord::Base
 
   belongs_to :user
   has_many :bookings, autosave: true, dependent: :destroy
-  has_many :active_bookings, -> { where(status_cd: 1) }, autosave: true, dependent: :destroy, class_name: 'Booking'
+  has_many :active_bookings, -> { where(status_cd: [1,4]) }, autosave: true, dependent: :destroy, class_name: 'Booking'
   has_many :property_photos, autosave: true, dependent: :destroy
 
   before_validation :standardize_address
