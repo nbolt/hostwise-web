@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   get '/auth' => 'auth#auth', as: 'auth'
 
   post '/password_resets' => 'password_resets#create'

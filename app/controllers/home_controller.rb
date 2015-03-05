@@ -17,7 +17,7 @@ class HomeController < ApplicationController
 
   def signout
     logout
-    redirect_to root_path
+    redirect_to "#{request.protocol}#{request.domain}:#{request.port}"
   end
 
   def cost

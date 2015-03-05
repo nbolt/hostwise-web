@@ -252,12 +252,12 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
 
     $scope.property.upcoming_bookings = _($scope.property.active_bookings).filter (booking) ->
       moment(booking.date, 'YYYY-MM-DD').diff(moment().startOf('day'), 'days') > 0
-    $scope.property.upcoming_bookings = _($scope.property.upcoming_bookings).sortBy (booking) -> booking.id
+    $scope.property.upcoming_bookings = _($scope.property.upcoming_bookings).sortBy (booking) -> moment(booking.date, 'YYYY-MM-DD')
 
 
     $scope.property.past_bookings = _($scope.property.active_bookings).filter (booking) ->
       moment(booking.date, 'YYYY-MM-DD').diff(moment().startOf('day'), 'days') < 0
-    $scope.property.past_bookings = _($scope.property.past_bookings).sortBy (booking) -> booking.id
+    $scope.property.past_bookings = _($scope.property.past_bookings).sortBy (booking) -> moment(booking.date, 'YYYY-MM-DD')
 
   $scope.$on 'refresh_bookings', ->
     $http.get($window.location.href + '.json').success (rsp) ->
