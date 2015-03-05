@@ -151,7 +151,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
             day.same_day_booking = $scope.pricing.late_same_day
             day.total += $scope.pricing.late_same_day
           if rsp.first_booking_discount && !first_booking_discount_applied
-            console.log($scope.pricing.first_booking_discount - day.total)
             if day.total >= $scope.pricing.first_booking_discount
               day.first_booking_discount = $scope.pricing.first_booking_discount
             else

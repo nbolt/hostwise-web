@@ -5,7 +5,7 @@ class PasswordResetsController < ApplicationController
     user = User.find_by_email(params[:form][:email])
     if user
       user.generate_reset_password_token!
-      UserMailer.reset_password_email(user, "#{edit_password_reset_url(user.reset_password_token)}").then(:deliver)
+      UserMailer.reset_password_email(user, edit_password_reset_url(user.reset_password_token, host: 'https://hostwise.com')).then(:deliver)
       render json: { success: true, message: 'Instructions have been sent to your email.' }
     else
       render json: { success: false, message: "Sorry! We're not able to locate your email." }
