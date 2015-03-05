@@ -11,7 +11,7 @@ div ng:controller='public_faq'
             i.fa.fa-search style=("position:absolute; top:20px; left:25px; color:#fff;")
             input#search-field name="search" placeholder=("You have questions, we have answers!") type="text" ng:model='term'
           .col.span_2_of_12
-            a.btn.search href="javascript:;" ng:click='search()' Search
+            a.btn.pl-search href="javascript:;" ng:click='search()' Search
           .col.span_2_of_12
       ul.faq-categories
         li ng:repeat='faq in faqs' ng:class='active(faq)'

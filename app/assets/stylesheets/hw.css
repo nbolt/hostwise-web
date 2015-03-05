@@ -950,7 +950,7 @@ input#search-field:-ms-input-placeholder {color: #fff;}
   top:1em; left:1em;
 }
 
-.search{
+.pl-search{
   width:100%;
   padding:1.6em 0;
   background:#e6c15d;

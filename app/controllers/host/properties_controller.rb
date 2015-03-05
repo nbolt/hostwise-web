@@ -71,7 +71,7 @@ class Host::PropertiesController < Host::AuthController
           if params[:late_same_day].present?
             booking.late_same_day = true if date.strftime('%b %-d, %Y') == params[:late_same_day]
           end
-          unless Booking.active.by_user(current_user)[0]
+          unless Booking.by_user(current_user)[0] || current_user.migrated
             booking.first_booking_discount = true
           end
           booking.payment = Payment.find params[:payment]
