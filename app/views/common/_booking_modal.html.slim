@@ -245,7 +245,7 @@ script#booking-modal type="text/ng-template"
                 .text ng:click='confirm_booking()' Close
       .content-group.static.cancel
         .content.confirmation.red
-          i.icon-alert-bolt
+          i.icon-calendar
           .title-text Are you sure you wish to cancel this job?
           .check-container.border.ok
             .text Service Date
@@ -262,7 +262,7 @@ script#booking-modal type="text/ng-template"
               i.icon-alert-ok
       .content-group.static.cancelled
         .content.confirmation.red
-          i.icon-alert-bolt
+          i.icon-calendar
           .title-text Job Cancelled
           .check-container.border
             .text ng:bind='::selected_date_confirmation'
