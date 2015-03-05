@@ -46,7 +46,13 @@ class User < ActiveRecord::Base
   attr_accessor :step
 
   def name
-    first_name + ' ' + last_name if first_name.present? && last_name.present?
+    if first_name.present? && last_name.present?
+      return first_name + ' ' + last_name
+    elsif first_name.present?
+      return first_name
+    else
+      return ''
+    end
   end
 
   def display_phone_number
