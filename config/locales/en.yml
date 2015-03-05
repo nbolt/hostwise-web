@@ -28,7 +28,7 @@ en:
         step2: 'Account Details'
         step3: 'Mobile Verification'
       forgot_pwd: 'Forgot Password'
-      change_your_pwd: 'Change your Password'
+      change_your_pwd: 'Update Password'
     button:
       sign_in: 'Sign In'
       sign_up:

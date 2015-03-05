@@ -111,6 +111,18 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
+  def new_hostwise_email(user, url)
+    mandrill do
+      mandrill_mail template: 'launch-announcement',
+                    subject: 'The new HostWise is here!',
+                    to: {email: user.email},
+                    vars: {'RESET_LINK' => url},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
   private
 
   def mandrill

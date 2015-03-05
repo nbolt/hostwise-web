@@ -4,7 +4,7 @@ namespace :migrate do
       user.create_stripe_customer
       user.create_balanced_customer
       user.generate_reset_password_token!
-      UserMailer.reset_password_email(user, "/password_resets/#{user.reset_password_token}/edit").then(:deliver)
+      UserMailer.reset_password_email(user, "https://www.hostwise.com/password_resets/#{user.reset_password_token}/edit").then(:deliver)
     end
   end
 end
