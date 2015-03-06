@@ -21,7 +21,12 @@ class UserMailer < MandrillMailer::TemplateMailer
       mandrill_mail template: 'new-booking-notification',
                     subject: "Turn Needed on #{booking.date.strftime}",
                     to: {email: Rails.application.config.booking_notification_email},
-                    vars: {'ID' => booking.id},
+                    vars: {
+                      'ID' => booking.id, 'NAME' => booking.property.user.name, 'NICKNAME' => booking.property.nickname,
+                      'FULL_ADDRESS' => booking.property.nickname, 'PROP_SIZE' => booking.property.property_type,
+                      'KING' => booking.property.king_beds, 'QUEEN' => booking.property.queen_beds,
+                      'FULL' => booking.property.full_beds, 'TWIN' => booking.property.twin_beds
+                    },
                     inline_css: true,
                     async: true
     end
