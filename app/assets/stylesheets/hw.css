@@ -815,6 +815,14 @@ ul.pl-main-nav li a.active{
   background:url(/hw_images/bg_teal.png) repeat;
 }
 
+#mission-list .title{
+  text-transform: uppercase;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 35px 0;
+}
+
 #mission-list i{
   font-size:4em;
 }
