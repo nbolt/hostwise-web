@@ -80,7 +80,7 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   def booking_confirmation(booking)
     mandrill do
-      appt_date = booking.date.strftime('%b %e/%Y')
+      appt_date = booking.date.strftime('%b %e, %Y')
       mandrill_mail template: 'booking-confirmation',
                     subject: "Booking Confirmed on #{appt_date} for #{booking.property.nickname}",
                     to: {email: booking.property.user.email, name: booking.property.user.name},
@@ -88,6 +88,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                            'PROP_SIZE' => "#{booking.property.bedrooms}BD/#{booking.property.bathrooms}BA #{booking.property.property_type}",
                            'SERVICES' => booking.services.map(&:display).join(', '),
                            'PRICE' => "$#{booking.cost}",
+                           'ADDRESS' => booking.property.short_address,
                            'DATE' => appt_date},
                     inline_css: true,
                     async: true,
