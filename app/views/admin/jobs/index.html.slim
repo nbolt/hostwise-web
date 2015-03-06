@@ -1,0 +1,40 @@
+.contractors ng:controller='admin_jobs'
+  .header
+    h2
+      .fa.fa-list
+      | Jobs
+  .highlight
+    span.total
+      | Total Jobs
+      strong
+        | {{jobs.length}}
+    span.search
+      i.icon-search
+      input type='text' placeholder='Search' ng:model='search'
+    span.sort style='margin-right: 15px'
+      input type='hidden' ui-select2='sortHash()' ng:model='sort'
+    span.sort
+      input type='hidden' ui-select2='filterHash()' ng:model='filter'
+    span.export style='float:right;margin-right: 25px;margin-top: 10px'
+    hr
+  table cellpadding='0' cellspacing='0'
+    tbody
+      tr.days
+        th ID
+        th Property
+        th Address
+        th Date
+        th Status
+        th Contractors
+      tr dir-paginate='job in jobs | itemsPerPage: 20'
+        td
+          a ng:href="/jobs/{{job.id}}" ng:bind='::job.id'
+        td ng:bind='::job.booking.property.nickname'
+          /a ng:href="/users/{{booking.property.user.id}}" ng:bind='::job.property.user.name'
+        td ng:bind='::job.booking.property.short_address'
+          /a ng:href="/properties/{{booking.property.id}}" ng:bind='::job.property.nickname'
+        td ng:bind='::job.date'
+        td ng:bind='::job.status'
+        td ng:bind='::job.contractor_list'
+  .pagination
+    dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"

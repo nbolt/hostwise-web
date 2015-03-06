@@ -1,7 +1,8 @@
 require 'csv'
 
 class Admin::BookingsController < Admin::AuthController
-  
+  expose(:booking) { Booking.find params[:id] }
+
   def index
     if params[:id]
       @bookings = [Booking.find(params[:id])]
@@ -26,6 +27,15 @@ class Admin::BookingsController < Admin::AuthController
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"bookings.csv\""
         headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+  end
+
+  def show
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: booking.to_json(methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}})
       end
     end
   end

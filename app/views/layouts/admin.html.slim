@@ -6,7 +6,7 @@ html
 
     javascript:
       function stripe_loaded() { Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}") }
-      function mapbox_loaded() { L.mapbox.accessToken = "#{ENV['MAPBOX_TOKEN']}" }
+      function mapbox_loaded() { window.loaded_mapbox = true; L.mapbox.accessToken = "#{ENV['MAPBOX_TOKEN']}" }
 
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'css_imports'
@@ -30,6 +30,12 @@ html
               .icon
                 i.icon-profile
               .text Bookings
+        .section
+          a href='/jobs'
+            .title
+              .icon
+                i.icon-profile
+              .text Jobs
         .section
           a href='/hosts'
             .title

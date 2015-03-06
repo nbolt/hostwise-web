@@ -8,7 +8,7 @@ class Job < ActiveRecord::Base
 
   scope :first_jobs, -> { where('contractor_jobs.priority = 1').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :trainers, -> { where('contractor_jobs.user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }
-  scope :future, -> { where('bookings.date >= ?', Time.now).includes(:booking).references(:booking) }
+  scope :future, -> { where('date >= ?', Time.now) }
   scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }

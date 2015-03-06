@@ -29,8 +29,8 @@
         th Email
         th Phone Number
       tr dir-paginate='booking in bookings | itemsPerPage: 20'
-        td ng:bind='::booking.id'
-          /a ng:href="/bookings/{{booking.id}}" ng:bind='::booking.id'
+        td
+          a ng:href="/bookings/{{booking.id}}" ng:bind='::booking.id'
         td ng:bind='::booking.property.user.name'
           /a ng:href="/users/{{booking.property.user.id}}" ng:bind='::booking.property.user.name'
         td ng:bind='::booking.property.nickname'

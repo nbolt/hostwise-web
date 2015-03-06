@@ -1,0 +1,104 @@
+.container.contractor ng:controller='admin_booking'
+  .page-title
+    strong Booking Detail
+  .row.one
+    .block.top-info.jobs
+      .job
+        .photo
+          img ng:src='{{booking.property.primary_photo}}'
+          .column
+        .right
+          .top
+            .neighborhood.address
+              .name
+                | {{::booking.property.address1}}, {{::booking.property.city}}, {{::booking.property.state}} {{::booking.property.zip}}
+            .beds remove-div=''
+              .text Beds
+              .bed ng:if='booking.property.king_beds > 0'
+                span King
+                | &nbsp; {{::booking.property.king_beds}}
+                .div |
+              .bed ng:if='booking.property.queen_beds > 0'
+                span Queen
+                | &nbsp; {{::booking.property.queen_beds}}
+                .div |
+              .bed ng:if='booking.property.full_beds > 0'
+                span Full
+                | &nbsp; {{::booking.property.full_beds}}
+                .div |
+              .bed ng:if='booking.property.twin_beds > 0'
+                span Twin
+                | &nbsp; {{::booking.property.twin_beds}}
+                .div |
+          .bottom
+            .rooms
+              i.icon-house ng:if='booking.property.property_type_cd == 0'
+              i.icon-apt ng:if='booking.property.property_type_cd == 1'
+              .text
+                | {{::booking.property.bedrooms}}BD/{{::booking.property.bathrooms}}BA
+            .right
+              .icon
+                i.icon-payout
+              .pricing
+                | ${{::booking.cost}}
+  .row.uneven
+    .block.customer
+      .head
+        .right
+          .arrow
+            .typcn.typcn-chevron-right
+        .photo
+          img ng:src='{{::booking.property.user.avatar}}'
+        .text Customer Info
+      .info
+        .name ng:bind='::booking.property.user.name'
+        .number ng:bind='::booking.property.user.display_phone_number'
+    .block#map
+  .row.two
+    .block.instructions
+      .head
+        .right
+          .arrow
+            .typcn.typcn-chevron-right
+        .icon
+          .typcn.typcn-document-text
+        .text Property Instructions
+      .instruction ng:if='::booking.property.access_info'
+        .content
+          .title Access Information
+          .text ng:bind='::booking.property.access_info'
+      .instruction ng:if='::booking.property.trash_disposal'
+        .content
+          .title Trash Disposal
+          .text ng:bind='::booking.property.trash_disposal'
+      .instruction ng:if='::booking.property.parking_info'
+        .content
+          .title Parking Information
+          .text ng:bind='::booking.property.parking_info'
+      .instruction ng:if='::booking.property.restocking_info'
+        .content
+          .title Restocking Instructions
+          .text ng:bind='::booking.property.restocking_info'
+      .instruction ng:if='::booking.property.additional_info'
+        .content
+          .title Additional Information
+          .text ng:bind='::booking.property.additional_info'
+    .blocks
+      .block.services
+        .head
+          .right
+            .arrow
+              .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-document-text
+          .text Service Details
+        .services ng:show='booking.standard_services[0]'
+          .title Services
+          .service ng:repeat='service in booking.standard_services'
+            i.icon class="icon-serv-{{service.name}}"
+            .name ng:bind='::service.display'
+        .services ng:show='booking.extra_services[0]'
+          .title Extra Services
+          .service ng:repeat='service in booking.extra_services'
+            i.icon class="icon-serv-{{service.name}}"
+            .name ng:bind='::service.display'
