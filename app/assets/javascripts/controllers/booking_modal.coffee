@@ -75,7 +75,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
         if rsp.error
           flash "failure", rsp.error.message
         else
-          $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method}).success (rsp) ->
+          $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method,spinner:true}).success (rsp) ->
             if rsp.success
               $scope.$emit 'fetch_user'
               defer.resolve rsp.payment.id if defer
@@ -88,7 +88,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           flash 'failure', rsp.errors[0].description
           defer.reject() if defer
         else
-          $http.post('/payments/add',{balanced_id:rsp.bank_accounts[0].id,payment_method:$scope.payment_method}).success (rsp) ->
+          $http.post('/payments/add',{balanced_id:rsp.bank_accounts[0].id,payment_method:$scope.payment_method,spinner:true}).success (rsp) ->
             if rsp.success
               $scope.$emit 'fetch_user'
               defer.resolve rsp.payment.id if defer
