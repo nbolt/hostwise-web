@@ -1,22 +1,23 @@
-footer.pl-footer
-  .container
-    .section.group
-      .col.span_2_of_12
-        ul.footer-nav
-          li
-            a href="/" Home
-          li
-            a href="/about" Our Mission
-          li
-            a href="/pricing" Services &amp; Pricing
-      .col.span_2_of_12
-        ul.footer-nav
-          li
-            a href="/faq" FAQ
-          li
-            a href="/contact" Contact Us
-      .col.span_8_of_12
-        a.btn.secondary href='' ng:click='show_signup()' Get a free trial
+- unless logged_in?
+  footer.pl-footer
+    .container
+      .section.group
+        .col.span_2_of_12
+          ul.footer-nav
+            li
+              a href="/" Home
+            li
+              a href="/about" Our Mission
+            li
+              a href="/pricing" Services &amp; Pricing
+        .col.span_2_of_12
+          ul.footer-nav
+            li
+              a href="/faq" FAQ
+            li
+              a href="/contact" Contact Us
+        .col.span_8_of_12
+          a.btn.secondary href='' ng:click='show_signup()' Get a free trial
 footer.colophon
   .container
     ul.legal
