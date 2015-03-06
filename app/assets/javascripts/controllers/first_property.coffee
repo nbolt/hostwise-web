@@ -8,7 +8,7 @@ FirstPropertyCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         else
           angular.element('.first-property form .section.notify').slideDown 600
           $http.post('/service_notifications/create', { zip: $scope.zip })
-          analytics.track('Service Request Outside Service Area', {zip: $scope.zip})
+          analytics.track('Service Requested Outside Service Area', {zip: $scope.zip})
     else
       flash 'failure', 'Please fill in all required fields'
 

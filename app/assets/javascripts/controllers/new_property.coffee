@@ -107,7 +107,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
         if rsp.success
           if rsp.slug
             $http.get("/properties/#{rsp.slug}.json").success (rsp) -> $scope.property = rsp
-            analytics.track('Property Added', {property_id: rsp.id})
+            analytics.track('Added a Property', {property_id: rsp.id})
           success()
           $scope.extras = {}
         else
