@@ -81,6 +81,7 @@ Rails.application.routes.draw do
     get   '/bookings/:id' => 'bookings#show'
     get   '/jobs' => 'jobs#index'
     get   '/jobs/:id' => 'jobs#show'
+    get  '/login_as/:id' => 'auth#login_as'
   end
 
   get '/cost' => 'home#cost'

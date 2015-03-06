@@ -2,6 +2,13 @@ class Admin::AuthController < ApplicationController
   layout 'admin'
   before_filter :require_login
 
+  def login_as
+    user = User.where(id: params[:id])[0]
+    user = User.where(email: params[:id])[0] unless user
+    auto_login user if user
+    redirect_to '/'
+  end
+
   private
 
   def require_login
