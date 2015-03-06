@@ -100,6 +100,10 @@ class Property < ActiveRecord::Base
     end
   end
 
+  def property_size
+    "#{bedrooms}BD/#{bathrooms}BA"
+  end
+
   private
 
   def standardize_address

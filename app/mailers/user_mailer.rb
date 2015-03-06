@@ -28,7 +28,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                       'NICKNAME' => booking.property.nickname, 'SERVICES' => booking.services.map(&:display).join(','),
                       'ACCESS' => booking.property.access_info, 'PARKING' => booking.property.parking_info,
                       'TRASH' => booking.property.trash_disposal, 'RESTOCKING' => booking.property.restocking_info,
-                      'SPECIAL_INSTRUCTIONS' => booking.property.additional_info, 'PROP_SIZE' => booking.property.property_type,
+                      'SPECIAL_INSTRUCTIONS' => booking.property.additional_info, 'PROP_SIZE' => booking.property.property_size,
                       'KING' => booking.property.king_beds, 'QUEEN' => booking.property.queen_beds,
                       'FULL' => booking.property.full_beds, 'TWIN' => booking.property.twin_beds
                     },
