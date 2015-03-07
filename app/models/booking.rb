@@ -40,7 +40,7 @@ class Booking < ActiveRecord::Base
           property.twin_beds.times  { rsp[:linens] += PRICING['twin_linens']  }
         when 'toiletries'
           rsp[:toiletries] ||= 0
-          property.beds.times  { rsp[:toiletries] += PRICING['toiletries']  }
+          property.bathrooms.times  { rsp[:toiletries] += PRICING['toiletries']  }
         when 'pool'
           rsp[:pool] = PRICING['pool']
         when 'patio'
