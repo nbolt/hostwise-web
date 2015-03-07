@@ -101,7 +101,7 @@ class Property < ActiveRecord::Base
   end
 
   def property_size
-    "#{bedrooms}BD/#{bathrooms}BA"
+    "#{bedrooms}BD/#{bathrooms}BA #{property_type.to_s.titleize}"
   end
 
   private
