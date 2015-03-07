@@ -127,7 +127,8 @@ class UserMailer < MandrillMailer::TemplateMailer
                     vars: {
                       'ADDRESS' => property.full_address,
                       'NICKNAME' => property.nickname,
-                      'PROP_SIZE' => property.property_size
+                      'PROP_SIZE' => property.property_size,
+                      'PROPERTY_LINK' => property_url property.slug
                     },
                     inline_css: true,
                     async: true,
