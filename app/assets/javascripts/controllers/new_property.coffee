@@ -59,6 +59,11 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
           flash 'failure', rsp.message
 
   $scope.step = (n) ->
+    if n == 2 || $scope.extras.validated
+      spinner = false
+    else
+      spinner = true
+
     if validate(n)
       if n == 3
         if !validate(1)
@@ -79,6 +84,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
                 stage: n
                 form: $scope.form
                 extras: $scope.extras
+                spinner: spinner
             ).success success_wrap
           else
             $http(
@@ -88,7 +94,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
                 stage: n
                 form: $scope.form
                 extras: $scope.extras
-                spinner: true
+                spinner: spinner
             ).success success_wrap
 
       if n < $scope.num_steps
