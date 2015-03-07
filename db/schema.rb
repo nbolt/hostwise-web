@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306024919) do
+ActiveRecord::Schema.define(version: 20150307224516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 20150306024919) do
     t.string   "slug"
     t.string   "access_info"
     t.string   "parking_info"
-    t.string   "additional_info"
+    t.string   "additional_info",                    default: ""
     t.string   "trash_disposal"
     t.integer  "full_beds"
     t.integer  "queen_beds"
@@ -272,6 +272,13 @@ ActiveRecord::Schema.define(version: 20150306024919) do
   end
 
   add_index "transactions", ["booking_id"], name: "index_transactions_on_booking_id", using: :btree
+
+  create_table "unserviced_zips", force: :cascade do |t|
+    t.string   "email"
+    t.string   "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                           limit: 255,                 null: false
