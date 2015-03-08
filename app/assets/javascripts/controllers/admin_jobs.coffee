@@ -17,6 +17,9 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
           when 3 then 'completed'
           when 4 then 'past due'
 
+  $scope.search_property = (job) ->
+    $scope.search = job.booking.property_id
+
   $scope.sortHash = ->
     {
       dropdownCssClass: 'sort'

@@ -29,8 +29,8 @@
       tr dir-paginate='job in jobs | itemsPerPage: 20'
         td
           a ng:href="/jobs/{{job.id}}" ng:bind='::job.id'
-        td ng:bind='::job.booking.property.nickname'
-          /a ng:href="/users/{{booking.property.user.id}}" ng:bind='::job.property.user.name'
+        td
+          a href='javascript:void(0)' ng:bind='::job.booking.property.nickname' ng:click='search_property(job)'
         td ng:bind='::job.booking.property.short_address'
           /a ng:href="/properties/{{booking.property.id}}" ng:bind='::job.property.nickname'
         td ng:bind='::job.date'

@@ -1,4 +1,7 @@
 class Job < ActiveRecord::Base
+  include PgSearch
+  pg_search_scope :search, associated_against: {booking: [:property_id]}
+
   belongs_to :booking
   has_many :contractor_jobs, class_name: 'ContractorJobs', dependent: :destroy
   has_many :contractors, through: :contractor_jobs, source: :user
