@@ -10,7 +10,26 @@ class UserMailer < MandrillMailer::TemplateMailer
       mandrill_mail template: 'cancelled-booking-notification',
                     subject: "[Hosts] Delete Appointment #{booking.date.strftime}",
                     to: {email: Rails.application.config.booking_notification_email},
-                    vars: {'ID' => booking.id},
+                    vars: {
+                      'ID' => booking.id,
+                      'CUST_NAME' => booking.property.user.name,
+                      'CUST_PHONE' => booking.property.user.display_phone_number,
+                      'CUST_EMAIL' => booking.property.user.email,
+                      'FULL_ADDRESS' => booking.property.full_address,
+                      'SERVICE_DATE' => booking.date.strftime,
+                      'NICKNAME' => booking.property.nickname,
+                      'SERVICES' => booking.services.map(&:display).join(','),
+                      'ACCESS' => booking.property.access_info,
+                      'PARKING' => booking.property.parking_info,
+                      'TRASH' => booking.property.trash_disposal,
+                      'RESTOCKING' => booking.property.restocking_info,
+                      'SPECIAL_INSTRUCTIONS' => booking.property.additional_info,
+                      'PROP_SIZE' => booking.property.property_size,
+                      'KING' => booking.property.king_beds,
+                      'QUEEN' => booking.property.queen_beds,
+                      'FULL' => booking.property.full_beds,
+                      'TWIN' => booking.property.twin_beds
+                    },
                     inline_css: true,
                     async: true
     end
