@@ -1,4 +1,4 @@
-ModalCtrl = ['$scope', '$timeout', 'ngDialog', ($scope, $timeout, ngDialog) ->
+ModalCtrl = ['$scope', '$timeout', 'ngDialog', '$rootScope', ($scope, $timeout, ngDialog, $rootScope) ->
   $scope.show_signin = ->
     openDialog 'modal-sign-in'
 
@@ -14,6 +14,10 @@ ModalCtrl = ['$scope', '$timeout', 'ngDialog', ($scope, $timeout, ngDialog) ->
       $timeout((->ngDialog.open template: id, className: 'auth full'),600)
     else
       ngDialog.open template: id, className: 'auth full'
+
+  $rootScope.$on 'ngDialog.opened', (e, $dialog) ->
+    el = $dialog.find('input')[0]
+    el.focus()
 ]
 
 app = angular.module('porter').controller('modal', ModalCtrl)
