@@ -41,9 +41,9 @@
           span SMS Notification Settings
           span SMS
         .row
-          .text Job Completed
+          .text Housekeeper En Route
           label.switch.red
-            input type='checkbox' toggle-notification='service_completion_sms' ng:checked="user.notification_settings['service_completion']['sms']"
+            input type='checkbox' toggle-notification='porter_en_route_sms' ng:checked="user.notification_settings['porter_en_route']['sms']"
             i
         .row
           .text Housekeeper Arrived
@@ -51,9 +51,9 @@
             input type='checkbox' toggle-notification='porter_arrived_sms' ng:checked="user.notification_settings['porter_arrived']['sms']"
             i
         .row
-          .text Housekeeper En Route
+          .text Job Completed
           label.switch.red
-            input type='checkbox' toggle-notification='porter_en_route_sms' ng:checked="user.notification_settings['porter_en_route']['sms']"
+            input type='checkbox' toggle-notification='service_completion_sms' ng:checked="user.notification_settings['service_completion']['sms']"
             i
         .icon-button.teal ng:click="save('sms')"
           .icon
