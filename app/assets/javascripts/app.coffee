@@ -46,6 +46,9 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
   angular.element('body').on 'click', ->
     angular.element('#user .drop-container').css 'max-height', 0 if angular.element('#user .drop-container').css('max-height') != '0px'
 
+  $scope.startSpin = -> angular.element('#spin-overlay').addClass 'active'
+  $scope.stopSpin  = -> angular.element('#spin-overlay').removeClass 'active'
+
 ]
 
 app = angular.module('porter', ['ngCookies',
