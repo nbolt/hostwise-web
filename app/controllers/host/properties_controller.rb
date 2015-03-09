@@ -114,9 +114,18 @@ class Host::PropertiesController < Host::AuthController
 
         # validate delivery_point_barcode and confirm with user if duplicate
         unless params[:extras][:validated]
-          code = delivery_code(params[:form][:address1], params[:form][:address2], params[:form][:zip])
+          rsp = call_smarty(params[:form][:address1], params[:form][:address2], params[:form][:zip])
+          address = rsp[0].to_hash if rsp[0]
+          code = address[:delivery_point_barcode] if address
           if code
-            if Property.where(delivery_point_barcode: code)[0]
+            if address[:components][:secondary_designator].present?
+              address1 = address[:delivery_line_1].split(address[:components][:secondary_designator])[0].strip
+              address2 = "#{address[:components][:secondary_designator]} #{address[:delivery_line_1].split(address[:components][:secondary_designator])[1].strip}"
+            else
+              address1 = address[:delivery_line_1]
+              address2 = nil
+            end
+            if Property.where(address1: address1, address2: address2, zip: address[:components][:zipcode])[0]
               render json: { success: false, extras: {validated: true}, type: 'info', message: 'You may already have another property with this address. Hit next to continue.' }
               return
             end
@@ -175,7 +184,8 @@ class Host::PropertiesController < Host::AuthController
   end
 
   def address
-    code = delivery_code(params[:form][:address1], params[:form][:address2], params[:form][:zip])
+    rsp = call_smarty(params[:form][:address1], params[:form][:address2], params[:form][:zip])
+    code = rsp[0].to_hash[:delivery_point_barcode] if rsp[0]
     unless code
       render json: { success: false, message: 'Invalid address' }
       return
@@ -195,14 +205,9 @@ class Host::PropertiesController < Host::AuthController
                                  :access_info, :parking_info, :additional_info, :trash_disposal, :restocking_info)
   end
 
-  def delivery_code(address1, address2, zip)
+  def call_smarty(address1, address2, zip)
     address = SmartyStreets::StreetAddressRequest.new(street: address1, street2: address2, zipcode: zip)
-    rsp = SmartyStreets::StreetAddressApi.call(address)
-    if rsp[0]
-      rsp[0].to_hash[:delivery_point_barcode]
-    else
-      false
-    end
+    return SmartyStreets::StreetAddressApi.call(address)
   end
 
 end
