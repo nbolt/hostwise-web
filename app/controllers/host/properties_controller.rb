@@ -16,6 +16,8 @@ class Host::PropertiesController < Host::AuthController
     property.full_beds = params[:form][:full_beds][:id]
     property.queen_beds = params[:form][:queen_beds][:id]
     property.king_beds = params[:form][:king_beds][:id]
+    property.bedrooms = params[:form][:bedrooms][:id]
+    property.bathrooms = params[:form][:bathrooms][:id]
 
     property.assign_attributes property_params
     property.step = 3
@@ -25,6 +27,11 @@ class Host::PropertiesController < Host::AuthController
         property.property_photos.destroy_all # make sure the uploaded photo is good before deleting previous one
         property.property_photos.build(photo: params[:file])
       end
+    end
+
+    if !PRICING.chain(property.property_type.to_s, property.bedrooms, property.bathrooms)
+      render json: { success: false, message: "Sorry, looks like we aren't setup for properties of this configuration. Please call support." }
+      return
     end
 
     if property.save

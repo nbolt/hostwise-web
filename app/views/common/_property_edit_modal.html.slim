@@ -39,6 +39,14 @@ script#property-edit-modal type="text/ng-template"
               .field.radio
                 input type='radio' id='part-time' value='1' ng:model='form.rental_type_cd'
                 label for='part-time' Part-time
+          .section
+            .row.two
+              .field
+                .title Bedrooms
+                input type='hidden' ui-select2='rooms()' ng:model='form.bedrooms'
+              .field
+                .title Bathrooms
+                input type='hidden' ui-select2='rooms()' ng:model='form.bathrooms'
           .section.bed-types
             .title Bed Types
             .row.two
