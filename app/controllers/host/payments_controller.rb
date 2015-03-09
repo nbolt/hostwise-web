@@ -3,7 +3,11 @@ class Host::PaymentsController < Host::AuthController
     first_payment = !current_user.payments.active.present?
 
     if params[:payment_method][:id] == 'credit-card'
-      customer = Stripe::Customer.retrieve current_user.stripe_customer_id
+      unless current_user.stripe_customer_id
+        customer = Stripe::Customer.create(email: user.email)
+        user.update_attribute :stripe_customer_id, customer.id
+      end
+      customer = Stripe::Customer.retrieve current_user.stripe_customer_id unless customer
       card = customer.sources.create(card: params[:stripe_id])
       payment = current_user.payments.create({
                                                stripe_id: card.id,
@@ -13,6 +17,10 @@ class Host::PaymentsController < Host::AuthController
                                                status: :active
                                              })
     else
+      unless current_user.balanced_customer_id
+        customer = Balanced::Customer.new; customer.save
+        user.update_attribute :balanced_customer_id, customer.id
+      end
       bank_account = Balanced::BankAccount.fetch "/bank_accounts/#{params[:balanced_id]}"
       bank_account.associate_to_customer "/customers/#{current_user.balanced_customer_id}"
       verification = bank_account.verify
