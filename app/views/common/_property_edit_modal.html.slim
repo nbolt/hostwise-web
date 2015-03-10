@@ -29,16 +29,16 @@ script#property-edit-modal type="text/ng-template"
             .row.one
               .field
                 input type='text' ng:model='form.title'
-        .column
-          .section
+          .section.rental-type
             .title Rental Type
             .row.two
               .field.radio
-                input type='radio'  id='full-time' value='0' ng:model='form.rental_type_cd'
+                input type='radio' id='full-time' value='0' ng:model='form.rental_type_cd'
                 label for='full-time' Full-time
               .field.radio
                 input type='radio' id='part-time' value='1' ng:model='form.rental_type_cd'
                 label for='part-time' Part-time
+        .column
           .section
             .row.two
               .field
