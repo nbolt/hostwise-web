@@ -66,28 +66,30 @@ class Host::PropertiesController < Host::AuthController
     if params[:dates]
       bookings = []
       params[:dates].each do |k,v|
-        v.each do |day|
-          month = k.split('-')[0]
-          year  = k.split('-')[1]
-          date = Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d')
-          booking = property.bookings.build(date: date, status_cd: 4)
-          if params[:late_next_day].present?
-            booking.late_next_day = true if date.strftime('%b %-d, %Y') == params[:late_next_day]
+        if v
+          v.each do |day|
+            month = k.split('-')[0]
+            year  = k.split('-')[1]
+            date = Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d')
+            booking = property.bookings.build(date: date, status_cd: 4)
+            if params[:late_next_day].present?
+              booking.late_next_day = true if date.strftime('%b %-d, %Y') == params[:late_next_day]
+            end
+            if params[:late_same_day].present?
+              booking.late_same_day = true if date.strftime('%b %-d, %Y') == params[:late_same_day]
+            end
+            unless Booking.by_user(current_user)[0] || current_user.migrated
+              booking.first_booking_discount = true
+            end
+            booking.payment = Payment.find params[:payment]
+            params[:services].each do |service|
+              booking.services.push Service.where(name: service)[0]
+            end
+            booking.save # need to check for errors
+            bookings.push booking
+            UserMailer.new_booking_notification(booking).then(:deliver)
+            UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
           end
-          if params[:late_same_day].present?
-            booking.late_same_day = true if date.strftime('%b %-d, %Y') == params[:late_same_day]
-          end
-          unless Booking.by_user(current_user)[0] || current_user.migrated
-            booking.first_booking_discount = true
-          end
-          booking.payment = Payment.find params[:payment]
-          params[:services].each do |service|
-            booking.services.push Service.where(name: service)[0]
-          end
-          booking.save # need to check for errors
-          bookings.push booking
-          UserMailer.new_booking_notification(booking).then(:deliver)
-          UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
         end
       end
       render json: { success: true, bookings: bookings.to_json(methods: :cost) }
