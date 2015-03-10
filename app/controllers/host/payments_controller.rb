@@ -4,8 +4,8 @@ class Host::PaymentsController < Host::AuthController
 
     if params[:payment_method][:id] == 'credit-card'
       unless current_user.stripe_customer_id
-        customer = Stripe::Customer.create(email: user.email)
-        user.update_attribute :stripe_customer_id, customer.id
+        customer = Stripe::Customer.create(email: current_user.email)
+        current_user.update_attribute :stripe_customer_id, customer.id
       end
       customer = Stripe::Customer.retrieve current_user.stripe_customer_id unless customer
       card = customer.sources.create(card: params[:stripe_id])
