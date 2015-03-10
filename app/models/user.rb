@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   validates_numericality_of :secondary_phone, only_integer: true, if: lambda { self.secondary_phone.present? }
   validates_length_of :secondary_phone, is: 10, if: lambda { self.secondary_phone.present? }
 
-  after_create :create_stripe_customer, :create_balanced_customer
+  # after_create :create_stripe_customer, :create_balanced_customer
 
   attr_accessor :step
 
