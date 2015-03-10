@@ -64,7 +64,7 @@ app = angular.module('porter', ['ngCookies',
   .controller('app', AppCtrl)
   .config ['$httpProvider', ($httpProvider) ->
     $httpProvider.defaults.headers.common['X-CSRF-Token'] = angular.element('meta[name=csrf-token]').attr 'content'
-    $httpProvider.interceptors.push 'spinner'
+    $httpProvider.interceptors.push 'spinner_request'
   ]
 
 angular.element(document).on 'ready page:load', ->

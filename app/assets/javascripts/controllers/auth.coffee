@@ -1,5 +1,5 @@
-AuthCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
-
+AuthCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
+  # spinner.startSpin()
   $scope.posting = false
   $scope.form = { role: 'host' }
 
