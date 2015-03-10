@@ -1,6 +1,6 @@
 .container ng:controller='contractor-account'
   .page-title
-    .fa.fa-cog
+    i.icon-edit-gear
     | Contractor Sign Up
   .contractor-account.activate
     .steps
@@ -29,17 +29,17 @@
                 input type='email' required='' ng:model='user.email'
               .row
                 label Mobile Phone
-                input type='text' required='' ng:model='user.phone_number'
+                input type='text' required='' placeholder='(###) ###-####' ui-mask='(999) 999-9999' ng:model='user.phone_number'
               .row
                 label Alternate Phone (optional)
-                input type='text' ng:model='user.secondary_phone'
+                input type='text' placeholder='(###) ###-####' ui-mask='(999) 999-9999' ng:model='user.secondary_phone'
               .row
                 label Address
-                input type='text' required='' ng:model='contractor_profile.address1'
+                input type='text' required='' placeholder='Street Address' ng:model='contractor_profile.address1'
                 .caption Address Line 1
               .row.two
-                input type='text' ng:model='contractor_profile.address2'
-                input.right type='text' maxlength=5 required='' ng:model='contractor_profile.zip'
+                input type='text' placeholder='Apt/Unit/#' ng:model='contractor_profile.address2'
+                input.right type='text' maxlength=5 required='' placeholder='Zip Code' ng:model='contractor_profile.zip'
                 .caption Unit # (optional)
                 .caption.right Zip Code
               .row.two
@@ -67,7 +67,7 @@
                 input type='checkbox' id='tos' ng:model='user.tos' ng:true-value="'yes'" ng:false-value="'no'"
                 label for='tos'
                   | I have read and agree to the&nbsp;
-                  a href='' terms & conditions
+                  a href='/terms' target='_blank' terms & conditions
                   | &nbsp;and give permission to HostWise, Inc to submit my personal information for background verification purposes.
               hr
               .row
