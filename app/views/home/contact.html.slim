@@ -4,6 +4,7 @@ section#banner-contact.pl-panel ng:controller='contact'
     h6.white We have real, local human beings standing by to help.
     hr.light
     .contact-form
+      .pl-confirmation Thanks for your message! We'll get back to you as soon as possible.
       form.pl-form action="" name=""
         label for="fname"
           | Your Name
@@ -33,9 +34,8 @@ section#banner-contact.pl-panel ng:controller='contact'
           | &nbsp;and&nbsp;
           a href="/privacy" Privacy Policy
           | .
-      .pl-confirmation Thanks for your message! We'll get back to you as soon as possible.
     .call
       img src='/hw_images/phone.png'
-      | Or give us a call at&nbsp;
+      span Or give us a call at&nbsp;
       strong.teal
         | 1 (855) 667-4085
