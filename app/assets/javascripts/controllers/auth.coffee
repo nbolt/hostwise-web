@@ -1,14 +1,13 @@
 AuthCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
-  # spinner.startSpin()
   $scope.posting = false
   $scope.form = { role: 'host' }
 
   $scope.signin = ->
     $http.post('/auth/signin', {
       form: $scope.form
-      spinner: true
     }).success (rsp) ->
       if rsp.success
+        spinner.startSpin()
         window.location = rsp.redirect_to
       else
         flash('failure', rsp.message)
