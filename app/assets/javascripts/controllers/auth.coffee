@@ -16,7 +16,9 @@ AuthCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, 
     if n < 3
       success = -> angular.element('.signup .steps .step').removeClass('active').eq(n).addClass('active')
     else
-      success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) -> window.location = '/auth'
+      success = -> $http.post('/auth/phone_confirmed', { email: $scope.form.email }).success (rsp) ->
+        spinner.startSpin()
+        window.location = '/auth'
 
     unless $scope.posting
       $scope.posting = true
