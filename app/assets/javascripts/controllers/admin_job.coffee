@@ -8,6 +8,14 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
     $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
     $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
     $scope.job.extra_services    = _(rsp.booking.services).filter (s) -> s.extra
+    switch $scope.job.state_cd
+      when 0
+        angular.element('#state-normal').click()
+      when 1
+        angular.element('#state-vip').click()
+      when 2
+        angular.element('#state-hidden').click()
+
     $timeout -> $scope.jobQ.resolve()
 
     load_mapbox = null
@@ -28,6 +36,9 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
                 })
             }).addTo map
     ), 200)
+
+  $scope.$watch 'job.state_cd', (n,o) -> if o != undefined
+    $http.post($window.location.href + '/update_state', {state: $scope.job.state_cd})
 
 ]
 

@@ -7,8 +7,10 @@ BookingsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
   $scope.fetch_bookings = ->
     $http.get('/bookings.json',{params:{sort: $scope.sort.id,search: $scope.search,filter: $scope.filter.id}}).success (rsp) ->
-      $scope.bookings = rsp
+      $scope.bookings = JSON.parse rsp.bookings
+      $scope.today = rsp.today
       _($scope.bookings).each (booking) ->
+        booking.created = moment(booking.created_at, 'YYYY-MM-DD').format('YYYY-MM-DD')
         booking.status = switch booking.status_cd
           when 0 then 'deleted'
           when 1 then 'scheduled'

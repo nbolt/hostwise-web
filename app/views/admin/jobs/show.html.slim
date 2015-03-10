@@ -1,6 +1,26 @@
-.container.contractor ng:controller='admin_job'
+.container.contractor.admin-job ng:controller='admin_job'
   .page-title
-    strong Job Detail &mdash; {{job.date_text}}
+    i.icon-list
+    | Job Detail
+  .top
+    .align-bottom
+    .date ng:bind='::job.date_text'
+    .states
+      .state
+        input type='radio' id='state-normal' name='state' value='0' ng:model='job.state_cd'
+        label for='state-normal' Normal
+      .state
+        input type='radio' id='state-vip' name='state' value='1' ng:model='job.state_cd'
+        label for='state-vip' VIP
+      .state
+        input type='radio' id='state-hidden' name='state' value='2' ng:model='job.state_cd'
+        label for='state-hidden' Hidden
+    .total
+      .icon
+        i.icon-earnings
+      .text
+        .title Job Total
+        .cost ${{::job.booking.cost}}
   .row.one
     .block.top-info.jobs
       .job id='job-{{job.id}}'

@@ -8,6 +8,7 @@ class Job < ActiveRecord::Base
   has_many :payouts
 
   as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4
+  as_enum :state, normal: 0, vip: 1, hidden: 2
 
   scope :first_jobs, -> { where('contractor_jobs.priority = 1').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :trainers, -> { where('contractor_jobs.user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }

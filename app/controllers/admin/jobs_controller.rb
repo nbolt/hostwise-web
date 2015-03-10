@@ -25,9 +25,14 @@ class Admin::JobsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: job.to_json(methods: [:payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
+        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
       end
     end
+  end
+
+  def update_state
+    job.update_attribute :state_cd, params[:state]
+    render json: { success: true }
   end
 
 end

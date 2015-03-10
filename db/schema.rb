@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150307224516) do
+ActiveRecord::Schema.define(version: 20150309231425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 20150307224516) do
     t.integer  "toiletries"
     t.boolean  "training",     default: false
     t.date     "date"
+    t.integer  "state_cd",     default: 0
   end
 
   create_table "messages", force: :cascade do |t|

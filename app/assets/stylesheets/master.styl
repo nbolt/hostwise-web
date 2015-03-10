@@ -661,6 +661,7 @@ form
 
 .body
   .page-title
+    color: heavy-gray
     font-size: 1.5em
     @media phone
       font-size: 1.4em
@@ -1079,7 +1080,6 @@ form
           width: 36%
           margin-right: 2%
     .top-info
-      margin-top: 20px
       height: 116px
   .welcome
     font-size: 2em
@@ -1823,6 +1823,40 @@ form
         margin: 12px 0 0 17px
         input
           width: 54px
+          
+.container.admin-job
+  > .top
+    margin-top: 10px
+    .date, .states, .state, .total, .icon, .text, .align-bottom
+      display: inline-block
+      vertical-align: bottom
+    .align-bottom
+      height: 60px
+    .date
+      color: heavy-gray
+      font-size: 1.1em
+      font-weight: 600
+      margin-right: 140px
+    .states
+      .state
+        margin: 0 15px
+        label
+          margin-left: 8px
+    .total
+      float: right
+      i
+        font-size: 1.8em
+        margin-right: 10px
+      .text
+        margin-bottom: -3px
+        .title
+          font-size: .9em
+          margin-bottom: 10px
+          color: darker-gray
+        .cost
+          color: teal
+          font-size: 2em
+          font-weight: 600
 
 .pagination
   ul
