@@ -30,8 +30,10 @@ class Host::BookingsController < Host::AuthController
     if params[:apply_fee]
       if booking.update_attribute :status, :cancelled
         booking.charge!
-        booking.job.contractors.each do |contractor|
-          contractor.payouts.create(job_id: self.id, amount: booking.job.payout(contractor) * 100)
+        if booking.job
+          booking.job.contractors.each do |contractor|
+            contractor.payouts.create(job_id: self.id, amount: booking.job.payout(contractor) * 100)
+          end
         end
         render json: { success: true }
       else
