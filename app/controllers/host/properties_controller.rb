@@ -167,7 +167,7 @@ class Host::PropertiesController < Host::AuthController
         property.trash_disposal = params[:form][:trash_disposal]
         property.parking_info = params[:form][:parking_info]
         property.restocking_info = params[:form][:restocking_info]
-        property.additional_info = params[:form][:additional_info]
+        property.additional_info = params[:form][:additional_info] || '?'
 
         if property.save
           current_user.save
