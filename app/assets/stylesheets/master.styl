@@ -966,8 +966,9 @@ form
           .name
             font-size: 1.2em
             font-weight: 600
-            margin: 35px 0 10px
-          .number
+            margin: 35px 0 15px
+          .email
+            margin-top: 6px
             color: teal
       &.services
         .services
@@ -988,6 +989,7 @@ form
       &.team
         .teammate
           padding: 20px
+          position: relative
           .icon, .name, .number
             display: inline-block
             vertical-align: top
@@ -998,6 +1000,14 @@ form
             color: teal
           .name
             font-weight: 600
+          .remove
+            position: absolute
+            top: 0
+            right: 2px
+            color: gray
+            &:hover
+              cursor: pointer
+              color: dark-gray
       &.actions
         overflow: hidden
         .viewports
@@ -1077,6 +1087,8 @@ form
         .block
           width: 100%
           margin-bottom: 20px
+        &:first-child
+          margin-right: 2%
     &.uneven
       #map
         margin-bottom: 0

@@ -3,19 +3,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
   $scope.jobQ = $q.defer()
 
   $http.get($window.location.href + '.json').success (rsp) ->
-    $scope.job = rsp
-    $scope.job.contractor_count = $scope.job.contractors.length
-    $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
-    $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
-    $scope.job.extra_services    = _(rsp.booking.services).filter (s) -> s.extra
-    switch $scope.job.state_cd
-      when 0
-        angular.element('#state-normal').click()
-      when 1
-        angular.element('#state-vip').click()
-      when 2
-        angular.element('#state-hidden').click()
-
+    load_job(rsp)
     $timeout -> $scope.jobQ.resolve()
 
     load_mapbox = null
@@ -39,6 +27,39 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
 
   $scope.$watch 'job.state_cd', (n,o) -> if o != undefined
     $http.post($window.location.href + '/update_state', {state: $scope.job.state_cd})
+
+  $scope.$watch 'new_teammate', (n,o) -> if n
+    $http.post($window.location.href + '/add_contractor', {contractor_id: n.id}).success (rsp) -> load_job(rsp)
+
+  $scope.remove = (contractor) ->
+    $http.post($window.location.href + '/remove_contractor', {contractor_id: contractor.id}).success (rsp) -> load_job(rsp)
+
+  $scope.teamHash = ->
+    {
+      dropdownCssClass: 'new-teammate'
+      data: []
+      initSelection: (el, cb) ->
+      formatResult: (data) -> data.text
+      ajax:
+        url: $window.location.href + '/available_contractors'
+        quietMillis: 400
+        data: (term) -> { term: term }
+        results: (data) -> { results: _(data).map (contractor) -> { id: contractor.id, text: contractor.name } }
+    }
+
+  load_job = (rsp) ->
+    $scope.job = rsp
+    $scope.job.contractor_count = $scope.job.contractors.length
+    $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
+    $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
+    $scope.job.extra_services    = _(rsp.booking.services).filter (s) -> s.extra
+    switch $scope.job.state_cd
+      when 0
+        angular.element('#state-normal').click()
+      when 1
+        angular.element('#state-vip').click()
+      when 2
+        angular.element('#state-hidden').click()
 
 ]
 

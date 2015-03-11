@@ -81,7 +81,7 @@ Rails.application.routes.draw do
     get   '/bookings/:id' => 'bookings#show'
     get   '/jobs' => 'jobs#index'
     get   '/jobs/:id' => 'jobs#show'
-    post  '/jobs/:id/:action' => 'jobs'
+    match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
     get  '/login_as/:id' => 'auth#login_as'
   end
 

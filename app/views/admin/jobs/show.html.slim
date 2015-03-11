@@ -78,36 +78,55 @@
       .info
         .name ng:bind='::job.booking.property.user.name'
         .number ng:bind='::job.booking.property.user.display_phone_number'
+        .email ng:bind='::job.booking.property.user.email'
     .block#map
   .row.two
-    .block.instructions
-      .head
-        .right
-          .arrow
-            .typcn.typcn-chevron-right
-        .icon
-          .typcn.typcn-document-text
-        .text Property Instructions
-      .instruction ng:if='::job.booking.property.access_info'
-        .content
-          .title Access Information
-          .text ng:bind='::job.booking.property.access_info'
-      .instruction ng:if='::job.booking.property.trash_disposal'
-        .content
-          .title Trash Disposal
-          .text ng:bind='::job.booking.property.trash_disposal'
-      .instruction ng:if='::job.booking.property.parking_info'
-        .content
-          .title Parking Information
-          .text ng:bind='::job.booking.property.parking_info'
-      .instruction ng:if='::job.booking.property.restocking_info'
-        .content
-          .title Restocking Instructions
-          .text ng:bind='::job.booking.property.restocking_info'
-      .instruction ng:if='::job.booking.property.additional_info'
-        .content
-          .title Additional Information
-          .text ng:bind='::job.booking.property.additional_info'
+    .blocks
+      .block.team
+        .head
+          .right
+            .arrow
+              .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-user
+          .text Team Information
+        .teammate ng:repeat='teammate in job.contractors'
+          .remove ng:click='remove(teammate)'
+            .typcn.typcn-times
+          .number ng:bind='::teammate.display_phone_number'
+          .icon
+            .typcn.typcn-user
+          .name ng:bind='::teammate.name'
+        .add-teammate ng:hide='job.contractor_count == job.size'
+          input type='hidden' ui-select2='teamHash()' ng:model='new_teammate' style='width:240px'
+      .block.instructions
+        .head
+          .right
+            .arrow
+              .typcn.typcn-chevron-right
+          .icon
+            .typcn.typcn-document-text
+          .text Property Instructions
+        .instruction ng:if='::job.booking.property.access_info'
+          .content
+            .title Access Information
+            .text ng:bind='::job.booking.property.access_info'
+        .instruction ng:if='::job.booking.property.trash_disposal'
+          .content
+            .title Trash Disposal
+            .text ng:bind='::job.booking.property.trash_disposal'
+        .instruction ng:if='::job.booking.property.parking_info'
+          .content
+            .title Parking Information
+            .text ng:bind='::job.booking.property.parking_info'
+        .instruction ng:if='::job.booking.property.restocking_info'
+          .content
+            .title Restocking Instructions
+            .text ng:bind='::job.booking.property.restocking_info'
+        .instruction ng:if='::job.booking.property.additional_info'
+          .content
+            .title Additional Information
+            .text ng:bind='::job.booking.property.additional_info'
     .blocks
       .block.services
         .head
@@ -127,16 +146,3 @@
           .service ng:repeat='service in job.extra_services'
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
-      .block.team ng:show='job.contractor_count > 1'
-        .head
-          .right
-            .arrow
-              .typcn.typcn-chevron-right
-          .icon
-            .typcn.typcn-user
-          .text Team Information
-        .teammate ng:repeat='teammate in job.contractors'
-          .number ng:bind='::teammate.display_phone_number'
-          .icon
-            .typcn.typcn-user
-          .name ng:bind='::teammate.name'

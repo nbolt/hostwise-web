@@ -30,9 +30,25 @@ class Admin::JobsController < Admin::AuthController
     end
   end
 
+  def add_contractor
+    contractor = User.find params[:contractor_id]
+    contractor.claim_job job
+    render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
+  end
+
+  def remove_contractor
+    contractor = User.find params[:contractor_id]
+    contractor.drop_job job
+    render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
+  end
+
   def update_state
     job.update_attribute :state_cd, params[:state]
     render json: { success: true }
+  end
+
+  def available_contractors
+    render json: User.search_contractors(params[:term]).to_json(methods: [:name])
   end
 
 end
