@@ -28,6 +28,10 @@ class HomeController < ApplicationController
     render json: PRICING.to_json
   end
 
+  def man_hrs
+    render json: MAN_HRS.to_json
+  end
+
   def contact_email
     if logged_in?
       UserMailer.contact_email("Customer Support: #{params[:form][:description]}", current_user.email, params[:form][:message], current_user.first_name, current_user.last_name, current_user.phone_number).then(:deliver)

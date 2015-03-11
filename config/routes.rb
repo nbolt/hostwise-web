@@ -85,6 +85,7 @@ Rails.application.routes.draw do
     get  '/login_as/:id' => 'auth#login_as'
   end
 
+  get '/man_hrs' => 'home#man_hrs'
   get '/cost' => 'home#cost'
   get '/user' => 'home#user'
   get '/signin' => 'home#signin', as: :signin, constraints: {subdomain: 'www'}

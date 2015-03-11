@@ -1,106 +1,108 @@
-.container.contractor ng:controller='job'
+#job-details ng:controller='job'
   .page-title
-    strong ng:bind='::job.date_text'
-  .row.one
-    .block.top-info.jobs
-      .job id='job-{{job.id}}'
-        .photo
-          img ng:src='{{job.booking.property.primary_photo}}'
-          .column
-        .right
-          .top
-            .neighborhood.address
-              .name
-                | {{::job.booking.property.address1}}, {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
-            .beds remove-div=''
-              .text Beds
-              .bed ng:if='job.booking.property.king_beds > 0'
-                span King
-                | &nbsp; {{::job.booking.property.king_beds}}
-                .div |
-              .bed ng:if='job.booking.property.queen_beds > 0'
-                span Queen
-                | &nbsp; {{::job.booking.property.queen_beds}}
-                .div |
-              .bed ng:if='job.booking.property.full_beds > 0'
-                span Full
-                | &nbsp; {{::job.booking.property.full_beds}}
-                .div |
-              .bed ng:if='job.booking.property.twin_beds > 0'
-                span Twin
-                | &nbsp; {{::job.booking.property.twin_beds}}
-                .div |
-          .bottom
-            .rooms
-              i.icon-house ng:if='job.booking.property.property_type_cd == 0'
-              i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
-              .text
-                | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
-            .contractors
-              i.icon-person
-              .text ng:bind='::job.contractor_count'
-            .right
-              .icon
-                i.icon-payout
-              .pricing
-                | ${{::job.payout_integer}}
-                span ng:hide='job.payout_fractional == 0'
-                  | .{{::job.payout_fractional}}
-  .row.uneven
-    .block.customer
-      .head
-        .right
-          .arrow
-            .typcn.typcn-chevron-right
-        .photo
-          img ng:src='{{::job.booking.property.user.avatar}}'
-        .text Customer Info
-      .info
-        .name ng:bind='::job.booking.property.user.name'
-        .number ng:bind='::job.booking.property.user.display_phone_number'
-        .email ng:bind='::job.booking.property.user.email'
-    .block#map
-  .row.two
-    .block.instructions
-      .head
-        .right
-          .arrow
-            .typcn.typcn-chevron-right
-        .icon
-          .typcn.typcn-document-text
-        .text Property Instructions
-      .instruction ng:if='::job.booking.property.access_info'
-        .content
-          .title Access Information
-          .text ng:bind='::job.booking.property.access_info'
-      .instruction ng:if='::job.booking.property.trash_disposal'
-        .content
-          .title Trash Disposal
-          .text ng:bind='::job.booking.property.trash_disposal'
-      .instruction ng:if='::job.booking.property.parking_info'
-        .content
-          .title Parking Information
-          .text ng:bind='::job.booking.property.parking_info'
-      .instruction ng:if='::job.booking.property.restocking_info'
-        .content
-          .title Restocking Instructions
-          .text ng:bind='::job.booking.property.restocking_info'
-      .instruction ng:if='::job.booking.property.additional_info'
-        .content
-          .title Additional Information
-          .text ng:bind='::job.booking.property.additional_info'
-    .blocks
-      .block.services
-        .head
-          .right
-            .arrow
-              .typcn.typcn-chevron-right
+    i.icon-notebook
+    | Job Details
+  .contractor
+    .flag.vip ng:if='vip'
+    .flag.staging ng:if='staging'
+    .photo
+      img ng:src='{{job.booking.property.primary_photo}}'
+    .right
+      .top
+        .title
+          .name ng:bind='job.booking.property.nickname'
+          .address ng:bind='job.booking.property.full_address'
+        .beds
+          .text Beds
+          .bed ng:if='job.booking.property.king_beds == 1'
+            | {{job.booking.property.king_beds}} King
+          .bed ng:if='job.booking.property.king_beds > 1'
+            | {{job.booking.property.king_beds}} Kings
+          .bed ng:if='job.booking.property.queen_beds == 1'
+            | {{job.booking.property.queen_beds}} Queen
+          .bed ng:if='job.booking.property.queen_beds > 1'
+            | {{job.booking.property.queen_beds}} Queens
+          .bed ng:if='job.booking.property.full_beds > 0'
+            | {{job.booking.property.full_beds}} Full
+          .bed ng:if='job.booking.property.twin_beds == 1'
+            | {{job.booking.property.twin_beds}} Twin
+          .bed ng:if='job.booking.property.twin_beds > 1'
+            | {{job.booking.property.twin_beds}} Twins
+      .bottom
+        .payout
           .icon
-            .typcn.typcn-document-text
+            i.icon-payout
+          .pricing ng:class='pricing_class()'
+            | ${{::job.payout_integer}}
+            span ng:hide='job.payout_fractional == 0'
+              | .{{::job.payout_fractional}}
+        .left
+          .rooms
+            i.icon-house ng:if='job.booking.property.property_type_cd == 0'
+            i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
+            .text
+              | {{job.booking.property.bedrooms}}BD/{{job.booking.property.bathrooms}}BA
+          .id
+            i.icon-person
+            .text ng:bind='::job.contractor_count'
+          .est ng:if='man_hrs'
+            i.icon-timer-outline
+            .text ng:bind='::man_hrs'
+  .photo ng:hide='job.booking.property.property_photos.length == 0'
+    img ng:src='{{job.booking.property.primary_photo}}'
+  #columns
+    .special-column
+      .section.profile
+        .head
+          .icon
+            i.icon-profile
+          .text Customer Info
+        .avatar
+          img ng:src='{{::job.booking.property.user.avatar}}'
+        hr
+        .info
+          .name ng:bind='::job.booking.property.user.name'
+          a.icon-button.teal href="tel:{{job.booking.property.user.phone_number}}"
+            .icon
+              i.icon-call
+            .text Call
+          .number ng:bind='::job.booking.property.user.display_phone_number'
+      #map
+    .column
+      .section.instructions
+        .head
+          .icon
+            .pf.icon-service
+          .text Property Instructions
+        .instruction ng:if='job.booking.property.access_info'
+          .content
+            .title Access Information
+            .text ng:bind='job.booking.property.access_info'
+        .instruction ng:if='job.booking.property.trash_disposal'
+          .content
+            .title Trash Disposal
+            .text ng:bind='job.booking.property.trash_disposal'
+        .instruction ng:if='job.booking.property.parking_info'
+          .content
+            .title Parking Information
+            .text ng:bind='job.booking.property.parking_info'
+        .instruction ng:if='job.booking.property.restocking_info'
+          .content
+            .title Restocking Instructions
+            .text ng:bind='job.booking.property.restocking_info'
+        .instruction ng:if='job.booking.property.additional_info'
+          .content
+            .title Additional Information
+            .text ng:bind='job.booking.property.additional_info'
+    .column
+      .section.services
+        .head
+          .icon
+            .pf.icon-service
           .text Service Details
         .services ng:show='job.standard_services[0]'
           .title Services
-          .service ng:repeat='service in job.standard_services'
+          .service ng:repeat='service in job.standard_services' ng:if="service.display != 'Staging'"
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
         .services ng:show='job.extra_services[0]'
@@ -108,20 +110,17 @@
           .service ng:repeat='service in job.extra_services'
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
-      .block.team ng:show='job.contractor_count > 1'
+      .section.team ng:show='job.contractor_count > 1'
         .head
-          .right
-            .arrow
-              .typcn.typcn-chevron-right
           .icon
-            .typcn.typcn-user
+            i.icon-person
           .text Team Information
         .teammate ng:repeat='teammate in job.contractors'
-          .number ng:bind='::teammate.display_phone_number'
-          .icon
-            .typcn.typcn-user
+          .avatar
+            img ng:src='{{::teammate.avatar}}'
           .name ng:bind='::teammate.name'
-      .block.actions
+          .number ng:bind='::teammate.display_phone_number'
+      .section.actions
         div ng:switch='job_status'
           .viewports ng:switch-when='blocked'
             .viewport.active.disabled

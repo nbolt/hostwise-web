@@ -1,0 +1,455 @@
+#job-details
+  .contractor
+    background-color: white
+    margin: 25px auto 12px
+    border-radius: 3px
+    height: 150px
+    box-shadow: gray_shadow
+    position: relative
+    @media phone
+      height: auto
+      font-size: 0.9em
+    .flag
+      position: absolute
+      right: -2px
+      top: -3px
+      width: 30px
+      height: 30px
+      &.vip
+        background: url('/hw_images/vip_flag.png') no-repeat scroll 0 0 transparent
+        background-size: 30px 30px
+      &.staging
+        background: url('/hw_images/staging_flag.png') no-repeat scroll 0 0 transparent
+        background-size: 30px 30px
+    .beds, .bed, .text
+      display: inline-block
+      vertical-align: top
+    .beds
+      position: absolute
+      right: 20px
+      top: 50%
+      .text
+        font-weight: 600
+        margin-right: 10px
+      .bed
+        padding: 0 15px
+        border-right: thin solid light-gray
+        &:last-child
+          border-right: 0
+        @media phone
+          padding: 0 5px
+      @media landscape_tablet
+        display: block
+        margin-top: 15px
+        position: static
+      @media portrait_tablet
+        display: block
+        margin-top: 15px
+        position: static
+      @media phone
+        font-size: 0.95em
+        display: block
+        margin-top: 15px
+        position: static
+    .right
+      overflow: hidden
+    .top
+      padding: 18px
+      height: 65px
+      position: relative
+      @media phone
+        height: auto
+    .bottom
+      border-top: 2px solid light-gray
+      font-size: .9em
+      .payout
+        float: right
+        color: darker-gray
+        background-color: lighter-gray
+        width: 212px
+        height: 47px
+        line-height: 47px
+        text-align: center
+        padding: 0 20px
+        .icon, .pricing
+          display: inline-block
+          vertical-align: top
+        .pricing
+          font-weight: 600
+          padding-bottom: 3px
+          height: 30px
+          span
+            font-size: .8em
+          &.vip
+            border-bottom: 2px solid gold
+          &.staging
+            border-bottom: 2px solid dark-red
+        i
+          color: dark-gray
+          margin-right: 10px
+        @media phone
+          float: none
+          padding: 0 10px 0 18px
+          text-align: left
+        width: auto
+      .left
+        padding: 15px 18px
+      .id, .rooms, .text, .est
+        display: inline-block
+        vertical-align: top
+        color: dark-gray
+      .id
+        display: none
+        margin-left: 20px
+      .est
+        margin-left: 30px
+        i
+          color: dark-gray
+          display: inline-block
+          vertical-align: top
+          font-size: 1.1em
+          margin: -2px 5px 0 0
+      .rooms
+        i
+          color: dark-gray
+          display: inline-block
+          vertical-align: top
+          font-size: 1.1em
+          margin: -2px 5px 0 0
+    .icon-button
+      display: inline-block
+      vertical-align: top
+      float: right
+      margin-top: 15px
+      .text
+        @media portrait_tablet
+          padding: 0 10px
+    .manage
+      float: right
+      font-size: .9em
+      color: teal
+      margin: 25px 15px 0 0
+      display: none
+      &:hover
+        text-decoration: underline
+    .photo
+      display: block
+      padding: 10px
+      width: 100px
+      height: 100px
+      padding: 25px
+      background-color: lighter-gray
+      float: left
+      img
+        border-radius: 50%
+        height: 100%
+        width: 100%
+      @media phone
+        display: none
+    .title
+      margin-top: 15px
+      display: inline-block
+      vertical-align: top
+      .name
+        font-weight: bold
+      .address
+        margin-top: 4px
+        color: dark-gray
+        .city_state
+          @media portrait_tablet
+            display: block
+          @media phone
+            display: block
+      @media landscape_tablet
+        margin-top: 0
+      @media portrait_tablet
+        margin-top: 0
+      @media phone
+        display: block
+        margin-top: 0
+    .edit
+      position: absolute
+      right: 3px
+      top: 3px
+      background-color: lighter-gray
+      border-radius: 1px
+      color: darker-gray
+      z-index: 1000
+      padding: 5px
+      font-size: 0.8em
+      cursor: pointer
+    a
+      color: black
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+  .photo
+    display: none
+    @media phone
+      border-radius: 3px
+      box-shadow: gray_shadow
+      display: block
+      overflow: hidden
+      width: 100%
+      height: 150px
+    img
+      @media phone
+        width: 100%
+        height: auto
+        margin-top: -50%
+  #title
+    background-color: white
+    padding: 12px 20px
+    border-radius: 1px
+    .photo, .text
+      display: inline-block
+      vertical-align: top
+    .photo
+      img
+        border-radius: 99px
+        width: 90px
+        height: 90px
+    .text
+      margin: 16px
+      .title
+        font-size: 1.75em
+      .address
+        color: teal
+        font-weight: 600
+  #columns
+    margin: 25px 0
+    @media phone
+      margin: 10px 0 25px
+    .section
+      background-color: white
+      border-radius: 3px
+      overflow: hidden
+      margin-bottom: 15px
+      box-shadow: gray_shadow
+      .head
+        padding: 15px
+        color: #E8E9EA
+        font-size: 1.25em
+        text-align: center
+        border-bottom: 2px solid light-gray
+        transition: color .6s ease-in-out, border .6s ease-in-out
+        position: relative
+        .icon, .text, .arrow
+          display: inline-block
+          vertical-align: top
+        .icon
+          color: teal
+          font-size: 1.25em
+          position: absolute
+          left: 20px
+          top: 12px
+        .text
+          color: heavy-gray
+          strong
+            color: teal
+            margin-right: 5px
+        .arrow
+          display: none
+          border-left: thin solid light-gray
+          padding-left: 20px
+          position: absolute
+          right: 20px
+          i
+            color: dark-gray
+            font-size: 0.8em
+        @media portrait_tablet
+          font-size: 1em
+    .special-column
+      #map
+        height: 325px
+        width: 66%
+        display: inline-block
+        vertical-align: top
+        @media phone
+          width: 100%
+      .section
+        &.profile
+          width: 30%
+          text-align: center
+          display: inline-block
+          vertical-align: top
+          margin-right: 4%
+          @media phone
+            width: 100%
+            margin-right: 0
+          .head
+            .text
+              @media portrait_tablet
+                margin-left: 20px
+          .info
+            padding: 0 30px 30px
+            @media phone
+              width: 64%
+              display: inline-block
+              margin-top: 35px
+              vertical-align: top
+              text-align: left
+              border-left: 1px solid border-gray
+              padding: 0px 0px 0px 5%
+            .name
+              text-transform: capitalize
+              color: heavy-gray
+              margin: 15px 0
+              font-weight: bold
+              font-size: 20px
+              @media phone
+                width: 50%
+                display: inline-block
+                font-size: 16px
+            .icon-button
+              display: none
+              width: 200px
+              margin: 20px auto 30px
+              @media phone
+                display: inline-block
+                width: 43%
+                margin: 0
+            .number
+              color: teal
+              @media phone
+                display: none
+          hr
+            border: 0
+            border-top: 1px solid light-gray
+            margin: 0 auto 20px
+            width: 10%
+            @media phone
+              display: none
+          .avatar
+            display: block
+            margin: 0 auto
+            width: 100px
+            height: 100px
+            padding: 30px
+            @media phone
+              display: inline-block
+              width: 20%
+              height: 20%
+              padding: 30px 5%
+            img
+              border-radius: 50%
+              height: 100%
+              width: 100%
+    .column
+      display: inline-block
+      vertical-align: top
+      width: 48%
+      margin-right: 4%
+      @media phone
+        margin-right: 0
+        width: 100%
+      &:last-child
+        margin-right: 0
+      .section
+        &.services
+          .services
+            margin: 30px
+            .title
+              color: teal
+              font-weight: 600
+              margin: 20px 0
+            .service
+              border-top: thin solid light-gray
+              padding: 20px 0
+              i
+                color: teal
+                margin-right: 15px
+                font-size: 25px
+              .name
+                display: inline-block
+                vertical-align: top
+                margin-top: 7px
+        &.team
+          .teammate
+            padding: 20px 30px
+            @media portrait_tablet
+              font-size: 15px
+            .avatar
+              display: inline-block
+              margin: 0 auto
+              width: 40px
+              height: 40px
+              img
+                border-radius: 50%
+                height: 100%
+                width: 100%
+            .name, .number
+              display: inline-block
+              vertical-align: top
+              line-height: 40px
+            .name
+              margin-left: 20px
+              font-weight: bold
+              @media portrait_tablet
+                margin-left: 10px
+            .number
+              float: right
+              color: teal
+        &.actions
+          overflow: hidden
+          .viewports
+            width: 200%
+            transition: margin-left .6s ease-in-out
+            .viewport
+              width: 50%
+              vertical-align: top
+              display: inline-block
+              &.side
+                display: none
+              &.active
+                display: inline-block
+              &.disabled .arrived-button
+                background-color: #A6A6A6
+                &:hover
+                  cursor: default
+            .arrived-button
+              background-color: teal
+              padding: 8px 12px
+              border-radius: 1px
+              color: white
+              hover-lighten(3%)
+              &:hover
+                cursor: pointer
+              .arrow
+                float: right
+              .icon
+                float: left
+              .text
+                text-align: center
+            .arrived-dropdown
+              max-height: 0
+              overflow: hidden
+              transition: max-height .4s ease-in-out
+              &.active
+                max-height: 80px
+            .bottom
+              background-color: white
+              .actions
+                padding: 20px
+                .action
+                  height: 40px
+                  color: white
+                  text-align: center
+                  overflow: auto
+                  background-color: teal
+                  .icon
+                    width: 40px
+                    height: 40px
+                    background-color: light-teal
+                    float: left
+                    .typcn
+                      font-size: 1.75em
+                      margin-left: 2px
+                  .text
+                    margin-top: 9px
+                    font-weight: 600
+                  &.start
+                    background-color: teal
+                  &:hover
+                    cursor: pointer
+                    background-color: light-teal

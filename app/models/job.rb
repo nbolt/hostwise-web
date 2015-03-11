@@ -144,12 +144,12 @@ class Job < ActiveRecord::Base
       end
     end
     num = jobs.map{|job| contractor.contractor_jobs.where(job_id: job.id)[0].priority}.max
-    
+
     unprioritized_jobs = jobs.select do |job|
       contractor_job = contractor.contractor_jobs.where(job_id: job.id)[0]
       contractor_job.priority == 0
     end
-    
+
     unprioritized_jobs.each_with_index do |job, index|
       contractor_job = contractor.contractor_jobs.where(job_id: job.id)[0]
       contractor_job.update_attribute :priority, num + index + 1

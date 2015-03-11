@@ -26,12 +26,12 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         unless $scope.map
           $scope.map = L.mapbox.map('map', 'useporter.l02en9o9',
             dragging: false
+            touchZoom: false
             scrollWheelZoom: false
             doubleClickZoom: false
             attributionControl: false)
           $scope.markers = new L.LayerGroup().addTo($scope.map)
           $scope.geocoder = L.mapbox.geocoder 'mapbox.places'
-          $scope.map.dragging.disable(); $scope.map.touchZoom.disable(); $scope.map.doubleClickZoom.disable(); $scope.map.scrollWheelZoom.disable()
           refresh_map()
     ), 200)
 
