@@ -59,17 +59,17 @@ class Job < ActiveRecord::Base
       payout += PRICING['windows_payout']  if pricing[:windows] unless pricing[:pool]
       payout += PRICING['no_access_fee_payout'] if booking.no_access_fee
       if size > 1
-        if contractor && !contractor.admin?
+        if contractor && !contractor.admin? # requesting pricing for specific contractor (job detail page)
           if ContractorJobs.where(job_id: self.id, user_id: contractor.id)[0].primary
             payout *= 0.55
           else
             payout *= 0.45
           end
         else
-          if contractor && contractor.admin?
+          if contractor && contractor.admin? # average pricing for viewing job detail as admin
             payout /= size
           else
-            if contractors.empty?
+            if contractors.empty? # pricing for open jobs
               payout *= 0.55
             else
               payout *= 0.45
