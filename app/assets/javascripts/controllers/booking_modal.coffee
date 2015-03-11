@@ -130,9 +130,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       else
         defer.resolve $scope.payment.id
 
-  $scope.load_pricing = ->
-    $http.get('/cost').success (rsp) ->
-      $scope.pricing = rsp
+  $scope.load_pricing = -> $http.get('/cost').success (rsp) -> $scope.pricing = rsp
 
   $scope.calculate_pricing = ->
     first_booking_discount_applied = false
@@ -140,6 +138,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     $scope.days = []
     $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services}).success (rsp) ->
       $scope.service_total = rsp.cost
+      cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
+      cancellation_cost = 0 if cancellation_cost < 0
+      twenty_percent = +(cancellation_cost * 0.2).toFixed(2)
+      $scope.pricing.cancellation = twenty_percent if twenty_percent > $scope.pricing.cancellation
       _($scope.chosen_dates).each (v,k) ->
         _(v).each (d) ->
           day = {}
