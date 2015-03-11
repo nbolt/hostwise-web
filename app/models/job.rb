@@ -50,11 +50,11 @@ class Job < ActiveRecord::Base
       payout = 0
       pricing = Booking.cost booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee
       payout += (pricing[:cleaning] * 0.7).round(2) if pricing[:cleaning]
-      payout += PRICING['preset'][booking.property.beds] if pricing[:preset]
+      payout += PRICING['preset'][booking.property.beds] * 0.7 if pricing[:preset]
       payout += PRICING['pool_payout'] if pricing[:pool]
       payout += PRICING['patio_payout']  if pricing[:patio] unless pricing[:pool]
       payout += PRICING['windows_payout']  if pricing[:windows] unless pricing[:pool]
-      payout += 20 if booking.no_access_fee
+      payout += PRICING['no_access_fee_payout'] if booking.no_access_fee
       payout / size
     end
   end
