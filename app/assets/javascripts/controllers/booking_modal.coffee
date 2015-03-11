@@ -74,6 +74,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       , (_, rsp) ->
         if rsp.error
           flash "failure", rsp.error.message
+          defer.reject() if defer
         else
           $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method,spinner:true}).success (rsp) ->
             if rsp.success

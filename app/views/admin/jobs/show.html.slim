@@ -98,7 +98,7 @@
             .typcn.typcn-user
           .name ng:bind='::teammate.name'
         .add-teammate ng:hide='job.contractor_count == job.size'
-          input type='hidden' ui-select2='teamHash()' ng:model='new_teammate' style='width:240px'
+          input type='hidden' ui-select2='teamHash()' ng:model='new_teammate' style='width:240px' placeholder='Add a Team Member'
       .block.instructions
         .head
           .right
@@ -145,7 +145,7 @@
               label.switch.red
                 input type='checkbox' toggle-admin-service="#{service.name}"
                 i
-        .services ng:show='job.extra_services[0]'
+        .services
           .title Extra Services
           - Service.extra.each do |service|
             .service class="#{service.name}"

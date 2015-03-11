@@ -50,12 +50,14 @@ class Admin::JobsController < Admin::AuthController
   def add_service
     service = Service.where(name: params[:service])[0]
     job.booking.services.push service
+    job.booking.services.delete Service.where(name: 'preset')[0] if service.name == 'cleaning'
     render json: { success: true }
   end
 
   def remove_service
     service = Service.where(name: params[:service])[0]
     job.booking.services.delete service
+    job.booking.services.push Service.where(name: 'preset')[0] if service.name == 'cleaning'
     render json: { success: true }
   end
 

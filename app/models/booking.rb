@@ -49,7 +49,7 @@ class Booking < ActiveRecord::Base
         when 'windows'
           rsp[:windows] = PRICING['windows'] unless services.index pool_service
         when 'preset'
-          rsp[:preset] = PRICING['preset']
+          rsp[:preset] = PRICING['preset'][property.beds]
       end
     end
     rsp[:cost] = rsp.reduce(0){|total, service| total + service[1]}
