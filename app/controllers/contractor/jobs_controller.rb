@@ -5,7 +5,10 @@ class Contractor::JobsController < Contractor::AuthController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: job.to_json(methods: [:payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number, :avatar]}, booking: {methods: [:cost], include: [:services, property: {include: {user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:nickname, :primary_photo, :full_address, :property_type]}]}}) }
+      format.json do
+        job.current_user = current_user
+        render json: job.to_json(methods: [:payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number, :avatar]}, booking: {methods: [:cost], include: [:services, property: {include: {user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type]}]}})
+      end
     end
   end
 

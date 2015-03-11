@@ -21,6 +21,8 @@ class Job < ActiveRecord::Base
   scope :team, -> { where('size > 1') }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
 
+  attr_accessor :current_user
+
   def self.open contractor
     Job.standard.where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   end
@@ -45,17 +47,43 @@ class Job < ActiveRecord::Base
     contractor.jobs.on_date(date).where('contractor_jobs.priority < ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[-1]
   end
 
-  def payout
+  def payout contractor=nil
     if booking
+      contractor ||= current_user
       payout = 0
       pricing = Booking.cost booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee
       payout += (pricing[:cleaning] * 0.7).round(2) if pricing[:cleaning]
-      payout += PRICING['preset'][booking.property.beds] * 0.7 if pricing[:preset]
+      payout += (PRICING['preset'][booking.property.beds] * 0.7).round(2) if pricing[:preset]
       payout += PRICING['pool_payout'] if pricing[:pool]
       payout += PRICING['patio_payout']  if pricing[:patio] unless pricing[:pool]
       payout += PRICING['windows_payout']  if pricing[:windows] unless pricing[:pool]
       payout += PRICING['no_access_fee_payout'] if booking.no_access_fee
-      payout / size
+      if size > 1
+        if contractor && !contractor.admin?
+          if ContractorJobs.where(job_id: self.id, user_id: contractor.id)[0].primary
+            payout *= 0.55
+          else
+            payout *= 0.45
+          end
+        else
+          if contractor && contractor.admin?
+            payout /= size
+          else
+            if contractors.empty?
+              payout *= 0.55
+            else
+              payout *= 0.45
+            end
+          end
+        end
+      elsif training && contractor
+        if contractor.status == :trainee
+          payout *= 0.45
+        else
+          payout *= 0.55
+        end
+      end
+      payout.round 2
     end
   end
 

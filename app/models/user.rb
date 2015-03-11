@@ -91,6 +91,7 @@ class User < ActiveRecord::Base
       false
     else
       job.contractors.push self
+      job.contractor_jobs[0].update_attribute :primary, true if job.contractors.count == 1
       if job.contractors.count == job.size
         job.scheduled!
         job.save
