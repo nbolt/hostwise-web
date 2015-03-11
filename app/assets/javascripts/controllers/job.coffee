@@ -10,7 +10,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialo
     $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
     $scope.job.extra_services = _(rsp.booking.services).filter (s) -> s.extra
     $scope.staging = _($scope.job.standard_services).find (s) -> s.display == 'Staging'
-    $scope.vip = $scope.job.state_cd == 1
+    $scope.vip = $scope.job.state_cd == 1 unless $scope.staging #always show staging if it is a staging and vip job
     $timeout -> $scope.jobQ.resolve()
     $scope.user_fetched.promise.then -> $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
 
