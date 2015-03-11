@@ -45,6 +45,7 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
+.icon-serv-preset:before { content: '\e800'; } /* '' */
 .icon-house:before { content: '\e800'; } /* '' */
 .icon-add:before { content: '\e801'; } /* '' */
 .icon-account:before { content: '\e802'; } /* '' */

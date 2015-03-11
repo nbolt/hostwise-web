@@ -68,6 +68,10 @@
             .text Call
           .number ng:bind='::job.booking.property.user.display_phone_number'
       #map
+        a.direction.icon-button.teal target='_blank' ng:href="http://maps.apple.com/?q={{job.booking.property.full_address}}"
+          .icon
+            i.icon-pin
+          .text Get Directions
     .column
       .section.instructions
         .head
@@ -102,7 +106,7 @@
           .text Service Details
         .services ng:show='job.standard_services[0]'
           .title Services
-          .service ng:repeat='service in job.standard_services' ng:if="service.display != 'Staging'"
+          .service ng:repeat='service in job.standard_services'
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
         .services ng:show='job.extra_services[0]'
