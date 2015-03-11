@@ -30,6 +30,11 @@ class Admin::JobsController < Admin::AuthController
     end
   end
 
+  def booking_cost
+    cost = Booking.cost job.booking.property, job.booking.services
+    render json: cost
+  end
+
   def add_contractor
     contractor = User.find params[:contractor_id]
     contractor.claim_job job

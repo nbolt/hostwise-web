@@ -6,6 +6,16 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
     load_job(rsp)
     $timeout -> $scope.jobQ.resolve()
 
+    $http.post("/jobs/#{$scope.job.id}/booking_cost", {services: $scope.job.booking.services}).success (rsp) ->
+      _rsp = rsp
+      _($scope.job.booking.services).each (service) -> service.cost = rsp[service.name]
+      $http.get('/cost').success (rsp) ->
+        $scope.pricing = rsp
+        if _rsp.cost >= $scope.pricing.first_booking_discount
+          $scope.job.first_booking_discount = $scope.pricing.first_booking_discount
+        else
+          $scope.job.first_booking_discount = _rsp.cost
+
     load_mapbox = null
     load_mapbox = $interval((->
       if $window.loaded_mapbox
