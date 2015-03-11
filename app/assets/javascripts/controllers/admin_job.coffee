@@ -8,7 +8,12 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
 
     $http.post("/jobs/#{$scope.job.id}/booking_cost", {services: $scope.job.booking.services}).success (rsp) ->
       _rsp = rsp
-      _($scope.job.booking.services).each (service) -> service.cost = rsp[service.name]
+      _($scope.job.booking.services).each (service) ->
+        service.cost = rsp[service.name]
+        angular.element(".services .service.#{service.name}").addClass 'active'
+        angular.element(".services .service.#{service.name} input").attr 'checked', true
+        $scope.$watch((-> ))
+
       $http.get('/cost').success (rsp) ->
         $scope.pricing = rsp
         if _rsp.cost >= $scope.pricing.first_booking_discount

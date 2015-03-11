@@ -136,16 +136,24 @@
           .icon
             .typcn.typcn-document-text
           .text Service Details
-        .services ng:show='job.standard_services[0]'
+        .services
           .title Services
-          .service ng:repeat='service in job.standard_services'
-            i.icon class="icon-serv-{{service.name}}"
-            .name ng:bind='::service.display'
+          - Service.standard.each do |service|
+            .service class="#{service.name}"
+              i.icon class="icon-serv-#{service.name}"
+              .name= service.display
+              label.switch.red
+                input type='checkbox' toggle-admin-service="#{service.name}"
+                i
         .services ng:show='job.extra_services[0]'
           .title Extra Services
-          .service ng:repeat='service in job.extra_services'
-            i.icon class="icon-serv-{{service.name}}"
-            .name ng:bind='::service.display'
+          - Service.extra.each do |service|
+            .service class="#{service.name}"
+              i.icon class="icon-serv-#{service.name}"
+              .name= service.display
+              label.switch.red
+                input type='checkbox' toggle-admin-service="#{service.name}"
+                i
       .block.invoice
         .head
           .right

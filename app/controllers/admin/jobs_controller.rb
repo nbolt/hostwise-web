@@ -47,6 +47,18 @@ class Admin::JobsController < Admin::AuthController
     render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
   end
 
+  def add_service
+    service = Service.where(name: params[:service])[0]
+    job.booking.services.push service
+    render json: { success: true }
+  end
+
+  def remove_service
+    service = Service.where(name: params[:service])[0]
+    job.booking.services.delete service
+    render json: { success: true }
+  end
+
   def update_state
     job.update_attribute :state_cd, params[:state]
     render json: { success: true }
