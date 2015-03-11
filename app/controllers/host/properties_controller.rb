@@ -71,7 +71,8 @@ class Host::PropertiesController < Host::AuthController
             month = k.split('-')[0]
             year  = k.split('-')[1]
             date = Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d')
-            booking = property.bookings.build(date: date)
+            status_cd = Rails.env.production? ? 4 : 1
+            booking = property.bookings.build(date: date, status_cd: status_cd)
             if params[:late_next_day].present?
               booking.late_next_day = true if date.strftime('%b %-d, %Y') == params[:late_next_day]
             end
