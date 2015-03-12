@@ -1,9 +1,11 @@
 .container
   .page-title
-    .fa.fa-calendar
+    i.icon-calendar
     | Availability
   .page-subtitle
-    | Select your weekly availability. Click day to turn it on or off.
+    | Select the days you are available from
+    span.red &nbsp;10 AM to 4 PM&nbsp
+    | . Click day to turn it on or off.
   .availability-container ng::controller='availability'
     form ng:init='init()'
       .section

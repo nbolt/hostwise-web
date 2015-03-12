@@ -1,4 +1,4 @@
-ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', ($scope, $http, $timeout, $upload, ngDialog) ->
+ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', 'spinner', ($scope, $http, $timeout, $upload, ngDialog, spinner) ->
 
   $scope.contractor_profile = {}
   $scope.bank = {}
@@ -69,6 +69,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', (
         file: file
       ).success((rsp, status, headers, config) ->
         if rsp.success
+          spinner.startSpin()
           window.location = window.location.href
         else
           flash 'failure', rsp.message
