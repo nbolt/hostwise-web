@@ -58,8 +58,14 @@ class Booking < ActiveRecord::Base
       end
     end
     rsp[:cost] = rsp.reduce(0){|total, service| total + service[1]}
-    rsp[:cost] += PRICING['late_next_day'] if late_next_day
-    rsp[:cost] += PRICING['late_same_day'] if late_same_day
+    if late_next_day
+      rsp[:late_next_day] = PRICING['late_next_day']
+      rsp[:cost] += PRICING['late_next_day']
+    end
+    if late_same_day
+      rsp[:late_same_day] = PRICING['late_same_day']
+      rsp[:cost] += PRICING['late_same_day']
+    end
     rsp[:cost] += PRICING['no_access_fee'] if no_access_fee
     if first_booking_discount
       rsp[:first_booking_discount] = PRICING['first_booking_discount']

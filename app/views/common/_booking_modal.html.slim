@@ -24,6 +24,16 @@ script#booking-modal type="text/ng-template"
                         | (-$
                         span ng:bind="day.first_booking_discount"
                         | )
+                    .late ng:show="day.next_day_booking"
+                      .text Late Day Booking Fee
+                      .price
+                        | $
+                        span ng:bind="day.next_day_booking"
+                    .late ng:show="day.same_day_booking"
+                      .text Same Day Booking Fee
+                      .price
+                        | $
+                        span ng:bind="day.same_day_booking"
                     - Service.all.each do |service|
                       .service ng:show="day.#{service.name}"
                         .text= service.display

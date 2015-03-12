@@ -136,7 +136,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
     first_booking_discount_applied = false
     $scope.total = 0
     $scope.days = []
-    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services}).success (rsp) ->
+    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, booking: $scope.selected_booking}).success (rsp) ->
       $scope.service_total = rsp.cost
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
       cancellation_cost = 0 if cancellation_cost < 0
@@ -147,12 +147,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           day = {}
           day.total = rsp.cost
           day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
+          $scope.next_day_booking = day.date if rsp.late_next_day
+          $scope.same_day_booking = day.date if rsp.late_same_day
           if day.date == $scope.next_day_booking
             day.next_day_booking = $scope.pricing.late_next_day
-            day.total += $scope.pricing.late_next_day
+            day.total += $scope.pricing.late_next_day unless rsp.late_next_day
           if day.date == $scope.same_day_booking
             day.same_day_booking = $scope.pricing.late_same_day
-            day.total += $scope.pricing.late_same_day
+            day.total += $scope.pricing.late_same_day unless rsp.late_same_day
           if rsp.first_booking_discount && !first_booking_discount_applied
             if day.total >= $scope.pricing.first_booking_discount
               day.first_booking_discount = $scope.pricing.first_booking_discount
