@@ -41,8 +41,6 @@ class User < ActiveRecord::Base
   validates_numericality_of :secondary_phone, only_integer: true, if: lambda { self.secondary_phone.present? }
   validates_length_of :secondary_phone, is: 10, if: lambda { self.secondary_phone.present? }
 
-  # after_create :create_stripe_customer, :create_balanced_customer
-
   attr_accessor :step
 
   def name
@@ -144,14 +142,6 @@ class User < ActiveRecord::Base
   def next_service_date
     bookings = Booking.upcoming(self)
     return bookings.first.date unless bookings.empty?
-  end
-
-  def create_stripe_customer
-    StripeCustomerJob.perform_later self
-  end
-
-  def create_balanced_customer
-    BalancedCustomerJob.perform_later self
   end
 
   private
