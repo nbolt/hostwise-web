@@ -267,6 +267,14 @@ input[type=file]
             color: darker-gray
             background-color: light-gray
             font-weight: bold
+            &:hover
+              padding: 0
+              .num
+                display: none
+              &::after
+                content: 'Edit'
+                font-size: 0.9em
+                text-transform: uppercase
           &.active:hover
             cursor: pointer
           &.active:hover, &.selecting

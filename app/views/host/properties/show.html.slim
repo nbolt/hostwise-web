@@ -29,9 +29,12 @@
           .bed ng:if='property.twin_beds > 1'
             | {{property.twin_beds}} Twins
       .bottom
-        .next-service ng:show='property.next_service_date'
-          i.icon-calendar
-          .text Next Service {{property.next_service_date}}
+        a href='javascript:void(0)' ng:click='edit_booking()'
+          .next-service ng:show='property.next_service_date'
+            i.icon-calendar
+            .text
+              | Next Service
+              strong style='margin-left:6px' ng:bind='property.next_service_date'
         .left
           .id
             | ID&nbsp;
@@ -85,7 +88,7 @@
             tbody
               tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.future_bookings | itemsPerPage: 5' pagination-id='upcoming'
                 td ng:bind='::booking.parsed_date_short'
-                td.id ng:bind='::booking.id'
+                td.id ng:bind='::booking.id' ng:click='edit_booking(booking)'
                 td.services
                   .text ng:bind='::booking.display_services'
                 td ${{::booking.cost}}

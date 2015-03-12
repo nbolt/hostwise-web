@@ -37,21 +37,21 @@ app = angular.module('porter').directive('calendar', [->
           day = (current_day + 1) + '-' + month + '-' + year
           html = '<td ' +
             (if row == 1 && i < first_day
-              'day="' + (prev_month_days - ((first_day-1) - i)) + '" month="' + prev_month + '" year="' + prev_year + '" class="active day">' + (prev_month_days - ((first_day-1) - i))
+              'day="' + (prev_month_days - ((first_day-1) - i)) + '" month="' + prev_month + '" year="' + prev_year + '" class="active day"><div class="num">' + (prev_month_days - ((first_day-1) - i))
              else if current_day >= month_days
               ++current_day
               _month = if month == 12 then 1 else month+1
               _year = month == 1 && year+1 || year
-              'day="' + (current_day - month_days) + '" month="' + _month + '" year="' + _year + '" class="active day">' + (current_day - month_days)
+              'day="' + (current_day - month_days) + '" month="' + _month + '" year="' + _year + '" class="active day"><div class="num">' + (current_day - month_days)
              else if options.disable_past && moment().diff(new Date(year, month-1, current_day+1), 'days') > 0
               ++current_day
-              'class="past day">' + current_day
+              'class="past day"><div class="num">' + current_day
              else if options.disable_past && moment().hour() >= 15 && moment().diff(new Date(year, month-1, current_day), 'days') > 0
               ++current_day
-              'class="past day">' + current_day
+              'class="past day"><div class="num">' + current_day
              else
                ++current_day
-               'day="' + current_day + '" month="' + month + '" year="' + year + '" class="active day">' + current_day) + '</td>'
+               'day="' + current_day + '" month="' + month + '" year="' + year + '" class="active day"><div class="num">' + current_day) + '</div></td>'
           calendar.find('tbody').append html
         calendar.find('tbody').append '</tr>'
 

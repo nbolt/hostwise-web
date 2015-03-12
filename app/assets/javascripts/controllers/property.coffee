@@ -97,45 +97,13 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       clickable: false
       selected_class: 'booked'
       disable_past: true
-      onchange: () ->
+      onchange: ->
         if $scope.property
           _($scope.property.active_bookings).each (booking) ->
             date = moment.utc(booking.date)
             angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
-      onclick: ($this) ->
-        ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope, closeByDocument: false
-        date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
-        $scope.selected_date = date
-        $scope.selected_date_confirmation = date.format('ddd, MMM D')
-        $scope.selected_date_booking = date.format('MMM D, YYYY')
-        $scope.chosen_dates = {}
-        $scope.chosen_dates["#{date.month()+1}-#{date.year()}"] = [date.date()]
-        $scope.modal_calendar_options.init_month = date.month() + 1
-        $scope.modal_calendar_options.init_year  = date.year()
-        $scope.selected_services = {}
-        $scope.selected_booking = $this.attr 'booking'
-        if $scope.selected_booking
-          $http.get("#{$window.location.href}/#{$scope.selected_booking}/show").success (rsp) ->
-            payment_type = if rsp.payment.stripe_id then 'Card' else 'Bank'
-            $scope.payment.id = rsp.payment.id
-            $scope.payment.text = "#{payment_type} ending in #{rsp.payment.last4}"
-            _(rsp.services).each (service) ->
-              $scope.selected_services[service.name] = true
-              angular.element(".booking.modal .services .service.#{service.name}, .booking.modal .extra .service.#{service.name}").addClass 'active'
-              angular.element(".booking.modal .services .service.#{service.name} input, .booking.modal .extra .service.#{service.name} input").attr 'checked', true
-            $timeout((->$scope.$broadcast 'existing_booking'),100)
-            $scope.$broadcast 'calculate_pricing'
-        else
-          days_diff = $scope.selected_date.diff(moment.utc().startOf('day'), 'days')
-          hour = moment().hours()
-          minute = moment().minutes()
-          if days_diff == 0 and hour <= 14 and minute <= 59 #same day booking before 3pm
-            $timeout((->$scope.$broadcast 'same_day_confirmation'),100)
-          else if days_diff == 1 and hour >= 22 #next day booking after 10pm
-            $timeout((->$scope.$broadcast 'next_day_confirmation'),100)
-          else
-            $timeout((->$scope.$broadcast 'booking_selection'),100)
+      onclick: ($this) -> edit_booking($this)
     }
 
   $scope.update_details = ->
@@ -179,6 +147,61 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
           angular.element('.preview').attr('src', rsp.image)
         else
           flash 'failure', rsp.message, true
+
+  $scope.edit_booking = (booking) ->
+    if booking
+      $this = {}
+      $this.attr = (attr) ->
+        switch attr
+          when 'day'
+            parseInt moment(booking.date, 'YYYY-MM-DD').format('MM/DD/YY').split('/')[1]
+          when 'month'
+            parseInt moment(booking.date, 'YYYY-MM-DD').format('MM/DD/YY').split('/')[0]
+          when 'year'
+            '20' + moment(booking.date, 'YYYY-MM-DD').format('MM/DD/YY').split('/')[2]
+          when 'booking'
+            booking.id
+
+      edit_booking $this
+    else
+      day   = parseInt $scope.property.next_service_date.split('/')[1]
+      month = parseInt $scope.property.next_service_date.split('/')[0]
+      year  = '20' + $scope.property.next_service_date.split('/')[2]
+      edit_booking angular.element(".column.cal .calendar td.active.day[month=#{month}][year=#{year}][day=#{day}]")
+
+  edit_booking = ($this) ->
+    ngDialog.open template: 'booking-modal', className: 'booking', scope: $scope, closeByDocument: false
+    date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
+    $scope.selected_date = date
+    $scope.selected_date_confirmation = date.format('ddd, MMM D')
+    $scope.selected_date_booking = date.format('MMM D, YYYY')
+    $scope.chosen_dates = {}
+    $scope.chosen_dates["#{date.month()+1}-#{date.year()}"] = [date.date()]
+    $scope.modal_calendar_options.init_month = date.month() + 1
+    $scope.modal_calendar_options.init_year  = date.year()
+    $scope.selected_services = {}
+    $scope.selected_booking = $this.attr 'booking'
+    if $scope.selected_booking
+      $http.get("#{$window.location.href}/#{$scope.selected_booking}/show").success (rsp) ->
+        payment_type = if rsp.payment.stripe_id then 'Card' else 'Bank'
+        $scope.payment.id = rsp.payment.id
+        $scope.payment.text = "#{payment_type} ending in #{rsp.payment.last4}"
+        _(rsp.services).each (service) ->
+          $scope.selected_services[service.name] = true
+          angular.element(".booking.modal .services .service.#{service.name}, .booking.modal .extra .service.#{service.name}").addClass 'active'
+          angular.element(".booking.modal .services .service.#{service.name} input, .booking.modal .extra .service.#{service.name} input").attr 'checked', true
+        $timeout((->$scope.$broadcast 'existing_booking'),100)
+        $scope.$broadcast 'calculate_pricing'
+    else
+      days_diff = $scope.selected_date.diff(moment.utc().startOf('day'), 'days')
+      hour = moment().hours()
+      minute = moment().minutes()
+      if days_diff == 0 and hour <= 14 and minute <= 59 #same day booking before 3pm
+        $timeout((->$scope.$broadcast 'same_day_confirmation'),100)
+      else if days_diff == 1 and hour >= 22 #next day booking after 10pm
+        $timeout((->$scope.$broadcast 'next_day_confirmation'),100)
+      else
+        $timeout((->$scope.$broadcast 'booking_selection'),100)
 
   $scope.edit = ->
     ngDialog.open template: 'property-edit-modal', controller: 'property', className: 'edit', scope: $scope
@@ -273,7 +296,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
 
   $scope.exists = () ->
     if $scope.property.active_bookings
-      _($scope.property.active_bookings).find (b) -> b.id.toString() == $scope.selected_booking
+      _($scope.property.active_bookings).find (b) -> b.id.toString() == $scope.selected_booking.toString()
 
   $scope.property_image = (src) ->
     $scope.image = src
