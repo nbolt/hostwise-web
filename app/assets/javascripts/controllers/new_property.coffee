@@ -163,8 +163,8 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
 
     onclick: ($this) ->
       return if $this.hasClass('chosen')
-      $scope.selected_date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
-      days_diff = $scope.selected_date.diff(moment.utc().startOf('day'), 'days')
+      $scope.selected_date = moment "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
+      days_diff = $scope.selected_date.diff(moment().startOf('day'), 'days')
       hour = moment().hours()
       minute = moment().minutes()
       if days_diff == 0 and hour <= 14 and minute <= 59 #same day booking before 3pm

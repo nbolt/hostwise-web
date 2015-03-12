@@ -88,7 +88,7 @@ class Booking < ActiveRecord::Base
     elsif cost == 0
       true
     elsif payment.stripe_id
-      amount = cost * 100
+      amount = (cost * 100).to_i
       begin
         metadata = {}
         if cancelled?
@@ -116,7 +116,7 @@ class Booking < ActiveRecord::Base
       if verification.verification_status == 'succeeded'
         bank_account = Balanced::BankAccount.fetch("/bank_accounts/#{payment.balanced_id}")
         order = Balanced::Order.fetch("/orders/#{balanced_order_id}")
-        amount = cost * 100
+        amount = (cost * 100).to_i
         rsp = order.debit_from(
           source: bank_account,
           amount: amount
