@@ -101,7 +101,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         if $scope.property
           _($scope.property.active_bookings).each (booking) ->
             date = moment.utc(booking.date)
-            angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+            angular.element(".column.cal .calendar td.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
       onclick: ($this) -> edit_booking($this)
     }
@@ -268,7 +268,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       booking.parsed_date = date.format('MMMM Do, YYYY')
       booking.parsed_date_short = date.format('MM/DD/YY')
       booking.display_services = _(booking.services).map((booking) -> booking.display).join(', ')
-      angular.element(".column.cal .calendar td.active.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
+      angular.element(".column.cal .calendar td.day[month=#{date.month()+1}][year=#{date.year()}][day=#{date.date()}]").addClass('booked').attr('booking', booking.id)
 
     _(['future_bookings', 'past_bookings']).each (type) ->
       _($scope.property[type]).each (booking) ->

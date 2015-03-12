@@ -254,6 +254,7 @@ input[type=file]
           border-radius: 3px
           padding: 4%
           color: darker-gray
+          position: relative
           &:hover
             cursor: default
           &.inactive
@@ -264,17 +265,28 @@ input[type=file]
             background-color: teal
             color: white
           &.booked
-            color: darker-gray
-            background-color: light-gray
-            font-weight: bold
-            &:hover
-              padding: 0
-              .num
-                display: none
+            &.past
               &::after
-                content: 'Edit'
-                font-size: 0.9em
-                text-transform: uppercase
+                content: ''
+                position: absolute
+                border-bottom: 2px solid gray
+                border-radius: 4px
+                display: block
+                bottom: 7px
+                left: 16px
+                right: 13px
+            &.active
+              color: darker-gray
+              background-color: light-gray
+              font-weight: bold
+              &:hover
+                padding: 0
+                .num
+                  display: none
+                &::after
+                  content: 'Edit'
+                  font-size: 0.9em
+                  text-transform: uppercase
           &.active:hover
             cursor: pointer
           &.active:hover, &.selecting
