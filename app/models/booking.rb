@@ -25,6 +25,8 @@ class Booking < ActiveRecord::Base
   as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3, manual: 4
   as_enum :payment_status, pending: 0, completed: 1
 
+  attr_accessor :vip
+
   def self.cost property, services, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
     pool_service = Service.where(name: 'pool')[0]
     total = 0
@@ -144,6 +146,7 @@ class Booking < ActiveRecord::Base
   def create_job
     if status_cd != 4
       job = self.build_job(status_cd: 0, date: date)
+      job.state_cd = 1 if vip
       job.size = 2 if property.bedrooms > 4
     end
   end

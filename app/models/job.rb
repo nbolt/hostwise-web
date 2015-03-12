@@ -49,14 +49,15 @@ class Job < ActiveRecord::Base
 
   def payout contractor=nil
     if booking
+      payout_multiplier = state == :vip ? 0.75 : 0.7
       if booking.cancelled?
         (booking.cost / size).round 2
       else
         contractor ||= current_user
         payout = 0
         pricing = Booking.cost booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee
-        payout += (pricing[:cleaning] * 0.7).round(2) if pricing[:cleaning]
-        payout += (PRICING['preset'][booking.property.beds] * 0.7).round(2) if pricing[:preset]
+        payout += (pricing[:cleaning] * payout_multiplier).round(2) if pricing[:cleaning]
+        payout += (PRICING['preset'][booking.property.beds] * payout_multiplier).round(2) if pricing[:preset]
         payout += PRICING['pool_payout'] if pricing[:pool]
         payout += PRICING['patio_payout']  if pricing[:patio] unless pricing[:pool]
         payout += PRICING['windows_payout']  if pricing[:windows] unless pricing[:pool]

@@ -86,6 +86,10 @@ class Host::PropertiesController < Host::AuthController
             params[:services].each do |service|
               booking.services.push Service.where(name: service)[0]
             end
+            if property.bookings.empty? && current_user.vip_count < 5
+              booking.vip = true
+              current_user.update_attribute :vip_count, current_user.vip_count + 1
+            end
             booking.save # need to check for errors
             bookings.push booking
             UserMailer.new_booking_notification(booking).then(:deliver)

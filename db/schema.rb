@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311200352) do
+ActiveRecord::Schema.define(version: 20150312000702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -312,6 +312,7 @@ ActiveRecord::Schema.define(version: 20150311200352) do
     t.datetime "activation_token_expires_at"
     t.integer  "status_cd",                                   default: 1
     t.boolean  "migrated",                                    default: false
+    t.integer  "vip_count",                                   default: 0
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree
