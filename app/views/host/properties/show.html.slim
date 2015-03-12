@@ -88,7 +88,7 @@
             tbody
               tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.future_bookings | itemsPerPage: 5' pagination-id='upcoming'
                 td ng:bind='::booking.parsed_date_short'
-                td.id ng:bind='::booking.id' ng:click='edit_booking(booking)'
+                td.id.link ng:bind='::booking.id' ng:click='edit_booking(booking)'
                 td.services
                   .text ng:bind='::booking.display_services'
                 td ${{::booking.cost}}
