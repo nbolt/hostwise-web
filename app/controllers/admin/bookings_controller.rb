@@ -22,7 +22,7 @@ class Admin::BookingsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: { today: Booking.where(status_cd: [1,4]).today.reduce(0){|a,b|a + b.cost}, bookings: @bookings.to_json(methods: [:cost], include: {property: {methods: :nickname, include: {user: {methods: :name}}}}) }
+        render json: { today: Booking.where(status_cd: [1,4]).today.reduce(0){|a,b|a + b.cost}, bookings: @bookings.to_json(methods: [:cost], include: {payment: {methods: [:display]}, property: {methods: :nickname, include: {user: {methods: :name}}}}) }
       end
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"bookings.csv\""

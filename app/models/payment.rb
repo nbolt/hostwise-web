@@ -19,6 +19,14 @@ class Payment < ActiveRecord::Base
     balanced_id.present?
   end
 
+  def display
+    if card?
+      "#{card_type.titleize} #{last4}"
+    elsif bank?
+      "Bank #{last4}"
+    end
+  end
+
   private
 
   def set_card_type
