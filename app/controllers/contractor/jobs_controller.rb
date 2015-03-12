@@ -19,6 +19,8 @@ class Contractor::JobsController < Contractor::AuthController
 
   def claim
     if current_user.claim_job job
+      UserMailer.job_claim_confirmation(job, current_user).then(:deliver) if current_user.settings(:job_claim_confirmation).email
+      TwilioJob.perform_later("+1#{current_user.phone_number}", 'You claimed a job') if current_user.settings(:job_claim_confirmation).sms
       render json: { success: true }
     else
       render json: { success: false }

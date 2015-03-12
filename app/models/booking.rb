@@ -88,7 +88,16 @@ class Booking < ActiveRecord::Base
   end
 
   def send_reminder
-    UserMailer.booking_reminder(self).then(:deliver)
+    # notify host
+    UserMailer.booking_reminder(self, self.property.user).then(:deliver) if self.property.user.settings(:service_reminder).email
+
+    # notify contractor
+    if self.job
+      self.job.contractors.each do |contractor|
+        UserMailer.booking_reminder(self, contractor).then(:deliver) if contractor.settings(:service_reminder).email
+        TwilioJob.perform_later("+1#{contractor.phone_number}", 'Reminder: Service Tomorrow') if contractor.settings(:service_reminder).sms
+      end
+    end
   end
 
   def charge!
