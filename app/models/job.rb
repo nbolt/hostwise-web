@@ -20,20 +20,11 @@ class Job < ActiveRecord::Base
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
+  scope :open, -> (contractor) { standard.where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
+  scope :upcoming, -> (contractor) { standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
+  scope :past, -> (contractor) { standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
 
   attr_accessor :current_user
-
-  def self.open contractor
-    Job.standard.where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
-  end
-
-  def self.upcoming contractor
-    Job.standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
-  end
-
-  def self.past contractor
-    Job.standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
-  end
 
   def priority contractor
     ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority
