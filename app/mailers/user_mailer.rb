@@ -104,12 +104,12 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
-  def booking_reminder(booking)
+  def booking_reminder(booking, user)
     mandrill do
       date = booking.date.strftime('%A, %b %e')
       mandrill_mail template: 'service-reminder',
                     subject: "Reminder: Service Tomorrow #{date}",
-                    to: {email: booking.property.user.email, name: booking.property.user.name},
+                    to: {email: user.email, name: user.name},
                     vars: {
                       'PROP_LINK' => property_url(booking.property.slug),
                       'DATE' => date,
@@ -234,6 +234,30 @@ class UserMailer < MandrillMailer::TemplateMailer
                            'ACCOUNT_NUM' => booking.payment.last4,
                            'CANCEL_FEE' => "$#{booking.cost}",
                            'DATE' => date},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def new_open_job(user, job)
+    mandrill do
+      mandrill_mail template: 'new-open-job',
+                    subject: 'New job',
+                    to: {email: user.email, name: user.name},
+                    vars: {},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def job_claim_confirmation(job, user)
+    mandrill do
+      mandrill_mail template: 'job-claim-confirmation',
+                    subject: 'You claimed a job',
+                    to: {email: user.email, name: user.name},
+                    vars: {},
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
