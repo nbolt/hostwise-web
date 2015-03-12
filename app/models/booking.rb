@@ -1,11 +1,13 @@
 class Booking < ActiveRecord::Base
   include PgSearch
-  pg_search_scope :search, associated_against: {property: [:title, :address1, :city, :state, :zip, :user_id]}, using: { tsearch: { prefix: true } }
+  pg_search_scope :search, associated_against: {user: [:first_name, :last_name, :email], property: [:title, :address1, :city, :state, :zip, :user_id]}, using: { tsearch: { prefix: true } }
 
   belongs_to :property
   belongs_to :payment
 
   has_one :job, autosave: true, dependent: :destroy
+  has_one :user, through: :booking_users
+  has_one :booking_users, dependent: :destroy
   has_many :booking_services, class_name: 'BookingServices', dependent: :destroy
   has_many :services, through: :booking_services
   has_many :transactions
@@ -21,6 +23,7 @@ class Booking < ActiveRecord::Base
 
   before_create :create_job
   before_save :create_order, :check_transaction
+  after_save :attach_user
 
   as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3, manual: 4
   as_enum :payment_status, pending: 0, completed: 1
@@ -163,6 +166,10 @@ class Booking < ActiveRecord::Base
     if !completed? && last_transaction && last_transaction.successful? || cost == 0
       completed!
     end
+  end
+
+  def attach_user
+    self.user = property.user
   end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150312000702) do
+ActiveRecord::Schema.define(version: 20150312180954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,16 @@ ActiveRecord::Schema.define(version: 20150312000702) do
 
   add_index "booking_services", ["booking_id"], name: "index_booking_services_on_booking_id", using: :btree
   add_index "booking_services", ["service_id"], name: "index_booking_services_on_service_id", using: :btree
+
+  create_table "booking_users", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "booking_users", ["booking_id"], name: "index_booking_users_on_booking_id", using: :btree
+  add_index "booking_users", ["user_id"], name: "index_booking_users_on_user_id", using: :btree
 
   create_table "bookings", force: :cascade do |t|
     t.integer  "property_id"
@@ -337,6 +347,8 @@ ActiveRecord::Schema.define(version: 20150312000702) do
   add_foreign_key "background_checks", "users"
   add_foreign_key "booking_services", "bookings"
   add_foreign_key "booking_services", "services"
+  add_foreign_key "booking_users", "bookings"
+  add_foreign_key "booking_users", "users"
   add_foreign_key "bookings", "payments"
   add_foreign_key "bookings", "properties"
   add_foreign_key "contractor_jobs", "users"
