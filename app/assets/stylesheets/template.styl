@@ -272,9 +272,19 @@ input[type=file]
                 border-bottom: 2px solid gray
                 border-radius: 4px
                 display: block
-                bottom: 7px
-                left: 16px
+                bottom: 10px
+                left: 17px
                 right: 13px
+                width: 24px
+                @media landscape_tablet
+                  left: 12px
+                  bottom: 7px
+                @media portrait_tablet
+                  left: 6px
+                  bottom: 4px
+                @media phone
+                  left: 9px
+                  bottom: 5px
             &.active
               color: darker-gray
               background-color: light-gray
