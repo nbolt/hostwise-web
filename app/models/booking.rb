@@ -21,9 +21,9 @@ class Booking < ActiveRecord::Base
   scope :by_user, -> (user) { where('user_id = ?', user.id).includes(property: [:user]).references(:user) }
   scope :active, -> { where(status_cd: 1) }
 
-  before_create :create_job
   before_save :create_order, :check_transaction
-  after_save :attach_user
+  before_create :create_job
+  after_create :attach_user
 
   as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3, manual: 4
   as_enum :payment_status, pending: 0, completed: 1
