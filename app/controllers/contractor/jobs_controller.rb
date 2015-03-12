@@ -40,7 +40,7 @@ class Contractor::JobsController < Contractor::AuthController
     end
     if job.booking
       property = job.booking.property
-      UserMailer.service_completed(property).then(:deliver) if property.user.settings(:service_completion).email
+      UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
       TwilioJob.perform_later("+1#{property.user.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
     end
     render json: { success: true, next_job: job.next_job(current_user).then(:id) }

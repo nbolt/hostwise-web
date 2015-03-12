@@ -110,10 +110,13 @@ class UserMailer < MandrillMailer::TemplateMailer
       mandrill_mail template: 'service-reminder',
                     subject: "Reminder: Service Tomorrow #{date}",
                     to: {email: booking.property.user.email, name: booking.property.user.name},
-                    vars: {'ADDRESS' => booking.property.full_address,
-                           'SERVICES' => booking.services.map(&:display).join(', '),
-                           'PROP_SIZE' => booking.property.property_size,
-                           'DATE' => date},
+                    vars: {
+                      'PROP_LINK' => property_url(booking.property.slug),
+                      'DATE' => date,
+                      'ADDRESS' => booking.property.full_address,
+                      'SERVICES' => booking.services.map(&:display).join(', '),
+                      'PROP_SIZE' => booking.property.property_size
+                    },
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
@@ -122,16 +125,17 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   def booking_confirmation(booking)
     mandrill do
-      appt_date = booking.date.strftime('%b %e, %Y')
+      date = booking.date.strftime('%b %e, %Y')
       mandrill_mail template: 'booking-confirmation',
-                    subject: "Booking Confirmed on #{appt_date} for #{booking.property.nickname}",
+                    subject: "Booking confirmed on #{date} for #{booking.property.nickname}",
                     to: {email: booking.property.user.email, name: booking.property.user.name},
                     vars: {'NICKNAME' => booking.property.nickname,
                            'PROP_SIZE' => booking.property.property_size,
                            'SERVICES' => booking.services.map(&:display).join(', '),
                            'PRICE' => "$#{booking.cost}",
                            'ADDRESS' => booking.property.full_address,
-                           'DATE' => appt_date},
+                           'PROP_LINK' => property_url(booking.property.slug),
+                           'DATE' => date},
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
@@ -147,7 +151,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                       'ADDRESS' => property.full_address,
                       'NICKNAME' => property.nickname,
                       'PROP_SIZE' => property.property_size,
-                      'PROPERTY_LINK' => property_url(property.slug)
+                      'PROP_LINK' => property_url(property.slug)
                     },
                     inline_css: true,
                     async: true,
@@ -155,12 +159,23 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
-  def service_completed(property)
+  def service_completed(booking)
     mandrill do
-      mandrill_mail template: '0-service-completed-payment-collected',
-                    subject: "Your services have been completed at #{property.short_address}",
+      date = booking.date.strftime('%b %e, %Y')
+      payment_method = booking.payment.stripe_id.present? ? booking.payment.card_type : booking.payment.bank_name
+      mandrill_mail template: 'service-completed',
+                    subject: 'Thank you for using HostWise',
                     to: {email: property.user.email, name: property.user.name},
-                    vars: {'ADDR' => property.full_address},
+                    vars: {
+                      'DATE' => date,
+                      'NICKNAME' => booking.property.nickname,
+                      'ADDRESS' => booking.property.full_address,
+                      'PAYMENT_METHOD' => payment_method.upcase,
+                      'ACCOUNT_NUM' => booking.payment.last4,
+                      'SERVICES' => booking.services.map(&:display).join(', '),
+                      'PRICE' => "$#{booking.cost}",
+                      'PROP_LINK' => property_url(booking.property.slug)
+                    },
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
@@ -185,6 +200,40 @@ class UserMailer < MandrillMailer::TemplateMailer
                     subject: "It's official! Porter is now HostWise.",
                     to: {email: user.email},
                     vars: {'RESET_LINK' => url},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def booking_cancellation(booking)
+    mandrill do
+      date = booking.date.strftime('%A, %b %e')
+      mandrill_mail template: 'cancellation',
+                    subject: "Booking cancelled on #{date} at #{booking.property.nickname}",
+                    to: {email: booking.property.user.email, name: booking.property.user.name},
+                    vars: {'ADDRESS' => booking.property.full_address,
+                           'NICKNAME' => booking.property.nickname,
+                           'DATE' => date},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def booking_same_day_cancellation(booking)
+    mandrill do
+      date = booking.date.strftime('%A, %b %e')
+      payment_method = booking.payment.stripe_id.present? ? booking.payment.card_type : booking.payment.bank_name
+      mandrill_mail template: 'cancellation-same-day',
+                    subject: "Booking cancelled on #{date} at #{booking.property.nickname}",
+                    to: {email: booking.property.user.email, name: booking.property.user.name},
+                    vars: {'ADDRESS' => booking.property.full_address,
+                           'NICKNAME' => booking.property.nickname,
+                           'PAYMENT_METHOD' => payment_method.upcase,
+                           'ACCOUNT_NUM' => booking.payment.last4,
+                           'CANCEL_FEE' => "$#{booking.cost}",
+                           'DATE' => date},
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}

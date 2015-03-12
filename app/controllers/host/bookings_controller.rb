@@ -35,12 +35,14 @@ class Host::BookingsController < Host::AuthController
             contractor.payouts.create(job_id: self.id, amount: booking.job.payout(contractor) * 100)
           end
         end
+        UserMailer.booking_same_day_cancellation(booking).then(:deliver)
         render json: { success: true }
       else
         render json: { success: false }
       end
     else
       if booking.update_attribute :status, :deleted
+        UserMailer.booking_cancellation(booking).then(:deliver)
         render json: { success: true }
       else
         render json: { success: false }
