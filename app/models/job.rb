@@ -154,15 +154,15 @@ class Job < ActiveRecord::Base
       team_job.booking.property.beds.times { supplies[:toiletries] += 1 } if team_job.booking.services.index Service.where(name: 'toiletries')[0]
     end
 
-    if standard_jobs.empty?
-      distribution_job.destroy if distribution_job
-    end
-
     if distribution_job
       supplies.each do |k,v|
         distribution_job[k] = v
       end
       distribution_job.save
+    end
+
+    if standard_jobs.empty?
+      distribution_job.destroy if distribution_job
     end
   end
 
