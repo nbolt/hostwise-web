@@ -69,8 +69,8 @@ class Booking < ActiveRecord::Base
   def cost
     cost = Booking.cost(property, services, first_booking_discount, late_next_day, late_same_day, no_access_fee)
     if cancelled?
-      cost[:cost] -= cost[:linens]
-      cost[:cost] -= cost[:toiletries]
+      cost[:cost] -= cost[:linens] if cost[:linens]
+      cost[:cost] -= cost[:toiletries] if cost[:toiletries]
       cost[:cost] = 0 if cost[:cost] < 0
       [PRICING['cancellation'], (cost[:cost] * 0.2).round(2)].max
     else
