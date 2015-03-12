@@ -10,13 +10,13 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
   promises = {}
 
   $scope.$on 'refresh_property', -> $http.get($window.location.href + '.json').success (rsp) ->
-    _($scope.property).extend rsp
-    $scope.property.next_service_date = moment(rsp.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if rsp.next_service_date
-
+    $scope.property = rsp
+    $scope.form = _(rsp).clone()
+    load_bookings(rsp)
+    
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
     $scope.form = _(rsp).clone()
-
     load_bookings(rsp)
 
     load_mapbox = null
