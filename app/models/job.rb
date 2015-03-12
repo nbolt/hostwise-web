@@ -20,9 +20,17 @@ class Job < ActiveRecord::Base
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
-  scope :open, -> (contractor) { standard.where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
+  scope :open, -> (contractor) { standard.days(contractor).where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :upcoming, -> (contractor) { standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :past, -> (contractor) { standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
+  scope :days, -> (contractor) { sun(contractor).mon(contractor).tue(contractor).wed(contractor).thurs(contractor).fri(contractor).sat(contractor) }
+  scope :sun, -> (contractor) { where('extract(dow from date) != ? OR availabilities.sun = ?', 0, true).includes(contractors: [:availability]).references(:availability) }
+  scope :mon, -> (contractor) { where('extract(dow from date) != ? OR availabilities.mon = ?', 1, true).includes(contractors: [:availability]).references(:availability) }
+  scope :tue, -> (contractor) { where('extract(dow from date) != ? OR availabilities.tues = ?', 2, true).includes(contractors: [:availability]).references(:availability) }
+  scope :wed, -> (contractor) { where('extract(dow from date) != ? OR availabilities.wed = ?', 3, true).includes(contractors: [:availability]).references(:availability) }
+  scope :thurs, -> (contractor) { where('extract(dow from date) != ? OR availabilities.thurs = ?', 4, true).includes(contractors: [:availability]).references(:availability) }
+  scope :fri, -> (contractor) { where('extract(dow from date) != ? OR availabilities.fri = ?', 5, true).includes(contractors: [:availability]).references(:availability) }
+  scope :sat, -> (contractor) { where('extract(dow from date) != ? OR availabilities.sat = ?', 6, true).includes(contractors: [:availability]).references(:availability) }
 
   attr_accessor :current_user
 
