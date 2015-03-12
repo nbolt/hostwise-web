@@ -447,7 +447,7 @@
                   width: 100%
                   display: block
                   position: relative
-                  padding-bottom: 18px
+                  padding-bottom: 42px
                   margin-bottom: 10px
                   border-bottom: 1px solid border-gray
                 .button
@@ -506,6 +506,18 @@
                 width: 130px
                 &:hover
                   background-color: #FAFAFA
+                &.red
+                  background-color: dark-red
+                  color: white
+                  margin-left: 10px
+                  &:hover
+                    background-color: red
+                  @media phone
+                    position: absolute
+                    left: 0px
+                    top: 0px
+                    width: 100px
+                    margin-left: 0
                 @media portrait_tablet
                   width: auto
                 @media phone
@@ -1003,7 +1015,7 @@
             .text
               span
                 font-weight: 600
-                
+
 .content-group .content.details, .content-side.details
   background-color: white
   padding: 25px 60px 0

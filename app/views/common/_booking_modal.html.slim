@@ -89,10 +89,7 @@ script#booking-modal type="text/ng-template"
         .foot.save
           .left
             .button.grey ng:click='details()' View Details
-            .cancel ng:click='to_booking_cancellation()' Cancel this service date?
-            .text
-              | Do you wish to
-              span ng:click='to_booking_cancellation()'  cancel this service date?
+            .button.red ng:click='to_booking_cancellation()' Cancel Service
           .right
             .total
               .text.dollar
