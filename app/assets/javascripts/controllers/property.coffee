@@ -89,7 +89,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       _($scope.property.active_bookings).each (booking) ->
         date = moment.utc booking.date
         booking.parsed_date = date.format('MMMM Do, YYYY')
-        angular.element(".booking.modal .calendar td.active.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').addClass('booked').attr('booking', booking.id)
+        angular.element(".booking.modal .calendar td.day[month=#{date.month()}][year=#{date.year()}][day=#{date.date()}]").removeClass('active').addClass('inactive').addClass('booked').attr('booking', booking.id)
 
   $scope.calendar_options =
     {
@@ -296,7 +296,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
 
   $scope.exists = () ->
     if $scope.property.active_bookings
-      _($scope.property.active_bookings).find (b) -> b.id.toString() == $scope.selected_booking.toString()
+      _($scope.property.active_bookings).find (b) -> b.id.toString() == $scope.selected_booking.toString() if $scope.selected_booking
 
   $scope.property_image = (src) ->
     $scope.image = src

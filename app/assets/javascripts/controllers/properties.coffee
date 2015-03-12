@@ -93,7 +93,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
 
   $scope.exists = () ->
     if $scope.property.active_bookings
-      _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking
+      _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking.toString() if $scope.selected_booking
 
   $scope.address = (property) ->
     parts = property.full_address.split ','
