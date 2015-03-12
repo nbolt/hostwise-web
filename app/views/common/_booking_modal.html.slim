@@ -308,7 +308,7 @@ script#booking-modal type="text/ng-template"
           i.icon-house
           .title-text Do you only need a staging?
           .check-container
-            .fee.border ${{pricing.staging}}
+            .fee.border ${{pricing.preset[property.beds]}}
             .caption We'll "spot check" clean and set the property with our linens, towels, and toiletries.
           .actions
             .action.cancel ng:click='cancel_staging()'
