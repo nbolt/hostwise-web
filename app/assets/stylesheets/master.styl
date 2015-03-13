@@ -2469,11 +2469,69 @@ body .select2-drop-mask
 .contractor-account.activate
   width: 80%
   margin: 30px auto 50px
+  box-shadow: none
+  border-radius: 0
   .steps
+    .step
+      height: 0
+      opacity: 0
+      transition: opacity .4s ease-in-out
+      &.active
+        opacity: 1
+        height: auto
     .step.one .vr
       height: 620px
     .step.two
-      display: none
+      span.red
+        color: dark-red
+      .availability-container
+        .section
+          width: 94%
+          box-shadow: none
+          border-radius: 0
+          @media landscape_tablet
+            padding: 50px 3%
+          @media portrait_tablet
+            padding: 50px 3%
+          @media phone
+            padding: 50px 0
+          > div
+            padding: 0
+          .caption
+            display: block
+            padding-top: 30px
+        .icon-button
+          @media phone
+            width: 100%
+    .step.three
+      .section
+        display: block
+        width: 100%
+        text-align: left
+        > div
+          padding: 50px 3%
+        .row, .icon-button
+          display: inline-block
+          width: 23%
+          @media phone
+            width: 100%
+        .row
+          margin-right: 2.66%
+          @media phone
+            margin-right: 0
+      h6
+        font-size: 13px
+        font-weight: normal
+        text-align: right
+        @media phone
+          text-align: center
+        a
+          color: red
+          font-size: 15px
+          text-decoration: none
+  form
+    border-radius: 3px
+    box-shadow: gray_shadow
 
 .availability-container
   margin: 40px auto 0

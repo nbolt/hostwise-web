@@ -15,9 +15,9 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
           contractor_profile: $scope.contractor_profile
         }).success (rsp) ->
           if rsp.success
+            spinner.startSpin()
             scroll 0
-            angular.element('.steps .step.one').hide()
-            angular.element('.steps .step.two').show()
+            goto 'two'
             submit_background_check()
           else
             flash 'failure', rsp.message
@@ -50,9 +50,32 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
           flash 'failure', rsp.errors[0].description
         else
           $http.post('/payments/add',{balanced_id:rsp.bank_accounts[0].id}).success (rsp) ->
-            window.location = '/jobs' if rsp.success
+            if rsp.success
+              spinner.startSpin()
+              window.location = '/jobs'
     else
       flash 'failure', 'Please fill in all required fields'
+
+  $scope.skip = ->
+    spinner.startSpin()
+    window.location = '/jobs'
+
+  $scope.setup_availability = ->
+    $http.post('/availability/add', {
+      form: $scope.form
+    }).success (rsp) ->
+      if rsp.success
+        goto 'three'
+      else
+        flash 'failure', rsp.message
+
+  $scope.change = (id) ->
+    lbl = angular.element('.availability-container form label[for=' + id + ']')
+    if lbl.hasClass('checked')
+      lbl.removeClass('checked')
+    else
+      lbl.addClass('checked')
+    return true
 
   $scope.open_deactivation = ->
     ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'warning full', scope: $scope
@@ -95,6 +118,16 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
     $timeout((->
       el.removeClass('info success failure')
     ), 4000)
+
+  goto = (step) ->
+    el_step = angular.element(".contractor-account.activate .steps .step.#{step}")
+    el = angular.element('.contractor-account.activate .steps .step')
+    $timeout((->
+      el.css 'display', 'none'
+      el_step.css 'display', 'block'
+      el.removeClass('active')
+      $timeout((->el_step.addClass('active')),50)
+    ), 400)
 
   scroll = (position) ->
     angular.element('body, html').animate
