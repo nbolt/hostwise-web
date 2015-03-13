@@ -27,6 +27,21 @@ class User < ActiveRecord::Base
   pg_search_scope :search_hosts, against: [:email, :first_name, :last_name, :phone_number], using: { tsearch: { prefix: true } }
 
   scope :trainers, -> { where(status_cd: 3) }
+  scope :contractors, -> { where(role_cd: 2) }
+  scope :available_contractors, -> (booking) {
+    day =
+      case booking.date.wday
+      when 0 then 'sun'
+      when 1 then 'mon'
+      when 2 then 'tues'
+      when 3 then 'wed'
+      when 4 then 'thurs'
+      when 5 then 'fri'
+      when 6 then 'sat'
+      end
+
+    where("availabilities.#{day} = ?", true).includes(:availability).references(:availability)
+  }
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile'}
   validates_presence_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile' }
