@@ -27,7 +27,6 @@ class User < ActiveRecord::Base
   pg_search_scope :search_hosts, against: [:email, :first_name, :last_name, :phone_number], using: { tsearch: { prefix: true } }
 
   scope :trainers, -> { where(status_cd: 3) }
-  scope :contractors, -> { where(role_cd: 2) }
   scope :available_contractors, -> (booking) {
     day =
       case booking.date.wday
