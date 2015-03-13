@@ -9,7 +9,7 @@ ContractorDashCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http,
       angular.element('.distribution .bottom').css 'max-height', 0
 
   $scope.jobs_completed = ->
-    if $scope.user
+    if $scope.user && $scope.user.jobs_today
       if $scope.user.jobs_today[0]
         unfinished = _($scope.user.jobs_today).reject (job) -> job.status_cd == 3
         if unfinished[0]

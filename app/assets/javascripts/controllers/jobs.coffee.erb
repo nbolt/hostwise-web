@@ -23,7 +23,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
     $http.post("/jobs/#{job.id}/claim").success (rsp) ->
       if rsp.success
         angular.element("#job-#{job.id}").fadeOut()
-        $timeout((->refresh_jobs()),600)
       else
         refresh_jobs()
 
@@ -31,7 +30,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
     $http.post("/jobs/#{job.id}/drop").success (rsp) ->
       if rsp.success
         angular.element("#job-#{job.id}").fadeOut()
-        $timeout((->refresh_jobs()),600)
       else
         refresh_jobs()
 

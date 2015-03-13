@@ -94,7 +94,7 @@ class User < ActiveRecord::Base
   end
 
   def man_hours date
-    jobs.on_date(date).reduce(0){|acc, job| acc + job.man_hours}
+    jobs.standard.on_date(date).reduce(0){|acc, job| acc + job.man_hours}
   end
 
   def claim_job job
@@ -114,7 +114,7 @@ class User < ActiveRecord::Base
         job.save
       end
       job.handle_distribution_job self
-      Job.set_priorities jobs_today.standard, self
+      Job.set_priorities jobs_today, self
       fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
       fanout.publish_async 'jobs', {}
       true
@@ -129,9 +129,9 @@ class User < ActiveRecord::Base
       job.open!
       job.save
       job.handle_distribution_job self
-      Job.set_priorities self.jobs.on_date(job.date).standard, self
+      Job.set_priorities self.jobs.on_date(job.date), self
       if job.contractors[0]
-        jobs = job.contractors[0].jobs.on_date(job.date).standard
+        jobs = job.contractors[0].jobs.on_date(job.date)
         job.handle_distribution_job jobs
         Job.set_priorities jobs, job.contractors[0]
       end

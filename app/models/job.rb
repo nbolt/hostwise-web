@@ -32,7 +32,7 @@ class Job < ActiveRecord::Base
   scope :fri, -> (contractor) { where("extract(dow from date) != ? OR #{contractor.availability.fri} = ?", 5, true).includes(contractors: [:availability]).references(:availability) }
   scope :sat, -> (contractor) { where("extract(dow from date) != ? OR #{contractor.availability.sat} = ?", 6, true).includes(contractors: [:availability]).references(:availability) }
 
-  attr_accessor :current_user
+  attr_accessor :current_user, :distance
 
   def priority contractor
     ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority
@@ -100,7 +100,7 @@ class Job < ActiveRecord::Base
   end
 
   def man_hours
-    MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size
+    MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
   end
 
   def start!
@@ -174,21 +174,23 @@ class Job < ActiveRecord::Base
     if team_job
       contractor_job = contractor.contractor_jobs.where(job_id: team_job.id)[0]
       contractor_job.update_attribute :priority, 1
-      jobs.each do |job|
-        contractor_job = contractor.contractor_jobs.where(job_id: job.id)[0]
-        contractor_job.update_attribute :priority, 0 if contractor_job.priority == 1
+      standard_jobs = jobs.standard - [team_job]
+    end
+
+    # primary_contractor = ContractorJobs.where(job_id: team_job.id, primary: true)[0].user
+    # distribution_job = primary_contractor.jobs.on_date(team_job.date).distribution[0]
+    last_job = nil
+    priority = 1
+    while standard_jobs[0]
+      standard_jobs.each do |job|
+        km = Haversine.distance(last_job.chain(:booking, :property, :lat) || 34.002905, last_job.chain(:booking, :property, :lng) || -118.459896, job.booking.property.lat, job.booking.property.lng)
+        job.distance = km
       end
-    end
-    num = jobs.map{|job| contractor.contractor_jobs.where(job_id: job.id)[0].priority}.max
-
-    unprioritized_jobs = jobs.select do |job|
-      contractor_job = contractor.contractor_jobs.where(job_id: job.id)[0]
-      contractor_job.priority == 0
-    end
-
-    unprioritized_jobs.each_with_index do |job, index|
-      contractor_job = contractor.contractor_jobs.where(job_id: job.id)[0]
-      contractor_job.update_attribute :priority, num + index + 1
+      last_job = standard_jobs.sort(&:distance)[0]
+      contractor_job = ContractorJobs.where(job_id: last_job.id, user_id: contractor.id)[0]
+      contractor_job.update_attribute :priority, priority
+      priority = priority + 1
+      standard_jobs = standard_jobs - [last_job]
     end
   end
 end

@@ -118,6 +118,8 @@ class Property < ActiveRecord::Base
         self.zip = address[:components][:zipcode]
         self.city = address[:components][:city_name]
         self.state = address[:components][:state_abbreviation]
+        self.lat = address[:metadata][:latitude]
+        self.lng = address[:metadata][:longitude]
       else
         errors[:base] << 'Invalid address'
       end
