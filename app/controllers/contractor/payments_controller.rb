@@ -1,7 +1,8 @@
 class Contractor::PaymentsController < Contractor::AuthController
   def add
     unless current_user.balanced_customer_id
-      customer = Balanced::Customer.new; customer.save
+      customer = Balanced::Customer.new
+      customer.save
       current_user.update_attribute :balanced_customer_id, customer.id
     end
     bank_account = Balanced::BankAccount.fetch "/bank_accounts/#{params[:balanced_id]}"

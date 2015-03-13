@@ -4,7 +4,7 @@
     | Contractor Sign Up
   .contractor-account.activate
     .steps
-      .step.one
+      .step.one.active
         h1 Welcome to HostWise!
         h3 Confirm your information below to finish setting up your account.
         form
@@ -44,12 +44,12 @@
                 .caption.right Zip Code
               .row.two
                 label Emergency Contact Person
-                input type='text' ng:model='contractor_profile.emergency_contact_first_name'
-                input.right type='text' ng:model='contractor_profile.emergency_contact_last_name'
+                input type='text' placeholder='First Name' ng:model='contractor_profile.emergency_contact_first_name'
+                input.right type='text' placeholder='Last Name' ng:model='contractor_profile.emergency_contact_last_name'
                 .caption First Name
                 .caption.right Last Name
               .row
-                input type='text' ng:model='contractor_profile.emergency_contact_phone'
+                input type='text' placeholder='(###) ###-####' ui-mask='(999) 999-9999' ng:model='contractor_profile.emergency_contact_phone'
                 .caption Emergency Contact Phone Number
           .vr
           .section.pwd
@@ -83,6 +83,48 @@
                     i.icon-refresh
                   .text Set Up My Account
       .step.two
+        h1 Tell us when you're available!
+        h3
+          | Select the days you are available from
+          span.red &nbsp;10 AM to 4 PM&nbsp
+          | . Click day to turn it on or off.
+        .availability-container
+          form
+            .section
+              .flash
+              .day
+                input type='checkbox' id='mon' ng:change="change('mon')" ng:model='form.mon'
+                label for='mon' Mon
+              .day
+                input type='checkbox' id='tues' ng:change="change('tues')" ng:model='form.tues'
+                label for='tues' Tues
+              .day
+                input type='checkbox' id='wed' ng:change="change('wed')" ng:model='form.wed'
+                label for='wed' Wed
+              .day
+                input type='checkbox' id='thurs' ng:change="change('thurs')" ng:model='form.thurs'
+                label for='thurs' Thurs
+              .day
+                input type='checkbox' id='fri' ng:change="change('fri')" ng:model='form.fri'
+                label for='fri' Fri
+              .day
+                input type='checkbox' id='sat' ng:change="change('sat')" ng:model='form.sat'
+                label for='sat' Sat
+              .day
+                input type='checkbox' id='sun' ng:change="change('sun')" ng:model='form.sun'
+                label for='sun' Sun
+              .caption
+                div
+                  .box
+                  span Unavailable
+                div
+                  .box.opened
+                  span Available
+            .icon-button.teal ng:click='setup_availability()'
+              .icon
+                i.icon-refresh
+              .text Save
+      .step.three
         h1 You're almost done!
         h3 Add a bank account for direct deposit.
         form
@@ -92,21 +134,17 @@
               .row
                 label Name on Account
                 input type='text' required='' ng:model='bank.name'
-          .section
-            div
               .row
                 label Routing Number
                 input type='text' required='' ng:model='bank.routing_number'
               .row
                 label Account Number
                 input type='text' required='' ng:model='bank.account_number'
-          .section
-            div
               .icon-button.teal ng:click="add_bank_account()"
                 .icon
                   i.icon-refresh
                 .text Save
         h6
-          a href='/jobs' Skip this step, take me to my account
+          a href='#' ng:click='skip()' Skip this step, take me to my account
           br
           | (You'll be required to add a bank account before you can start receiving payments)
