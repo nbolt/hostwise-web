@@ -1,4 +1,4 @@
-#job-details ng:controller='job'
+#job-details.container ng:controller='job'
   .page-title
     i.icon-notebook
     | Job Details
@@ -183,3 +183,8 @@
                     .icon
                       .typcn.typcn-tick
                     .text Complete & go to next job
+  .deactivate
+    | Do you wish to
+    span ng:click='cancel_modal()'  cancel this job?
+
+= render 'common/cancel_job_modal'

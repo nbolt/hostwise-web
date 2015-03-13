@@ -64,6 +64,15 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialo
       else
         $window.location = '/'
 
+  $scope.cancel_modal = ->
+    ngDialog.open template: 'cancel-job-modal', className: 'warning full', scope: $scope
+
+  $scope.close_cancellation = ->
+    ngDialog.closeAll()
+
+  $scope.confirm_cancellation = ->
+    $http.post("/jobs/#{$scope.job.id}/drop").success (rsp) -> $window.location = '/'
+
   $scope.pricing_class = ->
     if $scope.staging
       'staging'
