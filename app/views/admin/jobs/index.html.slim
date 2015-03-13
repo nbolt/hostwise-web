@@ -25,6 +25,7 @@
         th Address
         th Date
         th Status
+        th Cost
         th Contractors
       tr dir-paginate='job in jobs | itemsPerPage: 20'
         td
@@ -35,6 +36,7 @@
           /a ng:href="/properties/{{booking.property.id}}" ng:bind='::job.property.nickname'
         td ng:bind='::job.date'
         td ng:bind='::job.status'
+        td.cost ${{::job.booking.cost}}
         td ng:bind='::job.contractor_list'
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"

@@ -39,7 +39,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.$watch 'sort.id', (n,o) -> $scope.fetch_jobs() if o
   $scope.$watch 'filter.id', (n,o) -> $scope.fetch_jobs() if o
 
-  $scope.$watch 'search', (n,o) -> if o
+  $scope.$watch 'search', (n,o) -> if o != undefined
     $timeout.cancel promise
     promise = $timeout (->
       $scope.search = n
