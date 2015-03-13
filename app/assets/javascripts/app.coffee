@@ -24,7 +24,7 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
             $scope.user.earnings = $scope.user.earnings.toFixed 2
             $scope.user.unpaid = $scope.user.unpaid.toFixed 2
             _($scope.user.jobs).each (job) -> job.contractor_count = job.contractors.length if job.contractors
-            if $scope.user.status_cd == 1
+            if $scope.user.contractor_profile.position_cd == 1
               training_jobs = _(_($scope.user.jobs).groupBy (job) -> moment(job.date, 'YYYY-MM-DD')).sortBy (v,k) -> moment(k, 'ddd MMM DD YYYY').unix()
               $scope.user.training_jobs = []
               _(training_jobs).each (jobs) ->
