@@ -2,6 +2,15 @@ class Contractor::JobsController < Contractor::AuthController
 
   expose(:job) { Job.find params[:id] }
 
+  def index
+    case current_user.contractor_profile.position
+    when :trainee
+      redirect_to '/'
+    when :fired
+      redirect_to '/'
+    end
+  end
+
   def show
     respond_to do |format|
       format.html
