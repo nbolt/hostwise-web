@@ -1,0 +1,13 @@
+script#cancel-job-modal type="text/ng-template"
+  .modal
+    .header
+      .text Cancel Job
+    .content
+      .fa.fa-flash
+      .text Are you sure you want to cancel this job?
+    .footer
+      .buttons
+        .button.white ng:click='close_cancellation()'
+          .text No
+        .button.red ng:click='confirm_cancellation()'
+          .text Cancel

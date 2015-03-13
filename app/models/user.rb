@@ -93,12 +93,18 @@ class User < ActiveRecord::Base
     payouts.where(status_cd: 0).reduce(0){|acc, payout| acc + payout.amount} / 100.0
   end
 
+  def man_hours date
+    jobs.on_date(date).reduce(0){|acc, job| acc + job.man_hours}
+  end
+
   def claim_job job
     jobs_today = self.jobs.on_date(job.date)
     training_job = jobs_today.where(training:true)[0]
     if job.contractors.count == job.size
       false
     elsif training_job && job.size > 1
+      false
+    elsif man_hours(job.date) + job.man_hours > MAX_MAN_HOURS
       false
     else
       job.contractors.push self

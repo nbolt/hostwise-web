@@ -99,6 +99,10 @@ class Job < ActiveRecord::Base
     payout.to_s.split('.')[1].to_i if booking
   end
 
+  def man_hours
+    MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size
+  end
+
   def start!
     in_progress!
     save
