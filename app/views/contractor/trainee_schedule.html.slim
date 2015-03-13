@@ -12,7 +12,7 @@
     .head
       .right ng:bind='::training.date'
       .text Training Day {{$index+1}}
-    .header-message ng:show="jobs_completed(training)"
+    .header-message.pad ng:show="jobs_completed(training)"
       .left
         .icon
           .typcn.typcn-time
