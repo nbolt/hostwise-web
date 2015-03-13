@@ -80,7 +80,7 @@ class Job < ActiveRecord::Base
             end
           end
         elsif training && contractor
-          if contractor.status == :trainee
+          if contractor.contractor_profile.position == :trainee
             payout *= 0.45
           else
             payout *= 0.55

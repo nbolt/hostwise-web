@@ -1,6 +1,6 @@
 class Contractor::HomeController < Contractor::AuthController
   def index
-    case current_user.status
+    case current_user.contractor_profile.position
     when :trainee
       if current_user.jobs[0]
         render 'contractor/trainee_schedule'
