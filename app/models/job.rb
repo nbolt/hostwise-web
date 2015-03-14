@@ -110,6 +110,10 @@ class Job < ActiveRecord::Base
     MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
   end
 
+  def staging
+    booking.services.index Service.where(name: 'preset')[0] if booking
+  end
+
   def start!
     in_progress!
     save

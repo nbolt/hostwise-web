@@ -829,8 +829,6 @@ form
           .text.completed
             color: white
             margin: 45px 25px 0 0
-          &:hover .text
-            text-decoration: underline
         .beds
           float: right
           margin: 28px 40px 0 0
@@ -904,6 +902,7 @@ form
         .name
           color: heavy-gray
           font-weight: 600
+          text-transform: capitalize
       .neighborhood
         margin-top: 28px
         font-size: 1em
@@ -911,6 +910,10 @@ form
       &.complete
         background-color: teal
         color: white
+        .photo
+          background-color: teal
+          .timer i
+            color: white
         .address1, .title .icon, .name
           color: white
         .bottom
@@ -918,6 +921,25 @@ form
         .address
           margin-top: 36px
           font-size: 1em
+        .right
+          @media phone
+            height: 145px
+          .top
+            .text.completed
+              span
+                display: inline-block
+                vertical-align: top
+                margin-top: 10px
+                @media phone
+                  display: none
+              i
+                color: light-teal
+                margin-left: 10px
+                font-size: 2em
+            .title
+              margin-top: 35px
+              .address
+                color: white
         .column
           background: linear-gradient(left, 0% teal, #32A6AB)
   .page-title
@@ -1120,7 +1142,7 @@ form
   .schedule
     margin: 50px 0 25px
     .head
-      border-bottom: thin solid heavy-gray
+      border-bottom: thin solid dark-gray
       padding-bottom: 10px
       margin-bottom: 20px
       font-weight: 700
@@ -1129,12 +1151,15 @@ form
     .header-message
       background-color: orange
       color: white
-      border-radius: 1px
+      border-radius: 3px
+      box-shadow: gray_shadow
+      overflow: hidden
       margin-bottom: 15px
+      position: relative
       &.pad
         padding: 12px
       .left
-        padding: 12px 15px
+        line-height: 44px
       .right
         float: right
         background-color: dark-gold
@@ -1143,6 +1168,11 @@ form
         padding-top: 11px
         box-sizing: border-box
         text-align: center
+        @media phone
+          width: 265px
+          position: absolute
+          bottom: 0
+          right: 0
         a
           color: white
           text-decoration: none
@@ -1150,11 +1180,25 @@ form
         display: inline-block
         vertical-align: top
       .icon
+        background-color: orange
+        width: 50px
+        text-align: center
         font-size: 1.25em
-        margin-top: -4px
+        border-right: thin solid dark-orange
+        @media phone
+          height: 88px
+          line-height: 88px
+          font-size: 1.5em
       .text
-        margin-left: 5px
+        margin-left: 10px
+        @media phone
+          position: absolute
+          top: 0
+          font-size: 14px
     .distribution
+      border-radius: 3px
+      box-shadow: gray_shadow
+      overflow: hidden
       .top
         background-color: teal
         padding: 12px 15px
@@ -1166,14 +1210,14 @@ form
           vertical-align: top
         .right
           float: right
-          .typcn
-            -webkit-transform: rotate(90deg)
-            transform: rotate(90deg)
+          display: none
+          i
+            font-size: 0.8em
         .icon
           font-size: 1.25em
           margin-top: -4px
         .text
-          margin-left: 5px
+          margin-left: 10px
         .location
           margin-left: 10px
       .bottom
@@ -1181,30 +1225,19 @@ form
         max-height: 80px
         overflow: hidden
         background-color: white
+        @media phone
+          max-height: 100%
         .pad
           padding: 24px
         .right
           float: right
-          .button
-            padding: 0
-            text-align: left
-            width: 135px
+          .icon-button
+            width: 150px
             margin-top: -10px
-            .icon, .text
-              display: inline-block
-              vertical-align: top
-            .icon
-              width: 40px
-              height: 40px
-              font-size: 1.6em
-              .typcn
-                margin: 2px 0 0 7px
-            .text
-              width: 95px
-              text-align: center
-              margin-top: 9px
+            @media phone
+              margin-top: 20px
         .supplies
-          color: #A6A6A6
+          color: dark-gray
           .type, .num, .text
             display: inline-block
             vertical-align: top
@@ -1215,20 +1248,29 @@ form
             margin: 0 23px 0 7px
             display: inline-block
             vertical-align: top
+            @media phone
+              display: block
             .type
               color: teal
             .num
               margin-left: 8px
   .earnings
     padding-top: 25px
-    border-top: thin solid heavy-gray
+    border-top: thin solid dark-gray
     .earning
       display: inline-block
       vertical-align: top
       background-color: white
       width: 49%
+      box-shadow: gray_shadow
+      border-radius: 3px
+      @media phone
+        display: block
+        width: 100%
       &:first-child
         margin-right: 2%
+        @media phone
+          margin: 0 0 15px
       .top
         border-bottom: thin solid gray
         padding: 15px
@@ -1791,7 +1833,7 @@ form
             color: teal
             width: 15%
 
-#jobs
+#jobs, .container.contractor .jobs
   .tabs
     margin: 40px 0
     .filters
@@ -1808,11 +1850,22 @@ form
       width: 150px
       text-align: center
       color: dark-gray
+      border-radius: 3px
+      box-shadow: gray_shadow
+      @media phone
+        width: 32%
+        margin-right: 2%
+        padding: 0
+        line-height: 50px
+      &:last-child
+        @media phone
+          margin-right: 0
       &:hover
         cursor: pointer
       &.active, &:hover
         background-color: white
-        border-bottom: 2px solid teal
+        border-bottom: 3px solid teal
+        box-shadow: none
   .tab-content
     margin-top: 25px
     .tab
@@ -1823,11 +1876,60 @@ form
         margin-bottom: 50px
         .head
           color: heavy-gray
-          border-bottom: 2px solid heavy-gray
+          border-bottom: 2px solid dark-gray
           padding-bottom: 10px
           font-size: 1.25em
           font-weight: 700
           margin-bottom: 20px
+  .job
+    margin: 15px auto
+    .photo
+      img
+        margin: 0
+    .order
+      display: none
+      @media phone
+        color: light-navy
+        display: inline-block
+        width: 20px
+        float: left
+        background-color: lighter-gray
+        height: 145px
+        line-height: 145px
+        text-align: center
+        border-radius: 3px 0 0 3px
+    .right
+      .icon-button
+        width: 150px
+        @media phone
+          margin-top: 0
+          width: 120px
+        .text
+          display: block
+      .bottom
+        height: 100%
+        .rooms
+          margin: 0
+        .size
+          display: inline-block
+          vertical-align: top
+          margin-left: 30px
+      .top
+        @media phone
+          height: 60px
+        .title
+          @media landscape_tablet
+            margin-top: 15px
+          @media portrait_tablet
+            margin-top: 10px
+          @media phone
+            max-width: 130px
+        .address
+          @media portrait_tablet
+            max-width: 230px
+        .neighborhood
+          @media phone
+            margin-top: 13px
 
 .card-entry
   border: thin solid border-gray

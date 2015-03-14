@@ -1,5 +1,5 @@
 JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', ($scope, $http, $timeout, $interval, $window, ngDialog) ->
-  
+
   $scope.tabs = [{name:'open'},{name:'upcoming'},{name:'past'}]
   $scope.filter = {id:'recent',text:'Most Recent'}
   faye = null
@@ -33,6 +33,14 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
       else
         refresh_jobs()
 
+  $scope.pricing_class = (job) ->
+    if job.staging
+      'staging'
+    else if job.state_cd is 1
+      'vip'
+    else
+      ''
+
   refresh_jobs = ->
     _($scope.tabs).each (tab) ->
       $http.get('/data/jobs', {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
@@ -50,8 +58,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
             else if date.date() == moment().date() + 1
               date_text += ', Tomorrow'
           day[2].date_text = date_text
-
-
 
   $scope.$watch 'filter', (n,o) -> if o
     refresh_jobs()
