@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150313204343) do
+ActiveRecord::Schema.define(version: 20150314011623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,8 @@ ActiveRecord::Schema.define(version: 20150313204343) do
     t.string   "dob"
     t.string   "encrypted_driver_license"
     t.string   "delivery_point_barcode"
+    t.float    "lat"
+    t.float    "lng"
   end
 
   create_table "counties", force: :cascade do |t|
@@ -134,6 +136,29 @@ ActiveRecord::Schema.define(version: 20150313204343) do
   end
 
   add_index "counties", ["state_id"], name: "index_counties_on_state_id", using: :btree
+
+  create_table "distribution_centers", force: :cascade do |t|
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.float    "lat"
+    t.float    "lng"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "job_distribution_centers", force: :cascade do |t|
+    t.integer  "job_id"
+    t.integer  "distribution_center_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "job_distribution_centers", ["distribution_center_id"], name: "index_job_distribution_centers_on_distribution_center_id", using: :btree
+  add_index "job_distribution_centers", ["job_id"], name: "index_job_distribution_centers_on_job_id", using: :btree
 
   create_table "jobs", force: :cascade do |t|
     t.integer  "status_cd"
@@ -150,6 +175,7 @@ ActiveRecord::Schema.define(version: 20150313204343) do
     t.boolean  "training",     default: false
     t.date     "date"
     t.integer  "state_cd",     default: 0
+    t.integer  "occasion_cd"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -354,6 +380,8 @@ ActiveRecord::Schema.define(version: 20150313204343) do
   add_foreign_key "bookings", "payments"
   add_foreign_key "bookings", "properties"
   add_foreign_key "contractor_jobs", "users"
+  add_foreign_key "job_distribution_centers", "distribution_centers"
+  add_foreign_key "job_distribution_centers", "jobs"
   add_foreign_key "payments", "users"
   add_foreign_key "service_notifications", "users"
   add_foreign_key "transactions", "bookings"
