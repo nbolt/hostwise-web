@@ -34,7 +34,7 @@
       answer: Yes. You will receive texts from HostWise when we are en route, upon arrival, and after completion of service.
     -
       question: How do I edit or cancel a service day?
-      answer: To cancel, go to your property page, click the date you want to cancel, and click the "Do you wish to cancel this date?" link. Then, choose the correct service date.
+      answer: To cancel, go to your property page, click the date you want to cancel, and click the red "Cancel" button. Then, choose the correct service date.
 
 -
   name: cleaning
@@ -155,3 +155,6 @@
     -
       question: Does HostWise offer payment terms?
       answer: Currently, no. But, it is something we're thinking about. Please let us know if this is important to your business.
+    -
+      question: Cancellation Fee?
+      answer: There is no fee for canceling if done before 10 pm the night before your scheduled booking. However, a cancellation made on the day of or after 10pm the night before will be considered a Last Minute Cancellation. In this case, your account will be charged the greater of $25 or 20% of your booking.
