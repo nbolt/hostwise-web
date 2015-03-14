@@ -1,18 +1,22 @@
-class ContractorProfile < ActiveRecord::Base
-  belongs_to :user
+class DistributionCenter < ActiveRecord::Base
+  has_many :jobs, through: :job_distribution_centers
+  has_many :job_distribution_centers, dependent: :destroy
 
   before_save :standardize_address
 
-  as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
+  attr_accessor :distance
 
-  attr_encrypted :ssn, :driver_license, key: ENV['CIPHER_KEY']
-
-  validates_presence_of :address1, :zip
-  validates_numericality_of :emergency_contact_phone, only_integer: true, if: lambda { self.emergency_contact_phone.present? }
-  validates_length_of :emergency_contact_phone, is: 10, if: lambda { self.emergency_contact_phone.present? }
-
-  def current_position
-    {id: position_cd.to_s, text: position.upcase}
+  def neighborhood
+    zip = Zip.where(code: self.zip)[0]
+    if zip
+      if zip.neighborhood && zip.neighborhood.name != city
+        "#{zip.neighborhood.name}, #{city}"
+      else
+        city
+      end
+    else
+      ''
+    end
   end
 
   private
