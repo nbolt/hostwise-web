@@ -217,17 +217,4 @@ class Job < ActiveRecord::Base
       end
     end
   end
-
-  def choose_distribution_center job
-    if distribution && !distribution_center
-      centers = DistributionCenter.all
-      centers.each do |center|
-        primary_contractor = ContractorJobs.where(job_id: self.id, primary: true)[0].user
-        d1 = Haversine.distance(primary_contractor.contractor_profile.lat, primary_contractor.contractor_profile.lng, center.lat, center.lng)
-        d2 = Haversine.distance(center.lat, center.lng, job.booking.property.lat, job.booking.property.lng)
-        center.distance = d1 + d2
-      end
-      self.distribution_center = centers.sort_by(&:distance)[0]
-    end
-  end
 end
