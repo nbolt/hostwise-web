@@ -224,7 +224,6 @@ class Host::PropertiesController < Host::AuthController
 
   def blast(booking)
     if booking.job
-      #TODO: only blast to the eligible
       User.available_contractors(booking).each do |contractor|
         UserMailer.new_open_job(contractor, booking.job).then(:deliver) if contractor.settings(:new_open_job).email
         TwilioJob.perform_later("+1#{contractor.phone_number}", 'New job') if contractor.settings(:new_open_job).sms

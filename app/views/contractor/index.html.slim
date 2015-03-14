@@ -1,14 +1,13 @@
 .container.contractor ng:controller='contractor_dash'
   .page-title
-    .icon
-      .typcn.typcn-home-outline
+    i.icon-house
     .text Dashboard
-
-  .welcome Welcome, {{user.first_name}}.
+  .welcome Welcome back, {{user.first_name}}.
   .message
     .text ng:show='newbie()'
       | Congratulations! You're all ready to start accepting jobs.
-
+    .text ng:show='!newbie()'
+      | Here's a snapshot of what your day is looking like.
   .schedule ng:show='user.jobs'
     .head
       .right ng:bind='::today'
@@ -18,7 +17,7 @@
         a href='/jobs' Claim jobs
       .left
         .icon
-          .typcn.typcn-time
+          i.icon-alert-info
         .text You don't have any upcoming jobs today
     .header-message ng:show="jobs_completed()"
       .left
@@ -28,18 +27,17 @@
     .distribution ng:show='user.distribution_job'
       .top
         .right
-          .typcn.typcn-chevron-right
-        .icon
-          .typcn.typcn-time
+          i.icon-acc-open
+        i.icon-job-order
         .text 9:45 AM
         .location
           | | &nbsp;Distribution Center
       .bottom ng:hide='user.distribution_job.status_cd == 3'
         .pad
           .right
-            .button.teal ng:click='done(user.distribution_job)'
+            .icon-button.teal ng:click='done(user.distribution_job)'
               .icon
-                .typcn.typcn-tick
+                i.icon-details
               .text Done
           .supplies
             .text Supplies:
@@ -60,39 +58,44 @@
               .num ng:bind='::user.distribution_job.toiletries'
     .jobs
       .job ng:repeat='job in user.standard_jobs' ng:class="job.status_cd == 3 && 'complete'"
-        .title
-          .icon
-            .typcn.typcn-time
-          .text Job {{$index+1}}
-          .column
+        .flag.vip ng:if='job.state_cd == 1'
+        .flag.staging ng:if='job.staging'
+        .photo
+          .timer
+            i.icon-job-order
+            span Job {{$index+1}}
+        .order
+          | {{$index+1}}
         .right
           .top
             a href='/jobs/{{job.id}}'
-              .text.completed ng:show="job.status_cd == 3" View Completed Job
-              .button.teal ng:hide="job.status_cd == 3"
+              .text.completed ng:show="job.status_cd == 3"
+                span View Completed Job
+                i.icon-alert-ok
+              .icon-button.teal ng:hide="job.status_cd == 3"
                 .icon
-                  .typcn.typcn-tick
+                  i.icon-details
                 .text View Job
-            .address
-              .name ng:bind='::job.booking.property.user.name'
-              .address1
-                | {{::job.booking.property.address1}}, {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
+            .title
+              .name ng:bind='job.booking.property.user.name'
+              .address ng:bind='job.booking.property.full_address'
           .bottom
-            .rooms
-              i.icon-house ng:if='job.booking.property.property_type_cd == 0'
-              i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
-              .text
-                | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
-            .contractors
-              i.icon-person
-              .text ng:bind='::job.contractor_count'
-            .right
+            .payout
               .icon
                 i.icon-payout
-              .pricing
+              .pricing ng:class='pricing_class(job)'
                 | ${{::job.payout_integer}}
                 span ng:hide='job.payout_fractional == 0'
                   | .{{::job.payout_fractional}}
+            .left
+              .rooms
+                i.icon-house ng:if='job.booking.property.property_type_cd == 0'
+                i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
+                .text
+                  | {{job.booking.property.bedrooms}}BD/{{job.booking.property.bathrooms}}BA
+              .size
+                i.icon-person
+                .text ng:bind='::job.size'
   .earnings
     .total.earning
       .top
