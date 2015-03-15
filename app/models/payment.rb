@@ -5,7 +5,9 @@ class Payment < ActiveRecord::Base
 
   as_enum :status, active: 1, deleted: 0, pending: 2
 
-  before_create :set_card_type, :set_bank_name
+  scope :payout, -> { where(payout: true) }
+
+  before_create :set_card_type
 
   validates :fingerprint, uniqueness: true
 
@@ -31,9 +33,5 @@ class Payment < ActiveRecord::Base
 
   def set_card_type
     self.card_type.gsub! '_', ' ' if card_type
-  end
-
-  def set_bank_name
-    self.bank_name.downcase! if bank_name
   end
 end

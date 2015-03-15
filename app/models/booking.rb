@@ -21,7 +21,7 @@ class Booking < ActiveRecord::Base
   scope :by_user, -> (user) { where('user_id = ?', user.id).includes(property: [:user]).references(:user) }
   scope :active, -> { where(status_cd: 1) }
 
-  before_save :create_order, :check_transaction
+  before_save :check_transaction
   before_create :create_job
   after_create :attach_user
 
@@ -129,21 +129,6 @@ class Booking < ActiveRecord::Base
         transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount)
         false
       end
-    elsif payment.balanced_id
-      verification = Balanced::BankAccountVerification.fetch("/verifications/#{payment.balanced_verification_id}")
-      if verification.verification_status == 'succeeded'
-        bank_account = Balanced::BankAccount.fetch("/bank_accounts/#{payment.balanced_id}")
-        order = Balanced::Order.fetch("/orders/#{balanced_order_id}")
-        amount = (cost * 100).to_i
-        rsp = order.debit_from(
-          source: bank_account,
-          amount: amount
-        )
-        transactions.create(balanced_charge_id: rsp.id, status_cd: 2, amount: amount)
-        save
-      else
-        false
-      end
     else
       false
     end
@@ -166,14 +151,6 @@ class Booking < ActiveRecord::Base
       job = self.build_job(status_cd: 0, date: date)
       job.state_cd = 1 if vip
       job.size = 2 if property.bedrooms > 4
-    end
-  end
-
-  def create_order
-    if payment && payment.balanced_id && !balanced_order_id
-      customer = Balanced::Customer.fetch("/customers/#{property.user.balanced_customer_id}")
-      order = customer.create_order(meta: {booking_id: id})
-      self.balanced_order_id = order.id
     end
   end
 

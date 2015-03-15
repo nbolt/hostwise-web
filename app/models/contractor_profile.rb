@@ -1,7 +1,7 @@
 class ContractorProfile < ActiveRecord::Base
   belongs_to :user
 
-  before_save :standardize_address
+  before_save :standardize_address, :create_stripe_recipient
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
@@ -16,6 +16,17 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   private
+
+  def create_stripe_recipient
+    if ssn? && !stripe_recipient_id
+      rsp = Stripe::Recipient.create(
+        :name => user.name,
+        :tax_id => ssn,
+        :type => 'individual'
+      )
+      self.stripe_recipient_id = rsp.id
+    end
+  end
 
   def standardize_address
     if address_changed?

@@ -1,41 +1,76 @@
 class Contractor::PaymentsController < Contractor::AuthController
+  expose(:payment) { Payment.find params[:id] }
+
   def add
-    unless current_user.balanced_customer_id
-      customer = Balanced::Customer.new
-      customer.save
-      current_user.update_attribute :balanced_customer_id, customer.id
-    end
-    bank_account = Balanced::BankAccount.fetch "/bank_accounts/#{params[:balanced_id]}"
-    bank_account.associate_to_customer "/customers/#{current_user.balanced_customer_id}"
-    verification = bank_account.verify
-    payment = current_user.payments.create({
-                                             balanced_id: bank_account.id,
-                                             last4: bank_account.account_number.gsub('x',''),
-                                             fingerprint: bank_account.fingerprint,
-                                             balanced_verification_id: verification.id,
-                                             bank_name: bank_account.bank_name,
-                                             holder_name: bank_account.name,
-                                             routing_number: bank_account.routing_number,
-                                             status: :active
-                                           })
-    if payment.save
-      render json: { success: true }
-    else
-      render json: { success: false, message: payment.errors.full_messages[0] }
+    begin
+      first_payment = !current_user.payments.active.present?
+
+      if params[:payment_method][:id] == 'credit-card'
+        unless current_user.stripe_customer_id
+          customer = Stripe::Customer.create(email: current_user.email)
+          current_user.update_attribute :stripe_customer_id, customer.id
+        end
+        customer = Stripe::Customer.retrieve current_user.stripe_customer_id unless customer
+        card = customer.sources.create(card: params[:stripe_id])
+        payment = current_user.payments.create({
+                                                 stripe_id: card.id,
+                                                 last4: card.last4,
+                                                 card_type: card.brand.downcase.gsub(' ', '_'),
+                                                 fingerprint: card.fingerprint,
+                                                 status: :active
+                                               })
+      end
+      payment.primary = true if first_payment
+
+      if payment.save
+        render json: { success: true, payment: payment }
+      else
+        render json: { success: false, message: payment.errors.full_messages[0] }
+      end
+    rescue Stripe::CardError => e
+      body = e.json_body
+      err  = body[:error]
+      render json: { success: false, message: err[:message] }
     end
   end
 
   def delete
-    payment = Payment.find_by_id(params[:payment_id])
-    bank_account = Balanced::BankAccount.fetch "/bank_accounts/#{payment.balanced_id}"
-    rsp = bank_account.destroy
+    # check if future booking exists with this payment
+    future_bookings = payment.bookings.active.select { |booking| booking.date > Date.today }
+    if future_bookings.present?
+      render json: { success: false, message: "There is at least one booking associated with this #{payment.card? ? 'credit card' : 'bank account'}" }
+      return
+    end
 
-    if rsp && rsp.status == 204
+    if payment.primary
+      render json: { success: false, message: "You can't delete your default payment" }
+      return
+    end
+
+    if payment.card?
+      customer = Stripe::Customer.retrieve(payment.user.stripe_customer_id)
+      rsp = customer.sources.retrieve(payment.stripe_id).delete
+    end
+
+    if rsp && (payment.card? ? rsp.deleted : rsp.status == 204)
       payment.update_attribute :status, :deleted
       payment.update_attribute :fingerprint, nil
       render json: { success: true }
     else
-      render json: { success: false, message: 'Error deleting bank account' }
+      render json: { success: false, message: "Error deleting #{payment.card? ? 'credit card' : 'bank account'}" }
     end
+  end
+
+  def payout
+    payment.payout = true
+    payment.save
+
+    # make other active payment methods as non-default
+    current_user.payments.active.each do |p|
+      next if p.id == payment.id
+      p.update_attribute :payout, false
+    end
+
+    render json: { success: true }
   end
 end

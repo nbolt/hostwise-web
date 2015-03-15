@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150314011623) do
+ActiveRecord::Schema.define(version: 20150315030119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,7 +75,6 @@ ActiveRecord::Schema.define(version: 20150314011623) do
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.integer  "status_cd",              default: 1
-    t.string   "balanced_order_id"
     t.integer  "payment_status_cd",      default: 0
     t.boolean  "late_next_day",          default: false
     t.boolean  "late_same_day",          default: false
@@ -126,6 +125,7 @@ ActiveRecord::Schema.define(version: 20150314011623) do
     t.string   "delivery_point_barcode"
     t.float    "lat"
     t.float    "lng"
+    t.string   "stripe_recipient_id"
   end
 
   create_table "counties", force: :cascade do |t|
@@ -193,19 +193,16 @@ ActiveRecord::Schema.define(version: 20150314011623) do
 
   create_table "payments", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "stripe_id"
     t.string   "last4"
     t.string   "card_type"
     t.string   "fingerprint"
-    t.string   "balanced_id"
     t.integer  "status_cd"
-    t.boolean  "primary",                  default: false
-    t.string   "balanced_verification_id"
-    t.string   "bank_name"
-    t.string   "holder_name"
+    t.boolean  "primary",        default: false
     t.string   "routing_number"
+    t.boolean  "payout",         default: false
   end
 
   add_index "payments", ["user_id"], name: "index_payments_on_user_id", using: :btree
@@ -213,10 +210,11 @@ ActiveRecord::Schema.define(version: 20150314011623) do
   create_table "payouts", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "job_id"
-    t.integer  "status_cd",  default: 0
+    t.integer  "status_cd",          default: 0
     t.integer  "amount"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "stripe_transfer_id"
   end
 
   create_table "photo_previews", force: :cascade do |t|
@@ -302,12 +300,11 @@ ActiveRecord::Schema.define(version: 20150314011623) do
 
   create_table "transactions", force: :cascade do |t|
     t.string   "stripe_charge_id"
-    t.string   "balanced_charge_id"
     t.integer  "status_cd"
     t.string   "failure_message"
     t.integer  "booking_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "amount"
   end
 
@@ -342,7 +339,6 @@ ActiveRecord::Schema.define(version: 20150314011623) do
     t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
-    t.string   "balanced_customer_id"
     t.integer  "role_cd"
     t.string   "secondary_phone"
     t.string   "activation_state"

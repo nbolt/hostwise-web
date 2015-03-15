@@ -4,24 +4,11 @@ script#add-payment-modal type="text/ng-template"
       .step.one.active
         .header.credit-card.active
           .text Add Credit Card
-        .header.ach
-          .text Add ACH Payment
         .flash
         .content
           .payment-method
             .text Select Payment Method
             input type='hidden' ui-select2='paymentMethodHash()' ng:model='payment_method' value='credit-card'
-          .payment-tab.ach
-            .field.name
-              .label Name On Account
-              input ng:model='bank.name'
-            .row.two
-              .field.account-number
-                .label Account Number
-                input ng:model='bank.account_number'
-              .field.routing-number
-                .label Routing Number
-                input ng:model='bank.routing_number'
           .payment-tab.credit-card.active
             .field.card-number
               .label Card Number
@@ -37,12 +24,3 @@ script#add-payment-modal type="text/ng-template"
           .buttons
             .button.teal ng:click='add_payment()'
               .text Add Payment
-      .step.two.hide
-        .header.active
-          .text ACH Method Added
-        .content.center
-          =t('ach.verification')
-        .footer
-          .buttons
-            .button.teal ng:click='close()'
-              .text Close

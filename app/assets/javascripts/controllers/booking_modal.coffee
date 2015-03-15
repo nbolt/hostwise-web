@@ -83,16 +83,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
             else
               flash 'failure', rsp.message
               defer.reject() if defer
-    else
-      balanced.bankAccount.create $scope.bank, (rsp) ->
-        if rsp.status_code != 201
-          flash 'failure', rsp.errors[0].description
-          defer.reject() if defer
-        else
-          $http.post('/payments/add',{balanced_id:rsp.bank_accounts[0].id,payment_method:$scope.payment_method,spinner:true}).success (rsp) ->
-            if rsp.success
-              $scope.$emit 'fetch_user'
-              defer.resolve rsp.payment.id if defer
 
   $scope.book = ->
     unless $scope.booking
