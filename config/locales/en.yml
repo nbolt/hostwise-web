@@ -43,5 +43,3 @@ en:
     modal:
       extras_title: 'Select Extras'
       services_title: 'Select Services'
-  ach:
-    verification: "We've made 2 small test deposits into your bank account. Check your online bank statement and click the \"Verify Bank Account\" button. Most deposits appear within 1-2 business days."

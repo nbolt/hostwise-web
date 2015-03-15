@@ -1,34 +1,29 @@
 PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
 
   $scope.card = {}
-  $scope.bank = {}
 
   $scope.paymentMethodHash = ->
     {
     dropdownCssClass: 'payment'
     minimumResultsForSearch: -1
-    data: [{id:'credit-card', text:'Credit Card'},{id:'ach', text: 'ACH Bank Transfer'}]
+    data: [{id:'credit-card', text:'Credit Card'}]
     initSelection: (el, cb) -> cb {id:'credit-card', text:'Credit Card'}
     }
 
-  $scope.make_default = (id) ->
-    $http.put('/payments/default', {
-      payment_id: id
-    }).success (rsp) ->
+  $scope.make_default = (payment) ->
+    $http.post("/payments/default/#{payment.id}").success (rsp) ->
       $scope.$emit 'fetch_user'
       flash 'ok', 'Changes updated successfully!', true
 
-  $scope.open_deletion = (event) ->
-    $scope.payment_id = $(event.currentTarget).parent().attr('id').split('-')[1]
-    $scope.payment_info = $(event.currentTarget).parents('li').find('.details span').text().replace('ending in', '****')
+  $scope.open_deletion = (payment) ->
+    $scope.payment = payment
+    $scope.payment_info = angular.element("payment-#{payment.id}").find('.details span').text().replace('ending in', '****')
     ngDialog.open template: 'delete-payment-modal', controller: 'payment', className: 'warning full', scope: $scope
 
   $scope.cancel_deletion = -> ngDialog.closeAll()
 
-  $scope.delete_payment = (id) ->
-    $http.put('/payments/delete', {
-      payment_id: id
-    }).success (rsp) ->
+  $scope.delete_payment = (payment) ->
+    $http.post("/payments/delete/#{payment.id}").success (rsp) ->
       if rsp.success
         $scope.$emit 'fetch_user'
         ngDialog.closeAll()
@@ -38,8 +33,6 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
   $scope.add_payment = ->
     if $scope.payment_method.id == 'credit-card'
       $scope.add_credit_card()
-    else
-      $scope.add_bank_account()
 
   $scope.$watch 'payment_method', (n,o) -> if o
     el = angular.element('.payment.modal .steps .step.one')
@@ -52,11 +45,13 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       el.find('.content .payment-tab.ach').addClass 'active'
       el.find('.header.ach').addClass 'active'
 
-  $scope.open = (bank_only) ->
-    if bank_only
-      ngDialog.open template: 'add-bank-account-modal', className: 'success payment bank-acconut full', scope: $scope
-    else
-      ngDialog.open template: 'add-payment-modal', className: 'success payment full', scope: $scope
+  $scope.open = ->
+    ngDialog.open template: 'add-payment-modal', className: 'success payment full', scope: $scope
+
+  $scope.make_payout = (payment) ->
+    $http.post("/payments/payout/#{payment.id}").success (rsp) ->
+      $scope.$emit 'fetch_user'
+      flash 'ok', 'Changes updated successfully!', true
 
   $scope.add_credit_card = ->
     exp_date = angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val()
@@ -81,52 +76,10 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
         }).success (rsp) ->
           if rsp.success
             $scope.card = {}
-            $scope.bank = {}
             $scope.$emit 'fetch_user'
             ngDialog.closeAll()
           else
             flash 'failure', rsp.message
-
-  $scope.add_bank_account = ->
-    balanced.bankAccount.create $scope.bank, (rsp) ->
-      if rsp.status_code != 201
-        flash 'failure', rsp.errors[0].description
-      else
-        $http.post('/payments/add',{
-          balanced_id: rsp.bank_accounts[0].id,
-          payment_method: $scope.payment_method,
-          spinner: true
-        }).success (rsp) ->
-          if rsp.success
-            $scope.card = {}
-            $scope.bank = {}
-            $scope.$emit 'fetch_user'
-            if $scope.user.role is 'host'
-              angular.element('.payment.modal .steps .step.one').removeClass('active').addClass('hide')
-              angular.element('.payment.modal .steps .step.two').removeClass('hide').addClass('active')
-            else
-              ngDialog.closeAll()
-
-  $scope.open_verify = (event) ->
-    $scope.payment_id = $(event.currentTarget).parent().attr('id').split('-')[1]
-    ngDialog.open template: 'ach-verification-modal', className: 'success payment full', scope: $scope
-
-  $scope.verify = (id) ->
-    if validate()
-      $http.post('/payments/verify', {
-        payment_id: id
-        deposit1: $scope.deposit1,
-        deposit2: $scope.deposit2,
-        spinner: true
-      }).success (rsp) ->
-        if rsp.success
-          $scope.$emit 'fetch_user'
-          angular.element('.payment.modal .steps .step.one').removeClass('active').addClass('hide')
-          angular.element('.payment.modal .steps .step.two').removeClass('hide').addClass('active')
-        else
-          flash 'failure', rsp.message
-    else
-      flash 'failure', 'Please fill in all required fields'
 
   $scope.close = ->
     ngDialog.closeAll()

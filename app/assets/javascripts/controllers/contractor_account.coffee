@@ -1,7 +1,6 @@
 ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', 'spinner', ($scope, $http, $timeout, $upload, ngDialog, spinner) ->
 
   $scope.contractor_profile = {}
-  $scope.bank = {}
   $scope.files = []
 
   url = window.location.href.split('/')
@@ -42,19 +41,6 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
         flash 'info', message
       else
         flash 'failure', rsp.message
-
-  $scope.add_bank_account = ->
-    if validate(2)
-      balanced.bankAccount.create $scope.bank, (rsp) ->
-        if rsp.status_code != 201
-          flash 'failure', rsp.errors[0].description
-        else
-          $http.post('/payments/add',{balanced_id:rsp.bank_accounts[0].id}).success (rsp) ->
-            if rsp.success
-              spinner.startSpin()
-              window.location = '/jobs'
-    else
-      flash 'failure', 'Please fill in all required fields'
 
   $scope.skip = ->
     spinner.startSpin()

@@ -11,8 +11,6 @@ module Clockwork
         case booking.last_transaction.status_cd
         when 1
           booking.charge!
-        when 2
-          # check if bank debit succeeded 
         end
       end
     when 'jobs.outstanding.process'

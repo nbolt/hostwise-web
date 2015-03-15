@@ -10,25 +10,15 @@
         a href='' ng:click='open()' Add New Payment
       li ng:repeat='payment in user.payment_prefs'
         i.icon-cc ng:if='payment.stripe_id'
-        i.icon-bank ng:if='payment.balanced_id'
         .details
           span ng:if='payment.stripe_id'
             strong
               | {{::payment.card_type}}
             |  ending in {{::payment.last4}}
-          span ng:if='payment.balanced_id'
-            strong
-              | {{::payment.bank_name}}
-            |  - Account ending in {{::payment.last4}}
         .links id='payment-{{::payment.id}}' ng:show='payment.status_cd == 1'
-          a href='' ng:click='make_default({{::payment.id}})' ng:hide='{{::payment.primary}}' Make Default
+          a href='' ng:click='make_default(payment)' ng:hide='{{::payment.primary}}' Make Default
           span.primary ng:show='{{::payment.primary}}' Default
-          a href='' ng:click='open_deletion($event)' Remove
-        .links id='payment-{{::payment.id}}' ng:show='payment.status_cd == 2'
-          .icon-button.teal ng:click='open_verify($event)'
-            .icon
-              i.icon-check
-            .text Verify Bank Account
-=render 'common/add_payment_modal'
-=render 'common/delete_payment_modal'
-=render 'common/ach_verification_modal'
+          a href='' ng:click='open_deletion(payment)' Remove
+
+= render 'common/add_payment_modal'
+= render 'common/delete_payment_modal'
