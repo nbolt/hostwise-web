@@ -76,8 +76,8 @@ class Contractor::UsersController < Contractor::AuthController
       profile.position = :trainee
 
       if profile.valid?
+        profile.user = user
         profile.save
-        user.contractor_profile = profile
 
         user.settings(:new_open_job).sms = true
         user.settings(:new_open_job).email = true
