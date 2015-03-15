@@ -11,7 +11,7 @@ class Job < ActiveRecord::Base
   has_many :contractors, through: :contractor_jobs, source: :user
   has_many :payouts
 
-  as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4
+  as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4, cant_access: 5
   as_enum :state, normal: 0, vip: 1, hidden: 2
   as_enum :occasion, pickup: 0, dropoff: 1
 
@@ -201,7 +201,10 @@ class Job < ActiveRecord::Base
 
         path = pre_path + properties + post_path
         distance = 0
-        (path.length - 1).times {|i| distance += Haversine.distance(path[i].lat, path[i].lng, path[i+1].lat, path[i+1].lng)}
+        (path.length - 1).times do |i|
+          haversine = Haversine.distance(path[i].lat, path[i].lng, path[i+1].lat, path[i+1].lng)
+          distance += haversine if haversine
+        end
 
         pre_path[-1] = jobs.team[0] if pre_path[-1].class == Property
         paths.push([distance, pre_path[1..-1] + jobs_permutation + post_path[0..-2]])
