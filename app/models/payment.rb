@@ -17,15 +17,9 @@ class Payment < ActiveRecord::Base
     stripe_id.present?
   end
 
-  def bank?
-    balanced_id.present?
-  end
-
   def display
     if card?
       "#{card_type.titleize} #{last4}"
-    elsif bank?
-      "Bank #{last4}"
     end
   end
 
