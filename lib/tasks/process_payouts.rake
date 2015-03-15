@@ -11,6 +11,7 @@ namespace :payouts do
             payout.update_attribute :status_cd, 2
           when 'failed'
             payout.update_attribute :status_cd, 3
+          end
         end
 
         user.payouts = user.payouts.order(:created_at)
