@@ -33,17 +33,11 @@ namespace :payouts do
             )
             case rsp.status
             when 'pending'
-              user.payouts.unprocessed.each do |payout|
-                payout.update_attributes(status_cd: 1, stripe_transfer_id: rsp.id)
-              end
+              user.payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 1, stripe_transfer_id: rsp.id)}
             when 'paid'
-              user.payouts.unprocessed.each do |payout|
-                payout.update_attributes(status_cd: 2, stripe_transfer_id: rsp.id)
-              end
+              user.payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 2, stripe_transfer_id: rsp.id)}
             when 'failed'
-              user.payouts.unprocessed.each do |payout|
-                payout.update_attributes(status_cd: 3, stripe_transfer_id: rsp.id)
-              end
+              user.payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 3, stripe_transfer_id: rsp.id)}
             else
               false
             end
