@@ -1,0 +1,192 @@
+.quiz-container
+  .header
+    background-color: teal
+    color: white
+    text-align: center
+    text-transform: uppercase
+    padding: 10px 0
+    h5
+      margin: 20px 0 0
+  .progress
+    margin: 0 auto
+    background-color: dark-teal
+    border: 3px solid dark-teal
+    width: 500px
+    height: 10px
+    border-radius: 12px
+    @media phone
+      width: 320px
+    .bar
+      display: inline-block
+      vertical-align: top
+      background-color: light-teal
+      width: 48px
+      margin: 0 1px
+      height: 10px
+      @media phone
+        width: 30px
+      &.active
+        background-color: lighter-teal
+      &:first-child
+        border-radius: 12px 0 0 12px
+      &:last-child
+        border-radius: 0 12px 12px 0
+  .questions
+    margin: 80px auto
+    padding: 0 25%
+    @media landscape_tablet
+      padding: 0 15%
+    @media portrait_tablet
+      padding: 0 7%
+    @media phone
+      padding: 0 20px
+      margin: 40px auto
+    .q
+      display: none
+      &.active
+        display: block
+      .title
+        .num, .text
+          display: inline-block
+          vertical-align: top
+        .num
+          border-radius: 50%
+          background-color: teal
+          border: 3px solid lighter-teal
+          width: 27px
+          height: 27px
+          line-height: 27px
+          text-align: center
+          color: white
+          font-weight: bold
+          margin-right: 10px
+        .text
+          color: teal
+          font-size: 18px
+          font-weight: bold
+          margin-top: 5px
+          @media phone
+            width: 85%
+            margin-top: 0
+      ul
+        margin: 20px 0 20px 4px
+        padding: 0
+        li
+          color: dark-gray
+          margin: 10px 0
+          height: 22px
+          line-height: 22px
+          @media phone
+            margin: 30px 0
+            line-height: 18px
+          input[type=checkbox]
+            &:checked + label:before
+              font-family: 'hw-icons'
+              background-color: teal
+              color: white
+              content: '\e81a'
+              font-size: 14px
+              line-height: 18px
+              @media phone
+                font-size: 12px
+                line-height: 14px
+          label
+            font-size: 16px
+            margin-right: 0
+            padding-left: 35px
+            &:before
+              border: 2px solid teal
+              height: 18px
+              width: 18px
+              bottom: 0
+              @media phone
+                width: 14px
+                height: 14px
+                top: 3px
+      .actions
+        margin: 50px 0 40px 20px
+        @media phone
+          margin: 50px auto 40px
+        .icon-button
+          display: inline-block
+          vertical-align: top
+          width: 150px
+          margin: 0 20px
+          @media phone
+            width: 44%
+            margin: 0 3%
+          &.next
+            .text
+              float: left
+              width: 109px
+              @media phone
+                width: 68%
+            .icon
+              float: right
+              border-radius: 0 3px 3px 0
+              border-left: thin solid rgba(255, 255, 255, 0.25)
+              border-right: 0
+          &.last
+            &:active
+              .text
+                background-color: darker-gray
+      .order
+        color: teal
+        font-size: 15px
+        margin-left: 155px
+        @media phone
+          margin: 0
+          text-align: center
+  .report
+    display: none
+    text-align: center
+    .score
+      border-radius: 50%
+      background-color: teal
+      border: 20px solid lighter-teal
+      width: 100px
+      height: 100px
+      line-height: 100px
+      text-align: center
+      color: white
+      font-weight: bold
+      font-size: 30px
+      margin: 60px auto
+    .message
+      color: teal
+      margin: 30px 0
+      font-weight: bold
+    .caption
+      margin-bottom: 40px
+      padding: 0 20px
+      color: heavy-gray
+    .icon-button
+      width: 150px
+      margin: 0 auto
+      .text
+        float: left
+        width: 109px
+      .icon
+        float: right
+        border-radius: 0 3px 3px 0
+        border-left: thin solid rgba(255, 255, 255, 0.25)
+        border-right: 0
+    hr
+      border: 0
+      border-top: 1px solid light-gray
+      margin: 0 auto 20px
+      width: 35px
+    .manual
+      color: red
+      text-decoration: none
+      margin: 30px 0
+      display: block
+    &.pass
+      .icon-button
+        margin-bottom: 30px
+    &.fail
+      .score
+        background-color: red
+        border: 20px solid light-red
+      .message
+        color: red

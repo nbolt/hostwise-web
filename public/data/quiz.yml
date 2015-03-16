@@ -1,0 +1,139 @@
+-
+  name: basics
+  questions:
+    -
+      question: What are the 4 sins of housekeeping 1?
+      id: q1
+      options:
+        1: Hair in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair in the bathroom, hair on the bed, laundry, trash
+        4: Hair in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          2
+    -
+      question: What are the 4 sins of housekeeping 2?
+      id: q2
+      options:
+        1: Hair2 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair2 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair2 in the bathroom, hair on the bed, laundry, trash
+        4: Hair2 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          3
+    -
+      question: What are the 4 sins of housekeeping 3?
+      id: q3
+      options:
+        1: Hair3 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair3 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair3 in the bathroom, hair on the bed, laundry, trash
+        4: Hair3 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          4
+    -
+      question: What are the 4 sins of housekeeping 4?
+      id: q4
+      options:
+        1: Hair4 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair4 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair4 in the bathroom, hair on the bed, laundry, trash
+        4: Hair4 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          2
+        -
+          3
+    -
+      question: What are the 4 sins of housekeeping 5?
+      id: q5
+      options:
+        1: Hair5 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair5 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair5 in the bathroom, hair on the bed, laundry, trash
+        4: Hair5 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          4
+    -
+      question: What are the 4 sins of housekeeping 6?
+      id: q6
+      options:
+        1: Hair6 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair6 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair6 in the bathroom, hair on the bed, laundry, trash
+        4: Hair6 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          1
+    -
+      question: What are the 4 sins of housekeeping 7?
+      id: q7
+      options:
+        1: Hair7 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair7 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair7 in the bathroom, hair on the bed, laundry, trash
+        4: Hair7 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          1
+    -
+      question: What are the 4 sins of housekeeping 8?
+      id: q8
+      options:
+        1: Hair8 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair8 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair8 in the bathroom, hair on the bed, laundry, trash
+        4: Hair8 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          1
+        -
+          4
+    -
+      question: What are the 4 sins of housekeeping 9?
+      id: q9
+      options:
+        1: Hair9 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair9 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair9 in the bathroom, hair on the bed, laundry, trash
+        4: Hair9 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          1
+    -
+      question: What are the 4 sins of housekeeping 10?
+      id: q10
+      options:
+        1: Hair10 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair10 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair10 in the bathroom, hair on the bed, laundry, trash
+        4: Hair10 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          1
+    -
+      question: What are the 4 sins of housekeeping 11?
+      id: q11
+      options:
+        1: Hair11 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair11 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair11 in the bathroom, hair on the bed, laundry, trash
+        4: Hair11 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          1
+    -
+      question: What are the 4 sins of housekeeping 12?
+      id: q12
+      options:
+        1: Hair12 in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
+        2: Hair12 in the bathroom, hair on the bed, laundry, unorganized closets
+        3: Hair12 in the bathroom, hair on the bed, laundry, trash
+        4: Hair12 in the bathroom, hair on the bed, unorganized closets, trash
+      answers:
+        -
+          1

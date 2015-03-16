@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     post  '/availability/add' => 'availability#add'
     get   '/notifications' => 'notifications#index'
     put   '/notifications/update' => 'notifications#update'
+    get   '/quiz' => 'quiz#index'
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do
