@@ -64,6 +64,8 @@ Rails.application.routes.draw do
     post  '/checklist/update' => 'jobs#checklist_update' 
     get   '/quiz' => 'quiz#index'
     post  '/quiz/report' => 'quiz#report'
+    post  '/checklist' => 'jobs#checklist'
+    post  '/checklist/update' => 'jobs#checklist_update' 
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do
