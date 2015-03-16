@@ -1,0 +1,62 @@
+.quiz-container ng::controller='quiz'
+  .step1
+    .header
+      h2 It's Quiz Time!
+      .progress
+        .bar ng:repeat="i in total_q() track by $index" ng:class="$index == 0 && 'active'"
+      h5 Answer a few questions to claim jobs
+    .questions
+      .q ng:class="question_class($index+1)" ng:repeat='quiz in chosen_quizzes.questions'
+        .title
+          .num ng:bind='$index+1'
+          .text ng:bind='quiz.question'
+        ul
+          li.cb ng:repeat='option in quiz.options'
+            input type='checkbox' id="{{quiz.id}}.{{$index+1}}" toggle-quiz="{{quiz.id}}.{{$index+1}}"
+            label for="{{quiz.id}}.{{$index+1}}" {{option}}
+        .actions
+          .icon-button.grey.last ng:click='last()'
+            .icon
+              .fa.fa-chevron-left
+            .text Last
+          .icon-button.teal.next ng:click='next()'
+            .text Next
+            .icon
+              .fa.fa-chevron-right
+        .order
+          | Question&nbsp;
+          strong
+            | {{current_q}} of {{max_q}}
+  .report.pass
+    .header
+      h2 Quiz Complete!
+      .progress
+        .bar ng:repeat="i in total_q() track by $index"
+      h5 &nbsp;
+    .score
+      | {{score}}%
+    .message Great Job! You passed!
+    hr
+    .caption Congrats! You can continue to claim open jobs. Keep up the great work!
+    a href='' ng:click='claim()'
+      .icon-button.teal
+        .text Claim Jobs
+        .icon
+          .fa.fa-chevron-right
+  .report.fail
+    .header
+      h2 Quiz Complete!
+      .progress
+        .bar ng:repeat="i in total_q() track by $index"
+      h5 &nbsp;
+    .score
+      | {{score}}%
+    .message Almost! You only missed a few.
+    hr
+    .caption Don't worry - We all make mistakes! Click below to retake the quiz!
+    a href='' ng:click='retake()'
+      .icon-button.red
+        .text Retake
+        .icon
+          .fa.fa-chevron-right
+    a.manual href='' ng:click='review_manual()' Review Manual
