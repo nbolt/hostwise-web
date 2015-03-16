@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     get   '/jobs' => 'jobs#index', as: :contractor_jobs
     get   '/jobs/:id' => 'jobs#show'
     match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
-    match  '/trainee/:action' => 'trainee', via: [:get, :post]
+    match '/trainee/:action' => 'trainee', via: [:get, :post]
     get   '/user/edit' => 'users#edit'
     put   '/user/update' => 'users#update'
     post  '/user/deactivate' => 'users#deactivate'
@@ -60,6 +60,8 @@ Rails.application.routes.draw do
     put   '/notifications/update' => 'notifications#update'
     get   '/quiz' => 'quiz#index'
     post  '/quiz/report' => 'quiz#report'
+    post  '/checklist' => 'jobs#checklist'
+    post  '/checklist/update' => 'jobs#checklist_update' 
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do

@@ -123,64 +123,109 @@
           .name ng:bind='::teammate.name'
           .number ng:bind='::teammate.display_phone_number'
       .section.actions
-        div ng:switch='job_status'
-          .viewports ng:switch-when='blocked'
-            .viewport.active.disabled
-              .arrived-button
-                .arrow
-                  .typcn.typcn-media-play
-                .icon
-                  .typcn.typcn-media-play
-                .text This job can't be started yet
-          .viewports ng:switch-when='completed'
-            .viewport.active.disabled
-              .arrived-button
-                .arrow
-                  .typcn.typcn-media-play
-                .icon
-                  .typcn.typcn-media-play
-                .text This job has already been completed
-          .viewports ng:switch-when='in_progress'
-            .viewport.active
-              .arrived-button ng:click='arrived()'
-                .arrow
-                  .typcn.typcn-media-play
-                .icon
-                  .typcn.typcn-media-play
-                .text Job started
-              .bottom.active
+        div ng:switch='::job.status'
+          .phase.active ng:switch-default=''
+            .header
+              .text Job Not Started
+            .content.top
+              .pad
+                .text Arrived at the job?
+                .text Make a selection to continue.
+                .div.gray
                 .actions
-                  .action.complete ng:click='complete()'
+                  .icon-button.teal ng:click='start()'
                     .icon
-                      .typcn.typcn-tick
-                    .text Complete & go to next job
-          .viewports ng:switch-default=''
-            .viewport.actions.active
-              .arrived-button ng:click='arrived()'
-                .arrow
-                  .typcn.typcn-media-play
-                .icon
-                  .typcn.typcn-media-play
-                .text I've arrived at this job
-              .arrived-dropdown.bottom
-                .actions
-                  .action.start ng:click='start()'
+                      i.icon-alert-ok
+                    .text Start Job
+                  .icon-button.orange
                     .icon
-                      .typcn.typcn-tick
-                    .text Start this job
-            .viewport.side.start
-              .arrived-button ng:click='arrived()'
-                .arrow
-                  .typcn.typcn-media-play
-                .icon
-                  .typcn.typcn-media-play
-                .text Job started
-              .bottom
-                .actions
-                  .action.complete ng:click='complete()'
+                      i.icon-alert-bolt
+                    .text Can't Access Property
+                  .icon-button.orange
                     .icon
-                      .typcn.typcn-tick
-                    .text Complete & go to next job
+                      i.icon-alert-bolt
+                    .text Property Occupied
+          .phase.active ng:switch-when='blocked'
+            .header
+              .text Job Cannot be Started Yet
+            .content.top ng:switch='job.blocker'
+              .pad
+                i.icon-pw
+                .text This job cannot be started until
+                .text.strong ng:bind='::job.date_text_2' ng:switch-when='not_today'
+                .text.strong ng:switch-when='prev_job' You complete your previously scheduled job.
+          .phase.active ng:switch-when='cant_access'
+            .header.warning
+              .text Can't Access / Occupied
+            .content.top
+              .pad
+                .text Please call customer for instructions and wait 30 minutes before leaving.
+          .phase.active ng:switch-when='completed'
+            .header
+              .text Job Completed
+            .content
+              .pad
+                .stat
+                  i.icon-timer-outline
+                  .text Estimated Time
+                  .value ng:bind='::job.estimated_time'
+                .stat
+                  i.icon-clock
+                  .text Total Time
+                  .value ng:bind='::job.total_time'
+                .stat
+                  i.icon-cash
+                  .text Total Payout
+                  .value ng:bind='::job.payout'
+          .phase.in_progress ng:switch-when='in_progress'
+            .header
+              .text Job in Progress...
+          .phase.arrival ng:class='arrival_class()'
+            .header
+              .text Arrival Tasks
+            .content
+              .tabs
+                .tab.arrival.active
+                  .icon
+                    i.icon-flag
+                .tab.damage
+                  .icon
+                    i.icon-mag
+                .tab.inventory
+                  .icon
+                    i.icon-count
+                /.tab.confirmation
+                /  .icon
+                /    i.icon-job-complete
+              .pad
+                .tab.arrival.active
+                  .title When You Arrive
+                  .div.teal
+                  .checklist
+                    .check ng:class="check(checklist.checklist_settings.arrival_tasks.dishes)"
+                      input type='checkbox' id='check-dishes' ng:model='checklist.checklist_settings.arrival_tasks.dishes'
+                      label for='check-dishes'
+                        .strike
+                        strong Dishes:
+                        |  load and start dishwasher
+                    .check ng:class="check(checklist.checklist_settings.arrival_tasks.bathrooms)"
+                      input type='checkbox' id='check-bathrooms' ng:model='checklist.checklist_settings.arrival_tasks.bathrooms'
+                      label for='check-bathrooms'
+                        .strike
+                        strong Bathrooms:
+                        |  pre-soak shower/tub/toilet
+                  .div.teal
+                  .icon-button.teal.right ng:class='damage_class()' ng:click='to_damage()'
+                    .icon
+                      .typcn.typcn-chevron-right
+                    .text Damage Inspection
+          .phase.cleaning
+            .header
+              .text Begin Cleaning
+          .phase.qa
+            .header
+              .text Quality Assurance
+
   .deactivate
     | Do you wish to
     span ng:click='cancel_modal()'  cancel this job?

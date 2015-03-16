@@ -257,6 +257,118 @@
             font-size: 0.8em
         @media portrait_tablet
           font-size: 1em
+      &.actions
+        .phase
+          &.active
+            .header
+              background-color: teal
+              color: white
+              border-bottom: 0
+            .content
+              max-height: 350px
+          &.in_progress
+            .header
+              background-color: light-teal
+              color: white
+              border-bottom: thin solid dark-teal
+            .content
+              max-height: 0
+          .header
+            background-color: #ccc
+            font-size: 1.2em
+            font-weight: 600
+            text-align: center
+            color: #999
+            padding: 15px
+            border-bottom: thin solid #999
+            transition: background-color .5s ease-in-out, color .5s ease-in-out
+            &.warning
+              background-color: orange
+          &:last-child
+            .header
+              border-bottom: 0
+          .content
+            transition: max-height .5s ease-in-out
+            box-sizing: border-box
+            overflow: hidden
+            max-height: 0
+            &.top
+              text-align: center
+            .pad
+              padding: 20px
+              .tab
+                display: none
+                &.active
+                  display: block
+            > i
+              color: #ccc
+              font-size: 1.5em
+            .text
+              color: #B8B8B8
+              &:first-child
+                margin: 10px 0 6px
+              &.strong
+                color: teal
+                font-weight: 600
+                font-size: 1.1em
+                margin-top: 2px
+            .title
+              font-weight: 600
+              color: teal
+            .div
+              height: 1px
+              &.gray
+                border-bottom: thin solid #B8B8B8
+                width: 140px
+                margin: 40px auto 30px
+              &.teal
+                border-bottom: thin solid teal
+                margin: 20px 0
+            .icon-button
+              width: 80%
+              margin: 15px auto
+              .text
+                color: white
+            .checklist
+              .check
+                margin: 18px 0
+                .strike
+                  display: none
+                  position: absolute
+                  border-bottom: thin solid darker-gray
+                  top: 11px
+                  left: 0
+                  right: 0
+                input
+                  margin-right: 8px
+                label
+                  color: darker-gray
+                  position: relative
+                &.complete
+                  .strike
+                    display: block
+          .tabs
+            background-color: teal
+            text-align: center
+            .tab
+              background-color: light-teal
+              color: white
+              width: 30%
+              height: 50px
+              border-top-left-radius: 3px
+              border-top-right-radius: 3px
+              display: inline-block
+              vertical-align: top
+              margin-right: 5%
+              font-size: 1.6em
+              overflow: auto
+              .icon
+                margin-top: 8px
+              &:last-child
+                margin-right: 0
+              &.active
+                background-color: white
+                color: teal
     .special-column
       #map
         height: 325px
