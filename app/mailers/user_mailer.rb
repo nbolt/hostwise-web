@@ -165,7 +165,7 @@ class UserMailer < MandrillMailer::TemplateMailer
       payment_method = booking.payment.stripe_id.present? ? booking.payment.card_type : booking.payment.bank_name
       mandrill_mail template: 'service-completed',
                     subject: 'Thank you for using HostWise',
-                    to: {email: property.user.email, name: property.user.name},
+                    to: {email: booking.property.user.email, name: booking.property.user.name},
                     vars: {
                       'DATE' => date,
                       'NICKNAME' => booking.property.nickname,
