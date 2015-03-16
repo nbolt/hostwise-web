@@ -80,14 +80,29 @@ class Contractor::JobsController < Contractor::AuthController
         if prev_job.status == :completed
           render json: { success: true, status: 'active' }
         else
-          render json: { success: true, status: 'blocked' }
+          render json: { success: true, status: 'blocked', blocker: 'prev_job' }
         end
       else
         render json: { success: true, status: 'active' }
       end
     else
-      render json: { success: true, status: 'blocked' }
+      render json: { success: true, status: 'blocked', blocker: 'not_today' }
     end
+  end
+
+  def checklist
+    checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
+    render json: checklist.to_json(methods: :checklist_settings)
+  end
+
+  def checklist_update
+    checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
+    case params[:type]
+    when 'setting'
+      checklist.settings(params[:category].to_sym).send("#{params[:item]}=", params[:value])
+      checklist.save
+    end
+    render json: { success: true }
   end
 
 end
