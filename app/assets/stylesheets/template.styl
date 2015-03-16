@@ -171,6 +171,17 @@ input[type=file]
     background-color: border-gray
     .icon, &:hover
       background-color: dark-gray
+  &.disabled
+    background-color: #ccc
+    &:hover
+      background-color: #ccc
+    &:active
+      .text
+        background-color: #ccc
+    .icon
+      background-color: #C1C1C1
+    .icon, .text
+      color: #999 !important
 
 .select2-container
   vertical-align: top
