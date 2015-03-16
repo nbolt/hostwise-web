@@ -50,9 +50,9 @@ class Booking < ActiveRecord::Base
         when 'pool'
           rsp[:pool] = PRICING['pool']
         when 'patio'
-          rsp[:patio] = PRICING['patio'] unless services.index pool_service
+          rsp[:patio] = PRICING['patio']
         when 'windows'
-          rsp[:windows] = PRICING['windows'] unless services.index pool_service
+          rsp[:windows] = PRICING['windows']
         when 'preset'
           rsp[:preset] = PRICING['preset'][property.beds]
       end
