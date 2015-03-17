@@ -1,13 +1,4 @@
 .container.contractor ng:controller='trainee_schedule'
-  .page-title
-    .icon
-      .typcn.typcn-home-outline
-    .text Dashboard
-
-  .welcome Welcome, {{user.first_name}}.
-  .message
-    .text Here's your training schedule:
-
   .schedule ng:repeat='training in user.training_jobs'
     .head
       .right ng:bind='::training.date'

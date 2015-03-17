@@ -1,13 +1,4 @@
 .container.contractor ng:controller='contractor_dash'
-  .page-title
-    i.icon-house
-    .text Dashboard
-  .welcome Welcome back, {{user.first_name}}.
-  .message
-    .text ng:show='newbie()'
-      | Congratulations! You're all ready to start accepting jobs.
-    .text ng:show='!newbie()'
-      | Here's a snapshot of what your day is looking like.
   .schedule ng:show='user.jobs'
     .head
       .right ng:bind='::today'
