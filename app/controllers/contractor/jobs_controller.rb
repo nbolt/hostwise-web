@@ -4,7 +4,8 @@ class Contractor::JobsController < Contractor::AuthController
 
   def index
     completed_jobs = Job.standard.past(current_user).count
-    last_quiz = QuizStage.last_taken(current_user.contractor_profile)
+    passed_quizzes = QuizStage.passed(current_user.contractor_profile)
+    last_quiz = passed_quizzes.count > 0 ? passed_quizzes[0] : nil
     take_at = last_quiz.present? ? last_quiz.next : 0
 
     if completed_jobs == take_at
