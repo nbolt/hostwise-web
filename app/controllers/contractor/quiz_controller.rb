@@ -1,5 +1,4 @@
 class Contractor::QuizController < Contractor::AuthController
-
   def report
     quiz = QuizStage.new
     quiz.score = params[:score]
@@ -9,5 +8,4 @@ class Contractor::QuizController < Contractor::AuthController
     quiz.save
     render json: { success: true }
   end
-  
 end
