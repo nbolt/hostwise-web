@@ -65,20 +65,13 @@
           font-size: 18px
           font-weight: bold
           margin-top: 5px
-          @media phone
-            width: 85%
-            margin-top: 0
+          width: 85%
       ul
         margin: 20px 0 20px 4px
         padding: 0
         li
           color: dark-gray
-          margin: 10px 0
-          height: 22px
-          line-height: 22px
-          @media phone
-            margin: 30px 0
-            line-height: 18px
+          margin: 30px 0
           input[type=checkbox]
             &:checked + label:before
               font-family: 'hw-icons'
@@ -99,6 +92,7 @@
               height: 18px
               width: 18px
               bottom: 0
+              top: 0
               @media phone
                 width: 14px
                 height: 14px
@@ -190,3 +184,7 @@
         border: 20px solid light-red
       .message
         color: red
+      .icon-button
+        &:active
+          .text
+            background-color: dark-red

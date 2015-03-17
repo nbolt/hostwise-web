@@ -28,12 +28,14 @@ QuizCtrl = ['$scope', '$http', 'spinner', ($scope, $http, spinner) ->
     else
       $scope.current_q++
       show()
+    scroll 0
     return false
 
   $scope.last = ->
     unless $scope.current_q is 1
       $scope.current_q--
       show()
+    scroll 0
     return false
 
   $scope.claim = ->
@@ -69,6 +71,11 @@ QuizCtrl = ['$scope', '$http', 'spinner', ($scope, $http, spinner) ->
     angular.element(".questions .q.q#{$scope.current_q}").addClass('active')
     angular.element('.progress .bar').removeClass('active')
     angular.element(".progress .bar:lt(#{$scope.current_q})").addClass('active')
+
+  scroll = (position) ->
+    angular.element('body, html').animate
+      scrollTop: position
+    , 'fast'
 
 ]
 
