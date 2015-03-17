@@ -12,13 +12,15 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
         $http.put('/users/' + $scope.token + '/activated', {
           user: $scope.user
           contractor_profile: $scope.contractor_profile
+          spinner: true
         }).success (rsp) ->
           if rsp.success
             spinner.startSpin()
-            scroll 0
-            goto 'two'
             send_contract()
             submit_background_check()
+            spinner.stopSpin()
+            scroll 0
+            goto 'two'
           else
             flash 'failure', rsp.message
       else
