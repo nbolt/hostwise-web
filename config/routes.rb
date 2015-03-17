@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     get   '/notifications' => 'notifications#index'
     put   '/notifications/update' => 'notifications#update'
     get   '/quiz' => 'quiz#index'
+    post  '/quiz/report' => 'quiz#report'
   end
 
   scope module: 'admin', constraints: { subdomain: 'admin' } do

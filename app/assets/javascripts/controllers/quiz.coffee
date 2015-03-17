@@ -59,12 +59,14 @@ QuizCtrl = ['$scope', '$http', 'spinner', ($scope, $http, spinner) ->
 
   report = ->
     $scope.score = calculate_score()
+    pass = $scope.score >= $scope.passing_score
     angular.element('.step1').hide()
     angular.element('.progress .bar').addClass('active')
-    if $scope.score >= $scope.passing_score
-      angular.element('.report.pass').show()
-    else
-      angular.element('.report.fail').show()
+    $http.post('/quiz/report', { score: $scope.score, pass: pass }).success (rsp) ->
+      if pass
+        angular.element('.report.pass').show()
+      else
+        angular.element('.report.fail').show()
 
   show = ->
     angular.element('.questions .q').removeClass('active')

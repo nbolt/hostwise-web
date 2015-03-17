@@ -3,11 +3,19 @@ class Contractor::JobsController < Contractor::AuthController
   expose(:job) { Job.find params[:id] }
 
   def index
-    case current_user.contractor_profile.position
-    when :trainee
-      redirect_to '/'
-    when :fired
-      redirect_to '/'
+    completed_jobs = Job.standard.past(current_user).count
+    last_quiz = QuizStage.last_taken(current_user.contractor_profile)
+    take_at = last_quiz.present? ? last_quiz.next : 0
+
+    if completed_jobs == take_at
+      redirect_to '/quiz'
+    else
+      case current_user.contractor_profile.position
+        when :trainee
+          redirect_to '/'
+        when :fired
+          redirect_to '/'
+      end
     end
   end
 
