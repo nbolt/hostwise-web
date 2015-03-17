@@ -139,8 +139,9 @@ class Booking < ActiveRecord::Base
   end
 
   def same_day_cancellation
+    timezone = Timezone::Zone.new :latlon => [property.lat, property.lng]
     day = (self.date.to_date - Date.today).to_i
-    return true if day == 0 || (day <= 1 && Time.now.hour >= 22) # subject to cancellation if same day or the day before after 10pm
+    return true if day == 0 || (day <= 1 && timezone.time(Time.now).hour >= 22) # subject to cancellation if same day or the day before after 10pm
     return false
   end
 

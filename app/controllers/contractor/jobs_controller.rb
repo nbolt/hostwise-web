@@ -69,11 +69,12 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def status
+    timezone = Timezone::Zone.new :latlon => [job.booking.property.lat, job.booking.property.lng]
     if job.status == :completed
       render json: { success: true, status: 'completed' }
     elsif job.status == :in_progress
       render json: { success: true, status: 'in_progress' }
-    elsif job.date == Time.now.to_date
+    elsif job.date == (timezone.time Time.now).to_date
       prev_job = job.previous_job current_user
       if prev_job
         if prev_job.status == :completed

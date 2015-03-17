@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150315030119) do
+ActiveRecord::Schema.define(version: 20150317052314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,17 @@ ActiveRecord::Schema.define(version: 20150315030119) do
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
   add_index "bookings", ["property_id"], name: "index_bookings_on_property_id", using: :btree
 
+  create_table "checklists", force: :cascade do |t|
+    t.integer  "contractor_job_id"
+    t.string   "kitchen_photo"
+    t.string   "bedroom_photo"
+    t.string   "bathroom_photo"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "checklists", ["contractor_job_id"], name: "index_checklists_on_contractor_job_id", using: :btree
+
   create_table "cities", force: :cascade do |t|
     t.integer  "county_id"
     t.string   "name",       limit: 255
@@ -104,6 +115,15 @@ ActiveRecord::Schema.define(version: 20150315030119) do
   end
 
   add_index "contractor_jobs", ["user_id"], name: "index_contractor_jobs_on_user_id", using: :btree
+
+  create_table "contractor_photos", force: :cascade do |t|
+    t.string   "photo"
+    t.integer  "checklist_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "contractor_photos", ["checklist_id"], name: "index_contractor_photos_on_checklist_id", using: :btree
 
   create_table "contractor_profiles", force: :cascade do |t|
     t.integer  "user_id"
@@ -262,6 +282,15 @@ ActiveRecord::Schema.define(version: 20150315030119) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "quiz_stages", force: :cascade do |t|
+    t.integer  "contractor_profile_id"
+    t.integer  "took_at"
+    t.integer  "score"
+    t.boolean  "pass"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "service_notifications", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "zip"
@@ -375,7 +404,9 @@ ActiveRecord::Schema.define(version: 20150315030119) do
   add_foreign_key "booking_users", "users"
   add_foreign_key "bookings", "payments"
   add_foreign_key "bookings", "properties"
+  add_foreign_key "checklists", "contractor_jobs"
   add_foreign_key "contractor_jobs", "users"
+  add_foreign_key "contractor_photos", "checklists"
   add_foreign_key "job_distribution_centers", "distribution_centers"
   add_foreign_key "job_distribution_centers", "jobs"
   add_foreign_key "payments", "users"

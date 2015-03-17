@@ -397,6 +397,7 @@ GEM
     tilt (1.4.1)
     timers (4.0.1)
       hitimes
+    timezone (0.3.8)
     tins (1.3.5)
     turbolinks (2.5.3)
       coffee-rails
@@ -474,6 +475,7 @@ DEPENDENCIES
   stripe-rails
   stylus!
   sucker_punch
+  timezone
   turbolinks
   twilio-ruby
   uglifier
