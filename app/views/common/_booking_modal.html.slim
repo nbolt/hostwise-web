@@ -266,8 +266,8 @@ script#booking-modal type="text/ng-template"
             .date ng:bind='::selected_date_confirmation'
           .check-container.cancellation
             .border
-              .text Cancellation Fee
-              .fee ${{pricing.cancellation}}
+              .text Last Minute Booking Fee
+              .fee Greater of ${{pricing.cancellation}} or 20% of Booking
             .caption To avoid a fee, cancelling 24 hours in advance incurs no extra charge
           .actions
             .action.cancel ng:click='to_booking_selection()'

@@ -107,7 +107,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
               analytics.track('Made a Booking', {
                 booking_id: booking.id
                 revenue: booking.cost
-              })  
+              })
             null
           else
             flash 'failure', rsp.message
@@ -131,7 +131,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
       cancellation_cost = 0 if cancellation_cost < 0
       twenty_percent = +(cancellation_cost * 0.2).toFixed(2)
-      $scope.pricing.cancellation = twenty_percent if twenty_percent > $scope.pricing.cancellation
+      $scope.cancellation_fee = twenty_percent if twenty_percent > $scope.pricing.cancellation
       _($scope.chosen_dates).each (v,k) ->
         _(v).each (d) ->
           day = {}
