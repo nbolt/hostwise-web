@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     post  '/payments/add' => 'payments#add'
     post  '/payments/:action/:id' => 'payments'
     post  '/background_checks' => 'background_checks#create'
+    post  '/docusign/send' => 'docusign#create'
     get   '/availability' => 'availability#index'
     post  '/availability/add' => 'availability#add'
     get   '/notifications' => 'notifications#index'
