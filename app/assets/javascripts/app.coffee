@@ -30,14 +30,15 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
               _(training_jobs).each (jobs) ->
                 training = {}
                 training.jobs = _(jobs).reject (job) -> job.distribution
-                training.distribution_job = _(jobs).filter((job) -> job.distribution)[0]
+                training.distribution_job = _(jobs).find (job) -> job.occasion_cd == 0
                 training.date = moment(training.jobs[0].booking.date, 'YYYY-MM-DD').format 'ddd, MMM D'
                 $scope.user.training_jobs.push training
               $scope.user_fetched.resolve()
             else
               $http.get('/user/jobs_today').success (rsp) ->
                 $scope.user.jobs_today = rsp
-                $scope.user.distribution_job = _($scope.user.jobs_today).find (job) -> job.distribution
+                $scope.user.pickup_job = _($scope.user.jobs_today).find (job) -> job.occasion_cd == 0
+                $scope.user.dropoff_job = _($scope.user.jobs_today).find (job) -> job.occasion_cd == 1
                 $scope.user.standard_jobs = _($scope.user.jobs_today).reject (job) -> job.distribution
                 $scope.user_fetched.resolve()
 

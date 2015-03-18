@@ -47,7 +47,7 @@ class Job < ActiveRecord::Base
 
   def next_job contractor=nil
     contractor ||= current_user
-    contractor.jobs.standard.on_date(date).where('contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
+    contractor.jobs.on_date(date).where('contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
   end
 
   def previous_job contractor
@@ -211,8 +211,10 @@ class Job < ActiveRecord::Base
     chosen_path[1].each_with_index do |location, index|
       if location.class == DistributionCenter
         if index == 0
+          jobs.distribution.pickup[0].distribution_center = location
           ContractorJobs.where(job_id: jobs.distribution.pickup[0].id, user_id: contractor.id)[0].update_attribute :priority, index
         else
+          jobs.distribution.dropoff[0].distribution_center = location
           ContractorJobs.where(job_id: jobs.distribution.dropoff[0].id, user_id: contractor.id)[0].update_attribute :priority, index
         end
       else
