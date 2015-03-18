@@ -34,7 +34,7 @@ class Contractor::JobsController < Contractor::AuthController
 
   def begin
     job.update_attribute :status_cd, 2
-    render json: { success: true }
+    render json: { success: true, status_cd: job.status_cd }
   end
 
   def claim

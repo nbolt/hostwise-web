@@ -1,6 +1,6 @@
 class Checklist < ActiveRecord::Base
   belongs_to :contractor_job, class_name: 'ContractorJobs'
-  has_many :contractor_photos
+  has_many :contractor_photos, dependent: :destroy
 
   has_settings do |s|
     s.key :arrival_tasks, defaults: { dishes: false, bathrooms: false }
