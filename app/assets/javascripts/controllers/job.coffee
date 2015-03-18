@@ -20,7 +20,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
     $http.get($window.location.href + '/status').success (rsp) ->
       $scope.job.status = rsp.status
-      $scope.job.blocker = rsp.blocker  
+      $scope.job.blocker = rsp.blocker
 
     $http.get('/man_hrs').success (rsp) ->
       man_hrs = rsp[$scope.job.booking.property.property_type][$scope.job.booking.property.bedrooms][$scope.job.booking.property.bathrooms]
@@ -66,7 +66,8 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
               })
 
 
-  $scope.completed_job = -> $scope.job.status_cd == 3
+  $scope.completed_job = ->
+    $scope.job and $scope.job.status_cd == 3
 
   $scope.arrived = ->
     angular.element('.arrived-dropdown').css 'max-height', 80
@@ -154,7 +155,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
         'active'
     else
       ''
-  
+
   $scope.qa_class = ->
     if $scope.job && $scope.job.status_cd == 3
       'hidden'
@@ -162,7 +163,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       if $scope.checklist.checklist_settings.cleaning.cleaned then 'active' else ''
     else
       ''
-  
+
   $scope.damage_class = -> if $scope.in_progress() && $scope.arrival_tasks() then '' else 'disabled'
   $scope.inventory_class = -> if $scope.in_progress() && $scope.damage_inspection() then '' else 'disabled'
   $scope.begin_cleaning_class = ->
@@ -277,11 +278,11 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.complete_job = ->
     $http.post("/jobs/#{$scope.job.id}/complete").success (_rsp) ->
       $scope.next_job = rsp.next_job
-      
+
       $http.get($window.location.href + '/status').success (rsp) ->
         $scope.job.status_cd = _rsp.status_cd
         $scope.job.status = rsp.status
-        $scope.job.blocker = rsp.blocker 
+        $scope.job.blocker = rsp.blocker
 
   $scope.range = (n) -> if n then _.range 0, n else []
 
