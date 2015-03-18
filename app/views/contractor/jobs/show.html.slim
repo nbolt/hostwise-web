@@ -600,18 +600,21 @@
                       .new-photo ng:hide='checklist.kitchen_photo.url' ng-file-select='' ng-model='kitchen_photo' ng-multiple='false'
                         .icon
                           i.icon-cam
+                      .label 1 Kitchen
                     .snap-photo.bedroom
                       .kitchen-photo ng:show='checklist.bedroom_photo.url'
                         img ng:src='{{checklist.bedroom_photo.url}}'
                       .new-photo ng:hide='checklist.bedroom_photo.url' ng-file-select='' ng-model='bedroom_photo' ng-multiple='false'
                         .icon
                           i.icon-cam
+                      .label 1 Bedroom
                     .snap-photo.bathroom
                       .kitchen-photo ng:show='checklist.bathroom_photo.url'
                         img ng:src='{{checklist.bathroom_photo.url}}'
                       .new-photo ng:hide='checklist.bathroom_photo.url' ng-file-select='' ng-model='bathroom_photo' ng-multiple='false'
                         .icon
                           i.icon-cam
+                      .label 1 Bathroom
                   .text
                     | When you tap
                     strong  "Complete This Job!"

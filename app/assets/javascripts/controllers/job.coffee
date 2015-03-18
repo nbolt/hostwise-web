@@ -264,39 +264,44 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.complete_cleaning = -> $scope.checklist.checklist_settings.cleaning.cleaned = true
 
   $scope.complete_bedroom = (num) ->
-    if num == $scope.job.booking.property.bedrooms
-      angular.element('.phase.qa .tab').removeClass 'active'
-      angular.element('.phase.qa .tab.bathrooms').addClass 'active'
-      null
-    else
-      $scope.active_bedroom += 1
+    if $scope.bedroom_class(num) == ''
+      if num == $scope.job.booking.property.bedrooms
+        angular.element('.phase.qa .tab').removeClass 'active'
+        angular.element('.phase.qa .tab.bathrooms').addClass 'active'
+        null
+      else
+        $scope.active_bedroom += 1
 
   $scope.complete_bathroom = (num) ->
-    if num == $scope.job.booking.property.bathrooms
-      angular.element('.phase.qa .tab').removeClass 'active'
-      angular.element('.phase.qa .tab.kitchen').addClass 'active'
-      null
-    else
-      $scope.active_bathroom += 1
+    if $scope.bathroom_class(num) == ''
+      if num == $scope.job.booking.property.bathrooms
+        angular.element('.phase.qa .tab').removeClass 'active'
+        angular.element('.phase.qa .tab.kitchen').addClass 'active'
+        null
+      else
+        $scope.active_bathroom += 1
 
   $scope.complete_kitchen = ->
-    angular.element('.phase.qa .tab').removeClass 'active'
-    angular.element('.phase.qa .tab.living-room').addClass 'active'
-    null
+    if $scope.kitchen_class() == ''
+      angular.element('.phase.qa .tab').removeClass 'active'
+      angular.element('.phase.qa .tab.living-room').addClass 'active'
+      null
 
   $scope.complete_living = ->
-    angular.element('.phase.qa .tab').removeClass 'active'
-    angular.element('.phase.qa .tab.photos').addClass 'active'
-    null
+    if $scope.living_class() == ''
+      angular.element('.phase.qa .tab').removeClass 'active'
+      angular.element('.phase.qa .tab.photos').addClass 'active'
+      null
 
   $scope.complete_job = ->
-    $http.post("/jobs/#{$scope.job.id}/complete").success (_rsp) ->
-      $scope.next_job = _rsp.next_job
+    if $scope.complete_class() == ''
+      $http.post("/jobs/#{$scope.job.id}/complete", {spinner:true}).success (_rsp) ->
+        $scope.next_job = _rsp.next_job
 
-      $http.get($window.location.href + '/status').success (rsp) ->
-        $scope.job.status_cd = _rsp.status_cd
-        $scope.job.status = rsp.status
-        $scope.job.blocker = rsp.blocker
+        $http.get($window.location.href + '/status').success (rsp) ->
+          $scope.job.status_cd = _rsp.status_cd
+          $scope.job.status = rsp.status
+          $scope.job.blocker = rsp.blocker
 
   $scope.range = (n) -> if n then _.range 0, n else []
 
