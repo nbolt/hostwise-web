@@ -22,7 +22,7 @@
         i.icon-job-order
         .text 9:45 AM
         .location
-          | | &nbsp;Distribution Center &mdash; {{user.pickup_job.distribution_center.short_address}}
+          | | &nbsp;Distribution Center
       .bottom ng:hide='user.pickup_job.status_cd == 3'
         .pad
           .right
@@ -47,6 +47,8 @@
             .supply ng:show='::user.pickup_job.toiletries'
               .type Toiletry Kits:
               .num ng:bind='::user.pickup_job.toiletries'
+      .dc-address
+        | {{user.pickup_job.distribution_center.full_address}}
     .jobs
       .job ng:repeat='job in user.standard_jobs' ng:class="job.status_cd == 3 && 'complete'"
         .flag.vip ng:if='job.state_cd == 1'
@@ -92,9 +94,9 @@
         .right
           i.icon-acc-open
         i.icon-job-order
-        .text 9:45 AM
+        .text END OF DAY
         .location
-          | | &nbsp;Distribution Center &mdash; {{user.dropoff_job.distribution_center.short_address}}
+          | | &nbsp;Distribution Center
       .bottom ng:hide='user.dropoff_job.status_cd == 3'
         .pad
           .right
@@ -102,23 +104,12 @@
               .icon
                 i.icon-check
               .text Done
-          .supplies
-            .text Supplies:
-            .supply ng:show='::user.dropoff_job.king_beds'
-              .type King:
-              .num ng:bind='::user.dropoff_job.king_beds'
-            .supply ng:show='::user.dropoff_job.queen_beds'
-              .type Queen:
-              .num ng:bind='::user.dropoff_job.queen_beds'
-            .supply ng:show='::user.dropoff_job.full_beds'
-              .type Full:
-              .num ng:bind='::user.dropoff_job.full_beds'
-            .supply ng:show='::user.dropoff_job.twin_beds'
-              .type Twin:
-              .num ng:bind='::user.dropoff_job.twin_beds'
-            .supply ng:show='::user.dropoff_job.toiletries'
-              .type Toiletry Kits:
-              .num ng:bind='::user.dropoff_job.toiletries'
+          .return
+            .text RETURN:
+            .supply
+              .type Linens & Towels
+      .dc-address
+        | {{user.dropoff_job.distribution_center.full_address}}
   .earnings
     .total.earning
       .top
