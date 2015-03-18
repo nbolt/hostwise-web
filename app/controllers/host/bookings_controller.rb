@@ -10,7 +10,7 @@ class Host::BookingsController < Host::AuthController
     if params[:services]
       booking.payment = Payment.find params[:payment]
       booking.services.each do |service|
-        booking.services.delete service unless params[:services].find {|s| service.name == s}
+        booking.services.destroy service unless params[:services].find {|s| service.name == s}
       end
       params[:services].each do |service|
         booking.services.push Service.where(name: service)[0] unless booking.services.find {|s| service == s.name}
