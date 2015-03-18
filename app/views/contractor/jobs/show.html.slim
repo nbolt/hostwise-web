@@ -220,7 +220,7 @@
                         strong Bathrooms:
                         |  pre-soak shower/tub/toilet
                   .div.teal
-                  .icon-button.teal.right ng:class='damage_class()' ng:click="to_tab('damage', 'arrival')"
+                  .icon-button.teal.right ng:class='damage_class()' ng:click="to_damage()"
                     .icon
                       .typcn.typcn-chevron-right
                     .text Damage Inspection
@@ -246,7 +246,7 @@
                         .icon
                           i.icon-cam
                   .div.teal
-                  .icon-button.teal.right ng:class='inventory_class()' ng:click="to_tab('inventory', 'arrival')"
+                  .icon-button.teal.right ng:class='inventory_class()' ng:click="to_inventory()"
                     .icon
                       .typcn.typcn-chevron-right
                     .text Inventory Count
