@@ -4,7 +4,7 @@
     .text Jobs
   .tabs
     .tab.open.active ng:click="tab('open')" Open ({{tabs[0].count}})
-    .tab.upcoming ng:click="tab('upcoming')" Upcoming ({{tabs[1].count}})
+    .tab.upcoming ng:click="tab('upcoming')" Claimed ({{tabs[1].count}})
     .tab.past ng:click="tab('past')" Past ({{tabs[2].count}})
   .tab-content
     .tab ng:repeat="tab in tabs" class='{{tab.name}}'
