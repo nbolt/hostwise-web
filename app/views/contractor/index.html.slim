@@ -15,38 +15,38 @@
         .icon
           .typcn.typcn-time
         .text Congratulations! You're finished for the day.
-    .distribution ng:show='user.distribution_job'
+    .distribution ng:show='user.pickup_job'
       .top
         .right
           i.icon-acc-open
         i.icon-job-order
         .text 9:45 AM
         .location
-          | | &nbsp;Distribution Center
-      .bottom ng:hide='user.distribution_job.status_cd == 3'
+          | | &nbsp;Distribution Center &mdash; {{user.pickup_job.distribution_center.short_address}}
+      .bottom ng:hide='user.pickup_job.status_cd == 3'
         .pad
           .right
-            .icon-button.teal ng:click='done(user.distribution_job)'
+            .icon-button.teal ng:click='done(user.pickup_job)'
               .icon
                 i.icon-check
               .text Done
           .supplies
             .text Supplies:
-            .supply ng:show='::user.distribution_job.king_beds'
+            .supply ng:show='::user.pickup_job.king_beds'
               .type King:
-              .num ng:bind='::user.distribution_job.king_beds'
-            .supply ng:show='::user.distribution_job.queen_beds'
+              .num ng:bind='::user.pickup_job.king_beds'
+            .supply ng:show='::user.pickup_job.queen_beds'
               .type Queen:
-              .num ng:bind='::user.distribution_job.queen_beds'
-            .supply ng:show='::user.distribution_job.full_beds'
+              .num ng:bind='::user.pickup_job.queen_beds'
+            .supply ng:show='::user.pickup_job.full_beds'
               .type Full:
-              .num ng:bind='::user.distribution_job.full_beds'
-            .supply ng:show='::user.distribution_job.twin_beds'
+              .num ng:bind='::user.pickup_job.full_beds'
+            .supply ng:show='::user.pickup_job.twin_beds'
               .type Twin:
-              .num ng:bind='::user.distribution_job.twin_beds'
-            .supply ng:show='::user.distribution_job.toiletries'
+              .num ng:bind='::user.pickup_job.twin_beds'
+            .supply ng:show='::user.pickup_job.toiletries'
               .type Toiletry Kits:
-              .num ng:bind='::user.distribution_job.toiletries'
+              .num ng:bind='::user.pickup_job.toiletries'
     .jobs
       .job ng:repeat='job in user.standard_jobs' ng:class="job.status_cd == 3 && 'complete'"
         .flag.vip ng:if='job.state_cd == 1'
@@ -87,6 +87,38 @@
               .size
                 i.icon-person
                 .text ng:bind='::job.size'
+    .distribution.dropoff ng:show='user.dropoff_job'
+      .top
+        .right
+          i.icon-acc-open
+        i.icon-job-order
+        .text 9:45 AM
+        .location
+          | | &nbsp;Distribution Center &mdash; {{user.dropoff_job.distribution_center.short_address}}
+      .bottom ng:hide='user.dropoff_job.status_cd == 3'
+        .pad
+          .right
+            .icon-button.teal ng:click='done(user.dropoff_job)'
+              .icon
+                i.icon-check
+              .text Done
+          .supplies
+            .text Supplies:
+            .supply ng:show='::user.dropoff_job.king_beds'
+              .type King:
+              .num ng:bind='::user.dropoff_job.king_beds'
+            .supply ng:show='::user.dropoff_job.queen_beds'
+              .type Queen:
+              .num ng:bind='::user.dropoff_job.queen_beds'
+            .supply ng:show='::user.dropoff_job.full_beds'
+              .type Full:
+              .num ng:bind='::user.dropoff_job.full_beds'
+            .supply ng:show='::user.dropoff_job.twin_beds'
+              .type Twin:
+              .num ng:bind='::user.dropoff_job.twin_beds'
+            .supply ng:show='::user.dropoff_job.toiletries'
+              .type Toiletry Kits:
+              .num ng:bind='::user.dropoff_job.toiletries'
   .earnings
     .total.earning
       .top

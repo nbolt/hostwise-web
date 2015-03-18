@@ -19,6 +19,10 @@ class DistributionCenter < ActiveRecord::Base
     end
   end
 
+  def short_address
+    "#{address1} #{zip}"
+  end
+
   private
 
   def standardize_address
