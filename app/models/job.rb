@@ -45,8 +45,9 @@ class Job < ActiveRecord::Base
     ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority
   end
 
-  def next_job contractor
-    contractor.jobs.on_date(date).where('contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
+  def next_job contractor=nil
+    contractor ||= current_user
+    contractor.jobs.standard.on_date(date).where('contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
   end
 
   def previous_job contractor
@@ -125,15 +126,13 @@ class Job < ActiveRecord::Base
     if booking
       contractors.each do |contractor|
         contractor.payouts.create(job_id: self.id, amount: payout(contractor) * 100)
+        job = self.next_job(contractor)
+        TwilioJob.perform_later("+1#{job.booking.property.user.phone_number}", 'HostWise is en route to service your property') if job && job.booking && job.booking.property.user.settings(:porter_en_route).sms
       end
       booking.update_attribute :status_cd, 3
       booking.charge!
     end
     save
-    contractors.each do |contractor|
-      job = self.next_job(contractor)
-      TwilioJob.perform_later("+1#{job.booking.property.user.phone_number}", 'HostWise is en route to service your property') if job.present? && job.booking.property.user.settings(:porter_en_route).sms
-    end
   end
 
   def handle_distribution_jobs user

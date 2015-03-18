@@ -7,6 +7,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
+    $scope.next_job = rsp.next_job.id if rsp.next_job
     $scope.job.contractor_count = $scope.job.contractors.length
     $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
     $scope.job.date_text_2 = moment(rsp.date, 'YYYY-MM-DD').format 'MMMM Do, YYYY'
@@ -275,14 +276,12 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.complete_job = ->
     $http.post("/jobs/#{$scope.job.id}/complete").success (_rsp) ->
+      $scope.next_job = rsp.next_job
+      
       $http.get($window.location.href + '/status').success (rsp) ->
         $scope.job.status_cd = _rsp.status_cd
         $scope.job.status = rsp.status
         $scope.job.blocker = rsp.blocker 
-      #if rsp.next_job
-      #  $window.location = "/jobs/#{rsp.next_job}"
-      #else
-      #  $window.location = '/'
 
   $scope.range = (n) -> if n then _.range 0, n else []
 

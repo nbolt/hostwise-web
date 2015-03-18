@@ -165,18 +165,23 @@
               .text Job Completed
             .content
               .pad
-                .stat
-                  i.icon-timer-outline
-                  .text Estimated Time
-                  .value ng:bind='::job.estimated_time'
-                .stat
-                  i.icon-clock
-                  .text Total Time
-                  .value ng:bind='::job.total_time'
+                /.stat
+                /  i.icon-timer-outline
+                /  .text Estimated Time
+                /  .value ng:bind='::job.estimated_time'
+                /.stat
+                /  i.icon-clock
+                /  .text Total Time
+                /  .value ng:bind='::job.total_time'
                 .stat
                   i.icon-cash
                   .text Total Payout
-                  .value ng:bind='::job.payout'
+                  .value ${{::job.payout}}
+                a href='/jobs/{{next_job}}' ng:show='next_job'
+                  .icon-button.teal.right style='margin-top: 35px'
+                    .icon
+                      .typcn.typcn-chevron-right
+                    .text Go To Next Job
           .phase.complete ng:switch-when='in_progress'
             .header
               .text Job in Progress...
