@@ -72,7 +72,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     null
 
   $scope.start = ->
-    $http.post("/jobs/#{$scope.job.id}/begin")
+    $http.post("/jobs/#{$scope.job.id}/begin").success (rsp) -> $scope.job.status_cd = rsp.status_cd
     angular.element('.actions .phase.active').removeClass('active').addClass('complete').find('.header .text').text 'Job in Progress...'
     angular.element('.actions .phase.arrival').addClass('active')
     null
@@ -170,7 +170,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       sheets = inventory.king_sheets > 0 || inventory.twin_sheets > 0
       pillows = inventory.pillow_count > 0
       towels = inventory.bath_towels > 0 || inventory.hand_towels > 0 || inventory.face_towels > 0 || inventory.bath_mats > 0
-      if inventory && sheets && pillows then '' else 'disabled'
+      if towels && sheets && pillows then '' else 'disabled'
     else
       'disabled'
 
@@ -239,7 +239,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       'disabled'
 
   $scope.to_tab = (tab, phase) ->
-    angular.element('.phase.qa .tab').removeClass 'active'
+    angular.element(".phase.#{phase} .tab").removeClass 'active'
     angular.element(".phase.#{phase} .tab.#{tab}").addClass 'active'
     null
 
@@ -274,8 +274,11 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     null
 
   $scope.complete_job = ->
-    $http.post("/jobs/#{$scope.job.id}/complete").success (rsp) ->
-      $scope.job.status_cd = rsp.status_cd
+    $http.post("/jobs/#{$scope.job.id}/complete").success (_rsp) ->
+      $http.get($window.location.href + '/status').success (rsp) ->
+        $scope.job.status_cd = _rsp.status_cd
+        $scope.job.status = rsp.status
+        $scope.job.blocker = rsp.blocker 
       #if rsp.next_job
       #  $window.location = "/jobs/#{rsp.next_job}"
       #else

@@ -123,7 +123,7 @@
           .name ng:bind='::teammate.name'
           .number ng:bind='::teammate.display_phone_number'
       .section.actions
-        div ng:switch='::job.status'
+        div ng:switch='job.status'
           .phase.active ng:switch-default=''
             .header
               .text Job Not Started
@@ -241,7 +241,7 @@
                         .icon
                           i.icon-cam
                   .div.teal
-                  .icon-button.teal.right ng:class='inventory_class()' ng:click='to_inventory()'
+                  .icon-button.teal.right ng:class='inventory_class()' ng:click="to_tab('inventory', 'arrival')"
                     .icon
                       .typcn.typcn-chevron-right
                     .text Inventory Count
