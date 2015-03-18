@@ -834,7 +834,7 @@ form
           float: right
           .text.completed
             color: white
-            margin: 45px 25px 0 0
+            margin: 40px 25px 0 0
         .beds
           float: right
           margin: 28px 40px 0 0
@@ -918,6 +918,7 @@ form
         color: white
         .photo
           background-color: teal
+          box-shadow: teal_shadow
           .timer i
             color: white
         .address1, .title .icon, .name
@@ -927,6 +928,10 @@ form
         .address
           margin-top: 36px
           font-size: 1em
+        .order
+          background-color: teal
+          color: white
+          box-shadow: inset -1px 0 0 0 rgba(255,255,255,0.25)
         .right
           @media phone
             height: 145px
@@ -944,6 +949,12 @@ form
                 font-size: 2em
             .title
               margin-top: 35px
+              @media portrait_tablet
+                margin-top: 15px
+                max-width: 150px
+              @media phone
+                margin-top: 30px
+                max-width: 170px
               .address
                 color: white
         .column
@@ -1234,14 +1245,15 @@ form
         @media phone
           max-height: 100%
         .pad
-          padding: 24px
+          padding: 24px 18px
         .right
           float: right
           .icon-button
             width: 150px
             margin-top: -10px
             @media phone
-              margin-top: 20px
+              width: 120px
+              margin-top: 10px
         .supplies
           color: dark-gray
           .type, .num, .text
@@ -1250,14 +1262,21 @@ form
           .text
             font-weight: 600
             margin-right: 25px
+            @media portrait_tablet
+              display: none
+            @media phone
+              display: none
           .supply
             margin: 0 23px 0 7px
             display: inline-block
             vertical-align: top
             @media phone
               display: block
+              font-size: 14px
             .type
               color: teal
+              @media phone
+                width: 90px
             .num
               margin-left: 8px
   .earnings
