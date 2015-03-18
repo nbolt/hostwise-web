@@ -245,7 +245,21 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     angular.element(".phase.#{phase} .tab.#{tab}").addClass 'active'
     null
 
-  $scope.to_cleaning = -> $scope.checklist.checklist_settings.inventory_count.complete = true
+  $scope.to_damage = ->
+    if $scope.damage_class() == ''
+      angular.element(".phase.arrival .tab").removeClass 'active'
+      angular.element(".phase.arrival .tab.damage").addClass 'active'
+      null
+
+  $scope.to_inventory = ->
+    if $scope.inventory_class() == ''
+      angular.element(".phase.arrival .tab").removeClass 'active'
+      angular.element(".phase.arrival .tab.inventory").addClass 'active'
+      null
+
+  $scope.to_cleaning = ->
+    if $scope.begin_cleaning_class() == ''
+      $scope.checklist.checklist_settings.inventory_count.complete = true
 
   $scope.complete_cleaning = -> $scope.checklist.checklist_settings.cleaning.cleaned = true
 
