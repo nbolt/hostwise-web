@@ -26,6 +26,7 @@ config/database.yml
 /public/property_photo/
 /public/avatar/
 /public/photo_preview/
+/public/checklist/
 doc/
 vcr_cassettes/
 dump.rdb
