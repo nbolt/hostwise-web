@@ -264,9 +264,9 @@
                       .label King Sheets
                     .counter
                       .boxes
-                        .box -
+                        .box decrement='checklist.checklist_settings.inventory_count.twin_sheets' -
                         .box ng:bind='checklist.checklist_settings.inventory_count.twin_sheets'
-                        .box +
+                        .box increment='checklist.checklist_settings.inventory_count.twin_sheets' +
                       .label Twin Sheets
                   .div.teal
                   .title.inventory Soiled Pillow Case Count
