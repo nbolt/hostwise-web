@@ -277,7 +277,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.complete_job = ->
     $http.post("/jobs/#{$scope.job.id}/complete").success (_rsp) ->
-      $scope.next_job = rsp.next_job
+      $scope.next_job = _rsp.next_job
 
       $http.get($window.location.href + '/status').success (rsp) ->
         $scope.job.status_cd = _rsp.status_cd
