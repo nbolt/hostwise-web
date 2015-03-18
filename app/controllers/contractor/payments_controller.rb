@@ -36,7 +36,7 @@ class Contractor::PaymentsController < Contractor::AuthController
 
   def delete
     # check if future booking exists with this payment
-    future_bookings = payment.bookings.active.select { |booking| booking.date > Date.today }
+    future_bookings = payment.bookings.active
     if future_bookings.present?
       render json: { success: false, message: "There is at least one booking associated with this #{payment.card? ? 'credit card' : 'bank account'}" }
       return
