@@ -622,7 +622,7 @@
                       .typcn.typcn-chevron-right
                     .text Complete This Job!
 
-  .deactivate
+  .deactivate ng:hide='completed_job()'
     | Do you wish to
     span ng:click='cancel_modal()'  cancel this job?
 
