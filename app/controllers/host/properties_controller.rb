@@ -86,7 +86,7 @@ class Host::PropertiesController < Host::AuthController
             params[:services].each do |service|
               booking.services.push Service.where(name: service)[0]
             end
-            if property.bookings.count == 0 && current_user.vip_count < 5
+            if property.bookings.count == 0 && current_user.vip_count < VIP_CLEANINGS
               booking.vip = true
               current_user.update_attribute :vip_count, current_user.vip_count + 1
             end
