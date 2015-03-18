@@ -76,22 +76,22 @@
           .icon
             .pf.icon-service
           .text Property Instructions
-        .instruction ng:if='job.booking.property.access_info'
-          .content
-            .title Access Information
-            .text ng:bind='job.booking.property.access_info'
-        .instruction ng:if='job.booking.property.trash_disposal'
-          .content
-            .title Trash Disposal
-            .text ng:bind='job.booking.property.trash_disposal'
         .instruction ng:if='job.booking.property.parking_info'
           .content
             .title Parking Information
             .text ng:bind='job.booking.property.parking_info'
+        .instruction ng:if='job.booking.property.access_info'
+          .content
+            .title Access Information
+            .text ng:bind='job.booking.property.access_info'
         .instruction ng:if='job.booking.property.restocking_info'
           .content
             .title Restocking Instructions
             .text ng:bind='job.booking.property.restocking_info'
+        .instruction ng:if='job.booking.property.trash_disposal'
+          .content
+            .title Trash Disposal
+            .text ng:bind='job.booking.property.trash_disposal'
         .instruction ng:if='job.booking.property.additional_info'
           .content
             .title Additional Information
