@@ -177,21 +177,21 @@
                   i.icon-cash
                   .text Total Payout
                   .value ng:bind='::job.payout'
-          .phase.in_progress ng:switch-when='in_progress'
+          .phase.complete ng:switch-when='in_progress'
             .header
               .text Job in Progress...
           .phase.arrival ng:class='arrival_class()'
             .header
               .text Arrival Tasks
             .content
-              .tabs
-                .tab.arrival.active
+              .tabs.thirds
+                .tab.arrival.active ng:click="to_tab('arrival', 'arrival')"
                   .icon
                     i.icon-flag
-                .tab.damage
+                .tab.damage ng:click="to_tab('damage', 'arrival')"
                   .icon
                     i.icon-mag
-                .tab.inventory
+                .tab.inventory ng:click="to_tab('inventory', 'arrival')"
                   .icon
                     i.icon-count
                 /.tab.confirmation
@@ -215,16 +215,407 @@
                         strong Bathrooms:
                         |  pre-soak shower/tub/toilet
                   .div.teal
-                  .icon-button.teal.right ng:class='damage_class()' ng:click='to_damage()'
+                  .icon-button.teal.right ng:class='damage_class()' ng:click="to_tab('damage', 'arrival')"
                     .icon
                       .typcn.typcn-chevron-right
                     .text Damage Inspection
-          .phase.cleaning
+                .tab.damage
+                  .title Damage Inspection
+                  .div.teal
+                  .text
+                    strong Important:
+                    |  Is there anything out of the ordinary? Stains? Damaged walls? Etc.
+                  .radios
+                    .radiop
+                      input type='radio' ng:value='true' id='check-damage-yes' ng:model='checklist.checklist_settings.damage_inspection.damage'
+                      label for='check-damage-yes' Yes
+                    .radiop
+                      input type='radio' ng:value='false' id='check-damage-no' ng:model='checklist.checklist_settings.damage_inspection.damage'
+                      label for='check-damage-no' No
+                  .damage-photos ng:class='damage_photos_class()'
+                    .text Upload photos (as many as necessary):
+                    .photos
+                      .damage-photo ng:repeat='photo in checklist.contractor_photos'
+                        img ng:src='{{photo.photo.url}}'
+                      .new-photo ng-file-select='' ng-model='damage_photo' ng-multiple='false'
+                        .icon
+                          i.icon-cam
+                  .div.teal
+                  .icon-button.teal.right ng:class='inventory_class()' ng:click='to_inventory()'
+                    .icon
+                      .typcn.typcn-chevron-right
+                    .text Inventory Count
+                .tab.inventory
+                  .title Inventory Count
+                  .div.teal
+                  .text.inventory Please count the number of each inventory item in the property and enter the totals below.
+                  .title.inventory Soiled Sheet Count
+                  .counters
+                    .counter
+                      .boxes
+                        .box decrement='checklist.checklist_settings.inventory_count.king_sheets' -
+                        .box ng:bind='checklist.checklist_settings.inventory_count.king_sheets'
+                        .box increment='checklist.checklist_settings.inventory_count.king_sheets' +
+                      .label King Sheets
+                    .counter
+                      .boxes
+                        .box -
+                        .box ng:bind='checklist.checklist_settings.inventory_count.twin_sheets'
+                        .box +
+                      .label Twin Sheets
+                  .div.teal
+                  .title.inventory Soiled Pillow Case Count
+                  .counters
+                    .counter
+                      .boxes
+                        .box decrement='checklist.checklist_settings.inventory_count.pillow_count' -
+                        .box ng:bind='checklist.checklist_settings.inventory_count.pillow_count'
+                        .box increment='checklist.checklist_settings.inventory_count.pillow_count' +
+                      .label Pillow Cases
+                  .div.teal
+                  .title.inventory Soiled Towel Count
+                  .counters
+                    .counter
+                      .boxes
+                        .box decrement='checklist.checklist_settings.inventory_count.bath_towels' -
+                        .box ng:bind='checklist.checklist_settings.inventory_count.bath_towels'
+                        .box increment='checklist.checklist_settings.inventory_count.bath_towels' +
+                      .label Bath Towels
+                    .counter
+                      .boxes
+                        .box decrement='checklist.checklist_settings.inventory_count.hand_towels' -
+                        .box ng:bind='checklist.checklist_settings.inventory_count.hand_towels'
+                        .box increment='checklist.checklist_settings.inventory_count.hand_towels' +
+                      .label Hand Towels
+                    .counter
+                      .boxes
+                        .box decrement='checklist.checklist_settings.inventory_count.face_towels' -
+                        .box ng:bind='checklist.checklist_settings.inventory_count.face_towels'
+                        .box increment='checklist.checklist_settings.inventory_count.face_towels' +
+                      .label Face Towels
+                    .counter
+                      .boxes
+                        .box decrement='checklist.checklist_settings.inventory_count.bath_mats' -
+                        .box ng:bind='checklist.checklist_settings.inventory_count.bath_mats'
+                        .box increment='checklist.checklist_settings.inventory_count.bath_mats' +
+                      .label Bath Mats
+                  .div.teal
+                  .icon-button.teal.right ng:class='begin_cleaning_class()' ng:click='to_cleaning()'
+                    .icon
+                      .typcn.typcn-chevron-right
+                    .text Begin Cleaning
+          .phase.cleaning ng:class='cleaning_class()'
             .header
               .text Begin Cleaning
-          .phase.qa
+            .content
+              .pad
+                .title Start Cleaning!
+                .div.teal
+                .text
+                  strong Trash Disposal:
+                  |  {{job.booking.property.trash_disposal}}
+                .div.teal
+                .text
+                  strong Restocking Instructions:
+                  |  {{job.booking.property.restocking_info}}
+                .div.teal
+                .text
+                  strong Additional Info:
+                  |  {{job.booking.property.additional_info}}
+                .div.teal
+                .icon-button.teal.right ng:class='complete_cleaning_class()' ng:click='complete_cleaning()'
+                  .icon
+                    .typcn.typcn-chevron-right
+                  .text Cleaning Completed
+          .phase.qa ng:class='qa_class()'
             .header
               .text Quality Assurance
+            .content
+              .tabs.fifths
+                .tab.bedrooms.active ng:click="to_tab('bedrooms', 'qa')"
+                  .icon
+                    i.icon-bed
+                .tab.bathrooms ng:click="to_tab('bathrooms', 'qa')"
+                  .icon
+                    i.icon-bath
+                .tab.kitchen ng:click="to_tab('kitchen', 'qa')"
+                  .icon
+                    i.icon-kitchen
+                .tab.living-room ng:click="to_tab('living-room', 'qa')"
+                  .icon
+                    i.icon-livingroom
+                .tab.photos ng:click="to_tab('photos', 'qa')"
+                  .icon
+                    i.icon-cam
+              .pad
+                .tab.bedrooms.active
+                  .title.right
+                    | {{active_bedroom}}/{{job.booking.property.bedrooms}}
+                  .title Bedrooms
+                  .div.teal
+                  .checklists
+                    .checklist ng:repeat='bedroom in range(job.booking.property.bedrooms) track by $index' ng:class="bedroom_checklist_class($index+1)"
+                      .check ng:class='check(checklist.checklist_settings["bedroom_" + ($index+1).toString()].dust)'
+                        input type='checkbox' id='check-dust' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].dust'
+                        label for='check-dust'
+                          .strike
+                          strong Dust & Wipe:
+                          |  mirrors, nightstand, dresser, tables, headboard, bed frame, baseboards
+                      .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].trash)"
+                        input type='checkbox' id='check-trash' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].trash'
+                        label for='check-trash'
+                          .strike
+                          strong Trash:
+                          |  check drawers, closets, under bed
+                      .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].trash_can)"
+                        input type='checkbox' id='check-trash-can' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].trash_can'
+                        label for='check-trash-can'
+                          .strike
+                          strong Trash can:
+                          |  remove trash, replace liner
+                      .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].fixtures)"
+                        input type='checkbox' id='check-fixtures' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].fixtures'
+                        label for='check-fixtures'
+                          .strike
+                          strong Fixtures:
+                          |  wipe door handles, light switches
+                      .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].closets)"
+                        input type='checkbox' id='check-closets' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].closets'
+                        label for='check-closets'
+                          .strike
+                          strong Closets:
+                          |  items organized, folded & stored
+                      .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].windows)"
+                        input type='checkbox' id='check-windows' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].windows'
+                        label for='check-windows'
+                          .strike
+                          strong Windows:
+                          |  spray/wipe window sills
+                      .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].bed)"
+                        input type='checkbox' id='check-bed' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].bed'
+                        label for='check-bed'
+                          .strike
+                          strong Bed:
+                          |  stage the "HostWise Way," check for hair
+                      .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].duvet)"
+                        input type='checkbox' id='check-duvet' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].duvet'
+                        label for='check-duvet'
+                          .strike
+                          strong Inspect Duvet:
+                          |  if dirty, text HQ & customer
+                      .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].floor)"
+                        input type='checkbox' id='check-floor' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].floor'
+                        label for='check-floor'
+                          .strike
+                          strong Floor:
+                          |  Vacuum/Mop (under bed, in closet)
+                      .div.teal
+                      .icon-button.teal.right ng:class='bedroom_class($index+1)' ng:click='complete_bedroom($index+1)'
+                        .icon
+                          .typcn.typcn-chevron-right
+                        .text ng:hide='$index+2 > job.booking.property.bedrooms' Bedroom {{$index+2}}
+                        .text ng:show='$index+2 > job.booking.property.bedrooms' Complete Bedrooms
+                .tab.bathrooms
+                  .title.right
+                    | {{active_bathroom}}/{{job.booking.property.bathrooms}}
+                  .title Bathrooms
+                  .div.teal
+                  .checklists
+                    .checklist ng:repeat='bathroom in range(job.booking.property.bathrooms) track by $index' ng:class="bathroom_checklist_class($index+1)"
+                      .check ng:class='check(checklist.checklist_settings["bathroom_" + ($index+1).toString()].shower)'
+                        input type='checkbox' id='check-shower' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].shower'
+                        label for='check-shower'
+                          .strike
+                          strong Shower:
+                          |  spray disinfectant, soak 10 min
+                      .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].surfaces)"
+                        input type='checkbox' id='check-surfaces' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].surfaces'
+                        label for='check-surfaces'
+                          .strike
+                          strong Surfaces:
+                          |  mirrors, fixtures, baseboards
+                      .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].sanitize)"
+                        input type='checkbox' id='check-sanitize' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].sanitize'
+                        label for='check-sanitize'
+                          .strike
+                          strong Wash & Sanitize:
+                          |  shower, tub, and sink
+                      .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].toilet)"
+                        input type='checkbox' id='check-toilet' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].toilet'
+                        label for='check-toilet'
+                          .strike
+                          strong Toilet:
+                          |  bowl, under toilet seam, base
+                      .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].trash)"
+                        input type='checkbox' id='check-bath-trash' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].trash'
+                        label for='check-bath-trash'
+                          .strike
+                          strong Trash:
+                          |  empty & replace liner
+                      .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].mats)"
+                        input type='checkbox' id='check-mats' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].mats'
+                        label for='check-mats'
+                          .strike
+                          strong Rugs/Mats:
+                          |  pickup, shakeout, vacuum
+                      .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].hair)"
+                        input type='checkbox' id='check-hair' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].hair'
+                        label for='check-hair'
+                          .strike
+                          strong Hair:
+                          |  check shower, sink drain, counter
+                      .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].floor)"
+                        input type='checkbox' id='check-bath-floor' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].floor'
+                        label for='check-bath-floor'
+                          .strike
+                          strong Floor:
+                          |  map (after final hair check)
+                      .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].restocking)"
+                        input type='checkbox' id='check-restocking' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].restocking'
+                        label for='check-restocking'
+                          .strike
+                          strong Restocking:
+                          |  toilet paper, hand soap, toiletries (shampoo, conditioner, etc.)
+                      .div.teal
+                      .icon-button.teal.right ng:class='bathroom_class($index+1)' ng:click='complete_bathroom($index+1)'
+                        .icon
+                          .typcn.typcn-chevron-right
+                        .text ng:hide='$index+2 > job.booking.property.bathrooms' Bathroom {{$index+2}}
+                        .text ng:show='$index+2 > job.booking.property.bathrooms' Complete Bathrooms
+                .tab.kitchen
+                  .title Kitchen
+                  .div.teal
+                  .checklist
+                    .check ng:class='check(checklist.checklist_settings.kitchen.fridge)'
+                      input type='checkbox' id='check-fridge' ng:model='checklist.checklist_settings.kitchen.fridge'
+                      label for='check-fridge'
+                        .strike
+                        strong Fridge:
+                        |  wipe shelves, remove food
+                    .check ng:class='check(checklist.checklist_settings.kitchen.dishes)'
+                      input type='checkbox' id='check-kitchen-dishes' ng:model='checklist.checklist_settings.kitchen.dishes'
+                      label for='check-kitchen-dishes'
+                        .strike
+                        strong Dishes:
+                        |  clean and put away
+                    .check ng:class='check(checklist.checklist_settings.kitchen.dishwasher)'
+                      input type='checkbox' id='check-dishwasher' ng:model='checklist.checklist_settings.kitchen.dishwasher'
+                      label for='check-dishwasher'
+                        .strike
+                        strong Empty Dishwasher
+                    .check ng:class='check(checklist.checklist_settings.kitchen.coffee)'
+                      input type='checkbox' id='check-coffee' ng:model='checklist.checklist_settings.kitchen.coffee'
+                      label for='check-coffee'
+                        .strike
+                        strong Coffee Machine:
+                        |  empty, clean
+                    .check ng:class='check(checklist.checklist_settings.kitchen.microwave)'
+                      input type='checkbox' id='check-microwave' ng:model='checklist.checklist_settings.kitchen.microwave'
+                      label for='check-microwave'
+                        .strike
+                        strong Microwave:
+                        |  spray clean door, inside
+                    .check ng:class='check(checklist.checklist_settings.kitchen.stove)'
+                      input type='checkbox' id='check-stove' ng:model='checklist.checklist_settings.kitchen.stove'
+                      label for='check-stove'
+                        .strike
+                        strong Stove & Appliances:
+                        |  spray, clean
+                    .check ng:class='check(checklist.checklist_settings.kitchen.counters)'
+                      input type='checkbox' id='check-counters' ng:model='checklist.checklist_settings.kitchen.counters'
+                      label for='check-counters'
+                        .strike
+                        strong Counters & Cabinets:
+                        |  wipe clean
+                    .check ng:class='check(checklist.checklist_settings.kitchen.toaster)'
+                      input type='checkbox' id='check-toaster' ng:model='checklist.checklist_settings.kitchen.toaster'
+                      label for='check-toaster'
+                        .strike
+                        strong Toaster:
+                        |  empty tray, wipe clean
+                    .check ng:class='check(checklist.checklist_settings.kitchen.trash)'
+                      input type='checkbox' id='check-kitchen-trash' ng:model='checklist.checklist_settings.kitchen.trash'
+                      label for='check-kitchen-trash'
+                        .strike
+                        strong Trash:
+                        |  empty, replace linens
+                    .check ng:class='check(checklist.checklist_settings.kitchen.floor)'
+                      input type='checkbox' id='check-kitchen-floor' ng:model='checklist.checklist_settings.kitchen.floor'
+                      label for='check-kitchen-floor'
+                        .strike
+                        strong Floor:
+                        |  vacuum/mop all floors
+                    .check ng:class='check(checklist.checklist_settings.kitchen.restocking)'
+                      input type='checkbox' id='check-kitchen-restocking' ng:model='checklist.checklist_settings.kitchen.restocking'
+                      label for='check-kitchen-restocking'
+                        .strike
+                        strong Restocking:
+                        |  paper towels, hand soap, trash bags, dish detergent
+                  .div.teal
+                  .icon-button.teal.right ng:class='kitchen_class()' ng:click='complete_kitchen()'
+                    .icon
+                      .typcn.typcn-chevron-right
+                    .text Complete Kitchen
+                .tab.living-room
+                  .title Living Room
+                  .div.teal
+                  .checklist
+                    .check ng:class='check(checklist.checklist_settings.living_room.dust)'
+                      input type='checkbox' id='check-living-dust' ng:model='checklist.checklist_settings.living_room.dust'
+                      label for='check-living-dust'
+                        .strike
+                        strong Dust & Wipe All Surfaces:
+                        |  tv/entertainment center, coffee/side tables, shelves, baseboards, mirrors, door handles, other fixtures
+                    .check ng:class='check(checklist.checklist_settings.living_room.furniture)'
+                      input type='checkbox' id='check-furniture' ng:model='checklist.checklist_settings.living_room.furniture'
+                      label for='check-furniture'
+                        .strike
+                        strong Furniture:
+                        |  shake off, vacuum pillows
+                    .check ng:class='check(checklist.checklist_settings.living_room.floor)'
+                      input type='checkbox' id='check-living-floor' ng:model='checklist.checklist_settings.living_room.floor'
+                      label for='check-living-floor'
+                        .strike
+                        strong Floor:
+                        |  vacuum/mop (under furniture)
+                  .div.teal
+                  .icon-button.teal.right ng:class='living_class()' ng:click='complete_living()'
+                    .icon
+                      .typcn.typcn-chevron-right
+                    .text Complete Living Room
+                .tab.photos
+                  .title Snap 3 photos!
+                  .div.teal
+                  .text
+                    strong Take one photo of each of the following:
+                  .snap-photos
+                    .snap-photo.kitchen
+                      .kitchen-photo ng:show='checklist.kitchen_photo.url'
+                        img ng:src='{{checklist.kitchen_photo.url}}'
+                      .new-photo ng:hide='checklist.kitchen_photo.url' ng-file-select='' ng-model='kitchen_photo' ng-multiple='false'
+                        .icon
+                          i.icon-cam
+                    .snap-photo.bedroom
+                      .kitchen-photo ng:show='checklist.bedroom_photo.url'
+                        img ng:src='{{checklist.bedroom_photo.url}}'
+                      .new-photo ng:hide='checklist.bedroom_photo.url' ng-file-select='' ng-model='bedroom_photo' ng-multiple='false'
+                        .icon
+                          i.icon-cam
+                    .snap-photo.bathroom
+                      .kitchen-photo ng:show='checklist.bathroom_photo.url'
+                        img ng:src='{{checklist.bathroom_photo.url}}'
+                      .new-photo ng:hide='checklist.bathroom_photo.url' ng-file-select='' ng-model='bathroom_photo' ng-multiple='false'
+                        .icon
+                          i.icon-cam
+                  .text
+                    | When you tap
+                    strong  "Complete This Job!"
+                    | , your completed checklist and photos will be submitted to HostWise and the customer will be notified that their property is ready.
+                  .div.teal
+                  .icon-button.teal.right ng:class='complete_class()' ng:click='complete_job()'
+                    .icon
+                      .typcn.typcn-chevron-right
+                    .text Complete This Job!
 
   .deactivate
     | Do you wish to

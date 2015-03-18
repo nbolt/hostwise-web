@@ -32,7 +32,7 @@ class Host::BookingsController < Host::AuthController
         booking.charge!
         if booking.job
           booking.job.contractors.each do |contractor|
-            contractor.payouts.create(job_id: self.id, amount: booking.job.payout(contractor) * 100)
+            contractor.payouts.create(job_id: booking.job.id, amount: booking.job.payout(contractor) * 100)
           end
         end
         UserMailer.booking_same_day_cancellation(booking).then(:deliver)
