@@ -15,7 +15,7 @@ class Payout < ActiveRecord::Base
         :amount => amount,
         :currency => "usd",
         :recipient => "rp_15gRNjGQgOKVfE1z0JNClJpk",
-        :statement_descriptor => "HostWise payout for jobs up to #{Date.today.strftime("%b %-d, %Y")}",
+        :statement_descriptor => "HostWise Payout",
         :metadata => { payout_id: id },
         :card => user.payments.payout[0].stripe_id
       )

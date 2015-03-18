@@ -13,7 +13,6 @@ class Booking < ActiveRecord::Base
   has_many :transactions
 
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
-  scope :active,  -> { where('services.id is not null and bookings.payment_id is not null').includes(:services).references(:services) }
   scope :today, -> { where('date = ?', Date.today) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
   scope :upcoming, -> (user) { where(status_cd: [1,4]).where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
@@ -140,7 +139,7 @@ class Booking < ActiveRecord::Base
 
   def same_day_cancellation
     timezone = Timezone::Zone.new :latlon => [property.lat, property.lng]
-    day = (self.date.to_date - Date.today).to_i
+    day = (self.date.to_date - timezone.time(Time.now).to_date).to_i
     return true if day == 0 || (day <= 1 && timezone.time(Time.now).hour >= 22) # subject to cancellation if same day or the day before after 10pm
     return false
   end
