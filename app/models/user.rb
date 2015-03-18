@@ -125,7 +125,7 @@ class User < ActiveRecord::Base
     if job.training
       false
     else
-      job.contractors.delete self
+      job.contractors.destroy self
       job.open!
       job.save
       job.handle_distribution_jobs self
