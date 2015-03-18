@@ -63,7 +63,7 @@ class Contractor::JobsController < Contractor::AuthController
     if job.booking
       property = job.booking.property
       UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
-      TwilioJob.perform_later("+1#{property.user.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
+      TwilioJob.perform_later("+1#{property.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
     end
     render json: { success: true, next_job: job.next_job(current_user).then(:id), status_cd: job.status_cd }
   end
@@ -107,7 +107,7 @@ class Contractor::JobsController < Contractor::AuthController
 
   def damage_photo
     checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
-    
+
     if params[:file]
       photo = checklist.contractor_photos.create(photo: params[:file])
       render json: { success: true, contractor_photos: checklist.contractor_photos }
@@ -118,7 +118,7 @@ class Contractor::JobsController < Contractor::AuthController
 
   def snap_photo
     checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
-    
+
     if params[:file]
       checklist.send "#{params[:room]}_photo=", params[:file]
       if checklist.save
