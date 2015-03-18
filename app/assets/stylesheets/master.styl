@@ -1223,6 +1223,17 @@ form
       overflow: hidden
       &.dropoff
         margin-top: 25px
+        .bottom .right .icon-button
+          @media phone
+            margin-top: 0
+        .bottom .return .supply
+          @media phone
+            margin-left: 0
+      .dc-address
+        background-color: lighter-gray
+        padding: 10px 15px
+        font-weight: bold
+        font-size: 14px
       .top
         background-color: teal
         padding: 12px 15px
@@ -1261,6 +1272,19 @@ form
             @media phone
               width: 120px
               margin-top: 10px
+        .return
+          color: dark-gray
+          .text
+            display: inline-block
+            vertical-align: top
+            font-weight: 600
+            margin-right: 25px
+          .supply
+            margin: 0 23px 0 7px
+            display: inline-block
+            vertical-align: top
+            .type
+              color: teal
         .supplies
           color: dark-gray
           .type, .num, .text

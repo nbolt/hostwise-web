@@ -119,7 +119,7 @@ class Contractor::UsersController < Contractor::AuthController
     timezone = Timezone::Zone.new :latlon => [current_user.contractor_profile.lat, current_user.contractor_profile.lng]
     jobs = current_user.jobs.on_date(timezone.time Time.now).ordered(current_user)
     jobs.each {|j| j.current_user = current_user}
-    render json: jobs.to_json(methods: [:payout_integer, :payout_fractional, :staging], include: {distribution_center: {methods: [:short_address]}, contractors: {}, booking: {include: {property: {include: [user: {methods: [:name]}], methods: [:full_address]}}}})
+    render json: jobs.to_json(methods: [:payout_integer, :payout_fractional, :staging], include: {distribution_center: {methods: [:full_address]}, contractors: {}, booking: {include: {property: {include: [user: {methods: [:name]}], methods: [:full_address]}}}})
   end
 
   private

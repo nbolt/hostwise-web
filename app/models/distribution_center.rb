@@ -23,6 +23,14 @@ class DistributionCenter < ActiveRecord::Base
     "#{address1} #{zip}"
   end
 
+  def full_address
+    if address2
+      "#{address1} #{address2}, #{city}, #{state} #{zip}"
+    else
+      "#{address1}, #{city}, #{state} #{zip}"
+    end
+  end
+
   private
 
   def standardize_address
