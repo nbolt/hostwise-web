@@ -51,8 +51,7 @@
         | {{user.pickup_job.distribution_center.full_address}}
     .jobs
       .job ng:repeat='job in user.standard_jobs' ng:class="job.status_cd == 3 && 'complete'"
-        .flag.vip ng:if='job.state_cd == 1'
-        .flag.staging ng:if='job.staging'
+        .flag ng:class='pricing_class(job)'
         .photo
           .timer
             i.icon-job-order

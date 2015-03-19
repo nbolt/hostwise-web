@@ -13,8 +13,7 @@
           .text ng:bind='::day[2].date_text'
         .jobs
           .job id='job-{{job.id}}' ng:repeat='job in day[1]'
-            .flag.vip ng:if='job.state_cd == 1'
-            .flag.staging ng:if='job.staging'
+            .flag ng:class='pricing_class(job)'
             .photo
               img ng:show="tab.name != 'upcoming'" ng:src='{{job.booking.property.primary_photo}}'
               .timer ng:show="tab.name == 'upcoming'"
