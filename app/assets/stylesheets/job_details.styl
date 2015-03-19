@@ -166,6 +166,10 @@
       .name
         font-weight: bold
         text-transform: capitalize
+        @media phone
+          text-overflow: ellipsis
+          overflow: hidden
+          white-space: nowrap
       .address
         margin: 4px 0 0
         color: dark-gray
