@@ -1,6 +1,7 @@
 AvailabilityCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
 
   $scope.form = {}
+  $scope.skip_save = true
 
   $scope.init = ->
     $http.get(window.location.href + '.json').success (rsp) ->
@@ -21,6 +22,7 @@ AvailabilityCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
         $scope.change('fri') if rsp.availability.fri
         $scope.change('sat') if rsp.availability.sat
         $scope.change('sun') if rsp.availability.sun
+      $scope.skip_save = false
 
   $scope.save = ->
     $http.post('/availability/add', {
@@ -37,6 +39,7 @@ AvailabilityCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       lbl.removeClass('checked')
     else
       lbl.addClass('checked')
+    $scope.save() unless $scope.skip_save
     return true
 
   flash = (type, msg) ->
