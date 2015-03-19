@@ -253,7 +253,7 @@
                     .photos
                       .damage-photo ng:repeat='photo in checklist.contractor_photos'
                         img ng:src='{{photo.photo.url}}'
-                      .new-photo ng-file-select='' ng-model='damage_photo' ng-multiple='false'
+                      .new-photo ng:file-select='' ng:model='damage_photo' ng:multiple='false'
                         .icon
                           i.icon-cam
                   .div.teal
@@ -606,23 +606,23 @@
                     strong Take one photo of each of the following:
                   .snap-photos
                     .snap-photo.kitchen
-                      .kitchen-photo ng:show='checklist.kitchen_photo.url'
+                      .existing-photo ng:show='checklist.kitchen_photo.url' ng:file-select='' ng:model='kitchen_photo' ng:multiple='false'
                         img ng:src='{{checklist.kitchen_photo.url}}'
-                      .new-photo ng:hide='checklist.kitchen_photo.url' ng-file-select='' ng-model='kitchen_photo' ng-multiple='false'
+                      .new-photo ng:hide='checklist.kitchen_photo.url' ng:file-select='' ng:model='kitchen_photo' ng:multiple='false'
                         .icon
                           i.icon-cam
                       .label 1 Kitchen
                     .snap-photo.bedroom
-                      .kitchen-photo ng:show='checklist.bedroom_photo.url'
+                      .existing-photo ng:show='checklist.bedroom_photo.url' ng:file-select='' ng:model='bedroom_photo' ng:multiple='false'
                         img ng:src='{{checklist.bedroom_photo.url}}'
-                      .new-photo ng:hide='checklist.bedroom_photo.url' ng-file-select='' ng-model='bedroom_photo' ng-multiple='false'
+                      .new-photo ng:hide='checklist.bedroom_photo.url' ng:file-select='' ng:model='bedroom_photo' ng:multiple='false'
                         .icon
                           i.icon-cam
                       .label 1 Bedroom
                     .snap-photo.bathroom
-                      .kitchen-photo ng:show='checklist.bathroom_photo.url'
+                      .existing-photo ng:show='checklist.bathroom_photo.url' ng:file-select='' ng:model='bathroom_photo' ng:multiple='false'
                         img ng:src='{{checklist.bathroom_photo.url}}'
-                      .new-photo ng:hide='checklist.bathroom_photo.url' ng-file-select='' ng-model='bathroom_photo' ng-multiple='false'
+                      .new-photo ng:hide='checklist.bathroom_photo.url' ng:file-select='' ng:model='bathroom_photo' ng:multiple='false'
                         .icon
                           i.icon-cam
                       .label 1 Bathroom
