@@ -115,6 +115,11 @@ class Job < ActiveRecord::Base
     booking.services.index Service.where(name: 'preset')[0] if booking
   end
 
+  def cant_access_seconds_left
+    num = (CANT_ACCESS_MINUTES * 60) - (Time.now - cant_access).round
+    if num < 0 then 0 else num end
+  end
+
   def start!
     in_progress!
     save

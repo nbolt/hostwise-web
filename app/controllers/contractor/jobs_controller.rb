@@ -27,13 +27,18 @@ class Contractor::JobsController < Contractor::AuthController
       end
       format.json do
         job.current_user = current_user
-        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :next_job], include: {contractors: {methods: [:name, :display_phone_number, :avatar]}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type]}}}})
+        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :next_job, :cant_access_seconds_left], include: {contractors: {methods: [:name, :display_phone_number, :avatar]}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type]}}}})
       end
     end
   end
 
   def begin
     job.update_attribute :status_cd, 2
+    render json: { success: true, status_cd: job.status_cd }
+  end
+
+  def cant_access
+    job.update_attributes(status_cd: 5, cant_access: Time.now)
     render json: { success: true, status_cd: job.status_cd }
   end
 
@@ -74,6 +79,8 @@ class Contractor::JobsController < Contractor::AuthController
       render json: { success: true, status: 'completed' }
     elsif job.status == :in_progress
       render json: { success: true, status: 'in_progress' }
+    elsif job.status == :cant_access
+      render json: { success: true, status: 'cant_access' }
     elsif job.date == (timezone.time Time.now).to_date
       prev_job = job.previous_job current_user
       if prev_job
