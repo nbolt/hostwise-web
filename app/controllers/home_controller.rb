@@ -48,7 +48,7 @@ class HomeController < ApplicationController
         render json: current_user.to_json(include: [:payments, properties: {methods: [:nickname, :short_address, :primary_photo, :full_address, :next_service_date], include: [:active_bookings, :future_bookings, :past_bookings]}], methods: [:avatar, :name, :role, :notification_settings])
       when 2 # contractor
         current_user.jobs.each {|j| j.current_user = current_user}
-        render json: current_user.to_json(include: [:contractor_profile, :payments, :availability, jobs: {methods: [:payout_rounded, :payout_integer, :payout_fractional], include: {distribution_center: {methods: [:short_address]}, booking: {include: [property: {include: [user: {methods: [:name]}]}]}}}], methods: [:avatar, :name, :role, :notification_settings, :earnings, :unpaid])
+        render json: current_user.to_json(include: [:contractor_profile, :payments, :availability, jobs: {methods: [:payout_rounded, :payout_integer, :payout_fractional], include: {distribution_center: {methods: [:short_address]}, booking: {include: [property: {include: [user: {methods: [:name]}]}]}}}], methods: [:avatar, :name, :role, :notification_settings, :earnings, :unpaid, :man_hours])
       when 0 # admin
         render json: current_user.to_json(methods: [:avatar, :name, :role])
       end
