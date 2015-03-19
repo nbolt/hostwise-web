@@ -69,31 +69,32 @@ class Job < ActiveRecord::Base
         payout += PRICING['patio_payout']  if pricing[:patio]
         payout += PRICING['windows_payout']  if pricing[:windows]
         payout += PRICING['no_access_fee_payout'] if booking.no_access_fee
-        if size > 1
+
+        if training && contractor && contractor.contractor_profile.position == :trainee
+          payout = 20
+        elsif size > 1
+          even_payout = (payout / size).round 2
+          primary_payout = (even_payout + (even_payout * 0.1)).round 2
+          secondary_payout = (even_payout - ((primary_payout - even_payout) / (size-1))).round 2
           if contractor && !contractor.admin? # requesting pricing for specific contractor (job detail page)
             if ContractorJobs.where(job_id: self.id, user_id: contractor.id)[0].primary
-              payout *= 0.55
+              payout = primary_payout
             else
-              payout *= 0.45
+              payout = secondary_payout
             end
           else
             if contractor && contractor.admin? # average pricing for viewing job detail as admin
               payout /= size
             else
               if contractors.empty? # pricing for open jobs
-                payout *= 0.55
+                payout = primary_payout
               else
-                payout *= 0.45
+                payout = secondary_payout
               end
             end
           end
-        elsif training && contractor
-          if contractor.contractor_profile.position == :trainee
-            payout *= 0.45
-          else
-            payout *= 0.55
-          end
         end
+
         payout.round 2
       end
     end
