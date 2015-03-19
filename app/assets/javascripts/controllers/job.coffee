@@ -92,7 +92,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       false
 
   $scope.cant_access = ->
-    $http.post("/jobs/#{$scope.job.id}/cant_access").success (rsp) ->
+    $http.post("/jobs/#{$scope.job.id}/cant_access", {spinner:true}).success (rsp) ->
       $scope.job.status_cd = rsp.status_cd
       $scope.job.cant_access_seconds_left = rsp.seconds_left
       $http.get($window.location.href + '/status').success (rsp) ->
