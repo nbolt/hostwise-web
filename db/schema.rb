@@ -11,22 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318233309) do
+ActiveRecord::Schema.define(version: 20150319204051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "user_id"
-    t.boolean  "mon",        default: true
-    t.boolean  "tues",       default: true
-    t.boolean  "wed",        default: true
-    t.boolean  "thurs",      default: true
-    t.boolean  "fri",        default: true
-    t.boolean  "sat",        default: true
-    t.boolean  "sun",        default: true
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.boolean  "mon",        default: false
+    t.boolean  "tues",       default: false
+    t.boolean  "wed",        default: false
+    t.boolean  "thurs",      default: false
+    t.boolean  "fri",        default: false
+    t.boolean  "sat",        default: false
+    t.boolean  "sun",        default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "availabilities", ["user_id"], name: "index_availabilities_on_user_id", using: :btree
