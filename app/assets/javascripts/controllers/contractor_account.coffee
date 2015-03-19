@@ -54,7 +54,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
       form: $scope.form
     }).success (rsp) ->
       if rsp.success
-        goto 'three'
+        flash 'info', 'Your changes have been saved!'
       else
         flash 'failure', rsp.message
 
@@ -64,10 +64,14 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
       lbl.removeClass('checked')
     else
       lbl.addClass('checked')
+    $scope.setup_availability()
     return true
 
   $scope.open_deactivation = ->
     ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'warning full', scope: $scope
+
+  $scope.goto_bank_account = ->
+    goto 'three'
 
   $scope.$watch 'files', ->
     if $scope.files.length
