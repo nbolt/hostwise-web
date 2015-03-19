@@ -24,7 +24,7 @@
               | {{$index+1}}
             .right
               .top
-                .icon-button.teal ng:click='claim(job)' ng:show="tab.name == 'open'"
+                .icon-button.teal ng:click='confirm_claim(job)' ng:show="tab.name == 'open'"
                   .icon
                     i.icon-details
                   .text Claim Job
@@ -55,3 +55,4 @@
                   .size
                     i.icon-person
                     .text ng:bind='::job.size'
+= render 'common/claim_job_modal'

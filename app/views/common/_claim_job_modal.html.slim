@@ -1,0 +1,34 @@
+script#claim-job-modal type="text/ng-template"
+  .modal
+    .content
+      .main-icon.i.icon-alert-ok
+      .title Are you sure you wish to claim this job?
+      .job id='job-{{selected_job.id}}'
+        .flag.vip ng:if='selected_job.state_cd == 1'
+        .flag.staging ng:if='selected_job.staging'
+        .right
+          .top
+            .neighborhood
+            .name ng:bind='selected_job.booking.property.neighborhood'
+          .bottom
+            .payout
+              .icon
+                i.icon-payout
+              .pricing ng:class='pricing_class(selected_job)'
+                | ${{::selected_job.payout_integer}}
+                span ng:hide='selected_job.payout_fractional == 0'
+                  | .{{::selected_job.payout_fractional}}
+            .left
+              .rooms
+                i.icon-house ng:if='selected_job.booking.property.property_type_cd == 0'
+                i.icon-apt ng:if='selected_job.booking.property.property_type_cd == 1'
+                .text
+                  | {{selected_job.booking.property.bedrooms}}BD/{{selected_job.booking.property.bathrooms}}BA
+              .size
+                i.icon-person
+                .text ng:bind='::selected_job.size'
+      .actions
+        .action.cancel ng:click='close_modal()'
+          i.icon-close
+        .action.confirm ng:click='claim(selected_job)'
+          i.icon-alert-ok
