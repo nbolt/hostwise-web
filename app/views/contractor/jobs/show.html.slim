@@ -222,7 +222,7 @@
                   .div.teal
                   .icon-button.teal.right ng:class='damage_class()' ng:click="to_damage()"
                     .icon
-                      .typcn.typcn-chevron-right
+                      .fa.fa-chevron-right
                     .text Damage Inspection
                 .tab.damage
                   .title Damage Inspection
@@ -248,7 +248,7 @@
                   .div.teal
                   .icon-button.teal.right ng:class='inventory_class()' ng:click="to_inventory()"
                     .icon
-                      .typcn.typcn-chevron-right
+                      .fa.fa-chevron-right
                     .text Inventory Count
                 .tab.inventory
                   .title Inventory Count
@@ -307,7 +307,7 @@
                   .div.teal
                   .icon-button.teal.right ng:class='begin_cleaning_class()' ng:click='to_cleaning()'
                     .icon
-                      .typcn.typcn-chevron-right
+                      .fa.fa-chevron-right
                     .text Begin Cleaning
           .phase.cleaning ng:class='cleaning_class()'
             .header
@@ -330,7 +330,7 @@
                 .div.teal
                 .icon-button.teal.right ng:class='complete_cleaning_class()' ng:click='complete_cleaning()'
                   .icon
-                    .typcn.typcn-chevron-right
+                    .fa.fa-chevron-right
                   .text Cleaning Completed
           .phase.qa ng:class='qa_class()'
             .header
@@ -417,7 +417,7 @@
                       .div.teal
                       .icon-button.teal.right ng:class='bedroom_class($index+1)' ng:click='complete_bedroom($index+1)'
                         .icon
-                          .typcn.typcn-chevron-right
+                          .fa.fa-chevron-right
                         .text ng:hide='$index+2 > job.booking.property.bedrooms' Bedroom {{$index+2}}
                         .text ng:show='$index+2 > job.booking.property.bedrooms' Complete Bedrooms
                 .tab.bathrooms
@@ -484,7 +484,7 @@
                       .div.teal
                       .icon-button.teal.right ng:class='bathroom_class($index+1)' ng:click='complete_bathroom($index+1)'
                         .icon
-                          .typcn.typcn-chevron-right
+                          .fa.fa-chevron-right
                         .text ng:hide='$index+2 > job.booking.property.bathrooms' Bathroom {{$index+2}}
                         .text ng:show='$index+2 > job.booking.property.bathrooms' Complete Bathrooms
                 .tab.kitchen
@@ -559,7 +559,7 @@
                   .div.teal
                   .icon-button.teal.right ng:class='kitchen_class()' ng:click='complete_kitchen()'
                     .icon
-                      .typcn.typcn-chevron-right
+                      .fa.fa-chevron-right
                     .text Complete Kitchen
                 .tab.living-room
                   .title Living Room
@@ -586,7 +586,7 @@
                   .div.teal
                   .icon-button.teal.right ng:class='living_class()' ng:click='complete_living()'
                     .icon
-                      .typcn.typcn-chevron-right
+                      .fa.fa-chevron-right
                     .text Complete Living Room
                 .tab.photos
                   .title Snap 3 photos!
@@ -622,7 +622,7 @@
                   .div.teal
                   .icon-button.teal.right ng:class='complete_class()' ng:click='complete_job()'
                     .icon
-                      .typcn.typcn-chevron-right
+                      .fa.fa-chevron-right
                     .text Complete This Job!
 
   .deactivate ng:hide='completed_job()'
