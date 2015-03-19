@@ -61,11 +61,11 @@ Rails.application.routes.draw do
     get   '/quiz' => 'quiz#index'
     post  '/quiz/report' => 'quiz#report'
     post  '/checklist' => 'jobs#checklist'
-    post  '/checklist/update' => 'jobs#checklist_update' 
+    post  '/checklist/update' => 'jobs#checklist_update'
     get   '/quiz' => 'quiz#index'
     post  '/quiz/report' => 'quiz#report'
     post  '/checklist' => 'jobs#checklist'
-    post  '/checklist/update' => 'jobs#checklist_update' 
+    post  '/checklist/update' => 'jobs#checklist_update'
     post  '/checklist/:action' => 'jobs'
   end
 
@@ -106,7 +106,7 @@ Rails.application.routes.draw do
   get '/terms' => 'home#terms', as: :terms
   get '/privacy' => 'home#privacy', as: :privacy
 
-  post '/notifications/background_check' => 'notifications#background_check', as: :background_check_notification
+  post '/notifications/checkr' => 'notifications#checkr', as: :checkr_notification
   post '/contact_email' => 'home#contact_email'
 
   match '/:action' => 'home', via: [:get, :post]

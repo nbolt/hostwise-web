@@ -67,7 +67,7 @@
                     i.icon-refresh
                   .text Save Changes
               .bgc
-                div ng-attr-class="{{contractor.background_check && contractor.background_check.status_cd == 2 && 'fa fa-check-circle-o' || 'fa fa-times-circle-o' }}"
+                div ng-attr-class="{{contractor.background_check && contractor.background_check.status_cd == 1 && 'fa fa-check-circle-o' || 'fa fa-times-circle-o' }}"
                 span Background Checked
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to
