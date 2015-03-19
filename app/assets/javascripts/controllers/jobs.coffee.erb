@@ -19,9 +19,17 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
       initSelection: (el, cb) ->
     }
 
+  $scope.confirm_claim = (job) ->
+    $scope.selected_job = job
+    ngDialog.open template: 'claim-job-modal', className: 'claim full', scope: $scope
+
+  $scope.close_modal = ->
+    ngDialog.closeAll()
+
   $scope.claim = (job) ->
     $http.post("/jobs/#{job.id}/claim").success (rsp) ->
       if rsp.success
+        $scope.close_modal()
         angular.element("#job-#{job.id}").fadeOut()
       else
         refresh_jobs()
