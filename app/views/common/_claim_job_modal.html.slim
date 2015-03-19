@@ -4,8 +4,7 @@ script#claim-job-modal type="text/ng-template"
       .main-icon.i.icon-alert-ok
       .title Are you sure you wish to claim this job?
       .job id='job-{{selected_job.id}}'
-        .flag.vip ng:if='selected_job.state_cd == 1'
-        .flag.staging ng:if='selected_job.staging'
+        .flag ng:class='pricing_class(selected_job)'
         .right
           .top
             .neighborhood

@@ -3,8 +3,7 @@
     i.icon-notebook
     | Job Details
   .job
-    .flag.vip ng:if='vip'
-    .flag.staging ng:if='staging'
+    .flag ng:class='pricing_class()'
     .photo
       img ng:src='{{job.booking.property.primary_photo}}'
     .right
