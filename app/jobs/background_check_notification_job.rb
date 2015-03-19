@@ -1,21 +1,17 @@
 class BackgroundCheckNotificationJob < ActiveJob::Base
   queue_as :default
 
-  def perform(order_id, order_status)
+  def perform(order_id, status)
     begin
       ActiveRecord::Base.connection_pool.with_connection do
         background_check = BackgroundCheck.find_by_order_id order_id
-        case order_status
+        case status
           when 'pending'
             background_check.status = :pending
-          when 'canceled'
-            background_check.status = :canceled
-          when 'ready'
-            background_check.status = :ready
-          when 'error'
-            background_check.status = :error
-          when 'partial'
-            background_check.status = :partial
+          when 'clear'
+            background_check.status = :clear
+          when 'consider'
+            background_check.status = :consider
         end
         background_check.save
       end
