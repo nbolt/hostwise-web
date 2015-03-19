@@ -11,6 +11,9 @@ TraineeScheduleCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http
     else
       true
 
+  $scope.next_payout = ->
+    moment().weekday(3).add(1, 'weeks').format('ddd, MMM D')
+
 ]
 
 app = angular.module('porter').controller('trainee_schedule', TraineeScheduleCtrl)

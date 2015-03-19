@@ -93,3 +93,6 @@
         .amount
           | $
           span ng:bind='::user.unpaid'
+        .payout-date ng:show='user.unpaid > 0'
+          strong Next Payout:&nbsp;
+          span ng:bind='next_payout()'
