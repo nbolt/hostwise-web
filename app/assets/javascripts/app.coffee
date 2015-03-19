@@ -58,6 +58,7 @@ app = angular.module('porter', ['ngCookies',
                                 'ngSanitize',
                                 'angular-carousel',
                                 'angularFileUpload',
+                                'timer',
                                 'angularUtils.directives.dirPagination'])
   .controller('app', AppCtrl)
   .config ['$httpProvider', ($httpProvider) ->

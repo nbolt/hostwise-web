@@ -137,11 +137,11 @@
                     .icon
                       i.icon-alert-ok
                     .text Start Job
-                  .icon-button.orange
+                  .icon-button.orange ng:click='cant_access()'
                     .icon
                       i.icon-alert-bolt
                     .text Can't Access Property
-                  .icon-button.orange
+                  .icon-button.orange ng:click='cant_access()'
                     .icon
                       i.icon-alert-bolt
                     .text Property Occupied
@@ -154,12 +154,24 @@
                 .text This job cannot be started until
                 .text.strong ng:bind='::job.date_text_2' ng:switch-when='not_today'
                 .text.strong ng:switch-when='prev_job' You complete your previously scheduled job.
-          .phase.active ng:switch-when='cant_access'
+          .phase.cant_access.active ng:switch-when='cant_access'
             .header.warning
               .text Can't Access / Occupied
             .content.top
               .pad
-                .text Please call customer for instructions and wait 30 minutes before leaving.
+                .text.bottom Please call customer for instructions and wait 30 minutes before leaving.
+                .div.gray
+                timer interval="1000" start-timer='' autostart='false' finish-callback="$apply()" countdown="job.cant_access_seconds_left" {{mminutes}}:{{sseconds}}
+                .div.gray.bottom
+                .icon-button.teal ng:hide='can_access()' ng:click='start()'
+                  .icon
+                    i.icon-alert-ok
+                  .text Issue resolved, start this job
+                a ng:href="/jobs/{{::job.next_job.id}}" ng:show='can_access()'
+                  .icon-button.teal
+                    .icon
+                      i.icon-alert-ok
+                    .text Go to next job
           .phase.active ng:switch-when='completed'
             .header
               .text Job Completed
