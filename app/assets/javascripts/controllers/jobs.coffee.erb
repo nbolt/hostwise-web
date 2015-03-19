@@ -49,23 +49,33 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
     else
       ''
 
+  $scope.job_available = (job) ->
+    if $scope.user
+      $scope.user.man_hours + job.man_hours <= <%= MAX_MAN_HOURS %>
+    else
+      false
+
+  $scope.jobs_available = (day) -> _(day[1]).filter((job) -> $scope.job_available job)[0]
+
   refresh_jobs = ->
-    _($scope.tabs).each (tab) ->
-      $http.get('/data/jobs', {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
-        if tab.name == 'open' && !tab.days # there's a better way to do this
-          angular.element('.tab-content .tab:eq(0)').addClass 'active'
-        tab.days = rsp
-        tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
-        _(tab.days).each (day) ->
-          day.push {}
-          date = moment.utc(day[0],"MM-DD-YY")
-          date_text = date.format("ddd, MMM D")
-          if date.month() == moment().month()
-            if date.date() == moment().date()
-              date_text += ', Today'
-            else if date.date() == moment().date() + 1
-              date_text += ', Tomorrow'
-          day[2].date_text = date_text
+    $scope.user_fetched.promise.then ->
+      _($scope.tabs).each (tab) ->
+        $http.get('/data/jobs', {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
+          if tab.name == 'open' && !tab.days # there's a better way to do this
+            angular.element('.tab-content .tab:eq(0)').addClass 'active'
+          tab.days = _(rsp).filter (day) -> $scope.jobs_available day
+          _(tab.days).each (day) -> day[1] = _(day[1]).filter((job) -> $scope.job_available job)
+          tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
+          _(tab.days).each (day) ->
+            day.push {}
+            date = moment.utc(day[0],"MM-DD-YY")
+            date_text = date.format("ddd, MMM D")
+            if date.month() == moment().month()
+              if date.date() == moment().date()
+                date_text += ', Today'
+              else if date.date() == moment().date() + 1
+                date_text += ', Tomorrow'
+            day[2].date_text = date_text
 
   $scope.$watch 'filter', (n,o) -> if o
     refresh_jobs()
