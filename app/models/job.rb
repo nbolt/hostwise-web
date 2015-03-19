@@ -116,8 +116,10 @@ class Job < ActiveRecord::Base
   end
 
   def cant_access_seconds_left
-    num = (CANT_ACCESS_MINUTES * 60) - (Time.now - cant_access).round
-    if num < 0 then 0 else num end
+    if cant_access
+      num = (CANT_ACCESS_MINUTES * 60) - (Time.now - cant_access).round
+      if num < 0 then 0 else num end
+    end
   end
 
   def start!
