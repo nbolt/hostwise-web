@@ -79,7 +79,8 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       $http.get($window.location.href + '/status').success (rsp) ->
         $scope.job.status = rsp.status
         $scope.job.blocker = rsp.blocker
-    angular.element('.actions .phase.active').removeClass('active warning').addClass('complete').find('.header .text').text 'Job in Progress...'
+    angular.element('.actions .phase.active .header').removeClass 'warning'
+    angular.element('.actions .phase.active').removeClass('active').addClass('complete').find('.header .text').text 'Job in Progress...'
     angular.element('.actions .phase.arrival').addClass('active')
     null
 
@@ -93,6 +94,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.cant_access = ->
     $http.post("/jobs/#{$scope.job.id}/cant_access").success (rsp) ->
       $scope.job.status_cd = rsp.status_cd
+      $scope.job.cant_access_seconds_left = rsp.seconds_left
       $http.get($window.location.href + '/status').success (rsp) ->
         $scope.job.status = rsp.status
         $scope.job.blocker = rsp.blocker

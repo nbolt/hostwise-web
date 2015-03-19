@@ -39,7 +39,7 @@ class Contractor::JobsController < Contractor::AuthController
 
   def cant_access
     job.update_attributes(status_cd: 5, cant_access: Time.now)
-    render json: { success: true, status_cd: job.status_cd }
+    render json: { success: true, status_cd: job.status_cd, seconds_left: job.cant_access_seconds_left }
   end
 
   def claim
