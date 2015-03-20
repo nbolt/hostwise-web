@@ -44,7 +44,7 @@ gem 'faraday', '~> 0.8.9'
 
 gem 'twilio-ruby'
 gem 'smartystreets'
-gem 'simplecov'
+gem 'simplecov', :require => false
 gem 'sorcery'
 gem 'appsignal'
 gem 'pg_search'
