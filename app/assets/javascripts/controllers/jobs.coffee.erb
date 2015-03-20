@@ -61,10 +61,13 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
     $scope.user_fetched.promise.then ->
       _($scope.tabs).each (tab) ->
         $http.get('/data/jobs', {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
-          if tab.name == 'open' && !tab.days # there's a better way to do this
-            angular.element('.tab-content .tab:eq(0)').addClass 'active'
-          tab.days = _(rsp).filter (day) -> $scope.jobs_available day
-          _(tab.days).each (day) -> day[1] = _(day[1]).filter((job) -> $scope.job_available job)
+          if tab.name == 'open'
+            if !tab.days
+              angular.element('.tab-content .tab:eq(0)').addClass 'active'
+            tab.days = _(rsp).filter (day) -> $scope.jobs_available day
+            _(tab.days).each (day) -> day[1] = _(day[1]).filter((job) -> $scope.job_available job)
+          else
+            tab.days = rsp
           tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
           _(tab.days).each (day) ->
             day.push {}
