@@ -372,56 +372,56 @@
                   .checklists
                     .checklist ng:repeat='bedroom in range(job.booking.property.bedrooms) track by $index' ng:class="bedroom_checklist_class($index+1)"
                       .check ng:class='check(checklist.checklist_settings["bedroom_" + ($index+1).toString()].dust)'
-                        input type='checkbox' id='check-dust' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].dust'
-                        label for='check-dust'
+                        input type='checkbox' id='check-dust-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].dust'
+                        label for='check-dust-{{$index}}'
                           .strike
                           strong Dust & Wipe:
                           |  mirrors, nightstand, dresser, tables, headboard, bed frame, baseboards
                       .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].trash)"
-                        input type='checkbox' id='check-trash' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].trash'
-                        label for='check-trash'
+                        input type='checkbox' id='check-trash-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].trash'
+                        label for='check-trash-{{$index}}'
                           .strike
                           strong Trash:
                           |  check drawers, closets, under bed
                       .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].trash_can)"
-                        input type='checkbox' id='check-trash-can' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].trash_can'
-                        label for='check-trash-can'
+                        input type='checkbox' id='check-trash-can-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].trash_can'
+                        label for='check-trash-can-{{$index}}'
                           .strike
                           strong Trash can:
                           |  remove trash, replace liner
                       .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].fixtures)"
-                        input type='checkbox' id='check-fixtures' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].fixtures'
-                        label for='check-fixtures'
+                        input type='checkbox' id='check-fixtures-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].fixtures'
+                        label for='check-fixtures-{{$index}}'
                           .strike
                           strong Fixtures:
                           |  wipe door handles, light switches
                       .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].closets)"
-                        input type='checkbox' id='check-closets' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].closets'
-                        label for='check-closets'
+                        input type='checkbox' id='check-closets-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].closets'
+                        label for='check-closets-{{$index}}'
                           .strike
                           strong Closets:
                           |  items organized, folded & stored
                       .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].windows)"
-                        input type='checkbox' id='check-windows' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].windows'
-                        label for='check-windows'
+                        input type='checkbox' id='check-windows-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].windows'
+                        label for='check-windows-{{$index}}'
                           .strike
                           strong Windows:
                           |  spray/wipe window sills
                       .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].bed)"
-                        input type='checkbox' id='check-bed' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].bed'
-                        label for='check-bed'
+                        input type='checkbox' id='check-bed-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].bed'
+                        label for='check-bed-{{$index}}'
                           .strike
                           strong Bed:
                           |  stage the "HostWise Way," check for hair
                       .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].duvet)"
-                        input type='checkbox' id='check-duvet' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].duvet'
-                        label for='check-duvet'
+                        input type='checkbox' id='check-duvet-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].duvet'
+                        label for='check-duvet-{{$index}}'
                           .strike
                           strong Inspect Duvet:
                           |  if dirty, text HQ & customer
                       .check ng:class="check(checklist.checklist_settings['bedroom_' + ($index+1).toString()].floor)"
-                        input type='checkbox' id='check-floor' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].floor'
-                        label for='check-floor'
+                        input type='checkbox' id='check-floor-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].floor'
+                        label for='check-floor-{{$index}}'
                           .strike
                           strong Floor:
                           |  Vacuum/Mop (under bed, in closet)
@@ -439,56 +439,56 @@
                   .checklists
                     .checklist ng:repeat='bathroom in range(job.booking.property.bathrooms) track by $index' ng:class="bathroom_checklist_class($index+1)"
                       .check ng:class='check(checklist.checklist_settings["bathroom_" + ($index+1).toString()].shower)'
-                        input type='checkbox' id='check-shower' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].shower'
-                        label for='check-shower'
+                        input type='checkbox' id='check-shower-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].shower'
+                        label for='check-shower-{{$index}}'
                           .strike
                           strong Shower:
                           |  spray disinfectant, soak 10 min
                       .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].surfaces)"
-                        input type='checkbox' id='check-surfaces' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].surfaces'
-                        label for='check-surfaces'
+                        input type='checkbox' id='check-surfaces-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].surfaces'
+                        label for='check-surfaces-{{$index}}'
                           .strike
                           strong Surfaces:
                           |  mirrors, fixtures, baseboards
                       .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].sanitize)"
-                        input type='checkbox' id='check-sanitize' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].sanitize'
-                        label for='check-sanitize'
+                        input type='checkbox' id='check-sanitize-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].sanitize'
+                        label for='check-sanitize-{{$index}}'
                           .strike
                           strong Wash & Sanitize:
                           |  shower, tub, and sink
                       .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].toilet)"
-                        input type='checkbox' id='check-toilet' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].toilet'
-                        label for='check-toilet'
+                        input type='checkbox' id='check-toilet-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].toilet'
+                        label for='check-toilet-{{$index}}'
                           .strike
                           strong Toilet:
                           |  bowl, under toilet seam, base
                       .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].trash)"
-                        input type='checkbox' id='check-bath-trash' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].trash'
-                        label for='check-bath-trash'
+                        input type='checkbox' id='check-bath-trash-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].trash'
+                        label for='check-bath-trash-{{$index}}'
                           .strike
                           strong Trash:
                           |  empty & replace liner
                       .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].mats)"
-                        input type='checkbox' id='check-mats' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].mats'
-                        label for='check-mats'
+                        input type='checkbox' id='check-mats-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].mats'
+                        label for='check-mats-{{$index}}'
                           .strike
                           strong Rugs/Mats:
                           |  pickup, shakeout, vacuum
                       .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].hair)"
-                        input type='checkbox' id='check-hair' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].hair'
-                        label for='check-hair'
+                        input type='checkbox' id='check-hair-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].hair'
+                        label for='check-hair-{{$index}}'
                           .strike
                           strong Hair:
                           |  check shower, sink drain, counter
                       .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].floor)"
-                        input type='checkbox' id='check-bath-floor' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].floor'
-                        label for='check-bath-floor'
+                        input type='checkbox' id='check-bath-floor-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].floor'
+                        label for='check-bath-floor-{{$index}}'
                           .strike
                           strong Floor:
                           |  map (after final hair check)
                       .check ng:class="check(checklist.checklist_settings['bathroom_' + ($index+1).toString()].restocking)"
-                        input type='checkbox' id='check-restocking' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].restocking'
-                        label for='check-restocking'
+                        input type='checkbox' id='check-restocking-{{$index}}' ng:model='checklist.checklist_settings["bathroom_" + ($index+1).toString()].restocking'
+                        label for='check-restocking-{{$index}}'
                           .strike
                           strong Restocking:
                           |  toilet paper, hand soap, toiletries (shampoo, conditioner, etc.)
