@@ -17,7 +17,6 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
           if rsp.success
             spinner.startSpin()
             send_contract()
-            submit_background_check()
             spinner.stopSpin()
             scroll 0
             goto 'two'
@@ -90,9 +89,6 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
         else
           flash 'failure', rsp.message
       )
-
-  submit_background_check = ->
-    $http.post('/background_checks').success (rsp) ->
 
   send_contract = ->
     $http.post('/docusign/send').success (rsp) ->
