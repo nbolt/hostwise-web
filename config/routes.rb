@@ -52,7 +52,6 @@ Rails.application.routes.draw do
     get   '/payments' => 'payments#index'
     post  '/payments/add' => 'payments#add'
     post  '/payments/:action/:id' => 'payments'
-    post  '/background_checks' => 'background_checks#create'
     post  '/docusign/send' => 'docusign#create'
     get   '/availability' => 'availability#index'
     post  '/availability/add' => 'availability#add'
@@ -107,6 +106,7 @@ Rails.application.routes.draw do
   get '/privacy' => 'home#privacy', as: :privacy
 
   post '/notifications/checkr' => 'notifications#checkr', as: :checkr_notification
+  post 'notifications/docusign' => 'notifications#docusign'
   post '/contact_email' => 'home#contact_email'
 
   match '/:action' => 'home', via: [:get, :post]

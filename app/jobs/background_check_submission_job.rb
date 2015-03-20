@@ -3,7 +3,19 @@ require 'json'
 class BackgroundCheckSubmissionJob < ActiveJob::Base
   queue_as :default
 
-  def perform(user, application)
+  def perform(user)
+    dob = user.contractor_profile.dob
+    formatted_dob = [dob[4..dob.length-1], dob[0..1], dob[2..3]].join '-'
+    ssn = "#{user.contractor_profile.ssn[0..2]}-#{user.contractor_profile.ssn[3..4]}-#{user.contractor_profile.ssn[5..8]}"
+    application = {first_name: user.first_name,
+                   last_name: user.last_name,
+                   email: user.email,
+                   phone: user.phone_number,
+                   zipcode: user.contractor_profile.zip,
+                   dob: formatted_dob,
+                   ssn: Rails.env.production? ? ssn : '111-11-2001',
+                   custom_id: user.id}
+
     begin
       candidate_res = RestClient.post "#{ENV['CHECKR_URL']}/v1/candidates", application.to_json, content_type: :json, accept: :json
       if candidate_res.code == 201
