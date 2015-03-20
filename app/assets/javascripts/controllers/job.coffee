@@ -99,6 +99,8 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
         $scope.job.status = rsp.status
         $scope.job.blocker = rsp.blocker
 
+  $scope.timer_finished = -> $http.post("/jobs/#{$scope.job.id}/timer_finished")
+
   $scope.in_progress = ->
     if $scope.job
       $scope.job.status_cd == 2 && 'active' || ''
