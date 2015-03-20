@@ -146,6 +146,8 @@ ActiveRecord::Schema.define(version: 20150320185646) do
     t.float    "lat"
     t.float    "lng"
     t.string   "stripe_recipient_id"
+    t.boolean  "docusign_completed"
+    t.string   "docusign_id"
   end
 
   create_table "counties", force: :cascade do |t|
