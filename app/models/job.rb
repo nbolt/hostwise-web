@@ -76,8 +76,9 @@ class Job < ActiveRecord::Base
           even_payout = (payout / size).round 2
           primary_payout = (even_payout + (even_payout * 0.1)).round 2
           secondary_payout = (even_payout - ((primary_payout - even_payout) / (size-1))).round 2
-          if contractor && !contractor.admin? # requesting pricing for specific contractor (job detail page)
-            if ContractorJobs.where(job_id: self.id, user_id: contractor.id)[0].primary
+          contractor_job = contractor && ContractorJobs.where(job_id: self.id, user_id: contractor.id)[0]
+          if contractor_job && !contractor.admin? # requesting pricing for specific contractor (job detail page)
+            if contractor_job.primary
               payout = primary_payout
             else
               payout = secondary_payout
@@ -110,6 +111,11 @@ class Job < ActiveRecord::Base
 
   def man_hours
     MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
+  end
+
+  def contractor_hours contractor=nil
+    contractor ||= current_user
+    contractor.man_hours date
   end
 
   def staging
