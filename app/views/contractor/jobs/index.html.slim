@@ -17,8 +17,10 @@
             .photo
               img ng:show="tab.name != 'upcoming'" ng:src='{{job.booking.property.primary_photo}}'
               .timer ng:show="tab.name == 'upcoming'"
-                i.icon-job-order
-                span Job {{$index+1}}
+                .icon
+                  i.icon-job-order
+                .text
+                  span Job {{$index+1}}
             .order ng:show="tab.name == 'upcoming'"
               | {{$index+1}}
             .right

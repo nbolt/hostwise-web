@@ -1,3 +1,1 @@
-Timezone::Configure.begin do |c|
-  c.username = 'hostwise'
-end
+Timezone::Configure.begin {|c| c.google_api_key = ENV['GOOGLE_API_KEY']}

@@ -33,13 +33,20 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def begin
-    job.update_attribute :status_cd, 2
+    job.update_attribute :status_cd, 2 if job.status == :scheduled
     render json: { success: true, status_cd: job.status_cd }
   end
 
   def cant_access
     job.update_attributes(status_cd: 5, cant_access: Time.now)
     render json: { success: true, status_cd: job.status_cd, seconds_left: job.cant_access_seconds_left }
+  end
+
+  def timer_finished
+    unless job.booking.status == :couldnt_access
+      job.booking.update_attribute :status_cd, 5
+    end
+    render json: { success: true }
   end
 
   def claim
@@ -61,14 +68,16 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def complete
-    job.complete!
-    if current_user.contractor_profile.position == :trainee
-      current_user.contractor_profile.update_attribute :position_cd, 2 if current_user.jobs.where(training:true).count == current_user.jobs.where(training:true,status_cd:3).count
-    end
-    if job.booking
-      property = job.booking.property
-      UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
-      TwilioJob.perform_later("+1#{property.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
+    unless job.status == :completed
+      job.complete!
+      if current_user.contractor_profile.position == :trainee
+        current_user.contractor_profile.update_attribute :position_cd, 2 if current_user.jobs.where(training:true).count == current_user.jobs.where(training:true,status_cd:3).count
+      end
+      if job.booking
+        property = job.booking.property
+        UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
+        TwilioJob.perform_later("+1#{property.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
+      end
     end
     render json: { success: true, next_job: job.next_job(current_user).then(:id), status_cd: job.status_cd }
   end

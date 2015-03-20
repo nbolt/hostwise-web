@@ -24,7 +24,7 @@ class Booking < ActiveRecord::Base
   before_create :create_job
   after_create :attach_user
 
-  as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3, manual: 4
+  as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3, manual: 4, couldnt_access: 5
   as_enum :payment_status, pending: 0, completed: 1
 
   attr_accessor :vip

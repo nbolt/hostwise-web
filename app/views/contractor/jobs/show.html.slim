@@ -160,7 +160,7 @@
               .pad
                 .text.bottom Please call customer for instructions and wait 30 minutes before leaving.
                 .div.gray
-                timer interval="1000" start-timer='' autostart='false' finish-callback="$apply()" countdown="job.cant_access_seconds_left" {{mminutes}}:{{sseconds}}
+                timer interval="1000" start-timer='' autostart='false' finish-callback="timer_finished()" countdown="job.cant_access_seconds_left" {{mminutes}}:{{sseconds}}
                 .div.gray.bottom
                 .icon-button.teal ng:hide='can_access()' ng:click='start()'
                   .icon
