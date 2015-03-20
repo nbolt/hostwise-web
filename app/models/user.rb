@@ -93,14 +93,8 @@ class User < ActiveRecord::Base
     payouts.where(status_cd: 0).reduce(0){|acc, payout| acc + payout.amount} / 100.0
   end
 
-  def man_hours date=nil
-    if role_cd == 2
-      unless date
-        timezone = Timezone::Zone.new :latlon => [contractor_profile.lat, contractor_profile.lng]
-        date = timezone.time Time.now
-      end
-      jobs.standard.on_date(date).reduce(0){|acc, job| acc + job.man_hours}
-    end
+  def man_hours date
+    jobs.standard.on_date(date).reduce(0){|acc, job| acc + job.man_hours} if role_cd == 2
   end
 
   def claim_job job
