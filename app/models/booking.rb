@@ -94,7 +94,12 @@ class Booking < ActiveRecord::Base
     if self.job
       self.job.contractors.each do |contractor|
         UserMailer.booking_reminder(self, contractor).then(:deliver) if contractor.settings(:service_reminder).email
-        TwilioJob.perform_later("+1#{contractor.phone_number}", 'Reminder: Service Tomorrow') if contractor.settings(:service_reminder).sms
+        if contractor.settings(:service_reminder).sms
+          pickup_job = contractor.jobs.on_date(self.date).pickup[0]
+          sms = "Tomorrow you have a HostWise job at #{self.property.short_address}."
+          sms += " Don't forget to pick up supplies at 9:30 at #{pickup_job.distribution_center.short_address}." if pickup_job
+          TwilioJob.perform_later("+1#{contractor.phone_number}", sms)
+        end
       end
     end
   end
@@ -143,6 +148,10 @@ class Booking < ActiveRecord::Base
     day = (self.date.to_date - timezone.time(Time.now).to_date).to_i
     return true if day == 0 || (day <= 1 && timezone.time(Time.now).hour >= 22) # subject to cancellation if same day or the day before after 10pm
     return false
+  end
+
+  def formatted_date
+    date.strftime '%m/%d/%Y'
   end
 
   private

@@ -74,7 +74,9 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     null
 
   $scope.start = ->
-    $http.post("/jobs/#{$scope.job.id}/begin").success (rsp) ->
+    params = {}
+    params.issue_resolved = true if $scope.resolved
+    $http.post("/jobs/#{$scope.job.id}/begin", params).success (rsp) ->
       $scope.job.status_cd = rsp.status_cd
       $http.get($window.location.href + '/status').success (rsp) ->
         $scope.job.status = rsp.status
@@ -84,6 +86,10 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     angular.element('.actions .phase.arrival').addClass('active')
     null
 
+  $scope.issue_resolved = ->
+    $scope.resolved = true
+    $scope.start()
+
   $scope.can_access = ->
     text = angular.element('timer').text()
     if text == '00:00'
@@ -91,8 +97,10 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       false
 
-  $scope.cant_access = ->
-    $http.post("/jobs/#{$scope.job.id}/cant_access", {spinner:true}).success (rsp) ->
+  $scope.cant_access = (type) ->
+    params = {spinner:true}
+    params.property_occupied = true if type is 'property_occupied'
+    $http.post("/jobs/#{$scope.job.id}/cant_access", params).success (rsp) ->
       $scope.job.status_cd = rsp.status_cd
       $scope.job.cant_access_seconds_left = rsp.seconds_left
       $http.get($window.location.href + '/status').success (rsp) ->

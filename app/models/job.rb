@@ -110,6 +110,10 @@ class Job < ActiveRecord::Base
     payout.to_s.split('.')[1].to_i if booking
   end
 
+  def primary_contractor
+    ContractorJobs.where(job_id: self.id, primary: true)[0].user
+  end
+
   def man_hours
     MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
   end
@@ -131,17 +135,15 @@ class Job < ActiveRecord::Base
     booking.services.select {|s| s.name == 'toiletries' }.count > 0
   end
 
+  def formatted_date
+    date.strftime '%m/%d/%Y'
+  end
+
   def cant_access_seconds_left
     if cant_access
       num = (CANT_ACCESS_MINUTES * 60) - (Time.now - cant_access).round
       if num < 0 then 0 else num end
     end
-  end
-
-  def start!
-    in_progress!
-    save
-    TwilioJob.perform_later("+1#{self.booking.property.user.phone_number}", "HostWise arrived at #{self.booking.property.short_address}") if self.booking.property.user.settings(:porter_arrived).sms
   end
 
   def complete!
@@ -150,7 +152,7 @@ class Job < ActiveRecord::Base
       contractors.each do |contractor|
         contractor.payouts.create(job_id: self.id, amount: payout(contractor) * 100)
         job = self.next_job(contractor)
-        TwilioJob.perform_later("+1#{job.booking.property.user.phone_number}", 'HostWise is en route to service your property') if job && job.booking && job.booking.property.user.settings(:porter_en_route).sms
+        TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise is on the way to clean #{job.booking.property.full_address}. We will contact you when we arrive.") if job && job.booking && job.booking.property.user.settings(:porter_en_route).sms
       end
       booking.update_attribute :status_cd, 3
       booking.charge!
