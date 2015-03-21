@@ -119,7 +119,15 @@ class Job < ActiveRecord::Base
   end
 
   def staging
-    booking.services.index Service.where(name: 'preset')[0] if booking
+    booking.services.select {|s| s.name == 'preset' }.count > 0 if booking
+  end
+
+  def has_linens?
+    booking.services.select {|s| s.name == 'linens' }.count > 0
+  end
+
+  def has_toiletries?
+    booking.services.select {|s| s.name == 'toiletries' }.count > 0
   end
 
   def cant_access_seconds_left
@@ -164,25 +172,25 @@ class Job < ActiveRecord::Base
       if single_jobs[0]
         distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: date, occasion_cd: 0) unless distribution_job
         single_jobs.each do |job|
-          if job.booking.services.index Service.where(name: 'linens')[0]
+          if job.has_linens?
             supplies[:king_beds] += job.booking.property.king_beds
             supplies[:queen_beds] += job.booking.property.queen_beds
             supplies[:full_beds] += job.booking.property.full_beds
             supplies[:twin_beds] += job.booking.property.twin_beds
           end
-          job.booking.property.beds.times { supplies[:toiletries] += 1 } if job.booking.services.index Service.where(name: 'toiletries')[0]
+          job.booking.property.beds.times { supplies[:toiletries] += 1 } if job.has_toiletries?
         end
       end
 
       if team_job && team_job.contractors.count == 1
         distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: date, occasion_cd: 0) unless distribution_job
-        if team_job.booking.services.index Service.where(name: 'linens')[0]
+        if team_job.has_linens?
           supplies[:king_beds] += team_job.booking.property.king_beds
           supplies[:queen_beds] += team_job.booking.property.queen_beds
           supplies[:full_beds] += team_job.booking.property.full_beds
           supplies[:twin_beds] += team_job.booking.property.twin_beds
         end
-        team_job.booking.property.beds.times { supplies[:toiletries] += 1 } if team_job.booking.services.index Service.where(name: 'toiletries')[0]
+        team_job.booking.property.beds.times { supplies[:toiletries] += 1 } if team_job.has_toiletries?
       end
 
       if distribution_job
