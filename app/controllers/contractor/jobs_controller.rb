@@ -34,16 +34,39 @@ class Contractor::JobsController < Contractor::AuthController
 
   def begin
     job.update_attribute :status_cd, 2 if job.status == :scheduled
+
+    if params[:issue_resolved].present? #issue resolved 
+      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{job.primary_contractor.name} has resolved the issue at property #{job.booking.property.id}.")
+    else
+      TwilioJob.perform_later("+1#{self.booking.property.user.phone_number}", "HostWise has arrived at #{self.booking.property.full_address}") if self.booking.property.user.settings(:porter_arrived).sms
+    end
+
     render json: { success: true, status_cd: job.status_cd }
   end
 
   def done
     job.update_attribute :status_cd, 3 if job.status == :scheduled
-    render json: { success: true, next_job: job.next_job(current_user).then(:id) }
+    next_job = job.next_job(current_user)
+
+    if job.status == :completed && next_job
+      TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise is on the way to clean #{next_job.booking.property.full_address}. We will contact you when we arrive.") if next_job.booking.property.user.settings(:porter_en_route).sms
+    end
+
+    render json: { success: true, next_job: next_job.then(:id) }
   end
 
   def cant_access
-    job.update_attributes(status_cd: 5, cant_access: Time.now)
+    unless job.status == :cant_access
+      job.update_attributes(status_cd: 5, cant_access: Time.now)
+
+      if params[:property_occupied].present? #property occupied
+        TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address} but there are still guests occupying the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
+        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and guests are still occupying the property.")
+      else #can't access
+        TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address} but we are having trouble accessing the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
+        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and cannot access.")
+      end
+    end
     render json: { success: true, status_cd: job.status_cd, seconds_left: job.cant_access_seconds_left }
   end
 
@@ -54,6 +77,9 @@ class Contractor::JobsController < Contractor::AuthController
       job.contractors.each do |contractor|
         contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100)
       end
+
+      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise was unable to access your property. Having waited 30 minutes to resolve this issue, we must now move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
+      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}.")
     end
     render json: { success: true }
   end
@@ -61,7 +87,7 @@ class Contractor::JobsController < Contractor::AuthController
   def claim
     if current_user.claim_job job
       UserMailer.job_claim_confirmation(job, current_user).then(:deliver) if current_user.settings(:job_claim_confirmation).email
-      TwilioJob.perform_later("+1#{current_user.phone_number}", 'You claimed a job') if current_user.settings(:job_claim_confirmation).sms
+      TwilioJob.perform_later("+1#{current_user.phone_number}", "Success! You have claimed the HostWise job for #{job.booking.property.short_address} on #{job.formatted_date}.") if current_user.settings(:job_claim_confirmation).sms
       render json: { success: true }
     else
       render json: { success: false }
@@ -85,7 +111,7 @@ class Contractor::JobsController < Contractor::AuthController
       if job.booking
         property = job.booking.property
         UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
-        TwilioJob.perform_later("+1#{property.phone_number}", "Service completed at #{property.short_address}") if property.user.settings(:service_completion).sms
+        TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!") if property.user.settings(:service_completion).sms
       end
     end
     render json: { success: true, next_job: job.next_job(current_user).then(:id), status_cd: job.status_cd }
@@ -128,9 +154,9 @@ class Contractor::JobsController < Contractor::AuthController
   def checklist_update
     checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
     case params[:type]
-    when 'setting'
-      checklist.settings(params[:category].to_sym).send("#{params[:item]}=", params[:value])
-      checklist.save
+      when 'setting'
+        checklist.settings(params[:category].to_sym).send("#{params[:item]}=", params[:value])
+        checklist.save
     end
     render json: { success: true }
   end

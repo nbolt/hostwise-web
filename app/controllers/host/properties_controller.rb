@@ -226,7 +226,7 @@ class Host::PropertiesController < Host::AuthController
     if booking.job
       User.available_contractors(booking).each do |contractor|
         UserMailer.new_open_job(contractor, booking.job).then(:deliver) if contractor.settings(:new_open_job).email
-        TwilioJob.perform_later("+1#{contractor.phone_number}", 'New job') if contractor.settings(:new_open_job).sms
+        TwilioJob.perform_later("+1#{contractor.phone_number}", "New HostWise Job! $#{booking.job.payout(contractor)} in #{booking.property.city}, #{booking.property.zip} on #{booking.formatted_date}.") if contractor.settings(:new_open_job).sms
       end
     end
   end

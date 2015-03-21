@@ -140,7 +140,7 @@
                     .icon
                       i.icon-alert-bolt
                     .text Can't Access Property
-                  .icon-button.orange ng:click='cant_access()'
+                  .icon-button.orange ng:click="cant_access('property_occupied')"
                     .icon
                       i.icon-alert-bolt
                     .text Property Occupied
@@ -162,7 +162,7 @@
                 .div.gray
                 timer interval="1000" start-timer='' autostart='false' finish-callback="timer_finished()" countdown="job.cant_access_seconds_left" {{mminutes}}:{{sseconds}}
                 .div.gray.bottom
-                .icon-button.teal ng:hide='can_access()' ng:click='start()'
+                .icon-button.teal ng:hide='can_access()' ng:click="issue_resolved()"
                   .icon
                     i.icon-alert-ok
                   .text Issue resolved, start this job
