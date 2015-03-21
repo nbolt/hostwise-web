@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
 
   def name
     if first_name.present? && last_name.present?
-      return first_name + ' ' + last_name
+      return "#{first_name} #{last_name[0]}."
     elsif first_name.present?
       return first_name
     else
