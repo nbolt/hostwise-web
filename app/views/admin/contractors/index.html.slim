@@ -29,7 +29,7 @@
       tr dir-paginate='user in users | itemsPerPage: 20'
         td
           img.avatar ng:src='{{::user.avatar}}'
-        td
+        td class='name'
           a ng:show="{{user.activation_state != 'pending'}}" href="/contractors/{{user.id}}/edit" {{user.name}}
           span ng:show="{{user.activation_state == 'pending'}}" {{user.name}}
         td
