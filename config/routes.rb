@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     put   '/notifications/update' => 'notifications#update'
     get   '/quiz' => 'quiz#index'
     post  '/quiz/report' => 'quiz#report'
+    get   '/quiz/type' => 'quiz#type'
     post  '/checklist' => 'jobs#checklist'
     post  '/checklist/update' => 'jobs#checklist_update'
     post  '/checklist/:action' => 'jobs'

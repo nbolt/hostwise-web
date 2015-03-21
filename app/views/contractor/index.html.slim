@@ -13,7 +13,7 @@
     .header-message ng:show="jobs_completed()"
       .left
         .icon
-          .typcn.typcn-time
+          i.icon-alert-info
         .text Congratulations! You're finished for the day.
     .jobs
       .job ng:show='user.pickup_job' ng:class="user.pickup_job.status_cd == 3 && 'complete'"

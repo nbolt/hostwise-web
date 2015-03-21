@@ -8,19 +8,9 @@ class QuizStage < ActiveRecord::Base
   def next
     case took_at
       when 0
-        1
-      when 1
         2
-      when 2
-        6
-      when 6
-        11
-      when 11
-        21
-      when 21
-        41
       else
-        0
+        -1
     end
   end
 end

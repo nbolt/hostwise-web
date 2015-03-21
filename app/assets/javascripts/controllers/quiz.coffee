@@ -2,16 +2,22 @@ QuizCtrl = ['$scope', '$http', 'spinner', ($scope, $http, spinner) ->
 
   $scope.selected_answers = {}
   $scope.current_q = 1
-  $scope.max_q = 1
+  $scope.max_q = 10
   $scope.passing_score = 100
 
-  $http.get('/data/quiz.yml').success (rsp) ->
-    $scope.quizzes = jsyaml.load(rsp)
-    _($scope.quizzes).each (quiz) -> quiz.count = quiz.questions.length
-    $scope.chosen_quizzes = _($scope.quizzes[0]).clone()
-    $scope.chosen_quizzes.questions = _($scope.quizzes[0].questions).clone()
-    $scope.chosen_quizzes.questions = _($scope.chosen_quizzes.questions).shuffle()
-    $scope.chosen_quizzes.questions = _($scope.chosen_quizzes.questions).first($scope.max_q)
+  $http.get('/quiz/type').success (rsp) ->
+    quiz_type = rsp.type
+    $http.get('/data/quiz.yml').success (rsp) ->
+      $scope.quizzes = jsyaml.load(rsp)
+      _($scope.quizzes).each (quiz) -> quiz.count = quiz.questions.length
+      if quiz_type is 'basic'
+        $scope.chosen_quizzes = _($scope.quizzes[0]).clone()
+        $scope.chosen_quizzes.questions = _($scope.quizzes[0].questions).clone()
+      else #advanced
+        $scope.chosen_quizzes = _($scope.quizzes[1]).clone()
+        $scope.chosen_quizzes.questions = _($scope.quizzes[1].questions).clone()
+      $scope.chosen_quizzes.questions = _($scope.chosen_quizzes.questions).shuffle()
+      $scope.chosen_quizzes.questions = _($scope.chosen_quizzes.questions).first($scope.max_q)
 
   $scope.total_q = ->
     return new Array($scope.max_q)
