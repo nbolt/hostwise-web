@@ -3,10 +3,11 @@
     .text Select two dates below to schedule your training sessions.
 
   .schedule ng:show='no_dates()'
-    .header-message.pad
-      .icon
-        .typcn.typcn-time
-      .text Oops! There aren't any training dates available. Please check back soon!
+    .header-message
+      .left
+        .icon
+          i.icon-alert-exclamation
+        .text Oops! There aren't any training dates available. Please check back soon!
 
   .dates
     .date ng:repeat='date in dates' ng:click='select_date(date)' ng:class='date_selected(date)'
