@@ -76,7 +76,7 @@ class Booking < ActiveRecord::Base
 
   def cost
     cost = Booking.cost(property, services, first_booking_discount, late_next_day, late_same_day, no_access_fee)
-    if cancelled?
+    if cancelled? || couldnt_access?
       cost[:cost] -= cost[:linens] if cost[:linens]
       cost[:cost] -= cost[:toiletries] if cost[:toiletries]
       cost[:cost] = 0 if cost[:cost] < 0
@@ -108,10 +108,11 @@ class Booking < ActiveRecord::Base
       amount = (cost * 100).to_i
       begin
         metadata = {}
+        metadata[:job_id] = job.id if job
         if cancelled?
           metadata[:cancellation] = true
-        else
-          metadata[:job_id] = job.id
+        elsif couldnt_access?
+          metadata[:couldnt_access] = true
         end
         rsp = Stripe::Charge.create(
           amount: amount,

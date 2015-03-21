@@ -45,6 +45,10 @@ class Contractor::JobsController < Contractor::AuthController
   def timer_finished
     unless job.booking.status == :couldnt_access
       job.booking.update_attribute :status_cd, 5
+      job.booking.charge!
+      job.contractors.each do |contractor|
+        contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100)
+      end
     end
     render json: { success: true }
   end
