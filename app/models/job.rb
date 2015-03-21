@@ -21,6 +21,7 @@ class Job < ActiveRecord::Base
   scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
+  scope :not_training, -> { where(training: false) }
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
@@ -164,7 +165,7 @@ class Job < ActiveRecord::Base
     dropoff_job = jobs.distribution.dropoff.first
     team_job = jobs.team[0]
     single_jobs = standard_jobs.single
-    supplies = {king_beds:0,queen_beds:0,full_beds:0,twin_beds:0,toiletries:0}
+    supplies = {king_beds:0,twin_beds:0,toiletries:0}
 
     if standard_jobs.empty?
       jobs.distribution.destroy_all
@@ -174,8 +175,8 @@ class Job < ActiveRecord::Base
         single_jobs.each do |job|
           if job.has_linens?
             supplies[:king_beds] += job.booking.property.king_beds
-            supplies[:queen_beds] += job.booking.property.queen_beds
-            supplies[:full_beds] += job.booking.property.full_beds
+            supplies[:king_beds] += job.booking.property.queen_beds
+            supplies[:king_beds] += job.booking.property.full_beds
             supplies[:twin_beds] += job.booking.property.twin_beds
           end
           job.booking.property.beds.times { supplies[:toiletries] += 1 } if job.has_toiletries?
@@ -186,8 +187,8 @@ class Job < ActiveRecord::Base
         distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: date, occasion_cd: 0) unless distribution_job
         if team_job.has_linens?
           supplies[:king_beds] += team_job.booking.property.king_beds
-          supplies[:queen_beds] += team_job.booking.property.queen_beds
-          supplies[:full_beds] += team_job.booking.property.full_beds
+          supplies[:king_beds] += team_job.booking.property.queen_beds
+          supplies[:king_beds] += team_job.booking.property.full_beds
           supplies[:twin_beds] += team_job.booking.property.twin_beds
         end
         team_job.booking.property.beds.times { supplies[:toiletries] += 1 } if team_job.has_toiletries?

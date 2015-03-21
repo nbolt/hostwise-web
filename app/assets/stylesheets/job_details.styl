@@ -1,4 +1,12 @@
 #job-details, #jobs, .container.contractor .jobs, .ngdialog.claim .modal
+  .distribution-job
+    background-color: white
+    padding: 20px
+    border-radius: 3px
+    margin-top: 25px
+    .title
+      font-weight: 600
+      margin-bottom: 4px
   .job
     background-color: white
     margin: 25px auto 12px
@@ -227,7 +235,7 @@
       .address
         color: teal
         font-weight: 600
-  #columns
+  .columns
     margin: 25px 0
     @media phone
       margin: 10px 0 25px
@@ -270,6 +278,40 @@
             font-size: 0.8em
         @media portrait_tablet
           font-size: 1em
+      &.supplies
+        .supplies-container
+          padding: 20px
+          text-align: center
+          .div.teal
+            border-bottom: thin solid teal
+            height: 1px
+            margin: 20px 0
+          .supply
+            display: inline-block
+            vertical-align: top
+            margin-right: 40px
+            &:last-child
+              margin-right: 0s
+            .name, .value
+              display: inline-block
+              vertical-align: top
+            .name
+              color: teal
+              margin-right: 20px
+            .value
+              color: darker-gray
+      &.instructions
+        .instructions-container
+          padding: 20px
+          .title
+            color: teal
+            font-weight: 600
+            font-size: 1.1em
+            margin-bottom: 20px
+          .access-instruction
+            margin-bottom: 10px
+            color: darker-gray
+            line-height: 25px
       &.actions
         .phase
           &.active
@@ -746,3 +788,22 @@
                   &:hover
                     cursor: pointer
                     background-color: light-teal
+  &.distribution
+    .column
+      #map
+        height: 325px
+        width: 100%
+        display: inline-block
+        vertical-align: top
+        @media phone
+          width: 100%
+          height: 200px
+        .direction
+          bottom: 10px
+          color: white
+          font-size: 16px
+          left: 10px
+          position: absolute
+          width: 180px
+          z-index: 1001
+          outline: none
