@@ -163,6 +163,14 @@ class User < ActiveRecord::Base
     return bookings.first.date unless bookings.empty?
   end
 
+  def show_quiz
+    completed_jobs = Job.standard.past(self).count
+    passed_quizzes = QuizStage.passed(self.contractor_profile)
+    last_quiz = passed_quizzes.count > 0 ? passed_quizzes[0] : nil
+    take_at = last_quiz.present? ? last_quiz.next : 0
+    return completed_jobs == take_at
+  end
+
   private
 
   def format_phone_number

@@ -8,4 +8,8 @@ class Contractor::QuizController < Contractor::AuthController
     quiz.save
     render json: { success: true }
   end
+
+  def type
+    render json: { type: current_user.contractor_profile.position == :trainee ? 'basic' : 'advanced' }
+  end
 end
