@@ -52,15 +52,11 @@ Rails.application.routes.draw do
     get   '/payments' => 'payments#index'
     post  '/payments/add' => 'payments#add'
     post  '/payments/:action/:id' => 'payments'
-    post  '/docusign/send' => 'docusign#create'
+    #post  '/docusign/send' => 'docusign#create'
     get   '/availability' => 'availability#index'
     post  '/availability/add' => 'availability#add'
     get   '/notifications' => 'notifications#index'
     put   '/notifications/update' => 'notifications#update'
-    get   '/quiz' => 'quiz#index'
-    post  '/quiz/report' => 'quiz#report'
-    post  '/checklist' => 'jobs#checklist'
-    post  '/checklist/update' => 'jobs#checklist_update'
     get   '/quiz' => 'quiz#index'
     post  '/quiz/report' => 'quiz#report'
     post  '/checklist' => 'jobs#checklist'
@@ -79,6 +75,7 @@ Rails.application.routes.draw do
     put   '/contractors/:id/update' => 'contractors#update'
     post  '/contractors/:id/deactivate' => 'contractors#deactivate'
     post  '/contractors/:id/reactivate' => 'contractors#reactivate'
+    post  '/contractors/:id/complete_contract' => 'contractors#complete_contract'
     get   '/hosts' => 'hosts#index'
     get   '/hosts/:id/edit' => 'hosts#edit'
     put   '/hosts/:id/update' => 'hosts#update'
@@ -106,7 +103,7 @@ Rails.application.routes.draw do
   get '/privacy' => 'home#privacy', as: :privacy
 
   post '/notifications/checkr' => 'notifications#checkr', as: :checkr_notification
-  post 'notifications/docusign' => 'notifications#docusign'
+  #post 'notifications/docusign' => 'notifications#docusign'
   post '/contact_email' => 'home#contact_email'
 
   match '/:action' => 'home', via: [:get, :post]

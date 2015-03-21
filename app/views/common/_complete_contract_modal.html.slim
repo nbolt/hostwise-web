@@ -1,0 +1,13 @@
+script#complete-contract-modal type="text/ng-template"
+  .modal
+    .header
+      .text Complete Contract
+    .content
+      .fa.fa-check
+      .text By clicking 'Yes', we will submit the applicant's background check.
+    .footer
+      .buttons
+        .button.white ng:click='cancel_contract()'
+          .text No
+        .button.teal ng:click='confirm_contract()'
+          .text Yes

@@ -66,6 +66,10 @@
                   .icon
                     i.icon-refresh
                   .text Save Changes
+              .contract
+                div ng-attr-class="{{contractor.contractor_profile.docusign_completed && 'fa fa-check-circle-o' || 'fa fa-times-circle-o' }}"
+                span Contract Signed
+                a href='' ng:hide='contractor.contractor_profile.docusign_completed' ng:click='complete_contract()' Complete Contract
               .bgc
                 div ng-attr-class="{{contractor.background_check && contractor.background_check.status_cd == 1 && 'fa fa-check-circle-o' || 'fa fa-times-circle-o' }}"
                 span Background Checked
@@ -78,3 +82,4 @@
     span ng:click='open_reactivation()'  reactivate {{contractor.first_name}}'s account?
     = render 'common/account_reactivation_modal'
 = render 'common/change_status_modal'
+= render 'common/complete_contract_modal'

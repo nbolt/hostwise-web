@@ -24,8 +24,8 @@
         th Phone Number
         th Position
         th Status
-        th Next Service
-        th Jobs Completed
+        th Contract Signed
+        th BGC Completed
       tr dir-paginate='user in users | itemsPerPage: 20'
         td
           img.avatar ng:src='{{::user.avatar}}'
@@ -45,9 +45,9 @@
         td
           | {{user.activation_state}}
         td
-          span ng:bind="user.next_job_date | date:'MM/dd/yyyy':'UTC'"
+          | {{user.contractor_profile.docusign_completed ? 'Yes' : 'No'}}
         td
-          | &nbsp;
+          | {{user.background_check && user.background_check.status_cd == 1 ? 'Yes' : 'No'}}
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
 = render 'signup'
