@@ -41,6 +41,11 @@ class Contractor::JobsController < Contractor::AuthController
     render json: { success: true, status_cd: job.status_cd }
   end
 
+  def done
+    job.update_attribute :status_cd, 3 if job.status == :scheduled
+    render json: { success: true, next_job: job.next_job(current_user).then(:id) }
+  end
+
   def cant_access
     job.update_attributes(status_cd: 5, cant_access: Time.now)
     render json: { success: true, status_cd: job.status_cd, seconds_left: job.cant_access_seconds_left }
@@ -96,7 +101,7 @@ class Contractor::JobsController < Contractor::AuthController
     else
       timezone = Timezone::Zone.new :latlon => [job.booking.property.lat, job.booking.property.lng]
     end
-    
+
     if job.status == :completed
       render json: { success: true, status: 'completed' }
     elsif job.status == :in_progress
