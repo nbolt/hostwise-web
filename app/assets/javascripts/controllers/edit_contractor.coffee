@@ -1,4 +1,4 @@
-EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, $http, $timeout, ngDialog, spinner) ->
 
   url = window.location.href.split('/')
   $scope.id = url[url.length-2]
@@ -38,6 +38,17 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http,
     }).success (rsp) ->
       $scope.contractor = rsp
       angular.element('.status .steps').css('margin-left', -360)
+
+  $scope.complete_contract = ->
+    ngDialog.open template: 'complete-contract-modal', controller: 'edit-contractor', className: 'success full', scope: $scope
+
+  $scope.cancel_contract = ->
+    ngDialog.closeAll()
+
+  $scope.confirm_contract = ->
+    $http.post("/contractors/#{$scope.id}/complete_contract").success (rsp) ->
+      spinner.startSpin()
+      window.location = window.location.href
 
   $scope.open_deactivation = ->
     $scope.current_name = "#{$scope.contractor.first_name}'s"

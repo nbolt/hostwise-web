@@ -2,7 +2,7 @@ class Admin::ContractorsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.contractors.to_json(include: [contractor_profile: {methods: [:position]}], methods: [:name, :avatar, :next_job_date]) }
+      format.json { render json: User.contractors.to_json(include: {background_check: {}, contractor_profile: {methods: [:position]}}, methods: [:name, :avatar, :next_job_date]) }
     end
   end
 
@@ -71,6 +71,15 @@ class Admin::ContractorsController < Admin::AuthController
 
   def reactivate
     User.find_by_id(params[:id]).reactivate!
+    render json: { success: true }
+  end
+
+  def complete_contract
+    user = User.find_by_id(params[:id])
+    user.contractor_profile.docusign_completed = true
+    user.contractor_profile.save
+
+    BackgroundCheckSubmissionJob.perform_later(user)
     render json: { success: true }
   end
 

@@ -15,9 +15,6 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
           spinner: true
         }).success (rsp) ->
           if rsp.success
-            spinner.startSpin()
-            send_contract()
-            spinner.stopSpin()
             scroll 0
             goto 'two'
           else
@@ -89,9 +86,6 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
         else
           flash 'failure', rsp.message
       )
-
-  send_contract = ->
-    $http.post('/docusign/send').success (rsp) ->
 
   activation = ->
     return angular.element('.activate').length
