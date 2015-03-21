@@ -8,74 +8,71 @@
         .icon
           .typcn.typcn-time
         .text Congratulations! You're finished for the day.
-    .distribution
-      .top
-        .right
-          .typcn.typcn-chevron-right
-        .icon
-          .typcn.typcn-time
-        .text 9:30 AM
-        .location
-          | | &nbsp;Distribution Center
-      .bottom ng:hide='training.distribution_job.status_cd == 3'
-        .pad
-          .right
-            .button.teal ng:click='done(training.distribution_job)'
-              .icon
-                i.icon-check
-              .text Done
-          .supplies
-            .text Supplies:
-            .supply ng:show='::training.distribution_job.king_beds'
-              .type King:
-              .num ng:bind='::training.distribution_job.king_beds'
-            .supply ng:show='::training.distribution_job.queen_beds'
-              .type Queen:
-              .num ng:bind='::training.distribution_job.queen_beds'
-            .supply ng:show='::training.distribution_job.full_beds'
-              .type Full:
-              .num ng:bind='::training.distribution_job.full_beds'
-            .supply ng:show='::training.distribution_job.twin_beds'
-              .type Twin:
-              .num ng:bind='::training.distribution_job.twin_beds'
-            .supply ng:show='::training.distribution_job.toiletries'
-              .type Toiletry Kits:
-              .num ng:bind='::training.distribution_job.toiletries'
     .jobs
+      .job ng:show='training.distribution_job'
+        .photo
+          .timer
+            span Supplies Pickup
+        .order
+          | 0
+        .right
+          .top
+            a href='/jobs/{{training.distribution_job.id}}'
+              .text.completed ng:show="training.distribution_job.status_cd == 3"
+                span View
+                i.icon-alert-ok
+              .icon-button.teal ng:hide="training.distribution_job.status_cd == 3"
+                .icon
+                  i.icon-details
+                .text View
+            .title
+              .name ng:bind='training.distribution_job.distribution_center.name'
+              .address ng:bind='training.distribution_job.distribution_center.full_address'
+          .bottom
+            .payout
+              .icon
+                i.icon-clock
+              .pricing 9:30 AM
       .job ng:repeat='job in training.jobs' ng:class="job.status_cd == 3 && 'complete'"
-        .title
-          .icon
-            .typcn.typcn-time
-          .text Job {{$index+1}}
-          .column
+        .flag ng:class='pricing_class(job)'
+        .photo
+          .timer
+            .icon
+              i.icon-job-order
+            .text
+              span Job {{$index+1}}
+        .order
+          | {{$index+1}}
         .right
           .top
             a href='/jobs/{{job.id}}'
-              .text.completed ng:show="job.status_cd == 3" View Completed Job
-              .button.teal ng:hide="job.status_cd == 3"
+              .text.completed ng:show="job.status_cd == 3"
+                span View Completed Job
+                i.icon-alert-ok
+              .icon-button.teal ng:hide="job.status_cd == 3"
                 .icon
-                  .typcn.typcn-tick
+                  i.icon-details
                 .text View Job
-            .address
-              .name ng:bind='::job.booking.property.user.name'
-              .address1
-                | {{::job.booking.property.address1}}, {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
+            .title
+              .name ng:bind='job.booking.property.user.name'
+              .address ng:bind='job.booking.property.full_address'
           .bottom
-            .rooms
-              i.icon-house ng:if='job.booking.property.property_type_cd == 0'
-              i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
-              .text
-                | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
-            .contractors
-              i.icon-person
-              .text ng:bind='::job.contractor_count'
-            .right
+            .payout
               .icon
                 i.icon-payout
-              .pricing
+              .pricing ng:class='pricing_class(job)'
                 | ${{::job.payout_integer}}
                 span ng:hide='job.payout_fractional == 0'
                   | .{{::job.payout_fractional}}
+            .left
+              .rooms
+                i.icon-house ng:if='job.booking.property.property_type_cd == 0'
+                i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
+                .text
+                  | {{job.booking.property.bedrooms}}BD/{{job.booking.property.bathrooms}}BA
+              .size
+                i.icon-person
+                .text ng:bind='::job.size'
   .earnings
     .total.earning
       .top

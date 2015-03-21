@@ -21,7 +21,7 @@ class ContractorProfile < ActiveRecord::Base
     if ssn? && !stripe_recipient_id
       rsp = Stripe::Recipient.create(
         :name => user.name,
-        :tax_id => ssn,
+        :tax_id => Rails.env.production? ? ssn : '000000000',
         :type => 'individual'
       )
       self.stripe_recipient_id = rsp.id

@@ -47,7 +47,7 @@ class HomeController < ApplicationController
       when 1 # host
         render json: current_user.to_json(include: [:payments, properties: {methods: [:nickname, :short_address, :primary_photo, :full_address, :next_service_date], include: [:active_bookings, :future_bookings, :past_bookings]}], methods: [:avatar, :name, :role, :notification_settings])
       when 2 # contractor
-        render json: current_user.to_json(include: [:contractor_profile, :payments, :availability, jobs: {methods: [:payout_rounded, :payout_integer, :payout_fractional, :staging], include: {distribution_center: {methods: [:short_address]}, booking: {include: [property: {include: [user: {methods: [:name]}]}]}}}], methods: [:avatar, :name, :role, :notification_settings, :earnings, :unpaid])
+        render json: current_user.to_json(include: [:contractor_profile, :payments, :availability, jobs: {methods: [:payout_rounded, :payout_integer, :payout_fractional, :staging], include: {distribution_center: {methods: [:short_address, :full_address]}, booking: {include: [property: {methods: [:full_address], include: [user: {methods: [:name]}]}]}}}], methods: [:avatar, :name, :role, :notification_settings, :earnings, :unpaid])
       when 0 # admin
         render json: current_user.to_json(methods: [:avatar, :name, :role])
       end
