@@ -13,16 +13,9 @@ class Contractor::TraineeController < Contractor::AuthController
       jobs.each do |job|
         job.update_attribute :training, true
         job.contractors.push current_user
-        distribution_job = current_user.jobs.build(distribution: true, status_cd: 1, date: job.date)
-        if distribution_job.booking.services.index Service.where(name: 'linens')[0]
-          distribution_job.king_beds = job.booking.property.king_beds
-          distribution_job.queen_beds = job.booking.property.queen_beds
-          distribution_job.full_beds = job.booking.property.full_beds
-          distribution_job.twin_beds = job.booking.property.twin_beds
-        end
-        distribution_job.toiletries ||= 0
-        distribution_job.booking.property.beds.times { distribution_job.toiletries += 1 } if distribution_job.booking.services.index Service.where(name: 'toiletries')[0]
-        distribution_job.save
+        primary_contractor = ContractorJobs.where(job_id: job.id, primary: true)[0].user
+        distribution_job = primary_contractor.jobs.on_date(job.date).pickup[0]
+        distribution_job.contractors.push current_user
       end
       render json: { success: true }
     end

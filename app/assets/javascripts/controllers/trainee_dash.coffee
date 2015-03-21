@@ -10,7 +10,7 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
       date.moment = moment.utc job.date
       date.day = date.moment.format 'D'
       date.month = date.moment.format 'MMM'
-      date.time = '9:45 AM'
+      date.time = '9:30 AM'
       $scope.dates.push date
 
   $scope.no_dates = -> $scope.dates.length < 2
@@ -45,7 +45,7 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
             date.moment = moment.utc job.date
             date.day = date.moment.format 'D'
             date.month = date.moment.format 'MMM'
-            date.time = '9:45 AM'
+            date.time = '9:30 AM'
             $scope.dates.push date
 
 ]
