@@ -1,0 +1,34 @@
+script#add-payout-modal type="text/ng-template"
+  .payment.modal ng:controller='payment'
+    .steps
+      .step.one.active
+        .header.credit-card.active
+          .text Add Credit Card
+        .flash
+        .content
+          .payment-method
+            .text Select Payout Method
+            input type='hidden' ui-select2='payoutMethodHash()' ng:model='payment_method' value='credit-card'
+          .payment-tab.credit-card.active
+            .field.card-number
+              .label Card Number
+              input data-stripe='number' ng:model='card.number'
+            .row.two
+              .field.expiry
+                .label Expiry Date
+                input data-stripe='expiry' ui:mask='99/99' ng:model='card.expiry' placeholder='MM/YY'
+              .field.cvc
+                .label CV Code
+                input data-stripe='cvc' ng:model='card.cvc' placeholder='123'
+          .payment-tab.bank-account
+            .row.two
+              .field.account-number
+                .label Account Number
+                input ng:model='bank.account_number'
+              .field.routing-number
+                .label Routing Number
+                input ng:model='bank.routing_number'
+        .footer
+          .buttons
+            .button.teal ng:click='add_payment()'
+              .text Add Payment

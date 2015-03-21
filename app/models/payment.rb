@@ -5,17 +5,11 @@ class Payment < ActiveRecord::Base
 
   as_enum :status, active: 1, deleted: 0, pending: 2
 
-  scope :payout, -> { where(payout: true) }
-
   before_create :set_card_type
 
   validates :fingerprint, uniqueness: true
 
   scope :active, -> { where(status_cd: 1) }
-
-  def card?
-    stripe_id.present?
-  end
 
   def display
     if card?
