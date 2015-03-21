@@ -52,10 +52,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
     $http.post('/availability/add', {
       form: $scope.form
     }).success (rsp) ->
-      if rsp.success
-        flash 'info', 'Your changes have been saved!'
-      else
-        flash 'failure', rsp.message
+      flash 'failure', rsp.message unless rsp.success
 
   $scope.change = (id) ->
     lbl = angular.element('.availability-container form label[for=' + id + ']')
@@ -70,7 +67,10 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
     ngDialog.open template: 'account-deactivation-modal', controller: 'account', className: 'warning full', scope: $scope
 
   $scope.goto_bank_account = ->
-    goto 'three'
+    if angular.element('.availability-container form').find('label.checked').length > 0
+      goto 'three'
+    else
+      flash 'failure', 'Please select at least one day'
 
   $scope.$watch 'files', ->
     if $scope.files.length
