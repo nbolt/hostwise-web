@@ -1,0 +1,67 @@
+#job-details.container.distribution ng:controller='distribution_job'
+  .page-title
+    i.icon-details
+    | Distribution Job
+  .distribution-job
+    .title ng:bind='::job.distribution_center.name'
+    .address ng:bind='::job.distribution_center.full_address'
+  .columns
+    .column
+      .section.supplies
+        .head
+          .icon
+            i.icon-count
+          .text Today's Supply List
+        .supplies-container
+          .supplies
+            .supply
+              .name King:
+              .value ng:bind='::job.king_beds'
+            .supply
+              .name Twin:
+              .value ng:bind='::job.twin_beds'
+            .supply.toiletries
+              .name Toiletry Kits:
+              .value ng:bind='::job.toiletries'
+          .div.teal
+          a href='/jobs/{{::job.next_job.id}}' ng:show='job.next_job'
+            .icon-button.teal
+              .icon
+                i.icon-check
+              .text Done. Go to first job.
+      .section.instructions
+        .head
+          .icon
+            i.icon-service
+          .text Access Instructions
+        .instructions-container ng:switch='job.distribution_center.name'
+          .instructions ng:switch-when='Venice Distribution'
+            .title Access Information
+            .access-instruction
+              strong Access Code:
+              |  4756 "enter"
+            .access-instruction
+              strong Location:
+              |  Unit is in alleyway and under apartment 1020 Lake #G
+          .instructions ng:switch-when='DTLA Distribution'
+            .title Access Information
+            .access-instruction
+              strong Gate Code:
+              |  2934756*
+            .access-instruction
+              strong Unit:
+              |  5070, unit is in the far back right of the 2nd level
+            .access-instruction
+              strong Lock box code:
+              |  4756
+            .access-instruction Once you turn the key, pull the silver cylinder lock completely out of the door. Then move the latch to pen the door.
+            .access-instruction
+              | When locking, close the latch, push the cylinder lock back in, and turn the key. See
+              a href='https://www.youtube.com/watch?v=AFbzJTm1jcs'  this video
+              |  for a demonstration.
+    .column
+      #map
+        a.direction.icon-button.teal target='_blank' ng:href="http://maps.apple.com/?q={{job.booking.property.full_address}}"
+          .icon
+            i.icon-pin
+          .text Get Directions

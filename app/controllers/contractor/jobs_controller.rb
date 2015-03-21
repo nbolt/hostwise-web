@@ -23,11 +23,15 @@ class Contractor::JobsController < Contractor::AuthController
   def show
     respond_to do |format|
       format.html do
-        redirect_to '/' unless job.contractors.index current_user
+        if !job.contractors.index current_user
+          redirect_to '/'
+        elsif job.distribution
+          render 'distribution'
+        end
       end
       format.json do
         job.current_user = current_user
-        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :next_job, :cant_access_seconds_left], include: {contractors: {methods: [:name, :display_phone_number, :avatar]}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type]}}}})
+        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :next_job, :cant_access_seconds_left], include: {distribution_center: {methods: [:full_address]}, contractors: {methods: [:name, :display_phone_number, :avatar]}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type]}}}})
       end
     end
   end
@@ -87,7 +91,12 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def status
-    timezone = Timezone::Zone.new :latlon => [job.booking.property.lat, job.booking.property.lng]
+    if job.distribution_center
+      timezone = Timezone::Zone.new :latlon => [job.distribution_center.lat, job.distribution_center.lng]
+    else
+      timezone = Timezone::Zone.new :latlon => [job.booking.property.lat, job.booking.property.lng]
+    end
+    
     if job.status == :completed
       render json: { success: true, status: 'completed' }
     elsif job.status == :in_progress
