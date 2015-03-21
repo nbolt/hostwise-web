@@ -1,6 +1,6 @@
 default: &defaults
   push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
-  name: "PorterWeb"
+  name: "HostWise-web"
 
   # The cuttoff point in ms above which a request is considered slow, default is 200
   # slow_request_threshold: 200
@@ -14,7 +14,9 @@ default: &defaults
 staging:
   <<: *defaults
   active: true
+  enable_frontend_error_catching: true
 
 production:
   <<: *defaults
   active: true
+  enable_frontend_error_catching: true

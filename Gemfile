@@ -46,7 +46,7 @@ gem 'twilio-ruby'
 gem 'smartystreets'
 gem 'simplecov', :require => false
 gem 'sorcery'
-gem 'appsignal'
+gem 'appsignal', '~> 0.11.8.beta.3'
 gem 'pg_search'
 gem 'httparty'
 gem 'friendly_id'
