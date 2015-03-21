@@ -1265,6 +1265,8 @@ form
           color: dark-gray
 
 .container.trainee
+  .message .text .teal
+    color: teal
   .schedule
     .header-message
       .icon
@@ -1276,23 +1278,10 @@ form
           margin-top: 20px
   .select-dates
     width: 260px
-    border-radius: 1px
+    border-radius: 3px
     color: white
-    .icon, .text
-      display: inline-block
-      vertical-align: top
-    .icon
-      width: 50px
-      height: 50px
-      .typcn
-        font-size: 2.1em
-        margin: 1px 0 0 8px
-    .text
-      width: 210px
-      text-align: center
-      padding: 14px 0 15px
-      font-size: 1.1em
-      font-weight: 600
+    @media phone
+      width: 100%
     &.inactive
       background-color: #999
       .icon
@@ -1307,20 +1296,30 @@ form
     margin: 25px 0
     width: 640px
     border-bottom: thin solid #999
-    padding-bottom: 5px
+    padding-bottom: 10px
+    @media portrait_tablet
+      width: auto
+    @media phone
+      width: auto
     .date
       display: inline-block
       vertical-align: top
       width: 140px
       height: 190px
       margin: 0 20px 20px 0
-      border-radius: 1px
+      border-radius: 3px
+      overflow: hidden
+      box-shadow: gray_shadow
+      @media phone
+        width: 45%
+        margin-right: 5%
       .top
         background-color: white
         height: 150px
         padding: 18px
         box-sizing: border-box
         text-align: center
+        color: heavy-gray
         .day
           font-size: 2.4em
           font-weight: 600
@@ -1341,15 +1340,17 @@ form
         .icon
           width: 40px
           height: 40px
+          line-height: 40px
+          text-align: center
           background-color: light-teal
-          .typcn
-            font-size: 1.8em
-            margin-left: 6px
+          i
+            font-size: 1em
         .text
           text-align: center
-          font-size: 1.1em
+          font-size: 1em
           width: 100px
-          margin-top: 9px
+          line-height: 40px
+          text-transform: uppercase
       &.active:hover, &.chosen
         cursor: pointer
         .top
