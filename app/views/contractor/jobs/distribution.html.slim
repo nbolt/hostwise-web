@@ -24,11 +24,22 @@
               .name Toiletry Kits:
               .value ng:bind='::job.toiletries'
           .div.teal
-          a href='/jobs/{{::job.next_job.id}}' ng:show='job.next_job'
-            .icon-button.teal
+          div ng:switch='job.status'
+            .icon-button.teal ng:switch-default=''
               .icon
                 i.icon-check
-              .text Done. Go to first job.
+              .text ng:show='job.next_job' ng:click='done()' Done. Go to first job.
+              .text ng:hide='job.next_job' ng:click='done()' Done.
+            a ng:href='/jobs/{{job.next_job.id}}' ng:show='job.next_job'
+              .icon-button.teal ng:switch-when='completed'
+                .icon
+                  i.icon-check
+                .text Go to next job.
+            .icon-button.teal.disabled ng:switch-when='blocked'
+              .icon
+                i.icon-check
+              .text ng:show='job.blocker == "prev_job"' ng:click='done()' Complete your previously scheduled job first.
+              .text ng:show='job.blocker == "not_today"' ng:click='done()' Cannot be started until {{job.date_text_2}}.
       .section.instructions
         .head
           .icon

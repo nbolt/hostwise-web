@@ -16,7 +16,7 @@
           .typcn.typcn-time
         .text Congratulations! You're finished for the day.
     .jobs
-      .job ng:show='user.pickup_job'
+      .job ng:show='user.pickup_job' ng:class="user.pickup_job.status_cd == 3 && 'complete'"
         .photo
           .timer
             span Supplies Pickup
@@ -25,10 +25,10 @@
         .right
           .top
             a href='/jobs/{{user.pickup_job.id}}'
-              .text.completed ng:show="job.status_cd == 3"
+              .text.completed ng:show="user.pickup_job.status_cd == 3"
                 span View
                 i.icon-alert-ok
-              .icon-button.teal ng:hide="job.status_cd == 3"
+              .icon-button.teal ng:hide="user.pickup_job.status_cd == 3"
                 .icon
                   i.icon-details
                 .text View
@@ -80,7 +80,7 @@
               .size
                 i.icon-person
                 .text ng:bind='::job.size'
-      .job ng:show='user.dropoff_job'
+      .job ng:show='user.dropoff_job' ng:class="user.dropoff_job.status_cd == 3 && 'complete'"
           .photo
             .timer
               span Soiled Dropoff
@@ -89,10 +89,10 @@
           .right
             .top
               a href='/jobs/{{user.dropoff_job.id}}'
-                .text.completed ng:show="job.status_cd == 3"
+                .text.completed ng:show="user.dropoff_job.status_cd == 3"
                   span View
                   i.icon-alert-ok
-                .icon-button.teal ng:hide="job.status_cd == 3"
+                .icon-button.teal ng:hide="user.dropoff_job.status_cd == 3"
                   .icon
                     i.icon-details
                   .text View
