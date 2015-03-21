@@ -1,9 +1,9 @@
-ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', 'spinner', ($scope, $http, $timeout, $upload, ngDialog, spinner) ->
+ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'ngDialog', 'spinner', ($scope, $http, $timeout, $upload, $window, ngDialog, spinner) ->
 
   $scope.contractor_profile = {}
   $scope.files = []
 
-  url = window.location.href.split('/')
+  url = $window.location.href.split('/')
   $scope.token = url[url.length-2]
 
   $scope.setup_account = ->
@@ -43,7 +43,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
 
   $scope.skip = ->
     spinner.startSpin()
-    window.location = '/jobs'
+    $window.location = '/'
 
   $scope.setup_availability = ->
     $http.post('/availability/add', {
@@ -69,6 +69,25 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
     else
       flash 'failure', 'Please select at least one day'
 
+  $scope.add_bank_account = ->
+    Stripe.bankAccount.createToken
+      country: 'US'
+      routing_number: $scope.bank.routing_number
+      account_number: $scope.bank.account_number
+    , (_, rsp) ->
+      if rsp.error
+        flash 'failure', rsp.error.message
+      else
+        $http.post('/payments/add',{
+          stripe_id: rsp.id,
+          payment_method: $scope.payment_method,
+          spinner: true
+        }).success (rsp) ->
+          if rsp.success
+            $window.location = '/'
+          else
+            flash 'failure', rsp.message
+
   $scope.$watch 'files', ->
     if $scope.files.length
       file = $scope.files[0]
@@ -82,7 +101,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', '
       ).success((rsp, status, headers, config) ->
         if rsp.success
           spinner.startSpin()
-          window.location = window.location.href
+          $window.location = window.location.href
         else
           flash 'failure', rsp.message
       )

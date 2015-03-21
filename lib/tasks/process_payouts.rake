@@ -27,8 +27,7 @@ namespace :payouts do
             :currency => "usd",
             :recipient => recipient.id,
             :statement_descriptor => "HostWise Payout #{}",
-            :metadata => { payout_id: id },
-            :card => user.payments.payout[0].stripe_id
+            :metadata => { payout_id: id }
           )
           case rsp.status
           when 'pending'

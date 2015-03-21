@@ -1,24 +1,25 @@
 .container
   .page-title
     i.icon-bank
-    | Payout Methods
+    | Payout Method
   .payment-container ng::controller='payment'
     .flash
     ul
-      li ng:repeat='payment in user.payments' id='payment-{{::payment.id}}'
+      li ng:show='recipient.cards.total_count > 0 || recipient.active_account'
         i.icon-bank
-        .details
+        .details ng:show='recipient.cards.total_count > 0'
           span
             strong
-              | {{::payment.card_type}}
-            |  - Card ending in {{::payment.last4}}
-        .links ng:show='payment.status_cd == 1'
-          a href='' ng:click='make_payout(payment)' ng:hide='payment.payout' Select for Payout
-          .text ng:show='payment.payout' Selected for Payout
-          a href='' ng:click='open_deletion(payment)' Remove
-      li.add-payment ng:if='user.payments.length == 0'
+              | {{recipient.cards.data[0].brand}}
+            |  - Card ending in {{recipient.cards.data[0].last4}}
+        .details ng:show='recipient.active_account'
+          span
+            strong
+              | {{recipient.active_account.bank_name}}
+            |  - Bank ending in {{recipient.active_account.last4}}
+      li.add-payment
         .fa.fa-plus-circle
-        a href='' ng:click='open()' Add a bank account for direct deposit
+        a href='' ng:click='open_payout()' Add new payout method for direct deposit
 
 = render 'common/delete_payment_modal'
-= render 'common/add_payment_modal'
+= render 'common/add_payout_modal'

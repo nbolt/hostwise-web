@@ -1,13 +1,30 @@
 PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
 
   $scope.card = {}
+  $scope.bank = {}
+
+  refresh_recipient = ->
+    $scope.user_fetched.promise.then ->
+      $http.get('/stripe_recipient').success (rsp) -> $scope.recipient = rsp.recipient
+
+  $scope.$on 'refresh_recipient', -> refresh_recipient()
+
+  refresh_recipient()
 
   $scope.paymentMethodHash = ->
     {
-    dropdownCssClass: 'payment'
-    minimumResultsForSearch: -1
-    data: [{id:'credit-card', text:'Credit Card'}]
-    initSelection: (el, cb) -> cb {id:'credit-card', text:'Credit Card'}
+      dropdownCssClass: 'payment'
+      minimumResultsForSearch: -1
+      data: [{id:'credit-card', text:'Credit Card'}]
+      initSelection: (el, cb) -> cb {id:'credit-card', text:'Credit Card'}
+    }
+
+  $scope.payoutMethodHash = ->
+    {
+      dropdownCssClass: 'payment'
+      minimumResultsForSearch: -1
+      data: [{id:'credit-card', text:'Debit Card'}, {id:'bank-account', text:'Bank Account'}]
+      initSelection: (el, cb) -> cb {id:'credit-card', text:'Debit Card'}
     }
 
   $scope.make_default = (payment) ->
@@ -33,6 +50,8 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
   $scope.add_payment = ->
     if $scope.payment_method.id == 'credit-card'
       $scope.add_credit_card()
+    else if $scope.payment_method.id == 'bank-account'
+      $scope.add_bank_account()
 
   $scope.$watch 'payment_method', (n,o) -> if o
     el = angular.element('.payment.modal .steps .step.one')
@@ -42,11 +61,14 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       el.find('.content .payment-tab.credit-card').addClass 'active'
       el.find('.header.credit-card').addClass 'active'
     else
-      el.find('.content .payment-tab.ach').addClass 'active'
+      el.find('.content .payment-tab.bank-account').addClass 'active'
       el.find('.header.ach').addClass 'active'
 
   $scope.open = ->
     ngDialog.open template: 'add-payment-modal', className: 'success payment full', scope: $scope
+
+  $scope.open_payout = ->
+    ngDialog.open template: 'add-payout-modal', className: 'success payment full', scope: $scope
 
   $scope.make_payout = (payment) ->
     $http.post("/payments/payout/#{payment.id}").success (rsp) ->
@@ -60,7 +82,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
     if exp_date is 'MM/YY'
       exp_month = ''
       exp_year =  ''
-    Stripe.createToken
+    Stripe.card.createToken
       number: angular.element(".payment-tab.credit-card input[data-stripe=number]").val()
       cvc: angular.element(".payment-tab.credit-card input[data-stripe=cvc]").val()
       exp_month: exp_month
@@ -76,7 +98,28 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
         }).success (rsp) ->
           if rsp.success
             $scope.card = {}
-            $scope.$emit 'fetch_user'
+            $scope.$emit 'refresh_recipient'
+            ngDialog.closeAll()
+          else
+            flash 'failure', rsp.message
+
+  $scope.add_bank_account = ->
+    Stripe.bankAccount.createToken
+      country: 'US'
+      routing_number: $scope.bank.routing_number
+      account_number: $scope.bank.account_number
+    , (_, rsp) ->
+      if rsp.error
+        flash 'failure', rsp.error.message
+      else
+        $http.post('/payments/add',{
+          stripe_id: rsp.id,
+          payment_method: $scope.payment_method,
+          spinner: true
+        }).success (rsp) ->
+          if rsp.success
+            $scope.bank = {}
+            $scope.$emit 'refresh_recipient'
             ngDialog.closeAll()
           else
             flash 'failure', rsp.message
