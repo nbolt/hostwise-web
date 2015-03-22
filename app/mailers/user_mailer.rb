@@ -194,6 +194,34 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
+  def contractor_hired_email(user)
+    mandrill do
+      mandrill_mail template: 'hired',
+                    to: {email: user.email, name: user.name},
+                    vars: {
+                      'CALL_ACTION_URL' => contractor_jobs_url,
+                      'CONTRACTOR_FNAME' => user.first_name
+                    },
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def mentor_promotion_email(user)
+    mandrill do
+      mandrill_mail template: 'promoted-mentor',
+                    to: {email: user.email, name: user.name},
+                    vars: {
+                      'CALL_ACTION_URL' => contractor_jobs_url,
+                      'CONTRACTOR_FNAME' => user.first_name
+                    },
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
   def launch_email(user, url)
     mandrill do
       mandrill_mail template: 'launch-announcement',
@@ -234,6 +262,17 @@ class UserMailer < MandrillMailer::TemplateMailer
                            'ACCOUNT_NUM' => booking.payment.last4,
                            'CANCEL_FEE' => "$#{booking.cost}",
                            'DATE' => date},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def contractor_profile_completed(user)
+    mandrill do
+      mandrill_mail template: 'profile-completed',
+                    to: {email: user.email, name: user.name},
+                    vars: {},
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
