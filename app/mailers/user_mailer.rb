@@ -282,9 +282,13 @@ class UserMailer < MandrillMailer::TemplateMailer
   def new_open_job(user, job)
     mandrill do
       mandrill_mail template: 'new-open-job',
-                    subject: 'New job',
                     to: {email: user.email, name: user.name},
-                    vars: {},
+                    vars: {
+                      'CONTRACTOR_NAME' => user.name,
+                      'SERVICE_DATE' => job.booking.date.strftime,
+                      'SHORT_ADDRESS' => job.booking.property.short_address,
+                      'CLAIM_LINK' => contractor_jobs_url
+                    },
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
@@ -294,9 +298,19 @@ class UserMailer < MandrillMailer::TemplateMailer
   def job_claim_confirmation(job, user)
     mandrill do
       mandrill_mail template: 'job-claim-confirmation',
-                    subject: 'You claimed a job',
                     to: {email: user.email, name: user.name},
-                    vars: {},
+                    vars: {
+                      'CONTRACTOR_NAME' => user.name,
+                      'SERVICE_DATE' => job.booking.date.strftime,
+                      'FULL_ADDRESS' => job.booking.property.full_address,
+                      'PROP_SIZE' => job.booking.property.property_size,
+                      'SERVICES' => job.booking.services.map(&:display).join(','),
+                      'KING' => job.booking.property.king_beds,
+                      'QUEEN' => job.booking.property.queen_beds,
+                      'FULL' => job.booking.property.full_beds,
+                      'TWIN' => job.booking.property.twin_beds,
+                      'DETAILS_LINK' => job_details_url(job.id)
+                    },
                     inline_css: true,
                     async: true,
                     headers: {'Reply-To' => DEFAULT_REPLY_TO}
