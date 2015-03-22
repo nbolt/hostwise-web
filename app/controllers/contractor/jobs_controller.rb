@@ -90,7 +90,7 @@ class Contractor::JobsController < Contractor::AuthController
       TwilioJob.perform_later("+1#{current_user.phone_number}", "Success! You have claimed the HostWise job for #{job.booking.property.short_address} on #{job.formatted_date}.") if current_user.settings(:job_claim_confirmation).sms
       render json: { success: true }
     else
-      render json: { success: false }
+      render json: { success: false, message: "Oops! Looks like you can't claim this job." }
     end
   end
 

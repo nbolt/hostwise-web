@@ -28,11 +28,14 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
 
   $scope.claim = (job) ->
     $http.post("/jobs/#{job.id}/claim").success (rsp) ->
+      $scope.close_modal()
       if rsp.success
-        $scope.close_modal()
         angular.element("#job-#{job.id}").fadeOut()
       else
-        refresh_jobs()
+        refresh_jobs(->
+          angular.element("#job-#{job.id} .flash").css('opacity', 1).text rsp.message
+          $timeout((-> angular.element("#job-#{job.id} .flash").css('opacity', 0)), 4000)
+        )
 
   $scope.drop = (job) ->
     $http.post("/jobs/#{job.id}/drop").success (rsp) ->
@@ -53,7 +56,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
 
   $scope.jobs_available = (day) -> _(day[1]).filter((job) -> $scope.job_available job)[0]
 
-  refresh_jobs = ->
+  refresh_jobs = (cb) ->
     $scope.user_fetched.promise.then ->
       _($scope.tabs).each (tab) ->
         $http.get('/data/jobs', {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
@@ -75,6 +78,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
               else if date.date() == moment().date() + 1
                 date_text += ', Tomorrow'
             day[2].date_text = date_text
+          cb() if cb
 
   $scope.$watch 'filter', (n,o) -> if o
     refresh_jobs()
