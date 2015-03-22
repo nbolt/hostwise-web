@@ -12,9 +12,7 @@ class Payment < ActiveRecord::Base
   scope :active, -> { where(status_cd: 1) }
 
   def display
-    if card?
-      "#{card_type.titleize} #{last4}"
-    end
+    "#{card_type.titleize} #{last4}"
   end
 
   private

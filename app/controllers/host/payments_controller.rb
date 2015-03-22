@@ -38,7 +38,7 @@ class Host::PaymentsController < Host::AuthController
     # check if future booking exists with this payment
     future_bookings = payment.bookings.active
     if future_bookings.present?
-      render json: { success: false, message: "There is at least one booking associated with this #{payment.card? ? 'credit card' : 'bank account'}" }
+      render json: { success: false, message: "There is at least one booking associated with this credit card" }
       return
     end
 
@@ -47,17 +47,15 @@ class Host::PaymentsController < Host::AuthController
       return
     end
 
-    if payment.card?
-      customer = Stripe::Customer.retrieve(payment.user.stripe_customer_id)
-      rsp = customer.sources.retrieve(payment.stripe_id).delete
-    end
+    customer = Stripe::Customer.retrieve(payment.user.stripe_customer_id)
+    rsp = customer.sources.retrieve(payment.stripe_id).delete
 
-    if rsp && (payment.card? ? rsp.deleted : rsp.status == 204)
+    if rsp && rsp.deleted
       payment.update_attribute :status, :deleted
       payment.update_attribute :fingerprint, nil
       render json: { success: true }
     else
-      render json: { success: false, message: "Error deleting #{payment.card? ? 'credit card' : 'bank account'}" }
+      render json: { success: false, message: "Error deleting credit card" }
     end
   end
 
