@@ -52,8 +52,6 @@ QuizCtrl = ['$scope', '$http', 'spinner', ($scope, $http, spinner) ->
     spinner.startSpin()
     window.location = '/quiz'
 
-  $scope.review_manual = ->
-
   calculate_score = ->
     score = 0
     _($scope.chosen_quizzes.questions).each (question) ->
