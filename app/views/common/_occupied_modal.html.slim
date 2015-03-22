@@ -1,0 +1,14 @@
+script#occupied-modal type="text/ng-template"
+  .modal
+    .header
+      .text Guests still inside?
+    .content
+      .icon-button.orange ng:click='cant_access("property_occupied")' style='margin-bottom: 15px'
+        .icon
+          i.icon-bolt
+        .text Property is Still Occupied
+      .text Are there guests still inside? Click the button to alert the customer.
+    .footer
+      .buttons
+        .button.white ng:click='close_dialog()'
+          .text Cancel
