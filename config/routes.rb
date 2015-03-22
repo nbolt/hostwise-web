@@ -39,7 +39,7 @@ Rails.application.routes.draw do
     get   '/' => 'home#index'
     get   '/contact' => 'home#contact', as: :contractor_contact
     get   '/jobs' => 'jobs#index', as: :contractor_jobs
-    get   '/jobs/:id' => 'jobs#show'
+    get   '/jobs/:id' => 'jobs#show', as: :job_details
     match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
     match '/trainee/:action' => 'trainee', via: [:get, :post]
     get   '/user/edit' => 'users#edit'
