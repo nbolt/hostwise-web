@@ -25,7 +25,7 @@
         th Position
         th Status
         th Contract Signed
-        th BGC Completed
+        th BGC Status
       tr dir-paginate='user in users | itemsPerPage: 20'
         td
           img.avatar ng:src='{{::user.avatar}}'
@@ -46,8 +46,8 @@
           | {{user.activation_state}}
         td
           | {{user.contractor_profile.docusign_completed ? 'Yes' : 'No'}}
-        td
-          | {{user.background_check && user.background_check.status_cd == 1 ? 'Yes' : 'No'}}
+        td.status
+          | {{user.background_check && user.background_check.status}}
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
 = render 'signup'
