@@ -162,7 +162,12 @@
                 .div.gray
                 timer interval="1000" start-timer='' autostart='false' finish-callback="timer_finished()" countdown="job.cant_access_seconds_left" {{mminutes}}:{{sseconds}}
                 .div.gray.bottom
-                .icon-button.teal ng:hide='can_access()' ng:click="issue_resolved()"
+                a href='sms:+1{{job.booking.property.user.phone_number}}'
+                  .icon-button.teal.half
+                    .icon
+                      i.icon-text
+                    .text Text
+                .icon-button.teal ng:hide='can_access()' ng:click='issue_resolved()'
                   .icon
                     i.icon-alert-ok
                   .text Issue resolved, start this job
