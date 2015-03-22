@@ -47,6 +47,7 @@
                     | ${{::job.payout_integer}}
                     span ng:hide='job.payout_fractional == 0'
                       | .{{::job.payout_fractional}}
+                .flash.error
                 .left
                   .rooms
                     i.icon-house ng:if='job.booking.property.property_type_cd == 0'
