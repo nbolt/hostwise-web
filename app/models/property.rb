@@ -26,7 +26,8 @@ class Property < ActiveRecord::Base
   scope :inactive, -> { where(active: false) }
   scope :by_user, -> (user) { where(user_id: user.id) }
   scope :by_alphabetical, -> { reorder('LOWER(title)') }
-  scope :upcoming_bookings, -> { where('bookings.id is not null').order('bookings.created_at DESC').includes(:active_bookings).references(:active_bookings) }
+  scope :upcoming_bookings, -> { where('bookings.id is not null').order('bookings.created_at ASC').includes(:active_bookings).references(:active_bookings) }
+  scope :no_upcoming, -> { where('bookings.id is null').includes(:active_bookings).references(:active_bookings) }
   scope :recently_added, -> { reorder('created_at DESC') }
 
   attr_accessor :step
@@ -48,7 +49,7 @@ class Property < ActiveRecord::Base
         when 'recently_added'
           results = recently_added.active
         when 'upcoming_service'
-          results = upcoming_bookings.active
+          results = upcoming_bookings.active + no_upcoming
         when 'deactivated'
           results = inactive
       end

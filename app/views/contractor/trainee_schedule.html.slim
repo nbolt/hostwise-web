@@ -34,7 +34,6 @@
                 i.icon-clock
               .pricing 9:30 AM
       .job ng:repeat='job in training.jobs' ng:class="job.status_cd == 3 && 'complete'"
-        .flag ng:class='pricing_class(job)'
         .photo
           .timer
             .icon
@@ -60,7 +59,7 @@
             .payout
               .icon
                 i.icon-payout
-              .pricing ng:class='pricing_class(job)'
+              .pricing
                 | ${{::job.payout_integer}}
                 span ng:hide='job.payout_fractional == 0'
                   | .{{::job.payout_fractional}}

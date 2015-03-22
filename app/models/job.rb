@@ -71,7 +71,7 @@ class Job < ActiveRecord::Base
         payout += PRICING['windows_payout']  if pricing[:windows]
         payout += PRICING['no_access_fee_payout'] if booking.no_access_fee
 
-        if training && contractor && contractor.contractor_profile.position == :trainee
+        if contractor && contractor.contractor_profile.position == :trainee
           payout = 20
         elsif size > 1
           even_payout = (payout / size).round 2
