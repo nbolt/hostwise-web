@@ -73,7 +73,13 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     angular.element('.arrived-dropdown').css 'max-height', 80
     null
 
+  $scope.close_dialog = -> ngDialog.closeAll()
+
   $scope.start = ->
+    ngDialog.open template: 'begin-job-modal', className: 'success full', scope: $scope
+
+  $scope.confirm_start = ->
+    ngDialog.closeAll()
     params = {}
     params.issue_resolved = true if $scope.resolved
     $http.post("/jobs/#{$scope.job.id}/begin", params).success (rsp) ->
@@ -97,7 +103,14 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       false
 
+  $scope.cant_access_modal = ->
+    ngDialog.open template: 'cant-access-modal', className: 'info full', scope: $scope
+
+  $scope.occupied_modal = ->
+    ngDialog.open template: 'occupied-modal', className: 'info full', scope: $scope
+
   $scope.cant_access = (type) ->
+    ngDialog.closeAll()
     params = {spinner:true}
     params.property_occupied = true if type is 'property_occupied'
     $http.post("/jobs/#{$scope.job.id}/cant_access", params).success (rsp) ->

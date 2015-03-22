@@ -1,0 +1,14 @@
+script#cant-access-modal type="text/ng-template"
+  .modal
+    .header
+      .text Can't get inside?!
+    .content
+      .icon-button.orange ng:click='cant_access()' style='margin-bottom: 15px'
+        .icon
+          i.icon-bolt
+        .text I Can't Access Property
+      .text Having trouble accessing the property? Click the button to alert the customer.
+    .footer
+      .buttons
+        .button.white ng:click='close_dialog()'
+          .text Cancel

@@ -1,0 +1,14 @@
+script#begin-job-modal type="text/ng-template"
+  .modal
+    .header
+      .text Ready... Set.. Go!
+    .content
+      .icon-button.teal ng:click='confirm_start()' style='margin-bottom: 15px'
+        .icon
+          i.icon-check
+        .text Click to get started!
+      .text Are you sure you're ready to get started?
+    .footer
+      .buttons
+        .button.white ng:click='close_dialog()'
+          .text Cancel

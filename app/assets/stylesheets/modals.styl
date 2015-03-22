@@ -233,7 +233,7 @@
           .top
             height: auto
 
-.ngdialog.warning, .ngdialog.success
+.ngdialog.warning, .ngdialog.success, .ngdialog.info
   .ngdialog-content
     width: 400px
     .modal
@@ -243,6 +243,7 @@
         border-bottom: 1px solid red
         color: red
         padding: 20px
+        font-weight: 600
       .footer
         background-color: light-gray
         padding: 30px
@@ -281,6 +282,13 @@
     color: teal
   .content .fa
     background-color: teal
+    
+.ngdialog.info .ngdialog-content .modal
+  .header
+    border-bottom: 1px solid orange
+    color: orange
+  .content .fa
+    background-color: orange
 
 .ngdialog.payment
   .ngdialog-content
