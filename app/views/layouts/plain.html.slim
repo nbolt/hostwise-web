@@ -2,11 +2,15 @@ doctype html
 html
   head
     title= content_for?(:title) ? yield(:title) : 'HostWise'
+
+    javascript:
+      function stripe_loaded() { Stripe.setPublishableKey("#{ENV['STRIPE_API_KEY']}") }
+
     = render 'common/meta'
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'css_imports'
     = javascript_include_tag :application, 'data-turbolinks-track' => true
-    = javascript_include_tag 'https://js.stripe.com/v2', async: true
+    = javascript_include_tag 'https://js.stripe.com/v2', async: true, onload: 'stripe_loaded()'
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Lato:300,400,700', async: true
     = csrf_meta_tags
     = yield :head
