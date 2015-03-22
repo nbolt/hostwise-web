@@ -89,6 +89,9 @@ class Contractor::UsersController < Contractor::AuthController
         user.save
         user.activate!
         auto_login user
+
+        UserMailer.contractor_profile_completed(user).then(:deliver)
+
         render json: { success: true }
       else
         render json: { success: false, message: profile.errors.full_messages[0] }
