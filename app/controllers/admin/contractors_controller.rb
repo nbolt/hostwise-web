@@ -2,7 +2,7 @@ class Admin::ContractorsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.contractors.to_json(include: {background_check: {}, contractor_profile: {methods: [:position]}}, methods: [:name, :avatar, :next_job_date]) }
+      format.json { render json: User.contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {methods: [:position]}}, methods: [:name, :avatar, :next_job_date]) }
     end
   end
 
