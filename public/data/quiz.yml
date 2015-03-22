@@ -16,10 +16,10 @@
       question: What does HostWise do?
       id: q2
       options:
-        1: Cleaning, laundry, and set up for vacation rentals
-        2: On demand, maid service for homes
-        3: Personalized cleaning for homes and vacation rentals
-        4: 5-star, hotel-style clean and set up for vacation rentals
+        1: House cleaning + landscaping
+        2: Deep cleaning
+        3: Organizing closets & other special requests
+        4: 5-star, hotel-style housekeeping for vacation rentals
       answers:
         -
           4
@@ -27,21 +27,22 @@
       question: What are the 4 sins of housekeeping?
       id: q3
       options:
-        1: Hair in the bathroom, hair on the bed, mold in bathroom and kitchen, trash
-        2: Hair in the bathroom, hair on the bed, laundry, unorganized closets
-        3: Hair in the bathroom, hair on the bed, laundry, trash
-        4: Hair in the bathroom, hair on the bed, unorganized closets, trash
+        1: Hair anywhere in bathroom
+        2: Hair in or on the bed
+        3: Mildew anywhere in bathroom (sink, toilet, floor, shower, bath)
+        4: Trash anywhere in home
+        5: All of the above
       answers:
         -
-          1
+          5
     -
-      question: What is the HostWise way of making beds?
+      question: What is the proper way of making beds?
       id: q4
       options:
-        1: Hospital tuck - Tuck sheets under bed and leave a triangular fold at the side of each end of the bed. Blankets and comforters tucked in at the end of the bed
-        2: Hospital tuck - Tuck 1 sheet under bed and leave a triangular fold at the side of each end of the bed. Place other sheets over bed without tucking
-        3: HostWise tuck - Tuck bottom sheet under bed, place second and third sheets over bed
-        4: HostWise tuck - Tuck sheets under bed and place blankets and comforters over sheets, tucking them on all sides and corners of the bed
+        1: Tuck all sheets and blankets very tight under mattress with hospital corners technique
+        2: Leave sheets hanging out on left and right sides of bed
+        3: Tuck sheets in but drape blanket on top
+        4: Don't make bed. Customer can do it
       answers:
         -
           1
@@ -50,9 +51,9 @@
       id: q5
       options:
         1: In the bathroom. Towels that don't fit in the bathroom should be neatly placed on the bed
-        2: Neatly folded and placed on the bed
+        2: Folded and placed on the bed
         3: In the kitchen
-        4: Half in the bathroom and half on the bed
+        4: Hidden in bathroom drawers
       answers:
         -
           1
@@ -61,31 +62,31 @@
       id: q6
       options:
         1: At 9:30 am before my scheduled jobs
-        2: At 10:00 am before my scheduled jobs
+        2: At 10 am before my scheduled jobs
         3: The night before my scheduled jobs
         4: Twice a week
       answers:
         -
           1
     -
-      question: You cannot access the job site. What should you do?
+      question: You cannot access the property. What should you do?
       id: q7
       options:
-        1: Contact HostWise Support
+        1: Call HostWise HQ
         2: Try entering through a window
-        3: Immediately leave to your next job
-        4: Select "cannot access property" on the app and alert client
+        3: Go to next job
+        4: Select "cannot access property" on the app and call/text client
       answers:
         -
           4
     -
-      question: What are some must have, 5-star cleaning supplies? (Select all that apply)
+      question: What are the "must have" cleaning supplies? (Select all that apply)
       id: q8
       options:
         1: Vacuum
         2: Mop
-        3: Dust rags
-        4: Squeegee
+        3: Microfiber cloths
+        4: Paper towels
       answers:
         -
           1
@@ -98,30 +99,39 @@
       id: q9
       options:
         1: Pick them up, shake them out, then vacuum them
-        2: Sweep, mop then vacuum them
-        3: Pick them up, shake them out, then place back on the floor
+        2: Only vacuum them
+        3: Only shake them
         4: Place in washing machine and dry while doing the house clean
       answers:
         -
           1
     -
-      question: What are the most important things to remember with HostWise? (Select all that apply)
+      question: When do jobs start?
       id: q10
       options:
-        1: Presentation of beds, towels and toiletry kits
-        2: The 4 sins
-        3: Laundry
-        4: Vacuuming under carpets
+        1: 10 am
+        2: 12 pm
+        3: 4 pm
+        4: At any time of the day
       answers:
         -
           1
+    -
+      question: What is the standard guest check-in time?
+      id: q11
+      options:
+        1: 4 pm
+        2: 5 pm
+        3: Who cares
+        4: Whenever I finish the clean
+      answers:
         -
-          2
+          1
 -
   name: advanced
   questions:
     -
-      question: The HostWise clean is specifically designed to amaze?
+      question: The HostWise clean is specifically designed to amaze
       id: q20
       options:
         1: The homeowner
@@ -132,22 +142,22 @@
         -
           2
     -
-      question: What is the most efficient way to clean?
+      question: What's the best hotel-style cleaning method?
       id: q21
       options:
-        1: Trash and dirty dish collection, start dishwasher, spray disinfectant in bathroom, dust and wipe surfaces and counters, vacuum and mop floors
-        2: Trash and dirty dish collection, start dishwasher, vacuum and mop floors, dust and wipe surfaces and counters, spray disinfectant in bathroom
-        3: Dust and wipe surfaces and counters, vacuum and mop floors, spray disinfectant in bathroom, trash and dirty dish collection, start dishwasher
-        4: Start dishwasher, spray disinfectant in bathroom,trash and dirty dish collection, dust and wipe surfaces and counters, vacuum and mop floors
+        1: 1) Pre-soak bathrooms 2) Dust all surfaces 3) Vacuum all floors 4) Mop all floors
+        2: 1) Mop all floors 2) Vacuum all floors 3) Dust all surfaces 4) Pre-soak bathrooms
+        3: 1) Clean windows 2) Pre-soak bathrooms 3) Mop all floors 4) Vacuum all floors
+        4: 1) Clean pool area 2) Mop all floors 3) Vacuum all floors 4) Vacuum under rugs
       answers:
         -
           1
     -
-      question: Which of the following should not be cleaned unless specified in the app? (Select all that apply)
+      question: Which of the following do not need to be cleaned unless specified in the app? (Select all that apply)
       id: q22
       options:
         1: Exteriors (balcony, patio, pool area)
-        2: Exterior Windows
+        2: Windows
         3: Fridge
         4: Microwave
       answers:
@@ -159,10 +169,10 @@
       question: Which of the following is true?
       id: q23
       options:
-        1: You should not use client's cleaning supplies unless requested by the client
-        2: You should not bring your own cleaning supplies and materials
-        3: You should only vacuum if the client has a vacuum at the job site
-        4: You should leave unopened, perishable food in the fridge
+        1: Use your own cleaning supplies and materials
+        2: Use client's cleaning supplies and materials
+        3: Vacuum only if client has a vacuum
+        4: Leave perishable food in the fridge
       answers:
         -
           1
@@ -171,9 +181,9 @@
       id: q24
       options:
         1: Fridge, microwave, baseboards, light switches
-        2: Stove, balcony, windows, baseboards
-        3: Walls behind picture frames, pool interiors, external decorations, windows
-        4: Stove, inside laundry machine, garage, ceilings
+        2: Balcony, exterior windows
+        3: Walls behind picture frames, the pool, external decorations, windows
+        4: Inside laundry machine, ceilings
       answers:
         -
           1
@@ -189,13 +199,13 @@
         -
           3
     -
-      question: What is the HostWise way of making beds?
+      question: What do you do upon arrival?
       id: q26
       options:
-        1: Tucking sheets and blankets underneath the mattress and creating a triangular fold at the side of each end of the bed
-        2: Draping the sheets and blanket over the bed
-        3: Tucking sheets underneath the mattress and draping the blanket over the bed
-        4: Neatly folding sheets and blanket and placing them at the end of the bed
+        1: 1) Damage inspection 2) Inventory count 3) Start dishwasher 4) Pre-soak bathrooms
+        2: 1) Mop all floors 2) Dust all surfaces 3) Start dishwasher 4) Pre-soak bathrooms
+        3: 1) Start dishwasher 2) Damage inspection 3) Pre-soak bathrooms 4) Mop all floors
+        4: 1) Start dishwasher 2) Pre-soak bathrooms 3) Damage inspection 4) Dust all surfaces
       answers:
         -
           1
@@ -215,7 +225,7 @@
       id: q28
       options:
         1: 9:30 am
-        2: 10:00 am
+        2: 10 am
         3: 30 minutes before my job
         4: The night before
       answers:
@@ -233,45 +243,37 @@
         -
           2
     -
-      question: When should you not go to the Warehouse? (Select all that apply)
+      question: What are the most important focus points? (Select all that apply)
       id: q30
       options:
-        1: The night before my jobs
-        2: 9:30 am
-        3: Before 9 am
-        4: All of the above
+        1: Presentation of beds, towels and toiletry kits
+        2: The 4 sins
+        3: Laundry
+        4: Vacuuming under carpets
       answers:
         -
           1
         -
-          3
+          2
     -
-      question: Please select the "Property Occupied" option in the app when job site is occupied. What do you do after selecting the option? (Select all that apply)
+      question: If guests are at the property
       id: q31
       options:
-        1: Enter property and start cleaning
-        2: Call client if they don't text back after a few minutes
-        3: If after a few minutes, the client doesn't answer texts or calls, enter job site and start cleaning
-        4: Wait 30 minutes to hear from client
-        5: Leave site if after 30 minutes the client has not given you permission to clean
-        6: Clean around guests if the client gives you permission
+        1: Enter and clean property
+        2: Call/Text client and wait 30 mins to hear back
+        3: Go to next property
+        4: Ask permission to clean from guests
       answers:
         -
           2
-        -
-          4
-        -
-          5
-        -
-          6
     -
       question: If client gives permission to clean around guests, please make sure to (Select all that apply)
       id: q32
       options:
         1: Take pictures of cleaned floors, empty kitchen sinks, made beds and cleaned bathrooms
-        2: Tell guests to leave job site
+        2: Tell guests to leave property
         3: Spend extra time recleaning surfaces you have already cleaned
-        4: Help guests do laundry and pack
+        4: Help guests pack
       answers:
         -
           1
@@ -279,8 +281,8 @@
       question: Under which of the following circumstances should you contact HostWise? (Select all that apply)
       id: q33
       options:
-        1: Any one of your jobs won't be finished by 4 pm
-        2: Have an emergency and must cancel a job
+        1: Job won't be finished by 4 pm
+        2: Must cancel my job
         3: Have difficulty finding parking
         4: Need entry instructions
       answers:
@@ -289,10 +291,10 @@
         -
           2
     -
-      question: Under which of the following circumstances should you contact HostWise?
+      question: Under which circumstances should you contact HostWise? (Select all that apply)
       id: q34
       options:
-        1: Client asks for extras
+        1: Client asks for extras (more towels, more linens)
         2: Client asks you to work directly for them
         3: Damage to the property during cleaning
         4: All of the above
@@ -314,7 +316,7 @@
       question: Who do you contact if the entry instructions are incorrect?
       id: q36
       options:
-        1: Contact the client through the app
+        1: Contact the client
         2: Ask the neighbors
         3: Call or text HostWise
         4: Yelp a local lock smith to open the door
@@ -322,13 +324,24 @@
         -
           1
     -
-      question: What shouldn't be done for a HostWise client?
+      question: What should be done for a HostWise client?
       id: q37
       options:
-        1: Laundry
+        1: Moving furniture
         2: Dishes
         3: Clean inside the oven
-        4: Redecorate
+        4: Redecorating
       answers:
         -
-          1
+          2
+    -
+      question: When should you go to the Warehouse?
+      id: q38
+      options:
+        1: The night before my jobs
+        2: 9:30 am
+        3: Before 9 am
+        4: All of the above
+      answers:
+        -
+          2
