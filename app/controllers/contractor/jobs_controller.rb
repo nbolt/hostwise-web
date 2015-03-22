@@ -33,7 +33,7 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def begin
-    job.update_attribute :status_cd, 2 if job.status == :scheduled
+    job.update_attribute :status_cd, 2 if job.status == :scheduled || job.status == :cant_access
 
     if params[:issue_resolved].present? #issue resolved 
       TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{job.primary_contractor.name} has resolved the issue at property #{job.booking.property.id}.")
