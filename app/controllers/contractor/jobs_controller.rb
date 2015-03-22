@@ -38,7 +38,7 @@ class Contractor::JobsController < Contractor::AuthController
     if params[:issue_resolved].present? # issue resolved 
       TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{job.primary_contractor.name} has resolved the issue at property #{job.booking.property.id}.")
     else
-      TwilioJob.perform_later("+1#{job.booking.property.user.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}") if job.booking.property.user.settings(:porter_arrived).sms
+      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}") if job.booking.property.user.settings(:porter_arrived).sms
     end
 
     render json: { success: true, status_cd: job.status_cd }
