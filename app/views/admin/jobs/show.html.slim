@@ -23,49 +23,51 @@
         .cost ${{::job.booking.cost}}
   .row.one
     .block.top-info.jobs
-      .job id='job-{{job.id}}'
+      .job style='margin:0'
+        .flag ng:class='pricing_class()'
         .photo
           img ng:src='{{job.booking.property.primary_photo}}'
-          .column
         .right
           .top
-            .neighborhood.address
-              .name
-                | {{::job.booking.property.address1}}, {{::job.booking.property.city}}, {{::job.booking.property.state}} {{::job.booking.property.zip}}
-            .beds remove-div=''
+            .title
+              .name ng:bind='job.booking.property.nickname'
+              .address ng:bind='job.booking.property.full_address'
+            .beds style='margin:0'
               .text Beds
-              .bed ng:if='job.booking.property.king_beds > 0'
-                span King
-                | &nbsp; {{::job.booking.property.king_beds}}
-                .div |
-              .bed ng:if='job.booking.property.queen_beds > 0'
-                span Queen
-                | &nbsp; {{::job.booking.property.queen_beds}}
-                .div |
+              .bed ng:if='job.booking.property.king_beds == 1'
+                | {{job.booking.property.king_beds}} King
+              .bed ng:if='job.booking.property.king_beds > 1'
+                | {{job.booking.property.king_beds}} Kings
+              .bed ng:if='job.booking.property.queen_beds == 1'
+                | {{job.booking.property.queen_beds}} Queen
+              .bed ng:if='job.booking.property.queen_beds > 1'
+                | {{job.booking.property.queen_beds}} Queens
               .bed ng:if='job.booking.property.full_beds > 0'
-                span Full
-                | &nbsp; {{::job.booking.property.full_beds}}
-                .div |
-              .bed ng:if='job.booking.property.twin_beds > 0'
-                span Twin
-                | &nbsp; {{::job.booking.property.twin_beds}}
-                .div |
+                | {{job.booking.property.full_beds}} Full
+              .bed ng:if='job.booking.property.twin_beds == 1'
+                | {{job.booking.property.twin_beds}} Twin
+              .bed ng:if='job.booking.property.twin_beds > 1'
+                | {{job.booking.property.twin_beds}} Twins
           .bottom
-            .rooms
-              i.icon-house ng:if='job.booking.property.property_type_cd == 0'
-              i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
-              .text
-                | {{::job.booking.property.bedrooms}}BD/{{::job.booking.property.bathrooms}}BA
-            .contractors
-              i.icon-person
-              .text ng:bind='::job.contractor_count'
-            .right
+            .payout
               .icon
                 i.icon-payout
-              .pricing
+              .pricing ng:class='pricing_class()'
                 | ${{::job.payout_integer}}
                 span ng:hide='job.payout_fractional == 0'
                   | .{{::job.payout_fractional}}
+            .left
+              .rooms
+                i.icon-house ng:if='job.booking.property.property_type_cd == 0'
+                i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
+                .text
+                  | {{job.booking.property.bedrooms}}BD/{{job.booking.property.bathrooms}}BA
+              .id style='display:inline-block'
+                i.icon-person
+                .text ng:bind='::job.contractor_count'
+              .est ng:if='man_hrs'
+                i.icon-timer-outline
+                .text ng:bind='::man_hrs'
   .row.uneven
     .block.customer
       .head
@@ -97,7 +99,7 @@
           .icon
             .typcn.typcn-user
           .name ng:bind='::teammate.name'
-        .add-teammate ng:hide='job.contractor_count == job.size'
+        .add-teammate
           input type='hidden' ui-select2='teamHash()' ng:model='new_teammate' style='width:240px' placeholder='Add a Team Member'
       .block.instructions
         .head
