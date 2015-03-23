@@ -22,10 +22,6 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       $scope.job.status = rsp.status
       $scope.job.blocker = rsp.blocker
 
-    $http.get('/man_hrs').success (rsp) ->
-      man_hrs = rsp[$scope.job.booking.property.property_type][$scope.job.booking.property.bedrooms][$scope.job.booking.property.bathrooms]
-      $scope.man_hrs = "#{man_hrs} hours (est.)" if man_hrs
-
     load_mapbox = null
     load_mapbox = $interval((->
       if $window.loaded_mapbox

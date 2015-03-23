@@ -44,9 +44,10 @@
           .id
             i.icon-person
             .text ng:bind='::job.contractor_count'
-          .est ng:if='man_hrs'
+          .est ng:show='job.man_hours'
             i.icon-timer-outline
-            .text ng:bind='::man_hrs'
+            .text
+              | {{job.man_hours}} hours (est.)
   .columns
     .special-column
       .section.profile
