@@ -108,7 +108,7 @@ class Booking < ActiveRecord::Base
     if completed?
       false
     elsif cost == 0
-      true
+      save
     elsif payment.stripe_id
       amount = (cost * 100).to_i
       begin
