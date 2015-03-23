@@ -13,8 +13,6 @@
         .photo
           .timer
             span Supplies Pickup
-        .order
-          | 0
         .right
           .top
             a href='/jobs/{{training.distribution_job.id}}'
@@ -46,12 +44,12 @@
           .top
             a href='/jobs/{{job.id}}'
               .text.completed ng:show="job.status_cd == 3"
-                span View Completed Job
+                span View
                 i.icon-alert-ok
               .icon-button.teal ng:hide="job.status_cd == 3"
                 .icon
                   i.icon-details
-                .text View Job
+                .text View
             .title
               .name ng:bind='job.booking.property.user.name'
               .address ng:bind='job.booking.property.full_address'
