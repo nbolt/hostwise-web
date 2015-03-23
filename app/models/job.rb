@@ -117,6 +117,10 @@ class Job < ActiveRecord::Base
     ContractorJobs.where(job_id: self.id, primary: true)[0].user
   end
 
+  def checklist
+    ContractorJobs.where(job_id: self.id, primary: true)[0].checklist
+  end
+
   def man_hours
     MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
   end
