@@ -21,6 +21,8 @@ class Job < ActiveRecord::Base
   scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
+  scope :scheduled, -> { where(status_cd: 1) }
+  scope :training, -> { where(training: true) }
   scope :not_training, -> { where(training: false) }
   scope :training, -> { where(training: true) }
   scope :standard, -> { where(distribution: false) }
