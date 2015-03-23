@@ -3,44 +3,50 @@
     strong Booking Detail
   .row.one
     .block.top-info.jobs
-      .job
+      .job style='margin:0'
+        .flag ng:class='pricing_class()'
         .photo
           img ng:src='{{booking.property.primary_photo}}'
-          .column
         .right
           .top
-            .neighborhood.address
-              .name
-                | {{::booking.property.address1}}, {{::booking.property.city}}, {{::booking.property.state}} {{::booking.property.zip}}
-            .beds remove-div=''
+            .title
+              .name ng:bind='booking.property.nickname'
+              .address ng:bind='booking.property.full_address'
+            .beds style='margin:0'
               .text Beds
-              .bed ng:if='booking.property.king_beds > 0'
-                span King
-                | &nbsp; {{::booking.property.king_beds}}
-                .div |
-              .bed ng:if='booking.property.queen_beds > 0'
-                span Queen
-                | &nbsp; {{::booking.property.queen_beds}}
-                .div |
+              .bed ng:if='booking.property.king_beds == 1'
+                | {{booking.property.king_beds}} King
+              .bed ng:if='booking.property.king_beds > 1'
+                | {{booking.property.king_beds}} Kings
+              .bed ng:if='booking.property.queen_beds == 1'
+                | {{booking.property.queen_beds}} Queen
+              .bed ng:if='booking.property.queen_beds > 1'
+                | {{booking.property.queen_beds}} Queens
               .bed ng:if='booking.property.full_beds > 0'
-                span Full
-                | &nbsp; {{::booking.property.full_beds}}
-                .div |
-              .bed ng:if='booking.property.twin_beds > 0'
-                span Twin
-                | &nbsp; {{::booking.property.twin_beds}}
-                .div |
+                | {{booking.property.full_beds}} Full
+              .bed ng:if='booking.property.twin_beds == 1'
+                | {{booking.property.twin_beds}} Twin
+              .bed ng:if='booking.property.twin_beds > 1'
+                | {{booking.property.twin_beds}} Twins
           .bottom
-            .rooms
-              i.icon-house ng:if='booking.property.property_type_cd == 0'
-              i.icon-apt ng:if='booking.property.property_type_cd == 1'
-              .text
-                | {{::booking.property.bedrooms}}BD/{{::booking.property.bathrooms}}BA
-            .right
+            .payout
               .icon
                 i.icon-payout
-              .pricing
+              .pricing ng:class='pricing_class()'
                 | ${{::booking.cost}}
+            .left
+              .rooms
+                i.icon-house ng:if='booking.property.property_type_cd == 0'
+                i.icon-apt ng:if='booking.property.property_type_cd == 1'
+                .text
+                  | {{booking.property.bedrooms}}BD/{{booking.property.bathrooms}}BA
+              .id style='display:inline-block'
+                i.icon-person
+                .text ng:bind='::booking.job.size'
+              .est ng:show='booking.job.man_hours'
+                i.icon-timer-outline
+                .text
+                  | {{booking.job.man_hours}} hours (est.)
   .row.uneven
     .block.customer
       .head
@@ -53,6 +59,7 @@
       .info
         .name ng:bind='::booking.property.user.name'
         .number ng:bind='::booking.property.user.display_phone_number'
+        .email ng:bind='::booking.property.user.email'
     .block#map
   .row.two
     .block.instructions

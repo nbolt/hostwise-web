@@ -35,7 +35,7 @@ class Admin::BookingsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: booking.to_json(methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}})
+        render json: booking.to_json(methods: [:cost], include: {job: {}, services: {}, property: {methods: [:primary_photo, :full_address, :nickname], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}})
       end
     end
   end
