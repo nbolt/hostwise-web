@@ -1,7 +1,8 @@
 class ContractorProfile < ActiveRecord::Base
   belongs_to :user
 
-  before_save :standardize_address, :create_stripe_recipient
+  before_validation :standardize_address
+  before_save :create_stripe_recipient
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
