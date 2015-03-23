@@ -648,7 +648,7 @@
                     .text Complete This Job!
                   .caption Don't forget to complete all checklists!
 
-  .deactivate ng:hide='completed_job()'
+  .deactivate ng:show='cancellable()'
     | Do you wish to
     span ng:click='cancel_modal()'  cancel this job?
 
