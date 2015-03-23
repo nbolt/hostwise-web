@@ -1,3 +1,4 @@
+<% unless Rails.env.development? %>
 class @Appsignal
 
   constructor: ->
@@ -38,3 +39,4 @@ window.appsignal = appsignal
 
 window.onerror = (message, filename, lineno, colno, error) ->
   appsignal.sendError(error) if error
+<% end %>

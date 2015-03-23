@@ -17,6 +17,7 @@ require "minitest/spec"
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
+  include FactoryGirl::Syntax::Methods
 
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #
@@ -26,9 +27,9 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 
-  class << self
-    remove_method :describe
-  end
+  #class << self
+  #  remove_method :describe
+  #end
 
   extend MiniTest::Spec::DSL
 

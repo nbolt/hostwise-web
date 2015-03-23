@@ -32,6 +32,7 @@ group :test do
   gem 'minitest-rails'
   gem 'vcr'
   gem 'webmock'
+  gem 'factory_girl_rails'
 end
 
 gem 'coveralls', require: false, group: :test
