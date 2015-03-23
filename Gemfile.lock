@@ -122,6 +122,11 @@ GEM
     erubis (2.7.0)
     excon (0.44.4)
     execjs (2.4.0)
+    factory_girl (4.5.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.5.0)
+      factory_girl (~> 4.5.0)
+      railties (>= 3.0.0)
     fanout (1.1.1)
       pubcontrol (~> 1)
     faraday (0.8.9)
@@ -436,6 +441,7 @@ DEPENDENCIES
   coveralls
   decent_exposure
   docusign_rest
+  factory_girl_rails
   fanout
   faraday (~> 0.8.9)
   fog
