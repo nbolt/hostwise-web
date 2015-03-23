@@ -181,7 +181,7 @@ class Job < ActiveRecord::Base
             supplies[:king_beds] += job.booking.property.full_beds
             supplies[:twin_beds] += job.booking.property.twin_beds
           end
-          job.booking.property.beds.times { supplies[:toiletries] += 1 } if job.has_toiletries?
+          job.booking.property.bathrooms.times { supplies[:toiletries] += 1 } if job.has_toiletries?
         end
       end
 
@@ -193,7 +193,7 @@ class Job < ActiveRecord::Base
           supplies[:king_beds] += team_job.booking.property.full_beds
           supplies[:twin_beds] += team_job.booking.property.twin_beds
         end
-        team_job.booking.property.beds.times { supplies[:toiletries] += 1 } if team_job.has_toiletries?
+        team_job.booking.property.bathrooms.times { supplies[:toiletries] += 1 } if team_job.has_toiletries?
       end
 
       if distribution_job
