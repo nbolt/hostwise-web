@@ -312,35 +312,33 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       if num == $scope.job.booking.property.bedrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.bathrooms').addClass 'active'
-        scroll '.qa .bathrooms'
         null
       else
         $scope.active_bedroom += 1
-        scroll '.qa .bedrooms'
+      scroll '.phase.cleaning'
 
   $scope.complete_bathroom = (num) ->
     if $scope.bathroom_class(num) == ''
       if num == $scope.job.booking.property.bathrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.kitchen').addClass 'active'
-        scroll '.qa .kitchen'
         null
       else
         $scope.active_bathroom += 1
-        scroll '.qa .bathrooms'
+      scroll '.phase.cleaning'
 
   $scope.complete_kitchen = ->
     if $scope.kitchen_class() == ''
       angular.element('.phase.qa .tab').removeClass 'active'
       angular.element('.phase.qa .tab.living-room').addClass 'active'
-      scroll '.qa .living-room'
+      scroll '.phase.cleaning'
       null
 
   $scope.complete_living = ->
     if $scope.living_class() == ''
       angular.element('.phase.qa .tab').removeClass 'active'
       angular.element('.phase.qa .tab.photos').addClass 'active'
-      scroll '.qa .photos'
+      scroll '.phase.cleaning'
       null
 
   $scope.complete_job = ->
