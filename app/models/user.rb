@@ -103,13 +103,11 @@ class User < ActiveRecord::Base
     team_job = jobs_today.where('size > 1')[0]
     if job.contractors.count == job.size && !admin
       false
-    elsif job.size > 1
-      if training_job && !admin
-        false
-      elsif team_job
-        false
-      end
     elsif man_hours(job.date) + job.man_hours > MAX_MAN_HOURS && !admin
+      false
+    elsif training_job && !admin
+      false
+    elsif job.size > 1 && team_job
       false
     else
       job.contractors.push self
