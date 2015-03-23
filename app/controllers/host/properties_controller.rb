@@ -5,7 +5,7 @@ class Host::PropertiesController < Host::AuthController
   def show
     respond_to do |format|
       format.html { redirect_to '/' unless property }
-      format.json { render json: property.to_json(include: {property_photos: {}, active_bookings: {include: [:services], methods: [:cost]}, future_bookings: {include: [:services], methods: [:cost]}, past_bookings: {include: [:services], methods: [:cost]}}, methods: [:nickname, :short_address, :primary_photo, :full_address, :next_service_date, :beds]) }
+      format.json { render json: property.to_json(include: {property_photos: {}, bookings: {}, active_bookings: {include: [:services], methods: [:cost]}, future_bookings: {include: [:services], methods: [:cost]}, past_bookings: {include: [:services], methods: [:cost]}}, methods: [:nickname, :short_address, :primary_photo, :full_address, :next_service_date, :beds]) }
     end
   end
 

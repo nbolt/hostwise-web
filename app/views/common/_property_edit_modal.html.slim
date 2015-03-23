@@ -39,7 +39,7 @@ script#property-edit-modal type="text/ng-template"
                 input type='radio' id='part-time' value='1' ng:model='form.rental_type_cd'
                 label for='part-time' Part-time
         .column
-          .section
+          .section.rooms ng:hide='property.bookings[0]'
             .row.two
               .field
                 .title Bedrooms
