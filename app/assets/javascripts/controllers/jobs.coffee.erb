@@ -34,7 +34,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
       else
         refresh_jobs(->
           angular.element("#job-#{job.id} .flash").css('opacity', 1).text rsp.message
-          $timeout((-> angular.element("#job-#{job.id} .flash").css('opacity', 0)), 4000)
+          $timeout((-> angular.element("#job-#{job.id}").fadeOut()), 4000)
         )
 
   $scope.drop = (job) ->
