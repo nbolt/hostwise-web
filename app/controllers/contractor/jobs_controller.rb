@@ -33,12 +33,14 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def begin
-    job.update_attribute :status_cd, 2 if job.status == :scheduled || job.status == :cant_access
+    if job.status == :scheduled || job.status == :cant_access
+      job.update_attribute :status_cd, 2
 
-    if params[:issue_resolved].present? # issue resolved 
-      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{job.primary_contractor.name} has resolved the issue at property #{job.booking.property.id}.")
-    else
-      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}") if job.booking.property.user.settings(:porter_arrived).sms
+      if params[:issue_resolved].present? # issue resolved 
+        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{job.primary_contractor.name} has resolved the issue at property #{job.booking.property.id}.")
+      else
+        TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}") if job.booking.property.user.settings(:porter_arrived).sms
+      end
     end
 
     render json: { success: true, status_cd: job.status_cd }
@@ -148,7 +150,11 @@ class Contractor::JobsController < Contractor::AuthController
 
   def checklist
     checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
-    render json: checklist.to_json(methods: :checklist_settings, include: :contractor_photos)
+    if checklist
+      render json: checklist.to_json(methods: :checklist_settings, include: :contractor_photos)
+    else
+      render nothing: true
+    end
   end
 
   def checklist_update

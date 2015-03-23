@@ -48,18 +48,19 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
     $scope.user_fetched.promise.then ->
       $http.post('/checklist', { contractor_id: $scope.user.id, job_id: $scope.job.id }).success (rsp) ->
-        $scope.checklist = rsp
-        _($scope.checklist.checklist_settings).each (v,k) ->
-          _(v).each (v2, k2) ->
-            $scope.$watch "checklist.checklist_settings.#{k}.#{k2}", (n,o) -> if n != o
-              $http.post('/checklist/update', {
-                contractor_id: $scope.user.id,
-                job_id: $scope.job.id,
-                type: 'setting',
-                category: k,
-                item: k2
-                value: n
-              })
+        if rsp
+          $scope.checklist = rsp
+          _($scope.checklist.checklist_settings).each (v,k) ->
+            _(v).each (v2, k2) ->
+              $scope.$watch "checklist.checklist_settings.#{k}.#{k2}", (n,o) -> if n != o
+                $http.post('/checklist/update', {
+                  contractor_id: $scope.user.id,
+                  job_id: $scope.job.id,
+                  type: 'setting',
+                  category: k,
+                  item: k2
+                  value: n
+                })
 
 
   $scope.completed_job = ->
