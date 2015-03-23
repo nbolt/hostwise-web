@@ -194,7 +194,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     if $scope.job && $scope.job.status_cd == 3
       'hidden'
     else if $scope.in_progress() && $scope.inventory_count()
-      if $scope.checklist.checklist_settings.cleaning.cleaned
+      if $scope.checklist.checklist_settings && $scope.checklist.checklist_settings.cleaning.cleaned
         'complete'
       else
         'active'
