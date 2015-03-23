@@ -17,12 +17,7 @@ html
     = render 'common/analytics'
 
   body.grey.plain ng:controller='app' ng-cloak=''
-    #spin-overlay
-      .overlay
-      .spinner
-        .one
-        .two
-        .three
+    = render 'common/spinner'
     .home
       nav.pl-nav
         a.pl-logo href="/"

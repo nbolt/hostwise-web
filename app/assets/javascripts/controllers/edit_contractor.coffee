@@ -3,9 +3,12 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
   url = window.location.href.split('/')
   $scope.id = url[url.length-2]
 
-  $http.get(window.location.href + '.json').success (rsp) ->
-    $scope.contractor = rsp
-    $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position
+  $scope.$on 'fetch_contractor', ->
+    $http.get(window.location.href + '.json').success (rsp) ->
+      $scope.contractor = rsp
+      $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position
+
+  $scope.$emit 'fetch_contractor'
 
   $scope.position = ->
     {
@@ -20,6 +23,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
       contractor: $scope.contractor
     }).success (rsp) ->
       if rsp.success
+        spinner.startSpin()
         window.location = window.location.href
       else
         flash 'failure', rsp.message
@@ -36,8 +40,11 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
       contractor: $scope.contractor
       status: $scope.selected_status.text
     }).success (rsp) ->
-      $scope.contractor = rsp
-      angular.element('.status .steps').css('margin-left', -360)
+      if rsp.success
+        $scope.$emit 'fetch_contractor'
+        angular.element('.status .steps').css('margin-left', -360)
+      else
+        flash 'failure', rsp.message, true
 
   $scope.complete_contract = ->
     ngDialog.open template: 'complete-contract-modal', controller: 'edit-contractor', className: 'success full', scope: $scope
@@ -69,8 +76,8 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     $http.post("/contractors/#{$scope.id}/reactivate").success (rsp) ->
       window.location = window.location.href if rsp.success
 
-  flash = (type, msg) ->
-    el = angular.element('form .flash')
+  flash = (type, msg, modal) ->
+    el = if modal then angular.element('.modal .flash') else angular.element('form .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
     scroll 0
     $timeout((->

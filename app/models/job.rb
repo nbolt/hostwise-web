@@ -22,6 +22,7 @@ class Job < ActiveRecord::Base
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
   scope :not_training, -> { where(training: false) }
+  scope :training, -> { where(training: true) }
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
