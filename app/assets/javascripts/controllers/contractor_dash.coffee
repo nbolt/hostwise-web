@@ -16,6 +16,11 @@ ContractorDashCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http,
     else
       ''
 
+  $scope.job_class = (job) ->
+    switch job.status_cd
+      when 3 then 'complete'
+      when 5 then 'complete' # 'couldnt_access'
+
   $scope.jobs_completed = ->
     if $scope.user && $scope.user.jobs_today
       if $scope.user.jobs_today[0]

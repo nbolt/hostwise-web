@@ -38,7 +38,7 @@
               .icon
                 i.icon-clock
               .pricing 9:30 AM
-      .job ng:repeat='job in user.standard_jobs' ng:class="job.status_cd == 3 && 'complete'"
+      .job ng:repeat='job in user.standard_jobs' ng:class="job_class(job)"
         .flag ng:class='pricing_class(job)'
         .photo
           .timer
@@ -51,10 +51,10 @@
         .right
           .top
             a href='/jobs/{{job.id}}'
-              .text.completed ng:show="job.status_cd == 3"
+              .text.completed ng:show="job.status_cd == 3 || job.status_cd == 5"
                 span View
                 i.icon-alert-ok
-              .icon-button.teal ng:hide="job.status_cd == 3"
+              .icon-button.teal ng:hide="job.status_cd == 3 || job.status_cd == 5"
                 .icon
                   i.icon-details
                 .text View
