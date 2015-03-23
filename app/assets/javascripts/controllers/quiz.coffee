@@ -2,7 +2,7 @@ QuizCtrl = ['$scope', '$http', 'spinner', ($scope, $http, spinner) ->
 
   $scope.selected_answers = {}
   $scope.current_q = 1
-  $scope.max_q = 10
+  $scope.max_q = 1
   $scope.passing_score = 100
 
   $http.get('/quiz/type').success (rsp) ->
