@@ -7,7 +7,7 @@
     .address ng:bind='::job.distribution_center.full_address'
   .columns
     .column
-      .section.supplies
+      .section.supplies ng:show='job.occasion_cd == 0'
         .head
           .icon
             i.icon-count
@@ -38,7 +38,7 @@
             .icon-button.teal.disabled ng:switch-when='blocked'
               .icon
                 i.icon-check
-              .text ng:show='job.blocker == "prev_job"' ng:click='done()' Complete your previously scheduled job first.
+              .text ng:show='job.blocker == "prev_job"' ng:click='done()' Complete previous job first.
               .text ng:show='job.blocker == "not_today"' ng:click='done()' Cannot be started until {{job.date_text_2}}.
       .section.instructions
         .head
