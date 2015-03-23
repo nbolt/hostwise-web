@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'hwpl_icons';
-  src: url('/type/hwpl-icons/hwpl_icons.eot?80817559');
-  src: url('/type/hwpl-icons/hwpl_icons.eot?80817559#iefix') format('embedded-opentype'),
-  url('/type/hwpl-icons/hwpl_icons.woff?80817559') format('woff'),
-  url('/type/hwpl-icons/hwpl_icons.ttf?80817559') format('truetype'),
-  url('/type/hwpl-icons/hwpl_icons.svg?80817559#hwpl_icons') format('svg');
+  src: url('/type/hwpl-icons/hwpl_icons.eot?38472744');
+  src: url('/type/hwpl-icons/hwpl_icons.eot?38472744#iefix') format('embedded-opentype'),
+  url('/type/hwpl-icons/hwpl_icons.woff?38472744') format('woff'),
+  url('/type/hwpl-icons/hwpl_icons.ttf?38472744') format('truetype'),
+  url('/type/hwpl-icons/hwpl_icons.svg?38472744#hwpl_icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'hwpl_icons';
-    src: url('../fonts/hwpl_icons.svg?80817559#hwpl_icons') format('svg');
+    src: url('../fonts/hwpl_icons.svg?38472744#hwpl_icons') format('svg');
   }
 }
 */

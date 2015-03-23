@@ -710,7 +710,7 @@ ul.pl-main-nav li a.active{
 .t-slider li {
   font-size:1em;
   line-height:1.5em;
-  font-weight:300;
+  font-weight:400;
   color:#979fa9;
   list-style: none;
 }
@@ -735,8 +735,8 @@ ul.pl-main-nav li a.active{
 #more-time{
   padding:150px 0;
   text-align:center;
-  background: url(/hw_images/activities.png) repeat center center fixed;
-  background-size: 50%;
+  background: url(/hw_images/activities.png) repeat center fixed;
+  background-size: 800px;
   -webkit-animation:100s scroll infinite linear;
   -moz-animation:100s scroll infinite linear;
   -o-animation:100s scroll infinite linear;
@@ -1016,7 +1016,7 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   overflow:hidden;
   position:relative;
   font-size:1.125em;
-  font-weight:300;
+  font-weight:400;
   color:#2c3842;
   line-height:1.5em;
   text-align:left;
