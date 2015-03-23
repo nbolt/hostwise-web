@@ -29,7 +29,7 @@ class @Appsignal
     }
 
     xhr = new XMLHttpRequest()
-    xhr.open('POST', '/appsignal_error_catcher', true)
+    xhr.open('POST', '/appsignal/javascript', true)
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
     xhr.send(JSON.stringify(data))
 

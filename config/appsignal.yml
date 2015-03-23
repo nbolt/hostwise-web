@@ -15,8 +15,10 @@ staging:
   <<: *defaults
   active: true
   enable_frontend_error_catching: true
+  frontend_error_catching_path: '/appsignal/javascript'
 
 production:
   <<: *defaults
   active: true
   enable_frontend_error_catching: true
+  frontend_error_catching_path: '/appsignal/javascript'
