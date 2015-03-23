@@ -34,12 +34,17 @@ class Admin::ContractorsController < Admin::AuthController
     user = User.find_by_id params[:id]
 
     if params[:status].present?
+      if user.contractor_profile.position == :trainee && user.jobs.future.training.count > 0
+        render json: { success: false, message: 'Pending training jobs' }
+        return
+      end
+
       UserMailer.contractor_hired_email(user).then(:deliver) if user.contractor_profile.position == :trainee && params[:status].downcase.to_sym == :contractor
       UserMailer.mentor_promotion_email(user).then(:deliver) if user.contractor_profile.position == :contractor && params[:status].downcase.to_sym == :trainer
 
       user.contractor_profile.position = params[:status].downcase.to_sym
       user.contractor_profile.save
-      render json: user.to_json(include: [:background_check, contractor_profile: {methods: [:position, :ssn, :driver_license, :current_position]}], methods: [:name, :avatar])
+      render json: { success: true }
     else
       user.assign_attributes contractor_params
       user.step = 'contractor_info'
