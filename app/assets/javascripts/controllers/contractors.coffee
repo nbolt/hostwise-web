@@ -28,6 +28,17 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $t
       $http.get('/data/contractors', {params: {term: n}}).success (rsp) -> $scope.users = rsp if $scope.users
     ), 400
 
+  $scope.background_check_status = (user) ->
+    if user.background_check
+      if user.background_check.status is 'clear'
+        'Good'
+      else if user.background_check.status is 'consider'
+        'Flagged'
+      else
+        user.background_check.status
+    else
+      'N/A'
+
   flash = (type, msg, id) ->
     el = angular.element(id + ' .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)

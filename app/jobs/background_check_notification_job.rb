@@ -14,6 +14,12 @@ class BackgroundCheckNotificationJob < ActiveJob::Base
             background_check.status = :consider
         end
         background_check.save
+
+        unless background_check.status == :pending
+          msg = "The background check result for #{background_check.user.first_name} #{background_check.user.last_name}: #{background_check.status.to_s.upcase}."
+          msg += ' Further action is required.' if background_check.status == :consider
+          UserMailer.generic_notification("Background Check - #{background_check.user.name}", msg).then(:deliver)
+        end
       end
     rescue Exception => e
       Rails.logger.error "Background check notification error: #{e}"

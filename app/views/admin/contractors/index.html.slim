@@ -47,7 +47,7 @@
         td
           | {{user.contractor_profile.docusign_completed ? 'Yes' : 'No'}}
         td.status
-          | {{user.background_check && user.background_check.status}}
+          span ng:bind='background_check_status(user)'
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
 = render 'signup'
