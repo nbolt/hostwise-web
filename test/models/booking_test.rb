@@ -32,6 +32,9 @@ describe Booking do
   it 'same day cancels correctly' do
   	booking_same_day_cancellation = create(:booking_lat_lng)
   	booking_same_day_cancellation.same_day_cancellation.must_equal true
+
+    booking_not_today = create(:booking_not_today)
+    booking_not_today.same_day_cancellation.must_equal false
   end
 
   describe 'payments' do
@@ -46,11 +49,25 @@ describe Booking do
 
       @booking.user.payments.first.update_attribute :stripe_id, card.id
       @booking.payment = @booking.user.payments.first
+
+      @booking_2 = create(:booking_active_5)
+      @booking_2.pending!
+
+      VCR.use_cassette('booking_create_stripe_customer_2') { @booking_2.user.create_stripe_customer }
+      VCR.use_cassette('booking_customer_retrieval_2') { customer = Stripe::Customer.retrieve @booking_2.user.stripe_customer_id } 
+      VCR.use_cassette('booking_create_card_2') { card = customer.sources.create(card: {exp_month:1,exp_year:20,number:'4000000000000341'}) }
+
+      @booking_2.user.payments.first.update_attribute :stripe_id, card.id
+      @booking_2.payment = @booking_2.user.payments.first
     end
 
     it 'charges correctly' do
       VCR.use_cassette('booking_charge') { @booking.charge! }
       @booking.payment_status.must_equal :completed
+
+      VCR.use_cassette('booking_charge_2') { @booking_2.charge! }
+      @booking_2.payment_status.must_equal :pending
+      @booking_2.last_transaction.status.must_equal :failed
     end
 
   end
