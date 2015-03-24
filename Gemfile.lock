@@ -111,6 +111,7 @@ GEM
       thor (~> 0.19.1)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
+    database_cleaner (1.4.1)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     decent_exposure (2.3.2)
@@ -439,6 +440,7 @@ DEPENDENCIES
   clockwork
   coffee-rails
   coveralls
+  database_cleaner
   decent_exposure
   docusign_rest
   factory_girl_rails

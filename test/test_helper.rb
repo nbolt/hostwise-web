@@ -8,6 +8,9 @@ require "rails/test_help"
 require "minitest/rails"
 require "minitest/spec"
 
+DatabaseCleaner.strategy = :transaction
+DatabaseCleaner.clean
+
 # To add Capybara feature tests add `gem "minitest-rails-capybara"`
 # to the test group in the Gemfile and uncomment the following:
 # require "minitest/rails/capybara"
