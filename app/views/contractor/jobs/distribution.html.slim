@@ -33,15 +33,15 @@
             .supply.toiletries
               .name Toiletry Kits:
               .value ng:bind='::job.toiletries'
-          .div.teal
-          div ng:switch='job.status'
+          .div.teal ng:show='job.primary || job.status == "completed"'
+          div ng:switch='job.status' ng:show='job.primary || job.status == "completed"'
             .icon-button.teal ng:switch-default=''
               .icon
                 i.icon-check
               .text ng:show='job.next_job' ng:click='done()' Done. Go to first job.
               .text ng:hide='job.next_job' ng:click='done()' Done.
-            a ng:href='/jobs/{{job.next_job.id}}' ng:show='job.next_job'
-              .icon-button.teal ng:switch-when='completed'
+            a ng:href='/jobs/{{job.next_job.id}}' ng:show='job.next_job' ng:switch-when='completed'
+              .icon-button.teal
                 .icon
                   i.icon-check
                 .text Go to next job.

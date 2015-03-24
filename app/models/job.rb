@@ -118,6 +118,11 @@ class Job < ActiveRecord::Base
     ContractorJobs.where(job_id: self.id, primary: true)[0].user
   end
 
+  def primary contractor=nil
+    contractor ||= current_user
+    ContractorJobs.where(job_id: self.id, user_id: contractor.id)[0].primary if contractor
+  end
+
   def checklist
     ContractorJobs.where(job_id: self.id, primary: true)[0].checklist
   end
@@ -210,6 +215,8 @@ class Job < ActiveRecord::Base
           distribution_job[k] = v
           dropoff_job[k]      = v
         end
+        distribution_job.contractor_jobs[0].update_attribute :primary, true
+        dropoff_job.contractor_jobs[0].update_attribute :primary, true
         distribution_job.save
         dropoff_job.save
       end
