@@ -36,7 +36,7 @@ describe Booking do
 
   describe 'payments' do
     before do
-      @booking = create(:booking_active_5)
+      @booking = create(:booking_active_4)
       @booking.pending!
       customer = nil; card = nil
 
