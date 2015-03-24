@@ -45,6 +45,17 @@ FactoryGirl.define do |booking|
     end
   end
 
+  factory :booking_active_5, class: Booking do
+    status_cd 1
+    association :property, factory: :property_5
+    after(:create) do |booking|
+      booking.services << create(:pool)
+      booking.services << create(:patio)
+      booking.services << create(:windows)
+      booking.services << create(:preset)
+    end
+  end
+
   factory :booking_late_next_day, class: Booking do
     status_cd 1
     late_next_day true
