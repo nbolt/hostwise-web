@@ -87,7 +87,7 @@ FactoryGirl.define do |booking|
 
   factory :booking_lat_lng, class: Booking do
   	association :property, factory: :property_4
-  	date Date.new(2014, 3, 23)
+  	date Date.today
   end
 
   factory :booking_first_booking_discount, class: Booking do

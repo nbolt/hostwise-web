@@ -31,7 +31,7 @@ describe Booking do
 
   it 'same day cancels correctly' do
   	booking_same_day_cancellation = create(:booking_lat_lng)
-  	booking_same_day_cancellation.same_day_cancellation.must_equal false
+  	booking_same_day_cancellation.same_day_cancellation.must_equal true
   end
 
   describe 'payments' do
