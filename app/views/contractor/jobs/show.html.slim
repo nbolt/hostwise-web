@@ -128,7 +128,7 @@
             .header
               .text Job Not Started
             .content.top
-              .pad
+              .pad ng:show='job.primary'
                 .text Arrived at the job?
                 .text Make a selection to continue.
                 .div.gray
@@ -173,7 +173,7 @@
                     .icon
                       i.icon-text
                     .text Text
-                .icon-button.teal ng:hide='can_access()' ng:click='issue_resolved()'
+                .icon-button.teal ng:hide='can_access() || !job.primary' ng:click='issue_resolved()'
                   .icon
                     i.icon-alert-ok
                   .text Issue resolved, start this job
