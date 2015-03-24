@@ -2642,11 +2642,20 @@ body .select2-drop-mask
   margin: 30px auto 50px
   box-shadow: none
   border-radius: 0
+  @media phone
+    width: 95%
   .steps
     .step
       height: 0
       opacity: 0
       transition: opacity .4s ease-in-out
+      h1
+        margin-top: 0
+        font-size: 20px
+        padding: 0 18px
+      h3
+        font-size: 16px
+        padding: 0 18px
       &.active
         opacity: 1
         height: auto
