@@ -19,5 +19,8 @@ FactoryGirl.define do |user|
     crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
 		salt "oaz1NpsVHaNCqza9ynGU"
 		phone_number "9722149321"
+    after(:create) do |user|
+      user.payments << create(:credit_card)
+    end
   end
 end
