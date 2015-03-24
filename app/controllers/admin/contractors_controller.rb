@@ -34,7 +34,7 @@ class Admin::ContractorsController < Admin::AuthController
     user = User.find_by_id params[:id]
 
     if params[:status].present?
-      if user.contractor_profile.position == :trainee && user.jobs.future.training.count > 0
+      if user.contractor_profile.position == :trainee && user.jobs.training.not_complete.count > 0
         render json: { success: false, message: 'Pending training jobs' }
         return
       end
