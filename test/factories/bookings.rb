@@ -37,6 +37,12 @@ FactoryGirl.define do |booking|
   factory :booking_active_4, class: Booking do
     status_cd 1
     association :property, factory: :property_4
+    after(:create) do |booking|
+      booking.services << create(:pool)
+      booking.services << create(:patio)
+      booking.services << create(:windows)
+      booking.services << create(:preset)
+    end
   end
 
   factory :booking_late_next_day, class: Booking do
@@ -91,4 +97,21 @@ FactoryGirl.define do |booking|
     association :property, factory: :property_1
   end
 
+
+  factory :booking_active_5, class: Booking do
+    status_cd 1
+    association :property, factory: :property_5
+    after(:create) do |booking|
+      booking.services << create(:pool)
+      booking.services << create(:patio)
+      booking.services << create(:windows)
+      booking.services << create(:preset)
+    end
+  end
+
+  factory :booking_not_today, class: Booking do
+    status_cd 2
+    association :property, factory: :property_1
+    date Date.new(3,3,3)
+  end
 end
