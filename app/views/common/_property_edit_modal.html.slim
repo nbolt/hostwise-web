@@ -47,7 +47,7 @@ script#property-edit-modal type="text/ng-template"
               .field
                 .title Bathrooms
                 input type='hidden' ui-select2='rooms()' ng:model='form.bathrooms'
-          .section.bed-types
+          .section.bed-types ng:hide='property.bookings[0]'
             .title Bed Types
             .row.two
               .field.twins
