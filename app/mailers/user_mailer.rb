@@ -5,6 +5,19 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   DEFAULT_REPLY_TO = 'HostWise <support@hostwise.com>'
 
+  def generic_notification(subject, body)
+    mandrill do
+      mandrill_mail template: 'generic-notification',
+                    subject: subject,
+                    to: {email: Rails.application.config.support_notification_email},
+                    vars: {
+                      'BODY' => body
+                    },
+                    inline_css: true,
+                    async: true
+    end
+  end
+
   def cancelled_booking_notification booking
     mandrill do
       mandrill_mail template: 'cancelled-booking-notification',
