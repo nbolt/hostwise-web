@@ -313,10 +313,10 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       if num == $scope.job.booking.property.bedrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.bathrooms').addClass 'active'
-        null
       else
         $scope.active_bedroom += 1
       scroll '.phase.cleaning'
+    null
 
   $scope.complete_bathroom = (num) ->
     if $scope.bathroom_class(num) == ''
