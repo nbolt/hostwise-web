@@ -7,6 +7,16 @@
     .address ng:bind='::job.distribution_center.full_address'
   .columns
     .column
+      .section.supplies ng:show='job.occasion_cd == 1'
+        .head
+          .icon
+            i.icon-count
+          .text Drop Off Soiled Linens
+        .supplies-container
+          .icon-button.teal ng:switch-default=''
+            .icon
+              i.icon-check
+            .text ng:click='done()' Complete Day
       .section.supplies ng:show='job.occasion_cd == 0'
         .head
           .icon
