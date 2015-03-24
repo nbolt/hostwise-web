@@ -5,6 +5,10 @@ class Contractor::TraineeController < Contractor::AuthController
     render json: jobs[0..7].to_json(include: :booking)
   end
 
+  def bgc
+    render json: current_user.background_check
+  end
+
   def claim_jobs
     if params[:jobs]
       jobs = params[:jobs].map {|j| Job.find j['job']}

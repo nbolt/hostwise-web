@@ -13,7 +13,20 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
       date.time = '9:30 AM'
       $scope.dates.push date
 
+  $http.get('/trainee/bgc').success (rsp) -> $scope.bgc = rsp
+
   $scope.no_dates = -> $scope.dates.length < 2
+
+  $scope.no_bgc = ->
+    if $scope.bgc
+      if $scope.bgc.status_cd == 1
+        false
+      else
+        true
+    else
+      true
+
+  $scope.bgc && $scope.bgc.status_cd != 1
 
   $scope.dates_selected = -> $scope.selected_dates.length == 2 && 'active' || 'inactive'
 
