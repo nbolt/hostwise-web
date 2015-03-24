@@ -7,55 +7,66 @@ FactoryGirl.define do |booking|
   factory :booking_active_1, class: Booking do
     status_cd 1
     association :property, factory: :property_1
-    after(:create) {|booking|
+    after(:create) do |booking|
     	booking.services << create(:cleaning)
     	booking.services << create(:linens)
-    }
+    end
   end
 
   factory :booking_active_2, class: Booking do
     status_cd 1
     association :property, factory: :property_2
-    after(:create) {|booking|
+    after(:create) do |booking|
     	booking.services << create(:cleaning)
     	booking.services << create(:linens)
     	booking.services << create(:toiletries)
-    }
+    end
   end
 
   factory :booking_active_3, class: Booking do
     status_cd 1
     association :property, factory: :property_3
-    after(:create) {|booking|
+    after(:create) do |booking|
     	booking.services << create(:pool)
     	booking.services << create(:patio)
     	booking.services << create(:windows)
     	booking.services << create(:preset)
-    }
+    end
+  end
+
+  factory :booking_active_4, class: Booking do
+    status_cd 1
+    association :property, factory: :property_4
+    after(:create) do |booking|
+      booking.services << create(:pool)
+      booking.services << create(:patio)
+      booking.services << create(:windows)
+      booking.services << create(:preset)
+    end
   end
 
   factory :booking_late_next_day, class: Booking do
     status_cd 1
     late_next_day true
     association :property, factory: :property_3
-    after(:create) {|booking|
+    after(:create) do |booking|
     	booking.services << create(:pool)
     	booking.services << create(:patio)
     	booking.services << create(:windows)
     	booking.services << create(:preset)
-    }
+    end
   end
 
   factory :booking_late_same_day, class: Booking do
     status_cd 1
     late_same_day true
     association :property, factory: :property_3
-    after(:create) {|booking|
+    after(:create) do |booking|
     	booking.services << create(:pool)
     	booking.services << create(:patio)
     	booking.services << create(:windows)
     	booking.services << create(:preset)
-    }
+    end
   end
 
   factory :booking_dated, class: Booking do
@@ -72,12 +83,12 @@ FactoryGirl.define do |booking|
     status_cd 1
     first_booking_discount true
     association :property, factory: :property_3
-    after(:create) {|booking|
+    after(:create) do |booking|
     	booking.services << create(:pool)
     	booking.services << create(:patio)
     	booking.services << create(:windows)
     	booking.services << create(:preset)
-    }
+    end
   end
 
   factory :booking_zero_cost, class: Booking do

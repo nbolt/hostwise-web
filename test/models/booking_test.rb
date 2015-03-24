@@ -24,14 +24,6 @@ describe Booking do
     booking_first_booking_discount.cost.must_equal 20
   end
 
-  it 'charges correctly' do
-  	booking_active_3 = create(:booking_active_3)
-  	VCR.use_cassette('booking_charges') do
-  		booking_active_3.charge!
-  	end
-  	booking_active_3.status.must_equal :completed
-  end
-
   it 'formats date correctly' do
   	booking_date = create(:booking_dated)
   	booking_date.formatted_date.must_equal '03/23/2014'
@@ -40,6 +32,27 @@ describe Booking do
   it 'same day cancels correctly' do
   	booking_same_day_cancellation = create(:booking_lat_lng)
   	booking_same_day_cancellation.same_day_cancellation.must_equal false
+  end
+
+  describe 'payments' do
+    before do
+      @booking = create(:booking_active_4)
+      @booking.pending!
+      customer = nil; card = nil
+
+      VCR.use_cassette('booking_create_stripe_customer') { @booking.user.create_stripe_customer }
+      VCR.use_cassette('booking_customer_retrieval') { customer = Stripe::Customer.retrieve @booking.user.stripe_customer_id } 
+      VCR.use_cassette('booking_create_card') { card = customer.sources.create(card: {exp_month:1,exp_year:20,number:'4242424242424242'}) }
+
+      @booking.user.payments.first.update_attribute :stripe_id, card.id
+      @booking.payment = @booking.user.payments.first
+    end
+
+    it 'charges correctly' do
+      VCR.use_cassette('booking_charge') { @booking.charge! }
+      @booking.payment_status.must_equal :completed
+    end
+
   end
 
 end

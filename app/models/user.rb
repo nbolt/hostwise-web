@@ -175,6 +175,11 @@ class User < ActiveRecord::Base
     return completed_jobs == take_at
   end
 
+  def create_stripe_customer
+    customer = Stripe::Customer.create(email: email)
+    self.update_attribute :stripe_customer_id, customer.id
+  end
+
   private
 
   def format_phone_number
