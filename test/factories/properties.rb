@@ -48,16 +48,6 @@ FactoryGirl.define do
   	property_type :house
   	lat 33.99766
   	lng -118.47181
-  end
-
-  factory :property_5, class: Property do
-  	bedrooms 1
-  	bathrooms 1
-  	king_beds 0
-  	queen_beds 0
-  	full_beds 1
-  	twin_beds 0
-  	property_type :condo
-    association :user, factory: :user_name_4
+    association :user, factory: :user_name_3
   end
 end
