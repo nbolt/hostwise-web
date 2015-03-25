@@ -822,7 +822,7 @@ form
         margin-top: 28px
         font-size: 1em
         color: heavy-gray
-      &.complete
+      &.complete, &.couldnt_access
         background-color: teal
         color: white
         .photo
@@ -853,7 +853,7 @@ form
                 @media phone
                   display: none
               i
-                color: light-teal
+                color: dark-teal
                 margin-left: 10px
                 font-size: 2em
             .title
@@ -868,6 +868,15 @@ form
                 color: white
         .column
           background: linear-gradient(left, 0% teal, #32A6AB)
+      &.couldnt_access
+        background-color: orange
+        .photo
+          background-color: orange
+          box-shadow: orange_shadow
+        .right
+          .top
+            i
+              color: dark-orange !important
   .page-title
     font-size: 1.6em
   .row
