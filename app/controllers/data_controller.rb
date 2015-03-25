@@ -35,7 +35,7 @@ class DataController < ApplicationController
     end
     jobs.each {|j| j.current_user = current_user}
     jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|d|d}
-    render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
+    render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours, :first_job_of_day], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
   end
 
   def transactions

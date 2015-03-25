@@ -136,6 +136,13 @@ class Job < ActiveRecord::Base
     contractor.man_hours date
   end
 
+  def first_job_of_day contractor=nil
+    contractor ||= current_user
+    if contractor
+      if contractor.jobs.on_date(date)[0] then false else true end
+    end
+  end
+
   def staging
     booking.services.select {|s| s.name == 'preset' }.count > 0 if booking
   end
