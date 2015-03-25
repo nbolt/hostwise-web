@@ -63,4 +63,47 @@ FactoryGirl.define do
     lng -118.47181
     association :user, factory: :user_name_5
   end
+
+  factory :property_6, class: Property do
+    bedrooms 1
+    bathrooms 1
+    king_beds 0
+    queen_beds 0
+    full_beds 1
+    twin_beds 0
+    property_type :condo
+    zip '90023'
+    address1 '4404 Lone Tree Dr.'
+    address2 '4402 Lone Tree Dr.'
+    city 'plano'
+    state 'tx'
+  end
+
+  factory :property_7, class: Property do
+    bedrooms 2
+    bathrooms 2
+    king_beds 0
+    queen_beds 2
+    full_beds 0
+    twin_beds 0
+    property_type :house
+    address1 '4408 Lone Tree Dr.'
+    city 'plano'
+    state 'tx'
+    zip '75093'
+  end
+
+  factory :property_8, class: Property do
+    bedrooms 2
+    bathrooms 2
+    king_beds 0
+    queen_beds 2
+    full_beds 0
+    twin_beds 0
+    property_type :house
+    address1 '3100 Wynwood Ln'
+    city 'los angeles'
+    state 'CA'
+    zip '90023'
+  end
 end
