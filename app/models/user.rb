@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   include PgSearch
 
   before_validation :format_phone_number
+  after_save :handle_deactivation
 
   has_many :properties, dependent: :destroy
   has_many :payments, autosave: true, dependent: :destroy
@@ -132,13 +133,16 @@ class User < ActiveRecord::Base
     Job.set_priorities self.jobs.on_date(job.date), self
 
     if admin
-      # send notification to contractor
+      TwilioJob.perform_later("+1#{self.phone_number}", "Oops! Looks like job ##{job.id} on #{job.formatted_date} was cancelled. Sorry about this!")
+      # UserMailer ?
     end
 
     if job.contractors[0]
-      if job.contractors[0].contractor_profile.position == :trainee
-        job.contractors.destroy job.contractors[0]
-        # send notifications
+      contractor = job.contractors[0]
+      if contractor.contractor_profile.position == :trainee
+        job.contractors.destroy contractor
+        TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Looks like your training job on #{job.formatted_date} was cancelled. Sorry about this!")
+        # UserMailer ?
       else
         jobs = job.contractors[0].jobs.on_date(job.date)
         job.handle_distribution_jobs job.contractors[0]
@@ -193,5 +197,26 @@ class User < ActiveRecord::Base
 
   def format_phone_number
     self.phone_number = phone_number.strip.gsub(' ', '').delete("()-.+") if phone_number.present?
+  end
+
+  def handle_deactivation
+    if activation_state_changed? && activation_state == 'deactivated'
+      self.jobs.where(status_cd: [0,1]).each do |job|
+        self.drop_job job, true
+      end
+
+      self.properties.each do |property|
+        property.bookings.active.each do |booking|
+          if booking.job
+            booking.job.contractors.each do |contractor|
+              contractor.drop_job booking.job, true
+            end
+          end
+
+          booking.deleted!
+          booking.save
+        end
+      end
+    end
   end
 end

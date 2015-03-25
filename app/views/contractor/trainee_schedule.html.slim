@@ -9,7 +9,7 @@
           i.icon-alert-info
         .text Congratulations! You're finished for the day.
     .jobs
-      .job ng:show='training.distribution_job'
+      .job ng:show='training.distribution_job' ng:class="training.distribution_job.status_cd == 3 && 'complete'"
         .photo
           .timer
             span Supplies Pickup
