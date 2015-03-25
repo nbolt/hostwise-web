@@ -18,7 +18,7 @@
             div.orange Applicant
           .number ng:bind='::teammate.display_phone_number'
     .column
-      .section.supplies ng:show='job.occasion_cd == 1'
+      .section.supplies ng:show='job.occasion_cd == 1 && job.status == "active"'
         .head
           .icon
             i.icon-count
