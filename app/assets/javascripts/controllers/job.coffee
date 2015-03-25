@@ -8,6 +8,8 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
     $scope.next_job = rsp.next_job.id if rsp.next_job
+    $scope.job.booking.property.checklist_bedrooms = $scope.job.booking.property.bedrooms
+    $scope.job.booking.property.checklist_bedrooms = 1 if $scope.job.booking.property.bedrooms == 0
     $scope.job.contractor_count = $scope.job.contractors.length
     $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
     $scope.job.date_text_2 = moment(rsp.date, 'YYYY-MM-DD').format 'MMMM Do, YYYY'
@@ -310,7 +312,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.complete_bedroom = (num) ->
     if $scope.bedroom_class(num) == ''
-      if num == $scope.job.booking.property.bedrooms
+      if num == $scope.job.booking.property.checklist_bedrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.bathrooms').addClass 'active'
       else

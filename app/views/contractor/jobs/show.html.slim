@@ -378,11 +378,11 @@
                 .pad
                   .tab.bedrooms.active
                     .title.right
-                      | {{active_bedroom}}/{{job.booking.property.bedrooms}}
+                      | {{active_bedroom}}/{{job.booking.property.checklist_bedrooms}}
                     .title Bedrooms
                     .div.teal
                     .checklists
-                      .checklist ng:repeat='bedroom in range(job.booking.property.bedrooms) track by $index' ng:class="bedroom_checklist_class($index+1)"
+                      .checklist ng:repeat='bedroom in range(job.booking.property.checklist_bedrooms) track by $index' ng:class="bedroom_checklist_class($index+1)"
                         .check ng:class='check(checklist.checklist_settings["bedroom_" + ($index+1).toString()].dust)'
                           input type='checkbox' id='check-dust-{{$index}}' ng:model='checklist.checklist_settings["bedroom_" + ($index+1).toString()].dust'
                           label for='check-dust-{{$index}}'
