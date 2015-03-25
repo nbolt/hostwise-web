@@ -43,21 +43,22 @@ class Property < ActiveRecord::Base
   end
 
   def self.search(term, sort=nil)
+    results = Property.all
+    results = results.search_property(term) if term.present? && !results.empty? && sort != 'upcoming_service' # NEEDS FIX
     if sort
       case sort
         when 'alphabetical'
-          results = by_alphabetical.active
+          results = results.by_alphabetical.active
         when 'recently_added'
-          results = recently_added.active
+          results = results.recently_added.active
         when 'upcoming_service'
-          results = upcoming_bookings.active + no_upcoming
+          results = results.upcoming_bookings.active + results.no_upcoming.active
         when 'deactivated'
-          results = inactive
+          results = results.inactive
       end
     else
-      results = Property.active
-    end
-    return results.search_property(term) if term.present? && !results.empty?
+      results = results.active
+    end 
     results
   end
 

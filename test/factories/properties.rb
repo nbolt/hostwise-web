@@ -11,6 +11,11 @@ FactoryGirl.define do
     address1 '4408 Lone Tree Dr.'
     city 'plano'
     state 'tx'
+    active true
+    after(:create) do |property|
+      property.bookings << create(:booking_first)
+      property.bookings << create(:booking_second)
+    end
   end
 
   factory :property_2, class: Property do
@@ -23,9 +28,13 @@ FactoryGirl.define do
   	property_type :condo
   	zip '75093'
     address1 '4404 Lone Tree Dr.'
-    address2 '4402 Lone Tree Dr.'
+    address2 '#4'
     city 'plano'
     state 'tx'
+    active true
+    after(:create) do |property|
+      property.property_photos << create(:property_photo_1)
+    end
   end
 
   factory :property_3, class: Property do
@@ -77,20 +86,6 @@ FactoryGirl.define do
     address2 '4402 Lone Tree Dr.'
     city 'plano'
     state 'tx'
-  end
-
-  factory :property_7, class: Property do
-    bedrooms 2
-    bathrooms 2
-    king_beds 0
-    queen_beds 2
-    full_beds 0
-    twin_beds 0
-    property_type :house
-    address1 '4408 Lone Tree Dr.'
-    city 'plano'
-    state 'tx'
-    zip '75093'
   end
 
   factory :property_8, class: Property do

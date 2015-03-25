@@ -54,4 +54,12 @@ FactoryGirl.define do |user|
       user.payouts << create(:payout_5)
     end
   end
+
+  factory :user_name_7, class: User do
+    email 'dustinjones598@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "9722149321"
+    role_cd 2
+  end
 end
