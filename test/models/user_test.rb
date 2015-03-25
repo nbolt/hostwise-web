@@ -22,4 +22,20 @@ describe User do
 		user_name_6.earnings.must_equal 38
 		user_name_6.unpaid.must_equal 34
 	end
+
+	it 'shows avatar correctly' do
+		user_name_1 = create(:user_name_1)
+		user_name_1.avatar.must_equal  "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user_name_1.email)}.jpg?d=https%3A%2F%2Fs3.amazonaws.com%2Fhostwise-production%2Fgeneric_user.png"
+	end
+
+	it 'shows correct notification settings' do
+		user_name_1 = create(:user_name_1)
+		user_name_1.notification_settings.must_equal({:new_open_job=>{}, :job_claim_confirmation=>{}, :service_reminder=>{}, :booking_confirmation=>{}, :service_completion=>{}, :porter_arrived=>{}, :property_added=>{}, :porter_en_route=>{}})
+	end
+
+	it 'shows correct contractors' do
+		user_name_7 = create(:user_name_7)
+		#user_name_7.must_equal user_name_7
+		#User.contractors.must_equal ''
+	end
 end
