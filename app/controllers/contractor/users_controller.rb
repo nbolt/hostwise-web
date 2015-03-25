@@ -119,7 +119,7 @@ class Contractor::UsersController < Contractor::AuthController
   end
 
   def jobs_today
-    timezone = Timezone::Zone.new :zone => [current_user.contractor_profile.zone, current_user.contractor_profile.zone]
+    timezone = Timezone::Zone.new :zone => current_user.contractor_profile.zone
     jobs = current_user.jobs.on_date(timezone.time Time.now).ordered(current_user)
     jobs.each {|j| j.current_user = current_user}
     render json: jobs.to_json(methods: [:payout_integer, :payout_fractional, :staging], include: {distribution_center: {methods: [:full_address]}, contractors: {}, booking: {include: {property: {include: [user: {methods: [:name]}], methods: [:full_address]}}}})
