@@ -2,7 +2,7 @@ class ContractorProfile < ActiveRecord::Base
   belongs_to :user
 
   before_validation :standardize_address
-  before_save :create_stripe_recipient
+  before_save :create_stripe_recipient, :fetch_zone
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
@@ -17,6 +17,13 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   private
+
+  def fetch_zone
+    if !zone && lng
+      timezone = Timezone::Zone.new :latlon => [lat, lng]
+      self.zone = timezone.zone
+    end
+  end
 
   def create_stripe_recipient
     if ssn? && !stripe_recipient_id

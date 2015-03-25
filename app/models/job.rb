@@ -148,6 +148,14 @@ class Job < ActiveRecord::Base
     booking.services.select {|s| s.name == 'toiletries' }.count > 0
   end
 
+  def complete?
+    status_cd > 2
+  end
+
+  def not_complete?
+    status_cd < 3
+  end
+
   def formatted_date
     date.strftime '%m/%d/%Y'
   end
