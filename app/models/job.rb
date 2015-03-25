@@ -236,12 +236,13 @@ class Job < ActiveRecord::Base
     paths = []
     (DistributionCenter.all.map{|dc| [dc, dc]} + DistributionCenter.all.to_a.permutation(2).to_a).each do |dc_permutation|
       standard_jobs.to_a.permutation(standard_jobs.length).to_a.each do |jobs_permutation|
-        jobs_permutation = jobs_permutation - [jobs.team[0]]
+        team_job = standard_jobs.find {|job| job.contractors.count > 1}
+        jobs_permutation = jobs_permutation - [team_job]
         properties = jobs_permutation.map {|job| job.booking.property}
 
         pre_path = [contractor.contractor_profile]
         pre_path.append dc_permutation[0] if jobs.distribution[0]
-        pre_path.append jobs.team[0].booking.property if jobs.team[0]
+        pre_path.append team_job.booking.property if team_job
 
         post_path = [contractor.contractor_profile]
         post_path.unshift dc_permutation[1] if jobs.distribution[0]
@@ -250,7 +251,7 @@ class Job < ActiveRecord::Base
         distance = 0
         (path.length - 1).times {|i| distance += Haversine.distance(path[i].lat, path[i].lng, path[i+1].lat, path[i+1].lng)}
 
-        pre_path[-1] = jobs.team[0] if pre_path[-1].class == Property
+        pre_path[-1] = team_job if pre_path[-1].class == Property
         paths.push([distance, pre_path[1..-1] + jobs_permutation + post_path[0..-2]])
       end
     end
