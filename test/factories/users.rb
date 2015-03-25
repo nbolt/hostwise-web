@@ -40,4 +40,18 @@ FactoryGirl.define do |user|
       user.payments << create(:invalid_card)
     end
   end
+
+  factory :user_name_6, class: User do
+    email 'dustinjones597@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "9722149321"
+    after(:create) do |user|
+      user.payouts << create(:payout_1)
+      user.payouts << create(:payout_2)
+      user.payouts << create(:payout_3)
+      user.payouts << create(:payout_4)
+      user.payouts << create(:payout_5)
+    end
+  end
 end

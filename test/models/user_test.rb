@@ -16,4 +16,10 @@ describe User do
 		user_name_3 = create(:user_name_3)
 		user_name_3.display_phone_number.must_equal '(972) 214-9321'
 	end
+
+	it 'shows correct earnings' do
+		user_name_6 = create(:user_name_6)
+		user_name_6.earnings.must_equal 38
+		user_name_6.unpaid.must_equal 34
+	end
 end
