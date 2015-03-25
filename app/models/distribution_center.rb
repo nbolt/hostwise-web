@@ -2,7 +2,7 @@ class DistributionCenter < ActiveRecord::Base
   has_many :jobs, through: :job_distribution_centers
   has_many :job_distribution_centers, dependent: :destroy
 
-  before_save :standardize_address
+  before_save :standardize_address, :fetch_zone
 
   attr_accessor :distance
 
@@ -32,6 +32,13 @@ class DistributionCenter < ActiveRecord::Base
   end
 
   private
+
+  def fetch_zone
+    if !zone && lng
+      timezone = Timezone::Zone.new :latlon => [lat, lng]
+      self.zone = timezone.zone
+    end
+  end
 
   def standardize_address
     if address_changed?

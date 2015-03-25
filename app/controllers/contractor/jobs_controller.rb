@@ -128,9 +128,9 @@ class Contractor::JobsController < Contractor::AuthController
 
   def status
     if job.distribution_center
-      timezone = Timezone::Zone.new :latlon => [job.distribution_center.lat, job.distribution_center.lng]
+      timezone = Timezone::Zone.new :zone => job.distribution_center.zone
     else
-      timezone = Timezone::Zone.new :latlon => [job.booking.property.lat, job.booking.property.lng]
+      timezone = Timezone::Zone.new :zone => job.booking.property.zone
     end
 
     if job.status == :completed

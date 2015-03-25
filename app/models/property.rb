@@ -17,6 +17,7 @@ class Property < ActiveRecord::Base
   has_many :property_photos, autosave: true, dependent: :destroy
 
   before_validation :standardize_address
+  before_save :fetch_zone
 
   validates_numericality_of :phone_number, only_integer: true, if: lambda { self.phone_number.present? }
   validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
@@ -106,6 +107,13 @@ class Property < ActiveRecord::Base
   end
 
   private
+
+  def fetch_zone
+    if !zone && lng
+      timezone = Timezone::Zone.new :latlon => [lat, lng]
+      self.zone = timezone.zone
+    end
+  end
 
   def standardize_address
     if address_changed?
