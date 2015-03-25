@@ -98,6 +98,10 @@ class Contractor::JobsController < Contractor::AuthController
 
   def drop
     if current_user.drop_job job
+      User.available_contractors(job.booking).each do |contractor|
+        UserMailer.new_open_job(contractor, job).then(:deliver) if contractor.settings(:new_open_job).email
+        TwilioJob.perform_later("+1#{contractor.phone_number}", "New HostWise Job! $#{job.payout(contractor)} in #{job.booking.property.city}, #{job.booking.property.zip} on #{job.booking.formatted_date}.") if contractor.settings(:new_open_job).sms
+      end
       render json: { success: true }
     else
       render json: { success: false }
