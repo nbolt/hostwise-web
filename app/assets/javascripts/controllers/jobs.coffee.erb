@@ -52,7 +52,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
     else
       ''
 
-  $scope.job_available = (job) -> job.contractor_hours + job.man_hours <= <%= MAX_MAN_HOURS %>
+  $scope.job_available = (job) -> job.first_job_of_day || job.contractor_hours + job.man_hours <= <%= MAX_MAN_HOURS %>
 
   $scope.jobs_available = (day) -> _(day[1]).filter((job) -> $scope.job_available job)[0]
 
