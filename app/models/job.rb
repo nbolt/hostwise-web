@@ -152,6 +152,10 @@ class Job < ActiveRecord::Base
     status_cd > 2
   end
 
+  def in_progress?
+    status_cd == 2
+  end
+
   def not_complete?
     status_cd < 3
   end
