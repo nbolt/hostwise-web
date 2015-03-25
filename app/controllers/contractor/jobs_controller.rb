@@ -107,9 +107,10 @@ class Contractor::JobsController < Contractor::AuthController
   def complete
     unless job.status == :completed
       job.complete!
-      if current_user.contractor_profile.position == :trainee
-        current_user.contractor_profile.update_attribute :position_cd, 2 if current_user.jobs.where(training:true).count == current_user.jobs.where(training:true,status_cd:3).count
-      end
+      # Ops will manual review the feedback and flip them for now
+      # if current_user.contractor_profile.position == :trainee
+      #   current_user.contractor_profile.update_attribute :position_cd, 2 if current_user.jobs.where(training:true).count == current_user.jobs.where(training:true,status_cd:3).count
+      # end
       if job.booking
         property = job.booking.property
         checklist_photos = []
