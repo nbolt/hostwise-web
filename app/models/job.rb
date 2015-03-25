@@ -143,6 +143,13 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def previous_team_job contractor=nil
+    contractor ||= current_user
+    if contractor
+      if contractor.jobs.on_date(date).team[0] then true else false end
+    end
+  end
+
   def staging
     booking.services.select {|s| s.name == 'preset' }.count > 0 if booking
   end
