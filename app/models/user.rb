@@ -106,8 +106,6 @@ class User < ActiveRecord::Base
       false
     elsif man_hours(job.date) + job.man_hours > MAX_MAN_HOURS && !admin
       false
-    elsif training_job && !admin
-      false
     elsif job.size > 1 && team_job
       false
     else
@@ -127,23 +125,24 @@ class User < ActiveRecord::Base
   end
 
   def drop_job job
-    if job.training
-      false
-    else
-      job.contractors.destroy self
-      job.open!
-      job.save
-      job.handle_distribution_jobs self
-      Job.set_priorities self.jobs.on_date(job.date), self
-      if job.contractors[0]
+    job.contractors.destroy self
+    job.open!
+    job.save
+    job.handle_distribution_jobs self
+    Job.set_priorities self.jobs.on_date(job.date), self
+    if job.contractors[0]
+      if job.contractors[0].contractor_profile.position == :trainee
+        job.contractors.destroy job.contractors[0]
+        # send notifications
+      else
         jobs = job.contractors[0].jobs.on_date(job.date)
         job.handle_distribution_jobs job.contractors[0]
         Job.set_priorities jobs, job.contractors[0]
       end
-      fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
-      fanout.publish_async 'jobs', {}
-      true
     end
+    fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
+    fanout.publish_async 'jobs', {}
+    true
   end
 
   def self.contractors(term = nil)

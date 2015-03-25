@@ -15,7 +15,13 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
 
   $http.get('/trainee/bgc').success (rsp) -> $scope.bgc = rsp
 
-  $scope.no_dates = -> $scope.dates.length < 2
+  $scope.num_dates = -> 2 - $scope.selected_dates.length - ($scope.user && $scope.user.training_jobs.length || 0)
+
+  $scope.no_dates = ->
+    if $scope.user
+      $scope.dates.length + $scope.user.training_jobs.length < 2
+    else
+      $scope.dates.length < 2
 
   $scope.no_bgc = ->
     if $scope.bgc
@@ -28,12 +34,12 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
 
   $scope.bgc && $scope.bgc.status_cd != 1
 
-  $scope.dates_selected = -> $scope.selected_dates.length == 2 && 'active' || 'inactive'
+  $scope.dates_selected = -> $scope.selected_dates.length + ($scope.user && $scope.user.training_jobs.length || 0) == 2 && 'active' || 'inactive'
 
   $scope.date_selected = (date) ->
     if (_($scope.selected_dates).find (d) -> d == date)
       'chosen'
-    else if $scope.selected_dates.length == 2
+    else if $scope.selected_dates.length + ($scope.user && $scope.user.training_jobs.length || 0) == 2
       'inactive'
     else
       'active'
