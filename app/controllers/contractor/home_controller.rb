@@ -7,7 +7,7 @@ class Contractor::HomeController < Contractor::AuthController
 
     case current_user.contractor_profile.position
       when :trainee
-        if current_user.jobs[0]
+        if current_user.jobs.count > 2
           render 'contractor/trainee_schedule'
         else
           render 'contractor/trainee'
