@@ -67,7 +67,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     $scope.job and $scope.job.status_cd == 3
 
   $scope.cancellable = ->
-    $scope.job && $scope.job.status_cd == 0 && $scope.job.status_cd == 1
+    $scope.job && ($scope.job.status_cd == 0 || $scope.job.status_cd == 1)
 
   $scope.arrived = ->
     angular.element('.arrived-dropdown').css 'max-height', 80
