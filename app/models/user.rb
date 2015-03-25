@@ -124,12 +124,17 @@ class User < ActiveRecord::Base
     end
   end
 
-  def drop_job job
+  def drop_job job, admin=false
     job.contractors.destroy self
     job.open!
     job.save
     job.handle_distribution_jobs self
     Job.set_priorities self.jobs.on_date(job.date), self
+    
+    if admin
+      # send notification to contractor
+    end
+
     if job.contractors[0]
       if job.contractors[0].contractor_profile.position == :trainee
         job.contractors.destroy job.contractors[0]
