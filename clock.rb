@@ -6,27 +6,37 @@ require './config/environment'
 module Clockwork
   handler do |job|
     case job
-    when 'payments.process'
-      Booking.where(payment_status_cd: 0, status_cd: 3).each do |booking|
-        case booking.last_transaction.status_cd
-        when 1
-          booking.charge!
+    when 'jobs:check_no_shows'
+      User.contractors.each do |contractor|
+        timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
+        time = timezone.time Time.now
+        jobs_today = contractor.jobs.on_date(time)
+        jobs_today.each do |job|
+          unless job.distribution || job.in_progress? || job.complete?
+            priority = ContractorJobs.where(job_id: job.id, user_id: contractor.id)[0].priority
+            staging = Rails.env.staging? && '[STAGING] ' || ''
+            case priority
+            when 1
+              if time.hour == 10 && time.min == 30
+                TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
+                UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{admin_job_url(job)}").then(:deliver)
+              end
+            when 2
+              if time.hour == 13 && time.min == 30
+                TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
+                UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{admin_job_url(job)}").then(:deliver)
+              end
+            when 3
+              if time.hour == 14 && time.min == 30
+                TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
+                UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{admin_job_url(job)}").then(:deliver)
+              end
+            end
+          end
         end
-      end
-    when 'jobs.outstanding.process'
-      Job.where(status_cd: [0,1,2]).where('bookings.date < ?', Date.today).includes(:booking).references(:booking).each do |job|
-        job.past_due!
-        job.save
-      end
-    when 'payouts.process'
-      Payout.where(status_cd: 0).each do |payout|
-        payout.process!
       end
     end
   end
 
-  every(1.day, 'payments.process', :at => '00:00')
-  every(1.day, 'jobs.outstanding.process', :at => '00:00')
-
-  every(1.week, 'payouts.process', :at => 'Wednesday 20:00')
+  every(1.hour, 'jobs:check_no_shows', :at => '**:30')
 end
