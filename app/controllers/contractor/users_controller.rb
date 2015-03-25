@@ -52,20 +52,31 @@ class Contractor::UsersController < Contractor::AuthController
   end
 
   def activate
-    user = User.load_from_activation_token(params[:id])
-    if user
+    if current_user && current_user.activation_state == 'active'
       respond_to do |format|
         format.html { render 'contractor/users/activate', layout: 'plain' }
-        format.json { render json: user.to_json(include: [:contractor_profile], methods: [:avatar, :name, :role]) }
+        format.json { render json: current_user.to_json(include: [:contractor_profile], methods: [:avatar, :name, :role]) }
       end
     else
-      not_authenticated
-      return
+      user = User.load_from_activation_token(params[:id])
+      if user
+        respond_to do |format|
+          format.html { render 'contractor/users/activate', layout: 'plain' }
+          format.json { render json: user.to_json(include: [:contractor_profile], methods: [:avatar, :name, :role]) }
+        end
+      else
+        not_authenticated
+        return
+      end
     end
   end
 
   def activated
-    user = User.load_from_activation_token(params[:id])
+    if current_user
+      user = current_user
+    else
+      user = User.load_from_activation_token(params[:id])
+    end
     user.assign_attributes user_params
     user.step = 'contractor_profile'
     user.phone_confirmed = true #hack for now
