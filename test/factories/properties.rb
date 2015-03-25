@@ -46,8 +46,8 @@ FactoryGirl.define do
     full_beds 0
     twin_beds 1
   	property_type :house
-  	lat 37.7178216
-  	lng -121.9258115
+  	lat 53.349805
+  	lng -6.260310
     association :user, factory: :user_name_3
   end
 
