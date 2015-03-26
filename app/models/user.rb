@@ -123,8 +123,10 @@ class User < ActiveRecord::Base
       end
       job.handle_distribution_jobs self
       Job.set_priorities jobs_today, self
-      fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
-      fanout.publish_async 'jobs', {}
+      unless Rails.env.test?
+        fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
+        fanout.publish_async 'jobs', {}
+      end
       true
     end
   end
@@ -163,8 +165,10 @@ class User < ActiveRecord::Base
         end
       end
     end
-    fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
-    fanout.publish_async 'jobs', {}
+    unless Rails.env.test?
+      fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
+      fanout.publish_async 'jobs', {}
+    end
     true
   end
 
