@@ -224,11 +224,12 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.inventory_class = -> if $scope.in_progress() && $scope.damage_inspection() then '' else 'disabled'
   $scope.begin_cleaning_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings && $scope.checklist.checklist_settings.inventory_count
-      inventory = $scope.checklist.checklist_settings.inventory_count
-      sheets = inventory.king_sheets > 0 || inventory.twin_sheets > 0
-      pillows = inventory.pillow_count > 0
-      towels = inventory.bath_towels > 0 || inventory.hand_towels > 0 || inventory.face_towels > 0 || inventory.bath_mats > 0
-      if towels && sheets && pillows then '' else 'disabled'
+      ''
+      #inventory = $scope.checklist.checklist_settings.inventory_count
+      #sheets = inventory.king_sheets > 0 || inventory.twin_sheets > 0
+      #pillows = inventory.pillow_count > 0
+      #towels = inventory.bath_towels > 0 || inventory.hand_towels > 0 || inventory.face_towels > 0 || inventory.bath_mats > 0
+      #if towels && sheets && pillows then '' else 'disabled'
     else
       'disabled'
 

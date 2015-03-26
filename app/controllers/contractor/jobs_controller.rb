@@ -34,7 +34,9 @@ class Contractor::JobsController < Contractor::AuthController
 
   def begin
     if job.status == :scheduled || job.status == :cant_access
-      job.update_attribute :status_cd, 2
+      job.status_cd = 2
+      job.size = job.contractors.team_members.count
+      job.save
 
       if params[:issue_resolved].present? # issue resolved
         staging = Rails.env.staging? && '[STAGING] ' || ''

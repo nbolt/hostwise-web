@@ -17,7 +17,11 @@ class Job < ActiveRecord::Base
 
   scope :first_jobs, -> { where('contractor_jobs.priority = 1').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :trainers, -> { where('contractor_jobs.user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }
-  scope :future, -> { where('date > ?', Time.now) }
+  scope :future, -> (zone=nil) {
+    timezone = Timezone::Zone.new :zone => zone if zone
+    where('date > ?', zone && timezone.time(Time.now) || Time.now)
+  }
+  scope :visible, -> { where(state_cd: [0,1]) }
   scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
@@ -25,12 +29,15 @@ class Job < ActiveRecord::Base
   scope :not_complete, -> { where(status_cd: [0,1,2]) }
   scope :training, -> { where(training: true) }
   scope :not_training, -> { where(training: false) }
-  scope :training, -> { where(training: true) }
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
-  scope :open, -> (contractor) { standard.days(contractor).where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
+  scope :open, -> (contractor) {
+    jobs = visible.standard.days(contractor).where(status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
+    jobs = jobs.where(state_cd: 1) if contractor.contractor_profile.position == :contractor
+    jobs
+  }
   scope :upcoming, -> (contractor) { standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :past, -> (contractor) { standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :days, -> (contractor) { sun(contractor).mon(contractor).tue(contractor).wed(contractor).thurs(contractor).fri(contractor).sat(contractor) }
@@ -66,6 +73,7 @@ class Job < ActiveRecord::Base
       else
         contractor ||= current_user
         payout_multiplier = state == :vip ? 0.75 : 0.7
+        payout_multiplier += 0.1 if training
         payout = 0
         pricing = Booking.cost booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee
         payout += (pricing[:cleaning] * payout_multiplier).round(2) if pricing[:cleaning]
@@ -129,6 +137,12 @@ class Job < ActiveRecord::Base
 
   def man_hours
     MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
+  end
+
+  def minimum_job_size
+    if booking
+      if booking.property.bedrooms >= 3 && booking.property.bathrooms >= 3 then 2 else 1 end
+    end
   end
 
   def contractor_hours contractor=nil

@@ -27,7 +27,7 @@ class DataController < ApplicationController
     jobs = Job.all
     case params[:scope]
       when 'open'
-        jobs = jobs.open(current_user)
+        jobs = jobs.future(current_user.contractor_profile.zone).open(current_user)
       when 'upcoming'
         jobs = jobs.upcoming(current_user)
       when 'past'
