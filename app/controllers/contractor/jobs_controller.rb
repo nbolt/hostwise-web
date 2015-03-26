@@ -127,9 +127,7 @@ class Contractor::JobsController < Contractor::AuthController
         UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
 
         if property.user.settings(:service_completion).sms
-          TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!")
-          # twilio complains about bad media sometimes so it will be better off to send each pic individually
-          checklist_photos.each { |photo| TwilioJob.perform_later("+1#{property.phone_number}", '', photo) }
+          TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!", checklist_photos)
         end
       end
     end
