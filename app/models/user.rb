@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
   pg_search_scope :search_hosts, against: [:email, :first_name, :last_name, :phone_number], using: { tsearch: { prefix: true } }
 
   scope :trainers, -> { where('position_cd = 3').includes(:contractor_profile).references(:contractor_profile) }
+  scope :trainees, -> { where('position_cd = 1').includes(:contractor_profile).references(:contractor_profile) }
+  scope :team_members, -> { where('position_cd in (2,3) ').includes(:contractor_profile).references(:contractor_profile) }
   scope :contractors, -> { where(role_cd: 2) }
   scope :available_contractors, -> (booking) {
     day =
@@ -126,7 +128,9 @@ class User < ActiveRecord::Base
   end
 
   def drop_job job, admin=false
+    primary = ContractorJobs.where(job_id: job.id, user_id: self.id)[0].primary
     job.contractors.destroy self
+    job.size = job.contractors.count if job.contractors.count >= job.minimum_job_size
     job.open!
     job.save
     job.handle_distribution_jobs self
@@ -137,14 +141,24 @@ class User < ActiveRecord::Base
     end
 
     if job.contractors[0]
-      contractor = job.contractors[0]
-      if contractor.contractor_profile.position == :trainee
-        job.contractors.destroy contractor
-        TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
-      else
-        jobs = job.contractors[0].jobs.on_date(job.date)
-        job.handle_distribution_jobs job.contractors[0]
-        Job.set_priorities jobs, job.contractors[0]
+      trainee = job.contractors.trainees[0]
+      team_members = job.contractors.team_members
+      mentors = job.contractors.trainers
+      if trainee
+        if mentors
+          TwilioJob.perform_later("+1#{mentors[0].phone_number}", "Your job on #{job.formatted_date} is now a mentor job. Pay out is now 80%!")
+        else
+          job.contractors.destroy trainee
+          TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
+        end
+      end
+      if team_members
+        ContractorJobs.where(job_id: job.id, user_id: mentors && mentors[0].id || team_members[0].id)[0].update_attribute :primary, true if primary
+        team_members.each do |contractor|
+          job.handle_distribution_jobs contractor
+          jobs = contractor.jobs.on_date(job.date)
+          Job.set_priorities jobs, contractor
+        end
       end
     end
     fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
