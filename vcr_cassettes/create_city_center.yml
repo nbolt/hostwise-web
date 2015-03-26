@@ -1,0 +1,102 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.smartystreets.com/street-address?auth-id=be3ffba5-6059-4c70-8dff-92978ab8dec4&auth-token=sl4776At3RB7VDM7kXOw
+    body:
+      encoding: UTF-8
+      string: '[{"street":"3430 South La Brea Avenue","street2":null,"zipcode":"90016"}]'
+    headers:
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      X-Standardize-Only:
+      - 'true'
+      X-Accept-Keypair:
+      - 'false'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Accept, Content-Type, Content-Length, Referer, Origin, Host, x-include-invalid,
+        x-standardize-only
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      X-Account-Header:
+      - 374379a6-0000-0000-0000-000000000000
+      X-Server-Name:
+      - streetapi-004-phoenix
+      Date:
+      - Thu, 26 Mar 2015 19:47:02 GMT
+      Content-Length:
+      - '859'
+    body:
+      encoding: UTF-8
+      string: |
+        [{"input_index":0,"candidate_index":0,"delivery_line_1":"3430 S LA Brea Ave","last_line":"Los Angeles CA 90016-5258","delivery_point_barcode":"900165258301","components":{"primary_number":"3430","street_predirection":"S","street_name":"LA Brea","street_suffix":"Ave","city_name":"Los Angeles","state_abbreviation":"CA","zipcode":"90016","plus4_code":"5258","delivery_point":"30","delivery_point_check_digit":"1"},"metadata":{"record_type":"S","zip_type":"Standard","county_fips":"06037","county_name":"Los Angeles","carrier_route":"C027","congressional_district":"37","rdi":"Commercial","elot_sequence":"0066","elot_sort":"D","latitude":34.02376,"longitude":-118.35541,"precision":"Zip9","time_zone":"Pacific","utc_offset":-8,"dst":true},"analysis":{"dpv_match_code":"Y","dpv_footnotes":"AABB","dpv_cmra":"N","dpv_vacant":"N","active":"Y","footnotes":"N#"}}]
+    http_version: 
+  recorded_at: Thu, 26 Mar 2015 19:47:02 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=34.02376,-118.35541&timestamp=1427399222
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 26 Mar 2015 19:47:02 GMT
+      Pragma:
+      - no-cache
+      Expires:
+      - Fri, 01 Jan 1990 00:00:00 GMT
+      Cache-Control:
+      - no-cache, must-revalidate
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic,p=0.5
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "dstOffset" : 3600,
+           "rawOffset" : -28800,
+           "status" : "OK",
+           "timeZoneId" : "America/Los_Angeles",
+           "timeZoneName" : "Pacific Daylight Time"
+        }
+    http_version: 
+  recorded_at: Thu, 26 Mar 2015 19:47:02 GMT
+recorded_with: VCR 2.9.3

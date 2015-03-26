@@ -29,7 +29,7 @@ config/database.yml
 /public/checklist/
 /public/contractor_photo/
 doc/
-vcr_cassettes/
+#vcr_cassettes/
 dump.rdb
 # these should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
