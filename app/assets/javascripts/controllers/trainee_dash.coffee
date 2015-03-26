@@ -13,6 +13,10 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
       date.selected = false
       $scope.dates.push date
 
+      $scope.$watch (-> date.selected), (n,o) ->
+        num = $scope.selected_dates().length - ($scope.user && $scope.user.training_jobs.length || 0)
+        date.selected = false if n && num > 2
+
   $http.get('/trainee/bgc').success (rsp) -> $scope.bgc = rsp
 
   $scope.num_dates = -> 2 - $scope.selected_dates().length - ($scope.user && $scope.user.training_jobs.length || 0)
