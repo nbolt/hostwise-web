@@ -42,6 +42,9 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
 
   $scope.dates_selected = -> $scope.selected_dates().length + ($scope.user && $scope.user.training_jobs.length || 0) == 2 && 'active' || 'inactive'
 
+  $scope.inactive = (date) ->
+    'inactive' if !date.selected && $scope.selected_dates().length + ($scope.user && $scope.user.training_jobs.length || 0) == 2
+
   $scope.date_selected = (date) ->
     if date.selected
       'chosen'
