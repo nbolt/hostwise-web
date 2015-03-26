@@ -19,7 +19,7 @@
 //= require angular-carousel.min
 //= require angular-touch
 //= require angular-timer
-//= require angular-sanitize.min
+//= require angular-sanitize
 //= require dirPagination
 //= require mask
 //= require select2.min
