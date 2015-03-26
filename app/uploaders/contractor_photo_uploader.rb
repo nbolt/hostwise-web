@@ -1,7 +1,10 @@
+require 'carrierwave/processing/mime_types'
+
 class ContractorPhotoUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   include CarrierWave::RMagick
+  include CarrierWave::MimeTypes
   # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
@@ -29,6 +32,7 @@ class ContractorPhotoUploader < CarrierWave::Uploader::Base
   process :auto_orient
   process resize_to_fill: [768, 768]
   process convert: 'png'
+  process :set_content_type
 
   # Create different versions of your uploaded files:
   # version :thumb do
