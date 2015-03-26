@@ -24,7 +24,7 @@ class BackgroundCheckSubmissionJob < ActiveJob::Base
         if report_res.code == 201
           report = JSON.parse report_res.body
           ActiveRecord::Base.connection_pool.with_connection do
-            background_check = BackgroundCheck.new({order_id: report['id'] , status: report['status'].to_sym})
+            background_check = BackgroundCheck.new({order_id: report['id'] , status: Rails.env.production? && report['status'].to_sym || :clear})
             background_check.user = user
             background_check.save
           end
