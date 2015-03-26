@@ -1,10 +1,7 @@
-require 'carrierwave/processing/mime_types'
-
 class AvatarUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   include CarrierWave::RMagick
-  include CarrierWave::MimeTypes
   # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
@@ -67,5 +64,9 @@ class AvatarUploader < CarrierWave::Uploader::Base
     manipulate! do |img|
       img = img.auto_orient
     end
+  end
+
+  def set_content_type
+    self.file.instance_variable_set(:@content_type, "image/png")
   end
 end

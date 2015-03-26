@@ -343,6 +343,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       else
         $scope.active_bathroom += 1
       scroll '.phase.cleaning'
+    null
 
   $scope.complete_kitchen = ->
     if $scope.kitchen_class() == ''
