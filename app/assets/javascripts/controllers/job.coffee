@@ -294,7 +294,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     if $scope.checklist && $scope.checklist.checklist_settings
       if $scope.living_class() == '' && $scope.kitchen_class() == '' && $scope.photos_class() == '' &&
          $scope.bathroom_class($scope.job.booking.property.bathrooms) == '' &&
-         $scope.bedroom_class($scope.job.booking.property.bedrooms) == ''
+         $scope.bedroom_class($scope.job.booking.property.checklist_bedrooms) == ''
         ''
       else
         'disabled'
