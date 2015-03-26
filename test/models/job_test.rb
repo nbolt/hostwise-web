@@ -23,7 +23,7 @@ describe Job do
 	end
 
 	it 'shows jobs where priority contractor' do
-		venice_center = nil; city_center = nil; user_name_6 = nil; job_2 = nil
+		venice_center = nil; city_center = nil; user_name_6 = nil; job_2 = nil; job_3 = nil; job_1 = nil
 
 		VCR.use_cassette('create_venice_center') { venice_center = create(:venice_center) }
 		VCR.use_cassette('create_city_center') { city_center = create(:city_center) }
@@ -31,16 +31,112 @@ describe Job do
 		city_center.must_equal city_center
 		
 		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		VCR.use_cassette('create_job_1') { job_1 = create(:job_1) }
 		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		VCR.use_cassette('create_job_3') { job_3 = create(:job_3) }
+		user_name_6.claim_job job_1
 		user_name_6.claim_job job_2
-		user_name_6.jobs.standard[0].priority(user_name_6).must_equal 1
+		user_name_6.claim_job job_3
+		date_1_jobs = user_name_6.jobs.on_date(Date.new(2015, 4, 18))
+		date_2_jobs = user_name_6.jobs.on_date(Date.new(2015, 4, 19))
+
+		date_2_jobs.standard[0].priority(user_name_6).must_equal 1
+		date_2_jobs.distribution.pickup[0].priority(user_name_6).must_equal 0
+		date_2_jobs.distribution.dropoff[0].priority(user_name_6).must_equal 2
+
+		date_2_jobs[0].next_job(user_name_6).distribution.must_equal true
+		date_2_jobs[2].prev_job(user_name_6).distribution.must_equal false
 	end
 
 	it 'displays proper payout' do
-		user_name_1 = nil
-		VCR.use_cassette('create_user_name_1') { user_name_1 = create(:user_name_1) }
-		# job_2 = create(:job_2)
-		# job_2.payout(user_name_1).must_equal 130
+		job_2 = nil; user_name_6 = nil, job_5 = nil
+		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		VCR.use_cassette('create_job_5') { job_5 = create(:job_5) }
+		job_2.payout(user_name_6).must_equal 20
+		job_2.payout.must_equal 70
+		# job_5.payout.must_equal 38
+	end
+
+	it 'shows correct man hours' do
+		job_2 = nil; user_name_6 = nil, job_5 = nil
+		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		VCR.use_cassette('create_job_5') { job_5 = create(:job_5) }
+		job_2.contractor_hours(user_name_6).must_equal 0
+	end
+
+	it 'shows minimum job size' do
+		job_2 = nil
+		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		job_2.minimum_job_size.must_equal 1
+	end
+
+	it 'shows if first job of day correctly' do
+		venice_center = nil; city_center = nil; user_name_8 = nil; job_2 = nil; job_3 = nil; job_1 = nil
+
+		VCR.use_cassette('create_venice_center') { venice_center = create(:venice_center) }
+		VCR.use_cassette('create_city_center') { city_center = create(:city_center) }
+		venice_center.must_equal venice_center
+		city_center.must_equal city_center
+		
+		VCR.use_cassette('create_user_name_8') { user_name_8 = create(:user_name_6) }
+		VCR.use_cassette('create_job_1') { job_1 = create(:job_1) }
+		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		VCR.use_cassette('create_job_3') { job_3 = create(:job_3) }
+
+		user_name_8.claim_job job_1
+		user_name_8.claim_job job_2
+		user_name_8.claim_job job_3
+
+		user_name_8.jobs[0].first_job_of_day(user_name_8).must_equal false
+		user_name_8.jobs[0].previous_team_job(user_name_8).must_equal false
+	end
+
+	it 'status shows properly' do
+		job_6 = nil, job_7 = nil, job_8 = nil
+		VCR.use_cassette('create_job_6') { job_6 = create(:job_6) }
+		VCR.use_cassette('create_job_7') { job_7 = create(:job_7) }
+		VCR.use_cassette('create_job_8') { job_8 = create(:job_8) }
+
+		job_6.complete?.must_equal false
+		job_6.in_progress?.must_equal false
+		job_6.not_complete?.must_equal true
+
+		job_7.complete?.must_equal false
+		job_7.in_progress?.must_equal true
+		job_7.not_complete?.must_equal true
+
+		job_8.complete?.must_equal true
+		job_8.in_progress?.must_equal false
+		job_8.not_complete?.must_equal false
+	end
+
+	it 'should complete properly' do
+		job_7 = nil
+		VCR.use_cassette('create_job_7') { job_7 = create(:job_7) }
+		job_7.complete!
+		job_7.status_cd.must_equal 3
+	end
+
+	it 'should return proper checklist' do
+		venice_center = nil; city_center = nil; user_name_8 = nil; job_2 = nil; job_3 = nil; job_1 = nil
+
+		VCR.use_cassette('create_venice_center') { venice_center = create(:venice_center) }
+		VCR.use_cassette('create_city_center') { city_center = create(:city_center) }
+		venice_center.must_equal venice_center
+		city_center.must_equal city_center
+		
+		VCR.use_cassette('create_user_name_8') { user_name_8 = create(:user_name_6) }
+		VCR.use_cassette('create_job_1') { job_1 = create(:job_1) }
+		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		VCR.use_cassette('create_job_3') { job_3 = create(:job_3) }
+
+		user_name_8.claim_job job_1
+		user_name_8.claim_job job_2
+		user_name_8.claim_job job_3
+		
+		# user_name_8.jobs[0].checklist
 	end
 end
 
