@@ -8,6 +8,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
     $scope.next_job = rsp.next_job.id if rsp.next_job
+    $scope.prev_job = rsp.prev_job.id if rsp.prev_job
     $scope.job.booking.property.checklist_bedrooms = $scope.job.booking.property.bedrooms
     $scope.job.booking.property.checklist_bedrooms = 1 if $scope.job.booking.property.bedrooms == 0
     $scope.job.contractor_count = $scope.job.contractors.length
