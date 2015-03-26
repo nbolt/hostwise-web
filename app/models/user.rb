@@ -111,6 +111,8 @@ class User < ActiveRecord::Base
       false
     elsif job.size > 1 && team_job
       false
+    elsif job.contractors.index self
+      true
     else
       job.contractors.push self
       job.contractor_jobs[0].update_attribute :primary, true if job.contractors.count == 1
