@@ -46,6 +46,8 @@ FactoryGirl.define do |user|
     crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
     salt "oaz1NpsVHaNCqza9ynGU"
     phone_number "9722149321"
+    role_cd 2
+    association :contractor_profile, factory: :profile_1
     after(:create) do |user|
       user.payouts << create(:payout_1)
       user.payouts << create(:payout_2)

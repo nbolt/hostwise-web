@@ -1,4 +1,4 @@
-FactoryGirl.define do |booking|
+FactoryGirl.define do
   factory :credit_card, class: Payment do
     last4 '4242'
     card_type 'Visa'
