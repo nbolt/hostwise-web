@@ -12,7 +12,7 @@
             strong
               | {{recipient.cards.data[0].brand}}
             |  - Card ending in {{recipient.cards.data[0].last4}}
-        .details ng:show='recipient.active_account'
+        .details ng:show='recipient.active_account && recipient.cards.total_count == 0'
           span
             strong
               | {{recipient.active_account.bank_name}}
