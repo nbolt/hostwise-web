@@ -21,15 +21,17 @@
         .text Oops! Looks like your background check is still pending. Please check back soon!
 
   .dates ng:hide='no_bgc() || no_dates()'
-    .date ng:repeat='date in dates' ng:click='select_date(date)' ng:class='date_selected(date)'
-      .top
-        .day ng:bind='::date.day'
-        .month ng:bind='::date.month'
-        .time ng:bind='::date.time'
-      .bottom
-        .icon
-          i.icon-check
-        .text Select
+    .check-container ng:repeat='date in dates'
+      input type='checkbox' ng:model='date.selected' id='check-{{date.job}}'
+      label.date for='check-{{date.job}}' ng:class='date_selected(date)'
+        .top
+          .day ng:bind='::date.day'
+          .month ng:bind='::date.month'
+          .time ng:bind='::date.time'
+        .bottom
+          .icon
+            i.icon-check
+          .text Select
 
   .select-dates ng:class='dates_selected()' ng:click='select_dates()'
     .icon-button

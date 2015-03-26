@@ -1,7 +1,6 @@
 TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
 
   $scope.dates = []
-  $scope.selected_dates = []
 
   $http.get('/trainee/available_jobs').success (rsp) ->
     _(rsp).each (job) ->
@@ -11,11 +10,12 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
       date.day = date.moment.format 'D'
       date.month = date.moment.format 'MMM'
       date.time = '9:30 AM'
+      date.selected = false
       $scope.dates.push date
 
   $http.get('/trainee/bgc').success (rsp) -> $scope.bgc = rsp
 
-  $scope.num_dates = -> 2 - $scope.selected_dates.length - ($scope.user && $scope.user.training_jobs.length || 0)
+  $scope.num_dates = -> 2 - $scope.selected_dates().length - ($scope.user && $scope.user.training_jobs.length || 0)
 
   $scope.no_dates = ->
     if $scope.user
@@ -34,30 +34,25 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
 
   $scope.bgc && $scope.bgc.status_cd != 1
 
-  $scope.dates_selected = -> $scope.selected_dates.length + ($scope.user && $scope.user.training_jobs.length || 0) == 2 && 'active' || 'inactive'
+  $scope.selected_dates = -> _($scope.dates).filter (date) -> date.selected
+
+  $scope.dates_selected = -> $scope.selected_dates().length + ($scope.user && $scope.user.training_jobs.length || 0) == 2 && 'active' || 'inactive'
 
   $scope.date_selected = (date) ->
-    if (_($scope.selected_dates).find (d) -> d == date)
+    if date.selected
       'chosen'
-    else if $scope.selected_dates.length + ($scope.user && $scope.user.training_jobs.length || 0) == 2
+    else if $scope.selected_dates().length + ($scope.user && $scope.user.training_jobs.length || 0) == 2
       'inactive'
     else
       'active'
 
-  $scope.select_date = (date) ->
-    if (_($scope.selected_dates).find (d) -> d == date)
-      $scope.selected_dates = _($scope.selected_dates).reject (d) -> d == date
-    else if $scope.selected_dates.length < 2
-      $scope.selected_dates.push date
-
   $scope.select_dates = ->
-    $http.post("/trainee/claim_jobs", {jobs: $scope.selected_dates}).success (rsp) ->
+    $http.post("/trainee/claim_jobs", {jobs: $scope.selected_dates()}).success (rsp) ->
       if rsp.success
         $window.location = '/'
       else
         $http.get('/trainee/available_jobs').success (rsp) ->
           $scope.dates = []
-          $scope.selected_dates = []
           _(rsp).each (job) ->
             date = {}
             date.job = job.id
