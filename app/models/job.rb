@@ -66,10 +66,6 @@ class Job < ActiveRecord::Base
     contractor.jobs.on_date(date).where('contractor_jobs.priority < ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[-1]
   end
 
-  def previous_job contractor
-    contractor.jobs.on_date(date).where('contractor_jobs.priority < ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[-1]
-  end
-
   def payout contractor=nil
     if booking
       if booking.cancelled? || booking.couldnt_access?
