@@ -19,7 +19,12 @@ class Job < ActiveRecord::Base
   scope :trainers, -> { where('contractor_jobs.user_id in (?)', User.trainers.map(&:id)).includes(:contractors).references(:contractors) }
   scope :future, -> (zone=nil) {
     timezone = Timezone::Zone.new :zone => zone if zone
-    where('date > ?', zone && timezone.time(Time.now) || Time.now)
+    now = zone && timezone.time(Time.now) || Time.now
+    if now.hour < 10
+      where('date >= ?', now)
+    else
+      where('date > ?', now)
+    end
   }
   scope :visible, -> { where(state_cd: [0,1]) }
   scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
