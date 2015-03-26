@@ -125,7 +125,12 @@ class Contractor::JobsController < Contractor::AuthController
         checklist_photos = []
         checklist_photos << job.checklist.kitchen_photo.url << job.checklist.bedroom_photo.url << job.checklist.bathroom_photo.url
         UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
-        TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!", checklist_photos) if property.user.settings(:service_completion).sms
+
+        if property.user.settings(:service_completion).sms
+          TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!")
+          # twilio complains about bad media sometimes so it will be better off to send each pic individually
+          checklist_photos.each { |photo| TwilioJob.perform_later("+1#{property.phone_number}", '', photo) }
+        end
       end
     end
     render json: { success: true, next_job: job.next_job(current_user).then(:id), status_cd: job.status_cd }
