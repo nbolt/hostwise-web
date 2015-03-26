@@ -73,28 +73,30 @@ class Host::PropertiesController < Host::AuthController
             date = Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d')
             status_cd = Rails.env.production? ? 4 : 1
             booking = property.bookings.build(date: date, status_cd: status_cd)
-            if params[:late_next_day].present?
-              booking.late_next_day = true if date.strftime('%b %-d, %Y') == params[:late_next_day]
+            unless booking.duplicate?
+              if params[:late_next_day].present?
+                booking.late_next_day = true if date.strftime('%b %-d, %Y') == params[:late_next_day]
+              end
+              if params[:late_same_day].present?
+                booking.late_same_day = true if date.strftime('%b %-d, %Y') == params[:late_same_day]
+              end
+              unless Booking.by_user(current_user)[0] || current_user.migrated
+                booking.first_booking_discount = true
+              end
+              booking.payment = Payment.find params[:payment]
+              params[:services].each do |service|
+                booking.services.push Service.where(name: service)[0]
+              end
+              if property.bookings.count == 0 && current_user.vip_count < VIP_CLEANINGS
+                booking.vip = true
+                current_user.update_attribute :vip_count, current_user.vip_count + 1
+              end
+              booking.save # need to check for errors
+              bookings.push booking
+              UserMailer.new_booking_notification(booking).then(:deliver)
+              UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
+              blast booking
             end
-            if params[:late_same_day].present?
-              booking.late_same_day = true if date.strftime('%b %-d, %Y') == params[:late_same_day]
-            end
-            unless Booking.by_user(current_user)[0] || current_user.migrated
-              booking.first_booking_discount = true
-            end
-            booking.payment = Payment.find params[:payment]
-            params[:services].each do |service|
-              booking.services.push Service.where(name: service)[0]
-            end
-            if property.bookings.count == 0 && current_user.vip_count < VIP_CLEANINGS
-              booking.vip = true
-              current_user.update_attribute :vip_count, current_user.vip_count + 1
-            end
-            booking.save # need to check for errors
-            bookings.push booking
-            UserMailer.new_booking_notification(booking).then(:deliver)
-            UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
-            blast booking
           end
         end
       end

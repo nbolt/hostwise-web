@@ -13,6 +13,7 @@ class Booking < ActiveRecord::Base
   has_many :transactions
 
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
+  scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { where('date = ?', Date.today) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
   scope :upcoming, -> (user) { where(status_cd: [1,4]).where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
@@ -152,6 +153,19 @@ class Booking < ActiveRecord::Base
 
   def formatted_date
     date.strftime '%m/%d/%Y'
+  end
+
+  def duplicate?
+    existing_booking = property.bookings.on_date(date)[0]
+    if existing_booking
+      if existing_booking == self
+        false
+      else
+        true
+      end
+    else
+      false
+    end
   end
 
   private
