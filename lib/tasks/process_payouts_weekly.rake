@@ -1,6 +1,6 @@
 namespace :payouts do
   task process_outstanding_weekly: :environment do
-    if Time.now.wednesday?
+    if Date.today.wednesday?
       User.all.each do |user|
         if user.stripe_recipient_id
           total = 0
@@ -23,13 +23,21 @@ namespace :payouts do
           recipient = Stripe::Recipient.retrieve user.stripe_recipient_id
 
           if recipient.verified
-            rsp = Stripe::Transfer.create(
+            transfer_hash = {
               :amount => total,
-              :currency => "usd",
+              :currency => 'usd',
               :recipient => recipient.id,
-              :statement_descriptor => "HostWise Payout",
+              :statement_descriptor => 'HostWise Payout',
               :metadata => { payout_id: id }
-            )
+            }
+
+            if recipient.cards.total_count > 0
+              transfer_hash[:card] = recipient.default_card
+            else
+              transfer_hash[:bank_account] = recipient.active_account
+            end
+
+            rsp = Stripe::Transfer.create transfer_hash
             case rsp.status
             when 'pending'
               user.payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 1, stripe_transfer_id: rsp.id)}
