@@ -1314,6 +1314,9 @@ form
       display: inline-block
       vertical-align: top
       margin: 0 20px 20px 0
+      @media phone
+        width: 45%
+        margin-right: 5%
       input
         display: none
         &:checked + .date
@@ -1336,8 +1339,7 @@ form
         box-shadow: gray_shadow
         display: inline-block
         @media phone
-          width: 45%
-          margin-right: 5%
+          width: 100%
         .top
           background-color: white
           height: 150px
@@ -1376,7 +1378,7 @@ form
             width: 100px
             line-height: 40px
             text-transform: uppercase
-        &.active:hover, &.chosen:hover
+        &:hover
           cursor: pointer
         &.active:hover
           .top
