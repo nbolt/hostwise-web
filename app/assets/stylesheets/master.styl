@@ -1310,69 +1310,86 @@ form
       width: auto
     @media phone
       width: auto
-    .date
+    .check-container
       display: inline-block
       vertical-align: top
-      width: 140px
-      height: 190px
       margin: 0 20px 20px 0
-      border-radius: 3px
-      overflow: hidden
-      box-shadow: gray_shadow
-      @media phone
-        width: 45%
-        margin-right: 5%
-      .top
-        background-color: white
-        height: 150px
-        padding: 18px
-        box-sizing: border-box
-        text-align: center
-        color: heavy-gray
-        .day
-          font-size: 2.4em
-          font-weight: 600
-        .month
-          font-size: 1.6em
-          text-transform: uppercase
-          margin-bottom: 10px
-        .time
-          font-size: 1.1em
-          font-weight: 600
-      .bottom
-        background-color: teal
-        height: 40px
-        color: white
-        .icon, .text
-          display: inline-block
-          vertical-align: top
-        .icon
-          width: 40px
-          height: 40px
-          line-height: 40px
-          text-align: center
-          background-color: light-teal
-          i
-            font-size: 1em
-        .text
-          text-align: center
-          font-size: 1em
-          width: 100px
-          line-height: 40px
-          text-transform: uppercase
-      &.active:hover, &.chosen
-        cursor: pointer
+      input
+        display: none
+        &:checked + .date
+          .top
+            background-color: dark-teal
+            color: white
+          .bottom
+            .text
+              display: none
+            .icon
+              width: 100%
+              text-align: center
+        &.inactive
+          opacity: 0.3
+      .date
+        width: 140px
+        height: 190px
+        border-radius: 3px
+        overflow: hidden
+        box-shadow: gray_shadow
+        display: inline-block
+        @media phone
+          width: 45%
+          margin-right: 5%
         .top
-          background-color: dark-teal
-          color: white
+          background-color: white
+          height: 150px
+          padding: 18px
+          box-sizing: border-box
+          text-align: center
+          color: heavy-gray
+          .day
+            font-size: 2.4em
+            font-weight: 600
+          .month
+            font-size: 1.6em
+            text-transform: uppercase
+            margin-bottom: 10px
+          .time
+            font-size: 1.1em
+            font-weight: 600
         .bottom
-          .text
-            display: none
+          background-color: teal
+          height: 40px
+          color: white
+          .icon, .text
+            display: inline-block
+            vertical-align: top
           .icon
-            width: 100%
+            width: 40px
+            height: 40px
+            line-height: 40px
             text-align: center
-      &.inactive
-        opacity: 0.3
+            background-color: light-teal
+            i
+              font-size: 1em
+          .text
+            text-align: center
+            font-size: 1em
+            width: 100px
+            line-height: 40px
+            text-transform: uppercase
+        &.active:hover, &.chosen:hover
+          cursor: pointer
+        &.active:hover
+          .top
+            background-color: dark-teal
+            color: white
+          .bottom
+            .text
+              display: none
+            .icon
+              width: 100%
+              text-align: center
+        &.inactive
+          opacity: 0.3
 
 .property-form-container
   margin: 40px auto 0
