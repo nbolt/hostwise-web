@@ -9,4 +9,9 @@ FactoryGirl.define do |zip|
 		code '90023'
 		association :city, factory: :city_2
 	end
+
+	factory :zip_3, class: Zip do
+		code '90291'
+		association :city, factory: :city_2
+	end
 end

@@ -76,7 +76,7 @@ FactoryGirl.define do |booking|
 
   factory :booking_lat_lng, class: Booking do
   	association :property, factory: :property_4
-  	date Date.today
+  	date Timezone::Zone.new(zone: "Europe/Dublin").time(Time.now).to_date
   end
 
   factory :booking_first_booking_discount, class: Booking do
