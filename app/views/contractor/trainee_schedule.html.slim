@@ -8,7 +8,7 @@
   .schedule ng:repeat='training in user.training_jobs' ng:show='training.show'
     .head
       .right ng:bind='::training.date'
-      .text Training Day {{$index+1}}
+      .text Test & Tips Day {{$index+1}}
     .header-message.pad ng:show="jobs_completed(training)"
       .left
         .icon
