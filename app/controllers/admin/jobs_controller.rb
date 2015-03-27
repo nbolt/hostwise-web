@@ -38,7 +38,9 @@ class Admin::JobsController < Admin::AuthController
 
   def add_contractor
     contractor = User.find params[:contractor_id]
-    contractor.claim_job job, true
+    if contractor.claim_job job, true
+      TwilioJob.perform_later("+1#{contractor.phone_number}", "You have been assigned a new HostWise job on #{job.formatted_date}.")
+    end
     job.current_user = current_user
     render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address, :nickname], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
   end
