@@ -138,6 +138,31 @@ describe Job do
 		
 		# user_name_8.jobs[0].checklist
 	end
+
+	it 'should return proper primary info' do
+		venice_center = nil; city_center = nil; user_name_8 = nil; job_2 = nil; job_3 = nil; job_1 = nil
+
+		VCR.use_cassette('create_venice_center') { venice_center = create(:venice_center) }
+		VCR.use_cassette('create_city_center') { city_center = create(:city_center) }
+		venice_center.must_equal venice_center
+		city_center.must_equal city_center
+		
+		VCR.use_cassette('create_user_name_8') { user_name_8 = create(:user_name_6) }
+		VCR.use_cassette('create_job_1') { job_1 = create(:job_1) }
+		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		VCR.use_cassette('create_job_3') { job_3 = create(:job_3) }
+
+		user_name_8.claim_job job_1
+		user_name_8.claim_job job_2
+		user_name_8.claim_job job_3
+		
+		# user_name_8.jobs[0].checklist
+		user_name_8.jobs[0].primary_contractor.email.must_equal 'dustinjones597@gmail.com'
+		user_name_8.jobs[0].primary(user_name_8).must_equal true
+	end
+
+
+
 end
 
 

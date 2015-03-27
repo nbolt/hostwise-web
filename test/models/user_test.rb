@@ -45,4 +45,23 @@ describe User do
 		#user_name_7.must_equal user_name_7
 		#User.contractors.must_equal ''
 	end
+
+	it 'should drop jobs sucessfully' do
+		venice_center = nil; city_center = nil; user_name_6 = nil; job_2 = nil; job_3 = nil; job_1 = nil
+
+		VCR.use_cassette('create_venice_center') { venice_center = create(:venice_center) }
+		VCR.use_cassette('create_city_center') { city_center = create(:city_center) }
+		venice_center.must_equal venice_center
+		city_center.must_equal city_center
+		
+		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		VCR.use_cassette('create_job_1') { job_1 = create(:job_1) }
+		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		VCR.use_cassette('create_job_3') { job_3 = create(:job_3) }
+		user_name_6.claim_job job_1
+		user_name_6.claim_job job_2
+		user_name_6.claim_job job_3
+		user_name_6.drop_job user_name_6.jobs[0]
+		user_name_6.jobs.count.must_equal 6
+	end
 end
