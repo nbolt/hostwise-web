@@ -156,7 +156,7 @@ class Booking < ActiveRecord::Base
   end
 
   def duplicate?
-    existing_booking = property.bookings.on_date(date)[0]
+    existing_booking = property.bookings.active.on_date(date)[0]
     if existing_booking
       if existing_booking == self
         false
