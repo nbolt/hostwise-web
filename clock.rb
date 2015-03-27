@@ -4,6 +4,8 @@ require './config/boot'
 require './config/environment'
 
 module Clockwork
+  include Rails.application.routes.url_helpers
+  
   handler do |job|
     case job
     when 'jobs:check_unclaimed'
