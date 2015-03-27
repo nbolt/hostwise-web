@@ -1,3 +1,67 @@
+.ngdialog.distribution
+  .ngdialog-content
+    width: 460px !important
+    .section
+      background-color: white
+      border-radius: 3px
+      overflow: hidden
+      margin-bottom: 15px
+      box-shadow: gray_shadow
+      .head
+        padding: 15px
+        color: #E8E9EA
+        font-size: 1.25em
+        text-align: center
+        border-bottom: 2px solid light-gray
+        transition: color .6s ease-in-out, border .6s ease-in-out
+        position: relative
+        .icon, .text, .arrow
+          display: inline-block
+          vertical-align: top
+        .icon
+          color: teal
+          font-size: 1.25em
+          position: absolute
+          left: 20px
+          top: 12px
+        .text
+          color: heavy-gray
+          strong
+            color: teal
+            margin-right: 5px
+        .arrow
+          display: none
+          border-left: thin solid light-gray
+          padding-left: 20px
+          position: absolute
+          right: 20px
+          i
+            color: dark-gray
+            font-size: 0.8em
+        @media portrait_tablet
+          font-size: 1em
+      .supplies-container
+        padding: 20px
+        text-align: left
+        .div.teal
+          border-bottom: thin solid teal
+          height: 1px
+          margin: 20px 0
+        .supply
+          display: inline-block
+          vertical-align: top
+          width: 33%
+          &:last-child
+            margin-right: 0s
+          .name, .value
+            display: inline-block
+            vertical-align: top
+          .name
+            color: teal
+            margin-right: 20%
+          .value
+            color: darker-gray
+
 #job-details, #jobs, .container.contractor .jobs, .ngdialog.claim .modal
   .distribution-job
     background-color: white

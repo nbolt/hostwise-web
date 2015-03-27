@@ -27,7 +27,7 @@
           .icon-button.teal
             .icon
               i.icon-check
-            .text ng:click='done()' Complete Day
+            .text ng:click='done_modal()' Complete Day
       .section.supplies ng:show='job.occasion_cd == 0'
         .head
           .icon
@@ -49,8 +49,7 @@
             .icon-button.teal ng:switch-default=''
               .icon
                 i.icon-check
-              .text ng:show='job.next_job' ng:click='done()' Done. Go to first job.
-              .text ng:hide='job.next_job' ng:click='done()' Done.
+              .text ng:click='done_modal()' Inventory Pickup Complete
             a ng:href='/jobs/{{job.next_job.id}}' ng:show='job.next_job' ng:switch-when='completed'
               .icon-button.teal
                 .icon
@@ -97,3 +96,5 @@
           .icon
             i.icon-pin
           .text Get Directions
+
+= render 'common/distribution_modal'

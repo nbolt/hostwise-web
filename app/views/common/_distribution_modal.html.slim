@@ -1,0 +1,48 @@
+script#distribution-modal type="text/ng-template"
+  .modal
+    .content
+      .title ng:show='job.occasion_cd == 0' Double check inventory count!
+      .title ng:show='job.occasion_cd == 1 && job.status == "active"' Drop off all soiled linens & towels
+      .section.supplies ng:show='job.occasion_cd == 1 && job.status == "active"'
+        .head
+          .icon
+            i.icon-count
+          .text Drop Off Soiled Linens
+        .supplies-container
+          .icon-button.teal
+            .icon
+              i.icon-check
+            .text ng:click='done()' Yes! Complete my day!
+      .section.supplies ng:show='job.occasion_cd == 0'
+        .head
+          .icon
+            i.icon-count
+          .text Today's Supply List
+        .supplies-container
+          .supplies
+            .supply
+              .name King:
+              .value ng:bind='::job.king_beds'
+            .supply
+              .name Twin:
+              .value ng:bind='::job.twin_beds'
+            .supply.toiletries
+              .name Toiletry Kits:
+              .value ng:bind='::job.toiletries'
+          .div.teal ng:show='job.primary || job.status == "completed"'
+          div ng:switch='job.status' ng:show='job.primary || job.status == "completed"'
+            .icon-button.teal ng:switch-default=''
+              .icon
+                i.icon-check
+              .text ng:show='job.next_job' ng:click='done()' Confirm. Leaving for first job.
+              .text ng:hide='job.next_job' ng:click='done()' Confirm.
+            a ng:href='/jobs/{{job.next_job.id}}' ng:show='job.next_job' ng:switch-when='completed'
+              .icon-button.teal
+                .icon
+                  i.icon-check
+                .text Go to next job.
+            .icon-button.teal.disabled ng:switch-when='blocked'
+              .icon
+                i.icon-check
+              .text ng:show='job.blocker == "prev_job"' ng:click='done()' Complete previous job first.
+              .text ng:show='job.blocker == "not_today"' ng:click='done()' Cannot be started until {{job.date_text_2}}.
