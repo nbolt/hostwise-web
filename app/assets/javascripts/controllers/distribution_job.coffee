@@ -45,6 +45,11 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
   $scope.show_applicant = ->
     $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0
 
+  $scope.close_modal = -> ngDialog.closeAll()
+
+  $scope.done_modal = ->
+    ngDialog.open template: 'distribution-modal', className: 'distribution claim full', scope: $scope
+
   $scope.done = ->
     if $scope.job.status != 'blocked'
       $http.post($window.location.href + '/done').success (rsp) ->
