@@ -104,9 +104,20 @@ class User < ActiveRecord::Base
   def claim_job job, admin=false
     jobs_today = self.jobs.on_date(job.date)
     team_job = jobs_today.where('size > 1')[0]
-    if job.contractors.count == job.size && !admin
-      false
+    team_members = job.contractors.team_members
+    if team_members.count == job.size
+      if admin
+        if team_members.find {|c| (c.jobs.on_date(job.date) - [job]).team[0]}
+          false
+        else
+          true
+        end
+      else
+        false
+      end
     elsif man_hours(job.date) + job.man_hours > MAX_MAN_HOURS && !admin
+      false
+    elsif job.training
       false
     elsif job.size > 1 && team_job
       false
@@ -115,8 +126,8 @@ class User < ActiveRecord::Base
     else
       job.contractors.push self
       job.contractor_jobs[0].update_attribute :primary, true if job.contractors.count == 1
-      job.size = job.contractors.count if job.contractors.count > job.size
-      if job.contractors.count == job.size
+      job.size = team_members.count if team_members.count > job.size
+      if team_members.count == job.size
         job.scheduled!
         job.save
       end
