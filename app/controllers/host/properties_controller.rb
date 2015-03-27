@@ -204,6 +204,19 @@ class Host::PropertiesController < Host::AuthController
     end
   end
 
+  def last_services
+    booking = property.bookings.where(status_cd: [1,4]).order(:created_at)[-1]
+    if booking
+      if booking.services.where(name: 'preset')[0]
+        render json: Service.standard
+      else
+        render json: booking.services
+      end
+    else
+      render json: Service.standard
+    end
+  end
+
   def address
     rsp = call_smarty(params[:form][:address1], params[:form][:address2], params[:form][:zip])
     code = rsp[0].to_hash[:delivery_point_barcode] if rsp[0]
