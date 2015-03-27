@@ -11,7 +11,7 @@ class Job < ActiveRecord::Base
   has_many :contractors, through: :contractor_jobs, source: :user
   has_many :payouts
 
-  as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4, cant_access: 5
+  as_enum :status, open: 0, scheduled: 1, in_progress: 2, completed: 3, past_due: 4, cant_access: 5, cancelled: 6
   as_enum :state, normal: 0, vip: 1, hidden: 2
   as_enum :occasion, pickup: 0, dropoff: 1
 
@@ -78,7 +78,10 @@ class Job < ActiveRecord::Base
       else
         contractor ||= current_user
         payout_multiplier = state == :vip ? 0.75 : 0.7
-        payout_multiplier += 0.1 if training
+        if training
+          payout_multiplier = 0.8 if payout_multiplier == 0.7
+          payout_multiplier = 0.85 if payout_multiplier == 0.75
+        end
         payout = 0
         pricing = Booking.cost booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee
         payout += (pricing[:cleaning] * payout_multiplier).round(2) if pricing[:cleaning]

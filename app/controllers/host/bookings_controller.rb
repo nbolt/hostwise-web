@@ -27,14 +27,21 @@ class Host::BookingsController < Host::AuthController
 
   def cancel
     UserMailer.cancelled_booking_notification(booking).then(:deliver)
+    if booking.job
+      booking.job.update_attribute :status_cd, 6
+      booking.job.contractors.each do |contractor|
+        contractor.payouts.create(job_id: booking.job.id, amount: booking.job.payout(contractor) * 100) if params[:apply_fee]
+        booking.job.contractors.destroy contractor
+        if contractor.contractor_profile.position == :trainee
+          TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{booking.job.formatted_date} was cancelled. Please select another session!")
+        else
+          TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Looks like job ##{booking.job.id} on #{booking.job.formatted_date} was cancelled. Sorry about this!")
+        end
+      end
+    end
     if params[:apply_fee]
       if booking.update_attribute :status, :cancelled
         booking.charge!
-        if booking.job
-          booking.job.contractors.each do |contractor|
-            contractor.payouts.create(job_id: booking.job.id, amount: booking.job.payout(contractor) * 100)
-          end
-        end
         UserMailer.booking_same_day_cancellation(booking).then(:deliver)
         render json: { success: true }
       else
