@@ -103,7 +103,6 @@ class User < ActiveRecord::Base
 
   def claim_job job, admin=false
     jobs_today = self.jobs.on_date(job.date)
-    training_job = jobs_today.where(training:true)[0]
     team_job = jobs_today.where('size > 1')[0]
     if job.contractors.count == job.size && !admin
       false
