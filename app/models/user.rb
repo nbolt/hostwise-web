@@ -108,21 +108,21 @@ class User < ActiveRecord::Base
     if team_members.count == job.size
       if admin
         if team_members.find {|c| (c.jobs.on_date(job.date) - [job]).team[0]}
-          false
+          { success: false, message: "Can't create team job as other team members already have team jobs for this day" }
         else
-          true
+          { success: true }
         end
       else
-        false
+        { success: false, message: "Job already has assigned number of contractors" }
       end
     elsif man_hours(job.date) + job.man_hours > MAX_MAN_HOURS && !admin
-      false
+      { success: false, message: "Job would surpass maximum number of contractor man hours for the day" }
     elsif job.training
-      false
+      { success: false, message: "Can't claim jobs with applicants attached" }
     elsif job.size > 1 && team_job
-      false
+      { success: false, message: "Can't claim more team jobs for the day" }
     elsif job.contractors.index self
-      true
+      { success: true }
     else
       job.contractors.push self
       job.contractor_jobs[0].update_attribute :primary, true if job.contractors.count == 1
@@ -137,7 +137,7 @@ class User < ActiveRecord::Base
         fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
         fanout.publish_async 'jobs', {}
       end
-      true
+      { success: true }
     end
   end
 

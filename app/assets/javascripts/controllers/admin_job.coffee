@@ -45,7 +45,16 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
     $http.post($window.location.href + '/update_state', {state: $scope.job.state_cd})
 
   $scope.$watch 'new_teammate', (n,o) -> if n
-    $http.post($window.location.href + '/add_contractor', {contractor_id: n.id}).success (rsp) -> load_job(rsp)
+    $http.post($window.location.href + '/add_contractor', {contractor_id: n.id}).success (rsp) ->
+      if rsp.failure
+        angular.element('.add-teammate .flash').css 'display', 'block'
+        $timeout((-> angular.element('.add-teammate .flash').css('opacity', 1).text rsp.message), 50)
+        $timeout((->
+          angular.element('.add-teammate .flash').css 'opacity', 0
+          $timeout((-> angular.element('.add-teammate .flash').css 'display', 'none'), 800)
+        ), 3000)
+      else
+        load_job(rsp)
 
   $scope.remove = (contractor) ->
     $http.post($window.location.href + '/remove_contractor', {contractor_id: contractor.id}).success (rsp) -> load_job(rsp)
