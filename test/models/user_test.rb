@@ -58,10 +58,56 @@ describe User do
 		VCR.use_cassette('create_job_1') { job_1 = create(:job_1) }
 		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
 		VCR.use_cassette('create_job_3') { job_3 = create(:job_3) }
+
 		user_name_6.claim_job job_1
 		user_name_6.claim_job job_2
 		user_name_6.claim_job job_3
+		
 		user_name_6.drop_job user_name_6.jobs[0]
 		user_name_6.jobs.count.must_equal 6
+	end
+
+	it 'should return if deactivated or not' do
+		user_name_6 = nil
+		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		user_name_6.deactivated?.must_equal false
+	end
+
+	it 'should show contractors based on search' do
+		user_name_6 = nil, user_name_8 = nil
+		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		VCR.use_cassette('create_user_name_8') { user_name_8 = create(:user_name_8) }
+		
+		User.contractors('dustinjones598@gmail.com')[0].email.must_equal 'dustinjones598@gmail.com'
+		User.contractors('dustinjones598@gmail.com').size.must_equal 1
+		
+		User.contractors().size.must_equal 2
+	end
+
+	it 'should show hosts based on search' do
+		user_name_9 = nil
+		VCR.use_cassette('create_user_name_9') { user_name_9 = create(:user_name_9) }
+		#User.hosts('a_noob@')[0].email.must_equal 'a_noob@gmail.com'
+		User.hosts().size.must_equal 1
+	end
+
+	it 'show quiz info' do
+		venice_center = nil; city_center = nil; user_name_6 = nil; job_2 = nil; job_3 = nil; job_1 = nil
+
+		VCR.use_cassette('create_venice_center') { venice_center = create(:venice_center) }
+		VCR.use_cassette('create_city_center') { city_center = create(:city_center) }
+		venice_center.must_equal venice_center
+		city_center.must_equal city_center
+		
+		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		VCR.use_cassette('create_job_1') { job_1 = create(:job_1) }
+		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
+		VCR.use_cassette('create_job_3') { job_3 = create(:job_3) }
+
+		user_name_6.claim_job job_1
+		user_name_6.claim_job job_2
+		user_name_6.claim_job job_3
+
+		user_name_6.show_quiz.must_equal true
 	end
 end

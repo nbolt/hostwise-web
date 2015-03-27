@@ -42,4 +42,28 @@ FactoryGirl.define do |job|
 		date Date.new(2015, 4, 18)
 		status_cd 3
   end
+
+  factory :job_9, class: Job do
+		association :booking, factory: :booking_active_1
+		date Time.now + 5000
+		status_cd 3
+  end
+
+  factory :job_10, class: Job do
+		association :booking, factory: :booking_active_1
+		date Time.now + 10000
+		status_cd 3
+	end
+
+	factory :job_11, class: Job do
+		association :booking, factory: :booking_active_1
+		date Time.now + 15000
+		status_cd 3
+  end
+
+  factory :job_12, class: Job do
+		association :booking, factory: :booking_active_1
+		date Date.new(2010, 10, 10)
+		status_cd 3
+  end
 end
