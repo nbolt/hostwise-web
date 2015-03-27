@@ -13,10 +13,6 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
       date.selected = false
       $scope.dates.push date
 
-      $scope.$watch (-> date.selected), (n,o) ->
-        num = $scope.selected_dates().length - ($scope.user && $scope.user.training_jobs.length || 0)
-        date.selected = false if n && num > 2
-
   $http.get('/trainee/bgc').success (rsp) -> $scope.bgc = rsp
 
   $scope.num_dates = -> 2 - $scope.selected_dates().length - ($scope.user && $scope.user.training_jobs.length || 0)
@@ -41,6 +37,12 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
   $scope.selected_dates = -> _($scope.dates).filter (date) -> date.selected
 
   $scope.dates_selected = -> $scope.selected_dates().length + ($scope.user && $scope.user.training_jobs.length || 0) == 2 && 'active' || 'inactive'
+
+  $scope.disabled = (date) ->
+    if date.selected
+      false
+    else
+      if $scope.selected_dates().length + ($scope.user && $scope.user.training_jobs.length || 0) == 2 then true else false
 
   $scope.inactive = (date) ->
     'inactive' if !date.selected && $scope.selected_dates().length + ($scope.user && $scope.user.training_jobs.length || 0) == 2
