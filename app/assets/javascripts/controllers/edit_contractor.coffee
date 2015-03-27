@@ -14,7 +14,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     {
     dropdownCssClass: 'details'
     minimumResultsForSearch: -1
-    data: [{id:'0',text:'FIRED'},{id:'1',text:'TRAINEE'},{id:'2',text:'CONTRACTOR'},{id:'3',text:'TRAINER'}]
+    data: [{id:'0',text:'FIRED'},{id:'1',text:'APPLICANT'},{id:'2',text:'CONTRACTOR'},{id:'3',text:'MENTOR'}]
     initSelection: (el, cb) ->
     }
 
