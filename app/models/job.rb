@@ -61,6 +61,14 @@ class Job < ActiveRecord::Base
     ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority
   end
 
+  def tomorrow? date
+    if self.date == date + 1.day
+      true
+    else
+      false
+    end
+  end
+
   def next_job contractor=nil
     contractor ||= current_user
     contractor.jobs.on_date(date).where('contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
@@ -263,8 +271,6 @@ class Job < ActiveRecord::Base
           distribution_job[k] = v
           dropoff_job[k]      = v
         end
-        distribution_job.contractor_jobs[0].update_attribute :primary, true
-        dropoff_job.contractor_jobs[0].update_attribute :primary, true
         distribution_job.save
         dropoff_job.save
       end

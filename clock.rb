@@ -6,6 +6,14 @@ require './config/environment'
 module Clockwork
   handler do |job|
     case job
+    when 'jobs:check_unclaimed'
+      Job.where(status_cd: 0).each do |job|
+        timezone = Timezone::Zone.new :zone => job.booking.property.zone
+        time = timezone.time Time.now
+        if time.hour == 17 && job.tomorrow? time.to_date
+          UserMailer.generic_notification("Job for tomorrow not filled - #{job.id}", "Job ##{job.id} (#{job.booking.property.nickname}) for tomorrow has not been claimed by the required number of contractors - #{admin_job_url(job)}").then(:deliver)
+        end
+      end
     when 'jobs:check_no_shows'
       User.contractors.each do |contractor|
         timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
@@ -39,4 +47,5 @@ module Clockwork
   end
 
   every(1.hour, 'jobs:check_no_shows', :at => '**:30')
+  every(1.hour, 'jobs:check_unclaimed', :at => '**:00')
 end
