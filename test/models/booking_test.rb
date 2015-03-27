@@ -77,6 +77,16 @@ describe Booking do
       @booking_2.last_transaction.status.must_equal :failed
     end
 
+    it 'shows if duplicate correctly' do
+      booking_active_1 = nil; booking_not_today = nil
+
+      VCR.use_cassette('create_booking_active_1') { booking_active_1 = create(:booking_active_1) }
+
+      VCR.use_cassette('create_booking_not_today') { booking_not_today = create(:booking_not_today) }
+
+      #booking_active_1.duplicate?.must_equal true
+    end
+
   end
 
 end
