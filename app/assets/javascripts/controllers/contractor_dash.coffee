@@ -39,6 +39,9 @@ ContractorDashCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http,
     wed = wed.add(1, 'weeks') if moment().day() > 3
     wed.format('ddd, MMM D')
 
+  $scope.goto = (job_id) ->
+    window.location = "/jobs/#{job_id}"
+
 ]
 
 app = angular.module('porter').controller('contractor_dash', ContractorDashCtrl)

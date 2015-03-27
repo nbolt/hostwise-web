@@ -15,7 +15,7 @@
           i.icon-alert-info
         .text Congratulations! You're finished for the day.
     .jobs
-      .job ng:show='training.distribution_job' ng:class="training.distribution_job.status_cd == 3 && 'complete'"
+      .job ng:show='training.distribution_job' ng:class="training.distribution_job.status_cd == 3 && 'complete'" ng:click="goto(training.distribution_job.id)"
         .photo
           .timer
             span Supplies Pickup
@@ -37,7 +37,10 @@
               .icon
                 i.icon-clock
               .pricing 9:30 AM
-      .job ng:repeat='job in training.jobs' ng:class="job.status_cd == 3 && 'complete'"
+            .left
+              .pickup
+                | Supplies Pickup
+      .job ng:repeat='job in training.jobs' ng:class="job.status_cd == 3 && 'complete'" ng:click="goto(job.id)"
         .photo
           .timer
             .icon

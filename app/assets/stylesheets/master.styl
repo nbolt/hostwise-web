@@ -703,6 +703,7 @@ form
       background-color: white
       margin-bottom: 10px
       height: 116px
+      cursor: pointer
       .bottom
         border-top: 2px solid lighter-gray
         height: 40px
@@ -736,6 +737,12 @@ form
           .icon
             font-size: 1.1em
             margin: -1px 10px 0 0
+        .left
+          .pickup, .dropff
+            display: none
+            @media phone
+              display: inline-block
+              font-weight: bold
       .top
         height: 74px
         a
@@ -743,7 +750,9 @@ form
           float: right
           .text.completed
             color: white
-            margin: 40px 25px 0 0
+            margin: 18px 25px 0 0
+            @media phone
+              margin: 18px 0 0 0
         .beds
           float: right
           margin: 28px 40px 0 0
@@ -833,7 +842,15 @@ form
         .address1, .title .icon, .name
           color: white
         .bottom
-          display: none
+          border-top: 2px solid #39babe
+          color: white
+          .payout
+            background-color: teal
+            color: white
+            i
+              color: white
+          .text, .rooms i
+            color: white
         .address
           margin-top: 36px
           font-size: 1em
@@ -850,26 +867,27 @@ form
                 display: inline-block
                 vertical-align: top
                 margin-top: 10px
-                @media phone
-                  display: none
               i
                 color: dark-teal
                 margin-left: 10px
                 font-size: 2em
             .title
-              margin-top: 35px
               @media portrait_tablet
-                margin-top: 15px
+                margin-top: 5px
                 max-width: 150px
               @media phone
-                margin-top: 30px
-                max-width: 170px
+                margin-top: 5px
+                max-width: 150px
               .address
                 color: white
         .column
           background: linear-gradient(left, 0% teal, #32A6AB)
       &.couldnt_access
         background-color: orange
+        .bottom
+          border-top: 2px solid #e99c56
+          .payout
+            background-color: orange
         .order
           background-color: orange
         .photo
