@@ -2,7 +2,7 @@ class Admin::ContractorsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {methods: [:position]}}, methods: [:name, :avatar, :next_job_date]) }
+      format.json { render json: User.contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {methods: [:position, :display_position]}}, methods: [:name, :avatar, :next_job_date]) }
     end
   end
 
@@ -41,6 +41,17 @@ class Admin::ContractorsController < Admin::AuthController
 
       UserMailer.contractor_hired_email(user).then(:deliver) if user.contractor_profile.position == :trainee && params[:status].downcase.to_sym == :contractor
       UserMailer.mentor_promotion_email(user).then(:deliver) if user.contractor_profile.position == :contractor && params[:status].downcase.to_sym == :trainer
+
+      params[:status] = case params[:status].downcase
+                          when 'fired'
+                            'fired'
+                          when 'applicant'
+                            'trainee'
+                          when 'contractor'
+                            'contractor'
+                          when 'mentor'
+                            'trainer'
+                        end
 
       user.contractor_profile.position = params[:status].downcase.to_sym
       user.contractor_profile.save
