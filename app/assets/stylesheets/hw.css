@@ -1406,4 +1406,10 @@ footer.pl-footer .outlined{
     float:none;
   }
 
+  footer.pl-footer .outlined{
+    width:auto;
+    float:none;
+    padding: 1.5em 2.3em;
+  }
+
 }
