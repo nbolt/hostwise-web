@@ -16,7 +16,7 @@
           i.icon-alert-info
         .text Congratulations! You're finished for the day.
     .jobs
-      .job ng:show='user.pickup_job' ng:class="user.pickup_job.status_cd == 3 && 'complete'"
+      .job ng:show='user.pickup_job' ng:class="user.pickup_job.status_cd == 3 && 'complete'" ng:click="goto(user.pickup_job.id)"
         .photo
           .timer
             span Supplies Pickup
@@ -38,7 +38,10 @@
               .icon
                 i.icon-clock
               .pricing 9:30 AM
-      .job ng:repeat='job in user.standard_jobs' ng:class="job_class(job)"
+            .left
+              .pickup
+                | Supplies Pickup
+      .job ng:repeat='job in user.standard_jobs' ng:class="job_class(job)" ng:click="goto(job.id)"
         .flag ng:class='pricing_class(job)'
         .photo
           .timer
@@ -78,7 +81,7 @@
               .size
                 i.icon-person
                 .text ng:bind='::job.size'
-      .job ng:show='user.dropoff_job' ng:class="user.dropoff_job.status_cd == 3 && 'complete'"
+      .job ng:show='user.dropoff_job' ng:class="user.dropoff_job.status_cd == 3 && 'complete'" ng:click="goto(user.dropoff_job.id)"
           .photo
             .timer
               span Soiled Dropoff
@@ -100,6 +103,9 @@
                 .icon
                   i.icon-clock
                 .pricing End of Day
+              .left
+                .dropff
+                  | Soiled Dropoff
   .earnings
     .total.earning
       .top
