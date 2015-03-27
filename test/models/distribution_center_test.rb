@@ -13,8 +13,9 @@ describe DistributionCenter do
 		no_zip = create(:no_zip)
 		no_zip.neighborhood.must_equal ''
 
-		zip_3.must_equal zip_3
 		venice_center.neighborhood.must_equal 'Venice'
+
+		zip_3.must_equal zip_3
 
 		venice_center.short_address.must_equal '1020 Lake St 90291'
 		venice_center.full_address.must_equal	'1020 Lake St # 9, Venice, CA 90291' 
@@ -22,6 +23,7 @@ describe DistributionCenter do
 	end
 
 	it 'should error on invalid address' do
-		#DistributionCenter.create(:address1 => '34tfdgdfgdf', :zip => '2534', :city => 'lost angeles', :state => 'ca').must_equal ''
+		invalid_center = nil
+		VCR.use_cassette('create_invalid_center') { invalid_center = create(:invalid_center) }
 	end
 end

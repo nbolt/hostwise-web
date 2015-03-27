@@ -73,4 +73,21 @@ FactoryGirl.define do |user|
     role_cd 2
     association :contractor_profile, factory: :profile_2
   end
+
+  factory :user_name_9, class: User do
+    email 'a_noob@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "2142149321"
+    role_cd 1
+  end
+
+  factory :user_name_10, class: User do
+    email 'dustinjones600@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "9722149321"
+    role_cd 2
+    association :contractor_profile, factory: :profile_3
+  end
 end

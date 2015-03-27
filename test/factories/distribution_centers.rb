@@ -27,4 +27,12 @@ FactoryGirl.define do |distribution_center|
 		state 'TX'
 		zip '75093'
 	end
+
+	factory :invalid_center, class: DistributionCenter do
+		name 'Plano Warehouse'
+		address1 '4420 Lone Tree Dr'	
+		city 'los angeles'
+		state 'TX'
+		zip '75423'
+	end
 end

@@ -136,7 +136,9 @@ describe Job do
 		user_name_8.claim_job job_2
 		user_name_8.claim_job job_3
 		
-		# user_name_8.jobs[0].checklist
+		user_name_8.jobs[0].checklist.has_attribute?(:kitchen_photo).must_equal true
+		user_name_8.jobs[0].checklist.has_attribute?(:bathroom_photo).must_equal true
+		user_name_8.jobs[0].checklist.has_attribute?(:bedroom_photo).must_equal true
 	end
 
 	it 'should return proper primary info' do
@@ -161,7 +163,16 @@ describe Job do
 		user_name_8.jobs[0].primary(user_name_8).must_equal true
 	end
 
+	it 'should show future jobs' do
+		job_9 = nil, job_10 = nil, job_11 = nil, job_12 = nil
 
+		VCR.use_cassette('create_job_9') { job_9 = create(:job_9) }
+		VCR.use_cassette('create_job_10') { job_10 = create(:job_10) }
+		VCR.use_cassette('create_job_11') { job_11 = create(:job_11) }
+		VCR.use_cassette('create_job_12') { job_12 = create(:job_12) }
+
+		# Job.future.size.must_equal 4
+	end
 
 end
 
