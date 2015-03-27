@@ -44,6 +44,9 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
       else
         refresh_jobs()
 
+  $scope.goto = (job_id) ->
+    window.location = "/jobs/#{job_id}"
+
   $scope.pricing_class = (job) ->
     if job.staging
       'staging'
