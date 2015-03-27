@@ -105,16 +105,10 @@ class User < ActiveRecord::Base
     jobs_today = self.jobs.on_date(job.date)
     team_job = jobs_today.where('size > 1')[0]
     team_members = job.contractors.team_members
-    if team_members.count == job.size
-      if admin
-        if team_members.find {|c| (c.jobs.on_date(job.date) - [job]).team[0]}
-          { success: false, message: "Can't create team job as other team members already have team jobs for this day" }
-        else
-          { success: true }
-        end
-      else
-        { success: false, message: "Job already has assigned number of contractors" }
-      end
+    if team_members.count == job.size && !admin
+      { success: false, message: "Job already has assigned number of contractors" }
+    elsif team_members.count == job.size && admin && team_members.find {|c| (c.jobs.on_date(job.date) - [job]).find {|j| j.contractors.count > 1}}
+      { success: false, message: "Can't create team job as other team members already have team jobs for this day" }
     elsif man_hours(job.date) + job.man_hours > MAX_MAN_HOURS && !admin
       { success: false, message: "Job would surpass maximum number of contractor man hours for the day" }
     elsif job.training
