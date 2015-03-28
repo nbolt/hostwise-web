@@ -12,7 +12,9 @@ TraineeScheduleCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http
       true
 
   $scope.next_payout = ->
-    moment().weekday(3).add(1, 'weeks').format('ddd, MMM D')
+    wed = moment().weekday(3)
+    wed = wed.add(1, 'weeks') if moment().day() > 3
+    wed.format('ddd, MMM D')
 
 ]
 
