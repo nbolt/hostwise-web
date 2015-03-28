@@ -134,7 +134,6 @@ class User < ActiveRecord::Base
 
     if admin
       TwilioJob.perform_later("+1#{self.phone_number}", "Oops! Looks like job ##{job.id} on #{job.formatted_date} was cancelled. Sorry about this!")
-      # UserMailer ?
     end
 
     if job.contractors[0]
@@ -142,7 +141,6 @@ class User < ActiveRecord::Base
       if contractor.contractor_profile.position == :trainee
         job.contractors.destroy contractor
         TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Looks like your training job on #{job.formatted_date} was cancelled. Sorry about this!")
-        # UserMailer ?
       else
         jobs = job.contractors[0].jobs.on_date(job.date)
         job.handle_distribution_jobs job.contractors[0]
