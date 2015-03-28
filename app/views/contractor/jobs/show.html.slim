@@ -70,12 +70,12 @@
           img ng:src='{{::job.booking.property.user.avatar}}'
         hr
         .info
-          .name ng:bind='::job.booking.property.user.name'
-          a.icon-button.teal href="tel://+1{{job.booking.property.user.phone_number}}"
+          .name ng:bind='::job.booking.property.user.name' ng:class="is_applicant && 'pad'"
+          a.icon-button.teal href="tel://+1{{job.booking.property.user.phone_number}}" ng:hide='is_applicant'
             .icon
               i.icon-call
             .text Call
-          .number ng:bind='::job.booking.property.user.display_phone_number'
+          .number ng:bind='::job.booking.property.user.display_phone_number' ng:hide='is_applicant'
       #map ng:class="job.hide_details && 'full'"
         a.direction.icon-button.teal target='_blank' ng:href="http://maps.apple.com/?q={{job.booking.property.full_address}}"
           .icon
