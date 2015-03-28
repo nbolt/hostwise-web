@@ -1,5 +1,11 @@
 .container.contractor ng:controller='trainee_schedule'
-  .schedule ng:repeat='training in user.training_jobs'
+  .training-complete ng:show='user.training_completed'
+    .header-message.pad
+      .left
+        .icon
+          i.icon-alert-info
+        .text Congratulations, training is completed!
+  .schedule ng:repeat='training in user.training_jobs' ng:show='training.show'
     .head
       .right ng:bind='::training.date'
       .text Training Day {{$index+1}}
