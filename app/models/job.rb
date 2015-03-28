@@ -237,6 +237,7 @@ class Job < ActiveRecord::Base
     team_job = jobs.team[0]
     single_jobs = standard_jobs.single
     supplies = {king_beds:0,twin_beds:0,toiletries:0}
+    not_complete = false
 
     if standard_jobs.empty?
       jobs.distribution.destroy_all
@@ -244,6 +245,7 @@ class Job < ActiveRecord::Base
       if single_jobs[0]
         distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: date, occasion_cd: 0) unless distribution_job
         single_jobs.each do |job|
+          not_complete = true if job.not_complete?
           if job.has_linens?
             supplies[:king_beds] += job.booking.property.king_beds
             supplies[:king_beds] += job.booking.property.queen_beds
@@ -256,6 +258,7 @@ class Job < ActiveRecord::Base
 
       if team_job && team_job.contractors.count == 1
         distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: date, occasion_cd: 0) unless distribution_job
+        not_complete = true if team_job.not_complete?
         if team_job.has_linens?
           supplies[:king_beds] += team_job.booking.property.king_beds
           supplies[:king_beds] += team_job.booking.property.queen_beds
@@ -270,6 +273,10 @@ class Job < ActiveRecord::Base
         supplies.each do |k,v|
           distribution_job[k] = v
           dropoff_job[k]      = v
+        end
+        if not_complete
+          distribution_job.status_cd = 1
+          dropoff_job.status_cd = 1
         end
         distribution_job.save
         dropoff_job.save
