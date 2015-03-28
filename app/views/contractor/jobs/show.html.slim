@@ -61,7 +61,7 @@
             div.orange Applicant
           .number ng:bind='::teammate.display_phone_number'
     .special-column
-      .section.profile
+      .section.profile ng:hide='job.hide_details'
         .head
           .icon
             i.icon-profile
@@ -76,12 +76,12 @@
               i.icon-call
             .text Call
           .number ng:bind='::job.booking.property.user.display_phone_number'
-      #map
+      #map ng:class="job.hide_details && 'full'"
         a.direction.icon-button.teal target='_blank' ng:href="http://maps.apple.com/?q={{job.booking.property.full_address}}"
           .icon
             i.icon-pin
           .text Get Directions
-    .column
+    .column ng:hide='job.hide_details'
       .section.instructions
         .head
           .icon
