@@ -4,6 +4,7 @@
     padding: 20px
     border-radius: 3px
     margin-top: 25px
+    box-shadow: gray_shadow
     .title
       font-weight: 600
       margin-bottom: 4px
@@ -613,6 +614,41 @@
           z-index: 1001
           outline: none
       .section
+        &.applicant
+          border: 5px solid dark-orange
+          .head
+            background-color: dark-orange
+            .text
+              color: white
+          .teammate
+            padding: 20px 30px
+            @media portrait_tablet
+              font-size: 15px
+            .avatar
+              display: inline-block
+              margin: 0 auto
+              width: 40px
+              height: 40px
+              img
+                border-radius: 50%
+                height: 100%
+                width: 100%
+            .name, .number
+              display: inline-block
+              vertical-align: top
+              line-height: 40px
+            .name
+              margin-left: 20px
+              font-weight: bold
+              line-height: 20px
+              .orange
+                font-size: 14px
+                color: dark-orange
+              @media portrait_tablet
+                margin-left: 10px
+            .number
+              float: right
+              color: teal
         &.profile
           width: 30%
           text-align: center

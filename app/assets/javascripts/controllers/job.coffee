@@ -18,7 +18,10 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     $scope.staging = _($scope.job.standard_services).find (s) -> s.display == 'Staging'
     $scope.vip = $scope.job.state_cd == 1 unless $scope.staging #always show staging if it is a staging and vip job
     $timeout -> $scope.jobQ.resolve()
-    $scope.user_fetched.promise.then -> $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
+    $scope.user_fetched.promise.then ->
+      $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
+      $scope.job.applicants = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd != 1
+      $scope.job.team_members = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd == 1
 
     $http.get($window.location.href + '/status').success (rsp) ->
       $scope.job.status = rsp.status
@@ -148,6 +151,12 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       'vip'
     else
       ''
+
+  $scope.show_applicant = ->
+    $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0 and $scope.job.training
+
+  $scope.show_team = ->
+    $scope.job and $scope.job.team_members and $scope.job.team_members.length > 0
 
   $scope.in_arrival_tasks = ->
     unless $scope.arrival_tasks() && $scope.damage_inspection() && $scope.inventory_count()

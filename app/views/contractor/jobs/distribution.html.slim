@@ -6,6 +6,17 @@
     .title ng:bind='::job.distribution_center.name'
     .address ng:bind='::job.distribution_center.full_address'
   .columns
+    .special-column
+      .section.applicant ng:show='show_applicant()'
+        .head
+          .text This is a Test & Tips Session
+        .teammate ng:repeat='teammate in job.applicants'
+          .avatar
+            img ng:src='{{::teammate.avatar}}'
+          .name
+            div ng:bind='::teammate.name'
+            div.orange Applicant
+          .number ng:bind='::teammate.display_phone_number'
     .column
       .section.supplies ng:show='job.occasion_cd == 1'
         .head

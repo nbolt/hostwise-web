@@ -10,7 +10,9 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
     $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
     $scope.job.date_text_2 = moment(rsp.date, 'YYYY-MM-DD').format 'MMMM Do, YYYY'
     $timeout -> $scope.jobQ.resolve()
-    $scope.user_fetched.promise.then -> $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
+    $scope.user_fetched.promise.then ->
+      $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
+      $scope.job.applicants = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd != 1
 
     $http.get($window.location.href + '/status').success (rsp) ->
       $scope.job.status = rsp.status
@@ -40,6 +42,8 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
             }).addTo markers
     ), 200)
 
+  $scope.show_applicant = ->
+    $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0
 
   $scope.done = ->
     if $scope.job.status != 'blocked'
