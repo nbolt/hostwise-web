@@ -1330,7 +1330,7 @@ footer.pl-footer .outlined{
 
   footer.pl-footer .col:last-child{
     width:40%;
-    overflow:auto;
+    overflow:hidden;
     float:right;
   }
 
