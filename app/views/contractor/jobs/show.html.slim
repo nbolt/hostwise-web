@@ -50,6 +50,17 @@
               | {{job.man_hours}} hours (est.)
   .columns
     .special-column
+      .section.applicant ng:show='show_applicant()'
+        .head
+          .text This is a Test & Tips Session
+        .teammate ng:repeat='teammate in job.applicants'
+          .avatar
+            img ng:src='{{::teammate.avatar}}'
+          .name
+            div ng:bind='::teammate.name'
+            div.orange Applicant
+          .number ng:bind='::teammate.display_phone_number'
+    .special-column
       .section.profile
         .head
           .icon
@@ -112,12 +123,12 @@
           .service ng:repeat='service in job.extra_services'
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
-      .section.team ng:show='job.contractor_count > 1'
+      .section.team ng:show='show_team()'
         .head
           .icon
             i.icon-person
           .text Team Information
-        .teammate ng:repeat='teammate in job.contractors'
+        .teammate ng:repeat='teammate in job.team_members'
           .avatar
             img ng:src='{{::teammate.avatar}}'
           .name ng:bind='::teammate.name'
