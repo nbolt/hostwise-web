@@ -16,6 +16,19 @@ class ContractorProfile < ActiveRecord::Base
     {id: position_cd.to_s, text: position.upcase}
   end
 
+  def display_position
+    case position
+      when :fired
+        'fired'
+      when :trainee
+        'applicant'
+      when :contractor
+        'contractor'
+      when :trainer
+        'mentor'
+    end
+  end
+
   private
 
   def fetch_zone
