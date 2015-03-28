@@ -71,7 +71,7 @@ class Job < ActiveRecord::Base
 
   def next_job contractor=nil
     contractor ||= current_user
-    contractor.jobs.on_date(date).where('contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
+    contractor.jobs.on_date(date).where('status_cd = 1 AND contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
   end
 
   def prev_job contractor=nil
