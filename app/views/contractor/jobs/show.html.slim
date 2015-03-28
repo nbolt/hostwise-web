@@ -162,13 +162,14 @@
             .content.top ng:switch='job.blocker'
               .pad
                 i.icon-pw
-                .text style='margin-top: 6px' This job cannot be started until
+                .text style='margin-top: 6px' ng:switch-when='not_today' This job cannot be started until
+                .text style='margin-top: 6px' ng:switch-when='prev_job' This job cannot be started yet
                 .text.strong ng:bind='::job.date_text_2' ng:switch-when='not_today'
                 a ng:href='/jobs/{{prev_job}}' ng:switch-when='prev_job'
                   .icon-button.teal
                     .icon
-                      .typcn.typcn-chevron-left
-                    .text You complete your previous job
+                      .fa.fa-chevron-left
+                    .text Complete Previous
           .phase.cant_access.active ng:switch-when='cant_access'
             .header.warning
               .text Can't Access / Occupied
