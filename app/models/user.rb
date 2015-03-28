@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
       when 6 then 'sat'
       end
 
-    where("availabilities.#{day} = ?", true).where(contractor_profiles: {position_cd: [2,3]}).includes(:availability, :contractor_profile).references(:availability, :contractor_profile)
+    where(activation_state: 'active').where("availabilities.#{day} = ?", true).where(contractor_profiles: {position_cd: [2,3]}).includes(:availability, :contractor_profile).references(:availability, :contractor_profile)
   }
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile'}
@@ -130,7 +130,7 @@ class User < ActiveRecord::Base
     job.save
     job.handle_distribution_jobs self
     Job.set_priorities self.jobs.on_date(job.date), self
-    
+
     if admin
       # send notification to contractor
     end
@@ -183,6 +183,10 @@ class User < ActiveRecord::Base
   def create_stripe_customer
     customer = Stripe::Customer.create(email: email)
     self.update_attribute :stripe_customer_id, customer.id
+  end
+
+  def deactivated?
+    self.activation_state == 'deactivated'
   end
 
   private

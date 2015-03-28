@@ -94,7 +94,7 @@ class Booking < ActiveRecord::Base
     if self.job
       self.job.contractors.each do |contractor|
         UserMailer.booking_reminder(self, contractor).then(:deliver) if contractor.settings(:service_reminder).email
-        if contractor.settings(:service_reminder).sms
+        if contractor.settings(:service_reminder).sms && !contractor.deactivated?
           pickup_job = contractor.jobs.on_date(self.date).pickup[0]
           sms = "Tomorrow you have a HostWise job at #{self.property.short_address}."
           sms += " Don't forget to pick up supplies at 9:30 at #{pickup_job.distribution_center.short_address}." if pickup_job

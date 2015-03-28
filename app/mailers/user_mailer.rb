@@ -120,38 +120,42 @@ class UserMailer < MandrillMailer::TemplateMailer
   def booking_reminder(booking, user)
     mandrill do
       date = booking.date.strftime('%A, %b %e')
-      mandrill_mail template: 'service-reminder',
-                    subject: "Reminder: Service Tomorrow #{date}",
-                    to: {email: user.email, name: user.name},
-                    vars: {
-                      'PROP_LINK' => property_url(booking.property.slug),
-                      'DATE' => date,
-                      'ADDRESS' => booking.property.full_address,
-                      'SERVICES' => booking.services.map(&:display).join(', '),
-                      'PROP_SIZE' => booking.property.property_size
-                    },
-                    inline_css: true,
-                    async: true,
-                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      unless user.deactivated?
+        mandrill_mail template: 'service-reminder',
+                      subject: "Reminder: Service Tomorrow #{date}",
+                      to: {email: user.email, name: user.name},
+                      vars: {
+                        'PROP_LINK' => property_url(booking.property.slug),
+                        'DATE' => date,
+                        'ADDRESS' => booking.property.full_address,
+                        'SERVICES' => booking.services.map(&:display).join(', '),
+                        'PROP_SIZE' => booking.property.property_size
+                      },
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
     end
   end
 
   def booking_confirmation(booking)
     mandrill do
       date = booking.date.strftime('%b %e, %Y')
-      mandrill_mail template: 'booking-confirmation',
-                    subject: "Booking confirmed on #{date} for #{booking.property.nickname}",
-                    to: {email: booking.property.user.email, name: booking.property.user.name},
-                    vars: {'NICKNAME' => booking.property.nickname,
-                           'PROP_SIZE' => booking.property.property_size,
-                           'SERVICES' => booking.services.map(&:display).join(', '),
-                           'PRICE' => "$#{booking.cost}",
-                           'ADDRESS' => booking.property.full_address,
-                           'PROP_LINK' => property_url(booking.property.slug),
-                           'DATE' => date},
-                    inline_css: true,
-                    async: true,
-                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      unless booking.property.user.deactivated?
+        mandrill_mail template: 'booking-confirmation',
+                      subject: "Booking confirmed on #{date} for #{booking.property.nickname}",
+                      to: {email: booking.property.user.email, name: booking.property.user.name},
+                      vars: {'NICKNAME' => booking.property.nickname,
+                             'PROP_SIZE' => booking.property.property_size,
+                             'SERVICES' => booking.services.map(&:display).join(', '),
+                             'PRICE' => "$#{booking.cost}",
+                             'ADDRESS' => booking.property.full_address,
+                             'PROP_LINK' => property_url(booking.property.slug),
+                             'DATE' => date},
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
     end
   end
 
@@ -176,22 +180,24 @@ class UserMailer < MandrillMailer::TemplateMailer
     mandrill do
       date = booking.date.strftime('%b %e, %Y')
       payment_method = booking.payment.stripe_id.present? ? booking.payment.card_type : booking.payment.bank_name
-      mandrill_mail template: 'service-completed',
-                    subject: 'Thank you for using HostWise',
-                    to: {email: booking.property.user.email, name: booking.property.user.name},
-                    vars: {
-                      'DATE' => date,
-                      'NICKNAME' => booking.property.nickname,
-                      'ADDRESS' => booking.property.full_address,
-                      'PAYMENT_METHOD' => payment_method.upcase,
-                      'ACCOUNT_NUM' => booking.payment.last4,
-                      'SERVICES' => booking.services.map(&:display).join(', '),
-                      'PRICE' => "$#{booking.cost}",
-                      'PROP_LINK' => property_url(booking.property.slug)
-                    },
-                    inline_css: true,
-                    async: true,
-                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      unless booking.property.user.deactivated?
+        mandrill_mail template: 'service-completed',
+                      subject: 'Thank you for using HostWise',
+                      to: {email: booking.property.user.email, name: booking.property.user.name},
+                      vars: {
+                        'DATE' => date,
+                        'NICKNAME' => booking.property.nickname,
+                        'ADDRESS' => booking.property.full_address,
+                        'PAYMENT_METHOD' => payment_method.upcase,
+                        'ACCOUNT_NUM' => booking.payment.last4,
+                        'SERVICES' => booking.services.map(&:display).join(', '),
+                        'PRICE' => "$#{booking.cost}",
+                        'PROP_LINK' => property_url(booking.property.slug)
+                      },
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
     end
   end
 
@@ -250,15 +256,17 @@ class UserMailer < MandrillMailer::TemplateMailer
   def booking_cancellation(booking)
     mandrill do
       date = booking.date.strftime('%A, %b %e')
-      mandrill_mail template: 'cancellation',
-                    subject: "Booking cancelled on #{date} at #{booking.property.nickname}",
-                    to: {email: booking.property.user.email, name: booking.property.user.name},
-                    vars: {'ADDRESS' => booking.property.full_address,
-                           'NICKNAME' => booking.property.nickname,
-                           'DATE' => date},
-                    inline_css: true,
-                    async: true,
-                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      unless booking.property.user.deactivated?
+        mandrill_mail template: 'cancellation',
+                      subject: "Booking cancelled on #{date} at #{booking.property.nickname}",
+                      to: {email: booking.property.user.email, name: booking.property.user.name},
+                      vars: {'ADDRESS' => booking.property.full_address,
+                             'NICKNAME' => booking.property.nickname,
+                             'DATE' => date},
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
     end
   end
 
@@ -266,67 +274,75 @@ class UserMailer < MandrillMailer::TemplateMailer
     mandrill do
       date = booking.date.strftime('%A, %b %e')
       payment_method = booking.payment.stripe_id.present? ? booking.payment.card_type : booking.payment.bank_name
-      mandrill_mail template: 'cancellation-same-day',
-                    subject: "Booking cancelled on #{date} at #{booking.property.nickname}",
-                    to: {email: booking.property.user.email, name: booking.property.user.name},
-                    vars: {'ADDRESS' => booking.property.full_address,
-                           'NICKNAME' => booking.property.nickname,
-                           'PAYMENT_METHOD' => payment_method.upcase,
-                           'ACCOUNT_NUM' => booking.payment.last4,
-                           'CANCEL_FEE' => "$#{booking.cost}",
-                           'DATE' => date},
-                    inline_css: true,
-                    async: true,
-                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      unless booking.property.user.deactivated?
+        mandrill_mail template: 'cancellation-same-day',
+                      subject: "Booking cancelled on #{date} at #{booking.property.nickname}",
+                      to: {email: booking.property.user.email, name: booking.property.user.name},
+                      vars: {'ADDRESS' => booking.property.full_address,
+                             'NICKNAME' => booking.property.nickname,
+                             'PAYMENT_METHOD' => payment_method.upcase,
+                             'ACCOUNT_NUM' => booking.payment.last4,
+                             'CANCEL_FEE' => "$#{booking.cost}",
+                             'DATE' => date},
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
     end
   end
 
   def contractor_profile_completed(user)
     mandrill do
-      mandrill_mail template: 'profile-completed',
-                    to: {email: user.email, name: user.name},
-                    vars: {},
-                    inline_css: true,
-                    async: true,
-                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      unless user.deactivated?
+        mandrill_mail template: 'profile-completed',
+                      to: {email: user.email, name: user.name},
+                      vars: {},
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
     end
   end
 
   def new_open_job(user, job)
     mandrill do
-      mandrill_mail template: 'new-open-job',
-                    to: {email: user.email, name: user.name},
-                    vars: {
-                      'CONTRACTOR_NAME' => user.name,
-                      'SERVICE_DATE' => job.booking.date.strftime,
-                      'SHORT_ADDRESS' => job.booking.property.short_address,
-                      'CLAIM_LINK' => contractor_jobs_url
-                    },
-                    inline_css: true,
-                    async: true,
-                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      unless user.deactivated?
+        mandrill_mail template: 'new-open-job',
+                      to: {email: user.email, name: user.name},
+                      vars: {
+                        'CONTRACTOR_NAME' => user.name,
+                        'SERVICE_DATE' => job.booking.date.strftime,
+                        'SHORT_ADDRESS' => job.booking.property.short_address,
+                        'CLAIM_LINK' => contractor_jobs_url
+                      },
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
     end
   end
 
   def job_claim_confirmation(job, user)
     mandrill do
-      mandrill_mail template: 'job-claim-confirmation',
-                    to: {email: user.email, name: user.name},
-                    vars: {
-                      'CONTRACTOR_NAME' => user.name,
-                      'SERVICE_DATE' => job.booking.date.strftime,
-                      'FULL_ADDRESS' => job.booking.property.full_address,
-                      'PROP_SIZE' => job.booking.property.property_size,
-                      'SERVICES' => job.booking.services.map(&:display).join(','),
-                      'KING' => job.booking.property.king_beds,
-                      'QUEEN' => job.booking.property.queen_beds,
-                      'FULL' => job.booking.property.full_beds,
-                      'TWIN' => job.booking.property.twin_beds,
-                      'DETAILS_LINK' => job_details_url(job.id)
-                    },
-                    inline_css: true,
-                    async: true,
-                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      unless user.deactivated?
+        mandrill_mail template: 'job-claim-confirmation',
+                      to: {email: user.email, name: user.name},
+                      vars: {
+                        'CONTRACTOR_NAME' => user.name,
+                        'SERVICE_DATE' => job.booking.date.strftime,
+                        'FULL_ADDRESS' => job.booking.property.full_address,
+                        'PROP_SIZE' => job.booking.property.property_size,
+                        'SERVICES' => job.booking.services.map(&:display).join(','),
+                        'KING' => job.booking.property.king_beds,
+                        'QUEEN' => job.booking.property.queen_beds,
+                        'FULL' => job.booking.property.full_beds,
+                        'TWIN' => job.booking.property.twin_beds,
+                        'DETAILS_LINK' => job_details_url(job.id)
+                      },
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
     end
   end
 
