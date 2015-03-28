@@ -22,6 +22,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
     $timeout -> $scope.jobQ.resolve()
     $scope.user_fetched.promise.then ->
+      $scope.is_applicant = $scope.user and $scope.user.contractor_profile.position_cd == 1
       $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
       $scope.job.applicants = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd != 1
       $scope.job.team_members = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd == 1
