@@ -42,8 +42,12 @@ class HomeController < ApplicationController
   end
 
   def stripe_recipient
-    recipient = Stripe::Recipient.retrieve current_user.contractor_profile.stripe_recipient_id
-    render json: { success: true, recipient: recipient }
+    if current_user.contractor_profile.stripe_recipient_id
+      recipient = Stripe::Recipient.retrieve current_user.contractor_profile.stripe_recipient_id
+      render json: { success: true, recipient: recipient }
+    else
+      render json: { success: false }
+    end
   end
 
   def user
