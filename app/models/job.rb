@@ -278,6 +278,8 @@ class Job < ActiveRecord::Base
           distribution_job.status_cd = 1
           dropoff_job.status_cd = 1
         end
+        distribution_job.contractor_jobs[0].update_attribute :primary, true
+        dropoff_job.contractor_jobs[0].update_attribute :primary, true
         distribution_job.save
         dropoff_job.save
       end

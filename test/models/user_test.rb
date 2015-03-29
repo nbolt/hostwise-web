@@ -62,7 +62,6 @@ describe User do
 		user_name_6.claim_job job_1
 		user_name_6.claim_job job_2
 		user_name_6.claim_job job_3
-		
 		user_name_6.drop_job user_name_6.jobs[0]
 		user_name_6.jobs.count.must_equal 6
 	end
