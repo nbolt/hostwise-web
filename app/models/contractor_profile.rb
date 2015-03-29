@@ -13,7 +13,7 @@ class ContractorProfile < ActiveRecord::Base
   validates_length_of :emergency_contact_phone, is: 10, if: lambda { self.emergency_contact_phone.present? }
 
   def current_position
-    {id: position_cd.to_s, text: position.upcase}
+    {id: position_cd.to_s, text: display_position.upcase}
   end
 
   def display_position
