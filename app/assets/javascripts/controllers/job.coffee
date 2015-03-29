@@ -322,6 +322,8 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.to_cleaning = ->
     if $scope.begin_cleaning_class() == ''
       $scope.checklist.checklist_settings.inventory_count.complete = true
+      scroll '.phase.cleaning'
+    null
 
   $scope.complete_cleaning = -> $scope.checklist.checklist_settings.cleaning.cleaned = true
 
