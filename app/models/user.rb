@@ -140,7 +140,7 @@ class User < ActiveRecord::Base
       contractor = job.contractors[0]
       if contractor.contractor_profile.position == :trainee
         job.contractors.destroy contractor
-        TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Looks like your training job on #{job.formatted_date} was cancelled. Sorry about this!")
+        TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
       else
         jobs = job.contractors[0].jobs.on_date(job.date)
         job.handle_distribution_jobs job.contractors[0]
