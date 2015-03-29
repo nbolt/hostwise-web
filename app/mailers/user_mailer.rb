@@ -312,7 +312,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                       vars: {
                         'CONTRACTOR_NAME' => user.name,
                         'SERVICE_DATE' => job.booking.date.strftime,
-                        'SHORT_ADDRESS' => job.booking.property.short_address,
+                        'SHORT_ADDRESS' => job.booking.property.neighborhood,
                         'CLAIM_LINK' => contractor_jobs_url
                       },
                       inline_css: true,
