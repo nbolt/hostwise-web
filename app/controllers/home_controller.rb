@@ -42,7 +42,7 @@ class HomeController < ApplicationController
   end
 
   def stripe_recipient
-    if current_user.contractor_profile.stripe_recipient_id
+    if current_user.chain(:contractor_profile, :stripe_recipient_id)
       recipient = Stripe::Recipient.retrieve current_user.contractor_profile.stripe_recipient_id
       render json: { success: true, recipient: recipient }
     else
