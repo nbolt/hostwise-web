@@ -3,9 +3,9 @@
 describe ContractorProfile do
 	it 'should return the right position' do
 		profile_1 = create(:profile_1)
-		profile_1.current_position.must_equal ({:id => '1', :text => :APPLICANT})
+		profile_1.current_position.must_equal ({:id => '1', :text => 'APPLICANT'})
 		profile_2 = create(:profile_2)
-		profile_2.current_position.must_equal ({:id => '2', :text => :CONTRACTOR})
+		profile_2.current_position.must_equal ({:id => '2', :text => 'CONTRACTOR'})
 	end
 
 	it 'should handle firing correctly' do
