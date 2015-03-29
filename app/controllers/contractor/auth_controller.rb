@@ -1,6 +1,6 @@
 class Contractor::AuthController < ApplicationController
   layout 'contractor'
-  before_filter :require_login
+  before_filter :require_login, :handle_trainees
 
   private
 
@@ -13,6 +13,16 @@ class Contractor::AuthController < ApplicationController
 
   def not_authenticated
     redirect_to root_url + 'signin'
+  end
+
+  def handle_trainees
+    unless request.headers['X-CSRF-Token']
+      if !current_user.contractor_profile && request.fullpath != '/users/activate'
+        redirect_to '/users/activate'
+      elsif current_user.chain(:contractor_profile, :position) == :trainee && current_user.jobs.standard.count < 2 && request.fullpath != '/'
+        redirect_to '/'
+      end
+    end
   end
 
 end
