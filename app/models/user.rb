@@ -115,6 +115,8 @@ class User < ActiveRecord::Base
       { success: false, message: "Can't claim jobs with applicants attached" }
     elsif job.size > 1 && team_job
       { success: false, message: "Can't claim more team jobs for the day" }
+    elsif job.cancelled?
+      { success: false, message: "Can't claim a cancelled job" }
     elsif job.contractors.index self
       { success: true }
     else
