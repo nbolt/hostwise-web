@@ -152,7 +152,7 @@ class Contractor::JobsController < Contractor::AuthController
     elsif job.date == (timezone.time Time.now).to_date
       prev_job = job.prev_job current_user
       if prev_job
-        if prev_job.status == :completed || prev_job.status == :cant_access
+        if prev_job.status == :completed || (prev_job.status == :cant_access && prev_job.cant_access_seconds_left == 0)
           render json: { success: true, status: 'active' }
         else
           render json: { success: true, status: 'blocked', blocker: 'prev_job' }
