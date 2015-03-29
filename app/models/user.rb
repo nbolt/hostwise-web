@@ -140,7 +140,7 @@ class User < ActiveRecord::Base
   def drop_job job, admin=false
     primary = ContractorJobs.where(job_id: job.id, user_id: self.id)[0].primary
     job.contractors.destroy self
-    job.size = job.contractors.count if job.contractors.count >= job.minimum_job_size
+    job.size = job.contractors.count if job.booking && job.contractors.count >= job.minimum_job_size
     job.open!
     job.save
     job.handle_distribution_jobs self
