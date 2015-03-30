@@ -70,6 +70,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'n
       flash 'failure', 'Please select at least one day'
 
   $scope.add_bank_account = ->
+    $scope.payment_method = {id: 'bank-account'}
     Stripe.bankAccount.createToken
       country: 'US'
       routing_number: $scope.bank.routing_number
