@@ -37,6 +37,7 @@ class DataController < ApplicationController
     jobs_count = jobs.count
     if params[:scope] == 'open'
       selected_jobs = []; num = 0
+      jobs[0 .. (num + (params[:page].to_i - 1) * JOBS_PER_PAGE)-1].each {|job| num += 1 unless !job.previous_team_job && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS) } if params[:page].to_i > 1
       while selected_jobs.count < JOBS_PER_PAGE && jobs[num + (params[:page].to_i - 1) * JOBS_PER_PAGE]
         job = jobs[num + (params[:page].to_i - 1) * JOBS_PER_PAGE]
         selected_jobs.push job if !job.previous_team_job && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS)
