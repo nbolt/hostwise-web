@@ -62,8 +62,8 @@ describe User do
 		user_name_6.claim_job job_1
 		user_name_6.claim_job job_2
 		user_name_6.claim_job job_3
-		user_name_6.drop_job user_name_6.jobs[0]
-		user_name_6.jobs.count.must_equal 6
+		user_name_6.drop_job user_name_6.jobs.standard.last
+		user_name_6.jobs.count.must_equal 4
 	end
 
 	it 'should return if deactivated or not' do
