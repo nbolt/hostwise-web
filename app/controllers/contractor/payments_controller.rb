@@ -25,4 +25,9 @@ class Contractor::PaymentsController < Contractor::AuthController
       render json: { success: false, message: err[:message] }
     end
   end
+
+  def remove
+    current_user.payments.destroy_all
+    render json: { success: true }
+  end
 end
