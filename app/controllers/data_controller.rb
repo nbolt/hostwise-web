@@ -34,6 +34,7 @@ class DataController < ApplicationController
         jobs = jobs.past(current_user)
     end
     jobs.each {|j| j.current_user = current_user}
+    jobs.select {|job| !job.previous_team_job && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS)} if params[:scope] == 'open'
     jobs_count = jobs.count
     jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
     if params[:scope] == 'open'
