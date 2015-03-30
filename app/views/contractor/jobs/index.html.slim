@@ -8,11 +8,26 @@
     .tab.past ng:click="tab('past')" Past ({{tabs[2].count}})
   .tab-content
     .tab ng:repeat="tab in tabs" class='{{tab.name}}'
-      .day ng:repeat="day in tab.days"
+      .day ng:repeat="day in tab.days" id='day-{{day[0]}}'
         .head
           .text ng:bind='::day[2].date_text'
         .jobs
+          .job.claimed ng:hide='day[1][0]'
+            .claimed-container
+              .icon
+                i.icon-full-schedule
+              .text
+                strong You're all booked up!
+                br
+                | You've claimed as many jobs as possible for this day.
           .job id='job-{{job.id}}' ng:repeat='job in day[1]' ng:click="tab.name != 'open' && goto(job.id)"
+            .claimed-container
+              .icon
+                i.icon-full-schedule
+              .text
+                strong Claimed successfully!
+                br
+                | You've successfully claimed this job.
             .flag ng:class='pricing_class(job)'
             .photo
               img ng:show="tab.name != 'upcoming'" ng:src='{{job.booking.property.primary_photo}}'
@@ -25,7 +40,7 @@
               | {{$index+1}}
             .right
               .top
-                .icon-button.teal ng:click='confirm_claim(job)' ng:show="tab.name == 'open'"
+                .icon-button.teal ng:click='confirm_claim(job, day)' ng:show="tab.name == 'open'"
                   .icon
                     i.icon-details
                   .text Claim Job
@@ -59,4 +74,5 @@
                     .text ng:bind='::job.size'
       .week-pagination
         .num ng:repeat='n in range(pagination_count)' ng:bind='n' ng:click='goto_page(n)' ng:class='num_class(n)'
+
 = render 'common/claim_job_modal'
