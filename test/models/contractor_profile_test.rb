@@ -8,33 +8,33 @@ describe ContractorProfile do
 		profile_2.current_position.must_equal ({:id => '2', :text => 'CONTRACTOR'})
 	end
 
-	it 'should handle firing correctly' do
-		user_name_6 = nil
-		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
-
-		user_name_6.must_equal user_name_6
-
-		#profile_1 = create(:profile_1)
-		#profile_1.position_cd = 2
-		#profile_1.position = :fired
-		#profile_1.save
-		#profile_1.handle_fired
-	end
 
 	it 'should display position properly' do
-		profile_1 = nil; profile_2 = nil; profile_3 = nil; profile_4 = nil
+		profile_1 = nil; profile_2 = nil; profile_3 = nil; profile_4 = nil, user_name_10 = nil
 		VCR.use_cassette('create_profile_1') { profile_1 = create(:profile_1) }
 		VCR.use_cassette('create_profile_2') { profile_2 = create(:profile_2) }
-		#VCR.use_cassette('create_profile_3') { profile_3 = create(:profile_3) }
+		profile_2.must_equal profile_2
+		VCR.use_cassette('create_user_name_10') { user_name_10 = create(:user_name_10) }
 		VCR.use_cassette('create_profile_4') { profile_4 = create(:profile_4) }
-		# VCR.use_cassette('create_user_name_10') { user_name_10 = create(:user_name_10) }
-
-		profile_3.must_equal profile_3
 
 		profile_1.display_position.must_equal 'applicant'
 		profile_2.display_position.must_equal 'contractor'
-		#profile_3.display_position.must_equal 'fired'
 		profile_4.display_position.must_equal 'mentor'
+
+		profile_2.position_cd = 0
+
+		profile_2.display_position.must_equal 'fired'
+		
+		# user_name_10.activation_state.must_equal 'deactivated'
+
+	end
+
+	it 'should return if test session completed' do
+		profile_1 = nil, profile_2 = nil
+		VCR.use_cassette('create_profile_1') { profile_1 = create(:profile_1) }
+		VCR.use_cassette('create_profile_2') { profile_2 = create(:profile_2) }
+
+		profile_2.test_session_completed.must_equal true
 	end
 
 	it 'should error on invalid address' do
@@ -46,7 +46,7 @@ describe ContractorProfile do
 
 	it 'should create stripe recipient' do
 		profile_1 = nil, stripe_recipient = nil
-		#VCR.use_cassette('create_profile_1') { profile_1 = create(:profile_1) }
-		#profile_1.stripe_recipient_id.must_equal nil
+		VCR.use_cassette('create_profile_1') { profile_1 = create(:profile_1) }
+		#profile_1.save
 	end
 end

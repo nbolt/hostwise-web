@@ -49,13 +49,17 @@ describe Job do
 	end
 
 	it 'displays proper payout' do
-		job_2 = nil; user_name_6 = nil, job_5 = nil
+		job_2 = nil; user_name_6 = nil, job_5 = nil, user_name_10 = nil, user_name_11 = nil
 		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		VCR.use_cassette('create_user_name_10') { user_name_10 = create(:user_name_10) }
+		VCR.use_cassette('create_user_name_11') { user_name_11 = create(:user_name_11) }
 		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
 		VCR.use_cassette('create_job_5') { job_5 = create(:job_5) }
 		job_2.payout(user_name_6).must_equal 20
 		job_2.payout.must_equal 70
-		# job_5.payout.must_equal 38
+		job_5.payout(user_name_10).must_equal 38.5
+		job_5.payout(user_name_11).must_equal 35	
+		job_5.payout.must_equal 38.5
 	end
 
 	it 'shows correct man hours' do

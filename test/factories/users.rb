@@ -88,6 +88,15 @@ FactoryGirl.define do |user|
     salt "oaz1NpsVHaNCqza9ynGU"
     phone_number "9722149321"
     role_cd 2
-    association :contractor_profile, factory: :profile_3
+    association :contractor_profile, factory: :profile_2
+  end
+
+  factory :user_name_11, class: User do
+    email 'david.siqi.kong@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "9722149321"
+    role_cd 0
+    association :contractor_profile, factory: :profile_2
   end
 end

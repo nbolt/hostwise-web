@@ -175,4 +175,30 @@ describe User do
 
 		#
 	end
+
+	it 'jobs should claim correctly' do
+		venice_center = nil; city_center = nil; user_name_6 = nil; job_5 = nil; user_name_10 = nil; user_name_7 = nil; job_15 = nil
+
+		VCR.use_cassette('create_venice_center') { venice_center = create(:venice_center) }
+		VCR.use_cassette('create_city_center') { city_center = create(:city_center) }
+		venice_center.must_equal venice_center
+		city_center.must_equal city_center
+		
+		VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+		VCR.use_cassette('create_user_name_10') { user_name_10 = create(:user_name_10) }
+		VCR.use_cassette('create_user_name_7') { user_name_7 = create(:user_name_7) }
+		VCR.use_cassette('create_job_5') { job_5 = create(:job_5) }
+		VCR.use_cassette('create_job_15') { job_15 = create(:job_15) }
+
+		user_name_6.claim_job job_5
+
+		msg = user_name_10.claim_job job_5
+		msg.must_equal ( {success: true} )
+
+		msg = user_name_6.claim_job job_5
+		msg.must_equal ( {:success=>false, :message=>"Can't claim more team jobs for the day"} )
+	
+		msg = user_name_6.claim_job job_15
+		msg.must_equal ( { success: false, message: "Can't claim a cancelled job" } )
+	end
 end
