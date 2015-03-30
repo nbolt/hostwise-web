@@ -37,14 +37,14 @@ class DataController < ApplicationController
     jobs_count = jobs.count
     if params[:scope] == 'open'
       selected_jobs = []; num = 0
-      jobs[0 .. (num + (params[:page].to_i - 1) * JOBS_PER_PAGE)-1].each {|job| num += 1 unless !job.previous_team_job && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS) } if params[:page].to_i > 1
+      jobs[0 .. (num + (params[:page].to_i - 1) * JOBS_PER_PAGE)-1].each {|job| num += 1 unless !job.previous_team_job && !job.training && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS) } if params[:page].to_i > 1
       while selected_jobs.count < JOBS_PER_PAGE && jobs[num + (params[:page].to_i - 1) * JOBS_PER_PAGE]
         job = jobs[num + (params[:page].to_i - 1) * JOBS_PER_PAGE]
-        selected_jobs.push job if !job.previous_team_job && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS)
+        selected_jobs.push job if !job.previous_team_job && !job.training && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS)
         num += 1
       end
       jobs = selected_jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
-      render json: { jobs_count: jobs_count, jobs: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours, :first_job_of_day, :previous_team_job], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}}) }
+      render json: { jobs_count: jobs_count, jobs: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}}) }
     else
       jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
       render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
@@ -55,7 +55,7 @@ class DataController < ApplicationController
     job = Job.find params[:id]
     jobs = Job.on_date(job.date).open current_user
     jobs.each {|j| j.current_user = current_user}
-    jobs = jobs.select {|job| !job.previous_team_job && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS)}
+    jobs = jobs.select {|job| !job.previous_team_job && !job.training && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS)}
     render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
   end
 
