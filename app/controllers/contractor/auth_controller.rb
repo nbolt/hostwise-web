@@ -17,7 +17,7 @@ class Contractor::AuthController < ApplicationController
 
   def handle_trainees
     unless request.headers['X-CSRF-Token']
-      if !current_user.contractor_profile && request.fullpath != '/users/activate'
+      if !current_user.then(:contractor_profile) && request.fullpath != '/users/activate'
         redirect_to '/users/activate'
       elsif current_user.chain(:contractor_profile, :position) == :trainee && current_user.jobs.standard.count < 2 && request.fullpath != '/'
         redirect_to '/'
