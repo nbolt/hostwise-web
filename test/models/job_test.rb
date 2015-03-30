@@ -174,6 +174,20 @@ describe Job do
 		# Job.future.size.must_equal 4
 	end
 
+	it 'returns if job is tomorrow' do
+		job_12 = nil, job_13 = nil
+		VCR.use_cassette('create_job_12') { job_12 = create(:job_12) }
+		VCR.use_cassette('create_job_13') { job_13 = create(:job_13) }
+		job_12.tomorrow?(Date.today).must_equal false
+		job_13.tomorrow?(Date.today).must_equal true
+	end
+
+	it 'returns cant access seconds' do
+		job_14 = nil
+		VCR.use_cassette('create_job_14') { job_14 = create(:job_14) }
+		#job_14.cant_access_seconds_left.must_equal 0
+	end
+
 end
 
 
