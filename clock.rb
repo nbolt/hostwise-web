@@ -12,7 +12,7 @@ module Clockwork
       Job.where(status_cd: 0).each do |job|
         timezone = Timezone::Zone.new :zone => job.booking.property.zone
         time = timezone.time Time.now
-        if time.hour == 17 && job.tomorrow? time.to_date
+        if time.hour == 17 && job.tomorrow?(time.to_date)
           UserMailer.generic_notification("Job for tomorrow not filled - #{job.id}", "Job ##{job.id} (#{job.booking.property.nickname}) for tomorrow has not been claimed by the required number of contractors - #{admin_job_url(job)}").then(:deliver)
         end
       end
