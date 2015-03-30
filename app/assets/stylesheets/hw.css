@@ -838,14 +838,10 @@ ul.pl-main-nav li a.active{
 
 /* PRICE TABLE */
 
-#price-table .col{
-  padding:50px 0;
-  background:#fff;
-}
-
 .p-content{
   width:70%;
-  padding:0 15%;
+  padding:30px 15%;
+  background:#fff;
 }
 
 #price-table table{
@@ -868,6 +864,10 @@ ul.pl-main-nav li a.active{
   font-weight:300;
 }
 
+#price-table .outlined{
+  margin-top:0;
+}
+
 #p-housekeeping{
   -webkit-box-shadow:inset 0 10px 0 0 #2baab0;
   box-shadow:inset 0 10px 0 0 #2baab0;
@@ -881,6 +881,22 @@ ul.pl-main-nav li a.active{
 #p-toiletries{
   -webkit-box-shadow:inset 0 10px 0 0 #e6c15d;
   box-shadow:inset 0 10px 0 0 #e6c15d;
+}
+
+.p-gray{
+  margin-top:1em;
+  -webkit-box-shadow:inset 0 10px 0 0 #979fa9;
+  box-shadow:inset 0 10px 0 0 #979fa9;
+}
+
+.p-teal{
+  margin-top:1em;
+  -webkit-box-shadow:inset 0 10px 0 0 #40bcbc;
+  box-shadow:inset 0 10px 0 0 #40bcbc;
+}
+
+.p-gray i{
+  margin:1em 0 0 0;
 }
 
 #price-table table.p-details{
@@ -909,7 +925,7 @@ ul.pl-main-nav li a.active{
 .p-extra i{
   margin:0 20px 0 0;
   float:left;
-  font-size:4em;
+  font-size:5em;
 }
 
 

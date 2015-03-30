@@ -5,6 +5,9 @@ PricingCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
 
     $scope.view_pricing = ->
       ngDialog.open template: 'full-pricing-modal', className: 'full-pricing'
+
+    $scope.view_staging = ->
+      ngDialog.open template: 'full-staging-modal', className: 'full-pricing'
 ]
 
 app = angular.module('porter').controller('pricing', PricingCtrl)
