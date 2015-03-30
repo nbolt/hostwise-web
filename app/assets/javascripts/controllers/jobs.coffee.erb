@@ -21,21 +21,26 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDial
       initSelection: (el, cb) ->
     }
 
-  $scope.confirm_claim = (job) ->
+  $scope.confirm_claim = (job, day) ->
     $scope.selected_job = job
+    $scope.selected_day = day
     ngDialog.open template: 'claim-job-modal', className: 'claim full', scope: $scope
 
   $scope.close_modal = ->
     ngDialog.closeAll()
 
-  $scope.claim = (job) ->
-    $http.post("/jobs/#{job.id}/claim").success (rsp) ->
-      $scope.close_modal()
-      if rsp.success
-        angular.element("#job-#{job.id}").fadeOut()
-      else
-        angular.element("#job-#{job.id} .flash").css('opacity', 1).text rsp.message
-        $timeout((-> angular.element("#job-#{job.id}").fadeOut()), 4000)
+  $scope.claim = (job, day) ->
+    $http.post("/jobs/#{job.id}/claim", {spinner:true}).success (rsp) ->
+      $http.get("/data/refresh_day?id=#{job.id}", {spinner:true}).success (_rsp) ->
+        element = angular.element("#day-#{day[0]}")
+        $scope.close_modal()
+        if rsp.success
+          _rsp.unshift job if _rsp[0]
+          day[1] = _rsp
+          angular.element("#job-#{job.id}").addClass 'claimed'
+        else
+          angular.element("#job-#{job.id} .flash").css('opacity', 1).text rsp.message
+          $timeout((-> angular.element("#job-#{job.id}").fadeOut()), 4000)
 
   $scope.drop = (job) ->
     $http.post("/jobs/#{job.id}/drop").success (rsp) ->

@@ -2083,6 +2083,34 @@ form
         .neighborhood
           @media phone
             margin-top: 13px
+    .claimed-container
+      display: none
+      margin: 40px 0 0 40px
+      .icon, .text
+        display: inline-block
+        vertical-align: top
+      .text
+        margin: 13px 0 0 13px
+        color: dark-gray
+        line-height: 21px
+        strong
+          color: heavy-gray
+      .icon
+        background-color: teal
+        color: white
+        width: 70px
+        height: 70px
+        border-radius: 50%
+        font-size: 1.8em
+        box-sizing: border-box
+        padding-top: 15px
+        padding-left: 20px
+    &.claimed
+      overflow: auto
+      .flag, .photo, .order, .right
+        display: none
+      .claimed-container
+        display: block
 
 .card-entry
   border: thin solid border-gray
