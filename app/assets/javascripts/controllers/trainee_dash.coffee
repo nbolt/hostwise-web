@@ -56,20 +56,22 @@ TraineeDashCtrl = ['$scope', '$http', '$window', ($scope, $http, $window) ->
       'active'
 
   $scope.select_dates = ->
-    $http.post("/trainee/claim_jobs", {jobs: $scope.selected_dates()}).success (rsp) ->
-      if rsp.success
-        $window.location = '/'
-      else
-        $http.get('/trainee/available_jobs').success (rsp) ->
-          $scope.dates = []
-          _(rsp).each (job) ->
-            date = {}
-            date.job = job.id
-            date.moment = moment.utc job.date
-            date.day = date.moment.format 'D'
-            date.month = date.moment.format 'MMM'
-            date.time = '9:30 AM'
-            $scope.dates.push date
+    $http.post("/trainee/claim_jobs", {jobs: $scope.selected_dates()})
+      .error -> $window.location = '/'
+      .success (rsp) ->
+        if rsp.success
+          $window.location = '/'
+        else
+          $http.get('/trainee/available_jobs').success (rsp) ->
+            $scope.dates = []
+            _(rsp).each (job) ->
+              date = {}
+              date.job = job.id
+              date.moment = moment.utc job.date
+              date.day = date.moment.format 'D'
+              date.month = date.moment.format 'MMM'
+              date.time = '9:30 AM'
+              $scope.dates.push date
 
 ]
 
