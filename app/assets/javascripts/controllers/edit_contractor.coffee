@@ -30,6 +30,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
 
   $scope.change_status = ->
     $scope.selected_status = angular.element('.position').select2('data')
+    $scope.warning = if $scope.contractor.contractor_profile.test_session_completed then '' else 'This applicant has not finished test & tips session.'
     ngDialog.open template: 'change-status-modal', controller: 'edit-contractor', className: 'status full', scope: $scope
 
   $scope.cancel_status = ->

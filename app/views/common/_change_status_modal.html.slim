@@ -14,6 +14,7 @@ script#change-status-modal type="text/ng-template"
             | {{contractor.contractor_profile.position.text}}
           .fa.fa-long-arrow-right
           | {{selected_status.text}}
+        .warning ng:bind='::warning'
         .actions
           .fa.fa-times ng:click='cancel_status()'
           .fa.fa-check.confirm ng:click='confirm_status()'

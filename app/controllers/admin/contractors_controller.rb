@@ -26,7 +26,7 @@ class Admin::ContractorsController < Admin::AuthController
   def edit
     respond_to do |format|
       format.html
-      format.json { render json: User.find_by_id(params[:id]).to_json(include: [:background_check, contractor_profile: {methods: [:position, :ssn, :driver_license, :current_position]}], methods: [:name, :avatar]) }
+      format.json { render json: User.find_by_id(params[:id]).to_json(include: [:background_check, contractor_profile: {methods: [:position, :ssn, :driver_license, :current_position, :test_session_completed]}], methods: [:name, :avatar]) }
     end
   end
 
@@ -34,10 +34,10 @@ class Admin::ContractorsController < Admin::AuthController
     user = User.find_by_id params[:id]
 
     if params[:status].present?
-      if user.contractor_profile.position == :trainee && user.jobs.training.not_complete.count > 0
-        render json: { success: false, message: 'Pending training jobs' }
-        return
-      end
+      # if user.contractor_profile.position == :trainee && user.jobs.training.not_complete.count > 0
+      #   render json: { success: false, message: 'Pending training jobs' }
+      #   return
+      # end
 
       UserMailer.contractor_hired_email(user).then(:deliver) if user.contractor_profile.position == :trainee && params[:status].downcase.to_sym == :contractor
       UserMailer.mentor_promotion_email(user).then(:deliver) if user.contractor_profile.position == :contractor && params[:status].downcase.to_sym == :trainer
