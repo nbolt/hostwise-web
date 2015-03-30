@@ -96,7 +96,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDial
           tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
 
           cb() if cb
-          $timeout((-> $scope.jobs_fetched.resolve()), 2000)
+          $timeout((-> $scope.jobs_fetched.resolve()),5000)
 
   $scope.$watch 'filter', (n,o) -> if o
     refresh_jobs()
