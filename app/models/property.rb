@@ -27,7 +27,7 @@ class Property < ActiveRecord::Base
   scope :inactive, -> { where(active: false) }
   scope :by_user, -> (user) { where(user_id: user.id) }
   scope :by_alphabetical, -> { reorder('LOWER(title)') }
-  scope :upcoming_bookings, -> { where('bookings.id is not null').order('bookings.date ASC').includes(:active_bookings).references(:active_bookings) }
+  scope :upcoming_bookings, -> { where('bookings.id is not null').includes(:active_bookings).references(:active_bookings) }
   scope :no_upcoming, -> { where('bookings.id is null').includes(:active_bookings).references(:active_bookings) }
   scope :recently_added, -> { reorder('created_at DESC') }
 
@@ -36,6 +36,10 @@ class Property < ActiveRecord::Base
   def self.find_by_slug slug
     friendly.find slug
   rescue ActiveRecord::RecordNotFound
+  end
+
+  def self.order_by_upcoming
+    upcoming_bookings.active.future.sort_by(&:next_service_date) + no_upcoming.active
   end
 
   def next_service_date
@@ -52,7 +56,7 @@ class Property < ActiveRecord::Base
         when 'recently_added'
           results = results.recently_added.active
         when 'upcoming_service'
-          results = results.upcoming_bookings.active + results.no_upcoming.active
+          results = results.order_by_upcoming
         when 'deactivated'
           results = results.inactive
       end
