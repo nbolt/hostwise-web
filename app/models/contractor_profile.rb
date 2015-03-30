@@ -29,6 +29,11 @@ class ContractorProfile < ActiveRecord::Base
     end
   end
 
+  def test_session_completed
+    return false if position == :trainee && user.jobs.training.not_complete.count > 0
+    true
+  end
+
   private
 
   def fetch_zone
