@@ -78,13 +78,17 @@ describe Booking do
     end
 
     it 'shows if duplicate correctly' do
-      booking_active_1 = nil; booking_not_today = nil
+      booking_second = nil; booking_first = nil, booking_not_today = nil, booking_duplicate = nil, booking_duplicate_2 = nil
 
-      VCR.use_cassette('create_booking_active_1') { booking_active_1 = create(:booking_active_1) }
-
+      VCR.use_cassette('create_booking_second') { booking_second = create(:booking_second) }
+      VCR.use_cassette('create_booking_first') { booking_first = create(:booking_first) }
       VCR.use_cassette('create_booking_not_today') { booking_not_today = create(:booking_not_today) }
+      VCR.use_cassette('create_booking_duplicate') { booking_duplicate = create(:booking_duplicate) }
 
-      #booking_active_1.duplicate?.must_equal true
+      booking_not_today.duplicate?.must_equal false
+
+      VCR.use_cassette('create_booking_duplicate_2') { booking_duplicate_2 = create(:booking_duplicate_2) }
+      booking_duplicate.duplicate?.must_equal false
     end
 
   end

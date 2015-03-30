@@ -32,9 +32,9 @@ http_interactions:
       X-Account-Header:
       - 374379a6-0000-0000-0000-000000000000
       X-Server-Name:
-      - streetapi-001-chicago
+      - streetapi-004-phoenix
       Date:
-      - Mon, 30 Mar 2015 19:55:38 GMT
+      - Mon, 30 Mar 2015 22:25:31 GMT
       Content-Length:
       - '887'
     body:
@@ -42,10 +42,10 @@ http_interactions:
       string: |
         [{"input_index":0,"candidate_index":0,"delivery_line_1":"1317 S Bundy Dr","last_line":"Los Angeles CA 90025-1335","delivery_point_barcode":"900251335994","components":{"primary_number":"1317","street_predirection":"S","street_name":"Bundy","street_suffix":"Dr","city_name":"Los Angeles","state_abbreviation":"CA","zipcode":"90025","plus4_code":"1335","delivery_point":"99","delivery_point_check_digit":"4"},"metadata":{"record_type":"H","zip_type":"Standard","county_fips":"06037","county_name":"Los Angeles","carrier_route":"C023","congressional_district":"37","building_default_indicator":"Y","rdi":"Residential","elot_sequence":"0399","elot_sort":"A","latitude":34.04239,"longitude":-118.46561,"precision":"Zip9","time_zone":"Pacific","utc_offset":-8,"dst":true},"analysis":{"dpv_match_code":"D","dpv_footnotes":"AAN1","dpv_cmra":"N","dpv_vacant":"N","active":"Y","footnotes":"H#"}}]
     http_version: 
-  recorded_at: Mon, 30 Mar 2015 19:55:38 GMT
+  recorded_at: Mon, 30 Mar 2015 22:25:31 GMT
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=34.04239,-118.46561&timestamp=1427745338
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=34.04239,-118.46561&timestamp=1427754331
     body:
       encoding: US-ASCII
       string: ''
@@ -64,7 +64,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Mon, 30 Mar 2015 19:55:39 GMT
+      - Mon, 30 Mar 2015 22:25:31 GMT
       Pragma:
       - no-cache
       Expires:
@@ -98,5 +98,5 @@ http_interactions:
            "timeZoneName" : "Pacific Daylight Time"
         }
     http_version: 
-  recorded_at: Mon, 30 Mar 2015 19:55:38 GMT
+  recorded_at: Mon, 30 Mar 2015 22:25:31 GMT
 recorded_with: VCR 2.9.3

@@ -115,6 +115,18 @@ FactoryGirl.define do |booking|
     date Date.new(3,3,3)
   end
 
+  factory :booking_duplicate, class: Booking do
+    status_cd 1
+    association :property, factory: :property_1
+    date Date.new(3,3,3)
+  end
+
+  factory :booking_duplicate_2, class: Booking do
+    status_cd 1
+    association :property, factory: :property_1
+    date Date.new(3,3,3)
+  end
+
   factory :booking_first, class: Booking do
     status_cd 1
     association :property, factory: :property_2
