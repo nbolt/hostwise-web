@@ -34,8 +34,14 @@ class DataController < ApplicationController
         jobs = jobs.past(current_user)
     end
     jobs.each {|j| j.current_user = current_user}
-    jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|d|Date.strptime(d[0], '%m-%d-%y')}
-    render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours, :first_job_of_day, :previous_team_job], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
+    jobs_count = jobs.count
+    jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
+    if params[:scope] == 'open'
+      jobs = jobs.group_by{|jobs| day = Date.strptime(jobs[0], '%m-%d-%y'); (day - day.wday).strftime('%m-%d-%y')}.sort_by{|jobs |Date.strptime(jobs[0], '%m-%d-%y')}
+      render json: { weeks_count: jobs.count, jobs_count: jobs_count, jobs: jobs[params[:page].to_i][1].to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours, :first_job_of_day, :previous_team_job], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}}) }
+    else
+      render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours, :first_job_of_day, :previous_team_job], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
+    end
   end
 
   def transactions
