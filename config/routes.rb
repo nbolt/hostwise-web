@@ -52,6 +52,7 @@ Rails.application.routes.draw do
     get   '/user/jobs_today' => 'users#jobs_today'
     get   '/payments' => 'payments#index'
     post  '/payments/add' => 'payments#add'
+    post  '/payments/remove' => 'payments#remove'
     post  '/payments/:action/:id' => 'payments'
     #post  '/docusign/send' => 'docusign#create'
     get   '/availability' => 'availability#index'

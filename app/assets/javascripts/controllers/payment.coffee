@@ -33,14 +33,12 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       flash 'ok', 'Changes updated successfully!', true
 
   $scope.open_deletion = (payment) ->
-    $scope.payment = payment
-    $scope.payment_info = angular.element("payment-#{payment.id}").find('.details span').text().replace('ending in', '****')
     ngDialog.open template: 'delete-payment-modal', controller: 'payment', className: 'warning full', scope: $scope
 
   $scope.cancel_deletion = -> ngDialog.closeAll()
 
-  $scope.delete_payment = (payment) ->
-    $http.post("/payments/delete/#{payment.id}").success (rsp) ->
+  $scope.delete_payment = () ->
+    $http.post("/payments/remove").success (rsp) ->
       if rsp.success
         $scope.$emit 'fetch_user'
         ngDialog.closeAll()
@@ -99,6 +97,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
           if rsp.success
             $scope.card = {}
             $scope.$emit 'refresh_recipient'
+            $scope.$emit 'fetch_user'
             ngDialog.closeAll()
           else
             flash 'failure', rsp.message
@@ -120,6 +119,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
           if rsp.success
             $scope.bank = {}
             $scope.$emit 'refresh_recipient'
+            $scope.$emit 'fetch_user'
             ngDialog.closeAll()
           else
             flash 'failure', rsp.message

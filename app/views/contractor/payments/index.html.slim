@@ -5,7 +5,7 @@
   .payment-container ng::controller='payment'
     .flash
     ul
-      li ng:show='recipient.cards.total_count > 0 || recipient.active_account'
+      li ng:show='(recipient.cards.total_count > 0 || recipient.active_account) && user.payments[0]'
         i.icon-bank
         .details ng:show='recipient.cards.total_count > 0'
           span
@@ -17,7 +17,9 @@
             strong
               | {{recipient.active_account.bank_name}}
             |  - Bank ending in {{recipient.active_account.last4}}
-      li.add-payment
+        .links
+          a href='' ng:click='open_deletion()' Remove
+      li.add-payment ng:hide='user.payments[0]'
         .fa.fa-plus-circle
         a href='' ng:click='open_payout()' Add new payout method for direct deposit
 
