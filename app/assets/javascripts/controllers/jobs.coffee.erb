@@ -57,10 +57,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
     else
       ''
 
-  $scope.job_available = (job) -> !job.previous_team_job && (job.first_job_of_day || job.contractor_hours + job.man_hours <= <%= MAX_MAN_HOURS %>)
-
-  $scope.jobs_available = (day) -> _(day[1]).filter((job) -> $scope.job_available job)[0]
-
   $scope.goto_page = (page) -> $scope.page = page
 
   $scope.num_class = (n) -> if n == $scope.page then 'active' else ''
@@ -75,8 +71,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
             $scope.jobs_count = rsp.jobs_count
             $scope.pagination_count = rsp.weeks_count
             angular.element('.tab-content .tab:eq(0)').addClass 'active' if !tab.days
-            tab.days = _(JSON.parse rsp.jobs).filter (day) -> $scope.jobs_available day
-            _(tab.days).each (day) -> day[1] = _(day[1]).filter((job) -> $scope.job_available job)
+            tab.days = JSON.parse rsp.jobs
           else
             tab.days = rsp
           tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
