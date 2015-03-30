@@ -2,6 +2,8 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
 
   $scope.tabs = [{name:'open'},{name:'upcoming'},{name:'past'}]
   $scope.filter = {id:'recent',text:'Most Recent'}
+  $scope.page = 0
+  $scope.pagination_count = 0
   faye = null
 
   $scope.tab = (name) ->
@@ -59,14 +61,21 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
 
   $scope.jobs_available = (day) -> _(day[1]).filter((job) -> $scope.job_available job)[0]
 
+  $scope.goto_page = (page) -> $scope.page = page
+
+  $scope.num_class = (n) -> if n == $scope.page then 'active' else ''
+
+  $scope.range = (n) -> if n then _.range 0, n else []
+
   refresh_jobs = (cb) ->
     $scope.user_fetched.promise.then ->
       _($scope.tabs).each (tab) ->
-        $http.get('/data/jobs', {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
+        $http.get("/data/jobs?page=#{$scope.page}", {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
           if tab.name == 'open'
-            if !tab.days
-              angular.element('.tab-content .tab:eq(0)').addClass 'active'
-            tab.days = _(rsp).filter (day) -> $scope.jobs_available day
+            $scope.jobs_count = rsp.jobs_count
+            $scope.pagination_count = rsp.weeks_count
+            angular.element('.tab-content .tab:eq(0)').addClass 'active' if !tab.days
+            tab.days = _(JSON.parse rsp.jobs).filter (day) -> $scope.jobs_available day
             _(tab.days).each (day) -> day[1] = _(day[1]).filter((job) -> $scope.job_available job)
           else
             tab.days = rsp
@@ -84,6 +93,9 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
           cb() if cb
 
   $scope.$watch 'filter', (n,o) -> if o
+    refresh_jobs()
+
+  $scope.$watch 'page', (n,o) -> if o != undefined
     refresh_jobs()
 
   load_faye = null

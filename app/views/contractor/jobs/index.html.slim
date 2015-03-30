@@ -3,7 +3,7 @@
     i.icon-add
     .text Jobs
   .tabs
-    .tab.open.active ng:click="tab('open')" Open ({{tabs[0].count}})
+    .tab.open.active ng:click="tab('open')" Open ({{jobs_count}})
     .tab.upcoming ng:click="tab('upcoming')" Claimed ({{tabs[1].count}})
     .tab.past ng:click="tab('past')" Past ({{tabs[2].count}})
   .tab-content
@@ -57,4 +57,6 @@
                   .size
                     i.icon-person
                     .text ng:bind='::job.size'
+      .week-pagination
+        .num ng:repeat='n in range(pagination_count)' ng:bind='n' ng:click='goto_page(n)' ng:class='num_class(n)'
 = render 'common/claim_job_modal'
