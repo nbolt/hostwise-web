@@ -44,8 +44,8 @@ describe Job do
 		date_2_jobs.distribution.pickup[0].priority(user_name_6).must_equal 0
 		date_2_jobs.distribution.dropoff[0].priority(user_name_6).must_equal 2
 
-		date_2_jobs[0].next_job(user_name_6).distribution.must_equal true
-		date_2_jobs[2].prev_job(user_name_6).distribution.must_equal false
+		date_2_jobs.distribution.pickup[0].next_job(user_name_6).must_equal date_2_jobs.standard[0]
+		date_2_jobs.distribution.dropoff[0].prev_job(user_name_6).must_equal date_2_jobs.standard[0]
 	end
 
 	it 'displays proper payout' do
