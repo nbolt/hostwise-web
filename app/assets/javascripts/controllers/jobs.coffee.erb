@@ -1,9 +1,9 @@
-JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', ($scope, $http, $timeout, $interval, $window, ngDialog) ->
+JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialog', ($scope, $http, $timeout, $interval, $window, $q, ngDialog) ->
 
   $scope.tabs = [{name:'open'},{name:'upcoming'},{name:'past'}]
   $scope.filter = {id:'recent',text:'Most Recent'}
-  $scope.page = 0
-  $scope.pagination_count = 0
+  $scope.page = 1
+  $scope.jobs_fetched = $q.defer()
   faye = null
 
   $scope.tab = (name) ->
@@ -34,10 +34,8 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
       if rsp.success
         angular.element("#job-#{job.id}").fadeOut()
       else
-        refresh_jobs(->
-          angular.element("#job-#{job.id} .flash").css('opacity', 1).text rsp.message
-          $timeout((-> angular.element("#job-#{job.id}").fadeOut()), 4000)
-        )
+        angular.element("#job-#{job.id} .flash").css('opacity', 1).text rsp.message
+        $timeout((-> angular.element("#job-#{job.id}").fadeOut()), 4000)
 
   $scope.drop = (job) ->
     $http.post("/jobs/#{job.id}/drop").success (rsp) ->
@@ -63,19 +61,18 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
 
   $scope.range = (n) -> if n then _.range 0, n else []
 
-  refresh_jobs = (cb) ->
+  refresh_jobs = (append, cb) ->
     $scope.user_fetched.promise.then ->
       _($scope.tabs).each (tab) ->
         $http.get("/data/jobs?page=#{$scope.page}", {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
           if tab.name == 'open'
             $scope.jobs_count = rsp.jobs_count
-            $scope.pagination_count = rsp.weeks_count
             angular.element('.tab-content .tab:eq(0)').addClass 'active' if !tab.days
-            tab.days = JSON.parse rsp.jobs
+            days = JSON.parse rsp.jobs
           else
-            tab.days = rsp
-          tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
-          _(tab.days).each (day) ->
+            days = rsp
+
+          _(days).each (day) ->
             day.push {}
             date = moment.utc(day[0],"MM-DD-YY")
             date_text = date.format("ddd, MMM D")
@@ -85,21 +82,33 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', 'ngDialog', (
               else if date.date() == moment().date() + 1
                 date_text += ', Tomorrow'
             day[2].date_text = date_text
+
+
+          if append
+            tab.days = tab.days.concat days
+          else
+            tab.days = days
+          tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
+
           cb() if cb
+          $timeout((-> $scope.jobs_fetched.resolve()), 500)
 
   $scope.$watch 'filter', (n,o) -> if o
     refresh_jobs()
 
-  $scope.$watch 'page', (n,o) -> if o != undefined
-    refresh_jobs()
+  $scope.jobs_fetched.promise.then ->
+    angular.element('.body > .container').infiniteScrollHelper
+      loadMore: (page) ->
+        $scope.page = page
+        refresh_jobs true
 
-  load_faye = null
-  load_faye = $interval((->
-    if $window.faye_loaded
-      $interval.cancel(load_faye)
-      faye = new Faye.Client "http://pubsub.fanout.io/r/<%= ENV['FANOUT_ID'] %>/bayeux"
-      faye.subscribe '/jobs', (data) -> refresh_jobs()
-  ), 200)
+  #load_faye = null
+  #load_faye = $interval((->
+  #  if $window.faye_loaded
+  #    $interval.cancel(load_faye)
+  #    faye = new Faye.Client "http://pubsub.fanout.io/r/<%= ENV['FANOUT_ID'] %>/bayeux"
+  #    faye.subscribe '/jobs', (data) -> refresh_jobs()
+  #), 200)
 
 ]
 
