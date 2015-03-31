@@ -81,4 +81,6 @@ Rails.application.configure do
 
   config.booking_notification_email = 'bookings@hostwise.com'
   config.support_notification_email = 'support@hostwise.com'
+
+  config.quiz_num_questions = 10
 end
