@@ -79,13 +79,10 @@ class ContractorProfile < ActiveRecord::Base
 
   def handle_position_change
     if user && position_cd_changed?
-      if position == :trainee && position_cd_was == 2
-        user.jobs.standard.each {|job| user.drop_job job, true}
-      elsif position == :contractor && (position_cd_was == 3 || position_cd_was == 1)
+      if position == :contractor && (position_cd_was == 3 || position_cd_was == 1)
         user.jobs.training.each {|job| user.drop_job job, true}
       elsif position == :fired
-        user.activation_state = 'deactivated'
-        user.save
+        user.deactivate!
       end
     end
   end
