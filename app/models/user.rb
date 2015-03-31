@@ -112,7 +112,7 @@ class User < ActiveRecord::Base
       { success: false, message: "Job would surpass maximum number of contractor man hours for the day" }
     elsif job.training
       { success: false, message: "Can't claim jobs with applicants attached" }
-    elsif job.size > 1 && jobs_today.find {|job| job.contractors.count > 1} 
+    elsif job.size > 1 && jobs_today.find {|job| job.contractors.count > 1}
       { success: false, message: "Can't claim more team jobs for the day" }
     elsif job.cancelled?
       { success: false, message: "Can't claim a cancelled job" }
@@ -162,7 +162,7 @@ class User < ActiveRecord::Base
           TwilioJob.perform_later("+1#{mentors[0].phone_number}", "Your job on #{job.formatted_date} is now a mentor job. Pay out is now 80%!")
         else
           job.contractors.destroy trainee
-          TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
+          TwilioJob.perform_later("+1#{trainee.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
         end
       end
       if team_members
