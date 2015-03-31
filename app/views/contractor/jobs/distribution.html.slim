@@ -26,8 +26,8 @@
         .supplies-container
           .icon-button.teal
             .icon
-              i.icon-check
-            .text ng:click='done_modal()' Complete Day
+              i.icon-alert-ok
+            .text ng:click='done_modal()' Click to complete drop off
       .section.supplies ng:show='job.occasion_cd == 0'
         .head
           .icon
@@ -48,16 +48,16 @@
           div ng:switch='job.status' ng:show='job.primary || job.status == "completed"'
             .icon-button.teal ng:switch-default=''
               .icon
-                i.icon-check
+                i.icon-alert-ok
               .text ng:click='done_modal()' Inventory Pickup Complete
             a ng:href='/jobs/{{job.next_job.id}}' ng:show='job.next_job' ng:switch-when='completed'
               .icon-button.teal
                 .icon
-                  i.icon-check
+                  i.icon-alert-ok
                 .text Go to next job.
             .icon-button.teal.disabled ng:switch-when='blocked'
               .icon
-                i.icon-check
+                i.icon-alert-ok
               .text ng:show='job.blocker == "prev_job"' ng:click='done()' Complete previous job first.
               .text ng:show='job.blocker == "not_today"' ng:click='done()' Cannot be started until {{job.date_text_2}}.
       .section.instructions
