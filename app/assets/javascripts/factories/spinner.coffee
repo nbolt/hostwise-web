@@ -1,4 +1,4 @@
 app = angular.module('porter').factory 'spinner', [->
-  startSpin: -> angular.element('#spin-overlay').addClass 'active'
-  stopSpin: -> angular.element('#spin-overlay').removeClass 'active'
+  startSpin: -> angular.element('#spinner-overlay').addClass 'active'
+  stopSpin: -> angular.element('#spinner-overlay').removeClass 'active'
 ]

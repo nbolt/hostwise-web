@@ -2,7 +2,7 @@ class ContractorProfile < ActiveRecord::Base
   belongs_to :user
 
   before_validation :standardize_address
-  before_save :create_stripe_recipient, :fetch_zone, :handle_fired
+  before_save :create_stripe_recipient, :fetch_zone, :handle_fired, :handle_demoted
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
@@ -75,6 +75,12 @@ class ContractorProfile < ActiveRecord::Base
 
   def address_changed?
     address1_changed? || address2_changed? || city_changed? || state_changed? || zip_changed?
+  end
+
+  def handle_demoted
+    if position_cd_changed? && position == :trainee
+      user.jobs.standard.each {|job| user.drop_job job, true}
+    end
   end
 
   def handle_fired

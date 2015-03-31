@@ -45,7 +45,7 @@ describe Booking do
 
   describe 'payments' do
     before do
-      @booking = nil; @boobing_2 = nil; customer = nil; card = nil
+      customer = nil; card = nil
 
       VCR.use_cassette('create_booking_active_4') { @booking = create(:booking_active_4) }
       @booking.pending!
