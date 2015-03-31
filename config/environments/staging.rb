@@ -79,6 +79,6 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.booking_notification_email = 'team@hostwise.com'
-  config.support_notification_email = 'team@hostwise.com'
+  config.booking_notification_email = 'staging-notifications@hostwise.com'
+  config.support_notification_email = 'staging-notifications@hostwise.com'
 end
