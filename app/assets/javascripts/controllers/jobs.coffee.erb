@@ -1,4 +1,4 @@
-JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDialog', ($scope, $http, $timeout, $interval, $window, $q, ngDialog) ->
+JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinner', 'ngDialog', ($scope, $http, $timeout, $interval, $window, $q, spinner, ngDialog) ->
 
   $scope.tabs = [{name:'open'},{name:'upcoming'},{name:'past'}]
   $scope.filter = {id:'recent',text:'Most Recent'}
@@ -120,9 +120,10 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDial
 
   $scope.jobs_fetched.promise.then ->
     angular.element('.tab-content .tab.open').infiniteScrollHelper
-      loadMore: (page) ->
+      loadMore: (page, done) ->
+        spinner.startSpin()
         $scope.page = page
-        refresh_jobs true
+        refresh_jobs true, (-> spinner.stopSpin(); done())
 
   #load_faye = null
   #load_faye = $interval((->
