@@ -98,7 +98,7 @@ class Admin::ContractorsController < Admin::AuthController
     user.contractor_profile.docusign_completed = true
     user.contractor_profile.save
 
-    BackgroundCheckSubmissionJob.perform_later(user)
+    BackgroundCheckSubmissionJob.perform_later(user) unless Rails.env.production?
     render json: { success: true }
   end
 
