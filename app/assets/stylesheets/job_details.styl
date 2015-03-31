@@ -1,6 +1,10 @@
 .ngdialog.distribution
   .ngdialog-content
     width: 460px !important
+    .hint
+      color: white
+      font-size: 14px
+      margin-top: 30px
     .section
       background-color: white
       border-radius: 3px
@@ -47,10 +51,24 @@
           border-bottom: thin solid teal
           height: 1px
           margin: 20px 0
+        .icon-button
+          height: 60px
+          line-height: 60px
+          .icon
+            width: 50px
         .supply
           display: inline-block
           vertical-align: top
           width: 33%
+          @media phone
+            margin-bottom: 10px
+            width: 50%
+          @media landscape_tablet
+            margin-bottom: 10px
+            width: 50%
+          @media portrait_tablet
+            margin-bottom: 10px
+            width: 100%
           &:last-child
             margin-right: 0s
           .name, .value
@@ -61,6 +79,15 @@
             margin-right: 20%
           .value
             color: darker-gray
+            @media phone
+              float: right
+              margin-right: 15px
+            @media landscape_tablet
+              float: right
+              margin-right: 15px
+            @media portrait_tablet
+              float: right
+              margin-right: 15px
 
 #job-details, #jobs, .container.contractor .jobs, .ngdialog.claim .modal
   .distribution-job
@@ -363,6 +390,15 @@
             display: inline-block
             vertical-align: top
             width: 33%
+            @media phone
+              margin-bottom: 10px
+              width: 50%
+            @media landscape_tablet
+              margin-bottom: 10px
+              width: 50%
+            @media portrait_tablet
+              margin-bottom: 10px
+              width: 100%
             &:last-child
               margin-right: 0s
             .name, .value
@@ -373,6 +409,20 @@
               margin-right: 20%
             .value
               color: darker-gray
+              @media phone
+                float: right
+                margin-right: 15px
+              @media landscape_tablet
+                float: right
+                margin-right: 15px
+              @media portrait_tablet
+                float: right
+                margin-right: 15px
+          .icon-button
+            height: 60px
+            line-height: 60px
+            .icon
+              width: 50px
       &.instructions
         .instructions-container
           padding: 20px
