@@ -128,7 +128,7 @@ class User < ActiveRecord::Base
         job.save
       end
       job.handle_distribution_jobs self
-      Job.set_priorities jobs_today, self
+      job.contractors.team_members {|contractor| Job.set_priorities contractor.jobs.on_date(job.date), contractor}
       unless Rails.env.test?
         fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
         fanout.publish_async 'jobs', {}
