@@ -47,6 +47,7 @@ class DataController < ApplicationController
       render json: { jobs_count: jobs_count, jobs: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}}) }
     else
       jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
+      jobs = jobs.each {|jobs| jobs[1] = jobs[1].sort_by{|job| job.priority}} if params[:scope] == 'upcoming'
       render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
     end
   end
