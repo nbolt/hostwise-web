@@ -57,8 +57,9 @@ class Job < ActiveRecord::Base
 
   attr_accessor :current_user, :distance
 
-  def priority contractor
-    ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority
+  def priority contractor=nil
+    contractor ||= current_user
+    ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority if contractor
   end
 
   def tomorrow? date
