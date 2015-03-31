@@ -141,8 +141,11 @@ class User < ActiveRecord::Base
     primary = ContractorJobs.where(job_id: job.id, user_id: self.id)[0].primary
     job.contractors.destroy self
     job.size = job.contractors.count if job.booking && job.contractors.count >= job.minimum_job_size
-    job.training = false if self.contractor_profile.position == :trainee
-    job.open!
+    if self.contractor_profile.position == :trainee
+      job.training = false
+    else
+      job.open!
+    end
     job.save
     job.handle_distribution_jobs self
     Job.set_priorities self.jobs.on_date(job.date), self
