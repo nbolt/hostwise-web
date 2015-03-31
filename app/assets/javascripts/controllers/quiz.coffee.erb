@@ -2,7 +2,7 @@ QuizCtrl = ['$scope', '$http', 'spinner', ($scope, $http, spinner) ->
 
   $scope.selected_answers = {}
   $scope.current_q = 1
-  $scope.max_q = 1
+  $scope.max_q = <%= Rails.application.config.quiz_num_questions %>
   $scope.passing_score = 100
 
   $http.get('/quiz/type').success (rsp) ->
