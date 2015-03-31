@@ -1,7 +1,8 @@
-require "test_helper"
+require 'test_helper'
 
-describe Admin::AuthController do
+describe AuthController do
   it 'auth' do
-    #get :auth
+    get :auth
+    assert_redirected_to '/signin'
   end
 end
