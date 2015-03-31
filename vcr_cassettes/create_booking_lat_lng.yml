@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=53.349805,-6.26031&timestamp=1427399219
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=53.349805,-6.26031&timestamp=1427834647
     body:
       encoding: US-ASCII
       string: ''
@@ -21,7 +21,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Thu, 26 Mar 2015 19:46:59 GMT
+      - Tue, 31 Mar 2015 20:44:07 GMT
       Pragma:
       - no-cache
       Expires:
@@ -48,12 +48,12 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-           "dstOffset" : 0,
+           "dstOffset" : 3600,
            "rawOffset" : 0,
            "status" : "OK",
            "timeZoneId" : "Europe/Dublin",
-           "timeZoneName" : "Greenwich Mean Time"
+           "timeZoneName" : "Irish Standard Time"
         }
     http_version: 
-  recorded_at: Thu, 26 Mar 2015 19:46:59 GMT
+  recorded_at: Tue, 31 Mar 2015 20:44:07 GMT
 recorded_with: VCR 2.9.3
