@@ -80,7 +80,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.booking_notification_email = 'bookings@hostwise.com'
-  config.support_notification_email = 'support@hostwise.com'
+  config.support_notification_email = 'team@hostwise.com'
 
   config.quiz_num_questions = 10
 end
