@@ -32,9 +32,9 @@ http_interactions:
       X-Account-Header:
       - 374379a6-0000-0000-0000-000000000000
       X-Server-Name:
-      - streetapi-004-phoenix
+      - streetapi-002-phoenix
       Date:
-      - Tue, 31 Mar 2015 20:43:53 GMT
+      - Tue, 31 Mar 2015 22:02:05 GMT
       Content-Length:
       - '863'
     body:
@@ -42,10 +42,10 @@ http_interactions:
       string: |
         [{"input_index":0,"candidate_index":0,"delivery_line_1":"3100 Wynwood Ln","last_line":"Los Angeles CA 90023-4829","delivery_point_barcode":"900234829995","components":{"primary_number":"3100","street_name":"Wynwood","street_suffix":"Ln","city_name":"Los Angeles","state_abbreviation":"CA","zipcode":"90023","plus4_code":"4829","delivery_point":"99","delivery_point_check_digit":"5"},"metadata":{"record_type":"H","zip_type":"Standard","county_fips":"06037","county_name":"Los Angeles","carrier_route":"C022","congressional_district":"34","building_default_indicator":"Y","rdi":"Residential","elot_sequence":"0325","elot_sort":"A","latitude":34.02373,"longitude":-118.21046,"precision":"Zip9","time_zone":"Pacific","utc_offset":-8,"dst":true},"analysis":{"dpv_match_code":"D","dpv_footnotes":"AAN1","dpv_cmra":"N","dpv_vacant":"N","active":"Y","footnotes":"H#"}}]
     http_version: 
-  recorded_at: Tue, 31 Mar 2015 20:43:53 GMT
+  recorded_at: Tue, 31 Mar 2015 22:02:05 GMT
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=34.02373,-118.21046&timestamp=1427834633
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=34.02373,-118.21046&timestamp=1427839325
     body:
       encoding: US-ASCII
       string: ''
@@ -64,7 +64,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 31 Mar 2015 20:43:53 GMT
+      - Tue, 31 Mar 2015 22:02:05 GMT
       Pragma:
       - no-cache
       Expires:
@@ -98,5 +98,5 @@ http_interactions:
            "timeZoneName" : "Pacific Daylight Time"
         }
     http_version: 
-  recorded_at: Tue, 31 Mar 2015 20:43:53 GMT
+  recorded_at: Tue, 31 Mar 2015 22:02:06 GMT
 recorded_with: VCR 2.9.3
