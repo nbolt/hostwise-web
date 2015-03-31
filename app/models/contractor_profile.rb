@@ -78,13 +78,13 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   def handle_demoted
-    if position_cd_changed? && position == :trainee
+    if user && position_cd_changed? && position == :trainee
       user.jobs.standard.each {|job| user.drop_job job, true}
     end
   end
 
   def handle_fired
-    if position_cd_changed? && position == :fired
+    if user && position_cd_changed? && position == :fired
       user.activation_state = 'deactivated'
       user.save
     end

@@ -1,4 +1,4 @@
-	require "test_helper"
+require "test_helper"
 
 describe ContractorProfile do
 	it 'should return the right position' do
@@ -7,7 +7,6 @@ describe ContractorProfile do
 		profile_2 = create(:profile_2)
 		profile_2.current_position.must_equal ({:id => '2', :text => 'CONTRACTOR'})
 	end
-
 
 	it 'should display position properly' do
 		profile_1 = nil; profile_2 = nil; profile_3 = nil; profile_4 = nil, user_name_10 = nil
