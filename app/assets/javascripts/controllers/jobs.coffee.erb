@@ -89,7 +89,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDial
             day[2].date_text = date_text
 
 
-          if append
+          if append && tab.name == 'open'
             tab.days = tab.days.concat days
           else
             tab.days = days
@@ -102,7 +102,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'ngDial
     refresh_jobs()
 
   $scope.jobs_fetched.promise.then ->
-    angular.element('.body > .container').infiniteScrollHelper
+    angular.element('.tab-content .tab.open').infiniteScrollHelper
       loadMore: (page) ->
         $scope.page = page
         refresh_jobs true
