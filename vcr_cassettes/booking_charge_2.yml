@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=22000&currency=usd&customer=cus_5yT99jKsAXcbtj&source=card_5yT9FchRjWRCfj&statement_descriptor=HostWise%207450&metadata[job_id]=10757
+      string: amount=22000&currency=usd&customer=cus_5yUQ94D6cAXlpF&source=card_5yUQIdGCf1rAAL&statement_descriptor=HostWise%209329&metadata[job_id]=13360
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 31 Mar 2015 20:43:40 GMT
+      - Tue, 31 Mar 2015 22:02:39 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_U9QS7Vg8DsMJDnCb
+      - req_5SYUcftCD0Ub1RtD
       Stripe-Version:
       - '2014-12-17'
     body:
@@ -61,9 +61,9 @@ http_interactions:
             "type": "card_error",
             "code": "card_declined",
             "decline_code": "generic_decline",
-            "charge": "ch_5yT9wO3gr7tB0X"
+            "charge": "ch_5yUQam43XKAxCt"
           }
         }
     http_version: 
-  recorded_at: Tue, 31 Mar 2015 20:43:40 GMT
+  recorded_at: Tue, 31 Mar 2015 22:02:39 GMT
 recorded_with: VCR 2.9.3

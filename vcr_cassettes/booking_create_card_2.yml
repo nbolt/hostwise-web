@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_5yT99jKsAXcbtj/sources
+    uri: https://api.stripe.com/v1/customers/cus_5yUQ94D6cAXlpF/sources
     body:
       encoding: US-ASCII
       string: card[exp_month]=1&card[exp_year]=20&card[number]=4000000000000341
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 31 Mar 2015 20:43:35 GMT
+      - Tue, 31 Mar 2015 22:02:38 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_Lv9uBTyAHNhUk9FT
+      - req_22KJPlnH22NxyyIN
       Stripe-Version:
       - '2014-12-17'
       Strict-Transport-Security:
@@ -58,7 +58,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_5yT9FchRjWRCfj",
+          "id": "card_5yUQIdGCf1rAAL",
           "object": "card",
           "last4": "0341",
           "brand": "Visa",
@@ -79,8 +79,8 @@ http_interactions:
           "address_zip_check": null,
           "dynamic_last4": null,
           "metadata": {},
-          "customer": "cus_5yT99jKsAXcbtj"
+          "customer": "cus_5yUQ94D6cAXlpF"
         }
     http_version: 
-  recorded_at: Tue, 31 Mar 2015 20:43:35 GMT
+  recorded_at: Tue, 31 Mar 2015 22:02:38 GMT
 recorded_with: VCR 2.9.3
