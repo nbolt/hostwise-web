@@ -143,6 +143,7 @@ class User < ActiveRecord::Base
     if self.contractor_profile.position == :trainee
       job.training = false
     else
+      job.training = false if self.contractor_profile.position == :trainer
       job.open!
     end
     job.save
@@ -159,14 +160,15 @@ class User < ActiveRecord::Base
       mentors = job.contractors.trainers
       if trainee
         if mentors.present?
+          job.update_attribute :training, true
           TwilioJob.perform_later("+1#{mentors[0].phone_number}", "Your job on #{job.formatted_date} is now a mentor job. Pay out is now 80%!")
         else
           job.contractors.destroy trainee
           TwilioJob.perform_later("+1#{trainee.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
         end
       end
-      if team_members
-        ContractorJobs.where(job_id: job.id, user_id: mentors && mentors[0].id || team_members[0].id)[0].update_attribute :primary, true if primary
+      if team_members[0]
+        ContractorJobs.where(job_id: job.id, user_id: mentors[0] && mentors[0].id || team_members[0].id)[0].update_attribute :primary, true if primary
         team_members.each do |contractor|
           job.handle_distribution_jobs contractor
           jobs = contractor.jobs.on_date(job.date)
