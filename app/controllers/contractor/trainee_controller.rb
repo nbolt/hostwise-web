@@ -3,7 +3,8 @@ class Contractor::TraineeController < Contractor::AuthController
   def available_jobs
     jobs = Job.standard.future(current_user.contractor_profile.zone).scheduled.single.trainers.not_training.order('date')
     jobs = jobs - jobs.on_date(current_user.jobs.standard[0].date) if current_user.jobs.standard.first
-    jobs = jobs.to_a.uniq{|job| job.date}
+    jobs = jobs.each {|job| job.current_user = current_user}
+    jobs = jobs.reject {|job| job.previous_team_job}.uniq{|job| job.date}
     render json: jobs[0..7].to_json(include: :booking)
   end
 
