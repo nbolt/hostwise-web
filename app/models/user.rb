@@ -168,7 +168,7 @@ class User < ActiveRecord::Base
         end
       end
       if team_members[0]
-        ContractorJobs.where(job_id: job.id, user_id: mentors[0] && mentors[0].id || team_members[0].id)[0].update_attribute :primary, true if primary
+        ContractorJobs.where(job_id: job.id, user_id: mentors[0].then(:id) || team_members[0].id)[0].update_attribute :primary, true if primary
         team_members.each do |contractor|
           job.handle_distribution_jobs contractor
           jobs = contractor.jobs.on_date(job.date)
