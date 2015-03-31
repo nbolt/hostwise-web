@@ -159,7 +159,7 @@ class User < ActiveRecord::Base
       team_members = job.contractors.team_members
       mentors = job.contractors.trainers
       if trainee
-        if mentors
+        if mentors.present?
           TwilioJob.perform_later("+1#{mentors[0].phone_number}", "Your job on #{job.formatted_date} is now a mentor job. Pay out is now 80%!")
         else
           job.contractors.destroy trainee
