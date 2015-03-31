@@ -17,7 +17,7 @@ ModalCtrl = ['$scope', '$timeout', 'ngDialog', '$rootScope', ($scope, $timeout, 
 
   $rootScope.$on 'ngDialog.opened', (e, $dialog) ->
     el = $dialog.find('input')[0]
-    el.focus()
+    el.focus() if el
 ]
 
 app = angular.module('porter').controller('modal', ModalCtrl)
