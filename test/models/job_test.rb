@@ -34,6 +34,7 @@ describe Job do
 		VCR.use_cassette('create_job_1') { job_1 = create(:job_1) }
 		VCR.use_cassette('create_job_2') { job_2 = create(:job_2) }
 		VCR.use_cassette('create_job_3') { job_3 = create(:job_3) }
+
 		user_name_6.claim_job job_1
 		user_name_6.claim_job job_2
 		user_name_6.claim_job job_3

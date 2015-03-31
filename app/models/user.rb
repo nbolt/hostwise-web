@@ -103,7 +103,6 @@ class User < ActiveRecord::Base
 
   def claim_job job, admin=false
     jobs_today = self.jobs.on_date(job.date)
-    team_job = jobs_today.where('size > 1')[0]
     team_members = job.contractors.team_members
     if team_members.count == job.size && !admin
       { success: false, message: "Job already has assigned number of contractors" }
@@ -113,7 +112,7 @@ class User < ActiveRecord::Base
       { success: false, message: "Job would surpass maximum number of contractor man hours for the day" }
     elsif job.training
       { success: false, message: "Can't claim jobs with applicants attached" }
-    elsif job.size > 1 && team_job
+    elsif job.size > 1 && jobs_today.find {|job| job.contractors.count > 1} 
       { success: false, message: "Can't claim more team jobs for the day" }
     elsif job.cancelled?
       { success: false, message: "Can't claim a cancelled job" }
@@ -128,7 +127,7 @@ class User < ActiveRecord::Base
         job.save
       end
       job.handle_distribution_jobs self
-      job.contractors.team_members {|contractor| Job.set_priorities contractor.jobs.on_date(job.date), contractor}
+      job.contractors.each {|contractor| Job.set_priorities contractor.jobs.on_date(job.date), contractor}
       unless Rails.env.test?
         fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
         fanout.publish_async 'jobs', {}
