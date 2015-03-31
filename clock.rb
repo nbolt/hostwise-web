@@ -20,28 +20,28 @@ module Clockwork
       User.contractors.each do |contractor|
         timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
         time = timezone.time Time.now
-        jobs_today = contractor.jobs.on_date(time)
+        jobs_today = contractor.jobs.standard.on_date(time)
+        jobs_today.each {|j| j.current_user = contractor}
+        jobs_today = jobs_today.sort_by(&:priority)
         jobs_today.each do |job|
-          unless job.distribution || job.in_progress? || job.complete?
-            priority = ContractorJobs.where(job_id: job.id, user_id: contractor.id)[0].priority
-            staging = Rails.env.staging? && '[STAGING] ' || ''
-            case priority
-            when 1
-              if time.hour == 10
-                TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
-                UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
-              end
-            when 2
-              if time.hour == 13
-                TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
-                UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
-              end
-            when 3
-              if time.hour == 14
-                TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
-                UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
-              end
-            end
+          staging = Rails.env.staging? && '[STAGING] ' || ''
+          first_job? = job == jobs_today[0]
+          last_job?  = job == jobs_today[-1]
+          second_to_last? = if jobs_today.count > 1 then job == jobs_today[-2] else false end
+
+          if first_job? && job.status_cd == 1 && time.hour == 10
+            TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
+            UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
+          end
+
+          if second_to_last? && job.not_complete? && time.hour == 13
+            TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not completed job ##{job.id} (#{job.booking.property.nickname}) by 1:30p")
+            UserMailer.generic_notification("Contractor has not completed job - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not completed job ##{job.id} (#{job.booking.property.nickname}) by 1:30p - #{url.admin_job_url(job)}").then(:deliver)
+          end
+
+          if last_job? && job.status_cd == 1 && time.hour == 14
+            TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
+            UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
           end
         end
       end
