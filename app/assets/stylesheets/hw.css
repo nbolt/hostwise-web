@@ -323,6 +323,10 @@ a:hover{}
   text-decoration:underline;
 }
 
+/*BACKGROUND PATTERNS*/
+
+.teal-bg{background:url('/hw_images/bg_teal.png');}
+
 
 @media only screen and (max-width: 480px) {
 
@@ -1082,6 +1086,282 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   border-top:1px solid #e5e5e5;
 }
 
+
+/*--------------------------------*\
+*********** CONTRACTORS ************
+\*--------------------------------*/
+
+#banner-gray{
+  background:#f7f7f7;
+}
+
+#banner-contractors{
+  padding:80px 0 0 0;
+  background:url('/hw_images/bg_contractor.jpg') center top no-repeat;
+  background-size:cover;
+}
+
+#banner-contractors .container{
+  overflow:hidden;
+}
+
+#contractor-banner-image{
+  width:35%;
+  float:left;
+  overflow:hidden;
+}
+
+#team-members{
+  width:100%;
+  display:block;
+}
+
+#contractor-banner-text{
+  width:60%;
+  float:right;
+}
+
+#why-join{
+  margin:0 0 0 50px;
+  font: 1.5em 'Lato', sans-serif;
+  color:#fff;
+  line-height:1.5em;
+  list-style:disc;
+  text-align:left;
+}
+
+#apply-btn{
+  margin:2em 0 0 28px;
+  padding:2em 3em;
+  float:left;
+}
+
+#contractor-perks{
+  background:#f7f7f7;
+}
+
+#contractor-perks i{
+  font-size:3.5em;
+}
+
+#basic-requirements{
+  list-style:disc;
+  list-style-position: inside;
+  font-size:0.875em;
+  line-height:1.5em;
+}
+
+#basic-requirements li{
+  margin-bottom:0.75em;
+}
+
+#basic-requirements li:last-child{
+  margin-bottom:0;
+}
+
+.cont-testimonial{
+  width:60%;
+}
+
+.cont-testimonial:first-child{
+  margin:60px 0 20px 10%;
+}
+
+.cont-testimonial:last-child{
+  margin:0 10% 0 0;
+}
+
+.speech-bubble {
+  width: 90%;
+  padding: 10px 5%;
+  position: relative;
+  border: #2baab0 solid 3px;
+  text-align:center;
+  background:#ffffff;
+}
+
+.test-byline{
+  margin:20px 0 0 0;
+  overflow:hidden;
+}
+
+.test-byline p{
+  margin:18px 0 0 0;
+}
+
+.cont-testimonial.left{
+  float:left;
+}
+
+.cont-testimonial.left .speech-bubble:after {
+  content: '';
+  width: 0;
+  display: block;
+  position: absolute;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  border-color: #ffffff transparent;
+  z-index: 1;
+  bottom: -5px; left: 23px;
+}
+
+.cont-testimonial.left .speech-bubble:before 
+{
+  content: '';
+  width: 0;
+  display: block;
+  position: absolute;
+  border-style: solid;
+  border-width: 7px 7px 0;
+  border-color: #2baab0 transparent;
+  z-index: 0;
+  bottom: -10px; left: 21px;
+}
+
+.cont-testimonial.left img{
+  margin:0 20px 0 0;
+  float:left;
+}
+
+.cont-testimonial.right{
+  float:right;
+}
+
+.cont-testimonial.right .speech-bubble:after {
+  content: '';
+  width: 0;
+  display: block;
+  position: absolute;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  border-color: #ffffff transparent;
+  z-index: 1;
+  bottom: -5px; right: 23px;
+}
+
+.cont-testimonial.right .speech-bubble:before 
+{
+  content: '';
+  width: 0;
+  display: block;
+  position: absolute;
+  border-style: solid;
+  border-width: 7px 7px 0;
+  border-color: #2baab0 transparent;
+  z-index: 0;
+  bottom: -10px; right: 21px;
+}
+
+.cont-testimonial.right img{
+  margin:0 0 0 20px;
+  float:right;
+}
+
+.cont-testimonial.right .test-byline p{
+  text-align:right;
+}
+
+@media only screen and (max-width: 1080px) {
+  
+  #banner-contractors h1{font-size:2em;}
+
+}
+
+@media only screen and (max-width: 980px) {
+
+  #banner-contractors{
+    padding:80px 0;
+    position:relative;
+  }
+  
+  #banner-contractors h1{font-size:1.875em;}
+
+  #contractor-banner-image{
+    position:absolute;
+    right:20px; bottom:0;
+    float:none;
+  }
+
+  #contractor-banner-text{
+    width:100%;
+    float:none;
+  }
+
+  #why-join{
+    font-size:1.25em;
+  }
+
+}
+
+@media only screen and (max-width: 768px) {
+
+  #contractor-perks .col{
+    margin-bottom:40px;
+  }
+
+  #contractor-perks .col:last-child{
+    margin-bottom:0;
+  }
+
+  #contractor-info .container{
+    width:100%;
+  }
+
+  .cont-testimonial:last-child{
+    margin:0 10% 50px 0;
+  }
+
+}
+
+@media only screen and (max-width: 530px) {
+
+  #banner-contractors{
+    padding:80px 0;
+    position:relative;
+  }
+  
+  #banner-contractors h1{text-align:center;}
+
+  #contractor-banner-image{
+    position:static;
+    width:90%;
+    margin:0 auto;
+    border-bottom:1px solid rgba(255,255,255,0.5);
+  }
+
+  .team-crop{
+    width:60%;
+    margin:0 auto;
+  }
+
+  #contractor-banner-text{
+    width:90%;
+    margin:0 auto;
+  }
+
+  #why-join{
+    margin-left:0;
+    font-size:1em;
+    text-align:center;
+    list-style: none;
+  }
+
+  #why-join li::before{
+    content:'+ ';
+    font-weight:300;
+  }
+
+  #why-join li::after{
+    content:' +';
+    font-weight:300;
+  }
+
+  #apply-btn{
+    float:none;
+    margin-left:0;
+  }
+
+}
 
 /*--------------------------------*\
 ************** CONTACT *************
