@@ -39,8 +39,6 @@
 
 String.prototype.capitalize = function(){return this.charAt(0).toUpperCase() + this.slice(1)}
 
-$.cookie.json = true
-
 _.mixin({
   rotate: function(array, n, guard) {
     var head, tail
