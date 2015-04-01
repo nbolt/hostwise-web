@@ -23,8 +23,8 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
     {
       dropdownCssClass: 'payment'
       minimumResultsForSearch: -1
-      data: [{id:'credit-card', text:'Debit Card'}, {id:'bank-account', text:'Bank Account'}]
-      initSelection: (el, cb) -> cb {id:'credit-card', text:'Debit Card'}
+      data: [{id:'bank-account', text:'Bank Account'}]
+      initSelection: (el, cb) -> cb {id:'bank-account', text:'Bank Account'}
     }
 
   $scope.make_default = (payment) ->

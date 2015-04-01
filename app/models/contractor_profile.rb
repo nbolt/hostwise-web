@@ -44,11 +44,11 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   def create_stripe_recipient
-    if ssn? && !stripe_recipient_id
-      rsp = Stripe::Recipient.create(
-        :name => user.name,
-        :tax_id => Rails.env.production? ? ssn : '000000000',
-        :type => 'individual'
+    unless stripe_recipient_id
+      rsp = Stripe::Account.create(
+        :managed => true,
+        :country => 'US',
+        :email => user.email
       )
       self.stripe_recipient_id = rsp.id
     end
