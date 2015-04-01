@@ -62,6 +62,18 @@ describe HomeController do
   end
 
   it 'stripe_recipient' do
+    get :stripe_recipient
+    assert_response :success
+    body = JSON.parse(response.body)
+    body.must_equal ( {'success' => false} )
+
+    user_name_13 = nil
+    VCR.use_cassette('create_user_name_13') { user_name_13 = create(:user_name_13) }
+    login_user(user_name_13)
+    get :stripe_recipient
+    assert_response :success
+    body = JSON.parse(response.body)
+    body['recipient']['id'].must_equal 'acct_15mpviEUZIzGWSsO'
   end
 
   it 'user' do
