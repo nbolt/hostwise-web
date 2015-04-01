@@ -1,6 +1,6 @@
 namespace :booking do
   task send_reminder: :environment do
-    bookings = Booking.tomorrow.active
+    bookings = Booking.tomorrow.where(status_cd: [1,4])
     puts "Sending #{bookings.count} reminders..."
     bookings.each do |booking|
       puts "Booking ID: #{booking.id}"
