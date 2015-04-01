@@ -12,6 +12,8 @@
               img ng:src='{{::host.avatar}}'
               .name
                 | {{::host.name}}
+              .city
+                | City Name
           .vr
           .section.info
             div
@@ -25,8 +27,17 @@
                 label Email
                 input type='email' ng:model='host.email'
               .row
-                label Mobile Phone
+                label Phone Number
                 input type='text' ng:model='host.phone_number'
+              .row
+                label Address
+                input type='text' ng:model=''
+                .caption Address Line 1
+              .row.two
+                input type='text' ng:model='' 
+                input.right type='text' ng:model=''
+                .caption Unit # (optional)
+                .caption.right Zip Code
           .vr
           .section.pwd
             div
@@ -35,6 +46,8 @@
                   .icon
                     i.icon-refresh
                   .text Save Changes
+      .step.two
+        form style='height: 100px;'
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to
     span ng:click='open_deactivation()'  deactivate {{host.first_name}}'s account?
