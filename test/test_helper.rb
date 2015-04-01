@@ -1,5 +1,6 @@
 ENV["RAILS_ENV"] = "test"
 
+include Sorcery::TestHelpers::Rails::Controller
 require 'simplecov'
 SimpleCov.start
 
