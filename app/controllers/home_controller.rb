@@ -43,7 +43,7 @@ class HomeController < ApplicationController
 
   def stripe_recipient
     if current_user.chain(:contractor_profile, :stripe_recipient_id)
-      recipient = Stripe::Recipient.retrieve current_user.contractor_profile.stripe_recipient_id
+      recipient = Stripe::Account.retrieve current_user.contractor_profile.stripe_recipient_id
       render json: { success: true, recipient: recipient }
     else
       render json: { success: false }

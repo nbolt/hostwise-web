@@ -116,6 +116,8 @@ class User < ActiveRecord::Base
       { success: false, message: "Can't claim more team jobs for the day" }
     elsif job.cancelled?
       { success: false, message: "Can't claim a cancelled job" }
+    elsif payments.empty?
+      { success: false, message: "Cannot claim jobs until you setup a payout method" }
     elsif job.contractors.index self
       { success: true }
     else

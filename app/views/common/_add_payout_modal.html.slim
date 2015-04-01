@@ -8,8 +8,8 @@ script#add-payout-modal type="text/ng-template"
         .content
           .payment-method
             .text Select Payout Method
-            input type='hidden' ui-select2='payoutMethodHash()' ng:model='payment_method' value='credit-card'
-          .payment-tab.credit-card.active
+            input type='hidden' ui-select2='payoutMethodHash()' ng:model='payment_method' value='bank-account'
+          .payment-tab.credit-card
             .field.card-number
               .label Card Number
               input data-stripe='number' ng:model='card.number'
@@ -20,7 +20,7 @@ script#add-payout-modal type="text/ng-template"
               .field.cvc
                 .label CV Code
                 input data-stripe='cvc' ng:model='card.cvc' placeholder='123'
-          .payment-tab.bank-account
+          .payment-tab.bank-account.active
             .row.two
               .field.account-number
                 .label Account Number

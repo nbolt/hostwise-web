@@ -5,18 +5,18 @@
   .payment-container ng::controller='payment'
     .flash
     ul
-      li ng:show='(recipient.cards.total_count > 0 || recipient.active_account) && user.payments[0]'
+      li ng:show='user.payments[0]'
         i.icon-bank
-        .details ng:show='recipient.cards.total_count > 0'
+        /.details ng:show='recipient.cards.total_count > 0'
+        /  span
+        /    strong
+        /      | {{recipient.cards.data[0].brand}}
+        /    |  - Card ending in {{recipient.cards.data[0].last4}}
+        .details ng:show='recipient.bank_accounts.data[0]'
           span
             strong
-              | {{recipient.cards.data[0].brand}}
-            |  - Card ending in {{recipient.cards.data[0].last4}}
-        .details ng:show='recipient.active_account && recipient.cards.total_count == 0'
-          span
-            strong
-              | {{recipient.active_account.bank_name}}
-            |  - Bank ending in {{recipient.active_account.last4}}
+              | {{recipient.bank_accounts.data[0].bank_name}}
+            |  - Bank ending in {{recipient.bank_accounts.data[0].last4}}
         .links
           a href='' ng:click='open_deletion()' Remove
       li.add-payment ng:hide='user.payments[0]'
