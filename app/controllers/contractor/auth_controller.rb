@@ -1,6 +1,6 @@
 class Contractor::AuthController < ApplicationController
   layout 'contractor'
-  before_filter :require_login, :handle_trainees
+  before_filter :require_login, :handle_incomplete_profiles
 
   private
 
@@ -15,10 +15,12 @@ class Contractor::AuthController < ApplicationController
     redirect_to root_url + 'signin'
   end
 
-  def handle_trainees
-    if !request.headers['X-CSRF-Token'] && current_user
+  def handle_incomplete_profiles
+    if current_user && !request.headers['X-CSRF-Token']
       if !current_user.contractor_profile && request.fullpath != '/users/activate'
         redirect_to '/users/activate'
+      elsif current_user.payments.empty? && request.fullpath != '/payments' && request.fullpath != '/users/activate'
+        redirect_to '/payments'
       end
     end
   end
