@@ -1,4 +1,4 @@
-JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload', 'ngDialog', ($scope, $http, $timeout, $interval, $window, $q, $upload, ngDialog) ->
+JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload', 'spinner', 'ngDialog', ($scope, $http, $timeout, $interval, $window, $q, $upload, spinner, ngDialog) ->
 
   $scope.jobQ = $q.defer()
   $scope.job_status = 'blocked'
@@ -121,12 +121,14 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.cant_access = (type) ->
     ngDialog.closeAll()
-    params = {spinner:true}
+    params = {}
     params.property_occupied = true if type is 'property_occupied'
+    spinner.startSpin()
     $http.post("/jobs/#{$scope.job.id}/cant_access", params).success (rsp) ->
       $scope.job.status_cd = rsp.status_cd
       $scope.job.cant_access_seconds_left = rsp.seconds_left
       $http.get($window.location.href + '/status').success (rsp) ->
+        spinner.stopSpin()
         $scope.job.status = rsp.status
         $scope.job.blocker = rsp.blocker
 
@@ -364,10 +366,12 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.complete_job = ->
     if $scope.complete_class() == ''
-      $http.post("/jobs/#{$scope.job.id}/complete", {spinner:true}).success (_rsp) ->
+      spinner.startSpin()
+      $http.post("/jobs/#{$scope.job.id}/complete").success (_rsp) ->
         $scope.next_job = _rsp.next_job
 
         $http.get($window.location.href + '/status').success (rsp) ->
+          spinner.stopSpin()
           $scope.job.status_cd = _rsp.status_cd
           $scope.job.status = rsp.status
           $scope.job.blocker = rsp.blocker
@@ -379,13 +383,13 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.$watch 'damage_photo', ->
     if $scope.damage_photo && $scope.damage_photo[0]
+      spinner.startSpin()
       $upload.upload(
         url: '/checklist/damage_photo'
         data: { contractor_id: $scope.user.id, job_id: $scope.job.id }
         file: $scope.damage_photo[0]
-        headers:
-          spinner: true
       ).success (rsp) ->
+        spinner.stopSpin()
         if rsp.success
           $scope.checklist.contractor_photos = rsp.contractor_photos
         else
@@ -393,13 +397,13 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.$watch 'kitchen_photo', ->
     if $scope.kitchen_photo && $scope.kitchen_photo[0]
+      spinner.startSpin()
       $upload.upload(
         url: '/checklist/snap_photo'
         data: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'kitchen' }
         file: $scope.kitchen_photo[0]
-        headers:
-          spinner: true
       ).success (rsp) ->
+        spinner.stopSpin()
         if rsp.success
           $scope.checklist["kitchen_photo"] = rsp.photo
         else
@@ -407,13 +411,13 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.$watch 'bedroom_photo', ->
     if $scope.bedroom_photo && $scope.bedroom_photo[0]
+      spinner.startSpin()
       $upload.upload(
         url: '/checklist/snap_photo'
         data: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'bedroom' }
         file: $scope.bedroom_photo[0]
-        headers:
-          spinner: true
       ).success (rsp) ->
+        spinner.stopSpin()
         if rsp.success
           $scope.checklist["bedroom_photo"] = rsp.photo
         else
@@ -421,13 +425,13 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.$watch 'bathroom_photo', ->
     if $scope.bathroom_photo && $scope.bathroom_photo[0]
+      spinner.startSpin()
       $upload.upload(
         url: '/checklist/snap_photo'
         data: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'bathroom' }
         file: $scope.bathroom_photo[0]
-        headers:
-          spinner: true
       ).success (rsp) ->
+        spinner.stopSpin()
         if rsp.success
           $scope.checklist["bathroom_photo"] = rsp.photo
         else

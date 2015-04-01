@@ -30,8 +30,10 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
     ngDialog.closeAll()
 
   $scope.claim = (job, day) ->
-    $http.post("/jobs/#{job.id}/claim", {spinner:true}).success (rsp) ->
-      $http.get("/data/refresh_day?id=#{job.id}", {spinner:true}).success (_rsp) ->
+    spinner.startSpin()
+    $http.post("/jobs/#{job.id}/claim").success (rsp) ->
+      $http.get("/data/refresh_day?id=#{job.id}").success (_rsp) ->
+        spinner.stopSpin()
         element = angular.element("#day-#{day[0]}")
         $scope.close_modal()
         if rsp.success
