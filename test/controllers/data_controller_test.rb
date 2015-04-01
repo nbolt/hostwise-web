@@ -6,10 +6,10 @@ describe DataController do
     VCR.use_cassette('create_city_1') { city_2 = create(:city_1) }
     VCR.use_cassette('create_city_2') { city_2 = create(:city_2) }
 
-    get(:cities, {'param' => "value"} )  
+    get(:cities,:term => 'plano')  
     assert_response :success
     body = JSON.parse(response.body)
-    #body.must_equal 
+    body[0]['name'].must_equal 'plano'
   end 
 
   it 'services' do
@@ -34,6 +34,19 @@ describe DataController do
   end
 
   it 'properties' do
+    user_name_14 = nil, property_1 = nil, property_2 = nil
+    VCR.use_cassette('create_property_1') { property_1 = create(:property_1) }
+    property_1.must_equal property_1
+    VCR.use_cassette('create_property_2') { property_1 = create(:property_2) }
+    property_2.must_equal property_2
+    VCR.use_cassette('create_user_name_14') { user_name_14 = create(:user_name_14) }
+
+    login_user(user_name_14)
+
+    get(:properties, :term => '75093')
+    assert_response :success
+    body = JSON.parse(response.body)
+    #body[0]['zip'].must_equal ''
   end
 
   it 'service_available' do
@@ -43,8 +56,7 @@ describe DataController do
   end
 
   it 'jobs' do
-    #get :jobs, scope: 'open'
-    #assert_response :success
+    
   end
 
   it 'refresh_day' do
@@ -70,8 +82,17 @@ describe DataController do
   end
 
   it 'hosts' do
-    # add users
-    get :hosts, term: '593'
+    user_name_12 = nil, user_name_13 = nil, profile_1 = nil, profile_2 = nil
+    VCR.use_cassette('create_profile_1') { profile_1 = create(:profile_1) }
+    profile_1.must_equal profile_1
+    VCR.use_cassette('create_profile_2') { profile_2 = create(:profile_2) }
+    profile_2.must_equal profile_2
+
+    VCR.use_cassette('create_user_name_12') { user_name_12 = create(:user_name_12) }
+    VCR.use_cassette('create_user_name_13') { user_name_13 = create(:user_name_13) }
+    get :hosts, term: 'claire'
     assert_response :success
+    body = JSON.parse(response.body)
+    body[0]['email'].must_equal 'claire.s.beaumont@gmail.com'
   end
 end

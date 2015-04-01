@@ -12,13 +12,21 @@ describe HomeController do
   end
 
   it 'signup' do
+    user_name_13 = nil
+    VCR.use_cassette('create_user_name_13') { user_name_13 = create(:user_name_13) }
+    login_user(user_name_13)
+
     post :signup
-    # assert_redirected_to :root    
+    assert_redirected_to root_path  
   end
 
   it 'signin' do
+    user_name_13 = nil
+    VCR.use_cassette('create_user_name_13') { user_name_13 = create(:user_name_13) }
+    login_user(user_name_13)
+
     post :signin
-    # assert_redirected_to :root  
+    assert_redirected_to auth_path  
   end
 
   it 'signout' do
@@ -57,5 +65,32 @@ describe HomeController do
   end
 
   it 'user' do
+    get :user
+    must_render_template nil
+
+    user_name_13 = nil, user_name_10 = nil, user_name_11 = nil
+    VCR.use_cassette('create_user_name_13') { user_name_13 = create(:user_name_13) }
+    VCR.use_cassette('create_user_name_11') { user_name_11 = create(:user_name_11) }
+    VCR.use_cassette('create_user_name_10') { user_name_10 = create(:user_name_10) }
+    
+    login_user(user_name_13)
+    get :user
+    assert_response :success
+    body = JSON.parse(response.body)
+    body['email'].must_equal 'dustinj593@gmail.com'
+
+    logout_user
+    login_user(user_name_10)
+    get :user
+    assert_response :success
+    body = JSON.parse(response.body)
+    body['email'].must_equal 'dustinjones600@gmail.com'
+
+    logout_user
+    login_user(user_name_11)
+    get :user
+    assert_response :success
+    body = JSON.parse(response.body)
+    body['email'].must_equal 'david.siqi.kong@gmail.com'
   end
 end

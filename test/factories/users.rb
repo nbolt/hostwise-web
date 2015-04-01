@@ -103,4 +103,33 @@ FactoryGirl.define do |user|
     role_cd 0
     association :contractor_profile, factory: :profile_2
   end
+
+  factory :user_name_12, class: User do
+    email 'claire.s.beaumont@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "9722149321"
+    role_cd 1
+    association :contractor_profile, factory: :profile_2
+  end
+
+  factory :user_name_13, class: User do
+    email 'dustinj593@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "9722149321"
+    role_cd 1
+    association :contractor_profile, factory: :profile_2
+  end
+
+  factory :user_name_14, class: User do
+    email 'hello@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "1111111122"
+    role_cd 1
+     after(:property) do |user|
+      user.payments << create(:property_2)
+    end
+  end
 end
