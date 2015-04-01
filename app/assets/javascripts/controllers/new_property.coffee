@@ -1,4 +1,4 @@
-NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDialog', ($scope, $http, $timeout, $upload, $location, ngDialog) ->
+NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinner', 'ngDialog', ($scope, $http, $timeout, $upload, $location, spinner, ngDialog) ->
 
   $scope.num_steps = 3
   $scope.posting = false
@@ -47,12 +47,12 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
 
   $scope.$watch 'files', ->
     if $scope.files && $scope.files[0]
+      spinner.startSpin()
       $upload.upload(
         url: '/properties/upload'
         file: $scope.files[0]
-        headers:
-          spinner: true
       ).success (rsp) ->
+        spinner.stopSpin()
         if rsp.success
           angular.element('.preview').attr('src', rsp.image)
         else
@@ -76,6 +76,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
       post = ->
         unless $scope.posting
           $scope.posting = true
+          spinner.startSpin() if spinner
           if $scope.files && $scope.files[0]
             $upload.upload(
               url: '/properties/build'
@@ -84,7 +85,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
                 stage: n
                 form: $scope.form
                 extras: $scope.extras
-                spinner: spinner
             ).success success_wrap
           else
             $http(
@@ -94,7 +94,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
                 stage: n
                 form: $scope.form
                 extras: $scope.extras
-                spinner: spinner
             ).success success_wrap
 
       if n < $scope.num_steps
@@ -109,6 +108,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'ngDia
 
       success_wrap = (rsp) ->
         $scope.posting = false
+        spinner.stopSpin()
         _($scope.extras).extend(rsp.extras)
         if rsp.success
           if rsp.slug

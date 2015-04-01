@@ -9,11 +9,12 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'n
   $scope.setup_account = ->
     if validate(1)
       if $scope.user.tos == 'yes'
+        spinner.startSpin()
         $http.put('/users/' + $scope.token + '/activated', {
           user: $scope.user
           contractor_profile: $scope.contractor_profile
-          spinner: true
         }).success (rsp) ->
+          spinner.stopSpin()
           if rsp.success
             scroll 0
             goto 'two'
@@ -71,19 +72,21 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'n
 
   $scope.add_bank_account = ->
     $scope.payment_method = {id: 'bank-account'}
+    spinner.startSpin()
     Stripe.bankAccount.createToken
       country: 'US'
       routing_number: $scope.bank.routing_number
       account_number: $scope.bank.account_number
     , (_, rsp) ->
       if rsp.error
+        spinner.stopSpin()
         flash 'failure', rsp.error.message
       else
         $http.post('/payments/add',{
           stripe_id: rsp.id,
-          payment_method: $scope.payment_method,
-          spinner: true
+          payment_method: $scope.payment_method
         }).success (rsp) ->
+          spinner.stopSpin()
           if rsp.success
             $window.location = '/'
           else

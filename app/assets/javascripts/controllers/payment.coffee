@@ -1,4 +1,4 @@
-PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+PaymentCtrl = ['$scope', '$http', '$timeout', 'spinner', 'ngDialog', ($scope, $http, $timeout, spinner, ngDialog) ->
 
   $scope.card = {}
   $scope.bank = {}
@@ -74,6 +74,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       flash 'ok', 'Changes updated successfully!', true
 
   $scope.add_credit_card = ->
+    spinner.startSpin()
     exp_date = angular.element(".payment-tab.credit-card input[data-stripe=expiry]").val()
     exp_month = exp_date.split("/")[0]
     exp_year = exp_date.split("/")[1]
@@ -87,13 +88,14 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
       exp_year: exp_year
     , (_, rsp) ->
       if rsp.error
+        spinner.stopSpin()
         flash 'failure', rsp.error.message
       else
         $http.post('/payments/add',{
           stripe_id: rsp.id,
-          payment_method: $scope.payment_method,
-          spinner: true
+          payment_method: $scope.payment_method
         }).success (rsp) ->
+          spinner.stopSpin()
           if rsp.success
             $scope.card = {}
             $scope.$emit 'refresh_recipient'
@@ -103,6 +105,7 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
             flash 'failure', rsp.message
 
   $scope.add_bank_account = ->
+    spinner.startSpin()
     Stripe.bankAccount.createToken
       country: 'US'
       routing_number: $scope.bank.routing_number
@@ -110,12 +113,13 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeo
     , (_, rsp) ->
       if rsp.error
         flash 'failure', rsp.error.message
+        spinner.stopSpin()
       else
         $http.post('/payments/add',{
           stripe_id: rsp.id,
-          payment_method: $scope.payment_method,
-          spinner: true
+          payment_method: $scope.payment_method
         }).success (rsp) ->
+          spinner.stopSpin()
           if rsp.success
             $scope.bank = {}
             $scope.$emit 'refresh_recipient'

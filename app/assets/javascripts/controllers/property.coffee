@@ -1,4 +1,4 @@
-PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload', '$rootScope', 'ngDialog', ($scope, $http, $window, $timeout, $interval, $upload, $rootScope, ngDialog) ->
+PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload', '$rootScope', 'spinner', 'ngDialog', ($scope, $http, $window, $timeout, $interval, $upload, $rootScope, spinner, ngDialog) ->
 
   $scope.form = {}
   $scope.chosen_dates = {}
@@ -114,21 +114,22 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
 
   $scope.update_property = ->
     post_url = "/properties/#{$scope.property.slug}/update"
+    spinner.startSpin()
     if $scope.files && $scope.files[0]
       $upload.upload(
         url: post_url
         file: $scope.files[0]
         data:
           form: $scope.form
-        headers:
-          spinner: true
       ).success (rsp) ->
+        spinner.stopSpin()
         if typeof rsp.success == 'undefined'
           $window.location = $window.location.href
         else
           flash 'failure', rsp.message, true
     else
       $http.post(post_url, {form: $scope.form}).success (rsp) ->
+        spinner.stopSpin()
         if typeof rsp.success == 'undefined'
           $scope.$emit 'refresh_property'
           ngDialog.closeAll()
@@ -137,12 +138,12 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
 
   $scope.$watch 'files', ->
     if $scope.files && $scope.files[0]
+      spinner.startSpin()
       $upload.upload(
         url: '/properties/upload'
         file: $scope.files[0]
-        headers:
-          spinner: true
       ).success (rsp) ->
+        spinner.stopSpin()
         if rsp.success
           angular.element('.preview').attr('src', rsp.image)
         else
