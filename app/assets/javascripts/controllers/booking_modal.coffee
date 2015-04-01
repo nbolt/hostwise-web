@@ -1,4 +1,4 @@
-BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog', ($scope, $http, $timeout, $q, $rootScope, ngDialog) ->
+BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner', 'ngDialog', ($scope, $http, $timeout, $q, $rootScope, spinner, ngDialog) ->
 
   last_payment = null
   $scope.days = []
@@ -76,7 +76,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           flash "failure", rsp.error.message
           defer.reject() if defer
         else
-          $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method,spinner:true}).success (rsp) ->
+          $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method}).success (rsp) ->
             if rsp.success
               $scope.$emit 'fetch_user'
               defer.resolve rsp.payment.id if defer
@@ -87,6 +87,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
   $scope.book = ->
     unless $scope.booking
       $scope.booking = true
+      spinner.startSpin()
       defer = $q.defer()
       defer.promise.then(((id) ->
         $http.post("/properties/#{$scope.property.slug}/book", {
@@ -95,9 +96,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
           dates: $scope.chosen_dates
           late_next_day: $scope.next_day_booking
           late_same_day: $scope.same_day_booking
-          spinner: true
         }).success (rsp) ->
           $scope.booking = false
+          spinner.stopSpin()
           angular.element('#book').removeClass 'loading'
           if rsp.success
             $scope.to_booking_confirmation()
@@ -113,6 +114,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
             flash 'failure', rsp.message
       ), ->
         $scope.booking = false
+        spinner.stopSpin()
       )
 
       if $scope.payment.id == 'new'
@@ -237,18 +239,19 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
         $scope.slide 'cancelled'
 
   $scope.update = ->
+    spinner.startSpin()
     defer = $q.defer()
-    defer.promise.then((id) ->
+    defer.promise.then(((id) ->
       $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/update", {
         payment: id
         services: services_array()
-        spinner: true
       }).success (rsp) ->
+        spinner.stopSpin()
         if rsp.success
           $scope.to_booking_confirmation()
         else
           flash 'failure', rsp.message
-    )
+    ),(-> spinner.stopSpin()))
 
     if $scope.payment.id == 'new'
       $scope.add_payment defer
