@@ -16,4 +16,10 @@ FactoryGirl.define do
     card_type 'Visa'
     status :active
   end
+
+  factory :bank_account, class: Payment do
+    last4 '2329'
+    bank_name 'BANCORP'
+    status :active
+  end
 end

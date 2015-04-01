@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=53.349805,-6.26031&timestamp=1427839365
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=53.349805,-6.26031&timestamp=1427851097
     body:
       encoding: US-ASCII
       string: ''
@@ -21,7 +21,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 31 Mar 2015 22:02:46 GMT
+      - Wed, 01 Apr 2015 01:18:17 GMT
       Pragma:
       - no-cache
       Expires:
@@ -55,5 +55,5 @@ http_interactions:
            "timeZoneName" : "Irish Standard Time"
         }
     http_version: 
-  recorded_at: Tue, 31 Mar 2015 22:02:46 GMT
+  recorded_at: Wed, 01 Apr 2015 01:18:17 GMT
 recorded_with: VCR 2.9.3
