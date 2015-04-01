@@ -54,6 +54,7 @@ FactoryGirl.define do |user|
       user.payouts << create(:payout_3)
       user.payouts << create(:payout_4)
       user.payouts << create(:payout_5)
+      user.payments << create(:bank_account)
     end
   end
 
@@ -89,6 +90,9 @@ FactoryGirl.define do |user|
     phone_number "9722149321"
     role_cd 2
     association :contractor_profile, factory: :profile_2
+    after(:create) do |user|
+      user.payments << create(:bank_account)
+    end
   end
 
   factory :user_name_11, class: User do

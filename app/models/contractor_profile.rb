@@ -44,7 +44,7 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   def create_stripe_recipient
-    unless stripe_recipient_id
+    unless stripe_recipient_id || !user
       rsp = Stripe::Account.create(
         :managed => true,
         :country => 'US',
