@@ -45,6 +45,9 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
   $scope.show_applicant = ->
     $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0
 
+  $scope.show_supply = ->
+    $scope.job and $scope.job.occasion_cd == 0 and $scope.user and $scope.user.contractor_profile.position_cd != 1
+
   $scope.close_modal = -> ngDialog.closeAll()
 
   $scope.done_modal = ->
