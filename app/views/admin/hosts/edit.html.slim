@@ -29,15 +29,6 @@
               .row
                 label Phone Number
                 input type='text' ng:model='host.phone_number'
-              .row
-                label Address
-                input type='text' ng:model=''
-                .caption Address Line 1
-              .row.two
-                input type='text' ng:model='' 
-                input.right type='text' ng:model=''
-                .caption Unit # (optional)
-                .caption.right Zip Code
           .vr
           .section.pwd
             div
@@ -47,33 +38,21 @@
                     i.icon-refresh
                   .text Save Changes
       .step.two
-        form 
-          .section
+        form
+          .section.one
             h2 Last Booked
-            h2 00/00/00
-            h2.teal style='margin-right:30px;' $000
-            h2 ID
-            h2.teal 00000
-          .section
+          .section.two
             i.icon-details
             h2 Jobs Booked
-            h2.teal 00
-          .section 
+          .section.three
             i.icon-earnings
-            h2 Total Spent
-            h2 00,000.00
-          .section
+            h2 Total Spent 
+          .section.four
             i.icon-apt
             h2 Properties
-            h2.teal 000 
-      .step.three
-        form
-          .section
-            h2 Total Properties
-            h2.teal 00
-          .section
-            i.icon-search
-            input value='Search for a property'
+            h2.teal 
+              | {{ host.properties.length }}
+
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to
     span ng:click='open_deactivation()'  deactivate {{host.first_name}}'s account?
