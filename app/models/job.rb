@@ -158,7 +158,7 @@ class Job < ActiveRecord::Base
 
   def minimum_job_size
     if booking
-      if (property.bedrooms == 3 && property.bathrooms >= 3) || property.bedrooms > 3 then 2 else 1 end
+      if (booking.property.bedrooms == 3 && booking.property.bathrooms >= 3) || booking.property.bedrooms > 3 then 2 else 1 end
     end
   end
 
