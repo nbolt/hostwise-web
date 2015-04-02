@@ -21,16 +21,16 @@ describe DataController do
     windows = create(:windows)
     preset = create(:preset)
 
-    get(:services, {'param' => "value"} )  
+    get :services
     assert_response :success
     body = JSON.parse(response.body)
-    body[0]['name'].must_equal 'cleaning'
-    body[1]['name'].must_equal 'linens'
-    body[2]['name'].must_equal 'toiletries'
-    body[3]['name'].must_equal 'pool'
-    body[4]['name'].must_equal 'patio'
-    body[5]['name'].must_equal 'windows'
-    body[6]['name'].must_equal 'preset'
+    body['data'][0]['name'].must_equal 'cleaning'
+    body['data'][1]['name'].must_equal 'linens'
+    body['data'][2]['name'].must_equal 'toiletries'
+    body['data'][3]['name'].must_equal 'pool'
+    body['data'][4]['name'].must_equal 'patio'
+    body['data'][5]['name'].must_equal 'windows'
+    body['data'][6]['name'].must_equal 'preset'
   end
 
   it 'properties' do
