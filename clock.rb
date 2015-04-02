@@ -25,9 +25,9 @@ module Clockwork
         jobs_today = jobs_today.sort_by(&:priority)
         jobs_today.each do |job|
           staging = Rails.env.staging? && '[STAGING] ' || ''
-          first_job? = job == jobs_today[0]
-          last_job?  = job == jobs_today[-1]
-          second_to_last? = if jobs_today.count > 1 then job == jobs_today[-2] else false end
+          first_job = job == jobs_today[0]
+          last_job  = job == jobs_today[-1]
+          second_to_last = if jobs_today.count > 1 then job == jobs_today[-2] else false end
 
           if first_job? && job.status_cd == 1 && time.hour == 10
             TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
