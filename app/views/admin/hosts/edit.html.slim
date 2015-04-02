@@ -49,7 +49,6 @@
       .step.two
         form 
           .section
-
             h2 Last Booked
             h2 00/00/00
             h2.teal style='margin-right:30px;' $000
@@ -66,7 +65,15 @@
           .section
             i.icon-apt
             h2 Properties
-            h2.teal 000
+            h2.teal 000 
+      .step.three
+        form
+          .section
+            h2 Total Properties
+            h2.teal 00
+          .section
+            i.icon-search
+            input value='Search for a property'
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to
     span ng:click='open_deactivation()'  deactivate {{host.first_name}}'s account?
