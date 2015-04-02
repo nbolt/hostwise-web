@@ -47,7 +47,22 @@
                     i.icon-refresh
                   .text Save Changes
       .step.two
-        form style='height: 100px;'
+        form 
+          .section
+
+            h2 Last Booked
+            h2 00/00/00
+            h2.teal style='margin-right:30px;' $000
+            h2 ID
+            h2.teal 00000
+          .section
+            i.icon-details
+            h2 Jobs Booked
+            h2.teal 00
+          .section 
+            i.icon-earnings
+            h2 Total Spent
+            h2 00,000.00
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to
     span ng:click='open_deactivation()'  deactivate {{host.first_name}}'s account?
