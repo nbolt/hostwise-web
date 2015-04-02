@@ -7,7 +7,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
 
   $scope.fetch_jobs = ->
     spinner.startSpin()
-    $http.get('/jobs.json',{params:{sort: $scope.sort.id,search: $scope.search,filter: $scope.filter.id}}).success (rsp) ->
+    $http.get('/jobs.json',{params: {sort: $scope.sort.id, search: $scope.search, filter: $scope.filter.id}}).success (rsp) ->
       spinner.stopSpin()
       $scope.jobs = rsp.jobs
       _($scope.jobs).each (job) ->

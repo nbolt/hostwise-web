@@ -1,5 +1,5 @@
 class BookingSerializer < ActiveModel::Serializer
-  attributes :id, :cost
+  attributes :id, :property_id, :cost
 
   has_one :property
 end
