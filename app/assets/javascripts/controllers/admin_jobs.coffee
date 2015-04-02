@@ -18,6 +18,8 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           when 2 then 'in progress'
           when 3 then 'completed'
           when 4 then 'past due'
+          when 5 then "can't access"
+          when 6 then 'cancelled'
 
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id

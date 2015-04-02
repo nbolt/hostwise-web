@@ -26,6 +26,11 @@ class Job < ActiveRecord::Base
       where('date > ?', now)
     end
   }
+  scope :future_from_today, -> (zone=nil) {
+    timezone = Timezone::Zone.new :zone => zone if zone
+    now = zone && timezone.time(Time.now) || Time.now
+    where('date >= ?', now)
+  }
   scope :visible, -> { where(state_cd: [0,1]) }
   scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { on_date(Time.now) }
