@@ -1,8 +1,8 @@
 AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
 
   promise = null
-  $scope.sort = {id:'id',text:'ID'}
-  $scope.filter = {id:'all',text:'All'}
+  $scope.sort = {id:'date',text:'Date'}
+  $scope.filter = {id:'future',text:'Future'}
   $scope.search = ''
 
   $scope.fetch_jobs = ->
