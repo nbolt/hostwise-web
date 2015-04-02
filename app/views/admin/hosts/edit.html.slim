@@ -39,19 +39,35 @@
                   .text Save Changes
       .step.two
         form
+          /# write method for placeholder later
           .section.one
             h2 Last Booked
+            h2.teal 00/00/00
           .section.two
             i.icon-details
             h2 Jobs Booked
+            h2.teal 000
           .section.three
             i.icon-earnings
             h2 Total Spent 
+            h2.teal $000
           .section.four
             i.icon-apt
             h2 Properties
             h2.teal 
               | {{ host.properties.length }}
+      .step.three
+        form
+          .section.one
+            i.icon-house
+            h2 Total Properties
+            h2.teal 
+              | {{ host.properties.length }}
+          .section.two
+            i.icon-mag
+            input value='Search for a property'
+            i.icon-acc-open
+          hr
 
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to
