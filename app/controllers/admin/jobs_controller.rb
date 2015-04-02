@@ -17,6 +17,7 @@ class Admin::JobsController < Admin::AuthController
       format.html
       format.json do
         render json: jobs.to_json(include: {contractors: {methods: :name}, booking: {methods: [:cost], include: {property: {methods: [:nickname, :short_address], include: {user: {methods: :name}}}}}})
+        #render json: jobs
       end
     end
   end
