@@ -60,9 +60,9 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
 
   $scope.step = (n) ->
     if n == 2 || $scope.extras.validated
-      spinner = false
+      spin = false
     else
-      spinner = true
+      spin = true
 
     if validate(n)
       if n == 3
@@ -76,7 +76,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
       post = ->
         unless $scope.posting
           $scope.posting = true
-          spinner.startSpin() if spinner
+          spinner.startSpin() if spin
           if $scope.files && $scope.files[0]
             $upload.upload(
               url: '/properties/build'
