@@ -2085,9 +2085,9 @@ form
             margin-top: 13px
     .claimed-container
       display: none
-      margin: 40px 0 0 40px
+      padding: 40px
       @media phone
-        margin: 20px
+        padding: 20px
       .icon, .text
         display: inline-block
         vertical-align: top
@@ -2108,19 +2108,50 @@ form
         border-radius: 50%
         font-size: 1.8em
         box-sizing: border-box
-        padding-top: 15px
-        padding-left: 20px
+        line-height: 70px
+        text-align: center
         @media phone
           padding: 0px
-          line-height: 70px
-          text-align: center
           font-size: 2em
     &.claimed
-      overflow: auto
       .flag, .photo, .order, .right
         display: none
       .claimed-container
         display: block
+    &.claimed.success
+      background-color: light-teal
+      color: white
+      .right
+        display: block
+        .top
+          display: none
+        .bottom
+          border-top: 2px solid teal
+          color: white
+          .payout
+            background-color: teal
+            color: white
+            i
+              color: white
+          .rooms
+            i
+              color: white
+            .text
+              color: white
+          .size .text
+            color: white
+      .claimed-container
+        height: 65px
+        padding: 18px
+        margin: 0
+        .icon
+          background-color: dark-teal
+        .text
+          line-height: 65px
+          margin: 0 0 0 20px
+          width: auto
+          strong
+            color: white
 
 .card-entry
   border: thin solid border-gray
