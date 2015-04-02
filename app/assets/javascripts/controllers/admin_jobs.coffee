@@ -1,4 +1,4 @@
-AdminJobsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
 
   promise = null
   $scope.sort = {id:'id',text:'ID'}
@@ -6,8 +6,10 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
   $scope.search = ''
 
   $scope.fetch_jobs = ->
+    spinner.startSpin()
     $http.get('/jobs.json',{params:{sort: $scope.sort.id,search: $scope.search,filter: $scope.filter.id}}).success (rsp) ->
-      $scope.jobs = rsp
+      spinner.stopSpin()
+      $scope.jobs = rsp.jobs
       _($scope.jobs).each (job) ->
         job.contractor_list = _(job.contractors).map((contractor) -> contractor.name).join(', ')
         job.status = switch job.status_cd
@@ -36,10 +38,10 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
       initSelection: (el, cb) ->
     }
 
-  $scope.$watch 'sort.id', (n,o) -> $scope.fetch_jobs() if o
-  $scope.$watch 'filter.id', (n,o) -> $scope.fetch_jobs() if o
+  $scope.$watch 'sort.id', (n,o) -> $scope.fetch_jobs() if o != undefined && o != n
+  $scope.$watch 'filter.id', (n,o) -> $scope.fetch_jobs() if o != undefined && o != n
 
-  $scope.$watch 'search', (n,o) -> if o != undefined
+  $scope.$watch 'search', (n,o) -> if o != undefined && o != n
     $timeout.cancel promise
     promise = $timeout (->
       $scope.search = n
