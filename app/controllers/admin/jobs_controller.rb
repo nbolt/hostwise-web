@@ -11,13 +11,11 @@ class Admin::JobsController < Admin::AuthController
     end
     jobs = jobs.search(params[:search]) if params[:search] && !params[:search].empty?
     jobs = jobs.order(params[:sort])
-    jobs = jobs.reverse if params[:sort] && params[:sort] == 'id'
 
     respond_to do |format|
       format.html
       format.json do
-        render json: jobs.to_json(include: {contractors: {methods: :name}, booking: {methods: [:cost], include: {property: {methods: [:nickname, :short_address], include: {user: {methods: :name}}}}}})
-        #render json: jobs
+        render json: jobs.includes(contractors: {}, booking: {property: {user: {}}})
       end
     end
   end
