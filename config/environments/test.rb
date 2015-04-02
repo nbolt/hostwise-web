@@ -43,5 +43,4 @@ Rails.application.configure do
   config.active_record.raise_in_transactional_callbacks = true
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  config.quiz_num_questions = 1
 end
