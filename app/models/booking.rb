@@ -1,6 +1,6 @@
 class Booking < ActiveRecord::Base
   include PgSearch
-  pg_search_scope :search, associated_against: {user: [:first_name, :last_name, :email], property: [:title, :address1, :city, :state, :zip, :user_id]}, using: { tsearch: { prefix: true } }
+  pg_search_scope :search, against: [:id], associated_against: {user: [:first_name, :last_name, :email], property: [:title, :address1, :city, :state, :zip, :user_id]}, using: { tsearch: { prefix: true } }
 
   belongs_to :property
   belongs_to :payment

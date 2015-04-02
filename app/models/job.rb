@@ -1,6 +1,6 @@
 class Job < ActiveRecord::Base
   include PgSearch
-  pg_search_scope :search, associated_against: {booking: [:property_id]}
+  pg_search_scope :search, against: [:id], associated_against: {booking: [:property_id]}
 
   belongs_to :booking
 
