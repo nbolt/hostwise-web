@@ -28,7 +28,7 @@
             .icon
               i.icon-alert-ok
             .text ng:click='done_modal()' Click to complete drop off
-      .section.supplies ng:show='job.occasion_cd == 0'
+      .section.supplies ng:show='show_supply()'
         .head
           .icon
             i.icon-count
