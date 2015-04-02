@@ -209,7 +209,7 @@ class Host::PropertiesController < Host::AuthController
       if booking.services.where(name: 'preset')[0]
         render json: Service.standard
       else
-        render json: booking.services
+        render json: { services: booking.services }
       end
     else
       render json: Service.standard
