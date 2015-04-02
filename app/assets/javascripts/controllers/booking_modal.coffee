@@ -14,7 +14,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'ngDialog
 
   unless $scope.selected_booking
     $http.get("/properties/#{$scope.property.slug}/last_services").success (rsp) ->
-      _(rsp).each (service) ->
+      _(rsp.services).each (service) ->
         angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
         $scope.selected_services[service.name] = true
         $scope.calculate_pricing()
