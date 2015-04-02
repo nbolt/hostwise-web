@@ -2086,6 +2086,8 @@ form
     .claimed-container
       display: none
       margin: 40px 0 0 40px
+      @media phone
+        margin: 20px
       .icon, .text
         display: inline-block
         vertical-align: top
@@ -2095,6 +2097,9 @@ form
         line-height: 21px
         strong
           color: heavy-gray
+        @media phone
+          width: 70%
+          margin: 5px 0px 0px 10px
       .icon
         background-color: teal
         color: white
@@ -2105,6 +2110,11 @@ form
         box-sizing: border-box
         padding-top: 15px
         padding-left: 20px
+        @media phone
+          padding: 0px
+          line-height: 70px
+          text-align: center
+          font-size: 2em
     &.claimed
       overflow: auto
       .flag, .photo, .order, .right
