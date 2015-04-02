@@ -20,14 +20,12 @@
                 strong You're all booked up!
                 br
                 | You've claimed as many jobs as possible for this day.
-          .job id='job-{{job.id}}' ng:repeat='job in day[1]' ng:click="tab.name != 'open' && goto(job.id)"
+          .job id='job-{{job.id}}' class='success' ng:repeat='job in day[1]' ng:click="tab.name != 'open' && goto(job.id)"
             .claimed-container
               .icon
-                i.icon-full-schedule
+                i.icon-alert-ok
               .text
-                strong Claimed successfully!
-                br
-                | You've successfully claimed this job.
+                strong Congrats! You claimed this job.
             .flag ng:class='pricing_class(job)'
             .photo
               img ng:show="tab.name != 'upcoming'" ng:src='{{job.booking.property.primary_photo}}'
