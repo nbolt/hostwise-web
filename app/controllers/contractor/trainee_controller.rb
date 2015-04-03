@@ -19,12 +19,13 @@ class Contractor::TraineeController < Contractor::AuthController
         render json: { success: false }
       else
         jobs.each do |job|
+          prev_payout = job.payout job.primary_contractor
           job.update_attribute :training, true
           job.contractors.push current_user
           ContractorJobs.where(job_id: job.id, user_id: current_user.id)[0].update_attribute :priority, 1
           distribution_job = job.primary_contractor.jobs.on_date(job.date).pickup[0]
           distribution_job.contractors.push current_user
-          TwilioJob.perform_later("+1#{job.primary_contractor.phone_number}", "Your job on #{job.formatted_date} is now a mentor job. Pay out is now 80%!")
+          TwilioJob.perform_later("+1#{job.primary_contractor.phone_number}", "Your job on #{job.formatted_date} is now a mentor job. Payout has increased from $#{prev_payout} to $#{job.payout(job.primary_contractor)}!")
         end
         render json: { success: true }
       end

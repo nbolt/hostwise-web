@@ -162,8 +162,9 @@ class User < ActiveRecord::Base
       mentors = job.contractors.trainers
       if trainee
         if mentors.present?
+          prev_payout = job.payout mentors[0]
           job.update_attribute :training, true
-          TwilioJob.perform_later("+1#{mentors[0].phone_number}", "Your job on #{job.formatted_date} is now a mentor job. Pay out is now 80%!")
+          TwilioJob.perform_later("+1#{mentors[0].phone_number}", "Your job on #{job.formatted_date} is now a mentor job. Payout has increased from $#{prev_payout} to $#{job.payout(mentors[0])}!")
         else
           job.contractors.destroy trainee
           TwilioJob.perform_later("+1#{trainee.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
