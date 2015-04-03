@@ -259,6 +259,16 @@ a:hover{}
 .pl .yellow{color:#e6c15d;}
 .pl .red{color:#e26058;}
 
+.pl .center{text-align:center;margin:20px auto;width:900px;}
+
+@media only screen and (max-width: 768px) {
+  .pl .center{width:auto;}
+}
+
+@media only screen and (max-width: 480px) {
+  .pl .center{width:auto;}
+}
+
 /* BUTTONS */
 .btn{
   display:inline-block;
