@@ -185,15 +185,23 @@ class UserMailer < MandrillMailer::TemplateMailer
                       subject: 'Thank you for using HostWise',
                       to: {email: booking.property.user.email, name: booking.property.user.name},
                       vars: {
-                        'DATE' => date,
-                        'NICKNAME' => booking.property.nickname,
-                        'ADDRESS' => booking.property.full_address,
-                        'PAYMENT_METHOD' => payment_method.upcase,
-                        'ACCOUNT_NUM' => booking.payment.last4,
-                        'SERVICES' => booking.services.map(&:display).join(', '),
-                        'PRICE' => "$#{booking.cost}",
-                        'PROP_LINK' => property_url(booking.property.slug)
+                        date: date,
+                        nickname: booking.property.nickname,
+                        address: booking.property.full_address,
+                        payment_method: payment_method.upcase,
+                        account_num: booking.payment.last4,
+                        services: booking.services.map {|service| {
+                          display: service.display,
+                          cost: Booking.cost(booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)[service.name.to_sym]
+                        }},
+                        price: "$#{booking.cost}",
+                        late_same_day: booking.late_same_day,
+                        late_next_day: booking.late_next_day,
+                        first_booking_discount: booking.first_booking_discount,
+                        first_booking_discount_amount: Booking.cost(booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)[:first_booking_discount],
+                        prop_link: property_url(booking.property.slug)
                       },
+                      merge_language: 'handlebars',
                       inline_css: true,
                       async: true,
                       headers: {'Reply-To' => DEFAULT_REPLY_TO}

@@ -206,13 +206,13 @@ class Host::PropertiesController < Host::AuthController
   def last_services
     booking = property.bookings.where(status_cd: [1,4]).order(:created_at)[-1]
     if booking
-      if booking.services.where(name: 'preset')[0]
-        render json: Service.standard
+      if booking.services.empty? || booking.services.where(name: 'preset')[0]
+        render json: { services: Service.standard }
       else
         render json: { services: booking.services }
       end
     else
-      render json: Service.standard
+      render json: { services: Service.standard }
     end
   end
 
