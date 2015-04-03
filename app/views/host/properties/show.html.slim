@@ -134,30 +134,30 @@
           .text Property Instructions
           .arrow
             i.icon-acc-open ng:click='toggle($event)'
+        .instruction ng:if='property.parking_info'
+          .edit ng:click='edit_parking()'
+            i.icon-edit-gear
+          .content
+            .title Parking Instructions
+            .text ng:bind='property.parking_info'
         .instruction ng:if='property.access_info'
           .edit ng:click='edit_access()'
             i.icon-edit-gear
           .content
             .title Access Information
             .text ng:bind='property.access_info'
+        .instruction ng:if='property.restocking_info'
+          .edit ng:click='edit_restocking()'
+            i.icon-edit-gear
+          .content
+            .title Restocking Information
+            .text ng:bind='property.restocking_info'
         .instruction ng:if='property.trash_disposal'
           .edit ng:click='edit_trash()'
             i.icon-edit-gear
           .content
             .title Trash Disposal
             .text ng:bind='property.trash_disposal'
-        .instruction ng:if='property.parking_info'
-          .edit ng:click='edit_parking()'
-            i.icon-edit-gear
-          .content
-            .title Parking Information
-            .text ng:bind='property.parking_info'
-        .instruction ng:if='property.restocking_info'
-          .edit ng:click='edit_restocking()'
-            i.icon-edit-gear
-          .content
-            .title Restocking Instructions
-            .text ng:bind='property.restocking_info'
         .instruction ng:if='property.additional_info'
           .edit ng:click='edit_additional()'
             i.icon-edit-gear
