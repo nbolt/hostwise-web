@@ -59,11 +59,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
           flash 'failure', rsp.message
 
   $scope.step = (n) ->
-    if n == 2 || $scope.extras.validated
-      spinner = false
-    else
-      spinner = true
-
     if validate(n)
       if n == 3
         if !validate(1)
@@ -76,7 +71,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
       post = ->
         unless $scope.posting
           $scope.posting = true
-          spinner.startSpin() if spinner
+          spinner.startSpin()
           if $scope.files && $scope.files[0]
             $upload.upload(
               url: '/properties/build'
@@ -98,6 +93,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
 
       if n < $scope.num_steps
         success = ->
+          spinner.stopSpin()
           angular.element('.property-form-container .steps .step.active').removeClass('active').find('form').hide()
           angular.element('.property-form-container .steps .step').eq(n).addClass('active').find('form').show()
           angular.element('.property-form-container .step-nav.active').addClass('complete')
@@ -108,7 +104,6 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
 
       success_wrap = (rsp) ->
         $scope.posting = false
-        spinner.stopSpin()
         _($scope.extras).extend(rsp.extras)
         if rsp.success
           if rsp.slug
@@ -117,6 +112,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
           success()
           $scope.extras = {}
         else
+          spinner.stopSpin()
           $scope.goto(1) if rsp.message.indexOf('address') > 0 or rsp.message.indexOf('photo') > 0
           flash(rsp.type || 'failure', rsp.message)
 

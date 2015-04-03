@@ -114,7 +114,7 @@
           .text Property Instructions
         .instruction ng:if='::job.booking.property.parking_info'
           .content
-            .title Parking Information
+            .title Parking Instructions
             .text ng:bind='::job.booking.property.parking_info'
         .instruction ng:if='::job.booking.property.access_info'
           .content
@@ -122,7 +122,7 @@
             .text ng:bind='::job.booking.property.access_info'
         .instruction ng:if='::job.booking.property.restocking_info'
           .content
-            .title Restocking Instructions
+            .title Restocking Information
             .text ng:bind='::job.booking.property.restocking_info'
         .instruction ng:if='::job.booking.property.trash_disposal'
           .content

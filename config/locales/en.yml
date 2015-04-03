@@ -43,3 +43,10 @@ en:
     modal:
       extras_title: 'Select Extras'
       services_title: 'Select Services'
+  property:
+    instructions:
+      parking: 'Hint: Tell us where we can park - i.e. Street parking only, parking meters, etc.'
+      access: 'Hint: Tell us how to access the property — i.e. Dial 2324 on the keypad. Will buzz you in remotely. Spare key is under the mat. etc.'
+      restocking: 'Hint: Tell us where the supplies are — i.e. Supplies are to the left of the pantry. Make sure at least 3 rolls of toilet paper are in each bathroom.'
+      trash: 'Hint: Tell us where the trash goes — i.e. Turn right out of apt door, down the hall to the left. Please separate trash from recyclables.'
+      additional: 'Hint: Anything else we should now? — i.e. Water the plant behind the living room couch. Leave 2 pillows on each bed.'

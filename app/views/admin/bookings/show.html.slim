@@ -70,22 +70,22 @@
         .icon
           .typcn.typcn-document-text
         .text Property Instructions
+      .instruction ng:if='::booking.property.parking_info'
+        .content
+          .title Parking Instructions
+          .text ng:bind='::booking.property.parking_info'
       .instruction ng:if='::booking.property.access_info'
         .content
           .title Access Information
           .text ng:bind='::booking.property.access_info'
+      .instruction ng:if='::booking.property.restocking_info'
+        .content
+          .title Restocking Information
+          .text ng:bind='::booking.property.restocking_info'
       .instruction ng:if='::booking.property.trash_disposal'
         .content
           .title Trash Disposal
           .text ng:bind='::booking.property.trash_disposal'
-      .instruction ng:if='::booking.property.parking_info'
-        .content
-          .title Parking Information
-          .text ng:bind='::booking.property.parking_info'
-      .instruction ng:if='::booking.property.restocking_info'
-        .content
-          .title Restocking Instructions
-          .text ng:bind='::booking.property.restocking_info'
       .instruction ng:if='::booking.property.additional_info'
         .content
           .title Additional Information
