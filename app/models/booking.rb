@@ -68,9 +68,13 @@ class Booking < ActiveRecord::Base
     end
     rsp[:cost] += PRICING['no_access_fee'] if no_access_fee
     if first_booking_discount
-      rsp[:first_booking_discount] = PRICING['first_booking_discount']
+      discount = PRICING['first_booking_discount']
+      if discount <= rsp[:cost]
+        rsp[:first_booking_discount] = discount
+      else
+        rsp[:first_booking_discount] = rsp[:cost]
+      end
       rsp[:cost] -= rsp[:first_booking_discount]
-      rsp[:cost] = 0 if rsp[:cost] < 0
     end
     rsp
   end
