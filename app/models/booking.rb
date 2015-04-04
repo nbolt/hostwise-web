@@ -137,6 +137,7 @@ class Booking < ActiveRecord::Base
       rescue Stripe::CardError => e
         err  = e.json_body[:error]
         transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount)
+        UserMailer.generic_notification("Stripe Payment Failed - ***#{payment.last4}: #{property.user.name}", "Booking ID: #{id}").then(:deliver)
         false
       end
     else
