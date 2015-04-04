@@ -26,6 +26,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       $scope.is_applicant = $scope.user and $scope.user.contractor_profile.position_cd == 1
       $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
       $scope.job.applicants = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd != 1
+      $scope.job.mentors = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd != 3
       $scope.job.team_members = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd == 1
 
     $http.get($window.location.href + '/status').success (rsp) ->
@@ -162,8 +163,11 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.show_applicant = ->
     $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0 and $scope.job.training
 
+  $scope.show_mentor = ->
+    $scope.job and $scope.job.mentors and $scope.job.mentors.length > 0 and $scope.job.training
+
   $scope.show_team = ->
-    $scope.job and $scope.job.team_members and $scope.job.team_members.length > 0
+    $scope.job and $scope.job.team_members and $scope.job.team_members.length > 0 and !$scope.job.training
 
   $scope.in_arrival_tasks = ->
     unless $scope.arrival_tasks() && $scope.damage_inspection() && $scope.inventory_count()

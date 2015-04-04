@@ -13,6 +13,7 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
     $scope.user_fetched.promise.then ->
       $scope.job.contractors = _($scope.job.contractors).reject (user) -> user.id == $scope.user.id
       $scope.job.applicants = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd != 1
+      $scope.job.mentors = _($scope.job.contractors).reject (user) -> user.contractor_profile.position_cd != 3
 
     $http.get($window.location.href + '/status').success (rsp) ->
       $scope.job.status = rsp.status
@@ -44,6 +45,9 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
 
   $scope.show_applicant = ->
     $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0
+
+  $scope.show_mentor = ->
+    $scope.job and $scope.job.mentors and $scope.job.mentors.length > 0
 
   $scope.show_supply = ->
     $scope.job and $scope.job.occasion_cd == 0 and $scope.user and $scope.user.contractor_profile.position_cd != 1
