@@ -102,6 +102,20 @@ class Admin::ContractorsController < Admin::AuthController
     render json: { success: true }
   end
 
+  def background_check
+    user = User.find_by_id(params[:id])
+    user.background_check.status_cd = params[:status].to_i
+    user.background_check.save
+
+    if user.background_check.clear?
+      UserMailer.background_check_verified(user).then(:deliver)
+    elsif user.background_check.rejected?
+      UserMailer.background_check_failed(user).then(:deliver)
+      user.deactivate!
+    end
+    render json: { success: true }
+  end
+
   private
 
   def user_params
