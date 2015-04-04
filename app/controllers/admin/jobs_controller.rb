@@ -7,7 +7,7 @@ class Admin::JobsController < Admin::AuthController
     when 'active'
       jobs = jobs.where(status_cd: [0,1])
     when 'future'
-      jobs = jobs.future_from_today
+      jobs = jobs.future_from_today 'America/Los_Angeles'
     end
     jobs = jobs.search(params[:search]) if params[:search] && !params[:search].empty?
     jobs = jobs.order(params[:sort])

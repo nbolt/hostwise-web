@@ -43,6 +43,11 @@ module Clockwork
             TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
             UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
           end
+
+          if job.not_complete? && time.hour == 22
+            job.past_due!
+            job.save
+          end
         end
       end
     when 'jobs:check_timers'
