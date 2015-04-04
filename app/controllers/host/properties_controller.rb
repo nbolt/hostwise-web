@@ -145,6 +145,11 @@ class Host::PropertiesController < Host::AuthController
               render json: { success: false, extras: {validated: true}, type: 'info', message: 'You may already have another property with this address. Hit next to continue.' }
               return
             end
+
+            if params[:form][:title].present? && Property.where(title: params[:form][:title])[0]
+              render json: { success: false, extras: {validated: true}, type: 'info', message: 'You already have a property with this nick name.' }
+              return
+            end
           else
             render json: { success: false, message: 'Invalid address' }
             return
