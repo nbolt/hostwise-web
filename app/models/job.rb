@@ -20,7 +20,7 @@ class Job < ActiveRecord::Base
   scope :future, -> (zone=nil) {
     timezone = Timezone::Zone.new :zone => zone if zone
     now = zone && timezone.time(Time.now) || Time.now
-    if now.hour < 9 || now.hour == 9 && now.min <= 30
+    if now.hour < 14
       where('date >= ?', now)
     else
       where('date > ?', now)
