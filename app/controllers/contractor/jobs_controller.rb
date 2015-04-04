@@ -53,7 +53,7 @@ class Contractor::JobsController < Contractor::AuthController
     if job.status == :scheduled
       job.update_attribute :status_cd, 3
       next_job = job.next_job(current_user)
-      TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise is on the way to clean #{next_job.booking.property.full_address}. We will contact you when we arrive.") if next_job.booking.property.user.settings(:porter_en_route).sms if next_job && next_job.booking
+      TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise is on the way to clean #{next_job.booking.property.full_address}. We will contact you when we arrive.") if next_job.then(:booking) && next_job.booking.property.user.settings(:porter_en_route).sms
     end
 
     render json: { success: true, next_job: next_job.then(:id) }
