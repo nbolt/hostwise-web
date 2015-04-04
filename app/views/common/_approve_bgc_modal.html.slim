@@ -1,0 +1,13 @@
+script#approve-bgc-modal type="text/ng-template"
+  .modal
+    .header
+      .text Background Check Verified
+    .content
+      .fa.fa-check
+      .text By clicking 'Yes', we will approve the applicant's background check and notify them.
+    .footer
+      .buttons
+        .button.white ng:click='cancel_deactivation()'
+          .text No
+        .button.teal ng:click='bgc(1)'
+          .text Yes

@@ -73,6 +73,9 @@
               .bgc
                 div ng-attr-class="{{contractor.background_check && contractor.background_check.status_cd == 1 && 'fa fa-check-circle-o' || 'fa fa-times-circle-o' }}"
                 span Background Checked
+                a href='' ng:show='show_bgc_link()' ng:click='approve_bgc_modal()' Approve
+                a href='' ng:show='show_bgc_link()' ng:click='deny_bgc_modal()' Deny
+
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to
     span ng:click='open_deactivation()'  deactivate {{contractor.first_name}}'s account?
@@ -83,3 +86,5 @@
     = render 'common/account_reactivation_modal'
 = render 'common/change_status_modal'
 = render 'common/complete_contract_modal'
+= render 'common/approve_bgc_modal'
+= render 'common/deny_bgc_modal'

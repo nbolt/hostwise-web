@@ -1,0 +1,13 @@
+script#deny-bgc-modal type="text/ng-template"
+  .modal
+    .header
+      .text Background Check Failed
+    .content
+      .fa.fa-close
+      .text By clicking 'Yes', we will deny the applicant's background check and notify them.
+    .footer
+      .buttons
+        .button.white ng:click='cancel_deactivation()'
+          .text No
+        .button.teal ng:click='bgc(3)'
+          .text Yes
