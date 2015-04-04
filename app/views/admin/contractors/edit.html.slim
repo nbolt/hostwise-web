@@ -30,17 +30,17 @@
                 input type='email' ng:model='contractor.email'
               .row
                 label Mobile Phone
-                input type='text' ng:model='contractor.phone_number'
+                input type='text' placeholder='(###) ###-####' ui-mask='(999) 999-9999' ng:model='contractor.phone_number'
               .row
                 label Alternate Phone (optional)
-                input type='text' ng:model='contractor.secondary_phone'
+                input type='text' placeholder='(###) ###-####' ui-mask='(999) 999-9999' ng:model='contractor.secondary_phone'
               .row
                 label Address
-                input type='text' ng:model='contractor.contractor_profile.address1'
+                input type='text' placeholder='Street Address' ng:model='contractor.contractor_profile.address1'
                 .caption Address Line 1
               .row.two
-                input type='text' ng:model='contractor.contractor_profile.address2'
-                input.right type='text' maxlength=5 ng:model='contractor.contractor_profile.zip'
+                input type='text' placeholder='Apt/Unit/#' ng:model='contractor.contractor_profile.address2'
+                input.right type='text' maxlength=5 placeholder='Zip Code' ng:model='contractor.contractor_profile.zip'
                 .caption Unit # (optional)
                 .caption.right Zip Code
           .vr
@@ -48,12 +48,12 @@
             div
               .row.two
                 label Emergency Contact Person
-                input type='text' ng:model='contractor.contractor_profile.emergency_contact_first_name'
-                input.right type='text' ng:model='contractor.contractor_profile.emergency_contact_last_name'
+                input type='text' placeholder='First Name' ng:model='contractor.contractor_profile.emergency_contact_first_name'
+                input.right type='text' placeholder='Last Name' ng:model='contractor.contractor_profile.emergency_contact_last_name'
                 .caption First Name
                 .caption.right Last Name
               .row
-                input type='text' ng:model='contractor.contractor_profile.emergency_contact_phone'
+                input type='text' placeholder='(###) ###-####' ui-mask='(999) 999-9999' ng:model='contractor.contractor_profile.emergency_contact_phone'
                 .caption Emergency Contact Phone Number
               .row
                 label Social Security Number
