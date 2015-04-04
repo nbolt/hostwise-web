@@ -77,6 +77,20 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     $http.post("/contractors/#{$scope.id}/reactivate").success (rsp) ->
       window.location = window.location.href if rsp.success
 
+  $scope.show_bgc_link = ->
+    $scope.contractor and $scope.contractor.contractor_profile and $scope.contractor.contractor_profile.docusign_completed and $scope.contractor.background_check and $scope.contractor.background_check.status_cd != 1 and $scope.contractor.background_check.status_cd != 3
+
+  $scope.approve_bgc_modal = ->
+    ngDialog.open template: 'approve-bgc-modal', controller: 'edit-contractor', className: 'success full', scope: $scope
+
+  $scope.deny_bgc_modal = ->
+    ngDialog.open template: 'deny-bgc-modal', controller: 'edit-contractor', className: 'warning full', scope: $scope
+
+  $scope.bgc = (status) ->
+    $http.post("/contractors/#{$scope.id}/background_check", {status: status}).success (rsp) ->
+      spinner.startSpin()
+      window.location = window.location.href if rsp.success
+
   flash = (type, msg, modal) ->
     el = if modal then angular.element('.modal .flash') else angular.element('form .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)

@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   end
 
   scope module: 'contractor', constraints: { subdomain: 'contractor' } do
-    get   '/' => 'home#index'
+    get   '/' => 'home#index', as: :contractor_schedule
     get   '/contact' => 'home#contact', as: :contractor_contact
     get   '/jobs' => 'jobs#index', as: :contractor_jobs
     get   '/jobs/:id' => 'jobs#show', as: :job_details
@@ -79,6 +79,7 @@ Rails.application.routes.draw do
     post  '/contractors/:id/deactivate' => 'contractors#deactivate'
     post  '/contractors/:id/reactivate' => 'contractors#reactivate'
     post  '/contractors/:id/complete_contract' => 'contractors#complete_contract'
+    post  '/contractors/:id/background_check' => 'contractors#background_check'
     get   '/hosts' => 'hosts#index'
     get   '/hosts/:id/edit' => 'hosts#edit'
     put   '/hosts/:id/update' => 'hosts#update'
