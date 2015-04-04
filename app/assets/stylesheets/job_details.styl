@@ -764,16 +764,16 @@
           z-index: 1001
           outline: none
       .section
-        &.applicant
-          border: 5px solid dark-orange
+        &.applicant, &.mentor
           .head
-            background-color: dark-orange
             .text
               color: white
           .teammate
             padding: 20px 30px
             @media portrait_tablet
               font-size: 15px
+            @media phone
+              padding: 20px 10px
             .avatar
               display: inline-block
               margin: 0 auto
@@ -791,14 +791,27 @@
               margin-left: 20px
               font-weight: bold
               line-height: 20px
-              .orange
-                font-size: 14px
-                color: dark-orange
               @media portrait_tablet
+                margin-left: 10px
+              @media phone
                 margin-left: 10px
             .number
               float: right
               color: teal
+        &.applicant
+          border: 5px solid dark-orange
+          .head
+            background-color: dark-orange
+          .teammate .name .orange
+            font-size: 14px
+            color: dark-orange
+        &.mentor
+          border: 5px solid dark-navy
+          .head
+            background-color: dark-navy
+          .teammate .name .navy
+            font-size: 14px
+            color: dark-navy
         &.profile
           width: 30%
           text-align: center

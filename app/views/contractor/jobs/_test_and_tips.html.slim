@@ -1,0 +1,20 @@
+.section.applicant ng:show='show_applicant()'
+  .head
+    .text This is a Test & Tips Session
+  .teammate ng:repeat='teammate in job.applicants'
+    .avatar
+      img ng:src='{{::teammate.avatar}}'
+    .name
+      div ng:bind='::teammate.name'
+      div.orange Applicant
+    .number ng:bind='::teammate.display_phone_number'
+.section.mentor ng:show='show_mentor()'
+  .head
+    .text Find Your Mentor!
+  .teammate ng:repeat='teammate in job.mentors'
+    .avatar
+      img ng:src='{{::teammate.avatar}}'
+    .name
+      div ng:bind='::teammate.name'
+      div.navy Mentor
+    .number ng:bind='::teammate.display_phone_number'
