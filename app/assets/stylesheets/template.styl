@@ -116,13 +116,12 @@ input[type=file]
   text-align: left
   text-decoration: none
   position: relative
+  overflow: hidden
   .icon
     border-radius: 3px 0 0 3px
-    border-right: thin solid rgba(255, 255, 255, 0.25)
     font-size: 1.3em
     width: 40px
     text-align: center
-    box-shadow: inset -1px 0 0 0 rgba(255,255,255,0.25)
     float: left
     @media phone
       border-radius: 3px
@@ -134,9 +133,7 @@ input[type=file]
     .icon
       float: right
       border-right: 0
-      border-left: thin solid rgba(255, 255, 255, 0.25)
       border-radius: 0 3px 3px 0
-      box-shadow: inset 1px 0 0 0 rgba(255,255,255,0.25)
   .text
     font-size: 1em
     text-align: center
