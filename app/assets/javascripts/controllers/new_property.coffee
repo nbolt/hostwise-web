@@ -81,7 +81,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
             $upload.upload(
               url: '/properties/build'
               file: $scope.files[0]
-              data:
+              fields:
                 stage: n
                 form: $scope.form
                 extras: $scope.extras
