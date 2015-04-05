@@ -119,7 +119,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
       $upload.upload(
         url: post_url
         file: $scope.files[0]
-        data:
+        fields:
           form: $scope.form
       ).success (rsp) ->
         spinner.stopSpin()
