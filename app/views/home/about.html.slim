@@ -1,39 +1,122 @@
 section#banner-about.pl-panel.clip-arrow
   .container
-    h1.white More time for ( X )
-    h6.white Where ( X ) equals life.
+    h1.white More time for (X)
+    h6.white We’re empowering our community to live more fulfilling lives.
     hr.light
-    a.btn.primary href='' ng:click='show_signup()' Get More Time
+    a.btn.primary href='' ng:click='show_signup()' Try HostWise for Free
 section#mission.pl-panel
-  .container
-    .heading-container
-      h3.gray At the core of everything we do
-      h2.teal Community. Create. Integrity. Fun.
-      h6.gray We're empowering our community to live fulfilling lives.
-section#mission-list.pl-panel
-  .container
-    .section.group
-      .col.span_3_of_12
-        i.icon-community.yellow
-        hr.light.small
-        .title community
-        .padded-content
+  #beach.container
+    #mission-text.alignleft
+      h2.navy By Hosts, For Hosts
+      p.gray As hosts, we know firsthand the challenges you face. And, we understand that turning over a property after a guest check-out is the most time-consuming and costly part of the operation.
+      p.gray HostWise was created because we—and our community of hosts—demanded a real hospitality solution for property turnovers. We are passionate about doing big things, firmly believe in doing them with integrity, and we always try to have a little fun doing it every day. The HostWise team has one goal: to change the world, one host at a time.
+  #values-community.container
+    #values-container
+      h2.navy.alignright Our Values
+      hr.light style='margin:15px 0;'
+      .value
+        .v-icon
+          i.icon-community
+        .v-text
+          h6.white
+            strong Community
           p.white Created for Hosts by Hosts. We are here to give back to our community of hosts, housekeepers and teammates.
-      .col.span_3_of_12
-        i.icon-create.yellow
-        hr.light.small
-        .title create
+      .value
+        .v-icon
+          i.icon-create
+        .v-text
+          h6.white
+            strong Create
+          p.white We create beautiful apps, a perfect guest experience, and the opportunity for growth for our customers.
+      .value
+        .v-icon
+          i.icon-integrity
+        .v-text
+          h6.white
+            strong Integrity
+          p.white Do big things. Change the world. But, do it right—with integrity. We believe good people do get ahead.
+      .value
+        .v-icon
+          i.icon-fun
+        .v-text
+          h6.white
+            strong Fun
+          p.white Life is short. At HostWise, we live to give back, be passionate, travel, and have a lot of fun along the way.
+    #community-container
+      h2.navy.alignleft Who's It All For
+      p.gray.alignleft Community is at the center of everything we do. Ultimately, we’re helping people to live better and feel more fulfilled.
+      hr.light style='margin:15px 0;'
+      .member
+        img#c-hosts src='/hw_images/community_hosts.png' alt='Hosts' /
+        .m-text
+          h6.navy
+            strong Hosts
+          p.gray Giving hosts back their time—we want our clients to have more time to do what they love.
+      .member
+        img#c-hosts src='/hw_images/community_housekeep.png' alt='Housekeepers' /
+        .m-text
+          h6.navy
+            strong Housekeepers
+          p.gray We’re flipping an antiquated industry on its head—providing fair wages & more freedom.
+      .member
+        img#c-hosts src='/hw_images/community_team.png' alt='Team' /
+        .m-text
+          h6.navy
+            strong Team
+          p.gray Our team has an inherant desire to create things that promote growth and enrich lives.
+section#trust-safety.pl-panel
+  .container
+    h2.teal Trust &amp; Safety
+    h6.gray The ultimate peace of mind—you don’t need to worry about a thing.
+    hr.light style="margin:25px 0;"
+    .section.group
+      .col.span_4_of_12
         .padded-content
-          p.white We take great pride in creating beautiful apps, a perfect guest experience, and the opportunity for growth for our customers.
-      .col.span_3_of_12
-        i.icon-integrity.yellow
-        hr.light.small
-        .title integrity
+          i.icon-guarantee.yellow
+          hr.small.dark
+          h6.navy
+            strong Guaranteed
+          p.gray 100% satisfaction guarantee
+      .col.span_4_of_12
         .padded-content
-          p.white Do big things. Change the world. But, do it right - with integrity. We believe good people do get ahead.
-      .col.span_3_of_12
-        i.icon-fun.yellow
-        hr.light.small
-        .title fun
+          i.icon-insurance.yellow
+          hr.small.dark
+          h6.navy
+            strong Insured
+          p.gray $1mm coverage per job
+      .col.span_4_of_12
         .padded-content
-          p.white Life is short. At HostWise, we live to give back, to be passionate, to travel, and to have a lot of fun along the way.
+          i.icon-bg.yellow
+          hr.small.dark
+          h6.navy
+            strong Background Checked
+          p.gray Third-party verification
+section#about-tech.pl-panel
+  .container
+    #tech-text
+      #hosts.t-desc
+        h6.white
+          strong For Hosts
+        p.white We know you’re super busy. Using our powerful web app to book services is as easy as 1-2-3.
+      #housekeepers.t-desc
+        h6.white
+          strong For Housekeepers
+        p.white Our app allows our team members to find more jobs, earn more, and work better hours.
+      .clearfix
+    #macbook.device
+      img src='/hw_images/tech_mb.png' alt="For Hosts" /
+      #one.tech-num
+        .pl-tooltip-right data-tooltip='Select all your upcoming check-out dates' 1
+    #iphone.device
+      img src='/hw_images/tech_iphone.png' alt="For Contractors" /
+      img#tech-arrows src='/hw_images/tech_arrows.png' alt="" /
+      #two.tech-num
+        .pl-tooltip-left data-tooltip='Professional housekeeper claims job and completes it by 4pm on your requested date' 2
+      #three.tech-num
+        .pl-tooltip-left data-tooltip='You are notified when the job is completed and your guest checks in to a beautifully cleaned and set property. 5-star ratings abound!' 3
+    .clearfix
+section#about-cta.pl-panel
+  .container
+    h2.white Ready to start hosting wisely?
+    hr.light style="margin:25px auto;"
+    a.btn.primary href='' ng:click='show_signup()' Try HostWise for Free
