@@ -27,7 +27,7 @@ class ContractorPhotoUploader < CarrierWave::Uploader::Base
   # end
 
   process :auto_orient
-  process resize_to_fill: [768, 768]
+  process resize_to_fill: [512, 512]
   process convert: 'png'
   process :set_content_type
 
