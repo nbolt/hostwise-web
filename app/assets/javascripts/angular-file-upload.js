@@ -10,6 +10,21 @@ function patchXHR(fnName, newFn) {
     window.XMLHttpRequest.prototype[fnName] = newFn(window.XMLHttpRequest.prototype[fnName]);
 }
 
+function compressImage(file, cb) {
+	var origImg = new Image()
+	var newImg  = new Image()
+	var newImgData = null
+	var canvas = document.createElement('canvas')
+
+	r = new FileReader()
+	r.onloadend = function(e){
+		origImg.src = e.target.result
+		new thumbnailer(canvas, origImg, 512, 0)
+		canvas.toBlob(function(blob){ cb(blob) }, 'image/jpeg')
+	}
+	r.readAsDataURL(file)
+}
+
 if (window.XMLHttpRequest && !window.XMLHttpRequest.__isFileAPIShim) {
     patchXHR('setRequestHeader', function (orig) {
         return function (header, value) {
@@ -30,7 +45,7 @@ var angularFileUpload = angular.module('angularFileUpload', []);
 
 angularFileUpload.version = '3.2.5';
 angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function ($http, $q, $timeout) {
-    function sendHttp(config) {
+    function sendHttp(config, defer) {
         config.method = config.method || 'POST';
         config.headers = config.headers || {};
         config.transformRequest = config.transformRequest || function (data, headersGetter) {
@@ -65,13 +80,26 @@ angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function ($http
             };
         };
 
-        $http(config).then(function (r) {
-            deferred.resolve(r)
-        }, function (e) {
-            deferred.reject(e)
-        }, function (n) {
-            deferred.notify(n)
-        });
+        if (typeof(defer) != 'undefined'){
+        	defer.then(function(){
+        		console.log(config.file)
+        		$http(config).then(function (r) {
+		            deferred.resolve(r)
+		        }, function (e) {
+		            deferred.reject(e)
+		        }, function (n) {
+		            deferred.notify(n)
+		        });
+        	})
+        } else {
+	      	$http(config).then(function (r) {
+	            deferred.resolve(r)
+	        }, function (e) {
+	            deferred.reject(e)
+	        }, function (n) {
+	            deferred.notify(n)
+	        });
+	      }
 
         promise.success = function (fn) {
             promise.then(function (response) {
@@ -116,64 +144,69 @@ angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function ($http
     }
 
     this.upload = function (config) {
-        config.headers = config.headers || {};
-        config.headers['Content-Type'] = undefined;
-        config.transformRequest = config.transformRequest ?
-            (Object.prototype.toString.call(config.transformRequest) === '[object Array]' ?
-                config.transformRequest : [config.transformRequest]) : [];
-        config.transformRequest.push(function (data) {
-            var formData = new FormData();
-            var allFields = {};
-            for (key in config.fields) {
-                if (config.fields.hasOwnProperty(key)) {
-                    allFields[key] = config.fields[key];
-                }
-            }
-            if (data) allFields['data'] = data;
+    		var defer = $q.defer()
+    		console.log(config.file)
+    		compressImage(config.file, function(blob){
+    			config.file = blob
+	        config.headers = config.headers || {};
+	        config.headers['Content-Type'] = undefined;
+	        config.transformRequest = config.transformRequest ?
+	            (Object.prototype.toString.call(config.transformRequest) === '[object Array]' ?
+	                config.transformRequest : [config.transformRequest]) : [];
+	        config.transformRequest.push(function (data) {
+	            var formData = new FormData();
+	            var allFields = {};
+	            for (key in config.fields) {
+	                if (config.fields.hasOwnProperty(key)) {
+	                    allFields[key] = config.fields[key];
+	                }
+	            }
+	            if (data) allFields['data'] = data;
 
-            if (config.formDataAppender) {
-                for (key in allFields) {
-                    if (allFields.hasOwnProperty(key)) {
-                        config.formDataAppender(formData, key, allFields[key]);
-                    }
-                }
-            } else {
-                for (key in allFields) {
-                    if (allFields.hasOwnProperty(key)) {
-                        var val = allFields[key];
-                        if (val !== undefined) {
-                            if (Object.prototype.toString.call(val) === '[object String]') {
-                                formData.append(key, val);
-                            } else {
-                                if (config.sendObjectsAsJsonBlob && typeof val === 'object') {
-                                    formData.append(key, new Blob([val], {type: 'application/json'}));
-                                } else {
-                                    formData.append(key, JSON.stringify(val));
-                                }
-                            }
+	            if (config.formDataAppender) {
+	                for (key in allFields) {
+	                    if (allFields.hasOwnProperty(key)) {
+	                        config.formDataAppender(formData, key, allFields[key]);
+	                    }
+	                }
+	            } else {
+	                for (key in allFields) {
+	                    if (allFields.hasOwnProperty(key)) {
+	                        var val = allFields[key];
+	                        if (val !== undefined) {
+	                            if (Object.prototype.toString.call(val) === '[object String]') {
+	                                formData.append(key, val);
+	                            } else {
+	                                if (config.sendObjectsAsJsonBlob && typeof val === 'object') {
+	                                    formData.append(key, new Blob([val], {type: 'application/json'}));
+	                                } else {
+	                                    formData.append(key, JSON.stringify(val));
+	                                }
+	                            }
 
-                        }
-                    }
-                }
-            }
+	                        }
+	                    }
+	                }
+	            }
 
-            if (config.file != null) {
-                var fileFormName = config.fileFormDataName || 'file';
+	            if (config.file != null) {
+	                var fileFormName = config.fileFormDataName || 'file';
+	                if (Object.prototype.toString.call(config.file) === '[object Array]') {
+	                    var isFileFormNameString = Object.prototype.toString.call(fileFormName) === '[object String]';
+	                    for (i = 0; i < config.file.length; i++) {
+	                        formData.append(isFileFormNameString ? fileFormName : fileFormName[i], config.file[i],
+	                            (config.fileName && config.fileName[i]) || config.file[i].name);
+	                    }
+	                } else {
+	                		formData.append(fileFormName, config.file, 'contractor_photo.jpg');
+	                }
+	            }
+	            return formData;
+	        });
+					defer.resolve()
+				});
 
-                if (Object.prototype.toString.call(config.file) === '[object Array]') {
-                    var isFileFormNameString = Object.prototype.toString.call(fileFormName) === '[object String]';
-                    for (i = 0; i < config.file.length; i++) {
-                        formData.append(isFileFormNameString ? fileFormName : fileFormName[i], config.file[i],
-                            (config.fileName && config.fileName[i]) || config.file[i].name);
-                    }
-                } else {
-                    formData.append(fileFormName, config.file, config.fileName || config.file.name);
-                }
-            }
-            return formData;
-        });
-
-        return sendHttp(config);
+        return sendHttp(config, defer.promise);
     };
 
     this.http = function (config) {
