@@ -23,9 +23,9 @@ AccountCtrl = ['$scope', '$http', '$timeout', '$upload', 'ngDialog', ($scope, $h
     i = 0
     while i < $scope.files.length
       file = $scope.files[i]
-      $scope.upload = $upload.upload(
+      $upload.upload(
         url: '/user/update'
-        data:
+        fields:
           step: 'photo'
         method: 'PUT'
         file: file

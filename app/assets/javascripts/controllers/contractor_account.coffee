@@ -98,7 +98,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'n
       post_url = if activation() then '/users/' + $scope.token + '/avatar' else '/user/update'
       $scope.upload = $upload.upload(
         url: post_url
-        data:
+        fields:
           step: 'photo'
         method: 'PUT'
         file: file

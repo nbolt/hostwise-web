@@ -390,7 +390,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       spinner.startSpin()
       $upload.upload(
         url: '/checklist/damage_photo'
-        data: { contractor_id: $scope.user.id, job_id: $scope.job.id }
+        fields: { contractor_id: $scope.user.id, job_id: $scope.job.id }
         file: $scope.damage_photo[0]
       ).success (rsp) ->
         spinner.stopSpin()
@@ -404,7 +404,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       spinner.startSpin()
       $upload.upload(
         url: '/checklist/snap_photo'
-        data: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'kitchen' }
+        fields: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'kitchen' }
         file: $scope.kitchen_photo[0]
       ).success (rsp) ->
         spinner.stopSpin()
@@ -418,7 +418,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       spinner.startSpin()
       $upload.upload(
         url: '/checklist/snap_photo'
-        data: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'bedroom' }
+        fields: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'bedroom' }
         file: $scope.bedroom_photo[0]
       ).success (rsp) ->
         spinner.stopSpin()
@@ -432,7 +432,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       spinner.startSpin()
       $upload.upload(
         url: '/checklist/snap_photo'
-        data: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'bathroom' }
+        fields: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'bathroom' }
         file: $scope.bathroom_photo[0]
       ).success (rsp) ->
         spinner.stopSpin()
