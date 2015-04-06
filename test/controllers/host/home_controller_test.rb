@@ -8,13 +8,16 @@ describe Host::HomeController do
     login_user(user_name_9)
 
     get :index
-
     assert_redirected_to properties_first_path
     
-    #ogin_user(user_name_9)
+    user_name_14 = nil, property_2 = nil
+    VCR.use_cassette('create_property_2') { property_2 = create(:property_2) }
+    property_2.must_equal property_2
+    VCR.use_cassette('create_user_name_14') { user_name_14 = create(:user_name_14) }
+    login_user(user_name_14)
 
-    #get :index
-    #must_render_template 'host/index'
+    get :index
+    must_render_template 'host/index'
   end
 
   it 'faq' do
