@@ -20,7 +20,7 @@ function compressImage(file, cb) {
 	r.onloadend = function(e){
 		origImg.src = e.target.result
 		new thumbnailer(canvas, origImg, 512, 0)
-		canvas.toBlob(function(blob){ cb(blob) }, 'image/jpeg')
+		canvas.toBlob(function(blob){ cb(blob) }, 'image/jpeg', 0.7)
 	}
 	r.readAsDataURL(file)
 }
@@ -82,7 +82,6 @@ angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function ($http
 
         if (typeof(defer) != 'undefined'){
         	defer.then(function(){
-        		console.log(config.file)
         		$http(config).then(function (r) {
 		            deferred.resolve(r)
 		        }, function (e) {
@@ -145,7 +144,6 @@ angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function ($http
 
     this.upload = function (config) {
     		var defer = $q.defer()
-    		console.log(config.file)
     		compressImage(config.file, function(blob){
     			config.file = blob
 	        config.headers = config.headers || {};
