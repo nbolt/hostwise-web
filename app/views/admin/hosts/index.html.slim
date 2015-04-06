@@ -16,15 +16,35 @@
     tbody
       tr.days
         th
-        th Name
-        th Joined
-        th Email
-        th Phone Number
-        th Status
-        th Properties
-        th Next Service
-        th Jobs Booked
-      tr dir-paginate='user in users | itemsPerPage: 20'
+        th
+          a href='' ng:click="predicate = 'name'; reverse=!reverse"
+            | Name
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'created_at'; reverse=!reverse"
+            | Joined
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'email'; reverse=!reverse"
+            | Email
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'phone_number'; reverse=!reverse"
+            | Phone Number
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'activation_state'; reverse=!reverse"
+            | Status
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'properties.length'; reverse=!reverse"
+            | Properties
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'next_service_date'; reverse=!reverse"
+            | Next Service
+            i.icon-acc-open
+      tr dir-paginate='user in users | orderBy:predicate:reverse | itemsPerPage: 20'
         td
           img.avatar ng:src='{{::user.avatar}}'
         td class='name'
@@ -35,13 +55,11 @@
           | {{user.email}}
         td
           | {{user.phone_number}}
-        td
+        td.status
           | {{user.activation_state}}
         td
           | {{user.properties.length}}
         td
           span ng:bind="user.next_service_date | date:'MM/dd/yyyy':'UTC'"
-        td
-          | &nbsp;
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"

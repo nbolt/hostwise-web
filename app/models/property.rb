@@ -62,7 +62,7 @@ class Property < ActiveRecord::Base
       end
     else
       results = results.active
-    end 
+    end
     results
   end
 
