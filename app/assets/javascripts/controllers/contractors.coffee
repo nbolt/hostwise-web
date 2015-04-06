@@ -4,27 +4,25 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope
 
   $scope.form = {email: '', first_name: '', last_name: '', phone_number: ''}
 
-  $scope.$on 'fetch_contractors', ->
-    spinner.startSpin()
+  $scope.fetch_contractors = ->
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.users = rsp
       _($scope.users).each (user) ->
-        user.contract_status = if user.contractor_profile.docusign_completed then 'Yes' else 'No'
+        user.contract_status = if user.contractor_profile and user.contractor_profile.docusign_completed then 'Yes' else 'No'
         user.bgc_status = background_check_status(user)
-      spinner.stopSpin()
-
-  $scope.$emit 'fetch_contractors'
 
   $scope.show_signup = ->
-    ngDialog.open template: 'sign-up', className: 'auth full'
+    ngDialog.open template: 'sign-up', className: 'auth full', controller: 'contractors', scope: $scope
 
   $scope.add_contractor = ->
+    spinner.startSpin()
     $http.post('/contractors/signup', {
       form: $scope.form
     }).success (rsp) ->
       if rsp.success
         window.location = window.location.href
       else
+        spinner.stopSpin()
         flash('failure', rsp.message, '.default')
 
   $scope.$watch 'search', (n,o) -> if o
@@ -53,6 +51,8 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope
     $timeout((->
       el.removeClass('info success failure')
     ), 4000)
+
+  $scope.fetch_contractors()
 
 ]
 

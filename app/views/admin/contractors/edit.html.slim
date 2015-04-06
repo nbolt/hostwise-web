@@ -12,9 +12,9 @@
               img ng:src='{{::contractor.avatar}}'
               .name
                 | {{::contractor.name}}
-              .row
+              .row ng:show='contractor.contractor_profile'
                 input.position type='hidden' ng:change='change_status()' ng:model='contractor.contractor_profile.position' ui-select2='position()'
-              .location
+              .location ng:show='contractor.contractor_profile'
                 | {{::contractor.contractor_profile.city}}, {{::contractor.contractor_profile.state}}
           .vr
           .section.info
@@ -34,18 +34,18 @@
               .row
                 label Alternate Phone (optional)
                 input type='text' placeholder='(###) ###-####' ui-mask='(999) 999-9999' ng:model='contractor.secondary_phone'
-              .row
+              .row ng:show='contractor.contractor_profile'
                 label Address
                 input type='text' placeholder='Street Address' ng:model='contractor.contractor_profile.address1'
                 .caption Address Line 1
-              .row.two
+              .row.two ng:show='contractor.contractor_profile'
                 input type='text' placeholder='Apt/Unit/#' ng:model='contractor.contractor_profile.address2'
                 input.right type='text' maxlength=5 placeholder='Zip Code' ng:model='contractor.contractor_profile.zip'
                 .caption Unit # (optional)
                 .caption.right Zip Code
-          .vr
+          .vr ng:show='contractor.contractor_profile'
           .section.pwd
-            div
+            div ng:show='contractor.contractor_profile'
               .row.two
                 label Emergency Contact Person
                 input type='text' placeholder='First Name' ng:model='contractor.contractor_profile.emergency_contact_first_name'
@@ -84,6 +84,10 @@
     | Do you wish to
     span ng:click='open_reactivation()'  reactivate {{contractor.first_name}}'s account?
     = render 'common/account_reactivation_modal'
+  .deactivate ng:show="contractor.activation_state == 'pending'"
+    | Do you wish to
+    span ng:click='open_deletion()'  delete {{contractor.first_name}}'s account?
+    = render 'common/account_deletion_modal'
 = render 'common/change_status_modal'
 = render 'common/complete_contract_modal'
 = render 'common/approve_bgc_modal'
