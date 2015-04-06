@@ -1,12 +1,17 @@
-ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, $http, $timeout, ngDialog, spinner) ->
 
   promise = null
 
   $scope.form = {email: '', first_name: '', last_name: '', phone_number: ''}
 
   $scope.$on 'fetch_contractors', ->
+    spinner.startSpin()
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.users = rsp
+      _($scope.users).each (user) ->
+        user.contract_status = if user.contractor_profile.docusign_completed then 'Yes' else 'No'
+        user.bgc_status = background_check_status(user)
+      spinner.stopSpin()
 
   $scope.$emit 'fetch_contractors'
 
@@ -28,7 +33,7 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $t
       $http.get('/data/contractors', {params: {term: n}}).success (rsp) -> $scope.users = rsp if $scope.users
     ), 400
 
-  $scope.background_check_status = (user) ->
+  background_check_status = (user) ->
     if user.background_check
       if user.background_check.status is 'clear'
         'Good'
