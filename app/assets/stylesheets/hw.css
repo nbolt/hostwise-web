@@ -665,10 +665,10 @@ ul.pl-main-nav li a.active{
 }
 
 .f-icon i{
+  margin:-0.6em 0 0 -0.7em;
   position:absolute;
-  top:21%; left:18%;
+  top:50%; left:50%;
   font-size:2em;
-  font-size:2.5vw;
   color:#fff;
 }
 
@@ -845,10 +845,10 @@ ul.pl-main-nav li a.active{
 }
 
 .v-icon i{
+  margin:-0.55em 0 0 -0.7em;
   position:absolute;
-  top:18%; left:9%;
-  font-size:2.5em;
-  font-size:3.5vw;
+  top:50%; left:50%;
+  font-size:2.9em;
   color:#fff;
 }
 
@@ -1211,6 +1211,11 @@ ul.pl-main-nav li a.active{
     margin-top:0;
   }
 
+  .v-icon i{
+    margin:-0.6em 0 0 -0.7em;
+    font-size:2.25em;
+  }
+
 }
 
 @media only screen and (max-width: 960px) {
@@ -1233,9 +1238,8 @@ ul.pl-main-nav li a.active{
   }
 
   .v-icon i{
-    top:21%; left:13%;
+    margin:-0.5em 0 0 -0.7em;
     font-size:4em;
-    font-size:6vw;
   }
 
   #community-container{
@@ -1254,6 +1258,11 @@ ul.pl-main-nav li a.active{
     background-size:600px;
     overflow:visible;
     background-position:bottom center;
+  }
+
+  .v-icon i{
+    margin:-0.6em 0 0 -0.7em;
+    font-size:2.75em;
   }
 
   #trust-safety .col{
@@ -1331,9 +1340,22 @@ ul.pl-main-nav li a.active{
 
   #values-container h2{text-align:left;}
 
+  .v-icon i{
+    margin:-0.6em 0 0 -0.7em;
+    font-size:1.75em;
+  }
+
   #community-container{
     padding-right:10%;
     padding-left:10%;
+  }
+
+  #hosts{
+    width:65%;
+  }
+
+  #housekeepers{
+    width:48%;
   }
 
 }
@@ -1956,9 +1978,8 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   }
 
   .f-icon i{
-    top:18%; left:14%;
-    font-size:4em;
-    font-size:5vw;
+    margin:-0.6em 0 0 -0.7em;
+    font-size:2.75em;
   }
 
   /* MISSION */
@@ -2028,9 +2049,8 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   }
 
   .f-icon i{
-    top:23%; left:14%;
-    font-size:4em;
-    font-size:8vw;
+    margin:-0.6em 0 0 -0.7em;
+    font-size:2em;
   }
 
   .f-text{
