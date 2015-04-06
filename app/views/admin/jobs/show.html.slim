@@ -5,22 +5,35 @@
   .top
     .align-bottom
     .date ng:bind='::job.date_text'
-    .states
-      .state
-        input type='radio' id='state-normal' name='state' value='0' ng:model='job.state_cd'
-        label for='state-normal' Normal
-      .state
-        input type='radio' id='state-vip' name='state' value='1' ng:model='job.state_cd'
-        label for='state-vip' VIP
-      .state
-        input type='radio' id='state-hidden' name='state' value='2' ng:model='job.state_cd'
-        label for='state-hidden' Hidden
     .total
       .icon
         i.icon-earnings
       .text
         .title Job Total
         .cost ${{::job.booking.cost}}
+    .states
+      .state
+        input type='radio' id='state-open' name='state' value='0' ng:model='job.status_cd'
+        label for='state-open' Open
+      .state
+        input type='radio' id='state-scheduled' name='state' value='1' ng:model='job.status_cd'
+        label for='state-scheduled' Scheduled
+      .state
+        input type='radio' id='state-in-progress' name='state' value='2' ng:model='job.status_cd'
+        label for='state-in-progress' In Progress
+      .state
+        input type='radio' id='state-completed' name='state' value='3' ng:model='job.status_cd'
+        label for='state-completed' Completed
+      .state
+        input type='radio' id='state-past-due' name='state' value='4' ng:model='job.status_cd'
+        label for='state-past-due' Past Due
+      .state
+        input type='radio' id='state-cant-access' name='state' value='5' ng:model='job.status_cd'
+        label for='state-cant-access'
+          | Can't Access
+      .state
+        input type='radio' id='state-cancelled' name='state' value='6' ng:model='job.status_cd'
+        label for='state-cancelled' Cancelled
   .row.one
     .block.top-info.jobs
       .job style='margin:0'
