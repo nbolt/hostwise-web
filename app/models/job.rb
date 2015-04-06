@@ -224,15 +224,19 @@ class Job < ActiveRecord::Base
   def complete!
     completed!
     if booking
-      contractors.each do |contractor|
-        contractor.payouts.create(job_id: self.id, amount: payout(contractor) * 100)
-        job = self.next_job(contractor)
-        TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise is on the way to clean #{job.booking.property.full_address}. We will contact you when we arrive.") if job && job.booking && job.booking.property.user.settings(:porter_en_route).sms
-      end
       booking.update_attribute :status_cd, 3
       booking.charge!
+      booking.job.pay_contractors!
     end
     save
+  end
+
+  def pay_contractors!
+    contractors.each do |contractor|
+      unless Payout.where(job_id: self.id, user_id: contractor.id)[0]
+        contractor.payouts.create(job_id: self.id, amount: payout(contractor) * 100)
+      end
+    end
   end
 
   def handle_distribution_jobs user
