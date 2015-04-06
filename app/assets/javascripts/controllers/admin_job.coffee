@@ -41,8 +41,8 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
             }).addTo map
     ), 200)
 
-  $scope.$watch 'job.state_cd', (n,o) -> if o != undefined
-    $http.post($window.location.href + '/update_state', {state: $scope.job.state_cd})
+  $scope.$watch 'job.status_cd', (n,o) -> if o != undefined
+    $http.post($window.location.href + '/update_status', {status: $scope.job.status_cd})
 
   $scope.$watch 'new_teammate', (n,o) -> if n
     $http.post($window.location.href + '/add_contractor', {contractor_id: n.id}).success (rsp) ->
