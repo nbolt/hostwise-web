@@ -85,11 +85,11 @@
             };
         }
     }
-    if (typeof define === 'function' && define.amd) {
-        define(function () {
-            return dataURLtoBlob;
-        });
-    } else {
-        window.dataURLtoBlob = dataURLtoBlob;
-    }
+    //if (typeof define === 'function' && define.amd) {
+    //    define(function () {
+    //        return dataURLtoBlob;
+    //    });
+    //} else {
+    //    window.dataURLtoBlob = dataURLtoBlob;
+    //}
 }(this));
