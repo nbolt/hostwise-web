@@ -21,10 +21,9 @@ describe ContractorProfile do
 		profile_4.display_position.must_equal 'mentor'
 
 		profile_2.position_cd = 0
-
 		profile_2.display_position.must_equal 'fired'
-		
-		# user_name_10.activation_state.must_equal 'deactivated'
+		profile_2.save
+		#user_name_10.activation_state.must_equal 'deactivated'
 
 	end
 
