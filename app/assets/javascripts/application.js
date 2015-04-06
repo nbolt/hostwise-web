@@ -71,7 +71,7 @@ function thumbnailer(elem, img, sx, lobes) {
     this.ctx = elem.getContext("2d");
     this.ctx.drawImage(img, 0, 0);
     this.img = img;
-    this.src = this.ctx.getImageData(0, 0, img.width, img.height);
+    this.src = this.ctx.getImageData(0, 0, img.width-1, img.height-1);
     this.dest = {
         width : sx,
         height : Math.round(img.height * sx / img.width),
