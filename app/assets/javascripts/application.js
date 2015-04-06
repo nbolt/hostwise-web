@@ -64,21 +64,21 @@ function lanczosCreate(lobes) {
 
 // elem: canvas element, img: image element, sx: scaled width, lobes: kernel radius
 function thumbnailer(elem, img, sx, lobes) {
-    this.canvas = elem;
-    elem.width = img.width;
-    elem.height = img.height;
-    elem.style.display = "none";
-    this.ctx = elem.getContext("2d");
-    this.ctx.drawImage(img, 0, 0);
-    this.img = img;
-    this.src = this.ctx.getImageData(0, 0, img.width, img.height);
     this.dest = {
         width : sx,
         height : Math.round(img.height * sx / img.width),
     };
+    this.canvas = elem;
+    elem.width = this.dest.width;
+    elem.height = this.dest.height;
+    elem.style.display = "none";
+    this.ctx = elem.getContext("2d");
+    this.ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, this.dest.width, this.dest.height);
+    this.img = img;
+    this.src = this.ctx.getImageData(0, 0, this.dest.width, this.dest.height);
     this.dest.data = new Array(this.dest.width * this.dest.height * 3);
     this.lanczos = lanczosCreate(lobes);
-    this.ratio = img.width / sx;
+    this.ratio = this.dest.width / sx;
     this.rcp_ratio = 2 / this.ratio;
     this.range2 = Math.ceil(this.ratio * lobes / 2);
     this.cacheLanc = {};
