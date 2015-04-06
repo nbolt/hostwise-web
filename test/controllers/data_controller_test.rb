@@ -37,26 +37,36 @@ describe DataController do
     user_name_14 = nil, property_1 = nil, property_2 = nil
     VCR.use_cassette('create_property_1') { property_1 = create(:property_1) }
     property_1.must_equal property_1
-    VCR.use_cassette('create_property_2') { property_1 = create(:property_2) }
+    VCR.use_cassette('create_property_2') { property_2 = create(:property_2) }
     property_2.must_equal property_2
     VCR.use_cassette('create_user_name_14') { user_name_14 = create(:user_name_14) }
 
     login_user(user_name_14)
 
-    get(:properties, :term => '75093')
+    get(:properties, :term => '4408')
     assert_response :success
     body = JSON.parse(response.body)
-    #body[0]['zip'].must_equal ''
+    #body.must_equal ''
   end
 
   it 'service_available' do
   end
 
   it 'payments' do
+    user_name_6 = nil
+    VCR.use_cassette('create_user_name_6') { user_name_6 = create(:user_name_6) }
+    login_user(user_name_6)
+    get :payments
+    assert_response :success
+    body = JSON.parse(response.body)
+    body['data'][0]['last4'].must_equal '2329'
   end
 
   it 'jobs' do
-    
+    user_name_12 = nil, profile_2 = nil
+    VCR.use_cassette('create_profile_2') { profile_2 = create(:profile_2) }
+    profile_2.must_equal profile_2
+    VCR.use_cassette('create_user_name_12') { user_name_12 = create(:user_name_12) }
   end
 
   it 'refresh_day' do
