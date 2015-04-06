@@ -145,7 +145,8 @@ angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function ($http
     this.upload = function (config) {
     		var defer = $q.defer()
     		compressImage(config.file, function(blob){
-    			config.file = blob
+          if (blob.size != 0)
+            config.file = blob
 	        config.headers = config.headers || {};
 	        config.headers['Content-Type'] = undefined;
 	        config.transformRequest = config.transformRequest ?
