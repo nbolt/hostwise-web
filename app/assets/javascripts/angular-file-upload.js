@@ -19,8 +19,10 @@ function compressImage(file, cb) {
 	r = new FileReader()
 	r.onloadend = function(e){
 		origImg.src = e.target.result
-		new thumbnailer(canvas, origImg, 512, 0)
-		canvas.toBlob(function(blob){ cb(blob) }, 'image/jpeg', 0.7)
+    origImg.onload = function(){
+  		new thumbnailer(canvas, origImg, 512, 0)
+  		canvas.toBlob(function(blob){ cb(blob) }, 'image/jpeg', 0.7)
+    }
 	}
 	r.readAsDataURL(file)
 }
