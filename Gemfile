@@ -24,6 +24,7 @@ end
 group :production do
   gem 'rack-ssl'
   gem 'rails_12factor'
+  gem 'oink'
 end
 
 group :test do
