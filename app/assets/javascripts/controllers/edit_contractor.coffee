@@ -6,7 +6,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
   $scope.$on 'fetch_contractor', ->
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.contractor = rsp
-      $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position
+      $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position if $scope.contractor.contractor_profile
 
   $scope.$emit 'fetch_contractor'
 
@@ -66,16 +66,27 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     $scope.current_name = "#{$scope.contractor.first_name}'s"
     ngDialog.open template: 'account-reactivation-modal', controller: 'edit-contractor', className: 'warning full', scope: $scope
 
+  $scope.open_deletion = ->
+    $scope.current_name = "#{$scope.contractor.first_name}'s"
+    ngDialog.open template: 'account-deletion-modal', controller: 'edit-contractor', className: 'warning full', scope: $scope
+
   $scope.cancel_deactivation = ->
     ngDialog.closeAll()
 
   $scope.confirm_deactivation = ->
+    spinner.startSpin()
     $http.post("/contractors/#{$scope.id}/deactivate").success (rsp) ->
       window.location = window.location.href if rsp.success
 
   $scope.confirm_reactivation = ->
+    spinner.startSpin()
     $http.post("/contractors/#{$scope.id}/reactivate").success (rsp) ->
       window.location = window.location.href if rsp.success
+
+  $scope.confirm_deletion = ->
+    spinner.startSpin()
+    $http.post("/contractors/#{$scope.id}/delete").success (rsp) ->
+      window.location = '/contractors' if rsp.success
 
   $scope.show_bgc_link = ->
     $scope.contractor and $scope.contractor.contractor_profile and $scope.contractor.contractor_profile.docusign_completed and $scope.contractor.background_check and $scope.contractor.background_check.status_cd != 1 and $scope.contractor.background_check.status_cd != 3

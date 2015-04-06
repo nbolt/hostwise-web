@@ -1,0 +1,13 @@
+script#account-deletion-modal type="text/ng-template"
+  .modal
+    .header
+      .text Delete Account
+    .content
+      .fa.fa-flash
+      .text Are you sure you want to delete {{current_name || 'your'}} account? This cannot be undone.
+    .footer
+      .buttons
+        .button.white ng:click='cancel_deactivation()'
+          .text Cancel
+        .button.red ng:click='confirm_deletion()'
+          .text Delete

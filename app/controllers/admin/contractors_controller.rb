@@ -93,6 +93,11 @@ class Admin::ContractorsController < Admin::AuthController
     render json: { success: true }
   end
 
+  def delete
+    User.find_by_id(params[:id]).destroy
+    render json: { success: true }
+  end
+
   def complete_contract
     user = User.find_by_id(params[:id])
     user.contractor_profile.docusign_completed = true
