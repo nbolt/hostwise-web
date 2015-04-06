@@ -79,6 +79,8 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  config.middleware.use( Oink::Middleware, :logger => Hodel3000CompliantLogger.new(STDOUT))
+
   config.booking_notification_email = 'bookings@hostwise.com'
   config.support_notification_email = 'team@hostwise.com'
 end
