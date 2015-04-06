@@ -8,7 +8,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
   $scope.fetch_jobs = ->
     spinner.startSpin()
     $http.get('/jobs.json',{params: {sort: $scope.sort.id, search: $scope.search, filter: $scope.filter.id}}).success (rsp) ->
-      spinner.stopSpin()
       $scope.jobs = rsp.jobs
       _($scope.jobs).each (job) ->
         job.contractor_list = _(job.contractors).map((contractor) -> contractor.name).join(', ')
@@ -20,6 +19,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           when 4 then 'past due'
           when 5 then "can't access"
           when 6 then 'cancelled'
+      spinner.stopSpin()
 
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id

@@ -1,10 +1,12 @@
-CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, $http, $timeout, ngDialog, spinner) ->
 
   promise = null
 
   $scope.$on 'fetch_hosts', ->
+    spinner.startSpin()
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.users = rsp
+      spinner.stopSpin()
 
   $scope.$emit 'fetch_hosts'
 

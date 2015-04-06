@@ -20,22 +20,42 @@
   table cellpadding='0' cellspacing='0'
     tbody
       tr.days
-        th ID
-        th Property
-        th Address
-        th Date
-        th Status
-        th Cost
-        th Contractors
-      tr dir-paginate='job in jobs | itemsPerPage: 20'
+        th
+          a href='' ng:click="predicate = 'id'; reverse=!reverse"
+            | ID
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'booking.property.nickname'; reverse=!reverse"
+            | Property
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'booking.property.short_address'; reverse=!reverse"
+            | Address
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'date'; reverse=!reverse"
+            | Date
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'status'; reverse=!reverse"
+            | Status
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'booking.cost'; reverse=!reverse"
+            | Cost
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'contractor_list'; reverse=!reverse"
+            | Contractors
+            i.icon-acc-open
+      tr dir-paginate='job in jobs | orderBy:predicate:reverse | itemsPerPage: 20'
         td
           a ng:href="/jobs/{{job.id}}" ng:bind='::job.id'
         td
           a href='javascript:void(0)' ng:bind='::job.booking.property.nickname' ng:click='search_property(job)'
         td ng:bind='::job.booking.property.short_address'
-          /a ng:href="/properties/{{booking.property.id}}" ng:bind='::job.property.nickname'
         td ng:bind='::job.date'
-        td ng:bind='::job.status'
+        td.status ng:bind='::job.status'
         td.cost ${{::job.booking.cost}}
         td ng:bind='::job.contractor_list'
   .pagination

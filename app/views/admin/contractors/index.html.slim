@@ -17,16 +17,43 @@
     tbody
       tr.days
         th
-        th Name
-        th City
-        th Joined
-        th Email
-        th Phone Number
-        th Position
-        th Status
-        th Contract Signed
-        th BGC Status
-      tr dir-paginate='user in users | itemsPerPage: 20'
+        th
+          a href='' ng:click="predicate = 'name'; reverse=!reverse"
+            | Name
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'contractor_profile.city'; reverse=!reverse"
+            | City
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'created_at'; reverse=!reverse"
+            | Joined
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'email'; reverse=!reverse"
+            | Email
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'phone_number'; reverse=!reverse"
+            | Phone Number
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'contractor_profile.display_position'; reverse=!reverse"
+            | Position
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'activation_state'; reverse=!reverse"
+            | Status
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'contract_status'; reverse=!reverse"
+            | Contract Signed
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'bgc_status'; reverse=!reverse"
+            | BGC Status
+            i.icon-acc-open
+      tr dir-paginate='user in users | orderBy:predicate:reverse | itemsPerPage: 20'
         td
           img.avatar ng:src='{{::user.avatar}}'
         td class='name'
@@ -42,12 +69,12 @@
           | {{user.phone_number}}
         td.position
           | {{user.contractor_profile.display_position}}
-        td
+        td.status
           | {{user.activation_state}}
         td
-          | {{user.contractor_profile.docusign_completed ? 'Yes' : 'No'}}
+          | {{user.contract_status}}
         td.status
-          span ng:bind='background_check_status(user)'
+          span ng:bind='user.bgc_status'
   .pagination
     dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
 = render 'signup'
