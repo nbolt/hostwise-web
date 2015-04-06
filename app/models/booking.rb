@@ -183,8 +183,8 @@ class Booking < ActiveRecord::Base
   end
 
   def check_transaction
-    if payment_status != :completed && last_transaction && last_transaction.successful? || cost == 0
-      payment_status = :completed
+    if self.payment_status != :completed && last_transaction && last_transaction.successful? || cost == 0
+      self.payment_status = :completed
     end
   end
 
