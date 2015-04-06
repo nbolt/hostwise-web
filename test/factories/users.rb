@@ -128,8 +128,8 @@ FactoryGirl.define do |user|
     salt "oaz1NpsVHaNCqza9ynGU"
     phone_number "1111111122"
     role_cd 1
-     after(:property) do |user|
-      user.payments << create(:property_2)
+     after(:create) do |user|
+      user.properties << create(:property_2)
     end
   end
 end
