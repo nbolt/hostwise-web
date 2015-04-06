@@ -6,6 +6,15 @@ require './config/environment'
 module Clockwork
   handler do |job|
     case job
+    when 'payments:process'
+      Booking.where(payment_status_cd: 0, status_cd: [2,3,5]).each do |booking|
+        timezone = Timezone::Zone.new :zone => booking.property.zone
+        time = timezone.time Time.now
+        if time.hour == 22
+          booking.charge!
+          booking.job.pay_contractors!
+        end
+      end
     when 'jobs:check_unclaimed'
       url = Rails.application.routes.url_helpers
       Job.where(status_cd: 0).each do |job|
@@ -58,11 +67,6 @@ module Clockwork
       Job.where(status_cd: 5).each do |job|
         if job.booking.status != :couldnt_access && job.cant_access < Time.now.utc - 30.minutes
           job.booking.update_attribute :status_cd, 5
-          job.booking.charge!
-          job.contractors.each do |contractor|
-            contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100)
-          end
-
           staging = Rails.env.staging? && '[STAGING] ' || ''
           TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise was unable to access your property. Having waited 30 minutes to resolve this issue, we must now move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
           TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}.")
@@ -71,7 +75,8 @@ module Clockwork
     end
   end
 
-  every(1.hour, 'jobs:check_no_shows', :at => '**:30')
-  every(1.hour, 'jobs:check_unclaimed', :at => '**:00')
+  every(1.hour, 'payments:process', at: '**:00')
+  every(1.hour, 'jobs:check_unclaimed', at: '**:00')
+  every(1.hour, 'jobs:check_no_shows', at: '**:30')
   every(10.minutes, 'jobs:check_timers')
 end

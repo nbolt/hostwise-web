@@ -78,11 +78,6 @@ class Contractor::JobsController < Contractor::AuthController
   def timer_finished
     unless job.booking.status == :couldnt_access
       job.booking.update_attribute :status_cd, 5
-      job.booking.charge!
-      job.contractors.each do |contractor|
-        contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100)
-      end
-
       staging = Rails.env.staging? && '[STAGING] ' || ''
       TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise was unable to access your property. Having waited 30 minutes to resolve this issue, we must now move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
       TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}.")
@@ -118,10 +113,12 @@ class Contractor::JobsController < Contractor::AuthController
   def complete
     unless job.status == :completed
       job.complete!
-      # Ops will manual review the feedback and flip them for now
-      # if current_user.contractor_profile.position == :trainee
-      #   current_user.contractor_profile.update_attribute :position_cd, 2 if current_user.jobs.where(training:true).count == current_user.jobs.where(training:true,status_cd:3).count
-      # end
+
+      job.contractors.each do |contractor|
+        next_job = self.next_job(contractor)
+        TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise is on the way to clean #{next_job.booking.property.full_address}. We will contact you when we arrive.") if next_job && next_job.booking && next_job.booking.property.user.settings(:porter_en_route).sms
+      end
+
       if job.booking
         property = job.booking.property
         checklist_photos = []
