@@ -68,8 +68,17 @@ class Admin::JobsController < Admin::AuthController
     render json: { success: true }
   end
 
-  def update_state
-    job.update_attribute :state_cd, params[:state]
+  def update_status
+    job.update_attribute :status_cd, params[:status]
+    case job.status
+    when :completed
+      job.complete!
+    when :cant_access
+      job.booking.update_attribute :status_cd, 5
+    when :cancelled
+      job.booking.charge!
+      job.pay_contractors!
+    end
     render json: { success: true }
   end
 

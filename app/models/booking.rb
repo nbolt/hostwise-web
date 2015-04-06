@@ -110,7 +110,7 @@ class Booking < ActiveRecord::Base
   end
 
   def charge!
-    if completed?
+    if payment_status == :completed
       false
     elsif cost == 0
       save
@@ -184,8 +184,8 @@ class Booking < ActiveRecord::Base
   end
 
   def check_transaction
-    if !completed? && last_transaction && last_transaction.successful? || cost == 0
-      completed!
+    if payment_status != :completed && last_transaction && last_transaction.successful? || cost == 0
+      payment_status = :completed
     end
   end
 
