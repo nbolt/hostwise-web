@@ -224,11 +224,7 @@ class Job < ActiveRecord::Base
 
   def complete!
     completed!
-    if booking
-      booking.update_attribute :status_cd, 3
-      booking.charge!
-      booking.job.pay_contractors!
-    end
+    booking.update_attribute :status_cd, 3 if booking
     save
   end
 

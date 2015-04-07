@@ -75,9 +75,6 @@ class Admin::JobsController < Admin::AuthController
       job.complete!
     when :cant_access
       job.booking.update_attribute :status_cd, 5
-    when :cancelled
-      job.booking.charge!
-      job.pay_contractors!
     end
     render json: { success: true }
   end
