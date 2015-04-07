@@ -115,7 +115,7 @@ class Contractor::JobsController < Contractor::AuthController
       job.complete!
 
       job.contractors.each do |contractor|
-        next_job = self.next_job(contractor)
+        next_job = job.next_job contractor
         TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise is on the way to clean #{next_job.booking.property.full_address}. We will contact you when we arrive.") if next_job && next_job.booking && next_job.booking.property.user.settings(:porter_en_route).sms
       end
 
