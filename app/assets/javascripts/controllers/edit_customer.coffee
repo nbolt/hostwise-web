@@ -6,12 +6,21 @@ EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
   $http.get(window.location.href + '.json').success (rsp) ->
     $scope.host = rsp
 
-  $scope.count_bookings = (user) ->
+  $scope.count_bookings = ->
     count = 0
-    _.each user.properties, (property) ->
-      _.each property.bookings, (booking) =>
-        count += 1
+    if $scope.host
+      _.each $scope.host.properties, (property) ->
+        _.each property.bookings, (booking) ->
+          count += 1
     return count
+
+  $scope.total_spent = ->
+    cost = 0
+    if $scope.host
+      _.each $scope.host.properties, (property) ->
+        _.each property.bookings, (booking) ->
+          cost += booking.cost #need fix
+    return cost
 
   $scope.update_account = ->
     $http.put("/hosts/#{$scope.id}/update", {

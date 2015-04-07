@@ -43,16 +43,16 @@
           .section.one
             h2 Last Booked
             h2.teal 00/00/00
-            h2 ID 00000
+            h2 ID 
+            h2.teal ng:bind='000000'
           .section.two
             i.icon-details
             h2 Jobs Booked
-            h2.teal 
-              | {{ count_bookings(host) }}
+            h2.teal ng:bind='count_bookings()'
           .section.three
             i.icon-earnings
             h2 Total Spent 
-            h2.teal $000
+            h2.teal ng:bind='total_spent()'
           .section.four
             i.icon-apt
             h2 Properties
