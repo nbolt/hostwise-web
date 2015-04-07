@@ -110,7 +110,7 @@ class Booking < ActiveRecord::Base
   end
 
   def charge!
-    if payment_status == :completed
+    if self.payment_status == :completed
       false
     elsif cost == 0
       save
