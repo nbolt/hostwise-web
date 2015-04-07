@@ -32,9 +32,9 @@ http_interactions:
       X-Account-Header:
       - 374379a6-0000-0000-0000-000000000000
       X-Server-Name:
-      - streetapi-001-phoenix
+      - streetapi-004-phoenix
       Date:
-      - Wed, 01 Apr 2015 01:17:43 GMT
+      - Tue, 07 Apr 2015 21:32:05 GMT
       Content-Length:
       - '816'
     body:
@@ -42,10 +42,10 @@ http_interactions:
       string: |
         [{"input_index":0,"candidate_index":0,"delivery_line_1":"4408 Lone Tree Dr","last_line":"Plano TX 75093-3355","delivery_point_barcode":"750933355082","components":{"primary_number":"4408","street_name":"Lone Tree","street_suffix":"Dr","city_name":"Plano","state_abbreviation":"TX","zipcode":"75093","plus4_code":"3355","delivery_point":"08","delivery_point_check_digit":"2"},"metadata":{"record_type":"S","zip_type":"Standard","county_fips":"48085","county_name":"Collin","carrier_route":"C078","congressional_district":"03","rdi":"Residential","elot_sequence":"0080","elot_sort":"D","latitude":33.03627,"longitude":-96.77986,"precision":"Zip9","time_zone":"Central","utc_offset":-6,"dst":true},"analysis":{"dpv_match_code":"Y","dpv_footnotes":"AABB","dpv_cmra":"N","dpv_vacant":"N","active":"Y","footnotes":"N#"}}]
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:43 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:05 GMT
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=33.03627,-96.77986&timestamp=1427851063
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=33.03627,-96.77986&timestamp=1428442325
     body:
       encoding: US-ASCII
       string: ''
@@ -64,7 +64,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Wed, 01 Apr 2015 01:17:43 GMT
+      - Tue, 07 Apr 2015 21:32:05 GMT
       Pragma:
       - no-cache
       Expires:
@@ -98,7 +98,7 @@ http_interactions:
            "timeZoneName" : "Central Daylight Time"
         }
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:43 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:05 GMT
 - request:
     method: post
     uri: https://api.smartystreets.com/street-address?auth-id=be3ffba5-6059-4c70-8dff-92978ab8dec4&auth-token=sl4776At3RB7VDM7kXOw
@@ -133,7 +133,7 @@ http_interactions:
       X-Server-Name:
       - streetapi-003-phoenix
       Date:
-      - Wed, 01 Apr 2015 01:17:43 GMT
+      - Tue, 07 Apr 2015 21:32:06 GMT
       Content-Length:
       - '870'
     body:
@@ -141,10 +141,10 @@ http_interactions:
       string: |
         [{"input_index":0,"candidate_index":0,"delivery_line_1":"4404 Lone Tree Dr # 4","last_line":"Plano TX 75093-3355","delivery_point_barcode":"750933355046","components":{"primary_number":"4404","street_name":"Lone Tree","street_suffix":"Dr","secondary_number":"4","secondary_designator":"#","city_name":"Plano","state_abbreviation":"TX","zipcode":"75093","plus4_code":"3355","delivery_point":"04","delivery_point_check_digit":"6"},"metadata":{"record_type":"S","zip_type":"Standard","county_fips":"48085","county_name":"Collin","carrier_route":"C078","congressional_district":"03","rdi":"Residential","elot_sequence":"0080","elot_sort":"D","latitude":33.03627,"longitude":-96.77986,"precision":"Zip9","time_zone":"Central","utc_offset":-6,"dst":true},"analysis":{"dpv_match_code":"S","dpv_footnotes":"AACC","dpv_cmra":"N","dpv_vacant":"N","active":"Y","footnotes":"N#"}}]
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:43 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:05 GMT
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=33.03627,-96.77986&timestamp=1427851063
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=33.03627,-96.77986&timestamp=1428442325
     body:
       encoding: US-ASCII
       string: ''
@@ -163,7 +163,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Wed, 01 Apr 2015 01:17:44 GMT
+      - Tue, 07 Apr 2015 21:32:06 GMT
       Pragma:
       - no-cache
       Expires:
@@ -197,7 +197,7 @@ http_interactions:
            "timeZoneName" : "Central Daylight Time"
         }
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:44 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:06 GMT
 - request:
     method: post
     uri: https://api.smartystreets.com/street-address?auth-id=be3ffba5-6059-4c70-8dff-92978ab8dec4&auth-token=sl4776At3RB7VDM7kXOw
@@ -230,9 +230,9 @@ http_interactions:
       X-Account-Header:
       - 374379a6-0000-0000-0000-000000000000
       X-Server-Name:
-      - streetapi-004-phoenix
+      - streetapi-003-phoenix
       Date:
-      - Wed, 01 Apr 2015 01:17:44 GMT
+      - Tue, 07 Apr 2015 21:32:06 GMT
       Content-Length:
       - '870'
     body:
@@ -240,10 +240,10 @@ http_interactions:
       string: |
         [{"input_index":0,"candidate_index":0,"delivery_line_1":"4404 Lone Tree Dr # 4","last_line":"Plano TX 75093-3355","delivery_point_barcode":"750933355046","components":{"primary_number":"4404","street_name":"Lone Tree","street_suffix":"Dr","secondary_number":"4","secondary_designator":"#","city_name":"Plano","state_abbreviation":"TX","zipcode":"75093","plus4_code":"3355","delivery_point":"04","delivery_point_check_digit":"6"},"metadata":{"record_type":"S","zip_type":"Standard","county_fips":"48085","county_name":"Collin","carrier_route":"C078","congressional_district":"03","rdi":"Residential","elot_sequence":"0080","elot_sort":"D","latitude":33.03627,"longitude":-96.77986,"precision":"Zip9","time_zone":"Central","utc_offset":-6,"dst":true},"analysis":{"dpv_match_code":"S","dpv_footnotes":"AACC","dpv_cmra":"N","dpv_vacant":"N","active":"Y","footnotes":"N#"}}]
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:44 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:06 GMT
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=33.03627,-96.77986&timestamp=1427851064
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=33.03627,-96.77986&timestamp=1428442326
     body:
       encoding: US-ASCII
       string: ''
@@ -262,7 +262,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Wed, 01 Apr 2015 01:17:44 GMT
+      - Tue, 07 Apr 2015 21:32:06 GMT
       Pragma:
       - no-cache
       Expires:
@@ -296,5 +296,5 @@ http_interactions:
            "timeZoneName" : "Central Daylight Time"
         }
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:44 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:06 GMT
 recorded_with: VCR 2.9.3

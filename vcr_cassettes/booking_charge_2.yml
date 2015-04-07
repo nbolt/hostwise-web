@@ -5,20 +5,20 @@ http_interactions:
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=22000&currency=usd&customer=cus_5yXZxss0n8XKau&source=card_15maU0GQgOKVfE1zcN2HBaQB&statement_descriptor=HostWise%2010464&metadata[job_id]=14794
+      string: amount=22000&currency=usd&customer=cus_616VCIFeTOfEzN&source=card_15p4IsGQgOKVfE1zLvnos45U&statement_descriptor=HostWise%2017855&metadata[job_id]=24911
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.20.2
+      - Stripe/v1 RubyBindings/1.20.4
       Authorization:
       - Bearer sk_test_fKeyZic0oSJFOYS4YODfK45r
       Content-Type:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.20.2","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
+      - '{"bindings_version":"1.20.4","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
         Tree-Diagram.local 14.1.0 Darwin Kernel Version 14.1.0: Thu Feb 26 19:26:47
         PST 2015; root:xnu-2782.10.73~1/RELEASE_X86_64 x86_64"}'
       Content-Length:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 01 Apr 2015 01:17:29 GMT
+      - Tue, 07 Apr 2015 21:32:16 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_aHHu05pCVzm15sxh
+      - req_UCoM51xabOQ6A6WE
       Stripe-Version:
       - '2015-03-24'
     body:
@@ -60,9 +60,9 @@ http_interactions:
             "message": "Your card was declined.",
             "type": "card_error",
             "code": "card_declined",
-            "charge": "ch_15maU1GQgOKVfE1zgKnlNdu2"
+            "charge": "ch_15p4IuGQgOKVfE1zkbGN7xn0"
           }
         }
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:29 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:16 GMT
 recorded_with: VCR 2.9.3

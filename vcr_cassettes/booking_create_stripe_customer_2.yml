@@ -12,13 +12,13 @@ http_interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.20.2
+      - Stripe/v1 RubyBindings/1.20.4
       Authorization:
       - Bearer sk_test_fKeyZic0oSJFOYS4YODfK45r
       Content-Type:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.20.2","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
+      - '{"bindings_version":"1.20.4","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
         Tree-Diagram.local 14.1.0 Darwin Kernel Version 14.1.0: Thu Feb 26 19:26:47
         PST 2015; root:xnu-2782.10.73~1/RELEASE_X86_64 x86_64"}'
       Content-Length:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 01 Apr 2015 01:17:27 GMT
+      - Tue, 07 Apr 2015 21:32:14 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_N2loMvJ5qoqLqGdI
+      - req_ygkKfhjdsZjNLBh7
       Stripe-Version:
       - '2015-03-24'
       Strict-Transport-Security:
@@ -59,8 +59,8 @@ http_interactions:
       string: |
         {
           "object": "customer",
-          "created": 1427851047,
-          "id": "cus_5yXZxss0n8XKau",
+          "created": 1428442334,
+          "id": "cus_616VCIFeTOfEzN",
           "livemode": false,
           "description": null,
           "email": "dustinjones597@gmail.com",
@@ -70,7 +70,7 @@ http_interactions:
             "object": "list",
             "total_count": 0,
             "has_more": false,
-            "url": "/v1/customers/cus_5yXZxss0n8XKau/subscriptions",
+            "url": "/v1/customers/cus_616VCIFeTOfEzN/subscriptions",
             "data": []
           },
           "discount": null,
@@ -80,11 +80,11 @@ http_interactions:
             "object": "list",
             "total_count": 0,
             "has_more": false,
-            "url": "/v1/customers/cus_5yXZxss0n8XKau/sources",
+            "url": "/v1/customers/cus_616VCIFeTOfEzN/sources",
             "data": []
           },
           "default_source": null
         }
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:27 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:14 GMT
 recorded_with: VCR 2.9.3

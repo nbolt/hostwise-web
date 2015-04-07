@@ -5,20 +5,20 @@ http_interactions:
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=22000&currency=usd&customer=cus_5yXZyV3OetI5dW&source=card_15maTyGQgOKVfE1ze9zD2Wtd&statement_descriptor=HostWise%2010463&metadata[job_id]=14793
+      string: amount=22000&currency=usd&customer=cus_616VrYR3b4gWSA&source=card_15p4IrGQgOKVfE1zdGiXx43e&statement_descriptor=HostWise%2017854&metadata[job_id]=24910
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.20.2
+      - Stripe/v1 RubyBindings/1.20.4
       Authorization:
       - Bearer sk_test_fKeyZic0oSJFOYS4YODfK45r
       Content-Type:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.20.2","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
+      - '{"bindings_version":"1.20.4","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
         Tree-Diagram.local 14.1.0 Darwin Kernel Version 14.1.0: Thu Feb 26 19:26:47
         PST 2015; root:xnu-2782.10.73~1/RELEASE_X86_64 x86_64"}'
       Content-Length:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 01 Apr 2015 01:17:28 GMT
+      - Tue, 07 Apr 2015 21:32:15 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8XkfsGVHMDzbKWv3
+      - req_i4tOIVoM4i0c8u4A
       Stripe-Version:
       - '2015-03-24'
       Strict-Transport-Security:
@@ -58,9 +58,9 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_15maU0GQgOKVfE1z5FIvsS6O",
+          "id": "ch_15p4ItGQgOKVfE1zZh71EF6o",
           "object": "charge",
-          "created": 1427851048,
+          "created": 1428442335,
           "livemode": false,
           "paid": true,
           "status": "succeeded",
@@ -68,7 +68,7 @@ http_interactions:
           "currency": "usd",
           "refunded": false,
           "source": {
-            "id": "card_15maTyGQgOKVfE1ze9zD2Wtd",
+            "id": "card_15p4IrGQgOKVfE1zdGiXx43e",
             "object": "card",
             "last4": "4242",
             "brand": "Visa",
@@ -89,21 +89,21 @@ http_interactions:
             "address_zip_check": null,
             "dynamic_last4": null,
             "metadata": {},
-            "customer": "cus_5yXZyV3OetI5dW"
+            "customer": "cus_616VrYR3b4gWSA"
           },
           "captured": true,
-          "balance_transaction": "txn_15maU0GQgOKVfE1z1D7y0FaL",
+          "balance_transaction": "txn_15p4ItGQgOKVfE1zaB3bxm7O",
           "failure_message": null,
           "failure_code": null,
           "amount_refunded": 0,
-          "customer": "cus_5yXZyV3OetI5dW",
+          "customer": "cus_616VrYR3b4gWSA",
           "invoice": null,
           "description": null,
           "dispute": null,
           "metadata": {
-            "job_id": "14793"
+            "job_id": "24910"
           },
-          "statement_descriptor": "HostWise 10463",
+          "statement_descriptor": "HostWise 17854",
           "fraud_details": {},
           "receipt_email": "dustinjones595@gmail.com",
           "receipt_number": null,
@@ -113,10 +113,10 @@ http_interactions:
             "object": "list",
             "total_count": 0,
             "has_more": false,
-            "url": "/v1/charges/ch_15maU0GQgOKVfE1z5FIvsS6O/refunds",
+            "url": "/v1/charges/ch_15p4ItGQgOKVfE1zZh71EF6o/refunds",
             "data": []
           }
         }
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:28 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:15 GMT
 recorded_with: VCR 2.9.3

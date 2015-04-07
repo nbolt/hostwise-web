@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_5yXZyV3OetI5dW
+    uri: https://api.stripe.com/v1/customers/cus_616VrYR3b4gWSA
     body:
       encoding: US-ASCII
       string: ''
@@ -12,13 +12,13 @@ http_interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.20.2
+      - Stripe/v1 RubyBindings/1.20.4
       Authorization:
       - Bearer sk_test_fKeyZic0oSJFOYS4YODfK45r
       Content-Type:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.20.2","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
+      - '{"bindings_version":"1.20.4","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
         Tree-Diagram.local 14.1.0 Darwin Kernel Version 14.1.0: Thu Feb 26 19:26:47
         PST 2015; root:xnu-2782.10.73~1/RELEASE_X86_64 x86_64"}'
   response:
@@ -29,7 +29,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 01 Apr 2015 01:17:26 GMT
+      - Tue, 07 Apr 2015 21:32:12 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -47,7 +47,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_B8psMsdrjtdHaOpL
+      - req_4yHRTurPhPthuBvX
       Stripe-Version:
       - '2015-03-24'
       Strict-Transport-Security:
@@ -57,8 +57,8 @@ http_interactions:
       string: |
         {
           "object": "customer",
-          "created": 1427851046,
-          "id": "cus_5yXZyV3OetI5dW",
+          "created": 1428442332,
+          "id": "cus_616VrYR3b4gWSA",
           "livemode": false,
           "description": null,
           "email": "dustinjones595@gmail.com",
@@ -68,7 +68,7 @@ http_interactions:
             "object": "list",
             "total_count": 0,
             "has_more": false,
-            "url": "/v1/customers/cus_5yXZyV3OetI5dW/subscriptions",
+            "url": "/v1/customers/cus_616VrYR3b4gWSA/subscriptions",
             "data": []
           },
           "discount": null,
@@ -78,11 +78,11 @@ http_interactions:
             "object": "list",
             "total_count": 0,
             "has_more": false,
-            "url": "/v1/customers/cus_5yXZyV3OetI5dW/sources",
+            "url": "/v1/customers/cus_616VrYR3b4gWSA/sources",
             "data": []
           },
           "default_source": null
         }
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:26 GMT
+  recorded_at: Tue, 07 Apr 2015 21:32:12 GMT
 recorded_with: VCR 2.9.3

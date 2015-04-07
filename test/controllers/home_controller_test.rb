@@ -73,7 +73,7 @@ describe HomeController do
     get :stripe_recipient
     assert_response :success
     body = JSON.parse(response.body)
-    body['recipient']['id'].must_equal 'acct_15mpviEUZIzGWSsO'
+    body['recipient']['id'].must_equal 'acct_15p4IHCrporZAQeM' # not sure hardcoding this value is the best way to go about this...
   end
 
   it 'user' do

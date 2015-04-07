@@ -32,9 +32,9 @@ http_interactions:
       X-Account-Header:
       - 374379a6-0000-0000-0000-000000000000
       X-Server-Name:
-      - streetapi-001-phoenix
+      - streetapi-004-phoenix
       Date:
-      - Wed, 01 Apr 2015 01:17:43 GMT
+      - Tue, 07 Apr 2015 21:31:43 GMT
       Content-Length:
       - '3'
     body:
@@ -42,5 +42,5 @@ http_interactions:
       string: |
         []
     http_version: 
-  recorded_at: Wed, 01 Apr 2015 01:17:43 GMT
+  recorded_at: Tue, 07 Apr 2015 21:31:43 GMT
 recorded_with: VCR 2.9.3
