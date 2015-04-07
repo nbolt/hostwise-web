@@ -1,5 +1,5 @@
 namespace :payouts do
-  task process_outstanding_weekly: :environment do
+  task process_outstanding: :environment do
     if Date.today.wednesday?
       User.all.each do |user|
         if user.chain(:contractor_profile, :stripe_recipient_id)
