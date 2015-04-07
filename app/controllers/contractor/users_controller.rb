@@ -85,6 +85,7 @@ class Contractor::UsersController < Contractor::AuthController
       profile = ContractorProfile.new
       profile.assign_attributes new_profile_params
       profile.position = :trainee
+      profile.docusign_completed = true
 
       if profile.valid?
         profile.user = user
@@ -101,6 +102,7 @@ class Contractor::UsersController < Contractor::AuthController
         user.activate!
         auto_login user
 
+        BackgroundCheckSubmissionJob.perform_later(user)
         UserMailer.contractor_profile_completed(user).then(:deliver)
 
         render json: { success: true }
