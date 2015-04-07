@@ -2411,7 +2411,7 @@ a.xenon .bg-danger:hover {
   overflow-x: auto;
   min-height: 0.01%;
 }
-@media screen and (max-width: 767px) {
+@media (max-width: 767px) {
   .xenon .table-responsive {
     width: 100%;
     margin-bottom: 13.5px;
@@ -2562,7 +2562,7 @@ textarea.xenon .form-control {
 .xenon input[type="search"] {
   -webkit-appearance: none;
 }
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
+@media (-webkit-min-device-pixel-ratio: 0) {
   .xenon input[type="date"],
   .xenon input[type="time"],
   .xenon input[type="datetime-local"],
@@ -4817,7 +4817,7 @@ a.xenon .badge:focus {
 .xenon .jumbotron .container {
   max-width: 100%;
 }
-@media screen and (min-width: 768px) {
+@media (min-width: 768px) {
   .xenon .jumbotron {
     padding: 48px 0;
   }
@@ -6180,7 +6180,7 @@ button.xenon .close {
 .xenon .carousel-caption .btn {
   text-shadow: none;
 }
-@media screen and (min-width: 768px) {
+@media (min-width: 768px) {
   .xenon .carousel-control .glyphicon-chevron-left,
   .xenon .carousel-control .glyphicon-chevron-right,
   .xenon .carousel-control .icon-prev,
