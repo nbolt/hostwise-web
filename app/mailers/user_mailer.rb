@@ -404,6 +404,32 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
+  def payday_report(user, payouts, from, to)
+    mandrill do
+      mandrill_mail template: 'payday',
+                    to: 'staging-notifications@hostwise.com',
+                    subject: "HostWise Payday Report (#{user.name})",
+                    vars: {
+                      action_url: contractor_jobs_url,
+                      total: payouts.reduce(0) {|acc, payout| acc + payout.amount} / 100.0,
+                      bank: user.payments[0].last4,
+                      from_date: from.strftime('%b %-d, %Y'),
+                      to_date: to.strftime('%b %-d, %Y'),
+                      jobs: payouts.map {|payout| {
+                        id: payout.job.id,
+                        link: job_details_url(payout.job),
+                        formatted_date: payout.job.date.strftime,
+                        payout: payout.amount / 100.0,
+                        services: payout.job.booking.services.map(&:display).join(', ')
+                      }}
+                    },
+                    merge_language: 'handlebars',
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
   private
 
   def mandrill
