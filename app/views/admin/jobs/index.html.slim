@@ -29,7 +29,15 @@
             | Property
             i.icon-acc-open
         th
-          a href='' ng:click="predicate = 'booking.property.short_address'; reverse=!reverse"
+          a href='' ng:click="predicate = 'booking.property.property_size'; reverse=!reverse"
+            | Size
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'booking.property.user.name'; reverse=!reverse"
+            | Client
+            i.icon-acc-open
+        th
+          a href='' ng:click="predicate = 'booking.property.neighborhood_address'; reverse=!reverse"
             | Address
             i.icon-acc-open
         th
@@ -53,7 +61,11 @@
           a ng:href="/jobs/{{job.id}}" ng:bind='::job.id'
         td
           a href='javascript:void(0)' ng:bind='::job.booking.property.nickname' ng:click='search_property(job)'
-        td ng:bind='::job.booking.property.short_address'
+        td ng:bind='::job.booking.property.property_size'
+        td
+          a href='javascript:void(0)' ng:bind='::job.booking.property.user.name'
+          |  &ndash; {{::job.booking.property.user.display_phone_number}}
+        td ng:bind='::job.booking.property.neighborhood_address'
         td ng:bind='::job.date'
         td.status ng:bind='::job.status'
         td.cost ${{::job.booking.cost}}

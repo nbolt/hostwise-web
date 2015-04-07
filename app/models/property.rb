@@ -74,6 +74,19 @@ class Property < ActiveRecord::Base
     "#{address1} #{zip}"
   end
 
+  def neighborhood_address
+    zip = Zip.where(code: self.zip)[0]
+    if zip
+      if zip.neighborhood && zip.neighborhood.name != city
+        "#{address1}, #{zip.neighborhood.name}, #{zip.code}"
+      else
+        "#{address1}, #{city}, #{zip.code}"
+      end
+    else
+      "#{address1}, #{city}, #{zip.code}"
+    end
+  end
+
   def full_address
     if address2
       "#{address1} #{address2}, #{city}, #{state} #{zip}"
@@ -108,7 +121,11 @@ class Property < ActiveRecord::Base
   end
 
   def property_size
-    "#{bedrooms}BD/#{bathrooms}BA #{property_type.to_s.titleize}"
+    "#{rooms} #{property_type.to_s.titleize}"
+  end
+
+  def rooms
+    "#{bedrooms}BD/#{bathrooms}BA"
   end
 
   private
