@@ -9,7 +9,7 @@ class Admin::HostsController < Admin::AuthController
   def edit
     respond_to do |format|
       format.html
-      format.json { render json: User.find_by_id(params[:id]).to_json(include:[:properties], methods: [:name, :avatar]) }
+      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {include: :bookings, methods: [:cost]}}, methods: [:name, :avatar]) }
     end
   end
 

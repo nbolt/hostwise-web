@@ -37,6 +37,7 @@ class Job < ActiveRecord::Base
   scope :distribution, -> { where(distribution: true) }
   scope :scheduled, -> { where(status_cd: 1) }
   scope :not_complete, -> { where(status_cd: [0,1,2]) }
+  scope :complete, -> { where(status_cd: 3) }
   scope :training, -> { where(training: true) }
   scope :not_training, -> { where(training: false) }
   scope :standard, -> { where(distribution: false) }
@@ -223,11 +224,7 @@ class Job < ActiveRecord::Base
 
   def complete!
     completed!
-    if booking
-      booking.update_attribute :status_cd, 3
-      booking.charge!
-      booking.job.pay_contractors!
-    end
+    booking.update_attribute :status_cd, 3 if booking
     save
   end
 
