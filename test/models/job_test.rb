@@ -2,10 +2,9 @@ require "test_helper"
 
 describe Job do
 	it 'searches future jobs properly' do
-		job_1 = Job.create(date: Date.today)
-		job_2 = Job.create(date: Date.today + 1.years, full_beds: 9)
+		job_1 = Job.create(date: Date.yesterday)
+		job_2 = Job.create(date: Date.today + 1.year, full_beds: 9)
 		Job.all.future[0].full_beds.must_equal 9
-		#Job.all.future_from_today[0].full_beds.must_equal 9
 	end
 
 	it 'searches for open jobs properly' do
