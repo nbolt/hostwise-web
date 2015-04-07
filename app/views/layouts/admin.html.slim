@@ -19,7 +19,7 @@ html
     = yield :head
     = render 'common/analytics'
 
-  body.grey ng:controller='app' ng-cloak=''
+  body.page-body.grey ng:controller='app' ng-cloak=''
     = render 'common/spinner'
     = render 'common/header'
     #sidebar-container
@@ -48,6 +48,12 @@ html
               .icon
                 i.icon-profile
               .text Team Members
+        .section
+          a href='/properties'
+            .title
+              .icon
+                i.icon-house
+              .text Properties
         .section sidebar-dropdown='250'
           .title
             .icon

@@ -32,6 +32,8 @@
 //= require unslider.min
 //= require typed
 //= require hw
+//= require bootstrap.min
+//= require jquery.dataTables.js
 //= require app
 //= require_tree ./controllers
 //= require_tree .
