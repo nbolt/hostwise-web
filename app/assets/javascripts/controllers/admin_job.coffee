@@ -41,8 +41,11 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
             }).addTo map
     ), 200)
 
-  $scope.$watch 'job.status_cd', (n,o) -> if o != undefined
-    $http.post($window.location.href + '/update_status', {status: $scope.job.status_cd})
+  $scope.$watch 'status', (n,o) -> if o != undefined
+    $http.post($window.location.href + '/update_status', {status: $scope.status.id})
+
+  $scope.$watch 'state', (n,o) -> if o != undefined
+    $http.post($window.location.href + '/update_state', {state: $scope.state.id})
 
   $scope.$watch 'new_teammate', (n,o) -> if n
     $http.post($window.location.href + '/add_contractor', {contractor_id: n.id}).success (rsp) ->
@@ -58,6 +61,20 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
 
   $scope.remove = (contractor) ->
     $http.post($window.location.href + '/remove_contractor', {contractor_id: contractor.id}).success (rsp) -> load_job(rsp)
+
+  $scope.stateHash = ->
+    {
+      minimumResultsForSearch: -1
+      data: [{id:0,text:'Normal'},{id:1,text:'VIP'},{id:2,text:'Hidden'}]
+      initSelection: (el, cb) ->
+    }
+
+  $scope.statusHash = ->
+    {
+      minimumResultsForSearch: -1
+      data: [{id:0,text:'Open'},{id:1,text:'Scheduled'},{id:2,text:'In Progress'},{id:3,text:'Completed'},{id:4,text:'Past Due'},{id:5,text:"Can't Access"},{id:6,text:'Cancelled'}]
+      initSelection: (el, cb) ->
+    }
 
   $scope.teamHash = ->
     {
@@ -78,13 +95,30 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
     $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
     $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
     $scope.job.extra_services    = _(rsp.booking.services).filter (s) -> s.extra
+
     switch $scope.job.state_cd
       when 0
-        angular.element('#state-normal').click()
+        $scope.state = { id: $scope.job.state_cd, text: 'Normal' }
       when 1
-        angular.element('#state-vip').click()
+        $scope.state = { id: $scope.job.state_cd, text: 'VIP' }
       when 2
-        angular.element('#state-hidden').click()
+        $scope.state = { id: $scope.job.state_cd, text: 'Hidden' }
+
+    switch $scope.job.status_cd
+      when 0
+        $scope.status = { id: $scope.job.status_cd, text: 'Open' }
+      when 1
+        $scope.status = { id: $scope.job.status_cd, text: 'Scheduled' }
+      when 2
+        $scope.status = { id: $scope.job.status_cd, text: 'In Progress' }
+      when 3
+        $scope.status = { id: $scope.job.status_cd, text: 'Completed' }
+      when 4
+        $scope.status = { id: $scope.job.status_cd, text: 'Past Due' }
+      when 5
+        $scope.status = { id: $scope.job.status_cd, text: "Can't Access" }
+      when 6
+        $scope.status = { id: $scope.job.status_cd, text: 'Cancelled' }
 
 ]
 

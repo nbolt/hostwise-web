@@ -79,6 +79,11 @@ class Admin::JobsController < Admin::AuthController
     render json: { success: true }
   end
 
+  def update_state
+    job.update_attribute :state_cd, params[:state]
+    render json: { success: true }
+  end
+
   def available_contractors
     render json: User.search_contractors(params[:term]).to_json(methods: [:name])
   end
