@@ -28,7 +28,9 @@ EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
       _.each $scope.host.properties, (property) ->
         _.each property.bookings, (booking) ->
           bookings.push(booking)
-          _.sortBy  bookings, 'date'
+      bookings = _.sortBy  bookings, 'date'
+      console.log bookings
+
       return bookings[bookings.length - 1].date
 
   $scope.update_account = ->
