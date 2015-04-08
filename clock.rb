@@ -87,10 +87,10 @@ module Clockwork
             payouts[user.email] = {}
             payouts[user.email][:name] = user.name
             payouts[user.email][:amount] = total / 100.0
-            UserMailer.payout_report(payouts).then(:deliver)
           end
         end
       end
+      UserMailer.payout_report(payouts).then(:deliver)
     when 'jobs:check_unclaimed'
       url = Rails.application.routes.url_helpers
       Job.where(status_cd: 0).each do |job|
