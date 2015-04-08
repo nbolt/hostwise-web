@@ -8,6 +8,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "minitest/rails"
 require "minitest/spec"
+require 'stripe'
 
 DatabaseCleaner.strategy = :transaction
 DatabaseCleaner.clean
@@ -18,6 +19,14 @@ DatabaseCleaner.clean
 
 # Uncomment for awesome colorful output
 # require "minitest/pride"
+
+module Stripe
+  module CertificateBlacklist
+    def self.check_ssl_cert(uri, ca_file)
+      true
+    end
+  end
+end
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
