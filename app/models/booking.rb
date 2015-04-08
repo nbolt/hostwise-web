@@ -11,6 +11,7 @@ class Booking < ActiveRecord::Base
   has_many :booking_services, class_name: 'BookingServices', dependent: :destroy
   has_many :services, through: :booking_services
   has_many :transactions
+  has_many :successful_transactions, -> { where(status_cd: 0) }, class_name: 'Transaction'
 
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
   scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
