@@ -46,6 +46,10 @@ class Property < ActiveRecord::Base
     bookings.where(status_cd: [1,4]).future.order(:date).first.then(:date)
   end
 
+  def last_service_date
+    bookings.where(status_cd: 3).order('date DESC').first.then(:date)
+  end
+
   def self.search(term, sort=nil)
     results = Property.all
     results = results.search_property(term) if term.present? && !results.empty? && sort != 'upcoming_service' # NEEDS FIX

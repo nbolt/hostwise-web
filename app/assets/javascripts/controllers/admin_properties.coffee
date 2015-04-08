@@ -4,6 +4,8 @@ AdminPropertiesCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http,
     spinner.startSpin()
     $http.get('/properties.json').success (rsp) ->
       $scope.properties = rsp
+      _($scope.properties).each (property) ->
+        property.service_completed = _(property.bookings).filter (booking) -> booking.status_cd == 3
       spinner.stopSpin()
       $timeout((->
         angular.element("#example-1").dataTable({
