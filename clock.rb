@@ -72,7 +72,7 @@ module Clockwork
           payments[booking.user.email][:id] = booking.id
         end
       end
-      UserMailer.payments_report(payments).then(:deliver)
+      UserMailer.payments_report(payments).then(:deliver) if payments.present?
     when 'payouts:report'
       payouts = {}
       User.all.each do |user|
