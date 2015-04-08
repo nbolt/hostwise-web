@@ -22,16 +22,22 @@ EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
           cost += booking.cost #need fix
       return cost
 
-  $scope.last_booking_date = ->
+  $scope.last_booking = ->
     if $scope.host
       bookings = []
       _.each $scope.host.properties, (property) ->
         _.each property.bookings, (booking) ->
           bookings.push(booking)
       bookings = _.sortBy  bookings, 'date'
-      console.log bookings
 
-      return bookings[bookings.length - 1].date
+      return bookings[bookings.length - 1]
+
+  $scope.next_service_date = (property) ->
+    if $scope.host
+      console.log property.next_service_date
+      return property.next_service_date
+
+
 
   $scope.update_account = ->
     $http.put("/hosts/#{$scope.id}/update", {

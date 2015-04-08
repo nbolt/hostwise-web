@@ -42,9 +42,9 @@
           /# write method for placeholder later
           .section.one
             h2 Last Booked
-            h2.teal ng:bind='last_booking_date()'
+            h2.teal ng:bind='last_booking().date'
             h2 ID 
-            h2.teal ng:bind='000000'
+            h2.teal ng:bind='last_booking().id'
           .section.two
             i.icon-details
             h2 Jobs Booked
@@ -70,6 +70,42 @@
             input value='Search for a property'
             i.icon-acc-open
           hr
+          .row  
+            .section
+              h2 Property ID
+            .section
+              h2 Date Added
+            .section
+              h2 City
+            .section
+              h2 Last Service
+            .section
+              h2 Next Service 
+            .section
+              h2 Total Bookings
+            .section
+              h2 Property Revenue
+          .row ng-repeat='property in host.properties'
+            .section
+              p.teal
+                | {{ property.id }}
+            .section
+              p.dark-gray
+                | {{ property.created_at.substring(0, 10) }}
+            .section
+              p.dark-gray
+                | {{ property.city }}
+            .section
+              p.dark-gray
+                | {{ property.id }}
+            .section
+              p.dark-gray ng-bind='next_service_date(property)'
+            .section
+              p.dark-gray
+                | {{ property.bookings.length }}
+            .section
+              p.dark-gray
+                | {{ property.id }}
 
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to
