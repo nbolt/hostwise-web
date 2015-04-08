@@ -92,6 +92,9 @@ Rails.application.routes.draw do
     get   '/jobs/:id' => 'jobs#show', as: :admin_job
     match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
     get   '/properties' => 'properties#index'
+    get   '/properties/:id' => 'properties#show'
+    post  '/properties/:id' => 'properties#update'
+    match '/properties/:id/:action' => 'properties', via: [:get, :post]
     get   '/login_as/:id' => 'auth#login_as'
   end
 

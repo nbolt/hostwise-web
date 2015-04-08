@@ -1,4 +1,4 @@
-.xenon ng:controller='admin_properties'
+.xenon.custom ng:controller='admin_properties'
   .panel.panel-default.stats
     .panel-heading
       | Total Properties
@@ -30,22 +30,38 @@
             th Customer
             th Address
             th Type
-            th Last Service
-            th Next Service
-            th Service Completed
+            th
+              | Last
+              br Service
+            th
+              | Next
+              br Service
+            th
+              | Service
+              br Completed
         tfoot
           tr
             th ID
             th Customer
             th Address
             th Type
-            th Last Service
-            th Next Service
-            th Service Completed
+            th
+              | Last
+              br Service
+            th
+              | Next
+              br Service
+            th
+              | Service
+              br Completed
         tbody
           tr ng:repeat='property in properties'
-            td ng:bind='property.id'
-            td ng:bind-template="{{property.user.name}} ({{property.user.id}})"
+            td
+              a.teal ng:href='/properties/{{property.id}}'
+                | {{property.id}}
+            td
+              a.teal ng:href="/hosts/{{property.user.id}}/edit"
+                | {{property.user.name}} ({{property.user.id}})
             td ng:bind='property.neighborhood_address'
             td ng:bind='property.property_size'
             td ng:bind='property.last_service_date'
