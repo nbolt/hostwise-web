@@ -15,7 +15,7 @@
 
   .panel.panel-default
     .panel-heading
-      h3.panel-title Basic Setup
+      h3.panel-title Properties
       .panel-options
         a data-toggle="panel" href="#"
           span.collapse-icon &ndash;
@@ -64,6 +64,6 @@
                 | {{property.user.name}} ({{property.user.id}})
             td ng:bind='property.neighborhood_address'
             td ng:bind='property.property_size'
-            td ng:bind='property.last_service_date'
-            td ng:bind='property.next_service_date'
+            td ng:bind="property.last_service_date | date:'MM/dd/yyyy':'UTC'"
+            td ng:bind="property.next_service_date | date:'MM/dd/yyyy':'UTC'"
             td ng:bind='property.service_completed'

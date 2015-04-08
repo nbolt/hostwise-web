@@ -2,7 +2,7 @@ class Admin::HostsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.hosts.to_json(include: [:properties], methods: [:name, :avatar, :next_service_date]) }
+      format.json { render json: User.hosts.to_json(include: [:properties], methods: [:name, :avatar, :next_service_date, :display_phone_number]) }
     end
   end
 

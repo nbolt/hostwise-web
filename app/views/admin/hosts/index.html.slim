@@ -1,65 +1,76 @@
-.contractors ng:controller='customers'
-  .header
-    h2
-      .fa.fa-list
-      | Customers
-  .highlight
-    span.total
+.xenon.custom ng:controller='customers'
+  .panel.panel-default.stats
+    .panel-heading
       | Total Customers
-      strong
-        | {{users.length}}
-    span.search
-      i.icon-search
-      input type='text' placeholder='Search' ng:model='search'
-    hr
-  table cellpadding='0' cellspacing='0'
-    tbody
-      tr.days
-        th
-        th
-          a href='' ng:click="predicate = 'name'; reverse=!reverse"
-            | Name
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'created_at'; reverse=!reverse"
-            | Joined
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'email'; reverse=!reverse"
-            | Email
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'phone_number'; reverse=!reverse"
-            | Phone Number
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'activation_state'; reverse=!reverse"
-            | Status
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'properties.length'; reverse=!reverse"
-            | Properties
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'next_service_date'; reverse=!reverse"
-            | Next Service
-            i.icon-acc-open
-      tr dir-paginate='user in users | orderBy:predicate:reverse | itemsPerPage: 20'
-        td
-          img.avatar ng:src='{{::user.avatar}}'
-        td class='name'
-          a href="/hosts/{{user.id}}/edit" {{user.name}}
-        td
-          span ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
-        td
-          | {{user.email}}
-        td
-          | {{user.phone_number}}
-        td.status
-          | {{user.activation_state}}
-        td
-          | {{user.properties.length}}
-        td
-          span ng:bind="user.next_service_date | date:'MM/dd/yyyy':'UTC'"
-  .pagination
-    dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
+    .panel-body
+      .row
+        .col-sm-3
+          p.text-medium Total number of customers
+          .super-large.text-secondary
+            | {{users.length}}
+        .col-sm-3
+          #reqs-per-second style=("height: 150px;")
+        .col-sm-6
+          #reqs-per-second-chart style=("height: 150px;")
+
+  .panel.panel-default
+    .panel-heading
+      h3.panel-title Customers
+      .panel-options
+        a data-toggle="panel" href="#"
+          span.collapse-icon &ndash;
+          span.expand-icon +
+        a data-toggle="remove" href="#"
+          | \&times;
+    .panel-body
+      table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
+        thead
+          tr
+            th ID
+            th Name
+            th Joined
+            th Email
+            th Phone
+            th Status
+            th Properties
+            th
+              | Jobs
+              br Booked
+            th
+              | Next
+              br Service
+            th
+              | Total
+              br Spent
+        tfoot
+          tr
+            th ID
+            th Name
+            th Joined
+            th Email
+            th Phone
+            th Status
+            th Properties
+            th
+              | Jobs
+              br Booked
+            th
+              | Next
+              br Service
+            th
+              | Total
+              br Spent
+        tbody
+          tr ng:repeat='user in users'
+            td
+              a.teal ng:href='/hosts/{{user.id}}/edit'
+                | {{user.id}}
+            td ng:bind='user.name'
+            td ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
+            td ng:bind='user.email'
+            td ng:bind='user.display_phone_number'
+            td ng:bind='user.activation_state'
+            td ng:bind='user.properties.length'
+            td &nbsp;
+            td ng:bind="user.next_service_date | date:'MM/dd/yyyy':'UTC'"
+            td &nbsp;

@@ -7,6 +7,13 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.users = rsp
       spinner.stopSpin()
+      $timeout((->
+        angular.element("#example-1").dataTable({
+          aLengthMenu: [
+            [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+          ]
+        })
+      ),1000)
 
   $scope.$emit 'fetch_hosts'
 
