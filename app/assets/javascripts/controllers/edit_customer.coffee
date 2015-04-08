@@ -19,7 +19,7 @@ EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
       cost = 0
       _.each $scope.host.properties, (property) ->
         _.each property.bookings, (booking) ->
-          cost += booking.cost #need fix
+          cost += booking.cost
       return cost
 
   $scope.last_booking = ->
@@ -34,10 +34,8 @@ EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
 
   $scope.next_service_date = (property) ->
     if $scope.host
-      console.log property.next_service_date
+      #console.log $scope.host.earnings
       return property.next_service_date
-
-
 
   $scope.update_account = ->
     $http.put("/hosts/#{$scope.id}/update", {

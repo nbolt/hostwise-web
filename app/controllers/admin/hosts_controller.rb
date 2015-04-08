@@ -9,8 +9,26 @@ class Admin::HostsController < Admin::AuthController
   def edit
     respond_to do |format|
       format.html
-      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {include: :bookings, methods: [:cost]}}, methods: [:name, :avatar]) }
-      format.json { render json: User.find(params[:id]), serializer: HostSerializer }
+      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {include: :bookings, methods: [:cost, :formatted_date]}}, methods: [:name, :avatar]) } 
+      #format.json { render json: User.find(params[:id]), serializer: HostSerializer }
+
+      @host = User.hosts.find_by_id(params[:id])
+
+      @cost = 0
+      @host.properties.each do |property|
+        property.bookings.each do |booking|
+          @cost += booking.cost
+        end
+      end
+
+      @property_revenues = []
+      @host.properties.each do |property|
+        cost = 0
+        property.bookings.each do |booking|
+          cost += booking.cost
+        end
+        @property_revenues.push(cost)
+      end
     end
   end
 
