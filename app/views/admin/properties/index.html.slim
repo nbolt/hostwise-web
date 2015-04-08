@@ -28,7 +28,7 @@
           tr
             th ID
             th Customer
-            th Zip
+            th Address
             th Type
             th Last Service
             th Next Service
@@ -37,7 +37,7 @@
           tr
             th ID
             th Customer
-            th Zip
+            th Address
             th Type
             th Last Service
             th Next Service
@@ -46,7 +46,7 @@
           tr ng:repeat='property in properties'
             td ng:bind='property.id'
             td ng:bind-template="{{property.user.name}} ({{property.user.id}})"
-            td ng:bind='property.zip'
+            td ng:bind='property.neighborhood_address'
             td ng:bind='property.property_size'
             td ng:bind='property.last_service_date'
             td ng:bind='property.next_service_date'
