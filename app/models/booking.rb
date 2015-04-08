@@ -118,8 +118,7 @@ class Booking < ActiveRecord::Base
     elsif payment.stripe_id
       amount = (cost * 100).to_i
       begin
-        metadata = {}
-        metadata[:job_id] = job.id if job
+        metadata = { job_id: job.id, booking_id: self.id, user_id: user.id, user_email: user.email }
         if cancelled?
           metadata[:cancellation] = true
         elsif couldnt_access?

@@ -15,6 +15,82 @@ module Clockwork
           booking.job.pay_contractors!
         end
       end
+    when 'payouts:process'
+      User.all.each do |user|
+        if user.chain(:contractor_profile, :stripe_recipient_id)
+          total = 0
+
+          user.payouts.pending.each do |payout|
+            rsp = Stripe::Transfer.retrieve payout.stripe_transfer_id
+            case rsp.status
+            when 'paid'
+              payout.update_attribute :status_cd, 2
+            when 'failed'
+              payout.update_attribute :status_cd, 3
+            end
+          end
+
+          user.payouts.unprocessed.each do |payout|
+            total += payout.amount
+          end
+
+          if total > 0
+            recipient = Stripe::Account.retrieve user.contractor_profile.stripe_recipient_id
+
+            rsp = Stripe::Transfer.create(
+              :amount => total,
+              :currency => 'usd',
+              :destination => recipient.id,
+              :statement_descriptor => 'HostWise Payout',
+              :metadata => { payout_ids: user.payouts.unprocessed.map(&:id) }
+            )
+
+            case rsp.status
+            when 'pending'
+              user.payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 1, stripe_transfer_id: rsp.id)}
+            when 'paid'
+              payouts = user.payouts.unprocessed.sort_by {|payout| payout.job.date}
+              payouts.each {|payout| payout.update_attributes(status_cd: 2, stripe_transfer_id: rsp.id)}
+              UserMailer.payday(user, payouts, payouts[0].job.date, payouts[-1].job.date).then(:deliver)
+            when 'failed'
+              user.payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 3, stripe_transfer_id: rsp.id)}
+            else
+              false
+            end
+          end
+        end
+      end
+    when 'payments:report'
+      payments = {}
+      Booking.where(payment_status_cd: 0, status_cd: [2,3,5]).each do |booking|
+        timezone = Timezone::Zone.new :zone => booking.property.zone
+        time = timezone.time Time.now
+        if time.hour == 20
+          payments[booking.user.email] ||= {amount:0}
+          payments[booking.user.email][:amount] += booking.cost
+          payments[booking.user.email][:name] = booking.user.name
+          payments[booking.user.email][:id] = booking.id
+        end
+      end
+      UserMailer.payments_report(payments).then(:deliver)
+    when 'payouts:report'
+      payouts = {}
+      User.all.each do |user|
+        if user.chain(:contractor_profile, :stripe_recipient_id)
+          total = 0
+
+          user.payouts.unprocessed.each do |payout|
+            total += payout.amount
+          end
+
+          if total > 0
+            payouts[user.email] = {}
+            payouts[user.email][:name] = user.name
+            payouts[user.email][:amount] = total / 100.0
+            UserMailer.payout_report(payouts).then(:deliver)
+          end
+        end
+      end
     when 'jobs:check_unclaimed'
       url = Rails.application.routes.url_helpers
       Job.where(status_cd: 0).each do |job|
@@ -76,6 +152,9 @@ module Clockwork
   end
 
   every(1.hour, 'payments:process', at: '**:00')
+  every(1.hour, 'payments:report', at: '**:00')
+  every(1.week, 'payouts:process', at: 'Wednesday 22:00')
+  every(1.week, 'payouts:report', at: 'Wednesday 20:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')
   every(1.hour, 'jobs:check_no_shows', at: '**:30')
   every(10.minutes, 'jobs:check_timers')

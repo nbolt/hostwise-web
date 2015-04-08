@@ -404,23 +404,34 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
-  def payday_report(user, payouts, from, to)
+  def payments_report payments
     mandrill do
-      mandrill_mail template: 'payday',
-                    to: 'staging-notifications@hostwise.com',
-                    subject: "HostWise Payday Report (#{user.name})",
+      mandrill_mail template: 'payments-breakdown',
+                    to: Rails.application.config.support_notification_email,
+                    subject: "HostWise Payments Breakdown",
                     vars: {
-                      action_url: contractor_jobs_url,
-                      total: payouts.reduce(0) {|acc, payout| acc + payout.amount} / 100.0,
-                      bank: user.payments[0].last4,
-                      from_date: from.strftime('%b %-d, %Y'),
-                      to_date: to.strftime('%b %-d, %Y'),
-                      jobs: payouts.map {|payout| {
-                        id: payout.job.id,
-                        link: job_details_url(payout.job),
-                        formatted_date: payout.job.date.strftime,
-                        payout: payout.amount / 100.0,
-                        services: payout.job.booking.services.map(&:display).join(', ')
+                      payments: payments.map {|email, payment| {
+                        name: payment[:name],
+                        id: payment[:id],
+                        amount: payment[:amount]
+                      }}
+                    },
+                    merge_language: 'handlebars',
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def payout_report payouts
+    mandrill do
+      mandrill_mail template: 'payout-breakdown',
+                    to: Rails.application.config.support_notification_email,
+                    subject: "HostWise Payout Breakdown",
+                    vars: {
+                      payouts: payouts.map {|email, payout| {
+                        name: payout[:name],
+                        amount: payout[:amount]
                       }}
                     },
                     merge_language: 'handlebars',
