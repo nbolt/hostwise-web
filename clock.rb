@@ -87,6 +87,7 @@ module Clockwork
             payouts[user.email] = {}
             payouts[user.email][:name] = user.name
             payouts[user.email][:amount] = total / 100.0
+            payouts[user.email][:job_ids] = user.payouts.unprocessed.map(&:job_id).join ', '
           end
         end
       end

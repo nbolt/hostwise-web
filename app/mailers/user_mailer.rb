@@ -431,7 +431,8 @@ class UserMailer < MandrillMailer::TemplateMailer
                     vars: {
                       payouts: payouts.map {|email, payout| {
                         name: payout[:name],
-                        amount: payout[:amount]
+                        amount: payout[:amount],
+                        job_ids: payout[:job_ids]
                       }}
                     },
                     merge_language: 'handlebars',
