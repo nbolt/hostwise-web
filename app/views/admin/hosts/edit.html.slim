@@ -86,21 +86,21 @@
             .section
               h2 Property Revenue
           .row
-            - @host.properties.each_with_index do | property, index |
+            div ng:repeat='property in host.properties'
               .section
-                p.teal = property.id
+                p.teal ng:bind='::property.id'
               .section
-                p.dark-gray = property.created_at.strftime("%Y-%m-%d") 
+                p.dark-gray ng:bind='::property.created_at'
               .section
-                p.dark-gray = property.city
+                p.dark-gray ng:bind='::property.city'
               .section
-                p.dark-gray = property.last_service_date
+                p.dark-gray ng:bind='::property.last_service_date'
               .section
-                p.dark-gray = property.next_service_date
+                p.dark-gray ng:bind='::property.next_service_date'
               .section
-                p.dark-gray = property.bookings.count
+                p.dark-gray ng:bind='::property.bookings.length'
               .section
-                p.dark-gray $#{@property_revenues[index]}
+                p.dark-gray ${{property.revenue}}
 
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to
