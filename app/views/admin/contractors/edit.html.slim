@@ -81,21 +81,49 @@
           .section
             h3 Last Paid
             h3.teal = @contractor.last_payout_date
+            /h3.teal ng:bind='contractor.last_payout_date'
           .section
             h3 Outstanding Balance
             h3.teal = @contractor.earnings
+            /h3.teal ng:bind='contractor.earnings'
           .section
             h3 Jobs Completed
             h3.teal = @contractor.completed_jobs.count
+            /h3.teal ng:bind='contractor.completed_jobs.count'
           .section  
             h3 Jobs Canceled
             h3 style='color: red;' = @contractor.cancelled_jobs.count
+            /h3.teal ng:bind='contractor.cancelled_jobs.count'
       .step.three
         form
           .section
-            p style='float: left;' date
-            p style='float: right;' jobs claimed
+          h1 Upcoming Jobs
+          - @contractor.jobs.standard.not_complete.order('date ASC').each do |job|
+            .row
+              .column
+                p id: #{job.id}
+              .column
+                p = job.date
+              .column
+                p  = @contractor.name
+              .column
+                p  #{job.booking.property.bedrooms}br/#{job.booking.property.bathrooms}ba
+              .column
+                p  Size: #{job.size} 
+              .column
+                p
+                  - job.booking.services.each_with_index do |service, index|
+                    - if index == job.booking.services.size - 1
+                      = "#{service.name}"
+                    - else
+                      = "#{service.name}, "
+              .column
+                p 
+                  a href="/jobs/#{job.id}" View Job
+          h1 Past Jobs
           .row
+            .column
+              p
             .column
               p 
             .column

@@ -2,7 +2,7 @@ class Admin::ContractorsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {methods: [:position, :display_position]}}, methods: [:name, :avatar, :next_job_date, :completed_jobs, :display_phone_number]) }
+      format.json { render json: User.contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {methods: [:position, :display_position]}}, methods: [:name, :avatar, :next_job_date, :completed_jobs, :display_phone_number, :earnings]) }# why methods dont work?
     end
   end
 
