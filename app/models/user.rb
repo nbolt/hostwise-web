@@ -71,10 +71,14 @@ class User < ActiveRecord::Base
   end
 
   def display_phone_number
-    first  = phone_number[0..2]
-    second = phone_number[3..5]
-    third  = phone_number[6..9]
-    "(#{first}) #{second}-#{third}"
+    if phone_number
+      first  = phone_number[0..2]
+      second = phone_number[3..5]
+      third  = phone_number[6..9]
+      "(#{first}) #{second}-#{third}"
+    else
+      ''
+    end
   end
 
   def avatar

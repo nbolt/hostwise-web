@@ -4,6 +4,8 @@ class Admin::JobsController < Admin::AuthController
   def index
     jobs = Job.standard
     case params[:filter]
+    when 'complete'
+      jobs = jobs.where(status_cd: [3,5,6])
     when 'active'
       jobs = jobs.where(status_cd: [0,1])
     when 'future'

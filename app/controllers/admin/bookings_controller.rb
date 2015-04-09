@@ -9,6 +9,8 @@ class Admin::BookingsController < Admin::AuthController
     else
       @bookings = Booking.all
       case params[:filter]
+      when 'complete'
+        @bookings = @bookings.where(status_cd: [2,3,4,5])
       when 'active'
         @bookings = @bookings.where(status_cd: [1,4])
       when 'future'
@@ -22,7 +24,7 @@ class Admin::BookingsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: { today: Booking.where(status_cd: [1,4]).today.reduce(0){|a,b|a + b.cost}, bookings: @bookings.to_json(methods: [:cost], include: {payment: {methods: [:display]}, property: {methods: :nickname, include: {user: {methods: :name}}}}) }
+        render json: { today: Booking.where(status_cd: [1,4]).today.reduce(0){|a,b|a + b.cost}, bookings: @bookings.to_json(methods: [:cost], include: {job: {}, user: {methods: :name}, payment: {methods: [:display]}, property: {methods: :nickname, include: {user: {methods: :name}}}}) }
       end
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"bookings.csv\""

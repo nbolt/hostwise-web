@@ -1,0 +1,96 @@
+.xenon.custom ng:controller='admin_transactions'
+  .col-md-12
+    ul.nav.nav-tabs.nav-tabs-justified
+      li.active
+        a href='#customers' data-toggle='tab'
+          | Customers
+      li
+        a href='#contractors' data-toggle='tab'
+          | Contractors
+    .tab-content
+      .tab-pane.active#customers
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Account Receivable
+            .panel-options
+              a data-toggle="panel" href="#"
+                span.collapse-icon &ndash;
+                span.expand-icon +
+              a data-toggle="remove" href="#"
+                | \&times;
+          .panel-body.table-responsive
+            table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
+              thead
+                tr
+                  th Job ID
+                  th Property ID
+                  th Client ID
+                  th Date
+                  th Client Name
+                  th Status
+                  th Net Sale
+              tfoot
+                tr
+                  th Job ID
+                  th Property ID
+                  th Client ID
+                  th Date
+                  th Client Name
+                  th Status
+                  th Net Sale
+              tbody
+                tr ng:repeat='booking in bookings'
+                  td
+                    a ng:href='/jobs/{{booking.job.id}}' ng:bind='::booking.job.id'
+                  td
+                    a ng:href='/properties/{{booking.property.id}}' ng:bind='::booking.property.id'
+                  td
+                    a ng:href='/hosts/{{booking.user.id}}/edit' ng:bind='::booking.user.id'
+                  td ng:bind='::booking.date'
+                  td
+                    a ng:href='/hosts/{{booking.user.id}}/edit' ng:bind='::booking.user.name'
+                  td ng:bind='::booking.status'
+                  td ng:bind='::booking.cost'
+      .tab-pane#contractors
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Account Payable
+            .panel-options
+              a data-toggle="panel" href="#"
+                span.collapse-icon &ndash;
+                span.expand-icon +
+              a data-toggle="remove" href="#"
+                | \&times;
+          .panel-body.table-responsive
+            table#example-2.table.table-striped.table-bordered cellspacing="0" width="100%"
+              thead
+                tr
+                  th Job ID
+                  th Property ID
+                  th Client ID
+                  th Date
+                  th Client Name
+                  th Status
+                  th Total Payout
+              tfoot
+                tr
+                  th Job ID
+                  th Property ID
+                  th Client ID
+                  th Date
+                  th Client Name
+                  th Status
+                  th Total Payout
+              tbody
+                tr ng:repeat='job in jobs'
+                  td
+                    a ng:href='/jobs/{{job.id}}' ng:bind='::job.id'
+                  td
+                    a ng:href='/properties/{{job.booking.property.id}}' ng:bind='::job.booking.property.id'
+                  td
+                    a ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.id'
+                  td ng:bind='::job.date'
+                  td
+                    a ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.name'
+                  td ng:bind='::job.status'
+                  td ng:bind='::job.total_payout'
