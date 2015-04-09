@@ -44,7 +44,7 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
     ), 200)
 
   $scope.show_applicant = ->
-    $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0
+    $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0 and $scope.user and $scope.user.contractor_profile.position_cd != 1
 
   $scope.show_mentor = ->
     $scope.job and $scope.job.mentors and $scope.job.mentors.length > 0
