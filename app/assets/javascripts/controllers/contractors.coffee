@@ -2,28 +2,24 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope
 
   promise = null
 
-  $scope.form = {email: '', first_name: '', last_name: '', phone_number: ''}
-
   $scope.fetch_contractors = ->
+    spinner.startSpin()
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.users = rsp
       _($scope.users).each (user) ->
         user.contract_status = if user.contractor_profile and user.contractor_profile.docusign_completed then 'Yes' else 'No'
         user.bgc_status = background_check_status(user)
+      spinner.stopSpin()
+      $timeout((->
+        angular.element("#example-1").dataTable({
+          aLengthMenu: [
+            [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+          ]
+        })
+      ),1000)
 
   $scope.show_signup = ->
-    ngDialog.open template: 'sign-up', className: 'auth full', controller: 'contractors', scope: $scope
-
-  $scope.add_contractor = ->
-    spinner.startSpin()
-    $http.post('/contractors/signup', {
-      form: $scope.form
-    }).success (rsp) ->
-      if rsp.success
-        window.location = window.location.href
-      else
-        spinner.stopSpin()
-        flash('failure', rsp.message, '.default')
+    ngDialog.open template: 'sign-up', className: 'auth full'
 
   $scope.$watch 'search', (n,o) -> if o
     $timeout.cancel promise

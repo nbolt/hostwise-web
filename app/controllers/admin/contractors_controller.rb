@@ -2,7 +2,7 @@ class Admin::ContractorsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {methods: [:position, :display_position]}}, methods: [:name, :avatar, :next_job_date, :completed_jobs]) }
+      format.json { render json: User.contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {methods: [:position, :display_position]}}, methods: [:name, :avatar, :next_job_date, :completed_jobs, :display_phone_number]) }
     end
   end
 
@@ -27,10 +27,10 @@ class Admin::ContractorsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json { render json: User.find_by_id(params[:id]).to_json(include: [:background_check, contractor_profile: {methods: [:position, :ssn, :driver_license, :current_position, :test_session_completed]}], methods: [:name, :avatar]) }
-    
+
       @contractor = User.find_by_id(params[:id])
 
-      
+
     end
   end
 

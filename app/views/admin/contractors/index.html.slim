@@ -1,79 +1,77 @@
-.contractors ng:controller='contractors'
-  .header
-    h2
-      .fa.fa-list
-      | Contractors
-    a.button.teal href='' ng:click='show_signup()' Create Contractor
-  .highlight
-    span.total
-      | Total Contractors
-      strong
-        | {{users.length}}
-    span.search
-      i.icon-search
-      input type='text' placeholder='Search' ng:model='search'
-    hr
-  table cellpadding='0' cellspacing='0'
-    tbody
-      tr.days
-        th
-        th
-          a href='' ng:click="predicate = 'name'; reverse=!reverse"
-            | Name
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'contractor_profile.city'; reverse=!reverse"
-            | City
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'created_at'; reverse=!reverse"
-            | Joined
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'email'; reverse=!reverse"
-            | Email
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'phone_number'; reverse=!reverse"
-            | Phone Number
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'contractor_profile.display_position'; reverse=!reverse"
-            | Position
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'activation_state'; reverse=!reverse"
-            | Status
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'contract_status'; reverse=!reverse"
-            | Contract Signed
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'bgc_status'; reverse=!reverse"
-            | BGC Status
-            i.icon-acc-open
-      tr dir-paginate='user in users | orderBy:predicate:reverse | itemsPerPage: 20'
-        td
-          img.avatar ng:src='{{::user.avatar}}'
-        td class='name'
-          a href="/contractors/{{user.id}}/edit" {{user.name}}
-        td
-          | {{user.contractor_profile.city}}
-        td
-          span ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
-        td
-          | {{user.email}}
-        td
-          | {{user.phone_number}}
-        td.position
-          | {{user.contractor_profile.display_position}}
-        td.status
-          | {{user.activation_state}}
-        td
-          | {{user.contract_status}}
-        td.status
-          span ng:bind='user.bgc_status'
-  .pagination
-    dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
+.xenon.custom.contractors ng:controller='contractors'
+  .actions
+    .icon-button.teal ng:click='show_signup()'
+      .icon
+        i.icon-team
+      .text Create Team Member
+  .panel.panel-default.stats
+    .panel-heading
+      | Total Team Members
+    .panel-body
+      .row
+        .col-sm-3
+          p.text-medium Total number of team members
+          .super-large.text-secondary
+            | {{users.length}}
+        .col-sm-3
+          #reqs-per-second style=("height: 150px;")
+        .col-sm-6
+          #reqs-per-second-chart style=("height: 150px;")
+
+  .panel.panel-default
+    .panel-heading
+      h3.panel-title Team Members
+      .panel-options
+        a data-toggle="panel" href="#"
+          span.collapse-icon &ndash;
+          span.expand-icon +
+        a data-toggle="remove" href="#"
+          | \&times;
+    .panel-body.table-responsive
+      table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
+        thead
+          tr
+            th ID
+            th Name
+            th Joined
+            th City
+            th Email
+            th Phone
+            th Position
+            th Status
+            th
+              | Contract
+              br Signed
+            th
+              | BGC
+              br Status
+        tfoot
+          tr
+            th ID
+            th Name
+            th Joined
+            th City
+            th Email
+            th Phone
+            th Position
+            th Status
+            th
+              | Contract
+              br Signed
+            th
+              | BGC
+              br Status
+        tbody
+          tr ng:repeat='user in users'
+            td
+              a.teal ng:href='/contractors/{{user.id}}/edit' ng:bind='user.id'
+            td ng:bind='user.name'
+            td ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
+            td ng:bind='user.contractor_profile.city'
+            td ng:bind='user.email'
+            td ng:bind='user.display_phone_number'
+            td ng:bind='user.contractor_profile.display_position'
+            td ng:bind='user.activation_state'
+            td ng:bind='user.contract_status'
+            td ng:bind='user.bgc_status'
 = render 'signup'
