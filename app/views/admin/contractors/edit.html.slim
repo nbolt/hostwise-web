@@ -121,21 +121,28 @@
                 p 
                   a href="/jobs/#{job.id}" View Job
           h1 Past Jobs
-          .row
-            .column
-              p
-            .column
-              p 
-            .column
-              p 
-            .column
-              p 
-            .column
-              p 
-            .column
-              p 
-            .column
-              p 
+          - @contractor.jobs.standard.complete.order('date DESC').each do |job|
+            .row
+              .column
+                p id: #{job.id}
+              .column
+                p = job.date
+              .column
+                p  = @contractor.name
+              .column
+                p  #{job.booking.property.bedrooms}br/#{job.booking.property.bathrooms}ba
+              .column
+                p  Size: #{job.size} 
+              .column
+                p
+                  - job.booking.services.each_with_index do |service, index|
+                    - if index == job.booking.services.size - 1
+                      = "#{service.name}"
+                    - else
+                      = "#{service.name}, "
+              .column
+                p 
+                  a href="/jobs/#{job.id}" View Job
 
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to
