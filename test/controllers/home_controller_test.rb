@@ -59,6 +59,9 @@ describe HomeController do
   end
 
   it 'contact_email' do
+    user_name_13 = nil
+    VCR.use_cassette('create_user_name_13') { user_name_13 = create(:user_name_13) }
+    login_user(user_name_13)
   end
 
   it 'stripe_recipient' do

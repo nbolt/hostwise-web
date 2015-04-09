@@ -101,4 +101,23 @@ FactoryGirl.define do
     state 'CA'
     zip '90023'
   end
+
+  factory :property_9, class: Property do
+    bedrooms 2
+    bathrooms 2
+    king_beds 0
+    queen_beds 2
+    full_beds 0
+    twin_beds 0
+    property_type :house
+    zip '75093'
+    address1 '4408 Lone Tree Dr.'
+    city 'plano'
+    state 'tx'
+    active true
+    after(:create) do |property|
+      property.bookings << create(:booking_first)
+      property.bookings << create(:booking_second)
+    end
+  end
 end

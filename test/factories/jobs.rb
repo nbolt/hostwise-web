@@ -88,4 +88,10 @@ FactoryGirl.define do |job|
 		status_cd 6
 		date (Date.today + 1.days)
   end
+
+  factory :job_16, class: Job do
+    association :booking, factory: :booking_active_1
+    status_cd 0
+    date (Date.today + 3.days)
+  end
 end

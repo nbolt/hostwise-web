@@ -138,4 +138,16 @@ FactoryGirl.define do |booking|
     association :property, factory: :property_2
     date Date.today + 2.days
   end
+
+  factory :booking_yesterday, class: Booking do
+    status_cd 3
+    association :property, factory: :property_9
+    date Date.today - 1.days
+  end
+
+  factory :booking_tomorrow, class: Booking do
+    status_cd 3
+    association :property, factory: :property_9
+    date Date.today + 1.days
+  end
 end

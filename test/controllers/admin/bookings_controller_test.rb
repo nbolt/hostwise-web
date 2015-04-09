@@ -9,4 +9,9 @@ describe Admin::BookingsController do
     #assert_response :success
     #assert_not_nil assigns(:bookings)
   end
+
+  it 'show' do
+    get('show')
+    #assert_response :success
+  end
 end

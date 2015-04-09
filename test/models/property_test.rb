@@ -14,9 +14,17 @@ describe Property do
   end
 
   it 'chooses right next service date' do
-    property_1 = nil
+    property_9 = nil, booking_tomorrow = nil
     VCR.use_cassette('create_property_1') { property_1 = create(:property_1) }
-    property_1.next_service_date.must_equal(Date.today + 1.day)
+    VCR.use_cassette('create_booking_tomorrow') { booking_tomorrow = create(:booking_tomorrow) }
+    booking_tomorrow.property.next_service_date.must_equal (Date.today + 1.day)
+  end
+
+  it 'chooses right last service date' do
+    property_9 = nil, booking_yesterday = nil
+    VCR.use_cassette('create_property_9') { property_9 = create(:property_9) }
+    VCR.use_cassette('create_booking_yesterday') { booking_yesterday = create(:booking_yesterday) }
+    booking_yesterday.property.last_service_date.must_equal (Date.today - 1.day)
   end
 
   it 'displays property size correctly' do

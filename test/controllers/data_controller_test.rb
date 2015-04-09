@@ -67,6 +67,20 @@ describe DataController do
     VCR.use_cassette('create_profile_2') { profile_2 = create(:profile_2) }
     profile_2.must_equal profile_2
     VCR.use_cassette('create_user_name_12') { user_name_12 = create(:user_name_12) }
+
+    login_user(user_name_12)
+    #get(:jobs, :scope => 'open')
+    #assert_response :success
+
+    job_16 = nil
+    VCR.use_cassette('create_job_16') { job_16 = create(:job_16) }
+
+    get(:jobs, :scope => 'upcoming')
+    assert_response :success
+    body = response.body
+
+    get(:jobs, :scope => 'past')
+    assert_response :success
   end
 
   it 'refresh_day' do
