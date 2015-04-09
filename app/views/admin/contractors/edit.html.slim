@@ -80,7 +80,7 @@
         form
           .section
             h3 Last Paid
-            h3.teal 00/00/00
+            h3.teal = @contractor.last_payout_date
           .section
             h3 Outstanding Balance
             h3.teal = @contractor.earnings

@@ -105,6 +105,10 @@ class User < ActiveRecord::Base
     jobs.standard.on_date(date).reduce(0){|acc, job| acc + job.man_hours} if role_cd == 2
   end
 
+  def last_payout_date
+    payouts.where(status_cd: 2).order('updated_at DESC').first.then(:updated_at)
+  end
+
   def completed_jobs
     jobs.complete
   end
