@@ -15,7 +15,7 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
           user.completed_jobs += property.past_bookings.length
           if user.completed_jobs > 0
             _(property.past_bookings).each (booking) ->
-              _(booking.successful_transactions).each (transaction) -> user.total_spent += transaction.amount
+              _(booking.successful_transactions).each (transaction) -> user.total_spent += transaction.amount/100
       spinner.stopSpin()
       $timeout((->
         angular.element("#example-1").dataTable({
