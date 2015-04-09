@@ -11,6 +11,9 @@
       .tab-pane.active#customers
         .panel.panel-default
           .panel-heading
+            .btn.btn-info.btn-icon ng:click='process_payments_modal()'
+              i.icon-cc
+              span Process {{selected_payments().length}} Payments
             h3.panel-title Account Receivable
             .panel-options
               a data-toggle="panel" href="#"
@@ -22,6 +25,8 @@
             table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
               thead
                 tr
+                  th.no-sorting
+                    /input.cbr type="checkbox"
                   th Job ID
                   th Property ID
                   th Client ID
@@ -31,6 +36,8 @@
                   th Net Sale
               tfoot
                 tr
+                  th.no-sorting
+                    /input.cbr type="checkbox"
                   th Job ID
                   th Property ID
                   th Client ID
@@ -40,6 +47,8 @@
                   th Net Sale
               tbody
                 tr ng:repeat='booking in bookings'
+                  td ng:click='check(booking)'
+                    input.cbr type="checkbox" id='check-{{booking.id}}'
                   td
                     a ng:href='/jobs/{{booking.job.id}}' ng:bind='::booking.job.id'
                   td
@@ -94,3 +103,5 @@
                     a ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.name'
                   td ng:bind='::job.status'
                   td ng:bind='::job.total_payout'
+
+= render 'common/process_payments_confirmation'

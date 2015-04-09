@@ -138,6 +138,7 @@ class User < ActiveRecord::Base
       { success: true }
     else
       job.contractors.push self
+      team_members = job.contractors.team_members
       job.contractor_jobs[0].update_attribute :primary, true if job.contractors.count == 1
       job.size = team_members.count if team_members.count > job.size
       if team_members.count == job.size

@@ -1,5 +1,6 @@
 class Transaction < ActiveRecord::Base
-  belongs_to :booking
+  has_many :booking_transactions, class_name: 'BookingTransactions', dependent: :destroy, foreign_key: :stripe_transaction_id
+  has_many :bookings, through: :booking_transactions
   as_enum :status, successful: 0, failed: 1, pending: 2
 
   def self.completed(user, start_date, end_date)

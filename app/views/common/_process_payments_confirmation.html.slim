@@ -1,0 +1,12 @@
+script#process-payments-confirmation type="text/ng-template"
+  .modal
+    .header
+      .text Process Payments
+    .content
+      .text Are you sure you want to process these {{selected_payments().length}} payments?
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Cancel
+        .button.teal ng:click='process_payments()'
+          .text Process

@@ -96,6 +96,7 @@ Rails.application.routes.draw do
     post  '/properties/:id' => 'properties#update'
     match '/properties/:id/:action' => 'properties', via: [:get, :post]
     get   '/transactions' => 'transactions#index'
+    post  '/transactions/:action' => 'transactions'
     get   '/login_as/:id' => 'auth#login_as'
   end
 

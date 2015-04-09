@@ -10,6 +10,7 @@ class Payment < ActiveRecord::Base
   validates :fingerprint, uniqueness: true, allow_nil: true
 
   scope :active, -> { where(status_cd: 1) }
+  scope :primary, -> { where(primary: true) }
 
   def display
     "#{card_type.titleize} #{last4}"

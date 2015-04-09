@@ -1,10 +1,27 @@
-AdminTransactionsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
+AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'ngDialog', ($scope, $http, $timeout, $window, spinner, ngDialog) ->
+
+  $scope.selected_payments = -> _($scope.bookings).filter (booking) -> booking.selected
+
+  $scope.check = (booking) ->
+    if angular.element("#check-#{booking.id}").prop('checked')
+      booking.selected = true
+    else
+      booking.selected = false
+
+  $scope.process_payments_modal = -> ngDialog.open template: 'process-payments-confirmation', className: 'info full', scope: $scope
+  $scope.cancel_process = -> ngDialog.closeAll()
+
+  $scope.process_payments = ->
+    spinner.startSpin()
+    $http.post('/transactions/process_payments', {bookings: _($scope.selected_payments()).map((b) -> b.id)}).success (rsp) ->
+      $window.location = '/transactions'
 
   $scope.fetch_bookings = ->
     spinner.startSpin()
     $http.get('/bookings.json?filter=complete').success (rsp) ->
       $scope.bookings = JSON.parse rsp.bookings
       _($scope.bookings).each (booking) ->
+        booking.selected = false
         booking.status =
           switch booking.payment_status_cd
             when 0 then 'Open'
@@ -14,8 +31,22 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $htt
         angular.element("#example-1").dataTable({
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
-          ]
+          ],
+          aoColumns: [{bSortable:false},null,null,null,null,null,null,null]
         })
+
+        $state = angular.element("#example-1 thead input[type='checkbox'], #example-1 tfoot input[type='checkbox']")
+        cbr_replace()
+        $state.trigger('change')
+
+        $state.on('change', (ev) ->
+          $chcks = $("#example-1 tbody input[type='checkbox']");
+
+          if($state.is(':checked'))
+            $chcks.prop('checked', true).trigger('change');
+          else
+            $chcks.prop('checked', false).trigger('change');
+        )
       ),500)
 
   $scope.fetch_jobs = ->

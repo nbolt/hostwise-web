@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150330000252) do
+ActiveRecord::Schema.define(version: 20150409224748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,16 @@ ActiveRecord::Schema.define(version: 20150330000252) do
   add_index "booking_services", ["booking_id"], name: "index_booking_services_on_booking_id", using: :btree
   add_index "booking_services", ["service_id"], name: "index_booking_services_on_service_id", using: :btree
 
+  create_table "booking_transactions", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "stripe_transaction_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "booking_transactions", ["booking_id"], name: "index_booking_transactions_on_booking_id", using: :btree
+  add_index "booking_transactions", ["stripe_transaction_id"], name: "index_booking_transactions_on_stripe_transaction_id", using: :btree
+
   create_table "booking_users", force: :cascade do |t|
     t.integer  "booking_id"
     t.integer  "user_id"
@@ -98,7 +108,7 @@ ActiveRecord::Schema.define(version: 20150330000252) do
 
   create_table "cities", force: :cascade do |t|
     t.integer  "county_id"
-    t.string   "name"
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -153,7 +163,7 @@ ActiveRecord::Schema.define(version: 20150330000252) do
 
   create_table "counties", force: :cascade do |t|
     t.integer  "state_id"
-    t.string   "name"
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -251,13 +261,13 @@ ActiveRecord::Schema.define(version: 20150330000252) do
 
   create_table "properties", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "title"
-    t.string   "address1"
-    t.string   "address2"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zip"
-    t.string   "country"
+    t.string   "title",                  limit: 255
+    t.string   "address1",               limit: 255
+    t.string   "address2",               limit: 255
+    t.string   "city",                   limit: 255
+    t.string   "state",                  limit: 255
+    t.string   "zip",                    limit: 255
+    t.string   "country",                limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "delivery_point_barcode"
@@ -267,12 +277,12 @@ ActiveRecord::Schema.define(version: 20150330000252) do
     t.string   "slug"
     t.string   "access_info"
     t.string   "parking_info"
-    t.string   "additional_info"
+    t.string   "additional_info",                    default: ""
     t.string   "trash_disposal"
     t.integer  "full_beds"
     t.integer  "queen_beds"
     t.integer  "king_beds"
-    t.boolean  "active",                 default: false
+    t.boolean  "active",                             default: false
     t.string   "phone_number"
     t.integer  "rental_type_cd"
     t.integer  "property_type_cd"
@@ -328,8 +338,8 @@ ActiveRecord::Schema.define(version: 20150330000252) do
   add_index "settings", ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true, using: :btree
 
   create_table "states", force: :cascade do |t|
-    t.string   "name"
-    t.string   "abbr"
+    t.string   "name",       limit: 255
+    t.string   "abbr",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -354,23 +364,23 @@ ActiveRecord::Schema.define(version: 20150330000252) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                                           null: false
-    t.string   "crypted_password",                                null: false
-    t.string   "salt",                                            null: false
+    t.string   "email",                           limit: 255,                 null: false
+    t.string   "crypted_password",                limit: 255,                 null: false
+    t.string   "salt",                            limit: 255,                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "remember_me_token"
+    t.string   "remember_me_token",               limit: 255
     t.datetime "remember_me_token_expires_at"
     t.datetime "last_login_at"
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
-    t.string   "last_login_from_ip_address"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "phone_number"
-    t.boolean  "phone_confirmed",                 default: false
-    t.string   "company"
-    t.string   "phone_confirmation"
+    t.string   "last_login_from_ip_address",      limit: 255
+    t.string   "first_name",                      limit: 255
+    t.string   "last_name",                       limit: 255
+    t.string   "phone_number",                    limit: 255
+    t.boolean  "phone_confirmed",                             default: false
+    t.string   "company",                         limit: 255
+    t.string   "phone_confirmation",              limit: 255
     t.string   "stripe_customer_id"
     t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
@@ -380,9 +390,9 @@ ActiveRecord::Schema.define(version: 20150330000252) do
     t.string   "activation_state"
     t.string   "activation_token"
     t.datetime "activation_token_expires_at"
-    t.integer  "status_cd",                       default: 1
-    t.boolean  "migrated",                        default: false
-    t.integer  "vip_count",                       default: 0
+    t.integer  "status_cd",                                   default: 1
+    t.boolean  "migrated",                                    default: false
+    t.integer  "vip_count",                                   default: 0
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree
@@ -393,10 +403,10 @@ ActiveRecord::Schema.define(version: 20150330000252) do
 
   create_table "zips", force: :cascade do |t|
     t.integer  "city_id"
-    t.string   "code"
+    t.string   "code",            limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "serviced",        default: false
+    t.boolean  "serviced",                    default: false
     t.integer  "neighborhood_id"
   end
 
@@ -407,6 +417,8 @@ ActiveRecord::Schema.define(version: 20150330000252) do
   add_foreign_key "background_checks", "users"
   add_foreign_key "booking_services", "bookings"
   add_foreign_key "booking_services", "services"
+  add_foreign_key "booking_transactions", "bookings"
+  add_foreign_key "booking_transactions", "transactions", column: "stripe_transaction_id"
   add_foreign_key "booking_users", "bookings"
   add_foreign_key "booking_users", "users"
   add_foreign_key "bookings", "payments"
