@@ -12,6 +12,8 @@
               img ng:src='{{::contractor.avatar}}'
               .name
                 | {{::contractor.name}}
+              .created_at
+                | {{::contractor.created_at.substring(0, 10)}}
               .row ng:show='contractor.contractor_profile'
                 input.position type='hidden' ng:change='change_status()' ng:model='contractor.contractor_profile.position' ui-select2='position()'
               .location ng:show='contractor.contractor_profile'
@@ -74,6 +76,38 @@
                 span Background Checked
                 a href='' ng:show='show_bgc_link()' ng:click='approve_bgc_modal()' Approve
                 a href='' ng:show='show_bgc_link()' ng:click='deny_bgc_modal()' Deny
+      .step.two
+        form
+          .section
+            h3 Last Paid
+            h3.teal 00/00/00
+          .section
+            h3 Outstanding Balance
+            h3.teal = @contractor.earnings
+          .section
+            h3 Jobs Completed
+            h3.teal = @contractor.completed_jobs.count
+          .section  
+            h3 Jobs Canceled
+            h3 style='color: red;' = @contractor.cancelled_jobs.count
+      .step.three
+        form
+          .section
+            p style='float: left;' date
+            p style='float: right;' jobs claimed
+          .row
+            .column
+              p 
+            .column
+              p 
+            .column
+              p 
+            .column
+              p 
+            .column
+              p 
+            .column
+              p 
 
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to

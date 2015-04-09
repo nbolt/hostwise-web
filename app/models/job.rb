@@ -38,6 +38,7 @@ class Job < ActiveRecord::Base
   scope :scheduled, -> { where(status_cd: 1) }
   scope :not_complete, -> { where(status_cd: [0,1,2]) }
   scope :complete, -> { where(status_cd: 3) }
+  scope :cancelled, -> { where(status_cd: 6) }
   scope :training, -> { where(training: true) }
   scope :not_training, -> { where(training: false) }
   scope :standard, -> { where(distribution: false) }

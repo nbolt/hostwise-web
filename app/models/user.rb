@@ -101,6 +101,14 @@ class User < ActiveRecord::Base
     jobs.standard.on_date(date).reduce(0){|acc, job| acc + job.man_hours} if role_cd == 2
   end
 
+  def completed_jobs
+    jobs.complete
+  end
+
+  def cancelled_jobs
+    jobs.cancelled
+  end
+
   def claim_job job, admin=false
     jobs_today = self.jobs.on_date(job.date)
     team_members = job.contractors.team_members
