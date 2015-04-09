@@ -60,10 +60,10 @@
         td
           a ng:href="/jobs/{{job.id}}" ng:bind='::job.id'
         td
-          a href='javascript:void(0)' ng:bind='::job.booking.property.nickname' ng:click='search_property(job)'
+          a ng:href='/properties/{{job.booking.property.id}}' ng:bind='::job.booking.property.nickname' ng:click='search_property(job)'
         td ng:bind='::job.booking.property.property_size'
         td
-          a href='javascript:void(0)' ng:bind='::job.booking.property.user.name'
+          a ng:href='/hosts/{{job.booking.property.user.id}}/edit' ng:bind='::job.booking.property.user.name'
           |  &ndash; {{::job.booking.property.user.display_phone_number}}
         td ng:bind='::job.booking.property.neighborhood_address'
         td ng:bind='::job.date'
