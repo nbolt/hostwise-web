@@ -12,7 +12,7 @@ class Booking < ActiveRecord::Base
   has_many :services, through: :booking_services
   has_many :booking_transactions, class_name: 'BookingTransactions', dependent: :destroy
   has_many :transactions, through: :booking_transactions, source: :stripe_transaction
-  has_many :successful_transactions, -> { where(status_cd: 0) }, class_name: 'Transaction'
+  has_many :successful_transactions, -> { where(status_cd: 0) },  through: :booking_transactions, source: :stripe_transaction
 
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
   scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
