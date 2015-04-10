@@ -14,7 +14,7 @@ class UpdatePayoutJob < ActiveJob::Base
           payout.update_attribute :status_cd, 3
         end
       end
-      payouts = payouts.paid.sort_by {|payout| payout.job.date}
+      payouts = payouts.select{|payout| payout.status_cd == 2}.sort_by {|payout| payout.job.date}
       UserMailer.payday(user, payouts, payouts[0].job.date, payouts[-1].job.date).then(:deliver) unless payouts.empty?
     end
   end
