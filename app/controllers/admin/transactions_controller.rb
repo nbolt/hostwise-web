@@ -67,7 +67,7 @@ class Admin::TransactionsController < Admin::AuthController
       user = user_jobs[:user]
       if user.chain(:contractor_profile, :stripe_recipient_id)
         total = 0
-        payouts = Payout.where(job_id: user_jobs[:jobs].map(&:id))
+        payouts = Payout.where(job_id: user_jobs[:jobs].map(&:id), user_id: user.id)
 
         pending_payouts = payouts.pending
         pending_payouts.each do |payout|
@@ -101,7 +101,7 @@ class Admin::TransactionsController < Admin::AuthController
           case rsp.status
           when 'pending'
             payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 1, stripe_transfer_id: rsp.id)}
-            UpdatePayoutJob.set(wait: 30.seconds).perform_later(payouts)
+            UpdatePayoutJob.perform_later(user, payouts.map(&:id))
           when 'paid'
             payouts = payouts.unprocessed.sort_by {|payout| payout.job.date}
             payouts.each {|payout| payout.update_attributes(status_cd: 2, stripe_transfer_id: rsp.id)}

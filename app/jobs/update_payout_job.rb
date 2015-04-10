@@ -1,8 +1,9 @@
 class UpdatePayoutJob < ActiveJob::Base
   queue_as :default
 
-  def perform(payouts)
+  def perform(user, payouts)
     ActiveRecord::Base.connection_pool.with_connection do
+      payouts = payouts.map {|id| Payout.find id}
       payouts.each do |payout|
         rsp = Stripe::Transfer.retrieve payout.stripe_transfer_id
         case rsp.status
