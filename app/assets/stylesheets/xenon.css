@@ -6034,7 +6034,7 @@ body.chat-open .xenon #chat {
   transform: scale(1);
 }
 .xenon .table {
-  font-size: 14px;
+  font-size: 12px;
 }
 .xenon .table.table-bordered {
   border-color: #eeeeee;
