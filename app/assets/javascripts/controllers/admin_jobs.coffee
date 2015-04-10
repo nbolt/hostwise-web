@@ -24,14 +24,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id
 
-  $scope.sortHash = ->
-    {
-      dropdownCssClass: 'sort'
-      minimumResultsForSearch: -1
-      data: [{id:'id',text:'ID'},{id:'date',text:'Date'}]
-      initSelection: (el, cb) ->
-    }
-
   $scope.filterHash = ->
     {
       dropdownCssClass: 'filter'
