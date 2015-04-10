@@ -22,6 +22,10 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           when 4 then 'past due'
           when 5 then "can't access"
           when 6 then 'cancelled'
+        job.state = switch job.status_cd
+          when 0 then 'normal'
+          when 1 then 'vip'
+          when 2 then 'hidden'
       spinner.stopSpin()
       $timeout((->
         angular.element("#example-1").dataTable({
