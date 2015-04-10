@@ -39,6 +39,9 @@
             th
               | Service
               br Completed
+            th
+              | Total
+              br Revenue
         tfoot
           tr
             th ID
@@ -54,6 +57,9 @@
             th
               | Service
               br Completed
+            th
+              | Total
+              br Revenue
         tbody
           tr ng:repeat='property in properties'
             td
@@ -67,3 +73,4 @@
             td ng:bind="property.last_service_date | date:'MM/dd/yyyy':'UTC'"
             td ng:bind="property.next_service_date | date:'MM/dd/yyyy':'UTC'"
             td ng:bind='property.service_completed'
+            td ng:bind-template="${{property.revenue}}"
