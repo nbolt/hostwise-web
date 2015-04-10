@@ -84,6 +84,7 @@
                   th Client ID
                   th Date
                   th Client Name
+                  th Contractor Names
                   th Status
                   th Total Payout
               tfoot
@@ -94,6 +95,7 @@
                   th Client ID
                   th Date
                   th Client Name
+                  th Contractor Names
                   th Status
                   th Total Payout
               tbody
@@ -110,8 +112,9 @@
                   td ng:bind='::job.date'
                   td
                     a.teal ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.name'
+                  td ng:bind='::job.contractor_names'
                   td ng:bind='::job.status'
-                  td ng:bind-template="${{job.total_payout}}"
+                  td ng:bind-template="{{job.total_payout}}"
 
 = render 'common/process_payments_confirmation'
 = render 'common/process_payouts_confirmation'
