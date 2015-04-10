@@ -93,3 +93,4 @@
             td ng:bind='job.contractor_list'
             td
               .badge ng:bind='job.state' ng:class='state_class(job)'
+              .badge.badge-red ng:show='job.staging' staging

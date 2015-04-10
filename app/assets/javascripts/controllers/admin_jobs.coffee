@@ -65,8 +65,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
         'badge-default'
       when 1
         'badge-warning'
-      when 2
-        'badge-red'
 
   $scope.status_class = (job) ->
     if job.status_cd > 3
