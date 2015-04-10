@@ -12,6 +12,7 @@ group :assets do
   gem 'uglifier'
   gem 'angularjs-rails'
   gem 'jquery-rails'
+  gem 'jquery-ui-rails'
   gem 'axis-rails'
 end
 

@@ -47,14 +47,33 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ],
-          aoColumns: [{bSortable:false},null,null,null,null,null,null,null]
+          aoColumns: [{bSortable:false},null,null,null,null,null,null,null],
+          columnFilter: {aoColumns: [{type:'text'}]}
         })
+
+        $.fn.dataTable.ext.search.push (settings, data, index) ->
+          start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
+          end   = angular.element("##{settings.nTable.id} thead.search th.date input:last-child").val()
+
+          if !start || !end || start == '' || end == ''
+            true
+          else
+            start_date = moment(start,   'MM/DD/YYYY')
+            end_date   = moment(end,     'MM/DD/YYYY')
+            date       = moment(data[4], 'YYYY-MM-DD')
+
+            date >= start_date && date <= end_date
 
         angular.element('#example-1 thead.search th').each (index) ->
           unless angular.element(@).html() == ''
-            angular.element(@).html "<input>"
-            angular.element(@).on 'keyup change', ->
-              table.fnFilter angular.element(@).children('input').val(), index
+            if angular.element(@).html() == 'Date'
+              angular.element(@).html "<input><input>"
+              angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
+              angular.element(@).children('input').datepicker()
+            else
+              angular.element(@).html "<input>"
+              angular.element(@).children('input').on 'keyup change', ->
+                table.fnFilter angular.element(@).children('input').val(), index
 
         $state = angular.element("#example-1 thead input[type='checkbox'], #example-1 tfoot input[type='checkbox']")
         cbr_replace()
@@ -103,9 +122,14 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
 
         angular.element('#example-2 thead.search th').each (index) ->
           unless angular.element(@).html() == ''
-            angular.element(@).html "<input>"
-            angular.element(@).on 'keyup change', ->
-              table.fnFilter angular.element(@).children('input').val(), index
+            if angular.element(@).html() == 'Date'
+              angular.element(@).html "<input><input>"
+              angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
+              angular.element(@).children('input').datepicker()
+            else
+              angular.element(@).html "<input>"
+              angular.element(@).children('input').on 'keyup change', ->
+                table.fnFilter angular.element(@).children('input').val(), index
 
         $state = angular.element("#example-2 thead input[type='checkbox'], #example-2 tfoot input[type='checkbox']")
         cbr_replace()

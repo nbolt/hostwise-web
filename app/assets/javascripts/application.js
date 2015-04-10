@@ -29,6 +29,7 @@
 //= require slider
 //= require jquery.scrollTo
 //= require jquery.cookie
+//= require jquery-ui/datepicker
 //= require unslider.min
 //= require typed
 //= require hw
