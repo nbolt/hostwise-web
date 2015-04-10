@@ -8,8 +8,13 @@ AdminPropertiesCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http,
         property.service_completed = _(property.bookings).filter((booking) -> booking.status_cd == 3).length
         property.revenue = 0
         _(property.bookings).each (booking) ->
-          if booking.status_cd == 3
+        if booking.status_cd == 3
+          property.revenue += booking.cost
+        else if booking.status_cd == 1
+          if booking.late_next_day || booking.late_same_day
             property.revenue += booking.cost
+          else
+            property.revenue += 0
       spinner.stopSpin()
       $timeout((->
         angular.element("#example-1").dataTable({

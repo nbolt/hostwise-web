@@ -11,11 +11,22 @@ EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
       _(property.bookings).each (booking) ->
         if booking.status_cd == 3
           property.revenue += booking.cost
-
+        else if booking.status_cd == 1
+          if booking.late_next_day || booking.late_same_day
+            property.revenue += booking.cost
+          else
+            property.revenue += 0
+        
     $scope.host.total_spent = 0
     _($scope.host.properties).each (property) ->
       _(property.bookings).each (booking) ->
+        if booking.status_cd == 3
           $scope.host.total_spent += booking.cost
+        else if booking.status_cd == 1
+          if booking.late_next_day || booking.late_same_day
+            $scope.host.total_spent += booking.cost
+          else
+            $scope.host.total_spent += 0
 
 
   $scope.count_bookings = ->
