@@ -56,6 +56,65 @@ class Admin::TransactionsController < Admin::AuthController
   end
 
   def process_payouts
+    jobs = params[:jobs].map {|id| Job.find(id).contractor_jobs}.flatten.group_by(&:user_id).map do |user_id, jobs|
+      {
+        user: User.find(user_id),
+        jobs: jobs.map {|cj| Job.find cj.job_id}
+      }
+    end
+
+    jobs.each do |user_jobs|
+      user = user_jobs[:user]
+      if user.chain(:contractor_profile, :stripe_recipient_id)
+        total = 0
+        payouts = Payout.where(job_id: user_jobs[:jobs].map(&:id))
+
+        pending_payouts = payouts.pending
+        pending_payouts.each do |payout|
+          rsp = Stripe::Transfer.retrieve payout.stripe_transfer_id
+          case rsp.status
+          when 'paid'
+            payout.update_attribute :status_cd, 2
+          when 'failed'
+            payout.update_attribute :status_cd, 3
+          end
+        end
+        completed_payouts = pending_payouts.select{|payout| payout.status_cd == 2}.sort_by {|payout| payout.job.date}
+        UserMailer.payday(user, completed_payouts, completed_payouts[0].job.date, completed_payouts[-1].job.date).then(:deliver) unless completed_payouts.empty?
+
+        payouts.unprocessed.each do |payout|
+          total += payout.amount
+        end
+
+        if total > 0
+          recipient = Stripe::Account.retrieve user.contractor_profile.stripe_recipient_id
+
+          rsp = Stripe::Transfer.create(
+            :amount => total,
+            :currency => 'usd',
+            :destination => recipient.id,
+            :description => 'HostWise Payout',
+            :statement_descriptor => 'HostWise Payout',
+            :metadata => { payout_ids: payouts.unprocessed.map(&:id).to_s }
+          )
+
+          case rsp.status
+          when 'pending'
+            payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 1, stripe_transfer_id: rsp.id)}
+            UpdatePayoutJob.set(wait: 30.seconds).perform_later(payouts)
+          when 'paid'
+            payouts = payouts.unprocessed.sort_by {|payout| payout.job.date}
+            payouts.each {|payout| payout.update_attributes(status_cd: 2, stripe_transfer_id: rsp.id)}
+            UserMailer.payday(user, payouts, payouts[0].job.date, payouts[-1].job.date).then(:deliver)
+          when 'failed'
+            payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 3, stripe_transfer_id: rsp.id)}
+          else
+            false
+          end
+        end
+      end
+    end
+    render json: { success: true }
   end
 
 end

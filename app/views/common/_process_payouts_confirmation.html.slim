@@ -1,0 +1,12 @@
+script#process-payouts-confirmation type="text/ng-template"
+  .modal
+    .header
+      .text Process Payouts
+    .content
+      .text Are you sure you want to process these payouts?
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Cancel
+        .button.teal ng:click='process_payouts()'
+          .text Process

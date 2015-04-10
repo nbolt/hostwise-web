@@ -8,6 +8,7 @@ class Payout < ActiveRecord::Base
 
   scope :unprocessed, -> { where(status_cd: 0) }
   scope :pending, -> { where(status_cd: 1) }
+  scope :paid, -> { where(status_cd: 2) }
 
   def process!
     recipient = Stripe::Recipient.retrieve user.stripe_recipient_id

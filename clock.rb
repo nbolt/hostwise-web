@@ -42,7 +42,7 @@ module Clockwork
               :currency => 'usd',
               :destination => recipient.id,
               :statement_descriptor => 'HostWise Payout',
-              :metadata => { payout_ids: user.payouts.unprocessed.map(&:id) }
+              :metadata => { payout_ids: user.payouts.unprocessed.map(&:id).to_s }
             )
 
             case rsp.status

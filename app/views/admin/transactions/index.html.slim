@@ -47,7 +47,7 @@
                   th Net Sale
               tbody
                 tr ng:repeat='booking in bookings'
-                  td ng:click='check(booking)'
+                  td ng:click='check_booking(booking)'
                     div ng:show='booking.payment_status_cd == 0' style='text-align:center'
                       input.cbr type="checkbox" id='check-{{booking.id}}'
                   td
@@ -64,6 +64,9 @@
       .tab-pane#contractors
         .panel.panel-default
           .panel-heading
+            .btn.btn-info.btn-icon ng:click='process_payouts_modal()'
+              i.icon-cc
+              span Process {{selected_payouts().length}} Payouts
             h3.panel-title Account Payable
             .panel-options
               a data-toggle="panel" href="#"
@@ -75,6 +78,7 @@
             table#example-2.table.table-striped.table-bordered cellspacing="0" width="100%"
               thead
                 tr
+                  th.no-sorting
                   th Job ID
                   th Property ID
                   th Client ID
@@ -84,6 +88,7 @@
                   th Total Payout
               tfoot
                 tr
+                  th.no-sorting
                   th Job ID
                   th Property ID
                   th Client ID
@@ -93,6 +98,9 @@
                   th Total Payout
               tbody
                 tr ng:repeat='job in jobs'
+                  td ng:click='check_job(job)'
+                    div style='text-align:center'
+                      input.cbr type="checkbox" id='job-{{job.id}}'
                   td
                     a ng:href='/jobs/{{job.id}}' ng:bind='::job.id'
                   td
@@ -106,3 +114,4 @@
                   td ng:bind='::job.total_payout'
 
 = render 'common/process_payments_confirmation'
+= render 'common/process_payouts_confirmation'
