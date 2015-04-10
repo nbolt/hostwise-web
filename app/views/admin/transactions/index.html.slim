@@ -99,7 +99,7 @@
               tbody
                 tr ng:repeat='job in jobs'
                   td ng:click='check_job(job)'
-                    div style='text-align:center'
+                    div ng:show='job.total_payout != "Pending" && job.status != "Paid"' style='text-align:center'
                       input.cbr type="checkbox" id='job-{{job.id}}'
                   td
                     a.teal ng:href='/jobs/{{job.id}}' ng:bind='::job.id'
