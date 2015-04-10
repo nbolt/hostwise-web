@@ -51,16 +51,16 @@
                     div ng:show='booking.payment_status_cd == 0' style='text-align:center'
                       input.cbr type="checkbox" id='check-{{booking.id}}'
                   td
-                    a ng:href='/jobs/{{booking.job.id}}' ng:bind='::booking.job.id'
+                    a.teal ng:href='/jobs/{{booking.job.id}}' ng:bind='::booking.job.id'
                   td
-                    a ng:href='/properties/{{booking.property.id}}' ng:bind='::booking.property.id'
+                    a.teal ng:href='/properties/{{booking.property.id}}' ng:bind='::booking.property.id'
                   td
-                    a ng:href='/hosts/{{booking.user.id}}/edit' ng:bind='::booking.user.id'
+                    a.teal ng:href='/hosts/{{booking.user.id}}/edit' ng:bind='::booking.user.id'
                   td ng:bind='::booking.date'
                   td
-                    a ng:href='/hosts/{{booking.user.id}}/edit' ng:bind='::booking.user.name'
+                    a.teal ng:href='/hosts/{{booking.user.id}}/edit' ng:bind='::booking.user.name'
                   td ng:bind='::booking.status'
-                  td ng:bind='::booking.cost'
+                  td ng:bind-template="${{booking.cost}}"
       .tab-pane#contractors
         .panel.panel-default
           .panel-heading
@@ -102,16 +102,16 @@
                     div style='text-align:center'
                       input.cbr type="checkbox" id='job-{{job.id}}'
                   td
-                    a ng:href='/jobs/{{job.id}}' ng:bind='::job.id'
+                    a.teal ng:href='/jobs/{{job.id}}' ng:bind='::job.id'
                   td
-                    a ng:href='/properties/{{job.booking.property.id}}' ng:bind='::job.booking.property.id'
+                    a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='::job.booking.property.id'
                   td
-                    a ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.id'
+                    a.teal ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.id'
                   td ng:bind='::job.date'
                   td
-                    a ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.name'
+                    a.teal ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.name'
                   td ng:bind='::job.status'
-                  td ng:bind='::job.total_payout'
+                  td ng:bind-template="${{job.total_payout}}"
 
 = render 'common/process_payments_confirmation'
 = render 'common/process_payouts_confirmation'
