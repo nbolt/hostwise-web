@@ -98,4 +98,20 @@ describe Property do
 
     Property.search('ddg24422r34twdsv').must_equal []
   end
+
+  it 'neighborhood_address' do
+    property_1 = nil, zip_1 = nil, zip_2 = nil, property_8 = nil, property_10 = nil
+    VCR.use_cassette('create_property_1') { property_1 = create(:property_1) }
+    VCR.use_cassette('create_zip_1') { zip_1 = create(:zip_1) }
+    zip_1.must_equal zip_1
+    property_1.neighborhood_address.must_equal '4408 Lone Tree Dr, Preston Meadow, 75093'
+ 
+    VCR.use_cassette('create_property_8') { property_8 = create(:property_8) }
+    VCR.use_cassette('create_zip_2') { zip_2 = create(:zip_2) }
+    zip_2.must_equal zip_2
+    property_8.neighborhood_address.must_equal '3100 Wynwood Ln, Los Angeles, 90023'
+
+    VCR.use_cassette('create_property_10') { property_10 = create(:property_10) }
+    property_10.neighborhood_address.must_equal '2025 Wilshire Blvd, Santa Monica, 90403'
+  end
 end

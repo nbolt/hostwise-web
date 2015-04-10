@@ -87,7 +87,7 @@ class Property < ActiveRecord::Base
         "#{address1}, #{city}, #{zip.code}"
       end
     else
-      "#{address1}, #{city}, #{zip.code}"
+      "#{address1}, #{city}, #{self.zip}"
     end
   end
 
