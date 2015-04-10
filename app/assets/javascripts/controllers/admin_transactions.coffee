@@ -43,12 +43,18 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
             when 1 then 'Received'
       spinner.stopSpin()
       $timeout((->
-        angular.element("#example-1").dataTable({
+        table = angular.element("#example-1").dataTable({
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ],
           aoColumns: [{bSortable:false},null,null,null,null,null,null,null]
         })
+
+        angular.element('#example-1 thead.search th').each (index) ->
+          unless angular.element(@).html() == ''
+            angular.element(@).html "<input>"
+            angular.element(@).on 'keyup change', ->
+              table.fnFilter angular.element(@).children('input').val(), index
 
         $state = angular.element("#example-1 thead input[type='checkbox'], #example-1 tfoot input[type='checkbox']")
         cbr_replace()
@@ -88,12 +94,18 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
 
       spinner.stopSpin()
       $timeout((->
-        angular.element("#example-2").dataTable({
+        table = angular.element("#example-2").dataTable({
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ],
           aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null]
         })
+
+        angular.element('#example-2 thead.search th').each (index) ->
+          unless angular.element(@).html() == ''
+            angular.element(@).html "<input>"
+            angular.element(@).on 'keyup change', ->
+              table.fnFilter angular.element(@).children('input').val(), index
 
         $state = angular.element("#example-2 thead input[type='checkbox'], #example-2 tfoot input[type='checkbox']")
         cbr_replace()
