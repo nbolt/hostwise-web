@@ -39,13 +39,13 @@ class Admin::TransactionsController < Admin::AuthController
             metadata: metadata
           )
           booking_group[:bookings].each do |booking|
-            booking.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking.cost * 100)
+            booking.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total])
             booking.save
           end
         rescue Stripe::CardError => e
           err  = e.json_body[:error]
           booking_group[:bookings].each do |booking|
-            booking.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: booking.cost * 100)
+            booking.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: booking_group[:total])
           end
           UserMailer.generic_notification("Stripe Payment Failed - ***#{booking_group[:payment].last4}", "Booking IDs: #{booking_group[:bookings].map(&:id).join(', ').to_s}").then(:deliver)
           false
