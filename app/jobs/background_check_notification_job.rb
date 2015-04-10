@@ -18,7 +18,7 @@ class BackgroundCheckNotificationJob < ActiveJob::Base
         unless background_check.status == :pending
           msg = "The background check result for #{background_check.user.first_name} #{background_check.user.last_name}: #{background_check.status.to_s.upcase}."
           msg += ' Further action is required.' if background_check.status == :consider
-          UserMailer.generic_notification("Background Check - #{background_check.user.name}", msg).then(:deliver)
+          UserMailer.background_check_notification("Background Check - #{background_check.user.name}", msg).then(:deliver)
 
           # We only send approved bgc email if the results are clean. For cases where results are not clean, ops needs to manually review the bgc results
           UserMailer.background_check_verified(background_check.user).then(:deliver) if background_check.status = :clear
