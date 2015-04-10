@@ -66,11 +66,8 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
       when 1
         'badge-warning'
 
-  $scope.status_class = (job) ->
-    if job.status_cd > 3
-      'btn-red'
-    else
-      'btn-blue'
+  $scope.is_same_day_cancellation = (job) ->
+    job.status == 6 && job.booking.late_same_day
 
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id
