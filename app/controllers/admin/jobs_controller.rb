@@ -12,7 +12,6 @@ class Admin::JobsController < Admin::AuthController
       jobs = jobs.future_from_today 'America/Los_Angeles'
     end
     jobs = jobs.search(params[:search]) if params[:search] && !params[:search].empty?
-    jobs = jobs.order(params[:sort])
 
     respond_to do |format|
       format.html

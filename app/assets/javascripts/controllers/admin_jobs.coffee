@@ -1,20 +1,19 @@
 AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
 
   promise = null
-  $scope.sort = {id:'date',text:'Date'}
   $scope.filter = {id:'future',text:'Future'}
   $scope.search = ''
 
   $scope.fetch_jobs = ->
     spinner.startSpin()
-    $http.get('/jobs.json',{params: {sort: $scope.sort.id, search: $scope.search, filter: $scope.filter.id}}).success (rsp) ->
+    $http.get('/jobs.json',{params: {search: $scope.search, filter: $scope.filter.id}}).success (rsp) ->
       $scope.jobs = rsp.jobs
       _($scope.jobs).each (job) ->
         job.contractor_list = _(job.contractors).map((contractor) -> contractor.name).join(', ')
-        job.service_list = ''
-        job.total_kings = 0
-        job.total_twins = 0
-        job.total_toiletries = 0
+        job.service_list = _(_(job.booking.services).map((service) -> service.name)).join ', '
+        job.total_kings = job.booking.property.king_bed_count
+        job.total_twins = job.booking.property.twin_beds
+        job.total_toiletries = job.booking.property.bathrooms
         job.status = switch job.status_cd
           when 0 then 'open'
           when 1 then 'scheduled'
@@ -43,7 +42,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
       initSelection: (el, cb) ->
     }
 
-  $scope.$watch 'sort.id', (n,o) -> $scope.fetch_jobs() if o != undefined && o != n
   $scope.$watch 'filter.id', (n,o) -> $scope.fetch_jobs() if o != undefined && o != n
 
   $scope.$watch 'search', (n,o) -> if o != undefined && o != n
