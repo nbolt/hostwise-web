@@ -47,7 +47,7 @@ class Admin::TransactionsController < Admin::AuthController
           booking_group[:bookings].each do |booking|
             booking.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: booking.cost * 100)
           end
-          UserMailer.generic_notification("Stripe Payment Failed - ***#{payment.last4}: #{property.user.name}", "Booking ID: #{id}").then(:deliver)
+          UserMailer.generic_notification("Stripe Payment Failed - ***#{booking_group.payment.last4}", "Booking IDs: #{booking_group.bookings.map(&:id).join(', ').to_s}").then(:deliver)
           false
         end
       end
