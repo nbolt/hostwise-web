@@ -28,12 +28,36 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           when 2 then 'hidden'
       spinner.stopSpin()
       $timeout((->
-        angular.element("#example-1").dataTable({
+        table = angular.element("#example-1").dataTable({
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ]
         })
-      ),1000)
+
+        $.fn.dataTable.ext.search.push (settings, data, index) ->
+          start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
+          end   = angular.element("##{settings.nTable.id} thead.search th.date input:last-child").val()
+
+          if !start || !end || start == '' || end == ''
+            true
+          else
+            start_date = moment(start,   'MM/DD/YYYY')
+            end_date   = moment(end,     'MM/DD/YYYY')
+            date       = moment(data[3], 'MM/DD/YYYY')
+
+            date >= start_date && date <= end_date
+
+        angular.element('#example-1 thead.search th').each (index) ->
+          unless angular.element(@).html() == ''
+            if angular.element(@).html() == 'Date'
+              angular.element(@).html "<input><input>"
+              angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
+              angular.element(@).children('input').datepicker()
+            else
+              angular.element(@).html "<input>"
+              angular.element(@).children('input').on 'keyup change', ->
+                table.fnFilter angular.element(@).val(), index
+      ),500)
 
   $scope.state_class = (job) ->
     switch job.state_cd
