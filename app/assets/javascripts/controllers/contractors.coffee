@@ -6,6 +6,9 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope
     spinner.startSpin()
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.users = rsp
+      $scope.applicants = _($scope.users).filter (user) -> user.contractor_profile and user.contractor_profile.position_cd == 1
+      $scope.contractors = _($scope.users).filter (user) -> user.contractor_profile and user.contractor_profile.position_cd == 2
+      $scope.mentors = _($scope.users).filter (user) -> user.contractor_profile and user.contractor_profile.position_cd == 3
       _($scope.users).each (user) ->
         user.contract_status = if user.contractor_profile and user.contractor_profile.docusign_completed then 'Yes' else 'No'
         user.bgc_status = background_check_status(user)

@@ -10,13 +10,14 @@
     .panel-body
       .row
         .col-sm-3
-          p.text-medium Total number of team members
-          .super-large.text-secondary
-            | {{users.length}}
+          p.text-medium Total Mentors
+          .super-large.text-secondary.teal ng:bind='mentors.length'
         .col-sm-3
-          #reqs-per-second style=("height: 150px;")
-        .col-sm-6
-          #reqs-per-second-chart style=("height: 150px;")
+          p.text-medium Total Contractors
+          .super-large.text-secondary.red ng:bind='contractors.length'
+        .col-sm-3
+          p.text-medium Total Applicants
+          .super-large.text-secondary.gold ng:bind='applicants.length'
 
   .panel.panel-default
     .panel-heading
