@@ -68,6 +68,12 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
       when 2
         'btn-red'
 
+  $scope.status_class = (job) ->
+    if job.status_cd > 3
+      'btn-red'
+    else
+      'btn-blue'
+
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id
 

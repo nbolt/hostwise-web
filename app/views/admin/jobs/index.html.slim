@@ -83,7 +83,8 @@
             td
               a.teal ng:href="/hosts/{{job.booking.property.user.id}}/edit" ng:bind='job.booking.property.user.name'
             td ng:bind='job.booking.property.display_phone_number'
-            td ng:bind='job.status'
+            td
+              .btn.disabled ng:bind='job.status' ng:class='status_class(job)'
             td ng:bind-template="${{job.booking.cost}}"
             td ng:bind='job.service_list'
             td ng:bind='job.total_kings'
