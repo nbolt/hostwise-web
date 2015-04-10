@@ -62,11 +62,11 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
   $scope.state_class = (job) ->
     switch job.state_cd
       when 0
-        'btn-blue'
+        'badge-default'
       when 1
-        'btn-orange'
+        'badge-warning'
       when 2
-        'btn-red'
+        'badge-red'
 
   $scope.status_class = (job) ->
     if job.status_cd > 3
