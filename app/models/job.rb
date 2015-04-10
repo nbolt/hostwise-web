@@ -227,13 +227,14 @@ class Job < ActiveRecord::Base
 
   def complete!
     completed!
+    pay_contractors!
     booking.update_attribute :status_cd, 3 if booking
     save
   end
 
   def pay_contractors!
     contractors.each do |contractor|
-      unless Payout.where(job_id: self.id, user_id: contractor.id)[0]
+      unless Payout.where(job_id: self.id, user_id: contractor.id)[0] || !payout(contractor)
         contractor.payouts.create(job_id: self.id, amount: payout(contractor) * 100)
       end
     end

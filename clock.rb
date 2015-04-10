@@ -12,7 +12,6 @@ module Clockwork
         time = timezone.time Time.now
         if time.hour == 22
           booking.charge!
-          booking.job.pay_contractors!
         end
       end
     when 'payouts:process'
