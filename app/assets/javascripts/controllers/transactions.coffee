@@ -9,6 +9,7 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
         if tab.name is 'completed'
           $scope.tab tab.name
           _(tab.transactions).each (transaction) ->
+            transaction.booking = _(transaction.bookings).find (booking) -> booking.user.id == $scope.user.id
             transaction.date = transaction.booking.date
             transaction.property = transaction.booking.property.nickname
             transaction.services = booked_services transaction.booking.services
@@ -22,7 +23,7 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
             transaction.payment = transaction.payment.last4
             transaction.total = transaction.cost.toFixed(2)
 
-  $scope.$emit 'fetch_transactions'
+  $scope.user_fetched.promise.then -> $scope.$emit 'fetch_transactions'
 
   $scope.tab = (name) ->
     tabs = angular.element('.transaction-container .tabs')

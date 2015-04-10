@@ -48,7 +48,8 @@
               tbody
                 tr ng:repeat='booking in bookings'
                   td ng:click='check(booking)'
-                    input.cbr type="checkbox" id='check-{{booking.id}}'
+                    div ng:show='booking.payment_status_cd == 0' style='text-align:center'
+                      input.cbr type="checkbox" id='check-{{booking.id}}'
                   td
                     a ng:href='/jobs/{{booking.job.id}}' ng:bind='::booking.job.id'
                   td

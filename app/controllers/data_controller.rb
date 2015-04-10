@@ -66,7 +66,7 @@ class DataController < ApplicationController
       when 'completed'
         transactions = Transaction.completed(current_user, params[:start_date], params[:end_date])
         respond_to do |format|
-          format.json { render json: transactions.to_json(include: {booking: {methods: :cost, include: [:payment, :services, property: {methods: :nickname}]}}) }
+          format.json { render json: transactions.to_json(include: {bookings: {methods: :cost, include: [:payment, :services, :user, property: {methods: :nickname}]}}) }
           format.csv { send_data transaction_csv(transactions), filename: "completed_transactions_#{params[:start_date].gsub('/', '_')}_#{params[:end_date].gsub('/', '_')}.csv" }
         end
       when 'upcoming'

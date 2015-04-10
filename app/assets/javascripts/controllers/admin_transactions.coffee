@@ -39,6 +39,11 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         cbr_replace()
         $state.trigger('change')
 
+        angular.element('#example-1').on('draw.dt', ->
+          cbr_replace()
+          $state.trigger('change')
+        )
+
         $state.on('change', (ev) ->
           $chcks = $("#example-1 tbody input[type='checkbox']");
 

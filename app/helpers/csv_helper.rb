@@ -5,7 +5,7 @@ module CsvHelper
     CSV.generate do |csv|
       csv << %w(Date Property Services Payment Total)
       results.each do |transaction|
-        booking = transaction.booking
+        booking = transaction.bookings.find {|booking| booking.user.id == current_user.id}
         csv << [booking.date.strftime('%m/%d/%Y'),
                 booking.property.nickname,
                 booking.services.collect{|s| s.display}.join(','),
