@@ -22,7 +22,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           when 4 then 'past due'
           when 5 then "can't access"
           when 6 then 'cancelled'
-        job.state = switch job.status_cd
+        job.state = switch job.state_cd
           when 0 then 'normal'
           when 1 then 'vip'
           when 2 then 'hidden'
@@ -34,6 +34,15 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           ]
         })
       ),1000)
+
+  $scope.state_class = (job) ->
+    switch job.state_cd
+      when 0
+        'btn-blue'
+      when 1
+        'btn-orange'
+      when 2
+        'btn-red'
 
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id

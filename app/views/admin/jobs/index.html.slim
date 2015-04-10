@@ -73,4 +73,5 @@
             td ng:bind='job.total_twins'
             td ng:bind='job.total_toiletries'
             td ng:bind='job.contractor_list'
-            td ng:bind='job.state'
+            td
+              .btn.disabled ng:bind='job.state' ng:class='state_class(job)'

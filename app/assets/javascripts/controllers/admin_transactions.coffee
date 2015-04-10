@@ -73,7 +73,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
             else
               angular.element(@).html "<input>"
               angular.element(@).children('input').on 'keyup change', ->
-                table.fnFilter angular.element(@).children('input').val(), index
+                table.fnFilter angular.element(@).val(), index
 
         $state = angular.element("#example-1 thead input[type='checkbox'], #example-1 tfoot input[type='checkbox']")
         cbr_replace()
@@ -129,7 +129,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
             else
               angular.element(@).html "<input>"
               angular.element(@).children('input').on 'keyup change', ->
-                table.fnFilter angular.element(@).children('input').val(), index
+                table.fnFilter angular.element(@).val(), index
 
         $state = angular.element("#example-2 thead input[type='checkbox'], #example-2 tfoot input[type='checkbox']")
         cbr_replace()
