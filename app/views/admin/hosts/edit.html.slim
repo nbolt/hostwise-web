@@ -52,7 +52,7 @@
           .section.three
             i.icon-earnings
             h2 Total Spent 
-            h2.teal $#{@cost}
+            h2.teal ${{ host.total_spent }}
           .section.four
             i.icon-apt
             h2 Properties
@@ -88,7 +88,8 @@
           .row
             div ng:repeat='property in host.properties'
               .section
-                p.teal ng:bind='::property.id'
+                a href="/properties/{{::property.id}}"
+                  p.teal ng:bind='::property.id'
               .section
                 p.dark-gray ng:bind='::property.created_at'
               .section

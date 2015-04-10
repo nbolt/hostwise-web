@@ -6,7 +6,10 @@ AdminPropertiesCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http,
       $scope.properties = rsp
       _($scope.properties).each (property) ->
         property.service_completed = _(property.bookings).filter((booking) -> booking.status_cd == 3).length
-        property.revenue = _(property.bookings).reduce(((acc, booking) -> acc + booking.cost), 0)
+        property.revenue = 0
+        _(property.bookings).each (booking) ->
+          if booking.status_cd == 3
+            property.revenue += booking.cost
       spinner.stopSpin()
       $timeout((->
         angular.element("#example-1").dataTable({
