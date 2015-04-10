@@ -74,6 +74,17 @@ class Property < ActiveRecord::Base
     title || address1
   end
 
+  def display_phone_number
+    if phone_number
+      first  = phone_number[0..2]
+      second = phone_number[3..5]
+      third  = phone_number[6..9]
+      "(#{first}) #{second}-#{third}"
+    else
+      ''
+    end
+  end
+
   def short_address
     "#{address1} #{zip}"
   end

@@ -11,6 +11,10 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
       $scope.jobs = rsp.jobs
       _($scope.jobs).each (job) ->
         job.contractor_list = _(job.contractors).map((contractor) -> contractor.name).join(', ')
+        job.service_list = ''
+        job.total_kings = 0
+        job.total_twins = 0
+        job.total_toiletries = 0
         job.status = switch job.status_cd
           when 0 then 'open'
           when 1 then 'scheduled'
@@ -20,6 +24,13 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           when 5 then "can't access"
           when 6 then 'cancelled'
       spinner.stopSpin()
+      $timeout((->
+        angular.element("#example-1").dataTable({
+          aLengthMenu: [
+            [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+          ]
+        })
+      ),1000)
 
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id

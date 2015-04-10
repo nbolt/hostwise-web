@@ -1,72 +1,73 @@
-.contractors ng:controller='admin_jobs'
-  .header
-    h2
-      .fa.fa-list
-      | Jobs
-  .highlight
-    span.total
+.xenon.custom ng:controller='admin_jobs'
+  .panel.panel-default.stats
+    .panel-heading
       | Total Jobs
-      strong
-        | {{jobs.length}}
-    span.search
-      i.icon-search
-      input type='text' placeholder='Search' ng:model='search'
-    span.sort
-      input type='hidden' ui-select2='filterHash()' ng:model='filter'
-    span.export style='float:right;margin-right: 25px;margin-top: 10px'
-    hr
-  table cellpadding='0' cellspacing='0'
-    tbody
-      tr.days
-        th
-          a href='' ng:click="predicate = 'id'; reverse=!reverse"
-            | ID
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'booking.property.nickname'; reverse=!reverse"
-            | Property
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'booking.property.property_size'; reverse=!reverse"
-            | Size
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'booking.property.user.name'; reverse=!reverse"
-            | Client
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'booking.property.neighborhood_address'; reverse=!reverse"
-            | Address
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'date'; reverse=!reverse"
-            | Date
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'status'; reverse=!reverse"
-            | Status
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'booking.cost'; reverse=!reverse"
-            | Cost
-            i.icon-acc-open
-        th
-          a href='' ng:click="predicate = 'contractor_list'; reverse=!reverse"
-            | Contractors
-            i.icon-acc-open
-      tr dir-paginate='job in jobs | orderBy:predicate:reverse | itemsPerPage: 20'
-        td
-          a ng:href="/jobs/{{job.id}}" ng:bind='::job.id'
-        td
-          a ng:href='/properties/{{job.booking.property.id}}' ng:bind='::job.booking.property.nickname' ng:click='search_property(job)'
-        td ng:bind='::job.booking.property.property_size'
-        td
-          a ng:href='/hosts/{{job.booking.property.user.id}}/edit' ng:bind='::job.booking.property.user.name'
-          |  &ndash; {{::job.booking.property.user.display_phone_number}}
-        td ng:bind='::job.booking.property.neighborhood_address'
-        td ng:bind='::job.date'
-        td.status ng:bind='::job.status'
-        td.cost ${{::job.booking.cost}}
-        td ng:bind='::job.contractor_list'
-  .pagination
-    dir-pagination-controls template-url="#{asset_path 'pagination.html'}" on-page-change="page_changed(newPageNumber)"
+    .panel-body
+      .row
+        .col-sm-3
+          p.text-medium Total number of jobs
+          .super-large.text-secondary
+            | {{jobs.length}}
+
+  .panel.panel-default
+    .panel-heading
+      h3.panel-title Jobs
+      .panel-options
+        a data-toggle="panel" href="#"
+          span.collapse-icon &ndash;
+          span.expand-icon +
+        a data-toggle="remove" href="#"
+          | \&times;
+    .panel-body.table-responsive
+      table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
+        thead
+          tr
+            th ID
+            th Property
+            th Size
+            th Date
+            th Address
+            th Customer
+            th Phone
+            th Status
+            th Cost
+            th Services
+            th King Set(s)
+            th Twin Set(s)
+            th Toiletries Set(s)
+            th Contractor(s)
+        tfoot
+          tr
+            th ID
+            th Property
+            th Size
+            th Date
+            th Address
+            th Customer
+            th Phone
+            th Status
+            th Cost
+            th Services
+            th King Set(s)
+            th Twin Set(s)
+            th Toiletries Set(s)
+            th Contractor(s)
+        tbody
+          tr ng:repeat='job in jobs'
+            td
+              a.teal ng:href='/jobs/{{job.id}}' ng:bind='job.id'
+            td
+              a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='job.booking.property.id'
+            td ng:bind='job.booking.property.property_size'
+            td ng:bind="job.date | date:'MM/dd/yyyy':'UTC'"
+            td ng:bind='job.booking.property.neighborhood_address'
+            td
+              a.teal ng:href="/hosts/{{job.booking.property.user.id}}/edit" ng:bind='job.booking.property.user.name'
+            td ng:bind='job.booking.property.display_phone_number'
+            td ng:bind='job.status'
+            td ng:bind-template="${{job.booking.cost}}"
+            td ng:bind='job.service_list'
+            td ng:bind='job.total_kings'
+            td ng:bind='job.total_twins'
+            td ng:bind='job.total_toiletries'
+            td ng:bind='job.contractor_list'
