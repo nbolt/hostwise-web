@@ -65,7 +65,8 @@
           tr ng:repeat='user in users'
             td
               a.teal ng:href='/contractors/{{user.id}}/edit' ng:bind='user.id'
-            td ng:bind='user.name'
+            td
+              a.teal ng:href='/contractors/{{user.id}}/edit' ng:bind='user.name'
             td ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
             td ng:bind='user.contractor_profile.city'
             td ng:bind='user.email'

@@ -18,6 +18,14 @@ body
 .body, .grey
   background-color: gray
 
+body.admin
+  #sidebar-container
+    width: 80px
+    &:hover
+      width: 240px
+  .body
+    margin-left: 80px
+
 .plain
   nav.pl-nav
     height: 100px
@@ -2767,8 +2775,6 @@ body .select2-drop-mask
             width: 80%
 
 .edit-contractor .steps
-  .teal
-    color: teal
   .dark-gray
     color: dark-gray
   .step
@@ -2802,8 +2808,6 @@ body .select2-drop-mask
             vertical-align: top
 
 .edit-customer .steps
-  .teal
-    color: teal
   .dark-gray
     color: dark-gray
   h2
