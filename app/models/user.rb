@@ -89,6 +89,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def bookings
+    properties.map(&:bookings).flatten
+  end
+
+  def booking_count
+    bookings.count
+  end
+
   def notification_settings
     to_settings_hash
   end

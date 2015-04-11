@@ -59,11 +59,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
                 table.fnFilter angular.element(@).val(), index
       ),500)
 
-  $scope.is_new_customer = (user) ->
-    services = 0
-    _(user.properties).each (property) ->
-      services += property.bookings.length
-    services <= 5
+  $scope.is_new_customer = (user) -> user.booking_count <= 5
 
   $scope.state_class = (job) ->
     switch job.state_cd
