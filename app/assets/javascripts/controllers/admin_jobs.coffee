@@ -1,7 +1,7 @@
 AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
 
   promise = null
-  $scope.filter = {id:'future',text:'Future'}
+  $scope.filter = {id:'all',text:'All'}
   $scope.search = ''
 
   $scope.fetch_jobs = ->
@@ -63,7 +63,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
     services = 0
     _(user.properties).each (property) ->
       services += property.bookings.length
-    console.log services
     services <= 5
 
   $scope.state_class = (job) ->
