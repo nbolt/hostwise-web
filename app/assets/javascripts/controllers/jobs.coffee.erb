@@ -6,10 +6,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
   $scope.jobs_fetched = $q.defer()
   faye = null
 
-  $scope.fetch_hosts = ->
-    http.get('/hosts' + '.json').success (rsp) ->
-      $scope.hosts = rsp
-
   $scope.tab = (name) ->
     angular.element('#jobs .tabs .tab').removeClass 'active'
     angular.element('#jobs .tab-content .tab').removeClass 'active'
@@ -136,8 +132,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
         spinner.startSpin()
         $scope.page = page
         refresh_jobs true, (-> spinner.stopSpin(); done())
-
-  $scope.fetch_hosts()
 
   #load_faye = null
   #load_faye = $interval((->
