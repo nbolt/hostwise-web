@@ -63,6 +63,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
     services = 0
     _(user.properties).each (property) ->
       services += property.bookings.length
+    console.log services
     services <= 5
 
   $scope.state_class = (job) ->
