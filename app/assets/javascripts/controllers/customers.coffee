@@ -23,6 +23,11 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
         })
       ),1000)
 
+  $scope.is_new_customer = (user) ->
+    services = 0
+    _(user.properties).each (property) ->
+      services += property.bookings.length
+    services <= 5
   
   $scope.fetch_hosts()
 

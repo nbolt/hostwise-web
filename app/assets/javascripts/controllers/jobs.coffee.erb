@@ -6,12 +6,22 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
   $scope.jobs_fetched = $q.defer()
   faye = null
 
+  $scope.fetch_hosts = ->
+    http.get('/hosts' + '.json').success (rsp) ->
+      $scope.hosts = rsp
+
   $scope.tab = (name) ->
     angular.element('#jobs .tabs .tab').removeClass 'active'
     angular.element('#jobs .tab-content .tab').removeClass 'active'
     angular.element("#jobs .tabs .tab.#{name}").addClass 'active'
     angular.element("#jobs .tab-content .tab.#{name}").addClass 'active'
     null
+
+  $scope.is_new_customer = (host) ->
+    services = 0
+    _(host.properties).each (property) ->
+      services += property.bookings.length
+    services <= 5
 
   $scope.filters = ->
     {
@@ -126,6 +136,8 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
         spinner.startSpin()
         $scope.page = page
         refresh_jobs true, (-> spinner.stopSpin(); done())
+
+  $scope.fetch_hosts()
 
   #load_faye = null
   #load_faye = $interval((->
