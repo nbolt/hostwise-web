@@ -3,5 +3,4 @@ class BookingSerializer < ActiveModel::Serializer
 
   has_one :property
   has_one :user
-  has_many :services
 end
