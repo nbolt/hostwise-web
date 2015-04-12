@@ -10,6 +10,7 @@ FactoryGirl.define do |booking|
     after(:create) do |booking|
     	booking.services << create(:cleaning)
     	booking.services << create(:linens)
+      booking.update_cost!
     end
   end
 
@@ -20,6 +21,7 @@ FactoryGirl.define do |booking|
     	booking.services << create(:cleaning)
     	booking.services << create(:linens)
     	booking.services << create(:toiletries)
+      booking.update_cost!
     end
   end
 
@@ -31,6 +33,7 @@ FactoryGirl.define do |booking|
     	booking.services << create(:patio)
     	booking.services << create(:windows)
     	booking.services << create(:preset)
+      booking.update_cost!
     end
   end
 
@@ -42,6 +45,7 @@ FactoryGirl.define do |booking|
       booking.services << create(:patio)
       booking.services << create(:windows)
       booking.services << create(:preset)
+      booking.update_cost!
     end
   end
 
@@ -54,6 +58,7 @@ FactoryGirl.define do |booking|
     	booking.services << create(:patio)
     	booking.services << create(:windows)
     	booking.services << create(:preset)
+      booking.update_cost!
     end
   end
 
@@ -66,6 +71,7 @@ FactoryGirl.define do |booking|
     	booking.services << create(:patio)
     	booking.services << create(:windows)
     	booking.services << create(:preset)
+      booking.update_cost!
     end
   end
 
@@ -88,6 +94,7 @@ FactoryGirl.define do |booking|
     	booking.services << create(:patio)
     	booking.services << create(:windows)
     	booking.services << create(:preset)
+      booking.update_cost!
     end
   end
 
@@ -106,6 +113,7 @@ FactoryGirl.define do |booking|
       booking.services << create(:patio)
       booking.services << create(:windows)
       booking.services << create(:preset)
+      booking.update_cost!
     end
   end
 
