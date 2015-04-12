@@ -81,8 +81,8 @@
             td ng:bind="job.date | date:'MM/dd/yyyy':'UTC'"
             td ng:bind='job.booking.property.neighborhood_address'
             td
-              a.teal ng:href="/hosts/{{job.booking.property.user.id}}/edit" ng:bind='job.booking.property.user.name'
-              .badge.badge-green style='margin-top:7px' ng:show='is_new_customer(job.booking.property.user)' new customer
+              a.teal ng:href="/hosts/{{job.booking.user.id}}/edit" ng:bind='job.booking.user.name'
+              .badge.badge-green style='margin-top:7px' ng:show='is_new_customer(job.booking.user)' new customer
             td ng:bind='job.booking.property.display_phone_number'
             td
               p ng:bind='job.status'

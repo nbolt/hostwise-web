@@ -70,7 +70,10 @@ class Booking < ActiveRecord::Base
       rsp[:late_same_day] = PRICING['late_same_day']
       rsp[:cost] += PRICING['late_same_day']
     end
-    rsp[:cost] += PRICING['no_access_fee'] if no_access_fee
+    if no_access_fee
+      rsp[:no_access_fee] = PRICING['no_access_fee']
+      rsp[:cost] += PRICING['no_access_fee']
+    end
     if first_booking_discount
       discount = PRICING['first_booking_discount']
       if discount <= rsp[:cost]
@@ -84,15 +87,35 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    cost = Booking.cost(property, services, first_booking_discount, late_next_day, late_same_day, no_access_fee)
+    total_cost = cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost - first_booking_discount_cost
     if cancelled? || couldnt_access?
-      cost[:cost] -= cost[:linens] if cost[:linens]          # |
-      cost[:cost] -= cost[:toiletries] if cost[:toiletries]  # |  NOTE: tests needed [mutation coverage]
-      cost[:cost] = 0 if cost[:cost] < 0                     # |
-      [PRICING['cancellation'], (cost[:cost] * 0.2).round(2)].max
+      total_cost -= linen_cost            # |
+      total_cost -= toiletries_cost       # |  NOTE: tests needed [mutation coverage]
+      total_cost = 0 if total_cost < 0    # |
+      [PRICING['cancellation'], (total_cost * 0.2).round(2)].max
     else
-      cost[:cost]
+      total_cost
     end
+  end
+
+  def pricing_hash
+    { cost: cost, cleaning: cleaning_cost, linens: linen_cost, toiletries: toiletries_cost, pool: pool_cost, patio: patio_cost, windows: windows_cost, preset: staging_cost, no_access_fee: no_access_fee_cost, late_next_day: late_next_day_cost, late_same_day: late_same_day_cost, first_booking_discount: first_booking_discount_cost }
+  end
+
+  def update_cost!
+    cost = Booking.cost(property, services, first_booking_discount, late_next_day, late_same_day, no_access_fee)
+    self.cleaning_cost               = cost[:cleaning] || 0
+    self.linen_cost                  = cost[:linens] || 0
+    self.toiletries_cost             = cost[:toiletries] || 0
+    self.pool_cost                   = cost[:pool] || 0
+    self.patio_cost                  = cost[:patio] || 0
+    self.windows_cost                = cost[:windows] || 0
+    self.staging_cost                = cost[:preset] || 0
+    self.no_access_fee_cost          = cost[:no_access_fee] || 0
+    self.late_next_day_cost          = cost[:late_next_day] || 0
+    self.late_same_day_cost          = cost[:late_same_day] || 0
+    self.first_booking_discount_cost = cost[:first_booking_discount] || 0
+    self.save
   end
 
   def send_reminder

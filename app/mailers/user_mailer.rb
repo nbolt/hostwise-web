@@ -211,7 +211,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                         late_same_day: booking.late_same_day,
                         late_next_day: booking.late_next_day,
                         first_booking_discount: booking.first_booking_discount,
-                        first_booking_discount_amount: Booking.cost(booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)[:first_booking_discount],
+                        first_booking_discount_amount: booking.first_booking_discount_cost,
                         prop_link: property_url(booking.property.slug)
                       },
                       merge_language: 'handlebars',

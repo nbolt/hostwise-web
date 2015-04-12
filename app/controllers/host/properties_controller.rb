@@ -90,6 +90,18 @@ class Host::PropertiesController < Host::AuthController
                 booking.vip = true
                 current_user.update_attribute :vip_count, current_user.vip_count + 1
               end
+              cost = Booking.cost(property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
+              booking.cleaning_cost               = cost[:cleaning]
+              booking.linen_cost                  = cost[:linens]
+              booking.toiletries_cost             = cost[:toiletries]
+              booking.pool_cost                   = cost[:pool]
+              booking.patio_cost                  = cost[:patio]
+              booking.windows_cost                = cost[:windows]
+              booking.staging_cost                = cost[:preset]
+              booking.no_access_fee_cost          = cost[:no_access_fee]
+              booking.late_next_day_cost          = cost[:late_next_day]
+              booking.late_same_day_cost          = cost[:late_same_day]
+              booking.first_booking_discount_cost = cost[:first_booking_discount]
               booking.save # need to check for errors
               bookings.push booking
               UserMailer.new_booking_notification(booking).then(:deliver)
@@ -199,7 +211,7 @@ class Host::PropertiesController < Host::AuthController
 
   def booking_cost
     if booking
-      render json: Booking.cost(booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
+      render json: booking.pricing_hash
     else
       services = params[:services].map {|s| Service.where(name: s)[0] if s[1]}.compact
       cost = Booking.cost property, services

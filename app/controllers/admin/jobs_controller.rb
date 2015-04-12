@@ -32,7 +32,7 @@ class Admin::JobsController < Admin::AuthController
   end
 
   def booking_cost
-    cost = Booking.cost job.booking.property, job.booking.services
+    cost = job.booking.pricing_hash
     render json: cost
   end
 

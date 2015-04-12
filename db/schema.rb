@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410064957) do
+ActiveRecord::Schema.define(version: 20150412014932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "user_id"
@@ -82,14 +83,25 @@ ActiveRecord::Schema.define(version: 20150410064957) do
     t.integer  "property_id"
     t.integer  "payment_id"
     t.date     "date"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.integer  "status_cd",              default: 1
-    t.integer  "payment_status_cd",      default: 0
-    t.boolean  "late_next_day",          default: false
-    t.boolean  "late_same_day",          default: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.integer  "status_cd",                   default: 1
+    t.integer  "payment_status_cd",           default: 0
+    t.boolean  "late_next_day",               default: false
+    t.boolean  "late_same_day",               default: false
     t.boolean  "no_access_fee"
-    t.boolean  "first_booking_discount", default: false
+    t.boolean  "first_booking_discount",      default: false
+    t.integer  "cleaning_cost",               default: 0
+    t.integer  "linen_cost",                  default: 0
+    t.integer  "toiletries_cost",             default: 0
+    t.integer  "pool_cost",                   default: 0
+    t.integer  "patio_cost",                  default: 0
+    t.integer  "windows_cost",                default: 0
+    t.integer  "staging_cost",                default: 0
+    t.integer  "no_access_fee_cost",          default: 0
+    t.integer  "late_next_day_cost",          default: 0
+    t.integer  "late_same_day_cost",          default: 0
+    t.integer  "first_booking_discount_cost", default: 0
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
