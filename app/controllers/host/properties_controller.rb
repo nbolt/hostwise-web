@@ -91,17 +91,17 @@ class Host::PropertiesController < Host::AuthController
                 current_user.update_attribute :vip_count, current_user.vip_count + 1
               end
               cost = Booking.cost(property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
-              booking.cleaning_cost               = cost[:cleaning]
-              booking.linen_cost                  = cost[:linens]
-              booking.toiletries_cost             = cost[:toiletries]
-              booking.pool_cost                   = cost[:pool]
-              booking.patio_cost                  = cost[:patio]
-              booking.windows_cost                = cost[:windows]
-              booking.staging_cost                = cost[:preset]
-              booking.no_access_fee_cost          = cost[:no_access_fee]
-              booking.late_next_day_cost          = cost[:late_next_day]
-              booking.late_same_day_cost          = cost[:late_same_day]
-              booking.first_booking_discount_cost = cost[:first_booking_discount]
+              booking.cleaning_cost               = cost[:cleaning] || 0
+              booking.linen_cost                  = cost[:linens] || 0
+              booking.toiletries_cost             = cost[:toiletries] || 0
+              booking.pool_cost                   = cost[:pool] || 0
+              booking.patio_cost                  = cost[:patio] || 0
+              booking.windows_cost                = cost[:windows] || 0
+              booking.staging_cost                = cost[:preset] || 0
+              booking.no_access_fee_cost          = cost[:no_access_fee] || 0
+              booking.late_next_day_cost          = cost[:late_next_day] || 0
+              booking.late_same_day_cost          = cost[:late_same_day] || 0
+              booking.first_booking_discount_cost = cost[:first_booking_discount] || 0
               booking.save # need to check for errors
               bookings.push booking
               UserMailer.new_booking_notification(booking).then(:deliver)
