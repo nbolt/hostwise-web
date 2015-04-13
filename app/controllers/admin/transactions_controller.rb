@@ -13,7 +13,8 @@ class Admin::TransactionsController < Admin::AuthController
   end
 
   def process_payments
-    bookings = params[:bookings].map {|id| Booking.find id}.group_by {|booking| booking.user.id}.map do |user_id, bookings|
+    bookings = params[:bookings].map {|id| Booking.find id}.each {|booking| booking.update_cost!}
+    bookings = bookings.group_by {|booking| booking.user.id}.map do |user_id, bookings|
       {
         user: User.find(user_id),
         booking_groups: bookings.group_by {|booking| booking.payment.id}.map do |payment_id, bookings|

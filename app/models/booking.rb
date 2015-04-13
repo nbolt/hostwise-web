@@ -142,6 +142,7 @@ class Booking < ActiveRecord::Base
     elsif cost == 0
       save
     elsif payment.stripe_id
+      update_cost!
       amount = (cost * 100).to_i
       begin
         metadata = { job_id: job.id, booking_id: self.id, user_id: user.id, user_email: user.email }
