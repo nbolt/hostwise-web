@@ -62,7 +62,6 @@ class Contractor::JobsController < Contractor::AuthController
   def cant_access
     unless job.status == :cant_access
       job.update_attributes(status_cd: 5, cant_access: Time.now)
-
       staging = Rails.env.staging? && '[STAGING] ' || ''
       if params[:property_occupied].present? #property occupied
         TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}. There are still guests occupying the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
@@ -78,6 +77,7 @@ class Contractor::JobsController < Contractor::AuthController
   def timer_finished
     unless job.booking.status == :couldnt_access
       job.booking.update_attribute :status_cd, 5
+      job.booking.update_cost!
       staging = Rails.env.staging? && '[STAGING] ' || ''
       TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise was unable to access your property. Having waited 30 minutes to resolve this issue, we must now move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
       TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}.")

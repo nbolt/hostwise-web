@@ -59,6 +59,7 @@ class Admin::JobsController < Admin::AuthController
     service = Service.where(name: params[:service])[0]
     job.booking.services.push service
     job.booking.services.delete Service.where(name: 'preset')[0] if service.name == 'cleaning'
+    job.booking.update_cost!
     render json: { success: true }
   end
 
@@ -66,6 +67,7 @@ class Admin::JobsController < Admin::AuthController
     service = Service.where(name: params[:service])[0]
     job.booking.services.delete service
     job.booking.services.push Service.where(name: 'preset')[0] if service.name == 'cleaning'
+    job.booking.update_cost!
     render json: { success: true }
   end
 
@@ -76,6 +78,7 @@ class Admin::JobsController < Admin::AuthController
       job.complete!
     when :cant_access
       job.booking.update_attribute :status_cd, 5
+      job.booking.update_cost!
     end
     render json: { success: true }
   end
