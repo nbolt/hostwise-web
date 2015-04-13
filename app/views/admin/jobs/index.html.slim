@@ -82,7 +82,7 @@
             td ng:bind='job.booking.property.neighborhood_address'
             td
               a.teal ng:href="/hosts/{{job.booking.user.id}}/edit" ng:bind='job.booking.user.name'
-              .badge.badge-green style='margin-top:7px' ng:show='is_new_customer(job.booking.user)' new customer
+              .badge.badge-blue ng:show='is_new_customer(job.booking.user)' new
             td ng:bind='job.booking.property.display_phone_number'
             td
               p ng:bind='job.status'

@@ -39,9 +39,11 @@ class Admin::TransactionsController < Admin::AuthController
             statement_descriptor: "HostWise"[0..21], # 22 characters max
             metadata: metadata
           )
+
           booking_group[:bookings].each do |booking|
             booking.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total])
             booking.save
+            UserMailer.service_completed(booking).then(:deliver) if user_bookings[:user].settings(:service_completion).email
           end
         rescue Stripe::CardError => e
           err  = e.json_body[:error]

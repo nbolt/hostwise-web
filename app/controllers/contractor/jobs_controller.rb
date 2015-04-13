@@ -123,7 +123,6 @@ class Contractor::JobsController < Contractor::AuthController
         property = job.booking.property
         checklist_photos = []
         checklist_photos << job.checklist.kitchen_photo.url << job.checklist.bedroom_photo.url << job.checklist.bathroom_photo.url
-        UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
 
         if property.user.settings(:service_completion).sms
           TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!", checklist_photos)
