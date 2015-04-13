@@ -18,6 +18,10 @@ describe User do
 		user_name_3 = nil
 		VCR.use_cassette('create_user_name_3') { user_name_3 = create(:user_name_3) }
 		user_name_3.display_phone_number.must_equal '(972) 214-9321'
+
+		user_name_2 = nil
+		VCR.use_cassette('create_user_name_2') { user_name_2 = create(:user_name_2) }
+		user_name_2.display_phone_number.must_equal ''
 	end
 
 	it 'shows correct earnings' do
@@ -200,5 +204,27 @@ describe User do
 	
 		msg = user_name_6.claim_job job_15
 		msg.must_equal ( { success: false, message: "Can't claim a cancelled job" } )
+	end
+
+	it 'booking_count' do
+		user_name_15 = nil, property_1 = nil, booking_first = nil, booking_second = nil
+		VCR.use_cassette('create_booking_first') { booking_first = create(:booking_first)}
+		booking_first.must_equal booking_first
+		VCR.use_cassette('create_booking_second') { booking_second = create(:booking_second)}
+		booking_second.must_equal booking_second
+		VCR.use_cassette('create_property_1') {property_1 = create(:property_1) }
+		property_1.must_equal property_1
+		VCR.use_cassette('create_user_name_15') { user_name_15 = create(:user_name_15) }
+		#user_name_15.booking_count.must_equal ''
+	end
+
+	it 'last_payout_date' do
+		#payout_7 = create(:payout_7)
+		#payout_7.must_equal payout_7
+		#payout_8 = create(:payout_8)
+		#payout_8.must_equal payout_8
+		#user_name_16 = nil
+		#VCR.use_cassette('create_user_name_16') { user_name_16 = create(:user_name_16) }
+		#user_name_16.last_payout_date.day.must_equal Date.today.day
 	end
 end

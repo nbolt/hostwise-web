@@ -33,17 +33,26 @@ PaymentCtrl = ['$scope', '$http', '$timeout', 'spinner', 'ngDialog', ($scope, $h
       flash 'ok', 'Changes updated successfully!', true
 
   $scope.open_deletion = (payment) ->
+    $scope.selected_payment = payment
     ngDialog.open template: 'delete-payment-modal', controller: 'payment', className: 'warning full', scope: $scope
 
   $scope.cancel_deletion = -> ngDialog.closeAll()
 
-  $scope.delete_payment = () ->
-    $http.post("/payments/remove").success (rsp) ->
-      if rsp.success
-        $scope.$emit 'fetch_user'
-        ngDialog.closeAll()
-      else
-        flash 'failure', rsp.message
+  $scope.delete_payment = (payment) ->
+    if $scope.user.role_cd == 1
+      $http.post("/payments/delete/#{payment.id}").success (rsp) ->
+        if rsp.success
+          $scope.$emit 'fetch_user'
+          ngDialog.closeAll()
+        else
+          flash 'failure', rsp.message
+    else if $scope.user.role_cd == 2
+      $http.post("/payments/remove").success (rsp) ->
+        if rsp.success
+          $scope.$emit 'fetch_user'
+          ngDialog.closeAll()
+        else
+          flash 'failure', rsp.message
 
   $scope.add_payment = ->
     if $scope.payment_method.id == 'credit-card'

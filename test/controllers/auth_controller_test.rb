@@ -24,5 +24,6 @@ describe AuthController do
   end
 
   it 'signin' do
+    
   end
 end

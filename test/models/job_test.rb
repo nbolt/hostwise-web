@@ -7,6 +7,12 @@ describe Job do
 		Job.all.future[0].full_beds.must_equal 9
 	end
 
+	it 'future_from_today' do
+		job_1 = Job.create(date: Date.yesterday)
+		job_2 = Job.create(date: Date.today + 1.year, full_beds: 9)
+		Job.all.future_from_today[0].full_beds.must_equal 9																					
+	end
+
 	it 'searches for open jobs properly' do
 		#job_1 = Job.create(status_cd: 0, full_beds: 5)
 		#job_2 = Job.create(status_cd: 0, full_beds: 7)
@@ -202,7 +208,7 @@ describe Job do
 	it 'returns cant access seconds' do
 		job_14 = nil
 		VCR.use_cassette('create_job_14') { job_14 = create(:job_14) }
-		#job_14.cant_access_seconds_left.must_equal 0
+		job_14.cant_access_seconds_left.must_equal nil
 	end
 
 end

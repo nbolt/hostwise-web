@@ -132,4 +132,33 @@ FactoryGirl.define do |user|
       user.properties << create(:property_2)
     end
   end
+
+  factory :user_name_15, class: User do
+    email 'dustinjones5197@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "9722149321"
+    role_cd 2
+    association :contractor_profile, factory: :profile_1
+    after(:create) do |user|
+      user.payouts << create(:payout_1)
+      user.payouts << create(:payout_2)
+      user.payouts << create(:payout_3)
+      user.payouts << create(:payout_7)
+      user.payouts << create(:payout_8)
+      user.payments << create(:bank_account)
+    end
+  end
+
+
+  factory :user_name_16, class: User do
+    email 'hellooooo@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "1111111122"
+    role_cd 1
+     after(:create) do |user|
+      user.properties << create(:property_1)
+    end
+  end
 end
