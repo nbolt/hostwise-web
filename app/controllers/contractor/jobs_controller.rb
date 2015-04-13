@@ -65,10 +65,10 @@ class Contractor::JobsController < Contractor::AuthController
       staging = Rails.env.staging? && '[STAGING] ' || ''
       if params[:property_occupied].present? #property occupied
         TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}. There are still guests occupying the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
-        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and guests are still occupying the property.")
+        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and guests are still occupying the property. This is for job ##{job.id}.")
       else #can't access
         TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}. We are having trouble accessing the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
-        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and cannot access.")
+        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and cannot access. This is for job ##{job.id}.")
       end
     end
     render json: { success: true, status_cd: job.status_cd, seconds_left: job.cant_access_seconds_left }
@@ -80,7 +80,7 @@ class Contractor::JobsController < Contractor::AuthController
       job.booking.update_cost!
       staging = Rails.env.staging? && '[STAGING] ' || ''
       TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise was unable to access your property. Having waited 30 minutes to resolve this issue, we must now move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
-      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}.")
+      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}. This is for job ##{job.id}.")
     end
     render json: { success: true }
   end
