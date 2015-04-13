@@ -12,13 +12,18 @@ class Host::PaymentsController < Host::AuthController
         end
         customer = Stripe::Customer.retrieve current_user.stripe_customer_id unless customer
         card = customer.sources.create(card: params[:stripe_id])
-        payment = current_user.payments.create({
-                                                 stripe_id: card.id,
-                                                 last4: card.last4,
-                                                 card_type: card.brand.downcase.gsub(' ', '_'),
-                                                 fingerprint: card.fingerprint,
-                                                 status: :active
-                                               })
+        if card.funding == 'prepaid'
+          render json: { success: false, message: 'Prepaid cards not accepted.'}
+          return
+        else
+          payment = current_user.payments.create({
+                                                   stripe_id: card.id,
+                                                   last4: card.last4,
+                                                   card_type: card.brand.downcase.gsub(' ', '_'),
+                                                   fingerprint: card.fingerprint,
+                                                   status: :active
+                                                 })
+        end
       end
       payment.primary = true if first_payment
 
