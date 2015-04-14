@@ -253,7 +253,6 @@ describe User do
 		VCR.use_cassette('create_job_15') { job_15 = create(:job_15) }
 		job_15.must_equal job_15
 		VCR.use_cassette('create_user_name_17') { user_name_17 = create(:user_name_17) }
-		binding.pry
 		#user_name_17.cancelled_jobs[0].must_equal ''
 	end
 end
