@@ -207,15 +207,29 @@ describe User do
 	end
 
 	it 'booking_count' do
-		user_name_15 = nil, property_1 = nil, booking_first = nil, booking_second = nil
+		user_name_16 = nil, property_1 = nil, booking_first = nil, booking_second = nil
 		VCR.use_cassette('create_booking_first') { booking_first = create(:booking_first)}
 		booking_first.must_equal booking_first
 		VCR.use_cassette('create_booking_second') { booking_second = create(:booking_second)}
 		booking_second.must_equal booking_second
 		VCR.use_cassette('create_property_1') {property_1 = create(:property_1) }
 		property_1.must_equal property_1
-		VCR.use_cassette('create_user_name_15') { user_name_15 = create(:user_name_15) }
-		#user_name_15.booking_count.must_equal ''
+		VCR.use_cassette('create_user_name_16') { user_name_16 = create(:user_name_16) }
+		user_name_16.booking_count.must_equal 2
+	end
+
+	it 'bookings' do
+		Timecop.freeze(2011, 1, 1)
+		user_name_16 = nil, property_1 = nil, booking_first = nil, booking_second = nil
+		VCR.use_cassette('create_booking_first') { booking_first = create(:booking_first)}
+		booking_first.must_equal booking_first
+		VCR.use_cassette('create_booking_second') { booking_second = create(:booking_second)}
+		booking_second.must_equal booking_second
+		VCR.use_cassette('create_property_1') {property_1 = create(:property_1) }
+		property_1.must_equal property_1
+		VCR.use_cassette('create_user_name_16') { user_name_16 = create(:user_name_16) }
+		user_name_16.bookings.first.attributes.except('id', 'property_id').must_equal booking_first.attributes.except('id', 'property_id')
+		Timecop.return
 	end
 
 	it 'last_payout_date' do
@@ -229,5 +243,17 @@ describe User do
 		VCR.use_cassette('create_user_name_15') { user_name_15 = create(:user_name_15) }
 		user_name_15.last_payout_date.must_equal Date.new(2016, 6, 6)
 		Timecop.return
+	end
+
+	it 'completed_jobs' do
+	end
+
+	it 'cancelled_jobs' do
+		user_name_17 = nil, job_15 = nil
+		VCR.use_cassette('create_job_15') { job_15 = create(:job_15) }
+		job_15.must_equal job_15
+		VCR.use_cassette('create_user_name_17') { user_name_17 = create(:user_name_17) }
+		binding.pry
+		#user_name_17.cancelled_jobs[0].must_equal ''
 	end
 end

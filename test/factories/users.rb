@@ -161,4 +161,26 @@ FactoryGirl.define do |user|
       user.properties << create(:property_1)
     end
   end
+
+  factory :user_name_17, class: User do
+    email 'testso@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "1111111122"
+    role_cd 1
+     after(:jobs) do |user|
+      user.jobs << create(:job_15)
+    end
+  end
+
+  factory :user_name_18, class: User do
+    email 'tests1o@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "1111111122"
+    role_cd 1
+     after(:jobs) do |user|
+      user.jobs << create(:job_10)
+    end
+  end
 end

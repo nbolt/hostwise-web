@@ -2,9 +2,13 @@ require "test_helper"
 
 describe Job do
 	it 'searches future jobs properly' do
+		Timecop.freeze(2014, 4, 4, 10)
 		job_1 = Job.create(date: Date.yesterday)
 		job_2 = Job.create(date: Date.today + 1.year, full_beds: 9)
 		Job.all.future[0].full_beds.must_equal 9
+		Timecop.freeze(2014, 4, 4, 20)
+		Job.all.future[0].full_beds.must_equal 9
+		Timecop.return
 	end
 
 	it 'future_from_today' do
