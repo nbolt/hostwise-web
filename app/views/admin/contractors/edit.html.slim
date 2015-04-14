@@ -76,24 +76,27 @@
                 span Background Checked
                 a href='' ng:show='show_bgc_link()' ng:click='approve_bgc_modal()' Approve
                 a href='' ng:show='show_bgc_link()' ng:click='deny_bgc_modal()' Deny
-      .step.two
+      .step.two.stats
         form
           .section
+            i.icon-pay-total
             h3 Last Paid
-            h3.teal = @contractor.last_payout_date
-            /h3.teal ng:bind='contractor.last_payout_date'
+            - if @contractor.last_payout_date.present?
+              h3.teal = @contractor.last_payout_date
+            - else
+              h3.teal &nbsp;
           .section
+            i.icon-earnings
             h3 Outstanding Balance
-            h3.teal = @contractor.earnings
-            /h3.teal ng:bind='contractor.earnings'
+            h3.teal = number_to_currency(@contractor.earnings, precision: 2)
           .section
+            i.icon-alert-ok
             h3 Jobs Completed
             h3.teal = @contractor.completed_jobs.count
-            /h3.teal ng:bind='contractor.completed_jobs.count'
-          .section  
+          .section
+            i.icon-close
             h3 Jobs Canceled
-            h3 style='color: red;' = @contractor.cancelled_jobs.count
-            /h3.teal ng:bind='contractor.cancelled_jobs.count'
+            h3.red = @contractor.cancelled_jobs.count
       .step.three
         form
           .section
@@ -109,7 +112,7 @@
               .column
                 p  #{job.booking.property.bedrooms}br/#{job.booking.property.bathrooms}ba
               .column
-                p  Size: #{job.size} 
+                p  Size: #{job.size}
               .column
                 p
                   - job.booking.services.each_with_index do |service, index|
@@ -118,7 +121,7 @@
                     - else
                       = "#{service.name}, "
               .column
-                p 
+                p
                   a href="/jobs/#{job.id}" View Job
           h1 Past Jobs
           - @contractor.jobs.standard.complete.order('date DESC').each do |job|
@@ -132,7 +135,7 @@
               .column
                 p  #{job.booking.property.bedrooms}br/#{job.booking.property.bathrooms}ba
               .column
-                p  Size: #{job.size} 
+                p  Size: #{job.size}
               .column
                 p
                   - job.booking.services.each_with_index do |service, index|
@@ -141,7 +144,7 @@
                     - else
                       = "#{service.name}, "
               .column
-                p 
+                p
                   a href="/jobs/#{job.id}" View Job
 
   .deactivate ng:show="contractor.activation_state == 'active'"

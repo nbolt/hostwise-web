@@ -24,13 +24,11 @@ class Admin::ContractorsController < Admin::AuthController
   end
 
   def edit
+    @contractor = User.find_by_id(params[:id])
+
     respond_to do |format|
       format.html
       format.json { render json: User.find_by_id(params[:id]).to_json(include: [:background_check, contractor_profile: {methods: [:position, :ssn, :driver_license, :current_position, :test_session_completed]}], methods: [:name, :avatar]) }
-
-      @contractor = User.find_by_id(params[:id])
-
-
     end
   end
 
