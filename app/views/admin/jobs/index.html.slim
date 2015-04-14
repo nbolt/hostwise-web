@@ -85,7 +85,7 @@
               .badge.badge-blue ng:show='is_new_customer(job.booking.user)' new
             td ng:bind='job.booking.property.display_phone_number'
             td
-              p ng:bind='job.status'
+              p ng:bind='job.status' ng:hide='job.status_cd==6'
               .badge.badge-red ng:show='is_same_day_cancellation(job)' SDC
             td ng:bind-template="${{job.booking.cost}}"
             td ng:bind='job.service_list'
