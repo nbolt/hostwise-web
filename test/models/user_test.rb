@@ -219,12 +219,15 @@ describe User do
 	end
 
 	it 'last_payout_date' do
-		#payout_7 = create(:payout_7)
-		#payout_7.must_equal payout_7
-		#payout_8 = create(:payout_8)
-		#payout_8.must_equal payout_8
-		#user_name_16 = nil
-		#VCR.use_cassette('create_user_name_16') { user_name_16 = create(:user_name_16) }
-		#user_name_16.last_payout_date.day.must_equal Date.today.day
+		Timecop.freeze(2015, 5, 5)
+		payout_7 = create(:payout_7)
+		payout_7.must_equal payout_7
+		Timecop.freeze(2016, 6, 6)
+		payout_8 = create(:payout_8)
+		payout_8.must_equal payout_8
+		user_name_15 = nil
+		VCR.use_cassette('create_user_name_15') { user_name_15 = create(:user_name_15) }
+		user_name_15.last_payout_date.must_equal Date.new(2016, 6, 6)
+		Timecop.return
 	end
 end
