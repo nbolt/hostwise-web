@@ -358,7 +358,7 @@ app.factory('I18nService', function() {
             };
         }
         else {
-            console.error('i18nService has not been initialized. You must call i18nService.init("en") for example');
+            //console.error('i18nService has not been initialized. You must call i18nService.init("en") for example');
         }
 
         return time;

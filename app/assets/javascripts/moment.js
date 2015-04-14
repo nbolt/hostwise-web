@@ -321,7 +321,7 @@
     function printMsg(msg) {
         if (moment.suppressDeprecationWarnings === false &&
                 typeof console !== 'undefined' && console.warn) {
-            console.warn('Deprecation warning: ' + msg);
+            //console.warn('Deprecation warning: ' + msg);
         }
     }
 
