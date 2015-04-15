@@ -12,8 +12,6 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
         service.cost = rsp[service.name]
         angular.element(".services .service.#{service.name}").addClass 'active'
         angular.element(".services .service.#{service.name} input").attr 'checked', true
-      if _($scope.job.booking.services).find((service) -> service.name == 'preset')
-        angular.element('.service.cleaning').children('.name').text 'Staging'
 
     load_mapbox = null
     load_mapbox = $interval((->
