@@ -122,7 +122,7 @@
                   th Status
                   th Total Payout
               tbody
-                tr ng:repeat='job in jobs'
+                tr ng:repeat='job in jobs' id='payout-{{job.id}}'
                   td ng:click='check_job(job)'
                     div ng:show='job.total_payout != "Pending" && job.status != "Paid"' style='text-align:center'
                       input.cbr type="checkbox" id='job-{{job.id}}'

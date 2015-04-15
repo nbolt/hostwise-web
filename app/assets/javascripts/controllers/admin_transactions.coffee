@@ -67,11 +67,16 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       if rsp.success
         ngDialog.closeAll()
         angular.element("#payment-#{booking.id} td:last-child a").text "$#{$scope.updated_payment()}"
+        angular.element("#payment-#{booking.id} td:last-child").addClass 'modified'
+        $scope.payment = { discount: { percentage: 0, amount: 0 }, overage: { percentage: 0, amount: 0 } }
 
   $scope.edit_payout = (job) ->
     $http.post("/jobs/#{job.id}/edit_payout", {payout_id: $scope.selected_contractor.payout.id, adjusted_cost: adjusted_payout(), overage_cost: $scope.payout.overage.amount, discounted_cost: $scope.payout.discount.amount}).success (rsp) ->
       if rsp.success
         ngDialog.closeAll()
+        angular.element("#payout-#{job.id} td:last-child a").text "$#{$scope.updated_payout()}"
+        angular.element("#payout-#{job.id} td:last-child").addClass 'modified'
+        $scope.payout = { discount: { percentage: 0, amount: 0 }, overage: { percentage: 0, amount: 0 } }
 
   $scope.fetch_bookings = ->
     spinner.startSpin()
