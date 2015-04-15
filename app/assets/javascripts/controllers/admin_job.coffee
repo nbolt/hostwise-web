@@ -5,13 +5,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
   $http.get($window.location.href + '.json').success (rsp) ->
     load_job(rsp)
     $timeout -> $scope.jobQ.resolve()
-
-    $http.post("/jobs/#{$scope.job.id}/booking_cost", {services: $scope.job.booking.services}).success (rsp) ->
-      _rsp = rsp
-      _($scope.job.booking.services).each (service) ->
-        service.cost = rsp[service.name]
-        angular.element(".services .service.#{service.name}").addClass 'active'
-        angular.element(".services .service.#{service.name} input").attr 'checked', true
+    $scope.refresh_cost()
 
     load_mapbox = null
     load_mapbox = $interval((->
@@ -79,6 +73,21 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
         data: (term) -> { term: term }
         results: (data) -> { results: _(data).map (contractor) -> { id: contractor.id, text: contractor.name } }
     }
+
+  $scope.refresh_cost = ->
+    $http.post("/jobs/#{$scope.job.id}/booking_cost", {services: $scope.job.booking.services}).success (rsp) ->
+      _rsp = rsp
+      $scope.job.booking.cost = rsp.cost
+      _($scope.job.booking.services).each (service) ->
+        service.cost = rsp[service.name]
+        angular.element(".services .service.#{service.name}").addClass 'active'
+        angular.element(".services .service.#{service.name} input").attr 'checked', true
+
+  $scope.refresh_invoice = ->
+    $http.get($window.location.href + '.json').success (rsp) ->
+      load_job(rsp)
+      $timeout -> $scope.jobQ.resolve()
+      $scope.refresh_cost()
 
   load_job = (rsp) ->
     $scope.job = rsp

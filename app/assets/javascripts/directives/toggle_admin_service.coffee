@@ -6,4 +6,5 @@ app = angular.module('porter').directive('toggleAdminService', ['$http', ($http)
     else
       element.parent().parent().removeClass 'active'
       $http.post("/jobs/#{scope.job.id}/remove_service", {service: attrs.toggleAdminService})
+    scope.refresh_invoice()
 ])
