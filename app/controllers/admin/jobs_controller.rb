@@ -16,7 +16,7 @@ class Admin::JobsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: jobs#.includes(contractors: {}, booking: {property: {user: {}}})
+        render json: jobs.includes(contractors: {}, booking: {property: {user: {}}})
       end
     end
   end
