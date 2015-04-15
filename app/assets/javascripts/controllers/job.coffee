@@ -402,44 +402,62 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.$watch 'kitchen_photo', ->
     if $scope.kitchen_photo && $scope.kitchen_photo[0]
       spinner.startSpin()
-      $upload.upload(
-        url: '/checklist/snap_photo'
-        fields: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'kitchen' }
+      data = {success_action_status: 201}
+      _(angular.element('#kitchen_photo :input').serializeArray()).each (h) -> data[h.name] = h.value
+      action = angular.element('#kitchen_photo').attr 'action'
+      $upload.upload({
+        url: action,
+        method: 'POST',
+        fields: data,
         file: $scope.kitchen_photo[0]
-      ).success (rsp) ->
+      }).success (xml) ->
         spinner.stopSpin()
-        if rsp.success
-          $scope.checklist["kitchen_photo"] = rsp.photo
-        else
-          flash 'failure', rsp.message
+        key = $($.parseXML xml).find('Key').text()
+        $http.post($window.location.href + '/snap_photo', {key: key, checklist_id: $scope.checklist.id, room: 'kitchen'})
+          .success (rsp) ->
+            angular.element('.snap-photo.kitchen .icon').css 'display', 'none'
+            angular.element('.snap-photo.kitchen .new-photo').css 'background-image', "url(#{rsp.url})"
+            angular.element('.snap-photo.kitchen img').attr 'src', rsp.url
 
   $scope.$watch 'bedroom_photo', ->
     if $scope.bedroom_photo && $scope.bedroom_photo[0]
       spinner.startSpin()
-      $upload.upload(
-        url: '/checklist/snap_photo'
-        fields: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'bedroom' }
+      data = {success_action_status: 201}
+      _(angular.element('#bedroom_photo :input').serializeArray()).each (h) -> data[h.name] = h.value
+      action = angular.element('#bedroom_photo').attr 'action'
+      $upload.upload({
+        url: action,
+        method: 'POST',
+        fields: data,
         file: $scope.bedroom_photo[0]
-      ).success (rsp) ->
+      }).success (xml) ->
         spinner.stopSpin()
-        if rsp.success
-          $scope.checklist["bedroom_photo"] = rsp.photo
-        else
-          flash 'failure', rsp.message
+        key = $($.parseXML xml).find('Key').text()
+        $http.post($window.location.href + '/snap_photo', {key: key, checklist_id: $scope.checklist.id, room: 'bedroom'})
+          .success (rsp) ->
+            angular.element('.snap-photo.bedroom .icon').css 'display', 'none'
+            angular.element('.snap-photo.bedroom .new-photo').css 'background-image', "url(#{rsp.url})"
+            angular.element('.snap-photo.bedroom img').attr 'src', rsp.url
 
   $scope.$watch 'bathroom_photo', ->
     if $scope.bathroom_photo && $scope.bathroom_photo[0]
       spinner.startSpin()
-      $upload.upload(
-        url: '/checklist/snap_photo'
-        fields: { contractor_id: $scope.user.id, job_id: $scope.job.id, room: 'bathroom' }
+      data = {success_action_status: 201}
+      _(angular.element('#bathroom_photo :input').serializeArray()).each (h) -> data[h.name] = h.value
+      action = angular.element('#bathroom_photo').attr 'action'
+      $upload.upload({
+        url: action,
+        method: 'POST',
+        fields: data,
         file: $scope.bathroom_photo[0]
-      ).success (rsp) ->
+      }).success (xml) ->
         spinner.stopSpin()
-        if rsp.success
-          $scope.checklist["bathroom_photo"] = rsp.photo
-        else
-          flash 'failure', rsp.message
+        key = $($.parseXML xml).find('Key').text()
+        $http.post($window.location.href + '/snap_photo', {key: key, checklist_id: $scope.checklist.id, room: 'bathroom'})
+          .success (rsp) ->
+            angular.element('.snap-photo.bathroom .icon').css 'display', 'none'
+            angular.element('.snap-photo.bathroom .new-photo').css 'background-image', "url(#{rsp.url})"
+            angular.element('.snap-photo.bathroom img').attr 'src', rsp.url
 
   scroll = (target) -> angular.element('body').scrollTo(angular.element("#{target}"), 600)
 

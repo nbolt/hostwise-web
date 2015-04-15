@@ -19,6 +19,16 @@ class Contractor::JobsController < Contractor::AuthController
   def show
     respond_to do |format|
       format.html do
+        if job.primary_contractor == current_user
+          @kitchen_photo = Checklist.new.kitchen_photo
+          @kitchen_photo.success_action_status = '201'
+
+          @bedroom_photo = Checklist.new.bedroom_photo
+          @bedroom_photo.success_action_status = '201'
+
+          @bathroom_photo = Checklist.new.bathroom_photo
+          @bathroom_photo.success_action_status = '201'
+        end
         if !job.contractors.index current_user
           redirect_to '/'
         elsif job.distribution
@@ -192,6 +202,11 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def snap_photo
+    ProcessContractorPhotoJob.perform_later(params[:key], params[:checklist_id], params[:room])
+    render json: { success: true, url: "https://s3-#{ENV['S3_BUCKET']}.amazonaws.com/hostwise-#{Rails.env}/#{params[:key]}" }
+  end
+
+  def snap_photos
     checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
 
     if params[:file]

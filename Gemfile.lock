@@ -89,6 +89,10 @@ GEM
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
+    carrierwave_direct (0.0.15)
+      carrierwave
+      fog
+      uuidtools
     celluloid (0.16.0)
       timers (~> 4.0.0)
     clockwork (1.1.0)
@@ -430,6 +434,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.6)
+    uuidtools (2.1.5)
     vcr (2.9.3)
     webmock (1.21.0)
       addressable (>= 2.3.6)
@@ -452,6 +457,7 @@ DEPENDENCIES
   binding_of_caller
   breach-mitigation-rails
   carrierwave
+  carrierwave_direct
   clockwork
   coffee-rails
   coveralls
