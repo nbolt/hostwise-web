@@ -3,12 +3,41 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
   url = window.location.href.split('/')
   $scope.id = url[url.length-2]
 
-  $scope.$on 'fetch_contractor', ->
-    $http.get(window.location.href + '.json').success (rsp) ->
-      $scope.contractor = rsp
-      $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position if $scope.contractor.contractor_profile
+  $scope.fetch_contractor = ->
+    unless $scope.contractor
+      spinner.startSpin()
+      $http.get(window.location.href + '.json').success (rsp) ->
+        $scope.contractor = rsp.contractor
+        $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position if $scope.contractor.contractor_profile
+        $scope.contractor.total_completed_jobs = _($scope.contractor.jobs).filter((job) -> job.status_cd == 3).length
+        $scope.contractor.total_cancelled_jobs = _($scope.contractor.jobs).filter((job) -> job.status_cd == 6).length
+        $scope.contractor.jobs = _($scope.contractor.jobs).filter (job) -> !job.distribution
+        _($scope.contractor.jobs).each (job) ->
+          job.service_list = _(_(job.booking.services).map((service) -> service.name)).join ', '
+          job.total_kings = job.booking.property.king_bed_count
+          job.total_twins = job.booking.property.twin_beds
+          job.total_toiletries = job.booking.property.bathrooms
+          job.status = switch job.status_cd
+            when 0 then 'open'
+            when 1 then 'scheduled'
+            when 2 then 'in progress'
+            when 3 then 'completed'
+            when 4 then 'past due'
+            when 5 then "can't access"
+            when 6 then 'cancelled'
+          job.state = switch job.state_cd
+            when 0 then 'normal'
+            when 1 then 'vip'
+            when 2 then 'hidden'
 
-  $scope.$emit 'fetch_contractor'
+        spinner.stopSpin()
+        $timeout((->
+          table = angular.element("#example-1").dataTable({
+            aLengthMenu: [
+              [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+            ]
+          })
+        ),500)
 
   $scope.position = ->
     {
@@ -41,11 +70,9 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
       contractor: $scope.contractor
       status: $scope.selected_status.text
     }).success (rsp) ->
-      if rsp.success
-        $scope.$emit 'fetch_contractor'
-        angular.element('.status .steps').css('margin-left', -360)
-      else
-        flash 'failure', rsp.message, true
+      $scope.contractor = rsp.contractor
+      $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position if $scope.contractor.contractor_profile
+      angular.element('.status .steps').css('margin-left', -360)
 
   $scope.complete_contract = ->
     ngDialog.open template: 'complete-contract-modal', controller: 'edit-contractor', className: 'success full', scope: $scope
@@ -102,6 +129,13 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
       spinner.startSpin()
       window.location = window.location.href if rsp.success
 
+  $scope.state_class = (job) ->
+    switch job.state_cd
+      when 0
+        'badge-default'
+      when 1
+        'badge-warning'
+
   flash = (type, msg, modal) ->
     el = if modal then angular.element('.modal .flash') else angular.element('form .flash')
     el.removeClass('info success failure').addClass(type).css('opacity', 1).text(msg)
@@ -117,6 +151,8 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     angular.element('body, html').animate
       scrollTop: position
     , 'fast'
+
+  $scope.fetch_contractor()
 
 ]
 
