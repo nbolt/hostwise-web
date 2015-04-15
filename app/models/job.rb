@@ -92,7 +92,7 @@ class Job < ActiveRecord::Base
   def payout contractor=nil
     if booking
       if booking.cancelled? || booking.couldnt_access?
-        ((booking.cost / size) * 0.8).round 2
+        ((booking.original_cost / size) * 0.8).round 2
       else
         contractor ||= current_user
         payout_multiplier = state == :vip ? 0.75 : 0.7

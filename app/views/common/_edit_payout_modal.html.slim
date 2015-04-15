@@ -1,0 +1,37 @@
+script#edit-payout-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Contractor Payout
+    .content
+      .contractor ng:repeat='contractor in contractors' ng:class='contractor_class(contractor)'
+        .name ng:bind='contractor.name' ng:click='select_contractor(contractor)'
+      div ng:show='selected_contractor'
+        .price
+          .text Original Payout
+          .amount ${{selected_contractor.payout.amount / 100}}
+        .changes
+          .change.discount
+            .text Subtract $
+            .input.percentage
+              input type='text' ng:model='payout.discount.percentage' ng:change='payout_discount_percentage_update()'
+            .input.amount
+              input type='text' ng:model='payout.discount.amount' ng:change='payout_discount_amount_update()'
+            .input.reason
+              input type='text' placeholder='Describe the reason'
+          .change.overage
+            .text Add $
+            .input.percentage
+              input type='text' ng:model='payout.overage.percentage' ng:change='payout_overage_percentage_update()'
+            .input.amount
+              input type='text' ng:model='payout.overage.amount' ng:change='payout_overage_amount_update()'
+            .input.reason
+              input type='text' placeholder='Describe the reason'
+        .price.updated
+          .text Updated Payout
+          .amount ${{updated_payout()}}
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Cancel
+        .button.teal ng:click='edit_payout(selected_payout)'
+          .text Submit Change

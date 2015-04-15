@@ -1,5 +1,8 @@
 AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'ngDialog', ($scope, $http, $timeout, $window, spinner, ngDialog) ->
 
+  $scope.payout  = { discount: { percentage: 0, amount: 0 }, overage: { percentage: 0, amount: 0 } }
+  $scope.payment = { discount: { percentage: 0, amount: 0 }, overage: { percentage: 0, amount: 0 } }
+
   $scope.selected_payments = -> _($scope.bookings).filter (booking) -> booking.selected
   $scope.selected_payouts = -> _($scope.jobs).filter (job) -> job.selected
 
@@ -30,6 +33,45 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     spinner.startSpin()
     $http.post('/transactions/process_payouts', {jobs: _($scope.selected_payouts()).map((b) -> b.id)}).success (rsp) ->
       $window.location = '/transactions'
+
+  $scope.edit_payout_modal = (job) ->
+    $scope.selected_payout = job
+    $scope.contractors = _(job.contractors).clone()
+    _($scope.contractors).each (contractor) ->
+      contractor.payout = _(contractor.payouts).find (payout) -> payout.job_id == job.id
+    ngDialog.open template: 'edit-payout-modal', className: 'edit-pay info full', scope: $scope
+
+  $scope.edit_payment_modal = (booking) ->
+    $scope.selected_payment = booking
+    $scope.payment = { discount: { amount: booking.discounted_cost / 100 }, overage: { amount: booking.overage_cost / 100 } }
+    $scope.payment_discount_amount_update()
+    $scope.payment_overage_amount_update()
+    ngDialog.open template: 'edit-payment-modal', className: 'edit-pay info full', scope: $scope
+
+  $scope.select_contractor = (contractor) ->
+    $scope.selected_contractor = contractor
+    $scope.payout = { discount: { amount: contractor.payout.subtracted_amount / 100 }, overage: { amount: contractor.payout.additional_amount / 100 } }
+    $scope.payout_discount_amount_update()
+    $scope.payout_overage_amount_update()
+
+  $scope.contractor_class = (contractor) -> contractor == $scope.selected_contractor && 'selected' || ''
+  $scope.modified_payment = (booking) -> booking.adjusted && 'modified' || ''
+  $scope.modified_payout  = (job) ->
+    if _(job.payouts).find((payout) -> payout.adjusted)
+      'modified'
+    else
+      ''
+
+  $scope.edit_payment = (booking) ->
+    $http.post("/bookings/#{booking.id}/edit_payment", {adjusted_cost: adjusted_payment(), overage_cost: $scope.payment.overage.amount, discounted_cost: $scope.payment.discount.amount}).success (rsp) ->
+      if rsp.success
+        ngDialog.closeAll()
+        angular.element("#payment-#{booking.id} td:last-child a").text "$#{$scope.updated_payment()}"
+
+  $scope.edit_payout = (job) ->
+    $http.post("/jobs/#{job.id}/edit_payout", {payout_id: $scope.selected_contractor.payout.id, adjusted_cost: adjusted_payout(), overage_cost: $scope.payout.overage.amount, discounted_cost: $scope.payout.discount.amount}).success (rsp) ->
+      if rsp.success
+        ngDialog.closeAll()
 
   $scope.fetch_bookings = ->
     spinner.startSpin()
@@ -100,7 +142,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       _($scope.jobs).each (job) ->
         job.contractor_names = _(_(job.contractors).map((contractor) -> contractor.name)).join ', '
         if job.payouts[0]
-          job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.amount), 0)
+          job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0)
           job.total_payout = "$#{job.total_payout/100}"
         else
           job.total_payout = 'Pending'
@@ -151,6 +193,61 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
 
   $scope.fetch_bookings()
   $scope.fetch_jobs()
+
+  adjusted_payment = ->
+    parseFloat($scope.updated_payment()) - $scope.selected_payment.original_cost
+
+  adjusted_payout = ->
+    parseFloat($scope.updated_payout()) - ($scope.selected_contractor.payout.amount / 100)
+
+  $scope.updated_payment = ->
+    updated_cost = $scope.selected_payment.original_cost - (parseFloat($scope.payment.discount.amount) || 0)
+    updated_cost = updated_cost + (parseFloat($scope.payment.overage.amount) || 0)
+    updated_cost.toFixed 2
+
+  $scope.updated_payout = ->
+    if $scope.selected_contractor
+      updated_cost = ($scope.selected_contractor.payout.amount / 100) - (parseFloat($scope.payout.discount.amount) || 0)
+      updated_cost = updated_cost + (parseFloat($scope.payout.overage.amount) || 0)
+      updated_cost.toFixed 2
+    else
+      0
+
+  $scope.payout_discount_percentage_update = ->
+    amount = ($scope.selected_contractor.payout.amount / 100)
+    new_amount = amount * ($scope.payout.discount.percentage / 100)
+    $scope.payout.discount.amount = new_amount.toFixed 2
+
+  $scope.payout_discount_amount_update = ->
+    amount = ($scope.selected_contractor.payout.amount / 100)
+    new_percentage = (1 - (amount - $scope.payout.discount.amount) / amount) * 100
+    $scope.payout.discount.percentage = new_percentage.toFixed 2
+
+  $scope.payout_overage_percentage_update = ->
+    amount = ($scope.selected_contractor.payout.amount / 100)
+    new_amount = amount * ($scope.payout.overage.percentage / 100)
+    $scope.payout.overage.amount = new_amount.toFixed 2
+
+  $scope.payout_overage_amount_update = ->
+    amount = ($scope.selected_contractor.payout.amount / 100)
+    new_percentage = (1 - (amount - $scope.payout.overage.amount) / amount) * 100
+    $scope.payout.overage.percentage = new_percentage.toFixed 2
+
+  $scope.payment_discount_percentage_update = ->
+    new_amount = $scope.selected_payment.original_cost * ($scope.payment.discount.percentage / 100)
+    $scope.payment.discount.amount = new_amount.toFixed 2
+
+  $scope.payment_discount_amount_update = ->
+    new_percentage = (1 - ($scope.selected_payment.original_cost - $scope.payment.discount.amount) / $scope.selected_payment.original_cost) * 100
+    $scope.payment.discount.percentage = new_percentage.toFixed 2
+
+  $scope.payment_overage_percentage_update = ->
+    new_amount = $scope.selected_payment.original_cost * ($scope.payment.overage.percentage / 100)
+    $scope.payment.overage.amount = new_amount.toFixed 2
+
+  $scope.payment_overage_amount_update = ->
+    new_percentage = (1 - ($scope.selected_payment.original_cost - $scope.payment.overage.amount) / $scope.selected_payment.original_cost) * 100
+    $scope.payment.overage.percentage = new_percentage.toFixed 2
 
 ]
 

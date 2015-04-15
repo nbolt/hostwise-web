@@ -15,13 +15,6 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
       if _($scope.job.booking.services).find((service) -> service.name == 'preset')
         angular.element('.service.cleaning').children('.name').text 'Staging'
 
-      $http.get('/cost').success (rsp) ->
-        $scope.pricing = rsp
-        if _rsp.cost >= $scope.pricing.first_booking_discount
-          $scope.job.first_booking_discount = $scope.pricing.first_booking_discount
-        else
-          $scope.job.first_booking_discount = _rsp.cost
-
     load_mapbox = null
     load_mapbox = $interval((->
       if $window.loaded_mapbox

@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150412014932) do
+ActiveRecord::Schema.define(version: 20150415015317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "user_id"
@@ -101,6 +102,12 @@ ActiveRecord::Schema.define(version: 20150412014932) do
     t.integer  "late_next_day_cost",          default: 0
     t.integer  "late_same_day_cost",          default: 0
     t.integer  "first_booking_discount_cost", default: 0
+    t.boolean  "adjusted",                    default: false
+    t.boolean  "overage",                     default: false
+    t.boolean  "discounted",                  default: false
+    t.integer  "adjusted_cost",               default: 0
+    t.integer  "overage_cost",                default: 0
+    t.integer  "discounted_cost",             default: 0
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -259,9 +266,15 @@ ActiveRecord::Schema.define(version: 20150412014932) do
     t.integer  "job_id"
     t.integer  "status_cd",          default: 0
     t.integer  "amount"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "stripe_transfer_id"
+    t.boolean  "adjusted",           default: false
+    t.boolean  "addition",           default: false
+    t.boolean  "subtraction",        default: false
+    t.integer  "adjusted_amount",    default: 0
+    t.integer  "additional_amount",  default: 0
+    t.integer  "subtracted_amount",  default: 0
   end
 
   create_table "photo_previews", force: :cascade do |t|

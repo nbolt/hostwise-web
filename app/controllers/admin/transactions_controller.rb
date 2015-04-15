@@ -85,7 +85,7 @@ class Admin::TransactionsController < Admin::AuthController
         UserMailer.payday(user, completed_payouts, completed_payouts[0].job.date, completed_payouts[-1].job.date).then(:deliver) unless completed_payouts.empty?
 
         payouts.unprocessed.each do |payout|
-          total += payout.amount
+          total += payout.total
         end
 
         if total > 0

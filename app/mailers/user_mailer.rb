@@ -212,6 +212,10 @@ class UserMailer < MandrillMailer::TemplateMailer
                         late_next_day: booking.late_next_day,
                         first_booking_discount: booking.first_booking_discount,
                         first_booking_discount_amount: booking.first_booking_discount_cost,
+                        discounted: booking.discounted,
+                        discounted_cost: booking.discounted_cost / 100,
+                        overage: booking.overage,
+                        overage_cost: booking.overage_cost / 100,
                         prop_link: property_url(booking.property.slug)
                       },
                       merge_language: 'handlebars',
@@ -398,7 +402,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                     subject: "HostWise Payday! (#{from.strftime('%m/%d')} - #{to.strftime('%m/%d')})",
                     vars: {
                       action_url: contractor_jobs_url,
-                      total: payouts.reduce(0) {|acc, payout| acc + payout.amount} / 100.0,
+                      total: payouts.reduce(0) {|acc, payout| acc + payout.total} / 100.0,
                       bank: user.payments[0].last4,
                       from_date: from.strftime('%b %-d, %Y'),
                       to_date: to.strftime('%b %-d, %Y'),
@@ -406,7 +410,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                         id: payout.job.id,
                         link: job_details_url(payout.job),
                         formatted_date: payout.job.date.strftime,
-                        payout: payout.amount / 100.0,
+                        payout: payout.total / 100.0,
                         services: payout.job.booking.services.map(&:display).join(', ')
                       }}
                     },

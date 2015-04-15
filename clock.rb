@@ -30,7 +30,7 @@ module Clockwork
           end
 
           user.payouts.unprocessed.each do |payout|
-            total += payout.amount
+            total += payout.total
           end
 
           if total > 0
@@ -79,7 +79,7 @@ module Clockwork
           total = 0
 
           user.payouts.unprocessed.each do |payout|
-            total += payout.amount
+            total += payout.total
           end
 
           if total > 0

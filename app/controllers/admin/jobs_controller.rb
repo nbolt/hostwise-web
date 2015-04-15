@@ -16,7 +16,7 @@ class Admin::JobsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: jobs.includes(contractors: {}, booking: {property: {user: {}}})
+        render json: jobs#.includes(contractors: {}, booking: {property: {user: {}}})
       end
     end
   end
@@ -29,6 +29,41 @@ class Admin::JobsController < Admin::AuthController
         render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :man_hours], include: {contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
       end
     end
+  end
+
+  def edit_payout
+    payout = Payout.find params[:payout_id]
+    adjusted   = params[:adjusted_cost].to_f   * 100
+    overage    = params[:overage_cost].to_f    * 100
+    discounted = params[:discounted_cost].to_f * 100
+
+    if overage > 0
+      payout.adjusted          = true
+      payout.addition          = true
+      payout.additional_amount = overage
+      payout.adjusted_amount   = adjusted
+    else
+      payout.addition          = false
+      payout.additional_amount = 0
+    end
+
+    if discounted > 0
+      payout.adjusted          = true
+      payout.subtraction       = true
+      payout.subtracted_amount = discounted
+      payout.adjusted_amount   = adjusted
+    else
+      payout.subtraction       = false
+      payout.subtracted_amount = 0
+    end
+
+    if payout.subtraction == false && payout.addition == false
+      payout.adjusted = false
+      payout.adjusted_amount = 0
+    end
+
+    payout.save
+    render json: { success: true }
   end
 
   def booking_cost
