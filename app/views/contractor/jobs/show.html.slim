@@ -1,12 +1,13 @@
 #job-details.container ng:controller='job'
-  = direct_upload_form_for @kitchen_photo, html: { id: 'kitchen_photo' } do |f|
-    = f.file_field :kitchen_photo
+  - if @kitchen_photo
+    = direct_upload_form_for @kitchen_photo, html: { id: 'kitchen_photo' } do |f|
+      = f.file_field :kitchen_photo
 
-  = direct_upload_form_for @bedroom_photo, html: { id: 'bedroom_photo' } do |f|
-    = f.file_field :bedroom_photo
+    = direct_upload_form_for @bedroom_photo, html: { id: 'bedroom_photo' } do |f|
+      = f.file_field :bedroom_photo
 
-  = direct_upload_form_for @bathroom_photo, html: { id: 'bathroom_photo' } do |f|
-    = f.file_field :bathroom_photo
+    = direct_upload_form_for @bathroom_photo, html: { id: 'bathroom_photo' } do |f|
+      = f.file_field :bathroom_photo
   .page-title
     i.icon-notebook
     | Job Details
