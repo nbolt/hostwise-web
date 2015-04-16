@@ -71,7 +71,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
         url: $window.location.href + '/available_contractors'
         quietMillis: 400
         data: (term) -> { term: term }
-        results: (data) -> { results: _(data).map (contractor) -> { id: contractor.id, text: "#{contractor.name} - #{contractor.contractor_profile.display_position}" } }
+        results: (data) -> { results: _(data).filter((contractor) -> contractor.contractor_profile).map (contractor) -> { id: contractor.id, text: "#{contractor.name} - #{contractor.contractor_profile.display_position}" } }
     }
 
   $scope.refresh_cost = ->
