@@ -84,6 +84,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     angular.element('.ngdialog .content > .caption').hide()
     angular.element('.ngdialog .content > .contractor').hide()
     angular.element("#contractor-#{contractor.id}").show()
+    null
 
   $scope.contractor_class = (contractor) -> contractor == $scope.selected_contractor && 'selected' || ''
   $scope.modified_payment = (booking) -> booking.adjusted && 'modified' || ''
@@ -110,8 +111,6 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     $http.post("/jobs/#{job.id}/edit_payout", {payout_id: $scope.selected_contractor.payout.id, adjusted_cost: adjusted_payout(), overage_cost: $scope.payout.overage.amount, discounted_cost: $scope.payout.discount.amount, overage_reason: $scope.payout.overage.reason, discounted_reason: $scope.payout.discount.reason}).success (rsp) ->
       if rsp.success
         ngDialog.closeAll()
-        angular.element("#payout-#{job.id} td:last-child a").text "$#{$scope.updated_payout()}"
-        angular.element("#payout-#{job.id} td:nth-last-child(2)").text "$#{adjusted_payout()}"
         angular.element("#payout-#{job.id} td:nth-last-child(2)").addClass 'modified'
         angular.element("#payout-#{job.id} td:last-child").addClass 'modified'
         contractor = _(job.contractors).find (contractor) -> contractor.id == $scope.selected_contractor.id
@@ -120,6 +119,16 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         payout.subtracted_reason = $scope.payout.discount.reason
         payout.additional_amount = parseFloat($scope.payout.overage.amount) * 100
         payout.additional_reason = $scope.payout.overage.reason
+        payout = _(job.payouts).find (p) -> p.id == payout.id
+        payout.total = $scope.updated_payout() * 100
+        payout.adjusted_amount = adjusted_payout() * 100
+        job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0)
+        job.total_payout = "$#{(job.total_payout/100).toFixed(2)}"
+        job.adjusted_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.adjusted_amount), 0) / 100
+        if job.adjusted_payout >= 0
+          job.adjusted_payout = "$#{job.adjusted_payout.toFixed(2)}"
+        else
+          job.adjusted_payout = "(-$#{(job.adjusted_payout * -1).toFixed(2)})"
 
   $scope.fetch_bookings = ->
     spinner.startSpin()
