@@ -126,11 +126,11 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     $http.get('/bookings.json?filter=complete').success (rsp) ->
       $scope.bookings = JSON.parse rsp.bookings
       _($scope.bookings).each (booking) ->
-        booking.adjusted_cost = (booking.adjusted_cost / 100).toFixed 2
+        booking.adjusted_cost = booking.adjusted_cost / 100
         if booking.adjusted_cost >= 0
-          booking.adjusted_cost = "$#{booking.adjusted_cost}"
+          booking.adjusted_cost = "$#{booking.adjusted_cost.toFixed(2)}"
         else
-          booking.adjusted_cost = "(-$#{booking.adjusted_cost * -1})"
+          booking.adjusted_cost = "(-$#{(booking.adjusted_cost * -1).toFixed(2)})"
         booking.cost = booking.cost.toFixed 2
         booking.selected = false
         booking.status =
@@ -196,13 +196,13 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       _($scope.jobs).each (job) ->
         job.contractor_names = _(_(job.contractors).map((contractor) -> contractor.name)).join ', '
         if job.payouts[0]
-          job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0).toFixed 2
-          job.total_payout = "$#{job.total_payout/100}"
-          job.adjusted_payout = (_(job.payouts).reduce(((acc, payout) -> acc + payout.adjusted_amount), 0) / 100).toFixed 2
+          job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0)
+          job.total_payout = "$#{(job.total_payout/100).toFixed(2)}"
+          job.adjusted_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.adjusted_amount), 0) / 100
           if job.adjusted_payout >= 0
-            job.adjusted_payout = "$#{job.adjusted_payout}"
+            job.adjusted_payout = "$#{job.adjusted_payout.toFixed(2)}"
           else
-            job.adjusted_payout = "(-$#{job.adjusted_payout * -1})"
+            job.adjusted_payout = "(-$#{(job.adjusted_payout * -1).toFixed(2)})"
         else
           job.adjusted_payout = '$0.00'
           job.total_payout = 'Pending'
