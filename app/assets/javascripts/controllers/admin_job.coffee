@@ -86,8 +86,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
   $scope.refresh_invoice = ->
     $http.get($window.location.href + '.json').success (rsp) ->
       load_job(rsp)
-      $timeout -> $scope.jobQ.resolve()
-      $scope.refresh_cost()
+      $timeout((-> $scope.refresh_cost()), 400)
 
   load_job = (rsp) ->
     $scope.job = rsp
