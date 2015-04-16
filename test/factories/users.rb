@@ -183,4 +183,21 @@ FactoryGirl.define do |user|
       user.jobs << create(:job_10)
     end
   end
+
+  factory :user_name_19, class: User do
+    email '20007@gmail.com'
+    crypted_password "$2a$10$82xOTSAyKANXSjS1K94KdOiAyJeaPTwNO32.RZ3taojJ597wyCWx2"
+    salt "oaz1NpsVHaNCqza9ynGU"
+    phone_number "9722149321"
+    role_cd 2
+    association :contractor_profile, factory: :profile_4
+    after(:create) do |user|
+      user.payouts << create(:payout_1)
+      user.payouts << create(:payout_2)
+      user.payouts << create(:payout_3)
+      user.payouts << create(:payout_4)
+      user.payouts << create(:payout_5)
+      user.payments << create(:bank_account)
+    end
+  end
 end
