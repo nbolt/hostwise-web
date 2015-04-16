@@ -12,6 +12,17 @@ class Admin::TransactionsController < Admin::AuthController
     end
   end
 
+  def export
+    @bookings = params[:bookings].map {|id| Booking.find id}
+
+    respond_to do |format|
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"bookings.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+  end
+
   def process_payments
     bookings = params[:bookings].map {|id| Booking.find id}.group_by {|booking| booking.user.id}.map do |user_id, bookings|
       {
