@@ -81,6 +81,9 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     $scope.payout = { discount: { amount: contractor.payout.subtracted_amount / 100, reason: contractor.payout.subtracted_reason }, overage: { amount: contractor.payout.additional_amount / 100, reason: contractor.payout.additional_reason } }
     $scope.payout_discount_amount_update()
     $scope.payout_overage_amount_update()
+    angular.element('.ngdialog .content > .caption').hide()
+    angular.element('.ngdialog .content > .contractor').hide()
+    angular.element("#contractor-#{contractor.id}").show()
 
   $scope.contractor_class = (contractor) -> contractor == $scope.selected_contractor && 'selected' || ''
   $scope.modified_payment = (booking) -> booking.adjusted && 'modified' || ''
