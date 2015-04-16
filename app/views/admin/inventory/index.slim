@@ -9,9 +9,10 @@
         a data-toggle="remove" href="#"
           | \&times;
     .panel-body.table-responsive
-      table.table.table-striped.table-bordered cellspacing="0" width="100%"
+      table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
         thead
           tr
+            th Date
             th Location
             th Clean King Packs Picked Up
             th Clean Twin Packs Picked Up
@@ -24,6 +25,7 @@
             th Dirty Bed Covers Dropped Off
         thead.search
           tr
+            th Date
             th Location
             th Clean King Packs Picked Up
             th Clean Twin Packs Picked Up
@@ -36,6 +38,7 @@
             th Dirty Bed Covers Dropped Off
         tfoot
           tr
+            th Date
             th Location
             th Clean King Packs Picked Up
             th Clean Twin Packs Picked Up
@@ -47,8 +50,15 @@
             th Dirty Beach Towels Dropped Off
             th Dirty Bed Covers Dropped Off
         tbody
-          tr
-            - @distribution_centers.each do |distribution_center|
-            td yolo
-          /tr ng:repeat='distribution_center in distribution_centers'
-            /td ng:bind='distribution_center.name'
+          tr ng:repeat='day in days'
+            td ng:bind='day.distribution'
+            td
+            td
+            td
+            td
+            td
+            td
+            td
+            td
+            td
+            td
