@@ -24,6 +24,8 @@ class Admin::TransactionsController < Admin::AuthController
   end
 
   def process_payments
+    successful_payments = []
+
     bookings = params[:bookings].map {|id| Booking.find id}.group_by {|booking| booking.user.id}.map do |user_id, bookings|
       {
         user: User.find(user_id),
@@ -53,6 +55,7 @@ class Admin::TransactionsController < Admin::AuthController
           booking_group[:bookings].each do |booking|
             booking.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total])
             booking.save
+            successful_payments.push booking.id
             UserMailer.service_completed(booking).then(:deliver) if user_bookings[:user].settings(:service_completion).email
           end
         rescue Stripe::CardError => e
@@ -65,10 +68,12 @@ class Admin::TransactionsController < Admin::AuthController
         end
       end
     end
-    render json: { success: true }
+    render json: { success: true, payments: successful_payments }
   end
 
   def process_payouts
+    successful_payouts = []
+
     jobs = params[:jobs].map {|id| Job.find(id).contractor_jobs}.flatten.group_by(&:user_id).map do |user_id, jobs|
       {
         user: User.find(user_id),
@@ -93,6 +98,7 @@ class Admin::TransactionsController < Admin::AuthController
           end
         end
         completed_payouts = pending_payouts.select{|payout| payout.status_cd == 2}.sort_by {|payout| payout.job.date}
+        completed_payouts.each {|payout| successful_payouts.push payout}
         UserMailer.payday(user, completed_payouts, completed_payouts[0].job.date, completed_payouts[-1].job.date).then(:deliver) unless completed_payouts.empty?
 
         payouts.unprocessed.each do |payout|
@@ -110,6 +116,7 @@ class Admin::TransactionsController < Admin::AuthController
             :statement_descriptor => 'HostWise Payout',
             :metadata => { payout_ids: payouts.unprocessed.map(&:id).to_s }
           )
+          rsp = Stripe::Transfer.retrieve rsp.id
 
           case rsp.status
           when 'pending'
@@ -117,7 +124,7 @@ class Admin::TransactionsController < Admin::AuthController
             UpdatePayoutJob.perform_later(user, payouts.map(&:id))
           when 'paid'
             payouts = payouts.unprocessed.sort_by {|payout| payout.job.date}
-            payouts.each {|payout| payout.update_attributes(status_cd: 2, stripe_transfer_id: rsp.id)}
+            payouts.each {|payout| successful_payouts.push(payout); payout.update_attributes(status_cd: 2, stripe_transfer_id: rsp.id)}
             UserMailer.payday(user, payouts, payouts[0].job.date, payouts[-1].job.date).then(:deliver)
           when 'failed'
             payouts.unprocessed.each {|payout| payout.update_attributes(status_cd: 3, stripe_transfer_id: rsp.id)}
@@ -127,7 +134,7 @@ class Admin::TransactionsController < Admin::AuthController
         end
       end
     end
-    render json: { success: true }
+    render json: { success: true, payouts: successful_payouts.map{|payout| payout.job.id}.uniq }
   end
 
 end

@@ -39,7 +39,13 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
   $scope.process_payments = ->
     spinner.startSpin()
     $http.post('/transactions/process_payments', {bookings: _($scope.selected_payments()).map((b) -> b.id)}).success (rsp) ->
-      $window.location = '/transactions'
+      ngDialog.closeAll()
+      spinner.stopSpin()
+      _(rsp.payments).each (id) ->
+        angular.element("#payment-#{id} td:nth-last-child(3)").text 'Received'
+        angular.element("#payment-#{id} td:first-child div").remove()
+        angular.element("#payment-#{id} td:last-child a").remove()
+        angular.element("#payment-#{id} td:last-child span:last").show()
 
   $scope.process_payouts_modal = -> ngDialog.open template: 'process-payouts-confirmation', className: 'info full', scope: $scope
   $scope.cancel_process = -> ngDialog.closeAll()
@@ -47,7 +53,13 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
   $scope.process_payouts = ->
     spinner.startSpin()
     $http.post('/transactions/process_payouts', {jobs: _($scope.selected_payouts()).map((b) -> b.id)}).success (rsp) ->
-      $window.location = '/transactions'
+      ngDialog.closeAll()
+      spinner.stopSpin()
+      _(rsp.payouts).each (id) ->
+        angular.element("#payout-#{id} td:nth-last-child(3)").text 'Paid'
+        angular.element("#payout-#{id} td:first-child div").remove()
+        angular.element("#payout-#{id} td:last-child a").remove()
+        angular.element("#payout-#{id} td:last-child span:last").show()
 
   $scope.edit_payout_modal = (job) ->
     $scope.selected_payout = job
