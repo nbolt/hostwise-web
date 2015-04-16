@@ -1,7 +1,7 @@
 AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'ngDialog', ($scope, $http, $timeout, $window, spinner, ngDialog) ->
 
-  $scope.payout  = { discount: { percentage: 0, amount: 0 }, overage: { percentage: 0, amount: 0 } }
-  $scope.payment = { discount: { percentage: 0, amount: 0 }, overage: { percentage: 0, amount: 0 } }
+  $scope.payout  = { discount: { percentage: 0, amount: 0, reason: '' }, overage: { percentage: 0, amount: 0, reason: '' } }
+  $scope.payment = { discount: { percentage: 0, amount: 0, reason: '' }, overage: { percentage: 0, amount: 0, reason: '' } }
 
   $scope.export_csv = ->
     bookings = filtered_data('#example-1')
@@ -58,14 +58,14 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
 
   $scope.edit_payment_modal = (booking) ->
     $scope.selected_payment = booking
-    $scope.payment = { discount: { amount: booking.discounted_cost / 100 }, overage: { amount: booking.overage_cost / 100 } }
+    $scope.payment = { discount: { amount: booking.discounted_cost / 100, reason: booking.discounted_reason }, overage: { amount: booking.overage_cost / 100, reason: booking.overage_reason } }
     $scope.payment_discount_amount_update()
     $scope.payment_overage_amount_update()
     ngDialog.open template: 'edit-payment-modal', className: 'edit-pay info full', scope: $scope
 
   $scope.select_contractor = (contractor) ->
     $scope.selected_contractor = contractor
-    $scope.payout = { discount: { amount: contractor.payout.subtracted_amount / 100 }, overage: { amount: contractor.payout.additional_amount / 100 } }
+    $scope.payout = { discount: { amount: contractor.payout.subtracted_amount / 100, reason: contractor.payout.subtracted_reason }, overage: { amount: contractor.payout.additional_amount / 100, reason: contractor.payout.additional_reason } }
     $scope.payout_discount_amount_update()
     $scope.payout_overage_amount_update()
 
@@ -78,26 +78,29 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       ''
 
   $scope.edit_payment = (booking) ->
-    $http.post("/bookings/#{booking.id}/edit_payment", {adjusted_cost: adjusted_payment(), overage_cost: $scope.payment.overage.amount, discounted_cost: $scope.payment.discount.amount}).success (rsp) ->
+    $http.post("/bookings/#{booking.id}/edit_payment", {adjusted_cost: adjusted_payment(), overage_cost: $scope.payment.overage.amount, discounted_cost: $scope.payment.discount.amount, overage_reason: $scope.payment.overage.reason, discounted_reason: $scope.payment.discount.reason}).success (rsp) ->
       if rsp.success
         ngDialog.closeAll()
         angular.element("#payment-#{booking.id} td:last-child a").text "$#{$scope.updated_payment()}"
         angular.element("#payment-#{booking.id} td:last-child").addClass 'modified'
-        $scope.payment = { discount: { percentage: 0, amount: 0 }, overage: { percentage: 0, amount: 0 } }
 
   $scope.edit_payout = (job) ->
-    $http.post("/jobs/#{job.id}/edit_payout", {payout_id: $scope.selected_contractor.payout.id, adjusted_cost: adjusted_payout(), overage_cost: $scope.payout.overage.amount, discounted_cost: $scope.payout.discount.amount}).success (rsp) ->
+    $http.post("/jobs/#{job.id}/edit_payout", {payout_id: $scope.selected_contractor.payout.id, adjusted_cost: adjusted_payout(), overage_cost: $scope.payout.overage.amount, discounted_cost: $scope.payout.discount.amount, overage_reason: $scope.payout.overage.reason, discounted_reason: $scope.payout.discount.reason}).success (rsp) ->
       if rsp.success
         ngDialog.closeAll()
         angular.element("#payout-#{job.id} td:last-child a").text "$#{$scope.updated_payout()}"
         angular.element("#payout-#{job.id} td:last-child").addClass 'modified'
-        $scope.payout = { discount: { percentage: 0, amount: 0 }, overage: { percentage: 0, amount: 0 } }
 
   $scope.fetch_bookings = ->
     spinner.startSpin()
     $http.get('/bookings.json?filter=complete').success (rsp) ->
       $scope.bookings = JSON.parse rsp.bookings
       _($scope.bookings).each (booking) ->
+        booking.adjusted_cost = booking.adjusted_cost / 100
+        if booking.adjusted_cost >= 0
+          booking.adjusted_cost = "$#{booking.adjusted_cost}"
+        else
+          booking.adjusted_cost = "(-$#{booking.adjusted_cost * -1})"
         booking.selected = false
         booking.status =
           switch booking.payment_status_cd
@@ -109,7 +112,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ],
-          aoColumns: [{bSortable:false},null,null,null,null,null,null,null]
+          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null]
         })
 
         $.fn.dataTable.ext.search.push (settings, data, index) ->
@@ -164,7 +167,14 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         if job.payouts[0]
           job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0)
           job.total_payout = "$#{job.total_payout/100}"
+          job.adjusted_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.adjusted_amount), 0) / 100
+          if job.adjusted_payout >= 0
+            job.adjusted_payout = "$#{job.adjusted_payout}"
+          else
+
+            job.adjusted_payout = "(-$#{job.adjusted_payout * -1})"
         else
+          job.adjusted_payout = '0'
           job.total_payout = 'Pending'
 
         if !job.payouts[0] || _(job.payouts).find((payout) -> payout.status_cd != 2)
@@ -178,7 +188,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ],
-          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null]
+          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null,null]
         })
 
         angular.element('#example-2 thead.search th').each (index) ->

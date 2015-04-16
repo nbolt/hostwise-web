@@ -214,8 +214,10 @@ class UserMailer < MandrillMailer::TemplateMailer
                         first_booking_discount_amount: booking.first_booking_discount_cost,
                         discounted: booking.discounted,
                         discounted_cost: booking.discounted_cost / 100,
+                        discounted_reason: booking.discounted_reason,
                         overage: booking.overage,
                         overage_cost: booking.overage_cost / 100,
+                        overage_reason: booking.overage_reason,
                         prop_link: property_url(booking.property.slug)
                       },
                       merge_language: 'handlebars',
@@ -411,6 +413,12 @@ class UserMailer < MandrillMailer::TemplateMailer
                         link: job_details_url(payout.job),
                         formatted_date: payout.job.date.strftime,
                         payout: payout.total / 100.0,
+                        payout_addition: payout.addition,
+                        payout_subtraction: payout.subtraction,
+                        payout_additional_amount: payout.additional_amount,
+                        payout_subtracted_amount: payout.subtracted_amount,
+                        payout_additional_reason: payout.additional_reason,
+                        payout_subtracted_reason: payout.subtracted_reason,
                         services: payout.job.booking.services.map(&:display).join(', ')
                       }}
                     },

@@ -48,23 +48,27 @@ class Admin::BookingsController < Admin::AuthController
     discounted = params[:discounted_cost].to_f * 100
 
     if overage > 0
-      booking.adjusted      = true
-      booking.overage       = true
-      booking.overage_cost  = overage
-      booking.adjusted_cost = adjusted
+      booking.adjusted       = true
+      booking.overage        = true
+      booking.overage_cost   = overage
+      booking.overage_reason = params[:overage_reason]
+      booking.adjusted_cost  = adjusted
     else
-      booking.overage       = false
-      booking.overage_cost  = 0
+      booking.overage        = false
+      booking.overage_cost   = 0
+      booking.overage_reason = ''
     end
 
     if discounted > 0
-      booking.adjusted         = true
-      booking.discounted       = true
-      booking.discounted_cost  = discounted
-      booking.adjusted_cost    = adjusted
+      booking.adjusted          = true
+      booking.discounted        = true
+      booking.discounted_cost   = discounted
+      booking.discounted_reason = params[:discounted_reason]
+      booking.adjusted_cost     = adjusted
     else
-      booking.discounted       = false
-      booking.discounted_cost  = 0
+      booking.discounted        = false
+      booking.discounted_cost   = 0
+      booking.discounted_reason = ''
     end
 
     if booking.discounted == false && booking.overage == false

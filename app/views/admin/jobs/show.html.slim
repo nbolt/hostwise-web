@@ -175,7 +175,7 @@
                   span ng:bind="job.booking.first_booking_discount_cost"
                   | )
               .service.discount ng:show='job.booking.discounted'
-                .text Discount
+                .text Discount ({{job.booking.discounted_reason}})
                 .price
                   | (-$
                   span ng:bind="job.booking.discounted_cost / 100"
@@ -191,7 +191,7 @@
                   | $
                   span ng:bind="job.booking.late_same_day_cost"
               .late ng:show="job.booking.overage"
-                .text Overage
+                .text Overage ({{job.booking.overage_reason}})
                 .price
                   | $
                   span ng:bind="job.booking.overage_cost / 100"

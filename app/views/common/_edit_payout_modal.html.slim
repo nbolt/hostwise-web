@@ -17,7 +17,7 @@ script#edit-payout-modal type="text/ng-template"
             .input.amount
               input type='text' ng:model='payout.discount.amount' ng:change='payout_discount_amount_update()'
             .input.reason
-              input type='text' placeholder='Describe the reason'
+              input type='text' ng:model='payout.discount.reason' placeholder='Describe the reason'
           .change.overage
             .text Add $
             .input.percentage
@@ -25,7 +25,7 @@ script#edit-payout-modal type="text/ng-template"
             .input.amount
               input type='text' ng:model='payout.overage.amount' ng:change='payout_overage_amount_update()'
             .input.reason
-              input type='text' placeholder='Describe the reason'
+              input type='text' ng:model='payout.overage.reason' placeholder='Describe the reason'
         .price.updated
           .text Updated Payout
           .amount ${{updated_payout()}}

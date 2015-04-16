@@ -1,3 +1,5 @@
+require 'test_helper'
+
 describe Admin::HomeController do 
   it 'index' do
     user_name_11 = nil

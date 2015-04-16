@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415015317) do
+ActiveRecord::Schema.define(version: 20150416183251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,8 @@ ActiveRecord::Schema.define(version: 20150415015317) do
     t.integer  "adjusted_cost",               default: 0
     t.integer  "overage_cost",                default: 0
     t.integer  "discounted_cost",             default: 0
+    t.string   "discounted_reason",           default: ""
+    t.string   "overage_reason",              default: ""
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -275,6 +277,8 @@ ActiveRecord::Schema.define(version: 20150415015317) do
     t.integer  "adjusted_amount",    default: 0
     t.integer  "additional_amount",  default: 0
     t.integer  "subtracted_amount",  default: 0
+    t.string   "subtracted_reason",  default: ""
+    t.string   "additional_reason",  default: ""
   end
 
   create_table "photo_previews", force: :cascade do |t|

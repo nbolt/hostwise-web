@@ -14,7 +14,7 @@ script#edit-payment-modal type="text/ng-template"
           .input.amount
             input type='text' ng:model='payment.discount.amount' ng:change='payment_discount_amount_update()'
           .input.reason
-            input type='text' placeholder='Describe the reason'
+            input type='text' ng:model='payment.discount.reason' placeholder='Describe the reason'
         .change.overage
           .text Overage
           .input.percentage
@@ -22,7 +22,7 @@ script#edit-payment-modal type="text/ng-template"
           .input.amount
             input type='text' ng:model='payment.overage.amount' ng:change='payment_overage_amount_update()'
           .input.reason
-            input type='text' placeholder='Describe the reason'
+            input type='text' ng:model='payment.overage.reason' placeholder='Describe the reason'
       .price.updated
         .text Updated Price
         .amount ${{updated_payment()}}

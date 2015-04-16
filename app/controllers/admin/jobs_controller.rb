@@ -41,20 +41,24 @@ class Admin::JobsController < Admin::AuthController
       payout.adjusted          = true
       payout.addition          = true
       payout.additional_amount = overage
+      payout.additional_reason = params[:overage_reason]
       payout.adjusted_amount   = adjusted
     else
       payout.addition          = false
       payout.additional_amount = 0
+      payout.additional_reason = ''
     end
 
     if discounted > 0
       payout.adjusted          = true
       payout.subtraction       = true
       payout.subtracted_amount = discounted
+      payout.subtracted_reason = params[:discounted_reason]
       payout.adjusted_amount   = adjusted
     else
       payout.subtraction       = false
       payout.subtracted_amount = 0
+      payout.subtracted_reason = ''
     end
 
     if payout.subtraction == false && payout.addition == false

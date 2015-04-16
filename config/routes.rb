@@ -87,7 +87,6 @@ Rails.application.routes.draw do
     post  '/hosts/:id/deactivate' => 'hosts#deactivate'
     post  '/hosts/:id/reactivate' => 'hosts#reactivate'
     get   '/bookings' => 'bookings#index'
-    get   '/bookings/:id' => 'bookings#show'
     match '/bookings/:id/:action' => 'bookings', via: [:get, :post]
     get   '/jobs' => 'jobs#index'
     get   '/jobs/:id' => 'jobs#show', as: :admin_job
