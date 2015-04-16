@@ -2,9 +2,10 @@ app = angular.module('porter').directive('toggleAdminService', ['$http', ($http)
   element.on 'change', ->
     if element.is(':checked')
       element.parent().parent().addClass 'active'
-      $http.post("/jobs/#{scope.job.id}/add_service", {service: attrs.toggleAdminService})
+      $http.post("/jobs/#{scope.job.id}/add_service", {service: attrs.toggleAdminService}).success (rsp) ->
+        scope.refresh_invoice()
     else
       element.parent().parent().removeClass 'active'
-      $http.post("/jobs/#{scope.job.id}/remove_service", {service: attrs.toggleAdminService})
-    scope.refresh_invoice()
+      $http.post("/jobs/#{scope.job.id}/remove_service", {service: attrs.toggleAdminService}).success (rsp) ->
+        scope.refresh_invoice()
 ])
