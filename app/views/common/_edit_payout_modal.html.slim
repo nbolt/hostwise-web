@@ -3,6 +3,8 @@ script#edit-payout-modal type="text/ng-template"
     .header
       .text Edit Contractor Payout
     .content
+      .caption ng:show='contractors.length > 1'
+        | Which contractor's payout would you like to edit?
       .contractor ng:repeat='contractor in contractors' ng:class='contractor_class(contractor)'
         .name ng:bind='contractor.name' ng:click='select_contractor(contractor)'
       div ng:show='selected_contractor'
