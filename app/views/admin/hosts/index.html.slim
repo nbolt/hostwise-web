@@ -72,7 +72,7 @@
               a.teal ng:href='/hosts/{{user.id}}/edit' ng:bind='user.id'
             td
               a.teal ng:href='/hosts/{{user.id}}/edit' ng:bind='user.name'
-              .badge.badge-green style='margin-top:7px' ng:show='is_new_customer(user)' new customer
+              .badge.badge-blue ng:show='is_new_customer(user)' new
             td ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
             td ng:bind='user.email'
             td ng:bind='user.display_phone_number'

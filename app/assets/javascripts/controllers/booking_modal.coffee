@@ -154,6 +154,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
               day.first_booking_discount = day.total
             day.total -= day.first_booking_discount
             first_booking_discount_applied = true
+          if rsp.overage_cost
+            day.overage = true
+            day.overage_cost = rsp.overage_cost
+          if rsp.discounted_cost
+            day.discounted = true
+            day.discounted_cost = rsp.discounted_cost
           $scope.total += day.total
           _($scope.selected_services).each (v,k) ->
             day[k] = rsp[k] if v

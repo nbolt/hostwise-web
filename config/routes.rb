@@ -86,11 +86,13 @@ Rails.application.routes.draw do
     put   '/hosts/:id/update' => 'hosts#update'
     post  '/hosts/:id/deactivate' => 'hosts#deactivate'
     post  '/hosts/:id/reactivate' => 'hosts#reactivate'
+    get   '/inventory' => 'inventory#index'
     get   '/bookings' => 'bookings#index'
-    get   '/bookings/:id' => 'bookings#show'
+    match '/bookings/:id/:action' => 'bookings', via: [:get, :post]
     get   '/jobs' => 'jobs#index'
     get   '/jobs/:id' => 'jobs#show', as: :admin_job
     match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
+    get   '/inventory' => 'inventory#index'
     get   '/properties' => 'properties#index'
     get   '/properties/:id' => 'properties#show'
     post  '/properties/:id' => 'properties#update'

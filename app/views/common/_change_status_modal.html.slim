@@ -11,7 +11,7 @@ script#change-status-modal type="text/ng-template"
             | {{::contractor.name}}
         .position
           span
-            | {{contractor.contractor_profile.position.text}}
+            | {{contractor.contractor_profile.current_position.text}}
           .fa.fa-long-arrow-right
           | {{selected_status.text}}
         .warning ng:bind='::warning'

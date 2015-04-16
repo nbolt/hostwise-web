@@ -16,6 +16,7 @@ class Host::BookingsController < Host::AuthController
         booking.services.push Service.where(name: service)[0] unless booking.services.find {|s| service == s.name}
       end
       if booking.save
+        booking.update_cost!
         render json: { success: true }
       else
         render json: { success: false }
@@ -42,6 +43,7 @@ class Host::BookingsController < Host::AuthController
       end
       if params[:apply_fee]
         if booking.update_attribute :status, :cancelled
+          booking.update_cost!
           booking.charge!
           UserMailer.booking_same_day_cancellation(booking).then(:deliver)
           render json: { success: true }

@@ -1,0 +1,34 @@
+script#edit-payment-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Customer Payment
+    .content
+      .price
+        .text Original Price
+        .amount ${{selected_payment.original_cost}}
+      .changes
+        .change.discount
+          .text Discount
+          .input.percentage
+            input type='text' ng:model='payment.discount.percentage' ng:change='payment_discount_percentage_update()'
+          .input.amount
+            input type='text' ng:model='payment.discount.amount' ng:change='payment_discount_amount_update()'
+          .input.reason
+            input type='text' ng:model='payment.discount.reason' placeholder='Describe the reason'
+        .change.overage
+          .text Overage
+          .input.percentage
+            input type='text' ng:model='payment.overage.percentage' ng:change='payment_overage_percentage_update()'
+          .input.amount
+            input type='text' ng:model='payment.overage.amount' ng:change='payment_overage_amount_update()'
+          .input.reason
+            input type='text' ng:model='payment.overage.reason' placeholder='Describe the reason'
+      .price.updated
+        .text Updated Price
+        .amount ${{updated_payment()}}
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Cancel
+        .button.teal ng:click='edit_payment(selected_payment)'
+          .text Submit Change

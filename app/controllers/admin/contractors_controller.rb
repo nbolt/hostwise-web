@@ -24,13 +24,11 @@ class Admin::ContractorsController < Admin::AuthController
   end
 
   def edit
+    @contractor = User.find_by_id(params[:id])
+
     respond_to do |format|
       format.html
-      format.json { render json: User.find_by_id(params[:id]).to_json(include: [:background_check, contractor_profile: {methods: [:position, :ssn, :driver_license, :current_position, :test_session_completed]}], methods: [:name, :avatar]) }
-
-      @contractor = User.find_by_id(params[:id])
-
-
+      format.json { render json: @contractor, serializer: ContractorSerializer }
     end
   end
 
@@ -59,7 +57,7 @@ class Admin::ContractorsController < Admin::AuthController
 
       user.contractor_profile.position = params[:status].downcase.to_sym
       user.contractor_profile.save
-      render json: { success: true }
+      render json: user, serializer: ContractorSerializer
     else
       user.assign_attributes contractor_params
       user.step = 'contractor_info'

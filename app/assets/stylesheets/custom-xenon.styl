@@ -30,11 +30,18 @@
   .panel-body
     .row:last-child
       height: 60px
-  .dataTables_wrapper .table thead > tr
-    .sorting:before, .sorting_asc:before, .sorting_desc:before
-      position: absolute
-      right: 6px
-      bottom: 12px
+  .dataTables_wrapper .table
+    thead > tr
+      .sorting:before, .sorting_asc:before, .sorting_desc:before
+        position: absolute
+        right: 6px
+        bottom: 12px
+    tbody
+      td
+        .badge
+          margin: 0 0 0 5px
+        &.modified
+          font-weight: bold
   thead.search
     input
       width: 64px

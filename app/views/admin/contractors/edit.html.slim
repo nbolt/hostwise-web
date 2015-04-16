@@ -12,10 +12,9 @@
               img ng:src='{{::contractor.avatar}}'
               .name
                 | {{::contractor.name}}
-              .created_at
-                | {{::contractor.created_at.substring(0, 10)}}
               .row ng:show='contractor.contractor_profile'
                 input.position type='hidden' ng:change='change_status()' ng:model='contractor.contractor_profile.position' ui-select2='position()'
+              .created_at ng:bind-template="Created {{contractor.created_at | date:'MM/dd/yy':'UTC'}}"
               .location ng:show='contractor.contractor_profile'
                 | {{::contractor.contractor_profile.city}}, {{::contractor.contractor_profile.state}}
           .vr
@@ -76,73 +75,86 @@
                 span Background Checked
                 a href='' ng:show='show_bgc_link()' ng:click='approve_bgc_modal()' Approve
                 a href='' ng:show='show_bgc_link()' ng:click='deny_bgc_modal()' Deny
-      .step.two
+      .step.two.stats
         form
-          .section
+          .section ng:show='contractor.last_payout_date'
+            i.icon-pay-total
             h3 Last Paid
-            h3.teal = @contractor.last_payout_date
-            /h3.teal ng:bind='contractor.last_payout_date'
+            h3.teal ng:bind='contractor.last_payout_date'
           .section
+            i.icon-earnings
             h3 Outstanding Balance
-            h3.teal = @contractor.earnings
-            /h3.teal ng:bind='contractor.earnings'
+            h3.teal ng:bind-template='${{contractor.earnings.toFixed(2)}}'
           .section
+            i.icon-alert-ok
             h3 Jobs Completed
-            h3.teal = @contractor.completed_jobs.count
-            /h3.teal ng:bind='contractor.completed_jobs.count'
-          .section  
-            h3 Jobs Canceled
-            h3 style='color: red;' = @contractor.cancelled_jobs.count
-            /h3.teal ng:bind='contractor.cancelled_jobs.count'
-      .step.three
-        form
+            h3.teal ng:bind='contractor.total_completed_jobs'
           .section
-          h1 Upcoming Jobs
-          - @contractor.jobs.standard.not_complete.order('date ASC').each do |job|
-            .row
-              .column
-                p id: #{job.id}
-              .column
-                p = job.date
-              .column
-                p  = @contractor.name
-              .column
-                p  #{job.booking.property.bedrooms}br/#{job.booking.property.bathrooms}ba
-              .column
-                p  Size: #{job.size} 
-              .column
-                p
-                  - job.booking.services.each_with_index do |service, index|
-                    - if index == job.booking.services.size - 1
-                      = "#{service.name}"
-                    - else
-                      = "#{service.name}, "
-              .column
-                p 
-                  a href="/jobs/#{job.id}" View Job
-          h1 Past Jobs
-          - @contractor.jobs.standard.complete.order('date DESC').each do |job|
-            .row
-              .column
-                p id: #{job.id}
-              .column
-                p = job.date
-              .column
-                p  = @contractor.name
-              .column
-                p  #{job.booking.property.bedrooms}br/#{job.booking.property.bathrooms}ba
-              .column
-                p  Size: #{job.size} 
-              .column
-                p
-                  - job.booking.services.each_with_index do |service, index|
-                    - if index == job.booking.services.size - 1
-                      = "#{service.name}"
-                    - else
-                      = "#{service.name}, "
-              .column
-                p 
-                  a href="/jobs/#{job.id}" View Job
+            i.icon-close
+            h3 Jobs Canceled
+            h3.red ng:bind='contractor.total_cancelled_jobs'
+      .step.three.xenon.custom
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Jobs
+          .panel-body.table-responsive
+            table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
+              thead
+                tr
+                  th ID
+                  th Property
+                  th Size
+                  th Date
+                  th Address
+                  th Customer
+                  th Phone
+                  th Status
+                  th Cost
+                  th Services
+                  th King Set(s)
+                  th Twin Set(s)
+                  th Toiletries Set(s)
+                  th Type
+              tfoot
+                tr
+                  th ID
+                  th Property
+                  th Size
+                  th Date
+                  th Address
+                  th Customer
+                  th Phone
+                  th Status
+                  th Cost
+                  th Services
+                  th King Set(s)
+                  th Twin Set(s)
+                  th Toiletries Set(s)
+                  th Type
+              tbody
+                tr ng:repeat='job in contractor.jobs'
+                  td
+                    a.teal ng:href='/jobs/{{job.id}}' ng:bind='job.id'
+                  td
+                    a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='job.booking.property.id'
+                  td ng:bind='job.booking.property.property_size'
+                  td ng:bind="job.date | date:'MM/dd/yyyy':'UTC'"
+                  td ng:bind='job.booking.property.neighborhood_address'
+                  td
+                    a.teal ng:href="/hosts/{{job.booking.user.id}}/edit" ng:bind='job.booking.user.name'
+                    .badge.badge-blue ng:show='is_new_customer(job.booking.user)' new
+                  td ng:bind='job.booking.property.display_phone_number'
+                  td
+                    p ng:bind='job.status'
+                    .badge.badge-red ng:show='is_same_day_cancellation(job)' SDC
+                  td ng:bind-template="${{job.booking.cost}}"
+                  td ng:bind='job.service_list'
+                  td ng:bind='job.total_kings'
+                  td ng:bind='job.total_twins'
+                  td ng:bind='job.total_toiletries'
+                  td
+                    .badge style='margin-bottom:7px' ng:hide='job.state_cd == 0 && job.staging' ng:bind='job.state' ng:class='state_class(job)'
+                    .badge.badge-red ng:show='job.staging' staging
 
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to

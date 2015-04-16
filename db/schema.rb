@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410064957) do
+ActiveRecord::Schema.define(version: 20150416183251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,14 +82,33 @@ ActiveRecord::Schema.define(version: 20150410064957) do
     t.integer  "property_id"
     t.integer  "payment_id"
     t.date     "date"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.integer  "status_cd",              default: 1
-    t.integer  "payment_status_cd",      default: 0
-    t.boolean  "late_next_day",          default: false
-    t.boolean  "late_same_day",          default: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.integer  "status_cd",                   default: 1
+    t.integer  "payment_status_cd",           default: 0
+    t.boolean  "late_next_day",               default: false
+    t.boolean  "late_same_day",               default: false
     t.boolean  "no_access_fee"
-    t.boolean  "first_booking_discount", default: false
+    t.boolean  "first_booking_discount",      default: false
+    t.integer  "cleaning_cost",               default: 0
+    t.integer  "linen_cost",                  default: 0
+    t.integer  "toiletries_cost",             default: 0
+    t.integer  "pool_cost",                   default: 0
+    t.integer  "patio_cost",                  default: 0
+    t.integer  "windows_cost",                default: 0
+    t.integer  "staging_cost",                default: 0
+    t.integer  "no_access_fee_cost",          default: 0
+    t.integer  "late_next_day_cost",          default: 0
+    t.integer  "late_same_day_cost",          default: 0
+    t.integer  "first_booking_discount_cost", default: 0
+    t.boolean  "adjusted",                    default: false
+    t.boolean  "overage",                     default: false
+    t.boolean  "discounted",                  default: false
+    t.integer  "adjusted_cost",               default: 0
+    t.integer  "overage_cost",                default: 0
+    t.integer  "discounted_cost",             default: 0
+    t.string   "discounted_reason",           default: ""
+    t.string   "overage_reason",              default: ""
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -248,9 +267,17 @@ ActiveRecord::Schema.define(version: 20150410064957) do
     t.integer  "job_id"
     t.integer  "status_cd",          default: 0
     t.integer  "amount"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "stripe_transfer_id"
+    t.boolean  "adjusted",           default: false
+    t.boolean  "addition",           default: false
+    t.boolean  "subtraction",        default: false
+    t.integer  "adjusted_amount",    default: 0
+    t.integer  "additional_amount",  default: 0
+    t.integer  "subtracted_amount",  default: 0
+    t.string   "subtracted_reason",  default: ""
+    t.string   "additional_reason",  default: ""
   end
 
   create_table "photo_previews", force: :cascade do |t|

@@ -19,6 +19,16 @@ class Contractor::JobsController < Contractor::AuthController
   def show
     respond_to do |format|
       format.html do
+        if job.primary_contractor == current_user
+          @kitchen_photo = Checklist.new.kitchen_photo
+          @kitchen_photo.success_action_status = '201'
+
+          @bedroom_photo = Checklist.new.bedroom_photo
+          @bedroom_photo.success_action_status = '201'
+
+          @bathroom_photo = Checklist.new.bathroom_photo
+          @bathroom_photo.success_action_status = '201'
+        end
         if !job.contractors.index current_user
           redirect_to '/'
         elsif job.distribution
@@ -62,14 +72,13 @@ class Contractor::JobsController < Contractor::AuthController
   def cant_access
     unless job.status == :cant_access
       job.update_attributes(status_cd: 5, cant_access: Time.now)
-
       staging = Rails.env.staging? && '[STAGING] ' || ''
       if params[:property_occupied].present? #property occupied
         TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}. There are still guests occupying the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
-        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and guests are still occupying the property.")
+        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and guests are still occupying the property. This is for job ##{job.id}.")
       else #can't access
         TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}. We are having trouble accessing the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
-        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and cannot access.")
+        TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and cannot access. This is for job ##{job.id}.")
       end
     end
     render json: { success: true, status_cd: job.status_cd, seconds_left: job.cant_access_seconds_left }
@@ -78,9 +87,10 @@ class Contractor::JobsController < Contractor::AuthController
   def timer_finished
     unless job.booking.status == :couldnt_access
       job.booking.update_attribute :status_cd, 5
+      job.booking.update_cost!
       staging = Rails.env.staging? && '[STAGING] ' || ''
       TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise was unable to access your property. Having waited 30 minutes to resolve this issue, we must now move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
-      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}.")
+      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}. This is for job ##{job.id}.")
     end
     render json: { success: true }
   end
@@ -123,7 +133,6 @@ class Contractor::JobsController < Contractor::AuthController
         property = job.booking.property
         checklist_photos = []
         checklist_photos << job.checklist.kitchen_photo.url << job.checklist.bedroom_photo.url << job.checklist.bathroom_photo.url
-        UserMailer.service_completed(job.booking).then(:deliver) if property.user.settings(:service_completion).email
 
         if property.user.settings(:service_completion).sms
           TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!", checklist_photos)
@@ -193,6 +202,11 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def snap_photo
+    ProcessContractorPhotoJob.perform_later(params[:key], params[:checklist_id], params[:room])
+    render json: { success: true, url: "https://s3-#{ENV['S3_BUCKET']}.amazonaws.com/hostwise-#{Rails.env}/#{params[:key]}" }
+  end
+
+  def snap_photos
     checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
 
     if params[:file]

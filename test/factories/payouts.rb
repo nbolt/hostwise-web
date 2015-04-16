@@ -34,4 +34,18 @@ FactoryGirl.define do |payouts|
     amount 10100
     association :job, factory: :job_6
   end
+
+  factory :payout_7, class: Payout do
+    status_cd 2
+    amount 10100
+    association :job, factory: :job_6
+    updated_at Date.new(2015, 5, 5)
+  end
+
+  factory :payout_8, class: Payout do
+    status_cd 2
+    amount 10100
+    association :job, factory: :job_6
+    updated_at Date.new(2015, 5, 5)
+  end
 end

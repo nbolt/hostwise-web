@@ -1,7 +1,7 @@
 PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scope, $http, $timeout, $window, ngDialog) ->
 
   $scope.form = {}
-  $scope.filter = {id:'alphabetical',text:'Alphabetical'}
+  $scope.filter = {id:'recently_added',text:'Recently Added'}
   $scope.sort = 'alphabetical'
   $scope.term = ''
   $scope.show_properties = false
@@ -70,7 +70,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     {
       dropdownCssClass: 'filters'
       minimumResultsForSearch: -1
-      data: [{id:'alphabetical',text:'Alphabetical'},{id:'recently_added',text:'Recently Added'},{id:'upcoming_service',text:'Upcoming Service'},{id:'deactivated',text:'Deactivated'}]
+      data: [{id:'recently_added',text:'Recently Added'},{id:'alphabetical',text:'Alphabetical'},{id:'upcoming_service',text:'Upcoming Service'},{id:'deactivated',text:'Deactivated'}]
       initSelection: (el, cb) ->
     }
 

@@ -18,6 +18,10 @@ describe User do
 		user_name_3 = nil
 		VCR.use_cassette('create_user_name_3') { user_name_3 = create(:user_name_3) }
 		user_name_3.display_phone_number.must_equal '(972) 214-9321'
+
+		user_name_2 = nil
+		VCR.use_cassette('create_user_name_2') { user_name_2 = create(:user_name_2) }
+		user_name_2.display_phone_number.must_equal ''
 	end
 
 	it 'shows correct earnings' do
@@ -200,5 +204,55 @@ describe User do
 	
 		msg = user_name_6.claim_job job_15
 		msg.must_equal ( { success: false, message: "Can't claim a cancelled job" } )
+	end
+
+	it 'booking_count' do
+		user_name_16 = nil, property_1 = nil, booking_first = nil, booking_second = nil
+		VCR.use_cassette('create_booking_first') { booking_first = create(:booking_first)}
+		booking_first.must_equal booking_first
+		VCR.use_cassette('create_booking_second') { booking_second = create(:booking_second)}
+		booking_second.must_equal booking_second
+		VCR.use_cassette('create_property_1') {property_1 = create(:property_1) }
+		property_1.must_equal property_1
+		VCR.use_cassette('create_user_name_16') { user_name_16 = create(:user_name_16) }
+		user_name_16.booking_count.must_equal 2
+	end
+
+	it 'bookings' do
+		Timecop.freeze(2011, 1, 1)
+		user_name_16 = nil, property_1 = nil, booking_first = nil, booking_second = nil
+		VCR.use_cassette('create_booking_first') { booking_first = create(:booking_first)}
+		booking_first.must_equal booking_first
+		VCR.use_cassette('create_booking_second') { booking_second = create(:booking_second)}
+		booking_second.must_equal booking_second
+		VCR.use_cassette('create_property_1') {property_1 = create(:property_1) }
+		property_1.must_equal property_1
+		VCR.use_cassette('create_user_name_16') { user_name_16 = create(:user_name_16) }
+		user_name_16.bookings.first.attributes.except('id', 'property_id').must_equal booking_first.attributes.except('id', 'property_id')
+		Timecop.return
+	end
+
+	it 'last_payout_date' do
+		Timecop.freeze(2015, 5, 5)
+		payout_7 = create(:payout_7)
+		payout_7.must_equal payout_7
+		Timecop.freeze(2016, 6, 6)
+		payout_8 = create(:payout_8)
+		payout_8.must_equal payout_8
+		user_name_15 = nil
+		VCR.use_cassette('create_user_name_15') { user_name_15 = create(:user_name_15) }
+		user_name_15.last_payout_date.must_equal Date.new(2016, 6, 6)
+		Timecop.return
+	end
+
+	it 'completed_jobs' do
+	end
+
+	it 'cancelled_jobs' do
+		user_name_17 = nil, job_15 = nil
+		VCR.use_cassette('create_job_15') { job_15 = create(:job_15) }
+		job_15.must_equal job_15
+		VCR.use_cassette('create_user_name_17') { user_name_17 = create(:user_name_17) }
+		#user_name_17.cancelled_jobs[0].must_equal ''
 	end
 end

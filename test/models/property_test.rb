@@ -114,4 +114,30 @@ describe Property do
     VCR.use_cassette('create_property_10') { property_10 = create(:property_10) }
     property_10.neighborhood_address.must_equal '2025 Wilshire Blvd, Santa Monica, 90403'
   end
+
+  it 'king_bed_count' do
+    property_5 = nil, property_8 = nil
+    VCR.use_cassette('create_property_5') { property_5 = create(:property_5) }
+    property_5.king_bed_count.must_equal 8
+
+    VCR.use_cassette('create_property_8') { property_8 = create(:property_8) }
+    property_8.king_bed_count.must_equal 2
+  end
+
+  it 'beds' do
+    property_5 = nil, property_8 = nil
+    VCR.use_cassette('create_property_5') { property_5 = create(:property_5) }
+    property_5.beds.must_equal 9
+
+    VCR.use_cassette('create_property_8') { property_8 = create(:property_8) }
+    property_8.beds.must_equal 2
+  end
+
+  it 'display_phone_number' do
+    property_11 = nil, property_8 = nil
+    VCR.use_cassette('create_property_11') { property_11 = create(:property_11) }
+    VCR.use_cassette('create_property_8') { property_8 = create(:property_8) }
+    property_11.display_phone_number.must_equal '(214) 264-2230'
+    property_8.display_phone_number.must_equal ''
+  end
 end

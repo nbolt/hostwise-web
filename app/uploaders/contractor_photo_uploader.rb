@@ -1,12 +1,7 @@
 class ContractorPhotoUploader < CarrierWave::Uploader::Base
 
-  # Include RMagick or MiniMagick support:
   include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
-
-  # Choose what kind of storage to use for this uploader:
-  #storage :file
-  #storage :fog
+  include CarrierWaveDirect::Uploader
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -60,6 +55,12 @@ class ContractorPhotoUploader < CarrierWave::Uploader::Base
   end
 
   def set_content_type
-    self.file.instance_variable_set(:@content_type, "image/png")
+    self.file.instance_variable_set(:@content_type, 'image/png')
   end
+
+  def will_include_content_type
+    true
+  end
+
+  default_content_type  'image/png'
 end

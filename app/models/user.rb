@@ -94,7 +94,7 @@ class User < ActiveRecord::Base
   end
 
   def booking_count
-    bookings.count
+    properties.reduce(0) {|acc, property| acc + property.bookings.count}
   end
 
   def notification_settings

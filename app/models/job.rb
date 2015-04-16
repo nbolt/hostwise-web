@@ -92,7 +92,7 @@ class Job < ActiveRecord::Base
   def payout contractor=nil
     if booking
       if booking.cancelled? || booking.couldnt_access?
-        ((booking.cost / size) * 0.8).round 2
+        ((booking.original_cost / size) * 0.8).round 2
       else
         contractor ||= current_user
         payout_multiplier = state == :vip ? 0.75 : 0.7
@@ -101,13 +101,13 @@ class Job < ActiveRecord::Base
           payout_multiplier = 0.85 if payout_multiplier == 0.75
         end
         payout = 0
-        pricing = Booking.cost booking.property, booking.services, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee
-        payout += (pricing[:cleaning] * payout_multiplier).round(2) if pricing[:cleaning]
-        payout += (PRICING['preset'][booking.property.beds] * payout_multiplier).round(2) if pricing[:preset]
-        payout += PRICING['pool_payout'] if pricing[:pool]
-        payout += PRICING['patio_payout']  if pricing[:patio]
-        payout += PRICING['windows_payout']  if pricing[:windows]
-        payout += PRICING['no_access_fee_payout'] if booking.no_access_fee
+        pricing = booking.pricing_hash
+        payout += (pricing[:cleaning] * payout_multiplier).round(2) if pricing[:cleaning] > 0
+        payout += (PRICING['preset'][booking.property.beds] * payout_multiplier).round(2) if pricing[:preset] > 0
+        payout += PRICING['pool_payout'] if pricing[:pool] > 0
+        payout += PRICING['patio_payout']  if pricing[:patio] > 0
+        payout += PRICING['windows_payout']  if pricing[:windows] > 0
+        payout += PRICING['no_access_fee_payout'] if pricing[:no_access_fee] > 0
 
         if contractor.chain(:contractor_profile, :position) == :trainee
           payout = 20

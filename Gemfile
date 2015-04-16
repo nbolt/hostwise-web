@@ -36,6 +36,7 @@ group :test do
   gem 'webmock'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
+  gem 'timecop'
 end
 
 gem 'coveralls', require: false, group: :test
@@ -86,3 +87,4 @@ gem 'skylight'
 gem 'timezone'
 gem 'haversine_distance', require: 'haversine'
 gem 'active_model_serializers', '0.8.3'
+gem 'carrierwave_direct'

@@ -10,6 +10,10 @@ class Payout < ActiveRecord::Base
   scope :pending, -> { where(status_cd: 1) }
   scope :paid, -> { where(status_cd: 2) }
 
+  def total
+    amount + adjusted_amount if amount
+  end
+
   def process!
     recipient = Stripe::Recipient.retrieve user.stripe_recipient_id
 

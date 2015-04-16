@@ -31,8 +31,47 @@ class Admin::JobsController < Admin::AuthController
     end
   end
 
+  def edit_payout
+    payout = Payout.find params[:payout_id]
+    adjusted   = params[:adjusted_cost].to_f   * 100
+    overage    = params[:overage_cost].to_f    * 100
+    discounted = params[:discounted_cost].to_f * 100
+
+    if overage > 0
+      payout.adjusted          = true
+      payout.addition          = true
+      payout.additional_amount = overage
+      payout.additional_reason = params[:overage_reason]
+      payout.adjusted_amount   = adjusted
+    else
+      payout.addition          = false
+      payout.additional_amount = 0
+      payout.additional_reason = ''
+    end
+
+    if discounted > 0
+      payout.adjusted          = true
+      payout.subtraction       = true
+      payout.subtracted_amount = discounted
+      payout.subtracted_reason = params[:discounted_reason]
+      payout.adjusted_amount   = adjusted
+    else
+      payout.subtraction       = false
+      payout.subtracted_amount = 0
+      payout.subtracted_reason = ''
+    end
+
+    if payout.subtraction == false && payout.addition == false
+      payout.adjusted = false
+      payout.adjusted_amount = 0
+    end
+
+    payout.save
+    render json: { success: true }
+  end
+
   def booking_cost
-    cost = Booking.cost job.booking.property, job.booking.services
+    cost = job.booking.pricing_hash
     render json: cost
   end
 
@@ -59,6 +98,7 @@ class Admin::JobsController < Admin::AuthController
     service = Service.where(name: params[:service])[0]
     job.booking.services.push service
     job.booking.services.delete Service.where(name: 'preset')[0] if service.name == 'cleaning'
+    job.booking.update_cost!
     render json: { success: true }
   end
 
@@ -66,6 +106,7 @@ class Admin::JobsController < Admin::AuthController
     service = Service.where(name: params[:service])[0]
     job.booking.services.delete service
     job.booking.services.push Service.where(name: 'preset')[0] if service.name == 'cleaning'
+    job.booking.update_cost!
     render json: { success: true }
   end
 
@@ -76,6 +117,7 @@ class Admin::JobsController < Admin::AuthController
       job.complete!
     when :cant_access
       job.booking.update_attribute :status_cd, 5
+      job.booking.update_cost!
     end
     render json: { success: true }
   end
@@ -86,7 +128,7 @@ class Admin::JobsController < Admin::AuthController
   end
 
   def available_contractors
-    render json: User.search_contractors(params[:term]).to_json(methods: [:name])
+    render json: User.contractors(params[:term]).to_json(include: {contractor_profile: {methods: [:display_position]}}, methods: [:name])
   end
 
 end
