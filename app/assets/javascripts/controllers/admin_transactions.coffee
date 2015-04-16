@@ -42,10 +42,9 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       ngDialog.closeAll()
       spinner.stopSpin()
       _(rsp.payments).each (id) ->
-        angular.element("#payment-#{id} td:nth-last-child(3)").text 'Received'
-        angular.element("#payment-#{id} td:first-child div").remove()
-        angular.element("#payment-#{id} td:last-child a").remove()
-        angular.element("#payment-#{id} td:last-child span:last").show()
+        booking = _($scope.bookings).find (booking) -> booking.id == id
+        booking.payment_status_cd = 1
+        booking.status = 'Received'
 
   $scope.process_payouts_modal = -> ngDialog.open template: 'process-payouts-confirmation', className: 'info full', scope: $scope
   $scope.cancel_process = -> ngDialog.closeAll()
@@ -56,10 +55,8 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       ngDialog.closeAll()
       spinner.stopSpin()
       _(rsp.payouts).each (id) ->
-        angular.element("#payout-#{id} td:nth-last-child(3)").text 'Paid'
-        angular.element("#payout-#{id} td:first-child div").remove()
-        angular.element("#payout-#{id} td:last-child a").remove()
-        angular.element("#payout-#{id} td:last-child span:last").show()
+        job = _($scope.jobs).find (job) -> job.id == id
+        job.status = 'Paid'
 
   $scope.edit_payout_modal = (job) ->
     $scope.selected_payout = job
@@ -101,6 +98,10 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         angular.element("#payment-#{booking.id} td:nth-last-child(2)").text "$#{adjusted_payment()}"
         angular.element("#payment-#{booking.id} td:last-child").addClass 'modified'
         angular.element("#payment-#{booking.id} td:nth-last-child(2)").addClass 'modified'
+        booking.discounted_cost   = parseFloat($scope.payment.discount.amount) * 100
+        booking.discounted_reason = $scope.payment.discount.reason
+        booking.overage_cost      = parseFloat($scope.payment.overage.amount) * 100
+        booking.overage_reason    = $scope.payment.overage.reason
 
   $scope.edit_payout = (job) ->
     $http.post("/jobs/#{job.id}/edit_payout", {payout_id: $scope.selected_contractor.payout.id, adjusted_cost: adjusted_payout(), overage_cost: $scope.payout.overage.amount, discounted_cost: $scope.payout.discount.amount, overage_reason: $scope.payout.overage.reason, discounted_reason: $scope.payout.discount.reason}).success (rsp) ->
@@ -110,6 +111,12 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         angular.element("#payout-#{job.id} td:nth-last-child(2)").text "$#{adjusted_payout()}"
         angular.element("#payout-#{job.id} td:nth-last-child(2)").addClass 'modified'
         angular.element("#payout-#{job.id} td:last-child").addClass 'modified'
+        contractor = _(job.contractors).find (contractor) -> contractor.id == $scope.selected_contractor.id
+        payout = _(contractor.payouts).find (payout) -> payout.job_id == job.id
+        payout.subtracted_amount = parseFloat($scope.payout.discount.amount) * 100
+        payout.subtracted_reason = $scope.payout.discount.reason
+        payout.additional_amount = parseFloat($scope.payout.overage.amount) * 100
+        payout.additional_reason = $scope.payout.overage.reason
 
   $scope.fetch_bookings = ->
     spinner.startSpin()

@@ -76,12 +76,11 @@
                   td ng:bind='::booking.date'
                   td
                     a.teal ng:href='/hosts/{{booking.user.id}}/edit' ng:bind='::booking.user.name'
-                  td ng:bind='::booking.status'
+                  td ng:bind='booking.status'
                   td ng:bind='booking.adjusted_cost' ng:class='modified_payment(booking)'
                   td ng:class='modified_payment(booking)'
                     a.teal href='javascript:void(0)' ng:bind-template="${{booking.cost}}" ng:click='edit_payment_modal(booking)' ng:show='booking.payment_status_cd == 0'
                     span ng:bind-template='${{booking.cost}}' ng:hide='booking.payment_status_cd == 0'
-                    span ng:bind-template='${{booking.cost}}' style='display:none'
       .tab-pane#contractors
         .panel.panel-default
           .panel-heading
@@ -148,12 +147,11 @@
                   td
                     a.teal ng:href='/hosts/{{job.booking.user.id}}/edit' ng:bind='::job.booking.user.name'
                   td ng:bind='::job.contractor_names'
-                  td ng:bind='::job.status'
-                  td ng:bind='::job.adjusted_payout' ng:class='modified_payout(job)'
+                  td ng:bind='job.status'
+                  td ng:bind='job.adjusted_payout' ng:class='modified_payout(job)'
                   td ng:class='modified_payout(job)'
                     a.teal href='javascript:void(0)' ng:bind-template="{{job.total_payout}}" ng:click='edit_payout_modal(job)' ng:show='job.total_payout != "Pending" && job.status != "Paid"'
                     span ng:bind-template="{{job.total_payout}}" ng:hide='job.total_payout != "Pending" && job.status != "Paid"'
-                    span ng:bind-template="{{job.total_payout}}" style='display:none'
 = render 'common/process_payments_confirmation'
 = render 'common/process_payouts_confirmation'
 = render 'common/edit_payout_modal'
