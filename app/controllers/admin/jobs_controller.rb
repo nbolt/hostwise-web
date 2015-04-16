@@ -128,7 +128,7 @@ class Admin::JobsController < Admin::AuthController
   end
 
   def available_contractors
-    render json: User.contractors.search_contractors(params[:term]).to_json(methods: [:name])
+    render json: User.contractors(params[:term]).to_json(include: {contractor_profile: {methods: [:display_position]}}, methods: [:name])
   end
 
 end
