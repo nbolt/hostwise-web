@@ -54,6 +54,10 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     $scope.contractors = _(job.contractors).clone()
     _($scope.contractors).each (contractor) ->
       contractor.payout = _(contractor.payouts).find (payout) -> payout.job_id == job.id
+    if $scope.contractors.length == 1
+      $scope.select_contractor $scope.contractors[0]
+    else
+      $scope.selected_contractor = null
     ngDialog.open template: 'edit-payout-modal', className: 'edit-pay info full', scope: $scope
 
   $scope.edit_payment_modal = (booking) ->
@@ -82,13 +86,17 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       if rsp.success
         ngDialog.closeAll()
         angular.element("#payment-#{booking.id} td:last-child a").text "$#{$scope.updated_payment()}"
+        angular.element("#payment-#{booking.id} td:nth-last-child(2)").text "$#{adjusted_payment()}"
         angular.element("#payment-#{booking.id} td:last-child").addClass 'modified'
+        angular.element("#payment-#{booking.id} td:nth-last-child(2)").addClass 'modified'
 
   $scope.edit_payout = (job) ->
     $http.post("/jobs/#{job.id}/edit_payout", {payout_id: $scope.selected_contractor.payout.id, adjusted_cost: adjusted_payout(), overage_cost: $scope.payout.overage.amount, discounted_cost: $scope.payout.discount.amount, overage_reason: $scope.payout.overage.reason, discounted_reason: $scope.payout.discount.reason}).success (rsp) ->
       if rsp.success
         ngDialog.closeAll()
         angular.element("#payout-#{job.id} td:last-child a").text "$#{$scope.updated_payout()}"
+        angular.element("#payout-#{job.id} td:nth-last-child(2)").text "$#{adjusted_payout()}"
+        angular.element("#payout-#{job.id} td:nth-last-child(2)").addClass 'modified'
         angular.element("#payout-#{job.id} td:last-child").addClass 'modified'
 
   $scope.fetch_bookings = ->
