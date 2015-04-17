@@ -4,10 +4,10 @@ deployment:
     commands:
       - git push git@heroku.com:hostwise-staging.git $CIRCLE_SHA1:master
       - heroku run rake db:migrate --app hostwise-staging
-      # - bundle exec rake quay:build:develop
+      - heroku restart --app hostwise-staging
   production:
     branch: master
     commands:
        - git push git@heroku.com:hostwise.git $CIRCLE_SHA1:master
        - heroku run rake db:migrate --app hostwise
-       # - bundle exec rake quay:build:master
+       - heroku restart --app hostwise
