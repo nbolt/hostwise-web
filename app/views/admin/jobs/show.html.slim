@@ -15,7 +15,7 @@
         i.icon-earnings
       .text
         .title Job Total
-        .cost ${{::job.booking.cost}}
+        .cost ng:bind-template='${{job.booking.cost}}'
   .row.one
     .block.top-info.jobs
       .job style='margin:0'
@@ -48,9 +48,9 @@
               .icon
                 i.icon-payout
               .pricing ng:class='pricing_class()'
-                | ${{::job.payout_integer}}
+                | ${{job.payout_integer}}
                 span ng:hide='job.payout_fractional == 0'
-                  | .{{::job.payout_fractional}}
+                  | .{{job.payout_fractional}}
             .left
               .rooms
                 i.icon-house ng:if='job.booking.property.property_type_cd == 0'

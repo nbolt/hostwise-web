@@ -5,7 +5,6 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
   $http.get($window.location.href + '.json').success (rsp) ->
     load_job(rsp)
     $timeout -> $scope.jobQ.resolve()
-    $scope.refresh_cost()
 
     load_mapbox = null
     load_mapbox = $interval((->
@@ -86,7 +85,6 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
   $scope.refresh_invoice = ->
     $http.get($window.location.href + '.json').success (rsp) ->
       load_job(rsp)
-      $scope.refresh_cost()
 
   load_job = (rsp) ->
     $scope.job = rsp
@@ -119,6 +117,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
       when 6
         $scope.status = { id: $scope.job.status_cd, text: 'Cancelled' }
 
+    $scope.refresh_cost()
 ]
 
 app = angular.module('porter').controller('admin_job', AdminJobCtrl)
