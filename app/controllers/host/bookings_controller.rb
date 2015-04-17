@@ -29,6 +29,13 @@ class Host::BookingsController < Host::AuthController
   def cancel
     unless booking.status == :cancelled || booking.status == :deleted
       UserMailer.cancelled_booking_notification(booking).then(:deliver)
+
+      if params[:apply_fee]
+        booking.update_attribute :status, :cancelled
+      else
+        booking.update_attribute :status, :deleted
+      end
+
       if booking.job
         booking.job.update_attribute :status_cd, 6
         booking.job.contractors.each do |contractor|
@@ -41,24 +48,16 @@ class Host::BookingsController < Host::AuthController
           end
         end
       end
+
       if params[:apply_fee]
-        if booking.update_attribute :status, :cancelled
-          booking.update_cost!
-          booking.charge!
-          UserMailer.booking_same_day_cancellation(booking).then(:deliver)
-          render json: { success: true }
-        else
-          render json: { success: false }
-        end
+        booking.update_cost!
+        booking.charge!
+        UserMailer.booking_same_day_cancellation(booking).then(:deliver)
       else
-        if booking.update_attribute :status, :deleted
-          UserMailer.booking_cancellation(booking).then(:deliver)
-          render json: { success: true }
-        else
-          render json: { success: false }
-        end
+        UserMailer.booking_cancellation(booking).then(:deliver)
       end
     end
+    render json: { success: true }
   end
 
   def same_day_cancellation
