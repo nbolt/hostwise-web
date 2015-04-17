@@ -1,6 +1,7 @@
 general:
   branches:
     only:
+      - master
       - develop
 
 deployment:
