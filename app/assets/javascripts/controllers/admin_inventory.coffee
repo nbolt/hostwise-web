@@ -7,26 +7,8 @@ AdminInventoryCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, 
   $scope.fetch_jobs = ->
     spinner.startSpin()
     $http.get('/inventory.json',{params: {search: $scope.search, filter: $scope.filter.id}}).success (rsp) ->
-      $scope.jobs = rsp.jobs
-      _($scope.jobs).each (job) ->
-        job.contractor_list = _(job.contractors).map((contractor) -> contractor.name).join(', ')
-        job.service_list = _(_(job.booking.services).map((service) -> service.name)).join ', '
-        job.total_kings = job.booking.property.king_bed_count
-        job.total_twins = job.booking.property.twin_beds
-        job.total_toiletries = job.booking.property.bathrooms
-        job.status = switch job.status_cd
-          when 0 then 'open'
-          when 1 then 'scheduled'
-          when 2 then 'in progress'
-          when 3 then 'completed'
-          when 4 then 'past due'
-          when 5 then "can't access"
-          when 6 then 'cancelled'
-        job.state = switch job.state_cd
-          when 0 then 'normal'
-          when 1 then 'vip'
-          when 2 then 'hidden'
-      $scope.days = $scope.jobs
+      $scope.jobs = rsp.inventory
+
       spinner.stopSpin()
       $timeout((->
         table = angular.element("#example-1").dataTable({

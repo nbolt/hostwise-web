@@ -27,15 +27,15 @@
           tr
             th Date
             th Location
-            th Clean King Packs Picked Up
-            th Clean Twin Packs Picked Up
-            th Clean Pool Towels Picked Up
-            th Clean Bed Covers Picked Up
-            th Toiletry Packs Picked Up
-            th Dirty King Sheets Dropped Off
-            th Dirty Twin Sheets Dropped Off
-            th Dirty Beach Towels Dropped Off
-            th Dirty Bed Covers Dropped Off
+            th
+            th
+            th
+            th
+            th
+            th
+            th
+            th
+            th
         tfoot
           tr
             th Date
@@ -50,15 +50,17 @@
             th Dirty Beach Towels Dropped Off
             th Dirty Bed Covers Dropped Off
         tbody
-          tr ng:repeat='day in days'
-            td ng:bind='day.distribution'
-            td
-            td
-            td
-            td
-            td
-            td
-            td
-            td
-            td
-            td
+          - @days.each do |day|
+            - day.each do |distro|
+              tr
+                td
+                td
+                td
+                td
+                td
+                td
+                td
+                td
+                td
+                td
+                td
