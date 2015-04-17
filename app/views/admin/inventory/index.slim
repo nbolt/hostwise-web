@@ -50,17 +50,43 @@
             th Dirty Beach Towels Dropped Off
             th Dirty Bed Covers Dropped Off
         tbody
-          - @days.each do |day|
-            - day.each do |distro|
+          - @distro.each do |date, centers|
+            - centers.each do |id, jobs|
               tr
+                td= date
+                td= DistributionCenter.find(id).name
                 td
+                  - @king_bed_count = 0
+                  - jobs.each do |job|
+                    - if job.king_beds != nil
+                      - @king_bed_count += job.king_beds 
+                  = @king_bed_count
                 td
+                  - @twin_bed_count = 0
+                  - jobs.each do |job|
+                    - if job.twin_beds != nil
+                      - @twin_bed_count += job.twin_beds 
+                  = @twin_bed_count
+                td not currently available
                 td
+                  - @bed_count = 0
+                  - jobs.each do |job|
+                    - if job.king_beds != nil
+                      - @bed_count += job.king_beds
+                    - if job.twin_beds != nil
+                      - @bed_count += job.twin_beds
+                    - if job.queen_beds != nil
+                      - @bed_count += job.queen_beds
+                    - if job.full_beds != nil
+                      - @bed_count += job.full_beds
+                  = @bed_count
                 td
+                  = jobs.reduce(0) {|acc, job| acc + job.toiletries}
                 td
+                  = jobs.reduce(0) {|acc, job| acc + job.king_sheets}
                 td
+                  = jobs.reduce(0) {|acc, job| acc + job.twin_sheets}
                 td
+                  = jobs.reduce(0) {|acc, job| acc + job.king_sheets}
                 td
-                td
-                td
-                td
+                  = jobs.reduce(0) {|acc, job| acc + job.king_sheets + job.twin_sheets}

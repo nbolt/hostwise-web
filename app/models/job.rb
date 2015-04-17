@@ -158,7 +158,7 @@ class Job < ActiveRecord::Base
   end
 
   def checklist
-    ContractorJobs.where(job_id: self.id, primary: true)[0].checklist
+    ContractorJobs.where(job_id: self.id, primary: true)[0].then(:checklist)
   end
 
   def man_hours
@@ -225,8 +225,27 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def inventory_count!
+    standard_jobs = primary_contractor.jobs.standard.on_date(date)
+      
+    ['king_sheets', 'twin_sheets', 'pillow_count', 'bath_towels', 'hand_towels', 'face_towels', 'bath_mats'].each do |type|
+      update_attribute type.to_sym, standard_jobs.reduce(0) do |acc, job|
+        if job.checklist
+          checklist_id = job.checklist.id
+          settings = RailsSettings::SettingObject.where(var: 'inventory_count', target_id: checklist_id)[0]
+          if settings.chain(:value, type)
+            acc + settings.chain(:value, type)
+          else
+            acc
+          end
+        end
+      end
+    end
+  end
+
   def complete!
     completed!
+    inventory_count! if occasion == :dropoff
     pay_contractors!
     booking.update_attribute :status_cd, 3 if booking
     save
