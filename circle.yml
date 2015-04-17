@@ -1,3 +1,8 @@
+general:
+  branches:
+    only:
+      - master, develop
+
 deployment:
   staging:
     branch: develop
