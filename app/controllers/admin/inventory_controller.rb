@@ -2,6 +2,18 @@ class Admin::InventoryController < Admin::AuthController
   expose(:job) { Job.find params[:id] }
 
   def index
+    @days = []
+    distribution_jobs = Job.distribution
+    @days = distribution_jobs.group_by(&:date)
+    @days.to_a.reverse!
+
+    @days.each do |day|
+      day = day[1].group_by(&:distribution_center)
+      day.to_a.reverse!
+    end
+
+    @days = @days.to_h
+
     jobs = Job.distribution
     case params[:filter]
     when 'complete'
