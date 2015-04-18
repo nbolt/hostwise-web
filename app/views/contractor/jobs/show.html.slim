@@ -71,7 +71,7 @@
         hr
         .info
           .name ng:bind='::job.booking.property.user.name' ng:class="is_applicant && 'pad'"
-          a.icon-button.teal href="tel://+1{{job.booking.property.user.phone_number}}" ng:hide='is_applicant'
+          a.icon-button.teal href="tel://+1#{job.booking.property.phone_number}" ng:hide='is_applicant' ng:click='call()'
             .icon
               i.icon-call
             .text Call
@@ -179,12 +179,12 @@
                 .div.gray
                 timer interval="1000" start-timer='' autostart='false' finish-callback="timer_finished()" countdown="job.cant_access_seconds_left" {{mminutes}}:{{sseconds}}
                 .div.gray.bottom
-                a href='tel://+1{{job.booking.property.user.phone_number}}'
+                a href="tel://+1#{job.booking.property.phone_number}" ng:click='call()'
                   .icon-button.teal.half style='margin-right: 4%'
                     .icon
                       i.icon-call
                     .text Call
-                a href='sms://+1{{job.booking.property.user.phone_number}}'
+                a href="sms://+1#{job.booking.property.phone_number}" ng:click='sms()'
                   .icon-button.teal.half
                     .icon
                       i.icon-text
