@@ -31,8 +31,11 @@ class Job < ActiveRecord::Base
     now = zone && timezone.time(Time.now) || Time.now
     where('date >= ?', now)
   }
+  scope :on_date, -> (date) {
+    date = date.to_date if date.class == Time
+    where(date: date)
+  }
   scope :visible, -> { where(state_cd: [0,1]) }
-  scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
   scope :scheduled, -> { where(status_cd: 1) }
