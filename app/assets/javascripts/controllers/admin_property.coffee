@@ -134,7 +134,7 @@ AdminPropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$up
   load_bookings = (rsp) ->
     $scope.property.next_service_date = moment(rsp.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if rsp.next_service_date
 
-    _(['future_bookings', 'past_bookings']).each (type) ->
+    _(['past_bookings']).each (type) ->
       _($scope.property[type]).each (booking) ->
         date = moment.utc booking.date
         booking.parsed_date = date.format('MMMM Do, YYYY')
