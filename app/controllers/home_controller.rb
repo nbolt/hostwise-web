@@ -54,7 +54,7 @@ class HomeController < ApplicationController
     if logged_in?
       case current_user.role_cd
       when 1 # host
-        render json: current_user.to_json(include: [:payments, properties: {methods: [:nickname, :short_address, :primary_photo, :full_address, :next_service_date], include: [:active_bookings, :future_bookings, :past_bookings]}], methods: [:avatar, :name, :role, :notification_settings])
+        render json: current_user.to_json(include: [:payments, properties: {methods: [:nickname, :short_address, :primary_photo, :full_address, :next_service_date], include: [:active_bookings, :past_bookings]}], methods: [:avatar, :name, :role, :notification_settings])
       when 2 # contractor
         current_user.jobs.each{|j| j.current_user = current_user}
         render json: current_user.to_json(include: [:contractor_profile, :payments, :availability, jobs: {methods: [:payout_rounded, :payout_integer, :payout_fractional, :staging], include: {distribution_center: {methods: [:short_address, :full_address]}, booking: {include: [property: {methods: [:full_address], include: [user: {methods: [:name]}]}]}}}], methods: [:avatar, :name, :role, :notification_settings, :earnings, :unpaid])
