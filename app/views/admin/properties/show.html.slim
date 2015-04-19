@@ -107,7 +107,7 @@
                   a href='' ng:click="predicate = 'cost'; reverse=!reverse"
                     | Total
             tbody
-              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.past_bookings | itemsPerPage: 5' pagination-id='past'
+              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.past_bookings | reverse | itemsPerPage: 5' pagination-id='past'
                 td ng:bind='::booking.parsed_date_short'
                 td.id ng:bind='::booking.id'
                 td.services
