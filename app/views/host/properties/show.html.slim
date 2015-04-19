@@ -58,16 +58,16 @@
             .pf.icon-service
           .text
             strong
-              | {{property.future_bookings.length}}
+              | {{property.active_bookings.length}}
             |  Upcoming Services
           .arrow
             i.icon-acc-open ng:click='toggle($event)'
-        .book ng:if='!property.future_bookings[0]'
+        .book ng:if='!property.active_bookings[0]'
           .msg
             i.icon-alert-exclamation
             span No upcoming service dates
           a href='' ng:click='quick_add(property)' Book Service
-        .table ng:if='property.future_bookings[0]'
+        .table ng:if='property.active_bookings[0]'
           table
             thead
               tr
@@ -84,7 +84,7 @@
                   a href='' ng:click="predicate = 'cost'; reverse=!reverse"
                     | Total
             tbody
-              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.future_bookings | itemsPerPage: 5' pagination-id='upcoming'
+              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.active_bookings | itemsPerPage: 5' pagination-id='upcoming'
                 td ng:bind='::booking.parsed_date_short'
                 td.id.link ng:bind='::booking.id' ng:click='edit_booking(booking)'
                 td.services

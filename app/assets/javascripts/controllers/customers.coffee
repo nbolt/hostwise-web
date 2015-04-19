@@ -9,7 +9,7 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
         user.completed_jobs = 0
         user.total_spent = 0
         _(user.properties).each (property) ->
-          user.upcoming_jobs += property.future_bookings.length
+          user.upcoming_jobs += property.active_bookings.length
           user.completed_jobs += property.past_bookings.length
           if user.completed_jobs > 0
             _(property.past_bookings).each (booking) ->

@@ -23,7 +23,7 @@ app = angular.module('porter').directive('calendar', [->
       num_rows = if month_days + first_day > 35 then 6 else if first_day == 0 && month_days == 28 then 4 else 5
 
       prev_month = if month == 1 then 12 else month - 1
-      prev_year  = if month == 12 then year - 1 else year
+      prev_year  = if prev_month == 12 then year - 1 else year
 
       calendar.find('tbody').remove()
       calendar.find('thead').after('<tbody></tbody>')
@@ -34,10 +34,14 @@ app = angular.module('porter').directive('calendar', [->
       for row in [1..6]
         calendar.find('tbody').append('<tr class="week">')
         for day, i in days
-          day = (current_day + 1) + '-' + month + '-' + year
           html = '<td ' +
             (if row == 1 && i < first_day
-              'day="' + (prev_month_days - ((first_day-1) - i)) + '" month="' + prev_month + '" year="' + prev_year + '" class="active day"><div class="num">' + (prev_month_days - ((first_day-1) - i))
+              if options.disable_past && moment().diff(new Date(prev_year, prev_month-1, (prev_month_days - ((first_day-1) - i))), 'days') > 0
+                'day="' + (prev_month_days - ((first_day-1) - i)) + '" month="' + prev_month + '" year="' + year + '" class="past day"><div class="num">' + (prev_month_days - ((first_day-1) - i))
+              else if options.disable_past && moment().hour() >= 15 && moment().diff(new Date(prev_year, prev_month-1, (prev_month_days - ((first_day-1) - i))-1), 'days') > 0
+                'day="' + ((prev_month_days - ((first_day-1) - i))-1) + '" month="' + prev_month + '" year="' + year + '" class="past day"><div class="num">' + ((prev_month_days - ((first_day-1) - i))-1)
+              else
+                'day="' + (prev_month_days - ((first_day-1) - i)) + '" month="' + prev_month + '" year="' + prev_year + '" class="active day"><div class="num">' + (prev_month_days - ((first_day-1) - i))
              else if current_day >= month_days
               ++current_day
               _month = if month == 12 then 1 else month+1
