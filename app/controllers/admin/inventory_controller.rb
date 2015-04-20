@@ -4,7 +4,7 @@ class Admin::InventoryController < Admin::AuthController
   def index
     @distro = Job.distribution
     @distro = @distro.group_by(&:date)
-    @distro.each{|date, jobs| @distro[date] = jobs.group_by{|job| job.distribution_center.id}} 
+    @distro.each{|date, jobs| @distro[date] = jobs.group_by{|job| job.distribution_center.then(:id)}} 
 
     jobs = Job.distribution
     case params[:filter]
@@ -24,4 +24,18 @@ class Admin::InventoryController < Admin::AuthController
       end
     end
   end
+
+  def export
+    @distro = Job.distribution
+    @distro = @distro.group_by(&:date)
+    @distro.each{|date, jobs| @distro[date] = jobs.group_by{|job| job.distribution_center.then(:id)}} 
+    
+    respond_to do |format|
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"bookings.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+  end
+
 end

@@ -99,6 +99,7 @@ Rails.application.routes.draw do
     match '/properties/:id/:action' => 'properties', via: [:get, :post]
     get   '/transactions' => 'transactions#index'
     post  '/transactions/:action' => 'transactions'
+    post  '/inventory/:action' => 'inventory'
     get   '/login_as/:id' => 'auth#login_as'
   end
 

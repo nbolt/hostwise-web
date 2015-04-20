@@ -2,6 +2,9 @@
   .panel.panel-default
     .panel-heading
       h3.panel-title Inventory
+      .btn.btn-gray.btn-icon style='margin-right: 25px' ng:click='export_csv()'
+          i.icon-details
+          span Export CSV
       .panel-options
         a data-toggle="panel" href="#"
           span.collapse-icon &ndash;
@@ -53,40 +56,25 @@
           - @distro.each do |date, centers|
             - centers.each do |id, jobs|
               tr
-                td= date
-                td= DistributionCenter.find(id).name
                 td
-                  - @king_bed_count = 0
-                  - jobs.each do |job|
-                    - if job.king_beds != nil
-                      - @king_bed_count += job.king_beds 
-                  = @king_bed_count
+                  = date
                 td
-                  - @twin_bed_count = 0
-                  - jobs.each do |job|
-                    - if job.twin_beds != nil
-                      - @twin_bed_count += job.twin_beds 
-                  = @twin_bed_count
-                td not currently available
+                  = DistributionCenter.find(id).name
                 td
-                  - @bed_count = 0
-                  - jobs.each do |job|
-                    - if job.king_beds != nil
-                      - @bed_count += job.king_beds
-                    - if job.twin_beds != nil
-                      - @bed_count += job.twin_beds
-                    - if job.queen_beds != nil
-                      - @bed_count += job.queen_beds
-                    - if job.full_beds != nil
-                      - @bed_count += job.full_beds
-                  = @bed_count
+                  = king_bed_count(jobs)
                 td
-                  = jobs.reduce(0) {|acc, job| acc + job.toiletries}
+                  = twin_bed_count(jobs)
+                td 
+                  | not currently available
                 td
-                  = jobs.reduce(0) {|acc, job| acc + job.king_sheets}
+                  = bed_count(jobs)
                 td
-                  = jobs.reduce(0) {|acc, job| acc + job.twin_sheets}
+                  = toiletries(jobs)
                 td
-                  = jobs.reduce(0) {|acc, job| acc + job.king_sheets}
+                  = dirty_king_sheets(jobs)
                 td
-                  = jobs.reduce(0) {|acc, job| acc + job.king_sheets + job.twin_sheets}
+                  = dirty_twin_sheets(jobs)
+                td
+                  | not currently available
+                td
+                  = dirty_sheets(jobs)
