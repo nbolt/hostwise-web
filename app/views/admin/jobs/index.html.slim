@@ -92,7 +92,7 @@
             td ng:bind='job.total_kings'
             td ng:bind='job.total_twins'
             td ng:bind='job.total_toiletries'
-            td ng:bind='job.contractor_list'
+            td ng:bind='job.contractor_names'
             td
               .badge style='margin-bottom:7px' ng:hide='job.state_cd == 0 && job.staging' ng:bind='job.state' ng:class='state_class(job)'
               .badge.badge-red ng:show='job.staging' staging

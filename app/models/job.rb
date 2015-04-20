@@ -73,6 +73,10 @@ class Job < ActiveRecord::Base
 
   attr_accessor :current_user, :distance
 
+  def contractor_names
+    contractors.map(&:name).join ', '
+  end
+
   def priority contractor=nil
     contractor ||= current_user
     ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority if contractor
