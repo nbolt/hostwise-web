@@ -33,20 +33,21 @@ class DataController < ApplicationController
       when 'past'
         jobs = jobs.past(current_user)
     end
-    jobs.each {|j| j.current_user = current_user}
     if params[:scope] == 'open'
       selected_jobs = []; num = 0; processed = 0; offset = (params[:page].to_i - 1) * JOBS_PER_PAGE
       while selected_jobs.count < JOBS_PER_PAGE && jobs[num]
         job = jobs[num]
-        if !job.previous_team_job && !job.training && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS)
+        if !job.previous_team_job && !job.training && (job.first_job_of_day(current_user) || job.contractor_hours(current_user) + job.man_hours <= MAX_MAN_HOURS)
           processed += 1
           selected_jobs.push job if processed > offset && processed <= offset + JOBS_PER_PAGE
         end
         num += 1
       end
+      selected_jobs.each {|j| j.current_user = current_user}
       jobs = selected_jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
       render json: { jobs_count: processed, jobs: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}}) }
     else
+      jobs.each {|j| j.current_user = current_user}
       jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
       jobs = jobs.each {|jobs| jobs[1] = jobs[1].sort_by{|job| job.priority}} if params[:scope] == 'upcoming'
       render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})

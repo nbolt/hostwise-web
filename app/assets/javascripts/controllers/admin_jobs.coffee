@@ -10,7 +10,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
       $scope.jobs = rsp.jobs
       _($scope.jobs).each (job) ->
         job.contractor_list = _(job.contractors).map((contractor) -> contractor.name).join(', ')
-        job.service_list = _(_(job.booking.services).map((service) -> service.name)).join ', '
         job.total_kings = job.booking.property.king_bed_count
         job.total_twins = job.booking.property.twin_beds
         job.total_toiletries = job.booking.property.bathrooms
