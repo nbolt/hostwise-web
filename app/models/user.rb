@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   include PgSearch
 
   before_validation :format_phone_number
+  before_save :count_bookings
   after_save :handle_deactivation
 
   has_many :properties, dependent: :destroy
@@ -93,10 +94,6 @@ class User < ActiveRecord::Base
     properties.map(&:bookings).flatten
   end
 
-  def booking_count
-    properties.reduce(0) {|acc, property| acc + property.bookings.count}
-  end
-
   def notification_settings
     to_settings_hash
   end
@@ -110,7 +107,7 @@ class User < ActiveRecord::Base
   end
 
   def man_hours date
-    jobs.standard.on_date(date).reduce(0){|acc, job| acc + job.man_hours} if role_cd == 2
+    jobs.standard.on_date(date).sum(:man_hours)
   end
 
   def last_payout_date
@@ -251,6 +248,10 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def count_bookings
+    self.booking_count = properties.reduce(0) {|acc, property| acc + property.bookings.count}
+  end
 
   def format_phone_number
     self.phone_number = phone_number.strip.gsub(' ', '').delete("()-.+") if phone_number.present?

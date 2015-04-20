@@ -50,7 +50,9 @@ class Job < ActiveRecord::Base
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
-    visible.standard.days(contractor).where(state_cd: states, status_cd: 0).where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
+    visible.standard.days(contractor).where(state_cd: states, status_cd: 0)
+    .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today)
+    .order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   }
   scope :upcoming, -> (contractor) { standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :past, -> (contractor) { standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
@@ -66,6 +68,8 @@ class Job < ActiveRecord::Base
 
   scope :pickup,  -> { where(occasion_cd: 0) }
   scope :dropoff, -> { where(occasion_cd: 1) }
+
+  before_save :assign_man_hours
 
   attr_accessor :current_user, :distance
 
@@ -162,10 +166,6 @@ class Job < ActiveRecord::Base
 
   def checklist
     ContractorJobs.where(job_id: self.id, primary: true)[0].checklist
-  end
-
-  def man_hours
-    MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
   end
 
   def minimum_job_size
@@ -339,5 +339,11 @@ class Job < ActiveRecord::Base
         ContractorJobs.where(job_id: location.id, user_id: contractor.id)[0].update_attribute :priority, index
       end
     end
+  end
+
+  private
+
+  def assign_man_hours
+    self.man_hours = MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
   end
 end
