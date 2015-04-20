@@ -92,7 +92,7 @@ class Property < ActiveRecord::Base
     zip = Zip.where(code: self.zip)[0]
     if zip
       neighborhood = zip.chain(:neighborhood, :name)
-      if neighborhood != city
+      if neighborhood && neighborhood != city
         "#{address1}, #{neighborhood}, #{zip.code}"
       else
         "#{address1}, #{city}, #{zip.code}"
