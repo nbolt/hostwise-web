@@ -9,7 +9,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
     $http.get('/jobs.json',{params: {search: $scope.search, filter: $scope.filter.id}}).success (rsp) ->
       $scope.jobs = rsp.jobs
       _($scope.jobs).each (job) ->
-        job.contractor_list = _(job.contractors).map((contractor) -> contractor.name).join(', ')
         job.total_kings = job.booking.property.king_bed_count
         job.total_twins = job.booking.property.twin_beds
         job.total_toiletries = job.booking.property.bathrooms
