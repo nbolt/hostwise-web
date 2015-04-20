@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416183251) do
+ActiveRecord::Schema.define(version: 20150420080734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "user_id"
@@ -231,6 +232,14 @@ ActiveRecord::Schema.define(version: 20150416183251) do
     t.integer  "state_cd",     default: 0
     t.integer  "occasion_cd"
     t.datetime "cant_access"
+    t.integer  "king_sheets",  default: 0
+    t.integer  "twin_sheets",  default: 0
+    t.integer  "pillow_count", default: 0
+    t.integer  "bath_towels",  default: 0
+    t.integer  "hand_towels",  default: 0
+    t.integer  "face_towels",  default: 0
+    t.integer  "bath_mats",    default: 0
+    t.float    "man_hours"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -417,6 +426,7 @@ ActiveRecord::Schema.define(version: 20150416183251) do
     t.integer  "status_cd",                       default: 1
     t.boolean  "migrated",                        default: false
     t.integer  "vip_count",                       default: 0
+    t.integer  "booking_count"
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree

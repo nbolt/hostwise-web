@@ -34,6 +34,10 @@ class Booking < ActiveRecord::Base
 
   attr_accessor :vip
 
+  def service_list
+    services.map(&:display).join ', '
+  end
+
   def self.cost property, services, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
     pool_service = Service.where(name: 'pool')[0]
     total = 0
