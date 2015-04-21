@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
 
   def avatar
     if avatars.empty?
-      "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}.jpg?d=https%3A%2F%2Fs3.amazonaws.com%2Fhostwise-production%2Fgeneric_user.png"
+      "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}.jpg?d=https://s3-us-west-1.amazonaws.com/hostwise-assets/generic_user.png"
     else
       avatars.last.photo.url
     end
