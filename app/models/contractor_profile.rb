@@ -2,7 +2,7 @@ class ContractorProfile < ActiveRecord::Base
   belongs_to :user
 
   before_validation :standardize_address
-  before_save :create_stripe_recipient, :verify_account, :fetch_zone, :handle_position_change
+  before_save :create_stripe_recipient, :fetch_zone, :handle_position_change
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
@@ -100,10 +100,6 @@ class ContractorProfile < ActiveRecord::Base
       )
       self.stripe_recipient_id = rsp.id
     end
-  end
-
-  def verify_account
-    verify_stripe!
   end
 
   def standardize_address
