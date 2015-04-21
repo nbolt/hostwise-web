@@ -10,6 +10,8 @@ class Booking < ActiveRecord::Base
   has_one :booking_users, dependent: :destroy
   has_many :booking_services, class_name: 'BookingServices', dependent: :destroy
   has_many :services, through: :booking_services
+  has_many :booking_coupons, class_name: 'BookingCoupon', dependent: :destroy
+  has_many :coupons, through: :booking_coupons
   has_many :booking_transactions, class_name: 'BookingTransactions', dependent: :destroy
   has_many :transactions, through: :booking_transactions, source: :stripe_transaction
   has_many :successful_transactions, -> { where(status_cd: 0) },  through: :booking_transactions, source: :stripe_transaction
