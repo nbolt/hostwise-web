@@ -42,7 +42,7 @@ class ContractorProfile < ActiveRecord::Base
         account = Stripe::Account.retrieve self.stripe_recipient_id
         if account.verification.fields_needed[0]
           account.tos_acceptance = { date: Time.now.to_i, ip: ip }
-          account.legal_entity = { 'dob' => {}, 'address' => {}, 'personal_address' => {}, 'verification' => {} }
+          account.legal_entity = { 'type' => 'individual', 'dob' => {}, 'address' => {}, 'personal_address' => {}, 'verification' => {} }
           account.verification.fields_needed.each do |field|
             if field.match(/legal_entity/)
               field = field.gsub(/^legal_entity./, '')
