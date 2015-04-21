@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420234214) do
+ActiveRecord::Schema.define(version: 20150421182725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,16 @@ ActiveRecord::Schema.define(version: 20150420234214) do
   end
 
   add_index "background_checks", ["user_id"], name: "index_background_checks_on_user_id", using: :btree
+
+  create_table "booking_coupons", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "coupon_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "booking_coupons", ["booking_id"], name: "index_booking_coupons_on_booking_id", using: :btree
+  add_index "booking_coupons", ["coupon_id"], name: "index_booking_coupons_on_coupon_id", using: :btree
 
   create_table "booking_services", force: :cascade do |t|
     t.integer  "booking_id"
@@ -183,6 +193,7 @@ ActiveRecord::Schema.define(version: 20150420234214) do
     t.boolean  "docusign_completed"
     t.string   "docusign_id"
     t.string   "zone"
+    t.boolean  "verified",                     default: false
   end
 
   create_table "counties", force: :cascade do |t|
@@ -193,6 +204,18 @@ ActiveRecord::Schema.define(version: 20150420234214) do
   end
 
   add_index "counties", ["state_id"], name: "index_counties_on_state_id", using: :btree
+
+  create_table "coupons", force: :cascade do |t|
+    t.string   "description"
+    t.string   "code"
+    t.integer  "status_cd",        default: 1
+    t.integer  "amount",           default: 0
+    t.integer  "limit",            default: 0
+    t.date     "expiration"
+    t.integer  "discount_type_cd", default: 0
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
 
   create_table "distribution_centers", force: :cascade do |t|
     t.string   "address1"
@@ -453,6 +476,8 @@ ActiveRecord::Schema.define(version: 20150420234214) do
 
   add_foreign_key "availabilities", "users"
   add_foreign_key "background_checks", "users"
+  add_foreign_key "booking_coupons", "bookings"
+  add_foreign_key "booking_coupons", "coupons"
   add_foreign_key "booking_services", "bookings"
   add_foreign_key "booking_services", "services"
   add_foreign_key "booking_transactions", "bookings"

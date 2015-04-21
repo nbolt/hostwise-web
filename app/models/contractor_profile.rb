@@ -34,6 +34,54 @@ class ContractorProfile < ActiveRecord::Base
     true
   end
 
+  def verify_stripe!(ip=nil)
+    if stripe_recipient_id
+      ip = Socket.ip_address_list.detect(&:ipv4_private?).try(:ip_address) unless ip
+      ip = IPSocket::getaddress('www.hostwise.com') unless ip
+      begin
+        account = Stripe::Account.retrieve stripe_recipient_id
+        if account.verification.fields_needed[0]
+          account.tos_acceptance = { date: Time.now.to_i, ip: ip }
+          account.legal_entity = { 'dob' => {}, 'address' => {}, 'personal_address' => {}, 'verification' => {} }
+          account.verification.fields_needed.each do |field|
+            if field.match(/legal_entity/)
+              field = field.gsub(/^legal_entity./, '')
+              if field.match(/^.*\./)
+                subfield = field.gsub(field.match(/^.*\./)[0], '')
+                field    = field.match(/(^.*)\./)[1]
+              end
+              account.legal_entity[field] =
+                case field
+                when 'type'
+                  'individual'
+                when 'first_name'
+                  self.user.first_name
+                when 'last_name'
+                  self.user.last_name
+                when 'ssn_last_4'
+                  self.ssn[-4..-1]
+                when 'address'
+                  { 'line1' => self.address1, 'line2' => self.address2, 'city' => self.city, 'state' => self.state, 'postal_code' => self.zip }
+                when 'personal_address'
+                  { 'line1' => self.address1, 'line2' => self.address2, 'city' => self.city, 'state' => self.state, 'postal_code' => self.zip }
+                when 'dob'
+                  { 'day' => self.dob[0..1], 'month' => self.dob[2..3], 'year' => self.dob[4..7] }
+                end
+            end
+          end
+          account.save
+          self.update_attribute :verified, true
+        else
+          true
+        end
+      rescue Stripe::InvalidRequestError
+        false
+      end
+    else
+      false
+    end
+  end
+
   private
 
   def fetch_zone
