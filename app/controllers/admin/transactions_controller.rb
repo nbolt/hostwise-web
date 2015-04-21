@@ -107,7 +107,7 @@ class Admin::TransactionsController < Admin::AuthController
 
         if total > 0
           recipient = Stripe::Account.retrieve user.contractor_profile.stripe_recipient_id
-          recipient.verify_stripe!(request.remote_ip) if recipient.verification.fields_needed[0]
+          user.contractor_profile.verify_stripe!(request.remote_ip) if recipient.verification.fields_needed[0]
 
           rsp = Stripe::Transfer.create(
             :amount => total,
