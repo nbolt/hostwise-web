@@ -2,7 +2,7 @@ class ContractorProfile < ActiveRecord::Base
   belongs_to :user
 
   before_validation :standardize_address
-  before_save :create_stripe_recipient, :fetch_zone, :handle_position_change
+  before_save :create_stripe_recipient, :verify_account, :fetch_zone, :handle_position_change
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
@@ -35,11 +35,11 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   def verify_stripe!(ip=nil)
-    if stripe_recipient_id
+    if self.stripe_recipient_id
       ip = Socket.ip_address_list.detect(&:ipv4_private?).try(:ip_address) unless ip
       ip = IPSocket::getaddress('www.hostwise.com') unless ip
       begin
-        account = Stripe::Account.retrieve stripe_recipient_id
+        account = Stripe::Account.retrieve self.stripe_recipient_id
         if account.verification.fields_needed[0]
           account.tos_acceptance = { date: Time.now.to_i, ip: ip }
           account.legal_entity = { 'dob' => {}, 'address' => {}, 'personal_address' => {}, 'verification' => {} }
@@ -70,7 +70,7 @@ class ContractorProfile < ActiveRecord::Base
             end
           end
           account.save
-          self.update_attribute :verified, true
+          self.update_attribute :verified, true unless account.verification.fields_needed[0]
         else
           true
         end
@@ -100,6 +100,10 @@ class ContractorProfile < ActiveRecord::Base
       )
       self.stripe_recipient_id = rsp.id
     end
+  end
+
+  def verify_account
+    verify_stripe!
   end
 
   def standardize_address
