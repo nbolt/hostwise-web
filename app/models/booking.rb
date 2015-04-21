@@ -91,7 +91,7 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    total_cost = (adjusted_cost / 100) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost - first_booking_discount_cost
+    total_cost = (adjusted_cost / 100.0) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost - first_booking_discount_cost - (refunded_cost / 100.0)
     if cancelled? || couldnt_access?
       total_cost -= linen_cost            # |
       total_cost -= toiletries_cost       # |  NOTE: tests needed [mutation coverage]
@@ -103,11 +103,26 @@ class Booking < ActiveRecord::Base
   end
 
   def original_cost
-    (cost - (adjusted_cost / 100)).round 2
+    (cost - (adjusted_cost / 100.0) + (refunded_cost / 100.0)).round 2
   end
 
   def pricing_hash
-    { cost: cost, cleaning: cleaning_cost, linens: linen_cost, toiletries: toiletries_cost, pool: pool_cost, patio: patio_cost, windows: windows_cost, preset: staging_cost, no_access_fee: no_access_fee_cost, late_next_day: late_next_day_cost, late_same_day: late_same_day_cost, first_booking_discount: first_booking_discount_cost, overage_cost: overage_cost / 100, discounted_cost: discounted_cost / 100 }
+    { cost: cost, cleaning: cleaning_cost, linens: linen_cost, toiletries: toiletries_cost, pool: pool_cost, patio: patio_cost, windows: windows_cost, preset: staging_cost, no_access_fee: no_access_fee_cost, late_next_day: late_next_day_cost, late_same_day: late_same_day_cost, first_booking_discount: first_booking_discount_cost, refunded_cost: refunded_cost, overage_cost: overage_cost / 100.0, discounted_cost: discounted_cost / 100.0 }
+  end
+
+  def process_refund!
+    if last_transaction.then(:status) == :successful && !stripe_refund_id
+      charge = Stripe::Charge.retrieve(last_transaction.stripe_charge_id)
+      begin
+        refund = charge.refunds.create(amount: refunded_cost, reason: refunded_reason, metadata: {booking_id: self.id})
+        self.update_attribute :stripe_refund_id, refund.id
+        true
+      rescue Stripe::InvalidRequestError
+        false
+      end
+    else
+      false
+    end
   end
 
   def update_cost!

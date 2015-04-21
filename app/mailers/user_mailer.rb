@@ -213,10 +213,10 @@ class UserMailer < MandrillMailer::TemplateMailer
                         first_booking_discount: booking.first_booking_discount,
                         first_booking_discount_amount: booking.first_booking_discount_cost,
                         discounted: booking.discounted,
-                        discounted_cost: booking.discounted_cost / 100,
+                        discounted_cost: booking.discounted_cost / 100.0,
                         discounted_reason: booking.discounted_reason,
                         overage: booking.overage,
-                        overage_cost: booking.overage_cost / 100,
+                        overage_cost: booking.overage_cost / 100.0,
                         overage_reason: booking.overage_reason,
                         prop_link: property_url(booking.property.slug)
                       },
