@@ -596,6 +596,8 @@
                 .icon, .text
                   display: inline-block
                   vertical-align: top
+                &.auto
+                  width: auto
                 &.right
                   margin: 0
                   padding: 0
@@ -834,6 +836,64 @@
               .field
                 display: inline-block
                 vertical-align: top
+          &.extras
+            width: 976px
+            padding: 20px 50px
+            hr
+              border: 0
+              border-top: 1px solid light-gray
+              margin: 30px auto
+            h3
+              color: teal
+              margin: 10px 0 5px
+            h5
+              margin: 0
+              font-weight: normal
+            textarea
+              border: thin solid light-gray
+              border-radius: 3px
+              box-sizing: border-box
+              height: 200px
+              padding: 8px 12px
+              width: 100%
+              margin: 30px 0
+            .counters
+              .counter
+                display: inline-block
+                vertical-align: top
+                width: 33.33%
+                .label
+                  margin-top: 8px
+                  color: dark-gray
+                .boxes
+                  margin-top: 15px
+                .box
+                  background-color: white
+                  display: inline-block
+                  vertical-align: top
+                  border: thin solid gray
+                  width: 40px
+                  height: 40px
+                  box-sizing: border-box
+                  padding: 8px 15px
+                  &:first-child, &:last-child
+                    color: teal
+                    font-weight: 600
+                    font-size: 1.1em
+                    &:hover
+                      cursor: pointer
+                  &:first-child
+                    border-top-left-radius: 3px
+                    border-bottom-left-radius: 3px
+                  &:nth-child(2)
+                    border-left: 0
+                    border-right: 0
+                    color: heavy-gray
+                  &:last-child
+                    border-top-right-radius: 3px
+                    border-bottom-right-radius: 3px
+                input.box
+                  border-radius: 0
           &.confirmation
             background-color: white
             width: 976px
@@ -1098,10 +1158,10 @@
       margin-top: 20px
       font-weight: 700
     .day-services
-      max-height: 192px
+      max-height: 220px
       overflow: hidden
       transition: max-height .6s ease-in-out
-      .service, .late
+      .service, .late, .extra-set
         margin: 10px 0
       @media phone
         overflow: scroll

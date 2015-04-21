@@ -11,6 +11,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.next_day_booking = ''
   $scope.booking = false
   $scope.refresh_booking = false
+  $scope.extra = {king_sets: 0, twin_sets: 0, toiletry_sets: 0}
 
   unless $scope.selected_booking
     $http.get("/properties/#{$scope.property.slug}/last_services").success (rsp) ->
@@ -45,13 +46,17 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     else if no_dates()
       flash 'failure', 'Please select at least one date'
     else
-      if $scope.payment.id is 'new'
-        $scope.payment_screen 'new'
-      else
-        $scope.payment_screen 'existing'
-      $scope.slide 'step-two'
+      $scope.slide 'step-additional'
       $scope.calculate_pricing()
     null
+
+  $scope.select_payment = ->
+    if $scope.payment.id is 'new'
+      $scope.payment_screen 'new'
+    else
+      $scope.payment_screen 'existing'
+    $scope.slide 'step-two'
+    $scope.calculate_pricing()
 
   $scope.details = ->
     angular.element('.content-side-container .content-side').toggle()
@@ -93,6 +98,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
         $http.post("/properties/#{$scope.property.slug}/book", {
           payment: id
           services: services_array()
+          extra_king_sets: $scope.extra.king_sets
+          extra_twin_sets: $scope.extra.twin_sets
+          extra_toiletry_sets: $scope.extra.toiletry_sets
+          extra_instructions: $scope.extra.instructions
           dates: $scope.chosen_dates
           late_next_day: $scope.next_day_booking
           late_same_day: $scope.same_day_booking
@@ -128,7 +137,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     first_booking_discount_applied = false
     $scope.total = 0
     $scope.days = []
-    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, booking: $scope.selected_booking}).success (rsp) ->
+    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
       $scope.service_total = rsp.cost
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
       cancellation_cost = 0 if cancellation_cost < 0
@@ -160,6 +169,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
           if rsp.discounted_cost
             day.discounted = true
             day.discounted_cost = rsp.discounted_cost
+          if rsp.extra_king_sets
+            day.extra_king_sets = rsp.extra_king_sets
+          if rsp.extra_twin_sets
+            day.extra_twin_sets = rsp.extra_twin_sets
+          if rsp.extra_toiletry_sets
+            day.extra_toiletry_sets = rsp.extra_toiletry_sets
           $scope.total += day.total
           _($scope.selected_services).each (v,k) ->
             day[k] = rsp[k] if v

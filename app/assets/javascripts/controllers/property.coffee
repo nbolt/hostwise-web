@@ -13,7 +13,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     $scope.property = rsp
     $scope.form = _(rsp).clone()
     load_bookings(rsp)
-    
+
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.property = rsp
     $scope.form = _(rsp).clone()
@@ -190,6 +190,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         payment_type = if rsp.payment.stripe_id then 'Card' else 'Bank'
         $scope.payment.id = rsp.payment.id
         $scope.payment.text = "#{payment_type} ending in #{rsp.payment.last4}"
+        $scope.extra = {king_sets: rsp.extra_king_sets, twin_sets: rsp.extra_twin_sets, toiletry_sets: rsp.extra_toiletry_sets}
         _(rsp.services).each (service) ->
           $scope.selected_services[service.name] = true
           angular.element(".booking.modal .services .service.#{service.name}, .booking.modal .extra .service.#{service.name}").addClass 'active'
