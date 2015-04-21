@@ -4,19 +4,28 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
   $scope.payment = { discount: { percentage: 0, amount: 0, reason: '' }, overage: { percentage: 0, amount: 0, reason: '' } }
   $scope.refund  = { percentage: 0, amount: 0, reason: '' }
 
-  $scope.export_csv = ->
-    bookings = filtered_data('#example-1')
-    $http.post('/transactions/export.csv', {bookings: bookings}).success (rsp) ->
+  $scope.export_bookings = ->
+    bookings = filtered_data('#example-1', 'booking')
+    $http.post('/transactions/export_bookings.csv', {bookings: bookings}).success (rsp) ->
       blob = new Blob([rsp],
         type: "application/octet-stream;charset=utf-8;",
       )
       saveAs(blob, "bookings.csv")
 
-  filtered_data = (table) ->
+  $scope.export_jobs = ->
+    jobs = filtered_data('#example-2', 'job')
+    $http.post('/transactions/export_jobs.csv', {jobs: jobs}).success (rsp) ->
+      blob = new Blob([rsp],
+        type: "application/octet-stream;charset=utf-8;",
+      )
+      saveAs(blob, "jobs.csv")
+
+  filtered_data = (table, prefix) ->
     table = angular.element(table).dataTable()
     displayed = []
     currentlyDisplayed = table.fnSettings().aiDisplay
-    _(currentlyDisplayed).each (index) -> displayed.push( table.fnGetData(index)[0].match(/check-\d*/)[0].replace('check-', '') )
+    regexp = new RegExp("#{prefix}-\\d*")
+    _(currentlyDisplayed).each (index) -> displayed.push( table.fnGetData(index)[0].match(regexp)[0].replace("#{prefix}-", '') )
     displayed
 
   $scope.selected_payments = -> _($scope.bookings).filter (booking) -> booking.selected
