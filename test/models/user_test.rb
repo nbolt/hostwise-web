@@ -34,7 +34,7 @@ describe User do
 	it 'shows avatar correctly' do
 		user_name_1 = nil
 		VCR.use_cassette('create_user_name_1') { user_name_1 = create(:user_name_1) }
-		user_name_1.avatar.must_equal  "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user_name_1.email)}.jpg?d=https%3A%2F%2Fs3.amazonaws.com%2Fhostwise-production%2Fgeneric_user.png"
+		user_name_1.avatar.must_equal  "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user_name_1.email)}.jpg?d=https://s3-us-west-1.amazonaws.com/hostwise-assets/generic_user.png"
 	end
 
 	it 'shows correct notification settings' do
