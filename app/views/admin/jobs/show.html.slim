@@ -180,6 +180,12 @@
                   | (-$
                   span ng:bind="job.booking.discounted_cost / 100.0"
                   | )
+              .service.discount ng:show='job.booking.refunded'
+                .text Refund ({{job.booking.refunded_reason}})
+                .price
+                  | (-$
+                  span ng:bind="job.booking.refunded_cost / 100.0"
+                  | )
               .late ng:show="job.booking.late_next_day"
                 .text Late Day Booking Fee
                 .price
