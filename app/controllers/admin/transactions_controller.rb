@@ -12,12 +12,23 @@ class Admin::TransactionsController < Admin::AuthController
     end
   end
 
-  def export
+  def export_bookings
     @bookings = params[:bookings].map {|id| Booking.find id}
 
     respond_to do |format|
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"bookings.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+  end
+
+  def export_jobs
+    @jobs = params[:jobs].map {|id| Job.find id}
+
+    respond_to do |format|
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"jobs.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
     end
@@ -107,6 +118,7 @@ class Admin::TransactionsController < Admin::AuthController
 
         if total > 0
           recipient = Stripe::Account.retrieve user.contractor_profile.stripe_recipient_id
+          user.contractor_profile.verify_stripe!(request.remote_ip) if recipient.verification.fields_needed[0]
 
           rsp = Stripe::Transfer.create(
             :amount => total,

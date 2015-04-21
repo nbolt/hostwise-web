@@ -35,6 +35,7 @@ module Clockwork
 
           if total > 0
             recipient = Stripe::Account.retrieve user.contractor_profile.stripe_recipient_id
+            user.contractor_profile.verify_stripe! if recipient.verification.fields_needed[0]
 
             rsp = Stripe::Transfer.create(
               :amount => total,
