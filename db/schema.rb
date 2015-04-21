@@ -124,6 +124,13 @@ ActiveRecord::Schema.define(version: 20150421182725) do
     t.integer  "refunded_cost",               default: 0
     t.string   "refunded_reason"
     t.string   "stripe_refund_id"
+    t.integer  "extra_king_sets",             default: 0
+    t.integer  "extra_twin_sets",             default: 0
+    t.integer  "extra_toiletry_sets",         default: 0
+    t.string   "extra_instructions",          default: ""
+    t.integer  "extra_king_sets_cost",        default: 0
+    t.integer  "extra_twin_sets_cost",        default: 0
+    t.integer  "extra_toiletry_sets_cost",    default: 0
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
