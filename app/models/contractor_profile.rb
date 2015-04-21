@@ -65,7 +65,7 @@ class ContractorProfile < ActiveRecord::Base
                 when 'personal_address'
                   { 'line1' => self.address1, 'line2' => self.address2, 'city' => self.city, 'state' => self.state, 'postal_code' => self.zip }
                 when 'dob'
-                  { 'day' => self.dob[0..1], 'month' => self.dob[2..3], 'year' => self.dob[4..7] }
+                  { 'month' => self.dob[0..1], 'day' => self.dob[2..3], 'year' => self.dob[4..7] }
                 end
             end
           end
