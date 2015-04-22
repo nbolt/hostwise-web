@@ -32,7 +32,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
   $scope.selected_payouts = -> _($scope.jobs).filter (job) -> job.selected
 
   $scope.check_booking = (booking) ->
-    if angular.element("#check-#{booking.id}").prop('checked')
+    if angular.element("#booking-#{booking.id}").prop('checked')
       booking.selected = true
     else
       booking.selected = false
