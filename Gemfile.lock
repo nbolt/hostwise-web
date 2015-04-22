@@ -57,6 +57,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_commentable (4.0.2)
     addressable (2.3.8)
     algorithms (0.6.1)
     analytics-ruby (2.0.12)
@@ -445,6 +446,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (= 0.8.3)
+  acts_as_commentable
   algorithms
   analytics-ruby
   angular_rails_csrf

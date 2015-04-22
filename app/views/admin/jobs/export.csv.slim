@@ -1,0 +1,5 @@
+- headers = ['ID', 'Property', 'Size', 'Date', 'Address', 'Customer', 'Phone', 'Status', 'Cost', 'Services', 'King Set(s)', 'Twin Set(s)', 'Toiletries Set(s)', 'Contractor(s)', 'Type']
+
+= CSV.generate_line headers
+- @jobs.each do |job|
+  = CSV.generate_line([job.id, property_id(job), bed_bath(job), job.date, address(job), host(job), phone_number(job), job.status, cost(job), '', king_sets(job), twin_sets(job), toiletries(job), job.contractor_names, job.state]).html_safe

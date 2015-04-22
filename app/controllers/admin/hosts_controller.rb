@@ -42,4 +42,7 @@ class Admin::HostsController < Admin::AuthController
   def host_params
     params.require(:host).permit(:email, :first_name, :last_name, :phone_number)
   end
+
+  def notes
+  end
 end

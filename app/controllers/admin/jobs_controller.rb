@@ -21,6 +21,10 @@ class Admin::JobsController < Admin::AuthController
     end
   end
 
+  def export
+    @jobs = Job.all
+  end
+
   def show
     respond_to do |format|
       format.html

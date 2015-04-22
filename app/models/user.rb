@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
 
   include PgSearch
 
+  acts_as_commentable
+
   before_validation :format_phone_number
   before_save :count_bookings
   after_save :handle_deactivation

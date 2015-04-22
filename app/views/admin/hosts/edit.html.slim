@@ -102,6 +102,11 @@
                 p.dark-gray ng:bind='::property.bookings.length'
               .section
                 p.dark-gray ${{property.revenue}}
+    .step.three
+      form
+        a href="/hosts/{{host.id}}/notes" {{host.name}} Notes
+          
+          
 
   .deactivate ng:show="host.activation_state == 'active'"
     | Do you wish to

@@ -83,6 +83,7 @@ Rails.application.routes.draw do
     post  '/contractors/:id/background_check' => 'contractors#background_check'
     get   '/hosts' => 'hosts#index'
     get   '/hosts/:id/edit' => 'hosts#edit'
+    get   '/hosts/:id/notes' => 'hosts#notes'
     put   '/hosts/:id/update' => 'hosts#update'
     post  '/hosts/:id/deactivate' => 'hosts#deactivate'
     post  '/hosts/:id/reactivate' => 'hosts#reactivate'
@@ -100,6 +101,7 @@ Rails.application.routes.draw do
     get   '/transactions' => 'transactions#index'
     post  '/transactions/:action' => 'transactions'
     post  '/inventory/:action' => 'inventory'
+    post  '/jobs/:action' => 'jobs'
     get   '/login_as/:id' => 'auth#login_as'
   end
 

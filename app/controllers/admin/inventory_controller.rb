@@ -26,6 +26,7 @@ class Admin::InventoryController < Admin::AuthController
   end
 
   def export
+    @inventory = params[:inventory]
     @distro = Job.distribution
     @distro = @distro.group_by(&:date)
     @distro.each{|date, jobs| @distro[date] = jobs.group_by{|job| job.distribution_center.then(:id)}} 

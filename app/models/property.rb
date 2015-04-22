@@ -2,6 +2,8 @@ class Property < ActiveRecord::Base
   extend FriendlyId
   include PgSearch
 
+  acts_as_commentable
+
   friendly_id :slug_candidates, use: :slugged
 
   pg_search_scope :search_property, against: [:id, :title, :address1, :address2, :city, :zip], using: { tsearch: { prefix: true } }
