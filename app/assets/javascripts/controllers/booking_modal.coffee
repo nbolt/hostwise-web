@@ -11,7 +11,13 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.next_day_booking = ''
   $scope.booking = false
   $scope.refresh_booking = false
-  $scope.extra = {king_sets: 0, twin_sets: 0, toiletry_sets: 0}
+  $scope.show_back = false
+
+  if $scope.selected_booking
+    booking = _($scope.property.active_bookings).find (booking) -> booking.id == parseInt($scope.selected_booking)
+    $scope.extra = {king_sets: booking.extra_king_sets, twin_sets: booking.extra_twin_sets, toiletry_sets: booking.extra_toiletry_sets, instructions: booking.extra_instructions}
+  else
+    $scope.extra = {king_sets: 0, twin_sets: 0, toiletry_sets: 0}
 
   unless $scope.selected_booking
     $http.get("/properties/#{$scope.property.slug}/last_services").success (rsp) ->
@@ -58,10 +64,25 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     $scope.slide 'step-two'
     $scope.calculate_pricing()
 
-  $scope.details = ->
-    angular.element('.content-side-container .content-side').toggle()
-    $scope.calculate_pricing()
-    null
+  $scope.back = ->
+    angular.element('.content.side').hide()
+    angular.element('.content.side.edit').css 'display', 'inline-block'
+    $scope.show_back = false
+
+  $scope.change_payment = ->
+    angular.element('.content.side').hide()
+    angular.element('.content.side.payment').css 'display', 'inline-block'
+    $scope.show_back = true
+
+  $scope.edit_extras = ->
+    angular.element('.content.side').hide()
+    angular.element('.content.side.extras').css 'display', 'inline-block'
+    $scope.show_back = true
+
+  $scope.edit_services = ->
+    angular.element('.content.side').hide()
+    angular.element('.content.side.services').css 'display', 'inline-block'
+    $scope.show_back = true
 
   $scope.add_payment = (defer) ->
     if $scope.payment_method.id == 'credit-card'
@@ -266,6 +287,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
       $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/update", {
         payment: id
         services: services_array()
+        extra_king_sets: $scope.extra.king_sets
+        extra_twin_sets: $scope.extra.twin_sets
+        extra_toiletry_sets: $scope.extra.toiletry_sets
+        extra_instructions: $scope.extra.instructions
       }).success (rsp) ->
         spinner.stopSpin()
         if rsp.success

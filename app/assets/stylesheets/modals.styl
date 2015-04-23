@@ -719,12 +719,30 @@
               width: 488px
               margin: 0
               padding: 0
-              &.details
-                display: none
               @media portrait_tablet
                 width: 350px
               @media phone
                 width: 320px
+          &.edit
+            padding: 25px 60px
+            .title
+              color: teal
+              font-weight: 600
+            .buttons
+              .button
+                color: heavy-gray
+                display: block
+                background-color: white
+                border: thin solid #EFF0F2
+                padding: 15px
+                margin: 20px
+                .text
+                  margin: 0
+                  font-weight: 600
+                &:hover
+                  color: teal
+                &.red
+                  color: red
           .buttons
             margin: 25px auto
             .cancel

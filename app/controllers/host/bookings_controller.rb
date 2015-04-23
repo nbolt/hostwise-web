@@ -15,8 +15,21 @@ class Host::BookingsController < Host::AuthController
       params[:services].each do |service|
         booking.services.push Service.where(name: service)[0] unless booking.services.find {|s| service == s.name}
       end
+      if params[:extra_instructions].present?
+        booking.extra_instructions = params[:extra_instructions]
+      end
+      if params[:extra_king_sets].present?
+        booking.extra_king_sets = params[:extra_king_sets]
+      end
+      if params[:extra_twin_sets].present?
+        booking.extra_twin_sets = params[:extra_twin_sets]
+      end
+      if params[:extra_toiletry_sets].present?
+        booking.extra_toiletry_sets = params[:extra_toiletry_sets]
+      end
       if booking.save
         booking.update_cost!
+        booking.job.handle_distribution_jobs booking.job.primary_contractor if booking.job.primary_contractor
         render json: { success: true }
       else
         render json: { success: false }

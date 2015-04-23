@@ -160,7 +160,7 @@ class Job < ActiveRecord::Base
   end
 
   def primary_contractor
-    ContractorJobs.where(job_id: self.id, primary: true)[0].user
+    ContractorJobs.where(job_id: self.id, primary: true)[0].then(:user)
   end
 
   def primary contractor=nil
@@ -287,9 +287,14 @@ class Job < ActiveRecord::Base
             supplies[:king_beds] += job.booking.property.king_beds
             supplies[:king_beds] += job.booking.property.queen_beds
             supplies[:king_beds] += job.booking.property.full_beds
+            supplies[:king_beds] += job.booking.extra_king_sets
             supplies[:twin_beds] += job.booking.property.twin_beds
+            supplies[:twin_beds] += job.booking.extra_twin_sets
           end
-          job.booking.property.bathrooms.times { supplies[:toiletries] += 1 } if job.has_toiletries?
+          if job.has_toiletries?
+            job.booking.property.bathrooms.times { supplies[:toiletries] += 1 }
+            supplies[:toiletries] += job.booking.extra_toiletry_sets
+          end
         end
       end
 
@@ -300,9 +305,14 @@ class Job < ActiveRecord::Base
           supplies[:king_beds] += team_job.booking.property.king_beds
           supplies[:king_beds] += team_job.booking.property.queen_beds
           supplies[:king_beds] += team_job.booking.property.full_beds
+          supplies[:king_beds] += team_job.booking.extra_king_sets
           supplies[:twin_beds] += team_job.booking.property.twin_beds
+          supplies[:twin_beds] += team_job.booking.extra_twin_sets
         end
-        team_job.booking.property.bathrooms.times { supplies[:toiletries] += 1 } if team_job.has_toiletries?
+        if team_job.has_toiletries?
+          team_job.booking.property.bathrooms.times { supplies[:toiletries] += 1 }
+          supplies[:toiletries] += team_job.booking.extra_toiletry_sets
+        end
       end
 
       if distribution_job

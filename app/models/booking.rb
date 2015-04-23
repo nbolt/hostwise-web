@@ -40,7 +40,7 @@ class Booking < ActiveRecord::Base
     services.map(&:display).join ', '
   end
 
-  def self.cost property, services, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
+  def self.cost property, services, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
     pool_service = Service.where(name: 'pool')[0]
     total = 0
     rsp = {}

@@ -69,26 +69,64 @@ script#booking-modal type="text/ng-template"
               .total
                 .text Total
                 .price ${{total}}
-            .content-side.services
-              .services
-                .title =t('booking.modal.services_title')
-                - Service.standard.each do |service|
-                  .service class="#{service.name}"
-                    i.icon class="icon-serv-#{service.name}"
-                    .text= service.display
-                    label.switch.red
-                      input type='checkbox' toggle-service="#{service.name}"
-                      i
-              .extra
-                .title =t('booking.modal.extras_title')
-                - Service.extra.each do |service|
-                  .service class="#{service.name}"
-                    i.icon class="icon-serv-#{service.name}"
-                    .text= service.display
-                    label.switch.red
-                      input type='checkbox' toggle-service="#{service.name}"
-                      i
-        .content.payment
+        .content.side.edit style='display:inline-block'
+          .title What would you like to edit?
+          .buttons
+            .button ng:click='edit_services()'
+              .text Edit Services
+            .button ng:click='edit_extras()'
+              .text Edit Extras
+            .button ng:click='change_payment()'
+              .text Change Payment
+            .button.red ng:click='to_booking_cancellation() '
+              .text Cancel Booking
+        .content.side.extras style='width:488px'
+          .linens
+            h3 Do you want to add an extra sets of linens and towels or toiletries?
+            h5 Great for variable beds and pullout couches to accommodate extra guests.
+            .counters
+              .counter
+                .boxes
+                  .box decrement='extra.king_sets' -
+                  input.box type='text' disabled='disabled' ng:model='extra.king_sets'
+                  .box increment='extra.king_sets' +
+                .label Queen/Full Set
+              .counter
+                .boxes
+                  .box decrement='extra.twin_sets' -
+                  input.box type='text' disabled='disabled' ng:model='extra.twin_sets'
+                  .box increment='extra.twin_sets' +
+                .label Twin Set
+              .counter
+                .boxes
+                  .box decrement='extra.toiletry_sets' -
+                  input.box type='text' disabled='disabled' ng:model='extra.toiletry_sets'
+                  .box increment='extra.toiletry_sets' +
+                .label Guest Toiletries
+          hr
+          .instructions
+            h3 Anything specific we should know besides the usual?
+            h5 If you have any special requests please let us know here.
+            textarea style='height:150px' ng:model='extra.instructions'
+        .content.side.services
+          .services
+            .title =t('booking.modal.services_title')
+            - Service.standard.each do |service|
+              .service class="#{service.name}"
+                i.icon class="icon-serv-#{service.name}"
+                .text= service.display
+                label.switch.red
+                  input type='checkbox' toggle-service="#{service.name}"
+                  i
+          .extra
+            .title =t('booking.modal.extras_title')
+            - Service.extra.each do |service|
+              .service class="#{service.name}"
+                i.icon class="icon-serv-#{service.name}"
+                .text= service.display
+                label.switch.red
+                  input type='checkbox' toggle-service="#{service.name}"
+        .content.side.payment
           div.existing-payment
             .payment-title Select Payment Method
             .payment-method.existing
@@ -123,17 +161,15 @@ script#booking-modal type="text/ng-template"
                   input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
             a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
         .foot.save
-          .left
-            .button.grey ng:click='details()' View Details
-            .button.red ng:click='to_booking_cancellation()' Cancel Service
           .right
-            .total
+            .total ng:if='!exists()'
               .text.dollar
                 | $
               .text.amount
                 | {{service_total}}
               .text.per
                 | / Service
+            .button.white ng:if='exists()' style='margin-right:15px' ng:show='show_back' ng:click='back()' Back
             .button.teal ng:click='update()' Save
       .content-group.step-one ng:if='!exists()'
         .header
@@ -184,21 +220,21 @@ script#booking-modal type="text/ng-template"
             .counters
               .counter
                 .boxes
-                  .box booking-decrement='extra_king_sets' -
+                  .box decrement='extra.king_sets' -
                   input.box type='text' disabled='disabled' ng:model='extra.king_sets'
-                  .box booking-increment='extra_king_sets' +
+                  .box increment='extra.king_sets' +
                 .label Queen/Full Set
               .counter
                 .boxes
-                  .box booking-decrement='extra_twin_sets' -
+                  .box decrement='extra.twin_sets' -
                   input.box type='text' disabled='disabled' ng:model='extra.twin_sets'
-                  .box booking-increment='extra_twin_sets' +
+                  .box increment='extra.twin_sets' +
                 .label Twin Set
               .counter
                 .boxes
-                  .box booking-decrement='extra_toiletry_sets' -
+                  .box decrement='extra.toiletry_sets' -
                   input.box type='text' disabled='disabled' ng:model='extra.toiletry_sets'
-                  .box booking-increment='extra_toiletry_sets' +
+                  .box increment='extra.toiletry_sets' +
                 .label Guest Toiletries
           hr
           .instructions
