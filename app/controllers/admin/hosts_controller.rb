@@ -14,6 +14,27 @@ class Admin::HostsController < Admin::AuthController
     end
   end
 
+  def notes
+    host_id = params[:id]
+    @comments = User.find(host_id).comments
+    @users = User.all
+
+    respond_to do |format|
+      format.html
+      format.json { render json: User.find_by_id(params[:id]).to_json(include: {comments: {methods:[]}, properties: {methods: [:last_service_date, :next_service_date], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar]) } 
+      #format.json { render json: User.find(params[:id]), serializer: HostSerializer }
+    end
+  end
+
+  def new_note
+    host_id = params[:id]
+    title = params[:title]
+    comment = params[:comment]
+    user_id = current_user.id
+    User.find(host_id).comments.create(title: title, comment: comment, user_id: user_id)
+    redirect_to "/hosts/#{host_id}/notes"
+  end
+
   def update
     user = User.find_by_id params[:id]
     user.assign_attributes host_params
@@ -41,8 +62,5 @@ class Admin::HostsController < Admin::AuthController
 
   def host_params
     params.require(:host).permit(:email, :first_name, :last_name, :phone_number)
-  end
-
-  def notes
   end
 end

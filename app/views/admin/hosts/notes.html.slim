@@ -1,8 +1,27 @@
 .xenon.custom ng:controller='edit-customer'
-  ul.cbp_tmtimeline
-    li 
-      time.cbp_tmtime
-      .cbp_tmicon.timeline-bg-success
-      .cbp_tmlabel 
-        h1 Title
-        h3 Comment
+  .page-body
+    .main-content
+      ul.cbp_tmtimeline
+        - @comments.each do |comment|
+          li
+            time.cbp_tmtime 
+              span= comment.created_at.strftime '%Y-%m-%d'
+              span
+            .cbp_tmicon style="background-image: url(
+          #{User.find(comment.user_id).avatar});background-size:cover;"
+            .cbp_tmlabel
+              label= User.find(comment.user_id).name
+              h1= comment.title 
+              h3= comment.comment
+      center
+        = form_tag(controller: "hosts", action: "new_note", method: "post") do
+          = label_tag :title
+          br
+          = text_field_tag :title
+          br
+          = label_tag :comments
+          br
+          = text_area_tag :comment
+          = hidden_field_tag :user_id
+          br
+          = submit_tag "Submit"
