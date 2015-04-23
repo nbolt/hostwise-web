@@ -31,6 +31,22 @@ module Admin::JobsHelper
     end
   end
 
+  def host_email(job)
+    if job.booking != nil
+      job.booking.property.user.email
+    else
+      ''
+    end
+  end
+
+  def date_booked(job)
+    if job.booking != nil
+      job.booking.created_at.strftime '%Y-%m-%d'
+    else
+      ''
+    end
+  end
+
   def phone_number(job)
     if job.booking != nil
       job.booking.property.user.display_phone_number
@@ -66,6 +82,14 @@ module Admin::JobsHelper
   def toiletries(job)
     if job.booking != nil
       job.booking.property.bathrooms
+    else
+      ''
+    end
+  end
+
+  def service_list(job)
+    if job.booking != nil
+      job.booking.service_list
     else
       ''
     end
