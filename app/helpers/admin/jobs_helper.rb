@@ -79,7 +79,7 @@ module Admin::JobsHelper
     end
   end
 
-  def toiletries(job)
+  def bathrooms(job)
     if job.booking != nil
       job.booking.property.bathrooms
     else

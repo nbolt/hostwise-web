@@ -75,6 +75,8 @@ Rails.application.routes.draw do
     get   '/contractors' => 'contractors#index'
     post  '/contractors/signup' => 'contractors#signup'
     get   '/contractors/:id/edit' => 'contractors#edit'
+    get   '/contractors/:id/notes' => 'contractors#notes'
+    post  '/contractors/:id/new_note' => 'contractors#new_note'
     put   '/contractors/:id/update' => 'contractors#update'
     post  '/contractors/:id/deactivate' => 'contractors#deactivate'
     post  '/contractors/:id/reactivate' => 'contractors#reactivate'

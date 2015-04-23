@@ -155,6 +155,9 @@
                   td
                     .badge style='margin-bottom:7px' ng:hide='job.state_cd == 0 && job.staging' ng:bind='job.state' ng:class='state_class(job)'
                     .badge.badge-red ng:show='job.staging' staging
+      .step.three
+        form
+          a href="/contractors/{{contractor.id}}/notes" {{contractor.name}} Notes                  
 
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to

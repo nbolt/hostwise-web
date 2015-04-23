@@ -153,6 +153,8 @@
           .content
             .title Additional Information
             .text ng:bind='property.additional_info'
+  .column
+    a href='/properties/{{property.id}}/notes' Notes
   .deactivate
     | Do you wish to permanently
     span ng:click='open_deactivation()' ng:show='property.active'  deactivate this property?
