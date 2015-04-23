@@ -101,6 +101,9 @@ Rails.application.routes.draw do
     get   '/transactions' => 'transactions#index'
     post  '/transactions/:action' => 'transactions'
     post  '/inventory/:action' => 'inventory'
+    get   '/coupons' => 'coupons#index'
+    post  '/coupons/:action' => 'coupons'
+    post  '/coupons/:id/:action' => 'coupons'
     post  '/jobs/:action' => 'jobs'
     get   '/login_as/:id' => 'auth#login_as'
   end
