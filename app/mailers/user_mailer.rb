@@ -205,7 +205,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                         account_num: booking.payment.last4,
                         services: booking.services.map {|service| {
                           display: service.display,
-                          cost: Booking.cost(booking.property, booking.services, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)[service.name.to_sym]
+                          cost: Booking.cost(booking.property, booking.services, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id))[service.name.to_sym]
                         }},
                         price: "$#{booking.cost}",
                         late_same_day: booking.late_same_day,
@@ -218,6 +218,14 @@ class UserMailer < MandrillMailer::TemplateMailer
                         overage: booking.overage,
                         overage_cost: booking.overage_cost / 100.0,
                         overage_reason: booking.overage_reason,
+                        extra_king_sets: booking.extra_king_sets > 0,
+                        extra_king_sets_cost: booking.extra_king_sets_cost,
+                        extra_twin_sets: booking.extra_twin_sets > 0,
+                        extra_twin_sets_cost: booking.extra_twin_sets_cost,
+                        extra_toiletry_sets: booking.extra_toiletry_sets > 0,
+                        extra_toiletry_sets_cost: booking.extra_toiletry_sets_cost,
+                        coupon: booking.coupon_cost > 0,
+                        coupon_cost: booking.coupon_cost,
                         prop_link: property_url(booking.property.slug)
                       },
                       merge_language: 'handlebars',

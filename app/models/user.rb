@@ -96,6 +96,10 @@ class User < ActiveRecord::Base
     properties.map(&:bookings).flatten
   end
 
+  def coupons
+    bookings.map(&:coupons).flatten
+  end
+
   def notification_settings
     to_settings_hash
   end

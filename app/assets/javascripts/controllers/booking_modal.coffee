@@ -12,6 +12,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.booking = false
   $scope.refresh_booking = false
   $scope.show_back = false
+  $scope.discount = 0
 
   if $scope.selected_booking
     booking = _($scope.property.active_bookings).find (booking) -> booking.id == parseInt($scope.selected_booking)
@@ -126,6 +127,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
           dates: $scope.chosen_dates
           late_next_day: $scope.next_day_booking
           late_same_day: $scope.same_day_booking
+          coupon_id: $scope.coupon_id
         }).success (rsp) ->
           $scope.booking = false
           spinner.stopSpin()
@@ -156,7 +158,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $scope.calculate_pricing = ->
     first_booking_discount_applied = false
-    $scope.total = 0
+    $scope.total = 0 - $scope.discount
     $scope.days = []
     $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
       $scope.service_total = rsp.cost
@@ -200,6 +202,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
           _($scope.selected_services).each (v,k) ->
             day[k] = rsp[k] if v
           $scope.days.push day
+      $scope.total = 0 if $scope.total < 0
 
   $scope.slide = (type) ->
     angular.element('.booking.modal .content-container .content-group').css 'opacity', 0
@@ -332,6 +335,15 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
           $scope.flashing = false
         ), 500)
       ), 4000)
+
+  $scope.$watch 'discount_code', (n,o) -> if o != undefined && n != o
+    $http.post("/bookings/apply_discount", {code: n, total: $scope.total}).success (rsp) ->
+      if rsp.success
+        angular.element('#discount-code').attr 'disabled', true
+        angular.element('#discount-text').text "#{rsp.display_amount} Discount Applied"
+        $scope.discount = rsp.amount
+        $scope.coupon_id = rsp.coupon_id
+        $scope.calculate_pricing()
 
   $scope.$watch 'payment', (n,o) -> if o
     angular.element('.booking.modal .content.payment > div').hide()

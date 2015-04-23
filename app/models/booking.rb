@@ -40,7 +40,7 @@ class Booking < ActiveRecord::Base
     services.map(&:display).join ', '
   end
 
-  def self.cost property, services, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
+  def self.cost property, services, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
     pool_service = Service.where(name: 'pool')[0]
     total = 0
     rsp = {}
@@ -89,33 +89,41 @@ class Booking < ActiveRecord::Base
       end
       rsp[:cost] -= rsp[:first_booking_discount]
     end
-    if extra_king_sets #this tracks extra queen or full sets
+    if extra_king_sets # this tracks extra queen or full sets
       rsp[:extra_king_sets] ||= 0
       extra_king_sets.to_i.times { rsp[:extra_king_sets] += PRICING['queen_linens'] }
       rsp[:cost] += rsp[:extra_king_sets]
     end
-    if extra_twin_sets #this tracks extra twin sets
+    if extra_twin_sets # this tracks extra twin sets
       rsp[:extra_twin_sets] ||= 0
       extra_twin_sets.to_i.times { rsp[:extra_twin_sets] += PRICING['twin_linens'] }
       rsp[:cost] += rsp[:extra_twin_sets]
     end
-    if extra_toiletry_sets #this tracks extra toiletry sets
+    if extra_toiletry_sets # this tracks extra toiletry sets
       rsp[:extra_toiletry_sets] ||= 0
       extra_toiletry_sets.to_i.times { rsp[:extra_toiletry_sets] += PRICING['toiletries'] }
       rsp[:cost] += rsp[:extra_toiletry_sets]
+    end
+    if coupon_id
+      coupon = Coupon.find coupon_id
+      amount = coupon.amount / 100.0
+      amount = rsp[:cost] * (coupon.amount / 100.0) if coupon.discount_type == :percentage
+      amount *= 100
+      rsp[:coupon_cost] = amount
+      rsp[:cost] -= amount
     end
     rsp
   end
 
   def cost
-    total_cost = (adjusted_cost / 100.0) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost + extra_king_sets_cost + extra_twin_sets_cost + extra_toiletry_sets_cost - first_booking_discount_cost - (refunded_cost / 100.0)
+    total_cost = (adjusted_cost / 100.0) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost + extra_king_sets_cost + extra_twin_sets_cost + extra_toiletry_sets_cost - first_booking_discount_cost - (refunded_cost / 100.0) - (coupon_cost / 100.0)
     if cancelled? || couldnt_access?
-      total_cost -= linen_cost            # |
-      total_cost -= toiletries_cost       # |  NOTE: tests needed [mutation coverage]
-      total_cost -= extra_king_sets_cost
-      total_cost -= extra_twin_sets_cost
-      total_cost -= extra_toiletry_sets_cost
-      total_cost = 0 if total_cost < 0    # |
+      total_cost -= linen_cost                # |
+      total_cost -= toiletries_cost           # |
+      total_cost -= extra_king_sets_cost      # | NOTE: tests needed [mutation coverage]
+      total_cost -= extra_twin_sets_cost      # |
+      total_cost -= extra_toiletry_sets_cost  # |
+      total_cost = 0 if total_cost < 0        # |
       [PRICING['cancellation'], (total_cost * 0.2).round(2)].max
     else
       total_cost
@@ -164,7 +172,7 @@ class Booking < ActiveRecord::Base
   end
 
   def update_cost!
-    cost = Booking.cost(property, services, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee)
+    cost = Booking.cost(property, services, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
     self.cleaning_cost               = cost[:cleaning] || 0
     self.linen_cost                  = cost[:linens] || 0
     self.toiletries_cost             = cost[:toiletries] || 0
@@ -179,6 +187,7 @@ class Booking < ActiveRecord::Base
     self.extra_king_sets_cost        = cost[:extra_king_sets] || 0
     self.extra_twin_sets_cost        = cost[:extra_twin_sets] || 0
     self.extra_toiletry_sets_cost    = cost[:extra_toiletry_sets] || 0
+    self.coupon_cost                 = cost[:coupon_cost] || 0
     self.save
   end
 

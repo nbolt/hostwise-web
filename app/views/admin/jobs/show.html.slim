@@ -174,6 +174,12 @@
                   | (-$
                   span ng:bind="job.booking.first_booking_discount_cost"
                   | )
+              .service.discount ng:show='job.booking.coupon_cost > 0'
+                .text Coupon
+                .price
+                  | (-$
+                  span ng:bind="job.booking.coupon_cost / 100.0"
+                  | )
               .service.discount ng:show='job.booking.discounted'
                 .text Discount ({{job.booking.discounted_reason}})
                 .price
@@ -186,6 +192,21 @@
                   | (-$
                   span ng:bind="job.booking.refunded_cost / 100.0"
                   | )
+              .late ng:show="job.booking.extra_king_sets > 0"
+                .text Extra King Sets
+                .price
+                  | $
+                  span ng:bind="job.booking.extra_king_sets_cost"
+              .late ng:show="job.booking.extra_twin_sets > 0"
+                .text Extra Twin Sets
+                .price
+                  | $
+                  span ng:bind="job.booking.extra_twin_sets_cost"
+              .late ng:show="job.booking.extra_toiletry_sets > 0"
+                .text Extra Toiletry Sets
+                .price
+                  | $
+                  span ng:bind="job.booking.extra_toiletry_sets_cost"
               .late ng:show="job.booking.late_next_day"
                 .text Late Day Booking Fee
                 .price

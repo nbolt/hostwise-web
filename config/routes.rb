@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     put   '/notifications/update' => 'notifications#update'
     get   '/transactions' => 'transactions#index'
     get   '/last_services' => 'users#last_services'
+    post  '/bookings/apply_discount' => 'bookings#apply_discount'
     match '/users/:action' => 'users', via: [:get, :post]
     match '/properties/:slug/:action' => 'properties', via: [:get, :post]
     match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]

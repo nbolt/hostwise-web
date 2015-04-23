@@ -12,7 +12,7 @@ class Coupon < ActiveRecord::Base
     when 0
       "$ #{amount/100.0}"
     when 1
-      "% #{amount}"
+      "#{amount} %"
     end
   end
 end

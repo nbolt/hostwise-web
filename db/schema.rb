@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421182725) do
+ActiveRecord::Schema.define(version: 20150423233326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 20150421182725) do
     t.integer  "extra_twin_sets_cost",        default: 0
     t.integer  "extra_toiletry_sets_cost",    default: 0
     t.string   "stripe_refund_id"
+    t.integer  "coupon_cost",                 default: 0
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -236,6 +237,7 @@ ActiveRecord::Schema.define(version: 20150421182725) do
     t.integer  "discount_type_cd", default: 0
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "applied",          default: 0
   end
 
   create_table "distribution_centers", force: :cascade do |t|
