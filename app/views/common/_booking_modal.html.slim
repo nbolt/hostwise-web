@@ -274,6 +274,12 @@ script#booking-modal type="text/ng-template"
                     | (-$
                     span ng:bind="day.first_booking_discount"
                     | )
+                .service.discount ng:show="day.discount"
+                  .text Coupon
+                  .price
+                    | (-$
+                    span ng:bind="day.discount"
+                    | )
                 .late ng:show="day.next_day_booking"
                   .text Late Day Booking Fee
                   .price

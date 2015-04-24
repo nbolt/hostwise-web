@@ -158,8 +158,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $scope.calculate_pricing = ->
     first_booking_discount_applied = false
-    $scope.total = 0 - $scope.discount
+    $scope.total = 0
     $scope.days = []
+    remaining = $scope.remaining
     $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
       $scope.service_total = rsp.cost
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
@@ -198,6 +199,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
             day.extra_twin_sets = rsp.extra_twin_sets
           if rsp.extra_toiletry_sets
             day.extra_toiletry_sets = rsp.extra_toiletry_sets
+          if remaining == -1 || remaining > 0
+            remaining -= 1 if remaining > 0
+            day.discount = $scope.discount
+            day.discount = day.total if day.discount > day.total
+            day.total -= day.discount
           $scope.total += day.total
           _($scope.selected_services).each (v,k) ->
             day[k] = rsp[k] if v
@@ -342,6 +348,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
         angular.element('#discount-code').attr 'disabled', true
         angular.element('#discount-text').text "#{rsp.display_amount} Discount Applied"
         $scope.discount = rsp.amount
+        $scope.remaining = rsp.remaining
         $scope.coupon_id = rsp.coupon_id
         $scope.calculate_pricing()
 

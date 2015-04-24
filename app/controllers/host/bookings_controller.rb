@@ -85,7 +85,9 @@ class Host::BookingsController < Host::AuthController
       elsif coupon.status == :active && (coupon.limit == 0 || coupon.applied <= coupon.limit) && (!coupon.expiration || coupon.expiration >= Date.today)
         amount = coupon.amount / 100.0
         amount = params[:total].to_i * (coupon.amount / 100.0) if coupon.discount_type == :percentage
-        render json: { success: true, coupon_id: coupon.id, display_amount: coupon.display_amount.gsub(/\s+/, ''), amount: amount }
+        remaining = -1
+        remaining = coupon.limit - coupon.applied if coupon.limit > 0
+        render json: { success: true, remaining: remaining, coupon_id: coupon.id, display_amount: coupon.display_amount.gsub(/\s+/, ''), amount: amount }
       else
         render json: { success: false }
       end

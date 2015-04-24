@@ -65,7 +65,7 @@ class Host::PropertiesController < Host::AuthController
   def book
     if params[:dates]
       bookings = []
-      coupon_applied = false
+      coupon = Coupon.find params[:coupon_id] if params[:coupon_id]
       params[:dates].each do |k,v|
         if v
           v.each do |day|
@@ -103,13 +103,12 @@ class Host::PropertiesController < Host::AuthController
                 booking.vip = true
                 current_user.update_attribute :vip_count, current_user.vip_count + 1
               end
-              if params[:coupon_id] && !coupon_applied
-                coupon = Coupon.find params[:coupon_id]
+              cost = Booking.cost(property, booking.services, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
+              if coupon && coupon.limit == 0 || coupon.limit - coupon.applied > 0
                 coupon.update_attribute :applied, coupon.applied += 1
-                coupon_applied = true
                 booking.coupons.push coupon
+                cost = Booking.cost(property, booking.services, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, coupon.id)
               end
-              cost = Booking.cost(property, booking.services, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, params[:coupon_id])
               booking.cleaning_cost               = cost[:cleaning] || 0
               booking.linen_cost                  = cost[:linens] || 0
               booking.toiletries_cost             = cost[:toiletries] || 0
