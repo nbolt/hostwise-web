@@ -28,10 +28,9 @@ class Admin::HostsController < Admin::AuthController
 
   def new_note
     host_id = params[:id]
-    title = params[:title]
     comment = params[:comment]
     user_id = current_user.id
-    User.find(host_id).comments.create(title: title, comment: comment, user_id: user_id)
+    User.find(host_id).comments.create(comment: comment, user_id: user_id)
     redirect_to "/hosts/#{host_id}/notes"
   end
 

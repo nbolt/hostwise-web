@@ -26,10 +26,9 @@ class Admin::PropertiesController < Admin::AuthController
 
   def new_note
     property_id = params[:id]
-    title = params[:title]
     comment = params[:comment]
     user_id = current_user.id
-    Property.find(property_id).comments.create(title: title, comment: comment, user_id: user_id)
+    Property.find(property_id).comments.create(comment: comment, user_id: user_id)
     redirect_to "/properties/#{property.id}/notes"
   end
 

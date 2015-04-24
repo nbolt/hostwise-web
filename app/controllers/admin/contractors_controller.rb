@@ -40,10 +40,9 @@ class Admin::ContractorsController < Admin::AuthController
 
   def new_note
     contractor_id = params[:id]
-    title = params[:title]
     comment = params[:comment]
     user_id = current_user.id
-    User.find(contractor_id).comments.create(title: title, comment: comment, user_id: user_id)
+    User.find(contractor_id).comments.create(comment: comment, user_id: user_id)
     redirect_to "/contractors/#{contractor_id}/notes"
   end
 

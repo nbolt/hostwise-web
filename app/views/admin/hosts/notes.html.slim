@@ -9,14 +9,9 @@
           #{User.find(comment.user_id).avatar});background-size:cover;"
         .cbp_tmlabel
           label= User.find(comment.user_id).name
-          h1= comment.title 
           h3= comment.comment
   center
     = form_tag(controller: "hosts", action: "new_note", method: "post") do
-      = label_tag :title
-      br
-      = text_field_tag :title
-      br
       = label_tag :comments
       br
       = text_area_tag :comment
