@@ -1,0 +1,80 @@
+.xenon.custom ng:controller='admin_inventory'
+  .panel.panel-default
+    .panel-heading
+      h3.panel-title Inventory
+      .btn.btn-gray.btn-icon style='margin-right: 25px' ng:click='export_csv()'
+          i.icon-details
+          span Export CSV
+      .panel-options
+        a data-toggle="panel" href="#"
+          span.collapse-icon &ndash;
+          span.expand-icon +
+        a data-toggle="remove" href="#"
+          | \&times;
+    .panel-body.table-responsive
+      table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
+        thead
+          tr
+            th Date
+            th Location
+            th Clean King Packs Picked Up
+            th Clean Twin Packs Picked Up
+            th Clean Pool Towels Picked Up
+            th Clean Bed Covers Picked Up
+            th Toiletry Packs Picked Up
+            th Dirty King Sheets Dropped Off
+            th Dirty Twin Sheets Dropped Off
+            th Dirty Beach Towels Dropped Off
+            th Dirty Bed Covers Dropped Off
+        thead.search
+          tr
+            th Date
+            th Location
+            th
+            th
+            th
+            th
+            th
+            th
+            th
+            th
+            th
+        tfoot
+          tr
+            th Date
+            th Location
+            th Clean King Packs Picked Up
+            th Clean Twin Packs Picked Up
+            th Clean Pool Towels Picked Up
+            th Clean Bed Covers Picked Up
+            th Toiletry Packs Picked Up
+            th Dirty King Sheets Dropped Off
+            th Dirty Twin Sheets Dropped Off
+            th Dirty Beach Towels Dropped Off
+            th Dirty Bed Covers Dropped Off
+        tbody
+          - @distro.each do |date, centers|
+            - centers.each do |id, jobs|
+              tr
+                td
+                  = date
+                td
+                  = DistributionCenter.find(id).name
+                td
+                  = king_bed_count(jobs)
+                td
+                  = twin_bed_count(jobs)
+                td 
+                  | not currently available
+                td
+                  = bed_count(jobs)
+                td
+                  = toiletries(jobs)
+                td
+                  = dirty_king_sheets(jobs)
+                td
+                  = dirty_twin_sheets(jobs)
+                td
+                  | not currently available
+                td
+                  = dirty_sheets(jobs)
