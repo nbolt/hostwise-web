@@ -92,6 +92,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
     $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
     $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
     $scope.job.extra_services    = _(rsp.booking.services).filter (s) -> s.extra
+    $scope.job.contractors = _($scope.job.payouts).map (payout) -> payout.user if $scope.job.status_cd == 6
 
     switch $scope.job.state_cd
       when 0
