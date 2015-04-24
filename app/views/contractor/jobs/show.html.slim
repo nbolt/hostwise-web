@@ -10,7 +10,6 @@
       = f.file_field :bathroom_photo
   .page-title
     i.icon-notebook
-    | Job Details
   .job
     .flag ng:class='pricing_class()'
     .photo
@@ -158,7 +157,7 @@
                     .text Property Occupied
           .phase.active ng:switch-when='blocked'
             .header
-              .text Job Cannot be Started Yet
+              .text You Must First Complete the Linen Pickup
             .content.top ng:switch='job.blocker'
               .pad
                 i.icon-pw
@@ -226,7 +225,7 @@
           .checklist-phases ng:show='checklist'
             .phase.arrival ng:class='arrival_class()'
               .header
-                .text Arrival Tasks
+                .text 1. Arrival Tasks
               .content
                 .tabs.thirds
                   .tab.arrival.active
@@ -243,7 +242,7 @@
                   /    i.icon-job-complete
                 .pad
                   .tab.arrival.active
-                    .title When You Arrive
+                    .title 2. When You Arrive
                     .div.teal
                     .checklist
                       .check ng:class="check(checklist.checklist_settings.arrival_tasks.dishes)"
@@ -350,7 +349,7 @@
                       .text Begin Cleaning
             .phase.cleaning ng:class='cleaning_class()'
               .header
-                .text Begin Cleaning
+                .text 2. Begin Cleaning
               .content
                 .pad
                   .title Start Cleaning!
@@ -373,7 +372,7 @@
                     .text Cleaning Completed
             .phase.qa ng:class='qa_class()'
               .header
-                .text Quality Assurance
+                .text 3. Quality Assurance
               .content
                 .tabs.fifths
                   .tab.bedrooms.active ng:click="to_tab('bedrooms', 'qa')"

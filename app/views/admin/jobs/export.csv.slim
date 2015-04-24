@@ -2,5 +2,4 @@
 
 = CSV.generate_line headers
 - @jobs.each do |job|
-  = CSV.generate_line([job.id, property_id(job), bed_bath(job), date_booked(job)
-  ,job.date, address(job), host(job), host_email(job), phone_number(job), job.status, cost(job), service_list(job), king_sets(job), twin_sets(job), bathrooms(job), job.contractor_names, job.state]).html_safe
+  = CSV.generate_line([job.id, property_id(job), bed_bath(job), date_booked(job),job.date, address(job), host(job), host_email(job), phone_number(job), job.status, cost(job), service_list(job), king_sets(job), twin_sets(job), bathrooms(job), job.contractor_names, job.state]).html_safe

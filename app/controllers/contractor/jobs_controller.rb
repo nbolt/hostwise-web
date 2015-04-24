@@ -17,6 +17,9 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def show
+    id = params[:id]
+    @jobs = current_user.jobs.where(id == 616)
+
     respond_to do |format|
       format.html do
         if job.primary_contractor == current_user
