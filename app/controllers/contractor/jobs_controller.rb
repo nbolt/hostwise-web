@@ -18,7 +18,14 @@ class Contractor::JobsController < Contractor::AuthController
 
   def show
     id = params[:id]
-    @jobs = current_user.jobs.where(id == 616)
+    jobs = current_user.jobs.scheduled.standard.on_date(Job.find(id).date)
+    @index = 0
+    jobs.each do |job|
+      @index += 1
+      if id == job.id
+        return @index
+      end
+    end
 
     respond_to do |format|
       format.html do
