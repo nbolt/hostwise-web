@@ -345,7 +345,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.$watch 'discount_code', (n,o) -> if o != undefined && n != o
     $http.post("/bookings/apply_discount", {code: n, total: $scope.total}).success (rsp) ->
       if rsp.success
-        angular.element('#discount-code').attr 'disabled', true
+        angular.element('#discount-code input').attr('disabled', true)
+        angular.element('#discount-code').addClass 'applied'
         angular.element('#discount-text').text "#{rsp.display_amount} Discount Applied"
         $scope.discount = rsp.amount
         $scope.remaining = rsp.remaining

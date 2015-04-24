@@ -316,8 +316,8 @@ script#booking-modal type="text/ng-template"
             .price ${{total}}
           .discount
             .text id='discount-text' Enter Discount Code
-            .input
-              input type='text' id='discount-code' ng:model='$parent.discount_code'
+            .input id='discount-code' style='position:relative'
+              input type='text' ng:model='$parent.discount_code'
         .content.payment
           div.existing-payment
             .payment-title Select Payment Method
