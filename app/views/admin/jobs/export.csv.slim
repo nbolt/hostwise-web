@@ -1,5 +1,6 @@
 - headers = ['ID', 'Property', 'Size', 'Date Booked','Service Date', 'Address', 'Customer', 'Customer Email', 'Phone', 'Status', 'Cost', 'Services', 'King Set(s)', 'Twin Set(s)', 'Toiletries Set(s)', 'Contractor(s)', 'Type']
 
 = CSV.generate_line headers
-- @jobs.standard.each do |job|
-  = CSV.generate_line([job.id, property_id(job), bed_bath(job), date_booked(job),job.date, address(job), host(job), host_email(job), phone_number(job), job.status, cost(job), service_list(job), king_sets(job), twin_sets(job), bathrooms(job), job.contractor_names, job.state]).html_safe
+- @distro.each do |date, centers|
+  - centers.each do |id, jobs|
+    = CSV.generate_line([date, DistributionCenter.find(id).name, king_bed_count(jobs), twin_bed_count(jobs), 'not currently available', bed_count(jobs), toiletries(jobs), dirty_king_sheets(jobs), dirty_twin_sheets(jobs), 'not currently available', dirty_sheets(jobs)]).html_safe
