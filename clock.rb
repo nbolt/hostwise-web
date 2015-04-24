@@ -66,11 +66,14 @@ module Clockwork
         timezone = Timezone::Zone.new :zone => booking.property.zone
         time = timezone.time Time.now
         if time.hour == 20
-          payments[booking.user.email] ||= {amount:0}
+          payments[booking.user.email] ||= {amount:0,booking_ids:[]}
           payments[booking.user.email][:amount] += booking.cost
           payments[booking.user.email][:name] = booking.user.name
-          payments[booking.user.email][:id] = booking.id
+          payments[booking.user.email][:booking_ids].push booking.id
         end
+      end
+      payments.each do |email, values|
+        payments[email][:booking_ids] = payments[email][:booking_ids].join ', '
       end
       UserMailer.payments_report(payments).then(:deliver) if payments.present?
     when 'payouts:report'
@@ -153,8 +156,8 @@ module Clockwork
     end
   end
 
-  #every(1.hour, 'payments:process', at: '**:00')
-  #every(1.hour, 'payments:report', at: '**:00')
+  every(1.hour, 'payments:process', at: '**:00')
+  every(1.hour, 'payments:report', at: '**:00')
   every(1.week, 'payouts:process', at: 'Wednesday 22:00')
   every(1.week, 'payouts:report', at: 'Wednesday 20:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')

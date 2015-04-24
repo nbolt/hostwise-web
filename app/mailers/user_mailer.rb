@@ -445,7 +445,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                     vars: {
                       payments: payments.map {|email, payment| {
                         name: payment[:name],
-                        id: payment[:id],
+                        booking_ids: payment[:booking_ids],
                         amount: payment[:amount]
                       }}
                     },
