@@ -54,6 +54,13 @@ class Host::BookingsController < Host::AuthController
         booking.job.contractors.each do |contractor|
           contractor.payouts.create(job_id: booking.job.id, amount: booking.job.payout(contractor) * 100) if params[:apply_fee]
           booking.job.contractors.destroy contractor
+          other_jobs = contractor.jobs.standard.on_date(booking.date)
+          if other_jobs[0]
+            other_jobs[0].handle_distribution_jobs contractor
+            Job.set_priorities contractor.jobs.on_date(booking.date), contractor
+          else
+            contractor.jobs.distribution.on_date(booking.date).destroy_all
+          end
           if contractor.contractor_profile.position == :trainee
             TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{booking.job.formatted_date} was cancelled. Please select another session!")
           else

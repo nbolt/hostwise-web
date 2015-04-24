@@ -35,7 +35,6 @@ class Job < ActiveRecord::Base
     date = date.to_date if date.class == Time
     where(date: date)
   }
-  scope :visible, -> { where(state_cd: [0,1]) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
   scope :scheduled, -> { where(status_cd: 1) }
