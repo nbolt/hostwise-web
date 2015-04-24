@@ -15,4 +15,8 @@ class Coupon < ActiveRecord::Base
       "#{amount} %"
     end
   end
+
+  def applied user
+    user.coupons.select{|c| c == self}.count
+  end
 end

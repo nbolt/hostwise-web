@@ -79,18 +79,12 @@ class Host::BookingsController < Host::AuthController
 
   def apply_discount
     coupon = Coupon.where(code: params[:code])[0]
-    if coupon
-      if current_user.coupons.index coupon
-        render json: { success: false }
-      elsif coupon.status == :active && (coupon.limit == 0 || coupon.applied <= coupon.limit) && (!coupon.expiration || coupon.expiration >= Date.today)
-        amount = coupon.amount / 100.0
-        amount = params[:total].to_i * (coupon.amount / 100.0) if coupon.discount_type == :percentage
-        remaining = -1
-        remaining = coupon.limit - coupon.applied if coupon.limit > 0
-        render json: { success: true, remaining: remaining, coupon_id: coupon.id, display_amount: coupon.display_amount.gsub(/\s+/, ''), amount: amount }
-      else
-        render json: { success: false }
-      end
+    if coupon && coupon.status == :active && (coupon.limit == 0 || coupon.applied(current_user) <= coupon.limit) && (!coupon.expiration || coupon.expiration >= Date.today)
+      amount = coupon.amount / 100.0
+      amount = params[:total].to_i * (coupon.amount / 100.0) if coupon.discount_type == :percentage
+      remaining = -1
+      remaining = coupon.limit - coupon.applied(current_user) if coupon.limit > 0
+      render json: { success: true, remaining: remaining, coupon_id: coupon.id, display_amount: coupon.display_amount.gsub(/\s+/, ''), amount: amount }
     else
       render json: { success: false }
     end
