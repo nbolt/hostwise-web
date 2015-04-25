@@ -13,7 +13,7 @@ module Clockwork
         if time.hour == 22
           if booking.status_cd == 5
             booking.update_cost!
-            TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise was unable to access your property today. Having waited 30 minutes to resolve this issue, we had to move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
+            TwilioJob.perform_later("+1#{booking.property.phone_number}", "HostWise was unable to access your property today. Having waited 30 minutes to resolve this issue, we had to move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
           end
           booking.charge!
         end
