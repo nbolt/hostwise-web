@@ -49,7 +49,7 @@ class Job < ActiveRecord::Base
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
-    visible.standard.days(contractor).where(state_cd: states, status_cd: 0)
+    standard.days(contractor).where(state_cd: states, status_cd: 0)
     .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today)
     .order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   }
