@@ -27,9 +27,10 @@ class Admin::InventoryController < Admin::AuthController
 
   def export
     @inventory = params[:inventory]
-    @distro = Job.distribution
+    @distro = Job.distribution.order(:date)
     @distro = @distro.group_by(&:date)
     @distro.each{|date, jobs| @distro[date] = jobs.group_by{|job| job.distribution_center.then(:id)}} 
+
     
     respond_to do |format|
       format.csv do

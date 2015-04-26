@@ -12,11 +12,12 @@
             .cbp_tmlabel
               label= User.find(comment.user_id).name 
               h3= comment.comment
-      center
-        = form_tag(controller: "properties", action: "new_note", method: "post") do
-          = label_tag :comments
-          br
-          = text_area_tag :comment
-          = hidden_field_tag :user_id
-          br
-          = submit_tag "Submit"
+      center style='margin-left:275px;'
+        .inventory-form
+          = form_tag(controller: "properties", action: "new_note", method: "post", class: 'inventory-form') 
+            = label_tag :comments
+            br
+            = text_area_tag :comment
+            = hidden_field_tag :user_id
+            br
+            = submit_tag "Submit"

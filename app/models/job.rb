@@ -189,6 +189,26 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def is_last_job_of_day contractor=nil
+    contractor ||= current_user
+    if contractor
+      jobs_on_date = contractor.jobs.standard.on_date(date)
+      if id == jobs_on_date[jobs_on_date.size - 1].id then true else false end
+    end
+  end
+
+  def index_in_day contractor=nil
+    contractor ||= current_user
+    if contractor
+      jobs_on_date = contractor.jobs.standard.on_date(date)
+      jobs_on_date.each_with_index do |job, index|
+        if id == jobs_on_date[index].id
+          return index
+        end
+      end
+    end
+  end
+
   def previous_team_job contractor=nil
     contractor ||= current_user
     if contractor
