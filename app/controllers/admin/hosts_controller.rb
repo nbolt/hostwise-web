@@ -9,21 +9,13 @@ class Admin::HostsController < Admin::AuthController
   def edit
     respond_to do |format|
       format.html
-      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {methods: [:last_service_date, :next_service_date], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar]) } 
+      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {methods: [:last_service_date, :next_service_date], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar]) }
       #format.json { render json: User.find(params[:id]), serializer: HostSerializer }
     end
   end
 
   def notes
-    host_id = params[:id]
-    @comments = User.find(host_id).comments
-    @users = User.all
-
-    respond_to do |format|
-      format.html
-      format.json { render json: User.find_by_id(params[:id]).to_json(include: {comments: {methods:[]}, properties: {methods: [:last_service_date, :next_service_date], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar]) } 
-      #format.json { render json: User.find(params[:id]), serializer: HostSerializer }
-    end
+    @host = User.find(params[:id])
   end
 
   def new_note

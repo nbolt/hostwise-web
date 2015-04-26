@@ -1,23 +1,24 @@
-.xenon.custom
+.xenon.custom.note
   .page-body
     .main-content
+      h3 = "#{@property.title} Notes"
       ul.cbp_tmtimeline
-        - @comments.each do |comment|
+        - @property.comments.each do |comment|
           li
-            time.cbp_tmtime 
+            time.cbp_tmtime
               span= comment.created_at.strftime '%Y-%m-%d'
               span
-            .cbp_tmicon style="background-image: url(
-              #{User.find(comment.user_id).avatar});background-size:cover;"
+            .cbp_tmicon style="background-image: url(#{User.find(comment.user_id).avatar});background-size:cover;"
             .cbp_tmlabel
-              label= User.find(comment.user_id).name 
-              h3= comment.comment
-      center style='margin-left:275px;'
-        .inventory-form
-          = form_tag(controller: "properties", action: "new_note", method: "post", class: 'inventory-form') 
-            = label_tag :comments
-            br
-            = text_area_tag :comment
-            = hidden_field_tag :user_id
-            br
-            = submit_tag "Submit"
+              label = User.find(comment.user_id).name
+              .comment = comment.comment
+        li
+          time.cbp_tmtime
+            span = Date.today.strftime '%Y-%m-%d'
+            span
+          .cbp_tmicon style="background-image: url(#{current_user.avatar});background-size:cover;"
+          .cbp_tmlabel
+            = form_tag(controller: 'properties', action: 'new_note', method: 'post')
+              = text_area_tag :comment, '', placeholder: 'Enter note here'
+              = hidden_field_tag :user_id
+              = submit_tag 'Enter Note', class: 'btn btn-info btn-icon'

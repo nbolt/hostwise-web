@@ -19,9 +19,7 @@ class Admin::PropertiesController < Admin::AuthController
   end
 
   def notes
-    property_id = params[:id]
-    @comments = Property.find(property_id).comments
-    @users = User.all
+    @property = Property.find(params[:id])
   end
 
   def new_note

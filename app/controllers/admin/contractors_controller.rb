@@ -33,9 +33,7 @@ class Admin::ContractorsController < Admin::AuthController
   end
 
   def notes
-    contractor_id = params[:id]
-    @comments = User.find(contractor_id).comments
-    @users = User.all
+    @contractor = User.find(params[:id])
   end
 
   def new_note
