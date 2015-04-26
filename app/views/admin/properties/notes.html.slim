@@ -3,15 +3,7 @@
     .main-content
       h3 = "#{@property.title} Notes"
       ul.cbp_tmtimeline
-        - @property.comments.each do |comment|
-          li
-            time.cbp_tmtime
-              span= comment.created_at.strftime '%Y-%m-%d'
-              span
-            .cbp_tmicon style="background-image: url(#{User.find(comment.user_id).avatar});background-size:cover;"
-            .cbp_tmlabel
-              label = User.find(comment.user_id).name
-              .comment = comment.comment
+        = render 'common/notes', notes: @property.comments
         li
           time.cbp_tmtime
             span = Date.today.strftime '%Y-%m-%d'
