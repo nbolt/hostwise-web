@@ -154,7 +154,7 @@
               label.switch.red
                 input type='checkbox' toggle-admin-service="#{service.name}"
                 i
-        .services.supplies
+        .services.supplies ng:show='job.booking.extra_king_sets > 0 || job.booking.extra_twin_sets > 0 || job.booking.extra_toiletry_sets > 0'
           .title Extra Services Requested
           .supplies
             .supply
