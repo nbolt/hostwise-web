@@ -1,0 +1,51 @@
+script#create-coupon-modal type="text/ng-template"
+  .modal
+    .header
+      .text Create Coupon
+    .content
+      .columns
+        .column
+          .field
+            .title Description
+            .input
+              input type='text' ng:model='coupon.description'
+          .field
+            .title Code
+            .input
+              input type='text' ng:model='coupon.code'
+          .field.radio
+            .title Status
+            .input.radio
+              input type='radio' value='1' id='active-status' ng:model='coupon.status_cd'
+              label for='active-status' Active
+            .input.radio
+              input type='radio' value='0' id='deactivated-status' ng:model='coupon.status_cd'
+              label for='deactivated-status' Deactivated
+        .column
+          .field.radio
+            .title Discount Type
+            .input.radio
+              input type='radio' value='1' id='percentage-discount' ng:model='coupon.discount_type_cd'
+              label for='percentage-discount' Percentage
+            .input.radio
+              input type='radio' value='0' id='dollar-discount' ng:model='coupon.discount_type_cd'
+              label for='dollar-discount' Dollar Amount
+          .field
+            .title Amount
+            .input.amount ng:class='amount_class()'
+              input type='text' ng:model='coupon.amount'
+          .fields
+            .field
+              .title Expiration Date
+              .input
+                input type='text' datepicker='' ng:model='coupon.expiration'
+            .field
+              .title Limit
+              .input
+                input type='text' ng:model='coupon.limit'
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Cancel
+        .button.teal ng:click='create_coupon()'
+          .text Create Coupon

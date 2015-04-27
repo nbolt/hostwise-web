@@ -5,7 +5,7 @@ class Admin::JobsController < Admin::AuthController
     jobs = Job.standard
     case params[:filter]
     when 'complete'
-      jobs = jobs.where(status_cd: [3,5,6])
+      jobs = jobs.where(status_cd: [3,5,6]).where('bookings.status_cd != 0').includes(:booking).references(:bookings)
     when 'active'
       jobs = jobs.where(status_cd: [0,1])
     when 'future'
@@ -21,12 +21,16 @@ class Admin::JobsController < Admin::AuthController
     end
   end
 
+  def export
+    @jobs = Job.all
+  end
+
   def show
     respond_to do |format|
       format.html
       format.json do
         job.current_user = current_user
-        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :man_hours], include: {contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
+        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :man_hours], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
       end
     end
   end

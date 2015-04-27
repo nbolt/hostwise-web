@@ -18,6 +18,18 @@ class Admin::PropertiesController < Admin::AuthController
     end
   end
 
+  def notes
+    @property = Property.find(params[:id])
+  end
+
+  def new_note
+    property_id = params[:id]
+    comment = params[:comment]
+    user_id = current_user.id
+    Property.find(property_id).comments.create(comment: comment, user_id: user_id)
+    redirect_to "/properties/#{property.id}/notes"
+  end
+
   def update
     params[:form] = JSON.parse params[:form] if params[:form].class == String
 

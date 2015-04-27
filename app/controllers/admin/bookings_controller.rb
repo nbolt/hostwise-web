@@ -42,6 +42,25 @@ class Admin::BookingsController < Admin::AuthController
     end
   end
 
+  def refund
+    refunded = params[:refunded_cost].to_f * 100
+
+    if refunded > booking.refunded_cost
+      booking.refunded        = true
+      booking.adjusted        = true
+      booking.adjusted_cost   = booking.adjusted_cost - refunded
+      booking.refunded_cost   = refunded
+      booking.refunded_reason = params[:refunded_reason]
+      booking.process_refund!
+    else
+      render json: { success: false, message: "Can't refund for an amount less than what you've already refunded." }
+      return
+    end
+
+    booking.save
+    render json: { success: true, cost: booking.cost, adjusted: booking.adjusted, adjusted_cost: booking.adjusted_cost, refunded: booking.refunded, refunded_reason: booking.refunded_reason, refunded_cost: booking.refunded_cost }
+  end
+
   def edit_payment
     adjusted   = params[:adjusted_cost].to_f   * 100
     overage    = params[:overage_cost].to_f    * 100
@@ -56,7 +75,7 @@ class Admin::BookingsController < Admin::AuthController
     else
       booking.overage        = false
       booking.overage_cost   = 0
-      booking.overage_reason = ''
+      booking.overage_reason = nil
     end
 
     if discounted > 0
@@ -68,10 +87,10 @@ class Admin::BookingsController < Admin::AuthController
     else
       booking.discounted        = false
       booking.discounted_cost   = 0
-      booking.discounted_reason = ''
+      booking.discounted_reason = nil
     end
 
-    if booking.discounted == false && booking.overage == false
+    if !booking.discounted && !booking.overage
       booking.adjusted = false
       booking.adjusted_cost = 0
     end

@@ -2,6 +2,9 @@
   .panel.panel-default
     .panel-heading
       h3.panel-title Inventory
+      .btn.btn-gray.btn-icon style='margin-right: 25px' ng:click='export_csv()'
+          i.icon-details
+          span Export CSV
       .panel-options
         a data-toggle="panel" href="#"
           span.collapse-icon &ndash;
@@ -50,17 +53,28 @@
             th Dirty Beach Towels Dropped Off
             th Dirty Bed Covers Dropped Off
         tbody
-          - @days.each do |day|
-            - day.each do |distro|
+          - @distro.each do |date, centers|
+            - centers.each do |id, jobs|
               tr
                 td
+                  = date
                 td
+                  = DistributionCenter.find(id).name
                 td
+                  = king_bed_count(jobs)
                 td
+                  = twin_bed_count(jobs)
+                td 
+                  | not currently available
                 td
+                  = bed_count(jobs)
                 td
+                  = toiletries(jobs)
                 td
+                  = dirty_king_sheets(jobs)
                 td
+                  = dirty_twin_sheets(jobs)
                 td
+                  | not currently available
                 td
-                td
+                  = dirty_sheets(jobs)

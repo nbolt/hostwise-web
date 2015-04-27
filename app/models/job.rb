@@ -35,7 +35,6 @@ class Job < ActiveRecord::Base
     date = date.to_date if date.class == Time
     where(date: date)
   }
-  scope :visible, -> { where(state_cd: [0,1]) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
   scope :scheduled, -> { where(status_cd: 1) }
@@ -50,13 +49,13 @@ class Job < ActiveRecord::Base
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
-    visible.standard.days(contractor).where(state_cd: states, status_cd: 0)
+    standard.days(contractor).where(state_cd: states, status_cd: 0)
     .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today)
     .order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   }
   scope :upcoming, -> (contractor) { standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :past, -> (contractor) { standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
- 
+
   scope :sun, -> (contractor) { where("extract(dow from date) != ? OR #{contractor.availability.sun} = ?", 0, true).includes(contractors: [:availability]).references(:availability) }
   scope :mon, -> (contractor) { where("extract(dow from date) != ? OR #{contractor.availability.mon} = ?", 1, true).includes(contractors: [:availability]).references(:availability) }
   scope :tue, -> (contractor) { where("extract(dow from date) != ? OR #{contractor.availability.tues} = ?", 2, true).includes(contractors: [:availability]).references(:availability) }
@@ -73,6 +72,21 @@ class Job < ActiveRecord::Base
 
   attr_accessor :current_user, :distance
 
+<<<<<<< HEAD
+=======
+  def king_beds
+    booking.property.king_bed_count + booking.extra_king_sets if booking
+  end
+
+  def twin_beds
+    booking.property.twin_beds + booking.extra_twin_sets if booking
+  end
+
+  def toiletries
+    booking.property.bathrooms + booking.extra_toiletry_sets if booking
+  end
+
+>>>>>>> develop
   def contractor_names
     contractors.map(&:name).join ', '
   end
@@ -160,7 +174,7 @@ class Job < ActiveRecord::Base
   end
 
   def primary_contractor
-    ContractorJobs.where(job_id: self.id, primary: true)[0].user
+    ContractorJobs.where(job_id: self.id, primary: true)[0].then(:user)
   end
 
   def primary contractor=nil
@@ -169,7 +183,7 @@ class Job < ActiveRecord::Base
   end
 
   def checklist
-    ContractorJobs.where(job_id: self.id, primary: true)[0].checklist
+    ContractorJobs.where(job_id: self.id, primary: true)[0].then(:checklist)
   end
 
   def minimum_job_size
@@ -187,6 +201,22 @@ class Job < ActiveRecord::Base
     contractor ||= current_user
     if contractor
       if contractor.jobs.on_date(date)[0] then false else true end
+    end
+  end
+
+  def is_last_job_of_day contractor=nil
+    contractor ||= current_user
+    if contractor
+      jobs_on_date = contractor.jobs.standard.on_date(date).sort_by {|job| job.priority contractor}
+      self == jobs_on_date[-1]
+    end
+  end
+
+  def index_in_day contractor=nil
+    contractor ||= current_user
+    if contractor
+      jobs_on_date = contractor.jobs.standard.on_date(date).sort_by {|job| job.priority contractor}
+      jobs_on_date.index self
     end
   end
 
@@ -232,8 +262,27 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def inventory_count!
+    standard_jobs = primary_contractor.jobs.standard.on_date(date)
+
+    ['king_sheets', 'twin_sheets', 'pillow_count', 'bath_towels', 'hand_towels', 'face_towels', 'bath_mats'].each do |type|
+      update_attribute type.to_sym, standard_jobs.reduce(0) do |acc, job|
+        if job.checklist
+          checklist_id = job.checklist.id
+          settings = RailsSettings::SettingObject.where(var: 'inventory_count', target_id: checklist_id)[0]
+          if settings.chain(:value, type)
+            acc + settings.chain(:value, type)
+          else
+            acc
+          end
+        end
+      end
+    end
+  end
+
   def complete!
     completed!
+    inventory_count! if occasion == :dropoff
     pay_contractors!
     booking.update_attribute :status_cd, 3 if booking
     save
@@ -268,9 +317,14 @@ class Job < ActiveRecord::Base
             supplies[:king_beds] += job.booking.property.king_beds
             supplies[:king_beds] += job.booking.property.queen_beds
             supplies[:king_beds] += job.booking.property.full_beds
+            supplies[:king_beds] += job.booking.extra_king_sets
             supplies[:twin_beds] += job.booking.property.twin_beds
+            supplies[:twin_beds] += job.booking.extra_twin_sets
           end
-          job.booking.property.bathrooms.times { supplies[:toiletries] += 1 } if job.has_toiletries?
+          if job.has_toiletries?
+            job.booking.property.bathrooms.times { supplies[:toiletries] += 1 }
+            supplies[:toiletries] += job.booking.extra_toiletry_sets
+          end
         end
       end
 
@@ -281,9 +335,14 @@ class Job < ActiveRecord::Base
           supplies[:king_beds] += team_job.booking.property.king_beds
           supplies[:king_beds] += team_job.booking.property.queen_beds
           supplies[:king_beds] += team_job.booking.property.full_beds
+          supplies[:king_beds] += team_job.booking.extra_king_sets
           supplies[:twin_beds] += team_job.booking.property.twin_beds
+          supplies[:twin_beds] += team_job.booking.extra_twin_sets
         end
-        team_job.booking.property.bathrooms.times { supplies[:toiletries] += 1 } if team_job.has_toiletries?
+        if team_job.has_toiletries?
+          team_job.booking.property.bathrooms.times { supplies[:toiletries] += 1 }
+          supplies[:toiletries] += team_job.booking.extra_toiletry_sets
+        end
       end
 
       if distribution_job

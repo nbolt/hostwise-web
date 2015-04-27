@@ -1,0 +1,6 @@
+- headers = ['Date', 'Location', 'Clean King Packs Picked Up', 'Clean Twin Packs Picked Up','Clean Pool Towels Picked Up', 'Clean Bed Covers Picked Up', 'Toiletry Packs Picked Up', 'Dirty King Sheets Dropped Off', 'Dirty Twin Sheets Dropped Off', 'Dirty Beach Towels Dropped Off', 'Dirty Bed Covers Dropped Off']
+
+= CSV.generate_line headers
+- @distro.each do |date, centers|
+  - centers.each do |id, jobs|
+    = CSV.generate_line([date, DistributionCenter.find(id).name, king_bed_count(jobs), twin_bed_count(jobs), 'not currently available', bed_count(jobs), toiletries(jobs), dirty_king_sheets(jobs), dirty_twin_sheets(jobs), 'not currently available', dirty_sheets(jobs)]).html_safe

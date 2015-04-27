@@ -4,6 +4,22 @@ AdminInventoryCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, 
   $scope.filter = {id:'all',text:'All'}
   $scope.search = ''
 
+  $scope.export_csv = ->
+    inventory = filtered_data('#example-1')
+    $http.post('/inventory/export.csv', {inventory: inventory}).success (rsp) ->
+      blob = new Blob([rsp],
+        type: "application/octet-stream;charset=utf-8;",
+      )
+      saveAs(blob, "inventory.csv")
+
+  filtered_data = (table) ->
+    table = angular.element(table).dataTable()
+    displayed = []
+    currentlyDisplayed = table.fnSettings().aiDisplay
+    _(currentlyDisplayed).each (index) -> displayed.push( table.fnGetData(index)[0] )
+    #_(currentlyDisplayed).each (index) -> displayed.push( table.fnGetData(index)[0].match(/check-\d*/)[0].replace('check-', '') )
+    displayed
+
   $scope.fetch_jobs = ->
     spinner.startSpin()
     $http.get('/inventory.json',{params: {search: $scope.search, filter: $scope.filter.id}}).success (rsp) ->

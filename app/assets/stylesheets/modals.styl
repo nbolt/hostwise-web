@@ -1,3 +1,21 @@
+#discount-code.applied::after
+  color: teal
+  content: '\e81a'
+  position: absolute
+  top: 9px
+  right: 9px
+  font-family: "hw-icons"
+  font-style: normal
+  font-weight: normal
+  speak: none
+  display: inline-block
+  text-decoration: inherit
+  width: 1em
+  text-align: center
+  font-variant: normal
+  text-transform: none
+  line-height: 1em
+
 .ngdialog
   .ngdialog-content
     background: white
@@ -494,7 +512,6 @@
                   width: 100%
             &.save
               @media phone
-                height: 104px
                 padding: 0 10px
               .left
                 width: 60%
@@ -535,6 +552,7 @@
               @media phone
                 left: 0
                 width: 50%
+                z-index: 1
               .button, .text
                 display: inline-block
                 vertical-align: top
@@ -596,6 +614,8 @@
                 .icon, .text
                   display: inline-block
                   vertical-align: top
+                &.auto
+                  width: auto
                 &.right
                   margin: 0
                   padding: 0
@@ -717,12 +737,32 @@
               width: 488px
               margin: 0
               padding: 0
-              &.details
-                display: none
               @media portrait_tablet
                 width: 350px
               @media phone
                 width: 320px
+          &.edit
+            padding: 25px 60px
+            .title
+              color: teal
+              font-weight: 600
+              @media phone
+                text-align: center
+            .buttons
+              .button
+                color: heavy-gray
+                display: block
+                background-color: white
+                border: thin solid #EFF0F2
+                padding: 15px
+                margin: 20px
+                .text
+                  margin: 0
+                  font-weight: 600
+                &:hover
+                  color: teal
+                &.red
+                  color: red
           .buttons
             margin: 25px auto
             .cancel
@@ -834,6 +874,72 @@
               .field
                 display: inline-block
                 vertical-align: top
+          &.extras
+            width: 976px
+            padding: 50px 150px
+            @media portrait_tablet
+              width: 700px
+              padding: 50px 100px
+            @media phone
+              width: 100%
+              padding: 20px
+            hr
+              border: 0
+              border-top: 1px solid light-gray
+              margin: 50px auto
+            h3
+              color: teal
+              margin: 10px 0 5px
+            h5
+              margin: 0
+              font-weight: normal
+            textarea
+              border: thin solid light-gray
+              border-radius: 3px
+              box-sizing: border-box
+              height: 100px
+              padding: 8px 12px
+              width: 100%
+              margin: 30px 0
+            .counters
+              .counter
+                display: inline-block
+                vertical-align: top
+                width: 30%
+                @media phone
+                  width: 50%
+                .label
+                  margin-top: 8px
+                  color: dark-gray
+                .boxes
+                  margin-top: 15px
+                .box
+                  background-color: white
+                  display: inline-block
+                  vertical-align: top
+                  border: thin solid gray
+                  width: 40px
+                  height: 40px
+                  box-sizing: border-box
+                  padding: 8px 15px
+                  &:first-child, &:last-child
+                    color: teal
+                    font-weight: 600
+                    font-size: 1.1em
+                    &:hover
+                      cursor: pointer
+                  &:first-child
+                    border-top-left-radius: 3px
+                    border-bottom-left-radius: 3px
+                  &:nth-child(2)
+                    border-left: 0
+                    border-right: 0
+                    color: heavy-gray
+                  &:last-child
+                    border-top-right-radius: 3px
+                    border-bottom-right-radius: 3px
+                input.box
+                  border-radius: 0
           &.confirmation
             background-color: white
             width: 976px
@@ -1081,12 +1187,14 @@
   box-sizing: border-box
   @media phone
     padding: 30px 20px
+    margin: 0 auto 25px !important
+    display: block !important
   .invoice
     color: teal
     font-size: 1.1em
     font-weight: 700
   .days
-    height: 350px
+    height: 325px
     overflow: scroll
     @media phone
       height: auto
@@ -1098,10 +1206,10 @@
       margin-top: 20px
       font-weight: 700
     .day-services
-      max-height: 192px
+      max-height: 220px
       overflow: hidden
       transition: max-height .6s ease-in-out
-      .service, .late
+      .service, .late, .extra-set
         margin: 10px 0
       @media phone
         overflow: scroll
@@ -1109,6 +1217,30 @@
         &.discount
           .text, .price
             color: red
+  .discount
+    margin-top: 25px
+    @media phone
+      text-align: center
+    .text
+      display: inline-block
+      font-weight: 600
+      margin-top: 6px
+      width: 200px
+      @media phone
+        display: block
+        margin: auto
+    .input
+      display: inline-block
+      width: 168px
+      @media phone
+        margin: 12px 0 25px
+      input
+        width: 100%
+        background-color: gray
+        border: none
+        color: teal
+        -webkit-text-fill-color: teal
+        font-weight: 600
   > .total
     border-top: 2px solid teal
     border-bottom: 2px solid teal
@@ -1356,6 +1488,56 @@
               font-size: 1.2em
             span.teal
               outline: none
+
+.ngdialog.coupon
+  .ngdialog-content
+    width: 600px
+  .content
+    .columns
+      width: 500px
+      margin: auto
+      .column
+        display: inline-block
+        vertical-align: top
+        width: 50%
+        .field
+          margin-bottom: 20px
+          text-align: left
+          width: 180px
+          &:last-child
+            margin-bottom: 0
+          &.radio
+            width: 230px
+          .title
+            color: teal
+            font-weight: 600
+            margin-bottom: 8px
+          input[type=text]
+            width: 100%
+          .input
+            &.amount
+              position: relative
+              input
+                padding-left: 25px
+              &::before
+                position: absolute
+                top: 9px
+                left: 9px
+              &.percentage::before
+                content: '%'
+              &.dollar::before
+                content: '$'
+            &.radio
+              display: inline-block
+              vertical-align: top
+        .fields
+          text-align: left
+          .field
+            display: inline-block
+            vertical-align: top
+            width: 116px
+            &:first-child
+              margin-right: 18px
 
 .ngdialog.edit-pay
   .ngdialog-content

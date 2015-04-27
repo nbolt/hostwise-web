@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     put   '/notifications/update' => 'notifications#update'
     get   '/transactions' => 'transactions#index'
     get   '/last_services' => 'users#last_services'
+    post  '/bookings/apply_discount' => 'bookings#apply_discount'
     match '/users/:action' => 'users', via: [:get, :post]
     match '/properties/:slug/:action' => 'properties', via: [:get, :post]
     match '/properties/:slug/:booking/:action' => 'bookings', via: [:get, :post]
@@ -75,6 +76,8 @@ Rails.application.routes.draw do
     get   '/contractors' => 'contractors#index'
     post  '/contractors/signup' => 'contractors#signup'
     get   '/contractors/:id/edit' => 'contractors#edit'
+    get   '/contractors/:id/notes' => 'contractors#notes'
+    post  '/contractors/:id/new_note' => 'contractors#new_note'
     put   '/contractors/:id/update' => 'contractors#update'
     post  '/contractors/:id/deactivate' => 'contractors#deactivate'
     post  '/contractors/:id/reactivate' => 'contractors#reactivate'
@@ -83,6 +86,8 @@ Rails.application.routes.draw do
     post  '/contractors/:id/background_check' => 'contractors#background_check'
     get   '/hosts' => 'hosts#index'
     get   '/hosts/:id/edit' => 'hosts#edit'
+    get   '/hosts/:id/notes' => 'hosts#notes'
+    post  '/hosts/:id/new_note' => 'hosts#new_note'
     put   '/hosts/:id/update' => 'hosts#update'
     post  '/hosts/:id/deactivate' => 'hosts#deactivate'
     post  '/hosts/:id/reactivate' => 'hosts#reactivate'
@@ -99,6 +104,11 @@ Rails.application.routes.draw do
     match '/properties/:id/:action' => 'properties', via: [:get, :post]
     get   '/transactions' => 'transactions#index'
     post  '/transactions/:action' => 'transactions'
+    post  '/inventory/:action' => 'inventory'
+    get   '/coupons' => 'coupons#index'
+    post  '/coupons/:action' => 'coupons'
+    post  '/coupons/:id/:action' => 'coupons'
+    post  '/jobs/:action' => 'jobs'
     get   '/login_as/:id' => 'auth#login_as'
   end
 

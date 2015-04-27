@@ -1,0 +1,69 @@
+.xenon.custom ng:controller='coupons'
+  .panel.panel-default.stats
+    .panel-heading
+      | Total Coupons
+    .panel-body
+      .row
+        .col-sm-3
+          p.text-medium Total number of coupons
+          .super-large.text-secondary
+            | {{coupons.length}}
+
+  .panel.panel-default
+    .panel-heading
+      h3.panel-title Coupons
+      .btn.btn-info.btn-icon ng:click='create_coupon_modal()'
+        i.icon-details
+        span Create Coupon
+      .panel-options
+        a data-toggle="panel" href="#"
+          span.collapse-icon &ndash;
+          span.expand-icon +
+        a data-toggle="remove" href="#"
+          | \&times;
+    .panel-body.table-responsive
+      table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
+        thead
+          tr
+            th ID
+            th Description
+            th Code
+            th Status
+            th Discount Type
+            th Amount
+            th Expiration
+            th Limit
+        thead.search
+          tr
+            th ID
+            th Description
+            th Code
+            th Status
+            th Discount Type
+            th Amount
+            th.date Expiration
+            th Limit
+        tfoot
+          tr
+            th ID
+            th Description
+            th Code
+            th Status
+            th Discount Type
+            th Amount
+            th Expiration
+            th Limit
+        tbody
+          tr ng:repeat='coupon in coupons'
+            td
+              a.teal href='javascript:void(0)' ng:click='edit_coupon_modal(coupon)' ng:bind='coupon.id'
+            td ng:bind='coupon.description'
+            td ng:bind='coupon.code'
+            td ng:bind='coupon.status'
+            td ng:bind='coupon.discount_type'
+            td ng:bind='coupon.display_amount'
+            td ng:bind='coupon.expiration'
+            td ng:bind='coupon.limit'
+
+= render 'common/create_coupon_modal'
+= render 'common/edit_coupon_modal'

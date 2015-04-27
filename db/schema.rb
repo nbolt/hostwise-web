@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421182725) do
+ActiveRecord::Schema.define(version: 20150424194909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "user_id"
@@ -120,6 +119,18 @@ ActiveRecord::Schema.define(version: 20150421182725) do
     t.integer  "discounted_cost",             default: 0
     t.string   "discounted_reason",           default: ""
     t.string   "overage_reason",              default: ""
+    t.integer  "extra_king_sets",             default: 0
+    t.integer  "extra_twin_sets",             default: 0
+    t.integer  "extra_toiletry_sets",         default: 0
+    t.string   "extra_instructions",          default: ""
+    t.boolean  "refunded",                    default: false
+    t.integer  "refunded_cost",               default: 0
+    t.string   "refunded_reason"
+    t.integer  "extra_king_sets_cost",        default: 0
+    t.integer  "extra_twin_sets_cost",        default: 0
+    t.integer  "extra_toiletry_sets_cost",    default: 0
+    t.string   "stripe_refund_id"
+    t.integer  "coupon_cost",                 default: 0
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -138,12 +149,27 @@ ActiveRecord::Schema.define(version: 20150421182725) do
 
   create_table "cities", force: :cascade do |t|
     t.integer  "county_id"
-    t.string   "name"
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "cities", ["county_id"], name: "index_cities_on_county_id", using: :btree
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "title",            limit: 50, default: ""
+    t.text     "comment"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.integer  "user_id"
+    t.string   "role",                        default: "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
+  add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "contractor_jobs", force: :cascade do |t|
     t.integer  "user_id"
@@ -194,7 +220,7 @@ ActiveRecord::Schema.define(version: 20150421182725) do
 
   create_table "counties", force: :cascade do |t|
     t.integer  "state_id"
-    t.string   "name"
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -320,13 +346,13 @@ ActiveRecord::Schema.define(version: 20150421182725) do
 
   create_table "properties", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "title"
-    t.string   "address1"
-    t.string   "address2"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zip"
-    t.string   "country"
+    t.string   "title",                  limit: 255
+    t.string   "address1",               limit: 255
+    t.string   "address2",               limit: 255
+    t.string   "city",                   limit: 255
+    t.string   "state",                  limit: 255
+    t.string   "zip",                    limit: 255
+    t.string   "country",                limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "delivery_point_barcode"
@@ -341,7 +367,7 @@ ActiveRecord::Schema.define(version: 20150421182725) do
     t.integer  "full_beds"
     t.integer  "queen_beds"
     t.integer  "king_beds"
-    t.boolean  "active",                 default: false
+    t.boolean  "active",                             default: false
     t.string   "phone_number"
     t.integer  "rental_type_cd"
     t.integer  "property_type_cd"
@@ -397,8 +423,8 @@ ActiveRecord::Schema.define(version: 20150421182725) do
   add_index "settings", ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true, using: :btree
 
   create_table "states", force: :cascade do |t|
-    t.string   "name"
-    t.string   "abbr"
+    t.string   "name",       limit: 255
+    t.string   "abbr",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -420,23 +446,23 @@ ActiveRecord::Schema.define(version: 20150421182725) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                                           null: false
-    t.string   "crypted_password",                                null: false
-    t.string   "salt",                                            null: false
+    t.string   "email",                           limit: 255,                 null: false
+    t.string   "crypted_password",                limit: 255,                 null: false
+    t.string   "salt",                            limit: 255,                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "remember_me_token"
+    t.string   "remember_me_token",               limit: 255
     t.datetime "remember_me_token_expires_at"
     t.datetime "last_login_at"
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
-    t.string   "last_login_from_ip_address"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "phone_number"
-    t.boolean  "phone_confirmed",                 default: false
-    t.string   "company"
-    t.string   "phone_confirmation"
+    t.string   "last_login_from_ip_address",      limit: 255
+    t.string   "first_name",                      limit: 255
+    t.string   "last_name",                       limit: 255
+    t.string   "phone_number",                    limit: 255
+    t.boolean  "phone_confirmed",                             default: false
+    t.string   "company",                         limit: 255
+    t.string   "phone_confirmation",              limit: 255
     t.string   "stripe_customer_id"
     t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
@@ -446,9 +472,9 @@ ActiveRecord::Schema.define(version: 20150421182725) do
     t.string   "activation_state"
     t.string   "activation_token"
     t.datetime "activation_token_expires_at"
-    t.integer  "status_cd",                       default: 1
-    t.boolean  "migrated",                        default: false
-    t.integer  "vip_count",                       default: 0
+    t.integer  "status_cd",                                   default: 1
+    t.boolean  "migrated",                                    default: false
+    t.integer  "vip_count",                                   default: 0
     t.integer  "booking_count"
   end
 
@@ -460,10 +486,10 @@ ActiveRecord::Schema.define(version: 20150421182725) do
 
   create_table "zips", force: :cascade do |t|
     t.integer  "city_id"
-    t.string   "code"
+    t.string   "code",            limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "serviced",        default: false
+    t.boolean  "serviced",                    default: false
     t.integer  "neighborhood_id"
   end
 

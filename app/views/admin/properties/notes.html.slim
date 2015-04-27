@@ -1,0 +1,16 @@
+.xenon.custom.note
+  .page-body
+    .main-content
+      h3 = "#{@property.title} Notes"
+      ul.cbp_tmtimeline
+        = render 'common/notes', notes: @property.comments
+        li
+          time.cbp_tmtime
+            span = Date.today.strftime '%Y-%m-%d'
+            span
+          .cbp_tmicon style="background-image: url(#{current_user.avatar});background-size:cover;"
+          .cbp_tmlabel
+            = form_tag(controller: 'properties', action: 'new_note', method: 'post')
+              = text_area_tag :comment, '', placeholder: 'Enter note here'
+              = hidden_field_tag :user_id
+              = submit_tag 'Enter Note', class: 'btn btn-info btn-icon'

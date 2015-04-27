@@ -2,17 +2,9 @@ class Admin::InventoryController < Admin::AuthController
   expose(:job) { Job.find params[:id] }
 
   def index
-    @days = []
-    distribution_jobs = Job.distribution
-    @days = distribution_jobs.group_by(&:date)
-    @days.to_a.reverse!
-
-    @days.each do |day|
-      day = day[1].group_by(&:distribution_center)
-      day.to_a.reverse!
-    end
-
-    @days = @days.to_h
+    @distro = Job.distribution
+    @distro = @distro.group_by(&:date)
+    @distro.each{|date, jobs| @distro[date] = jobs.group_by{|job| job.distribution_center.then(:id)}} 
 
     jobs = Job.distribution
     case params[:filter]
@@ -32,4 +24,20 @@ class Admin::InventoryController < Admin::AuthController
       end
     end
   end
+
+  def export
+    @inventory = params[:inventory]
+    @distro = Job.distribution.order(:date)
+    @distro = @distro.group_by(&:date)
+    @distro.each{|date, jobs| @distro[date] = jobs.group_by{|job| job.distribution_center.then(:id)}} 
+
+    
+    respond_to do |format|
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"bookings.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+  end
+
 end
