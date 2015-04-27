@@ -25,7 +25,7 @@ class Admin::CouponsController < Admin::AuthController
   def create
     coupon = Coupon.new coupon_params
     coupon.expiration = Date.strptime params[:coupon][:expiration], '%m/%d/%Y' if params[:coupon][:expiration]
-    coupon.amount = params[:coupon][:amount].to_i * 100 if coupon.discount_type_cd == 0
+    coupon.amount = params[:coupon][:amount].to_f * 100 if coupon.discount_type_cd == 0
     if coupon.save
       render json: { success: true }
     else
@@ -36,7 +36,7 @@ class Admin::CouponsController < Admin::AuthController
   def update
     coupon.update_attributes coupon_params
     coupon.expiration = Date.strptime params[:coupon][:expiration], '%m/%d/%Y' if params[:coupon][:expiration]
-    coupon.amount = params[:coupon][:amount].to_i * 100 if coupon.discount_type_cd == 0
+    coupon.amount = params[:coupon][:amount].to_f * 100 if coupon.discount_type_cd == 0
     if coupon.save
       render json: { success: true }
     else
