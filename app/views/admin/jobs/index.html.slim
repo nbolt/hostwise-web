@@ -38,6 +38,9 @@
             th King Set(s)
             th Twin Set(s)
             th Toiletries Set(s)
+            th Extra King Set(s)
+            th Extra Twin Set(s)
+            th Extra Toiletries Set(s)
             th Contractor(s)
             th Type
         thead.search
@@ -55,6 +58,9 @@
             th King Set(s)
             th Twin Set(s)
             th Toiletries Set(s)
+            th Extra King Set(s)
+            th Extra Twin Set(s)
+            th Extra Toiletries Set(s)
             th Contractor(s)
             th Type
         tfoot
@@ -72,6 +78,9 @@
             th King Set(s)
             th Twin Set(s)
             th Toiletries Set(s)
+            th Extra King Set(s)
+            th Extra Twin Set(s)
+            th Extra Toiletries Set(s)
             th Contractor(s)
             th Type
         tbody
@@ -95,6 +104,9 @@
             td ng:bind='job.total_kings'
             td ng:bind='job.total_twins'
             td ng:bind='job.total_toiletries'
+            td ng:bind='job.booking.extra_king_sets'
+            td ng:bind='job.booking.extra_twin_sets'
+            td ng:bind='job.booking.extra_toiletry_sets'
             td ng:bind='job.contractor_names'
             td
               .badge style='margin-bottom:7px' ng:hide='job.state_cd == 0 && job.staging' ng:bind='job.state' ng:class='state_class(job)'
