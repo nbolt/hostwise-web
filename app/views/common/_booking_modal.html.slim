@@ -75,6 +75,10 @@ script#booking-modal type="text/ng-template"
               .total
                 .text Total
                 .price ${{total}}
+              .discount ng:show='!days[0].coupon || coupon_id'
+                .text id='discount-text' Enter Discount Code
+                .input id='discount-code' style='position:relative'
+                  input type='text' ng:model='$parent.discount_code'
         .content.side.edit style='display:inline-block'
           .title What would you like to edit?
           .buttons
@@ -86,7 +90,7 @@ script#booking-modal type="text/ng-template"
               .text Change Payment
             .button.red ng:click='to_booking_cancellation() '
               .text Cancel Booking
-        .content.side.extras style='width:488px'
+        .content.side.extras
           .linens
             h3 Do you want to add an extra sets of linens and towels or toiletries?
             h5 Great for variable beds and pullout couches to accommodate extra guests.
@@ -113,7 +117,7 @@ script#booking-modal type="text/ng-template"
           .instructions
             h3 Anything specific we should know besides the usual?
             h5 If you have any special requests please let us know here.
-            textarea style='height:150px' ng:model='extra.instructions'
+            textarea ng:model='extra.instructions'
         .content.side.services
           .services
             .title =t('booking.modal.services_title')
@@ -132,6 +136,7 @@ script#booking-modal type="text/ng-template"
                 .text= service.display
                 label.switch.red
                   input type='checkbox' toggle-service="#{service.name}"
+                  i
         .content.side.payment
           div.existing-payment
             .payment-title Select Payment Method

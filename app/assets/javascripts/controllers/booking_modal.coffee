@@ -161,7 +161,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     $scope.total = 0
     $scope.days = []
     remaining = $scope.remaining
-    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
+    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
       $scope.service_total = rsp.cost
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
       cancellation_cost = 0 if cancellation_cost < 0
@@ -189,7 +189,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
             first_booking_discount_applied = true
           if rsp.coupon_cost
             day.coupon = true
-            day.coupon_cost = rsp.coupon_cost / 100
+            day.coupon_cost = rsp.coupon_cost
           if rsp.overage_cost
             day.overage = true
             day.overage_cost = rsp.overage_cost
@@ -202,14 +202,13 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
             day.extra_twin_sets = rsp.extra_twin_sets
           if rsp.extra_toiletry_sets
             day.extra_toiletry_sets = rsp.extra_toiletry_sets
-          if remaining == -1 || remaining > 0
+          if (remaining == -1 || remaining > 0) && !$scope.selected_booking
             remaining -= 1 if remaining > 0
             day.discount = $scope.discount
             day.discount = day.total if day.discount > day.total
             day.total -= day.discount
           $scope.total += day.total
-          _($scope.selected_services).each (v,k) ->
-            day[k] = rsp[k] if v
+          _($scope.selected_services).each (v,k) -> day[k] = rsp[k] if v
           $scope.days.push day
       $scope.total = 0 if $scope.total < 0
 
