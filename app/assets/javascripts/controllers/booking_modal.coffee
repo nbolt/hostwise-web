@@ -187,6 +187,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
               day.first_booking_discount = day.total
             day.total -= day.first_booking_discount
             first_booking_discount_applied = true
+          if rsp.coupon_cost
+            day.coupon = true
+            day.coupon_cost = rsp.coupon_cost / 100
           if rsp.overage_cost
             day.overage = true
             day.overage_cost = rsp.overage_cost

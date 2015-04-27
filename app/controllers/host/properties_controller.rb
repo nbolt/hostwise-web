@@ -234,7 +234,7 @@ class Host::PropertiesController < Host::AuthController
   def booking_cost
     services = params[:services].map {|s| Service.where(name: s)[0] if s[1]}.compact
     if booking
-      cost = Booking.cost property, services, params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.chain(:coupons, :first, :id)
+      cost = Booking.cost property, services, params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id)
       render json: cost
     else
       cost = Booking.cost property, services, params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets]
