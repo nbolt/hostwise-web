@@ -174,13 +174,13 @@
           .title Total Inventory Needed
           .supplies
             .supply
-              .value ng:bind='job.king_beds'
+              .value ng:bind='job.king_bed_count'
               .name King Set
-              span ng:hide='job.king_beds == 1' s
+              span ng:hide='job.king_bed_count == 1' s
             .supply
-              .value ng:bind='job.twin_beds'
+              .value ng:bind='job.twin_bed_count'
               .name Twin Set
-              span ng:hide='job.twin_beds == 1' s
+              span ng:hide='job.twin_bed_count == 1' s
             .supply.toiletries
               .value ng:bind='job.toiletries'
               .name Toiletry Set

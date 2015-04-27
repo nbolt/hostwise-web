@@ -30,14 +30,14 @@ class Admin::JobsController < Admin::AuthController
       format.html
       format.json do
         job.current_user = current_user
-        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :man_hours, :king_beds, :twin_beds, :toiletries], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
+        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletries], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
       end
     end
   end
 
   def update_extras
     job.booking.update_attributes(extra_king_sets: params[:extras][:king_sets], extra_twin_sets: params[:extras][:twin_sets], extra_toiletry_sets: params[:extras][:toiletry_sets])
-    render json: { success: true, king_beds: job.king_beds, twin_beds: job.twin_beds, toiletries: job.toiletries, extra_king_sets: job.booking.extra_king_sets, extra_twin_sets: job.booking.extra_twin_sets, extra_toiletry_sets: job.booking.extra_toiletry_sets }
+    render json: { success: true, king_beds: job.king_bed_count, twin_beds: job.twin_bed_count, toiletries: job.toiletries, extra_king_sets: job.booking.extra_king_sets, extra_twin_sets: job.booking.extra_twin_sets, extra_toiletry_sets: job.booking.extra_toiletry_sets }
   end
 
   def update_instructions
