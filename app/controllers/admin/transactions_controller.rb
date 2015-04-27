@@ -43,7 +43,7 @@ class Admin::TransactionsController < Admin::AuthController
         booking_groups: bookings.group_by {|booking| booking.payment.id}.map do |payment_id, bookings|
           {
             payment: Payment.find(payment_id),
-            total: bookings.reduce(0) {|acc, booking| acc + booking.cost} * 100,
+            total: (bookings.reduce(0) {|acc, booking| acc + booking.cost} * 100).to_i,
             bookings: bookings
           }
         end
