@@ -27,6 +27,7 @@ class Host::BookingsController < Host::AuthController
       if params[:extra_toiletry_sets].present?
         booking.extra_toiletry_sets = params[:extra_toiletry_sets]
       end
+      booking.coupons.push(Coupon.find params[:coupon_id]) if params[:coupon_id]
       if booking.save
         booking.update_cost!
         booking.job.handle_distribution_jobs booking.job.primary_contractor if booking.job.primary_contractor

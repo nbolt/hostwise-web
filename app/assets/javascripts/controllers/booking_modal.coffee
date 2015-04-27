@@ -299,6 +299,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
       $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/update", {
         payment: id
         services: services_array()
+        coupon_id: $scope.coupon_id
         extra_king_sets: $scope.extra.king_sets
         extra_twin_sets: $scope.extra.twin_sets
         extra_toiletry_sets: $scope.extra.toiletry_sets

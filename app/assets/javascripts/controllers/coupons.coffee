@@ -1,6 +1,6 @@
 CouponsCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spinner', ($scope, $http, $timeout, $window, ngDialog, spinner) ->
 
-  $scope.coupon = {}
+  $scope.coupon = {status_cd:1}
 
   $scope.create_coupon_modal = -> ngDialog.open template: 'create-coupon-modal', className: 'coupon info full', scope: $scope
   $scope.edit_coupon_modal = (coupon) ->

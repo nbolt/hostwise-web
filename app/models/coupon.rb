@@ -10,9 +10,15 @@ class Coupon < ActiveRecord::Base
   def display_amount
     case discount_type_cd
     when 0
-      "$ #{amount/100.0}"
+      num = amount / 100.0
+      num = '%.2f' % num unless num % 1 == 0
+      num = num.to_i     if     num % 1 == 0
+      "$ #{num}"
     when 1
-      "#{amount} %"
+      num = amount
+      num = '%.2f' % num unless num % 1 == 0
+      num = num.to_i     if     num % 1 == 0
+      "#{num} %"
     end
   end
 
