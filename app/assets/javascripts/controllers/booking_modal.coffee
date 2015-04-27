@@ -207,6 +207,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
             day.discount = $scope.discount
             day.discount = day.total if day.discount > day.total
             day.total -= day.discount
+          day.total = parseFloat day.total.toFixed(2)
           $scope.total += day.total
           _($scope.selected_services).each (v,k) -> day[k] = rsp[k] if v
           $scope.days.push day
