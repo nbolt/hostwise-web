@@ -229,17 +229,17 @@
                   span ng:bind="job.booking.refunded_cost / 100.0"
                   | )
               .late ng:show="job.booking.extra_king_sets > 0"
-                .text Extra King Sets
+                .text ng:bind-template='{{extra.king_sets}} Extra King Sets'
                 .price
                   | $
                   span ng:bind="job.booking.extra_king_sets_cost"
               .late ng:show="job.booking.extra_twin_sets > 0"
-                .text Extra Twin Sets
+                .text ng:bind-template='{{extra.twin_sets}} Extra Twin Sets'
                 .price
                   | $
                   span ng:bind="job.booking.extra_twin_sets_cost"
               .late ng:show="job.booking.extra_toiletry_sets > 0"
-                .text Extra Toiletry Sets
+                .text ng:bind-template='{{extra.toiletry_sets}} Extra Toiletry Sets'
                 .price
                   | $
                   span ng:bind="job.booking.extra_toiletry_sets_cost"
