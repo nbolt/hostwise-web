@@ -53,15 +53,10 @@ class Host::PaymentsController < Host::AuthController
     end
 
     customer = Stripe::Customer.retrieve(payment.user.stripe_customer_id)
-    rsp = customer.sources.retrieve(payment.stripe_id).delete
-
-    if rsp && rsp.deleted
-      payment.update_attribute :status, :deleted
-      payment.update_attribute :fingerprint, nil
-      render json: { success: true }
-    else
-      render json: { success: false, message: "Error deleting credit card" }
-    end
+    customer.sources.retrieve(payment.stripe_id).delete rescue Stripe::InvalidRequestError
+    payment.update_attribute :status, :deleted
+    payment.update_attribute :fingerprint, nil
+    render json: { success: true }
   end
 
   def default
