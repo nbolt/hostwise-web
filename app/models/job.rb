@@ -55,7 +55,7 @@ class Job < ActiveRecord::Base
   }
   scope :upcoming, -> (contractor) { standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :past, -> (contractor) { standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
- 
+
   scope :sun, -> (contractor) { where("extract(dow from date) != ? OR #{contractor.availability.sun} = ?", 0, true).includes(contractors: [:availability]).references(:availability) }
   scope :mon, -> (contractor) { where("extract(dow from date) != ? OR #{contractor.availability.mon} = ?", 1, true).includes(contractors: [:availability]).references(:availability) }
   scope :tue, -> (contractor) { where("extract(dow from date) != ? OR #{contractor.availability.tues} = ?", 2, true).includes(contractors: [:availability]).references(:availability) }
@@ -215,7 +215,7 @@ class Job < ActiveRecord::Base
       jobs_on_date = contractor.jobs.standard.on_date(date)
       jobs_on_date.each_with_index do |job, index|
         if id == jobs_on_date[index].id
-          return index
+          return index + 1
         end
       end
     end
@@ -265,7 +265,7 @@ class Job < ActiveRecord::Base
 
   def inventory_count!
     standard_jobs = primary_contractor.jobs.standard.on_date(date)
-      
+
     ['king_sheets', 'twin_sheets', 'pillow_count', 'bath_towels', 'hand_towels', 'face_towels', 'bath_mats'].each do |type|
       update_attribute type.to_sym, standard_jobs.reduce(0) do |acc, job|
         if job.checklist
