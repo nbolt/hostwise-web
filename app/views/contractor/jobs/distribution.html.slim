@@ -1,7 +1,7 @@
 #job-details.container.distribution ng:controller='distribution_job'
   .page-title
     i.icon-details
-    | Distribution Job
+    span ng:bind='distribution_type()'
   .distribution-job
     .title ng:bind='::job.distribution_center.name'
     .address ng:bind='::job.distribution_center.full_address'

@@ -15,8 +15,21 @@ class Host::BookingsController < Host::AuthController
       params[:services].each do |service|
         booking.services.push Service.where(name: service)[0] unless booking.services.find {|s| service == s.name}
       end
+      if params[:extra_instructions].present?
+        booking.extra_instructions = params[:extra_instructions]
+      end
+      if params[:extra_king_sets].present?
+        booking.extra_king_sets = params[:extra_king_sets]
+      end
+      if params[:extra_twin_sets].present?
+        booking.extra_twin_sets = params[:extra_twin_sets]
+      end
+      if params[:extra_toiletry_sets].present?
+        booking.extra_toiletry_sets = params[:extra_toiletry_sets]
+      end
       if booking.save
         booking.update_cost!
+        booking.job.handle_distribution_jobs booking.job.primary_contractor if booking.job.primary_contractor
         render json: { success: true }
       else
         render json: { success: false }
@@ -41,6 +54,13 @@ class Host::BookingsController < Host::AuthController
         booking.job.contractors.each do |contractor|
           contractor.payouts.create(job_id: booking.job.id, amount: booking.job.payout(contractor) * 100) if params[:apply_fee]
           booking.job.contractors.destroy contractor
+          other_jobs = contractor.jobs.standard.on_date(booking.date)
+          if other_jobs[0]
+            other_jobs[0].handle_distribution_jobs contractor
+            Job.set_priorities contractor.jobs.on_date(booking.date), contractor
+          else
+            contractor.jobs.distribution.on_date(booking.date).destroy_all
+          end
           if contractor.contractor_profile.position == :trainee
             TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{booking.job.formatted_date} was cancelled. Please select another session!")
           else
@@ -62,5 +82,21 @@ class Host::BookingsController < Host::AuthController
 
   def same_day_cancellation
     render json: { same_day_cancellation: booking.same_day_cancellation }
+  end
+
+  def apply_discount
+    coupon = Coupon.where(code: params[:code])[0]
+    timezone = Timezone::Zone.new :zone => Property.find(params[:property_id]).zone
+    time = timezone.time Time.now
+    today = time.to_date
+    if coupon && coupon.status == :active && (coupon.limit == 0 || coupon.applied(current_user) <= coupon.limit) && (!coupon.expiration || coupon.expiration >= today)
+      amount = coupon.amount / 100.0
+      amount = params[:total].to_i * (coupon.amount / 100.0) if coupon.discount_type == :percentage
+      remaining = -1
+      remaining = coupon.limit - coupon.applied(current_user) if coupon.limit > 0
+      render json: { success: true, remaining: remaining, coupon_id: coupon.id, display_amount: coupon.display_amount.gsub(/\s+/, ''), amount: amount }
+    else
+      render json: { success: false }
+    end
   end
 end

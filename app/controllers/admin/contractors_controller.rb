@@ -32,6 +32,18 @@ class Admin::ContractorsController < Admin::AuthController
     end
   end
 
+  def notes
+    @contractor = User.find(params[:id])
+  end
+
+  def new_note
+    contractor_id = params[:id]
+    comment = params[:comment]
+    user_id = current_user.id
+    User.find(contractor_id).comments.create(comment: comment, user_id: user_id)
+    redirect_to "/contractors/#{contractor_id}/notes"
+  end
+
   def update
     user = User.find_by_id params[:id]
 

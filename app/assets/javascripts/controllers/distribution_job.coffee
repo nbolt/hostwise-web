@@ -52,6 +52,9 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
   $scope.show_supply = ->
     $scope.job and $scope.job.occasion_cd == 0 and $scope.user and $scope.user.contractor_profile.position_cd != 1
 
+  $scope.distribution_type = ->
+    if $scope.job and $scope.job.occasion_cd == 0 then 'Inventory Pickup' else 'Inventory Dropoff'
+
   $scope.close_modal = -> ngDialog.closeAll()
 
   $scope.done_modal = ->

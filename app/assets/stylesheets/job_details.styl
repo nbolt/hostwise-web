@@ -473,6 +473,35 @@
             line-height: 25px
       &.actions
         .phase
+          .supplies
+            padding: 20px
+            .div.teal
+              border-bottom: thin solid teal
+              height: 1px
+              margin: 20px 0
+            .supply
+              display: inline-block
+              vertical-align: top
+              width: 30%
+              &:last-child
+                margin-right: 0
+              .name, .value
+                display: inline-block
+                vertical-align: top
+              .name
+                color: teal
+                width: 60px
+                @media phone
+                  margin-right: 0
+              &.toiletries .name
+                width: 100px
+              .value
+                color: darker-gray
+            .icon-button
+              height: 60px
+              line-height: 60px
+              .icon
+                width: 60px
           &.active
             .header
               background-color: teal

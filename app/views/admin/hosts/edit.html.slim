@@ -12,8 +12,7 @@
               img ng:src='{{::host.avatar}}'
               .name
                 | {{::host.name}}
-              .city
-                | City Name
+              a href="/hosts/{{host.id}}/notes" Notes
           .vr
           .section.info
             div
@@ -43,7 +42,7 @@
           .section.one
             h2 Last Booked
             h2.teal ng:bind='last_booking().date'
-            h2 ID 
+            h2 ID
             h2.teal ng:bind='last_booking().id'
           .section.two
             i.icon-details
@@ -51,26 +50,26 @@
             h2.teal ng:bind='count_bookings()'
           .section.three
             i.icon-earnings
-            h2 Total Spent 
+            h2 Total Spent
             h2.teal ${{ host.total_spent }}
           .section.four
             i.icon-apt
             h2 Properties
-            h2.teal 
+            h2.teal
               | {{ host.properties.length }}
       .step.three
         form
           .section.one
             i.icon-house
             h2 Total Properties
-            h2.teal 
+            h2.teal
               | {{ host.properties.length }}
           .section.two
             i.icon-mag
             input value='Search for a property'
             i.icon-acc-open
           hr
-          .row  
+          .row
             .section
               h2 Property ID
             .section
@@ -80,7 +79,7 @@
             .section
               h2 Last Service
             .section
-              h2 Next Service 
+              h2 Next Service
             .section
               h2 Total Bookings
             .section

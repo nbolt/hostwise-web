@@ -36,6 +36,7 @@
                   th Date
                   th Client Name
                   th Status
+                  th Refund
                   th Adjusted Cost
                   th Net Sale
               thead.search
@@ -48,6 +49,7 @@
                   th.date Date
                   th Client Name
                   th Status
+                  th Refund
                   th Adjusted Cost
                   th Net Sale
               tfoot
@@ -60,6 +62,7 @@
                   th Date
                   th Client Name
                   th Status
+                  th Refund
                   th Adjusted Cost
                   th Net Sale
               tbody
@@ -77,6 +80,8 @@
                   td
                     a.teal ng:href='/hosts/{{booking.user.id}}/edit' ng:bind='::booking.user.name'
                   td ng:bind='booking.status'
+                  td
+                    .btn.btn-xs ng:class='refund_class(booking)' ng:click='refund_modal(booking)' ng:bind='refund_text(booking)' ng:hide='booking.payment_status_cd == 0'
                   td ng:bind='booking.adjusted_cost' ng:class='modified_payment(booking)'
                   td ng:class='modified_payment(booking)'
                     a.teal href='javascript:void(0)' ng:bind-template="${{booking.cost}}" ng:click='edit_payment_modal(booking)' ng:show='booking.payment_status_cd == 0'
@@ -159,3 +164,4 @@
 = render 'common/process_payouts_confirmation'
 = render 'common/edit_payout_modal'
 = render 'common/edit_payment_modal'
+= render 'common/refund_payment_modal'

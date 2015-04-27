@@ -17,6 +17,8 @@
               .created_at ng:bind-template="Created {{contractor.created_at | date:'MM/dd/yy':'UTC'}}"
               .location ng:show='contractor.contractor_profile'
                 | {{::contractor.contractor_profile.city}}, {{::contractor.contractor_profile.state}}
+            div
+              a href="/contractors/{{contractor.id}}/notes" Notes
           .vr
           .section.info
             div

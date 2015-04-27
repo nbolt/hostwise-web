@@ -10,7 +10,7 @@
       = f.file_field :bathroom_photo
   .page-title
     i.icon-notebook
-    | Job Details
+    .text Job {{index_in_day + 1}} Details
   .job
     .flag ng:class='pricing_class()'
     .photo
@@ -71,7 +71,7 @@
         hr
         .info
           .name ng:bind='::job.booking.property.user.name' ng:class="is_applicant && 'pad'"
-          a.icon-button.teal href="tel://+1{{job.booking.property.user.phone_number}}" ng:hide='is_applicant'
+          a.icon-button.teal href="tel://+1#{job.booking.property.phone_number}" ng:hide='is_applicant' ng:click='call()'
             .icon
               i.icon-call
             .text Call
@@ -133,6 +133,22 @@
             img ng:src='{{::teammate.avatar}}'
           .name ng:bind='::teammate.name'
           .number ng:bind='::teammate.display_phone_number'
+      .section.supplies
+        .head
+          .icon
+            i.icon-count
+          .text Job Inventory List
+        .supplies-container
+          .supplies
+            .supply
+              .name King:
+              .value ng:bind='::job.king_beds'
+            .supply
+              .name Twin:
+              .value ng:bind='::job.twin_beds'
+            .supply.toiletries
+              .name Toiletry Kits:
+              .value ng:bind='::job.toiletries'
       .section.actions
         div ng:switch='job.status'
           .phase.active ng:switch-default=''
@@ -158,7 +174,7 @@
                     .text Property Occupied
           .phase.active ng:switch-when='blocked'
             .header
-              .text Job Cannot be Started Yet
+              .text You Must First Complete the Linen Pickup
             .content.top ng:switch='job.blocker'
               .pad
                 i.icon-pw
@@ -179,12 +195,12 @@
                 .div.gray
                 timer interval="1000" start-timer='' autostart='false' finish-callback="timer_finished()" countdown="job.cant_access_seconds_left" {{mminutes}}:{{sseconds}}
                 .div.gray.bottom
-                a href='tel://+1{{job.booking.property.user.phone_number}}'
+                a href="tel://+1#{job.booking.property.phone_number}" ng:click='call()'
                   .icon-button.teal.half style='margin-right: 4%'
                     .icon
                       i.icon-call
                     .text Call
-                a href='sms://+1{{job.booking.property.user.phone_number}}'
+                a href="sms://+1#{job.booking.property.phone_number}" ng:click='sms()'
                   .icon-button.teal.half
                     .icon
                       i.icon-text
@@ -197,7 +213,8 @@
                   .icon-button.teal
                     .icon
                       i.icon-alert-ok
-                    .text Go to next job
+                    .text ng:hide='job.is_last_job_of_day' Go to next job
+                    .text ng:show='job.is_last_job_of_day' Drop Off Soiled Linens
           .phase.active ng:switch-when='completed'
             .header
               .text Job Completed
@@ -219,7 +236,8 @@
                   .icon-button.teal.right style='margin-top: 35px'
                     .icon
                       .typcn.typcn-chevron-right
-                    .text Go To Next Job
+                    .text ng:hide='job.is_last_job_of_day' Go to next job
+                    .text ng:show='job.is_last_job_of_day' Drop Off Soiled Linens
           .phase.complete ng:switch-when='in_progress'
             .header
               .text Job in Progress...
@@ -342,7 +360,7 @@
                           .box decrement='checklist.checklist_settings.inventory_count.bath_mats' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.bath_mats'
                           .box increment='checklist.checklist_settings.inventory_count.bath_mats' +
-                        .label Bath Mats
+                        .label Bath Mats                                                               r
                     .div.teal
                     .icon-button.teal.right ng:class='begin_cleaning_class()' ng:click='to_cleaning()'
                       .icon
@@ -367,6 +385,20 @@
                     strong Additional Info:
                     |  {{job.booking.property.additional_info}}
                   .div.teal
+                  div ng:show='job.booking.extra_king_sets > 0 || job.booking.extra_twin_sets > 0 || job.booking.extra_toiletry_sets > 0'
+                    .text
+                      strong Extras:
+                      |  This customer has requested to leave extra sets on site in the closet.
+                    .supplies
+                      .supply
+                        .name King:
+                        .value ng:bind='::job.king_beds'
+                      .supply
+                        .name Twin:
+                        .value ng:bind='::job.twin_beds'
+                      .supply.toiletries
+                        .name Toiletry Kits:
+                        .value ng:bind='::job.toiletries'
                   .icon-button.teal.right ng:class='complete_cleaning_class()' ng:click='complete_cleaning()'
                     .icon
                       .fa.fa-chevron-right

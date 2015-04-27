@@ -1,0 +1,26 @@
+script#refund-payment-modal type="text/ng-template"
+  .modal
+    .header
+      .text Refund Payment
+    .content
+      .price
+        .text Original Cost
+        .amount ${{selected_payment.original_cost}}
+      .changes
+        .change.discount
+          .text Refund $
+          .input.percentage
+            input type='text' ng:model='refund.percentage' ng:change='refund_percentage_update()'
+          .input.amount
+            input type='text' ng:model='refund.amount' ng:change='refund_amount_update()'
+          .input.reason
+            input type='text' ng:model='refund.reason' placeholder='Describe the reason'
+      .price.updated
+        .text Updated Cost
+        .amount ${{updated_cost()}}
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Cancel
+        .button.teal ng:click='refund_payment(selected_payment)'
+          .text Submit Refund

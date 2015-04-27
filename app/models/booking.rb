@@ -10,6 +10,8 @@ class Booking < ActiveRecord::Base
   has_one :booking_users, dependent: :destroy
   has_many :booking_services, class_name: 'BookingServices', dependent: :destroy
   has_many :services, through: :booking_services
+  has_many :booking_coupons, class_name: 'BookingCoupon', dependent: :destroy
+  has_many :coupons, through: :booking_coupons
   has_many :booking_transactions, class_name: 'BookingTransactions', dependent: :destroy
   has_many :transactions, through: :booking_transactions, source: :stripe_transaction
   has_many :successful_transactions, -> { where(status_cd: 0) },  through: :booking_transactions, source: :stripe_transaction
@@ -38,7 +40,7 @@ class Booking < ActiveRecord::Base
     services.map(&:display).join ', '
   end
 
-  def self.cost property, services, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false
+  def self.cost property, services, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
     pool_service = Service.where(name: 'pool')[0]
     total = 0
     rsp = {}
@@ -87,15 +89,41 @@ class Booking < ActiveRecord::Base
       end
       rsp[:cost] -= rsp[:first_booking_discount]
     end
+    if extra_king_sets # this tracks extra queen or full sets
+      rsp[:extra_king_sets] ||= 0
+      extra_king_sets.to_i.times { rsp[:extra_king_sets] += PRICING['queen_linens'] }
+      rsp[:cost] += rsp[:extra_king_sets]
+    end
+    if extra_twin_sets # this tracks extra twin sets
+      rsp[:extra_twin_sets] ||= 0
+      extra_twin_sets.to_i.times { rsp[:extra_twin_sets] += PRICING['twin_linens'] }
+      rsp[:cost] += rsp[:extra_twin_sets]
+    end
+    if extra_toiletry_sets # this tracks extra toiletry sets
+      rsp[:extra_toiletry_sets] ||= 0
+      extra_toiletry_sets.to_i.times { rsp[:extra_toiletry_sets] += PRICING['toiletries'] }
+      rsp[:cost] += rsp[:extra_toiletry_sets]
+    end
+    if coupon_id
+      coupon = Coupon.find coupon_id
+      amount = coupon.amount / 100.0
+      amount = rsp[:cost] * (coupon.amount / 100.0) if coupon.discount_type == :percentage
+      amount *= 100
+      rsp[:coupon_cost] = amount
+      rsp[:cost] -= amount
+    end
     rsp
   end
 
   def cost
-    total_cost = (adjusted_cost / 100) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost - first_booking_discount_cost
+    total_cost = (adjusted_cost / 100.0) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost + extra_king_sets_cost + extra_twin_sets_cost + extra_toiletry_sets_cost - first_booking_discount_cost - (refunded_cost / 100.0) - (coupon_cost / 100.0)
     if cancelled? || couldnt_access?
-      total_cost -= linen_cost            # |
-      total_cost -= toiletries_cost       # |  NOTE: tests needed [mutation coverage]
-      total_cost = 0 if total_cost < 0    # |
+      total_cost -= linen_cost                # |
+      total_cost -= toiletries_cost           # |
+      total_cost -= extra_king_sets_cost      # | NOTE: tests needed [mutation coverage]
+      total_cost -= extra_twin_sets_cost      # |
+      total_cost -= extra_toiletry_sets_cost  # |
+      total_cost = 0 if total_cost < 0        # |
       [PRICING['cancellation'], (total_cost * 0.2).round(2)].max
     else
       total_cost
@@ -103,15 +131,48 @@ class Booking < ActiveRecord::Base
   end
 
   def original_cost
-    (cost - (adjusted_cost / 100)).round 2
+    (cost - (adjusted_cost / 100.0) + (refunded_cost / 100.0)).round 2
   end
 
   def pricing_hash
-    { cost: cost, cleaning: cleaning_cost, linens: linen_cost, toiletries: toiletries_cost, pool: pool_cost, patio: patio_cost, windows: windows_cost, preset: staging_cost, no_access_fee: no_access_fee_cost, late_next_day: late_next_day_cost, late_same_day: late_same_day_cost, first_booking_discount: first_booking_discount_cost, overage_cost: overage_cost / 100, discounted_cost: discounted_cost / 100 }
+    { cost: cost,
+      cleaning: cleaning_cost,
+      linens: linen_cost,
+      toiletries: toiletries_cost,
+      pool: pool_cost,
+      patio: patio_cost,
+      windows: windows_cost,
+      preset: staging_cost,
+      no_access_fee: no_access_fee_cost,
+      late_next_day: late_next_day_cost,
+      late_same_day: late_same_day_cost,
+      extra_king_sets: extra_king_sets_cost,
+      extra_twin_sets: extra_twin_sets_cost,
+      extra_toiletry_sets: extra_toiletry_sets_cost,
+      first_booking_discount: first_booking_discount_cost,
+      refunded_cost: refunded_cost,
+      overage_cost: overage_cost / 100.0,
+      discounted_cost: discounted_cost / 100.0
+    }
+  end
+
+  def process_refund!
+    if last_transaction.then(:status) == :successful && !stripe_refund_id
+      charge = Stripe::Charge.retrieve(last_transaction.stripe_charge_id)
+      begin
+        refund = charge.refunds.create(amount: refunded_cost, reason: refunded_reason, metadata: {booking_id: self.id})
+        self.update_attribute :stripe_refund_id, refund.id
+        true
+      rescue Stripe::InvalidRequestError
+        false
+      end
+    else
+      false
+    end
   end
 
   def update_cost!
-    cost = Booking.cost(property, services, first_booking_discount, late_next_day, late_same_day, no_access_fee)
+    cost = Booking.cost(property, services, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
     self.cleaning_cost               = cost[:cleaning] || 0
     self.linen_cost                  = cost[:linens] || 0
     self.toiletries_cost             = cost[:toiletries] || 0
@@ -123,6 +184,10 @@ class Booking < ActiveRecord::Base
     self.late_next_day_cost          = cost[:late_next_day] || 0
     self.late_same_day_cost          = cost[:late_same_day] || 0
     self.first_booking_discount_cost = cost[:first_booking_discount] || 0
+    self.extra_king_sets_cost        = cost[:extra_king_sets] || 0
+    self.extra_twin_sets_cost        = cost[:extra_twin_sets] || 0
+    self.extra_toiletry_sets_cost    = cost[:extra_toiletry_sets] || 0
+    self.coupon_cost                 = cost[:coupon_cost] || 0
     self.save
   end
 

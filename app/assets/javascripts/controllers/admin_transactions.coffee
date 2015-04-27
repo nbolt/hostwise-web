@@ -2,6 +2,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
 
   $scope.payout  = { discount: { percentage: 0, amount: 0, reason: '' }, overage: { percentage: 0, amount: 0, reason: '' } }
   $scope.payment = { discount: { percentage: 0, amount: 0, reason: '' }, overage: { percentage: 0, amount: 0, reason: '' } }
+  $scope.refund  = { percentage: 0, amount: 0, reason: '' }
 
   $scope.export_bookings = ->
     bookings = filtered_data('#example-1', 'booking')
@@ -41,6 +42,54 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       job.selected = true
     else
       job.selected = false
+
+  $scope.job_status_class = (job) ->
+    if job.status == 'Paid'
+      'btn-secondary'
+    else
+      'btn-white'
+
+  $scope.status_class = (booking) ->
+    if booking.status == 'Open'
+      'btn-white'
+    else
+      'btn-secondary'
+
+  $scope.refund_class = (booking) ->
+    if booking.refunded
+      'btn-primary disabled'
+    else
+      'btn-gray'
+
+  $scope.refund_text = (booking) ->
+    if booking.refunded
+      'Refunded'
+    else
+      'Refund'
+
+  $scope.refund_modal = (booking) ->
+    unless booking.refunded
+      $scope.selected_payment = booking
+      $scope.refund  = { amount: booking.refunded_cost / 100, reason: booking.refunded_reason }
+      $scope.refund_amount_update()
+      ngDialog.open template: 'refund-payment-modal', className: 'edit-pay info full', scope: $scope
+
+  $scope.refund_payment = ->
+    spinner.startSpin()
+    $http.post("/bookings/#{$scope.selected_payment.id}/refund", {refunded_cost: $scope.refund.amount, refunded_reason: $scope.refund.reason}).success (rsp) ->
+      ngDialog.closeAll()
+      spinner.stopSpin()
+      $scope.selected_payment.cost            = rsp.cost
+      $scope.selected_payment.refunded        = rsp.refunded
+      $scope.selected_payment.adjusted        = rsp.adjusted
+      $scope.selected_payment.refunded_cost   = rsp.refunded_cost
+      $scope.selected_payment.refunded_reason = rsp.refunded_reason
+
+      $scope.selected_payment.adjusted_cost = rsp.adjusted_cost / 100
+      if $scope.selected_payment.adjusted_cost >= 0
+        $scope.selected_payment.adjusted_cost = "$#{$scope.selected_payment.adjusted_cost.toFixed(2)}"
+      else
+        $scope.selected_payment.adjusted_cost = "(-$#{($scope.selected_payment.adjusted_cost * -1).toFixed(2)})"
 
   $scope.process_payments_modal = -> ngDialog.open template: 'process-payments-confirmation', className: 'info full', scope: $scope
   $scope.cancel_process = -> ngDialog.closeAll()
@@ -161,7 +210,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ],
-          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null]
+          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null,null]
         })
 
         $.fn.dataTable.ext.search.push (settings, data, index) ->
@@ -278,6 +327,10 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
   adjusted_payout = ->
     parseFloat($scope.updated_payout()) - ($scope.selected_contractor.payout.amount / 100)
 
+  $scope.updated_cost = ->
+    updated_cost = $scope.selected_payment.original_cost - (parseFloat($scope.refund.amount) || 0)
+    updated_cost.toFixed 2
+
   $scope.updated_payment = ->
     updated_cost = $scope.selected_payment.original_cost - (parseFloat($scope.payment.discount.amount) || 0)
     updated_cost = updated_cost + (parseFloat($scope.payment.overage.amount) || 0)
@@ -290,6 +343,16 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       updated_cost.toFixed 2
     else
       0
+
+  $scope.refund_percentage_update = ->
+    amount = $scope.selected_payment.original_cost
+    new_amount = amount * ($scope.refund.percentage / 100)
+    $scope.refund.amount = new_amount.toFixed 2
+
+  $scope.refund_amount_update = ->
+    amount = $scope.selected_payment.original_cost
+    new_percentage = (1 - (amount - $scope.refund.amount) / amount) * 100
+    $scope.refund.percentage = new_percentage.toFixed 2
 
   $scope.payout_discount_percentage_update = ->
     amount = ($scope.selected_contractor.payout.amount / 100)

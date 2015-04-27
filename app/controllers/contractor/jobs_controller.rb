@@ -37,7 +37,7 @@ class Contractor::JobsController < Contractor::AuthController
       end
       format.json do
         job.current_user = current_user
-        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :next_job, :prev_job, :cant_access_seconds_left, :man_hours, :primary], include: {distribution_center: {methods: [:full_address]}, contractors: {methods: [:name, :display_phone_number, :avatar], include: {contractor_profile: {}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type]}}}})
+        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :next_job, :prev_job, :cant_access_seconds_left, :man_hours, :primary, :king_beds, :twin_beds, :toiletries, :is_last_job_of_day, :index_in_day], include: {distribution_center: {methods: [:full_address]}, contractors: {methods: [:name, :display_phone_number, :avatar], include: {contractor_profile: {}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type]}}}})
       end
     end
   end
@@ -87,11 +87,21 @@ class Contractor::JobsController < Contractor::AuthController
   def timer_finished
     unless job.booking.status == :couldnt_access
       job.booking.update_attribute :status_cd, 5
-      job.booking.update_cost!
       staging = Rails.env.staging? && '[STAGING] ' || ''
-      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise was unable to access your property. Having waited 30 minutes to resolve this issue, we must now move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
-      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has waited for 30 min and is now leaving property #{job.booking.property.id}. This is for job ##{job.id}.")
+      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} was unable to access property ##{job.booking.property.id} and the 30m timer has passed. They are now either leaving the property or have forgotten to notify us they've gotten in. This is for job ##{job.id}.")
     end
+    render json: { success: true }
+  end
+
+  def call
+    staging = Rails.env.staging? && '[STAGING] ' || ''
+    TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has attempted to call customer #{job.booking.property.user.id} regarding property #{job.booking.property.id} for job ##{job.id}.")
+    render json: { success: true }
+  end
+
+  def sms
+    staging = Rails.env.staging? && '[STAGING] ' || ''
+    TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has attempted to message customer #{job.booking.property.user.id} regarding property #{job.booking.property.id} for job ##{job.id}.")
     render json: { success: true }
   end
 
@@ -194,7 +204,13 @@ class Contractor::JobsController < Contractor::AuthController
     checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
 
     if params[:file]
-      photo = checklist.contractor_photos.create(photo: params[:file])
+      contractor_photo = checklist.contractor_photos.create(photo: params[:file])
+      job = Job.find_by_id(params[:job_id])
+      staging = Rails.env.staging? && '[STAGING] ' || ''
+
+      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has found damages at #{job.booking.property.full_address}", [contractor_photo.photo.url])
+      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has found damages at property #{job.booking.property.id}.", [contractor_photo.photo.url])
+
       render json: { success: true, contractor_photos: checklist.contractor_photos }
     else
       render json: { success: false }

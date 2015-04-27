@@ -2,6 +2,8 @@ class Property < ActiveRecord::Base
   extend FriendlyId
   include PgSearch
 
+  acts_as_commentable
+
   friendly_id :slug_candidates, use: :slugged
 
   pg_search_scope :search_property, against: [:id, :title, :address1, :address2, :city, :zip], using: { tsearch: { prefix: true } }
@@ -12,7 +14,7 @@ class Property < ActiveRecord::Base
   belongs_to :user
   has_many :bookings, autosave: true, dependent: :destroy
   has_many :active_bookings, -> { active.order(:date) }, autosave: true, dependent: :destroy, class_name: 'Booking'
-  has_many :past_bookings, -> { where('bookings.status_cd in (3,5)', Date.today).order(:date) }, class_name: 'Booking'
+  has_many :past_bookings, -> { where('bookings.status_cd in (3,5)').order(:date) }, class_name: 'Booking'
   has_many :property_photos, autosave: true, dependent: :destroy
 
   before_validation :standardize_address

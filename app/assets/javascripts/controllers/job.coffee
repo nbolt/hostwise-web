@@ -7,6 +7,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
+    $scope.index_in_day = rsp.index_in_day
     $scope.next_job = rsp.next_job.id if rsp.next_job
     $scope.prev_job = rsp.prev_job.id if rsp.prev_job
     $scope.job.cant_access_seconds_left = 1 if $scope.job.cant_access_seconds_left == 0
@@ -73,7 +74,6 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
                   value: n
                 })
 
-
   $scope.completed_job = ->
     $scope.job and $scope.job.status_cd == 3
 
@@ -136,6 +136,12 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.timer_finished = ->
     if $scope.job.status_cd == 5
       $http.post("/jobs/#{$scope.job.id}/timer_finished")
+
+  $scope.call = ->
+    $http.post("/jobs/#{$scope.job.id}/call")
+
+  $scope.sms = ->
+    $http.post("/jobs/#{$scope.job.id}/sms")
 
   $scope.in_progress = ->
     if $scope.job
