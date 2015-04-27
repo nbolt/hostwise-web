@@ -154,6 +154,36 @@
               label.switch.red
                 input type='checkbox' toggle-admin-service="#{service.name}"
                 i
+        .services.supplies
+          .title Extra Services Requested
+          .supplies
+            .supply
+              .value ng:bind='::job.booking.extra_king_sets'
+              .name King Set
+              span ng:hide='job.booking.extra_king_sets == 1' s
+            .supply
+              .value ng:bind='::job.booking.extra_twin_sets'
+              .name Twin Set
+              span ng:hide='job.booking.extra_twin_sets == 1' s
+            .supply.toiletries
+              .value ng:bind='::job.booking.extra_toiletry_sets'
+              .name Toiletry Set
+              span ng:hide='job.booking.extra_toiletry_sets == 1' s
+        .services.supplies
+          .title Total Inventory Needed
+          .supplies
+            .supply
+              .value ng:bind='job.king_beds'
+              .name King Set
+              span ng:hide='job.king_beds == 1' s
+            .supply
+              .value ng:bind='::job.twin_beds'
+              .name Twin Set
+              span ng:hide='job.twin_beds == 1' s
+            .supply.toiletries
+              .value ng:bind='::job.toiletries'
+              .name Toiletry Set
+              span ng:hide='job.toiletries == 1' s
       .block.invoice
         .head
           .right

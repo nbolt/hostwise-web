@@ -132,6 +132,22 @@
             img ng:src='{{::teammate.avatar}}'
           .name ng:bind='::teammate.name'
           .number ng:bind='::teammate.display_phone_number'
+      .section.supplies
+        .head
+          .icon
+            i.icon-count
+          .text Job Inventory List
+        .supplies-container
+          .supplies
+            .supply
+              .name King:
+              .value ng:bind='::job.king_beds'
+            .supply
+              .name Twin:
+              .value ng:bind='::job.twin_beds'
+            .supply.toiletries
+              .name Toiletry Kits:
+              .value ng:bind='::job.toiletries'
       .section.actions
         div ng:switch='job.status'
           .phase.active ng:switch-default=''
@@ -367,6 +383,20 @@
                     strong Additional Info:
                     |  {{job.booking.property.additional_info}}
                   .div.teal
+                  div ng:show='job.booking.extra_king_sets > 0 || job.booking.extra_twin_sets > 0 || job.booking.extra_toiletry_sets > 0'
+                    .text
+                      strong Extras:
+                      |  This customer has requested to leave extra sets on site in the closet.
+                    .supplies
+                      .supply
+                        .name King:
+                        .value ng:bind='::job.king_beds'
+                      .supply
+                        .name Twin:
+                        .value ng:bind='::job.twin_beds'
+                      .supply.toiletries
+                        .name Toiletry Kits:
+                        .value ng:bind='::job.toiletries'
                   .icon-button.teal.right ng:class='complete_cleaning_class()' ng:click='complete_cleaning()'
                     .icon
                       .fa.fa-chevron-right

@@ -994,6 +994,30 @@ form
             &.active
               i
                 color: teal
+          &.supplies
+            margin: 20px 20px 0
+            &:last-child
+              margin-bottom: 10px
+          .supplies
+            .supply
+              display: inline-block
+              vertical-align: top
+              margin-right: 25px
+              span
+                color: dark-gray
+              &:last-child
+                margin-right: 0
+              .name, .value
+                display: inline-block
+                vertical-align: top
+              .name
+                color: dark-gray
+                @media phone
+                  margin-right: 0
+              .value
+                color: darker-gray
+                font-weight: 600
+                width: 18px
       &.team
         .teammate
           padding: 20px

@@ -512,7 +512,6 @@
                   width: 100%
             &.save
               @media phone
-                height: 104px
                 padding: 0 10px
               .left
                 width: 60%
@@ -553,6 +552,7 @@
               @media phone
                 left: 0
                 width: 50%
+                z-index: 1
               .button, .text
                 display: inline-block
                 vertical-align: top
@@ -746,6 +746,8 @@
             .title
               color: teal
               font-weight: 600
+              @media phone
+                text-align: center
             .buttons
               .button
                 color: heavy-gray
@@ -1185,6 +1187,8 @@
   box-sizing: border-box
   @media phone
     padding: 30px 20px
+    margin: 0 auto 25px !important
+    display: block !important
   .invoice
     color: teal
     font-size: 1.1em
@@ -1215,14 +1219,21 @@
             color: red
   .discount
     margin-top: 25px
+    @media phone
+      text-align: center
     .text
       display: inline-block
       font-weight: 600
       margin-top: 6px
       width: 200px
+      @media phone
+        display: block
+        margin: auto
     .input
       display: inline-block
       width: 168px
+      @media phone
+        margin: 12px 0 25px
       input
         width: 100%
         background-color: gray

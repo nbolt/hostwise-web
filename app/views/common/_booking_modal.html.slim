@@ -52,7 +52,7 @@ script#booking-modal type="text/ng-template"
                           | $
                           span ng:bind="day.#{service.name}"
                     .extra-set ng:show='extra.king_sets > 0'
-                      .text ng:bind-template='{{extra.king_sets}} Extra Queen/Full Set'
+                      .text ng:bind-template='{{extra.king_sets}} Extra King Set'
                       .price
                         | $
                         span ng:bind='day.extra_king_sets'
@@ -90,7 +90,7 @@ script#booking-modal type="text/ng-template"
                   .box decrement='extra.king_sets' -
                   input.box type='text' disabled='disabled' ng:model='extra.king_sets'
                   .box increment='extra.king_sets' +
-                .label Queen/Full Set
+                .label King Set
               .counter
                 .boxes
                   .box decrement='extra.twin_sets' -
@@ -223,7 +223,7 @@ script#booking-modal type="text/ng-template"
                   .box decrement='extra.king_sets' -
                   input.box type='text' disabled='disabled' ng:model='extra.king_sets'
                   .box increment='extra.king_sets' +
-                .label Queen/Full Set
+                .label King Set
               .counter
                 .boxes
                   .box decrement='extra.twin_sets' -
@@ -297,7 +297,7 @@ script#booking-modal type="text/ng-template"
                       | $
                       span ng:bind="day.#{service.name}"
                 .extra-set ng:show='extra.king_sets > 0'
-                  .text ng:bind-template='{{extra.king_sets}} Extra Queen/Full Set'
+                  .text ng:bind-template='{{extra.king_sets}} Extra King Set'
                   .price
                     | $
                     span ng:bind='day.extra_king_sets'

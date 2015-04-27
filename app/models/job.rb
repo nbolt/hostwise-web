@@ -72,6 +72,18 @@ class Job < ActiveRecord::Base
 
   attr_accessor :current_user, :distance
 
+  def king_beds
+    booking.property.king_bed_count + booking.extra_king_sets if booking
+  end
+
+  def twin_beds
+    booking.property.twin_beds + booking.extra_twin_sets if booking
+  end
+
+  def toiletries
+    booking.property.bathrooms + booking.extra_toiletry_sets if booking
+  end
+
   def contractor_names
     contractors.map(&:name).join ', '
   end
