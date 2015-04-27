@@ -108,7 +108,6 @@ class Booking < ActiveRecord::Base
       coupon = Coupon.find coupon_id
       amount = coupon.amount / 100.0
       amount = rsp[:cost] * (coupon.amount / 100.0) if coupon.discount_type == :percentage
-      amount *= 100
       rsp[:coupon_cost] = amount
       rsp[:cost] -= amount
     end

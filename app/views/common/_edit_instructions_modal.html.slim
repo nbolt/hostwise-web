@@ -1,0 +1,13 @@
+script#edit-instructions-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Special Requests
+    .content
+      .text
+        textarea rows='6' ng:model='extra.instructions'
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Cancel
+        .button.teal ng:click='update_instructions()'
+          .text Update Extras

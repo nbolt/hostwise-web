@@ -1,0 +1,30 @@
+script#edit-extras-modal type="text/ng-template"
+  .modal
+    .header
+      .text Edit Extra Inventory Requested
+    .content
+      .counters
+        .counter
+          .boxes
+            .box decrement='extra.king_sets' -
+            input.box type='text' disabled='disabled' ng:model='extra.king_sets'
+            .box increment='extra.king_sets' +
+          .label King Set
+        .counter
+          .boxes
+            .box decrement='extra.twin_sets' -
+            input.box type='text' disabled='disabled' ng:model='extra.twin_sets'
+            .box increment='extra.twin_sets' +
+          .label Twin Set
+        .counter
+          .boxes
+            .box decrement='extra.toiletry_sets' -
+            input.box type='text' disabled='disabled' ng:model='extra.toiletry_sets'
+            .box increment='extra.toiletry_sets' +
+          .label Guest Toiletries
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Cancel
+        .button.teal ng:click='update_extras()'
+          .text Update Extras
