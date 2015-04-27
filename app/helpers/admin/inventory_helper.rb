@@ -51,6 +51,6 @@ module Admin::InventoryHelper
   end
 
   def dirty_sheets(jobs)
-    jobs.reduce(0) {|acc, job| acc + (job.king_sheets ||= 0) + (job.twin_sheets ||= 0)}
+    jobs.reduce(0) {|acc, job| acc + (job.king_sheets ||= 0) + (job.twin_sheets ||=0 )}
   end
 end
