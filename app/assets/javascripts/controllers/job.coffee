@@ -7,7 +7,6 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
-    $scope.is_last_job_of_day = rsp.is_last_job_of_day
     $scope.index_in_day = rsp.index_in_day
     $scope.next_job = rsp.next_job.id if rsp.next_job
     $scope.prev_job = rsp.prev_job.id if rsp.prev_job

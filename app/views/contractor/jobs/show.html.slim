@@ -9,7 +9,8 @@
     = direct_upload_form_for @bathroom_photo, html: { id: 'bathroom_photo' } do |f|
       = f.file_field :bathroom_photo
   .page-title
-    i.icon-notebook Job {{index_in_day}} Details
+    i.icon-notebook
+    .text Job {{index_in_day + 1}} Details
   .job
     .flag ng:class='pricing_class()'
     .photo
@@ -212,8 +213,8 @@
                   .icon-button.teal
                     .icon
                       i.icon-alert-ok
-                    .text ng:hide='is_last_job_of_day()' Go to next job
-                    .text ng:show='is_last_job_of_day()' Drop Off Soiled Linens
+                    .text ng:hide='job.is_last_job_of_day' Go to next job
+                    .text ng:show='job.is_last_job_of_day' Drop Off Soiled Linens
           .phase.active ng:switch-when='completed'
             .header
               .text Job Completed
@@ -235,7 +236,8 @@
                   .icon-button.teal.right style='margin-top: 35px'
                     .icon
                       .typcn.typcn-chevron-right
-                    .text Go To Next Job
+                    .text ng:hide='job.is_last_job_of_day' Go to next job
+                    .text ng:show='job.is_last_job_of_day' Drop Off Soiled Linens
           .phase.complete ng:switch-when='in_progress'
             .header
               .text Job in Progress...
