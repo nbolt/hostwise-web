@@ -55,7 +55,7 @@ class Admin::TransactionsController < Admin::AuthController
         begin
           metadata = { booking_ids: booking_group[:bookings].map(&:id).to_s }
           rsp = Stripe::Charge.create(
-            amount: booking_group[:total],
+            amount: booking_group[:total].to_i,
             currency: 'usd',
             customer: user_bookings[:user].stripe_customer_id,
             source: booking_group[:payment].stripe_id,
