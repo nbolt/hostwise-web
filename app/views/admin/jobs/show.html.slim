@@ -154,19 +154,20 @@
               label.switch.red
                 input type='checkbox' toggle-admin-service="#{service.name}"
                 i
-        .services.supplies ng:show='job.booking.extra_king_sets > 0 || job.booking.extra_twin_sets > 0 || job.booking.extra_toiletry_sets > 0'
+        .services.supplies
           .title Extra Services Requested
           .supplies
+            .edit ng:click='edit_extras_modal()' Edit
             .supply
-              .value ng:bind='::job.booking.extra_king_sets'
+              .value ng:bind='job.booking.extra_king_sets'
               .name King Set
               span ng:hide='job.booking.extra_king_sets == 1' s
             .supply
-              .value ng:bind='::job.booking.extra_twin_sets'
+              .value ng:bind='job.booking.extra_twin_sets'
               .name Twin Set
               span ng:hide='job.booking.extra_twin_sets == 1' s
             .supply.toiletries
-              .value ng:bind='::job.booking.extra_toiletry_sets'
+              .value ng:bind='job.booking.extra_toiletry_sets'
               .name Toiletry Set
               span ng:hide='job.booking.extra_toiletry_sets == 1' s
         .services.supplies
@@ -177,13 +178,18 @@
               .name King Set
               span ng:hide='job.king_beds == 1' s
             .supply
-              .value ng:bind='::job.twin_beds'
+              .value ng:bind='job.twin_beds'
               .name Twin Set
               span ng:hide='job.twin_beds == 1' s
             .supply.toiletries
-              .value ng:bind='::job.toiletries'
+              .value ng:bind='job.toiletries'
               .name Toiletry Set
               span ng:hide='job.toiletries == 1' s
+        .services.supplies
+          .title Special Requests
+          .supplies
+            .edit ng:click='edit_instructions_modal()' Edit
+            p ng:bind='job.booking.extra_instructions'
       .block.invoice
         .head
           .right
@@ -263,3 +269,6 @@
           .paid
             .right ng:bind='::job.booking.payment.display'
             .left Paid with:
+
+  = render 'common/edit_extras_modal'
+  = render 'common/edit_instructions_modal'

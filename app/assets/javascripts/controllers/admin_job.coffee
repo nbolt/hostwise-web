@@ -1,4 +1,4 @@
-AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($scope, $http, $timeout, $interval, $q, $window) ->
+AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ngDialog', ($scope, $http, $timeout, $interval, $q, $window, ngDialog) ->
 
   $scope.jobQ = $q.defer()
 
@@ -42,6 +42,28 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
         ), 3000)
       else
         load_job(rsp)
+
+  $scope.update_extras = ->
+    $http.post($window.location.href + '/update_extras', extras: $scope.extra).success (rsp) ->
+      if rsp.success
+        $scope.job.booking.extra_king_sets     = rsp.extra_king_sets
+        $scope.job.booking.extra_twin_sets     = rsp.extra_twin_sets
+        $scope.job.booking.extra_toiletry_sets = rsp.extra_toiletry_sets
+        $scope.job.king_beds                   = rsp.king_beds
+        $scope.job.twin_beds                   = rsp.twin_beds
+        $scope.job.toiletries                  = rsp.toiletries
+        ngDialog.closeAll()
+
+  $scope.update_instructions = ->
+    $http.post($window.location.href + '/update_instructions', extras: $scope.extra).success (rsp) ->
+      if rsp.success
+        $scope.job.booking.extra_instructions = rsp.extra_instructions
+        ngDialog.closeAll()
+
+  $scope.edit_extras_modal = -> ngDialog.open template: 'edit-extras-modal', className: 'extras info full', scope: $scope
+  $scope.edit_instructions_modal = -> ngDialog.open template: 'edit-instructions-modal', className: 'extras info full', scope: $scope
+
+  $scope.cancel_process = -> ngDialog.closeAll()
 
   $scope.remove = (contractor) ->
     $http.post($window.location.href + '/remove_contractor', {contractor_id: contractor.id}).success (rsp) -> load_job(rsp)
@@ -87,6 +109,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', ($s
       load_job(rsp)
 
   load_job = (rsp) ->
+    $scope.extra = { king_sets: rsp.booking.extra_king_sets, twin_sets: rsp.booking.extra_twin_sets, toiletry_sets: rsp.booking.extra_toiletry_sets, instructions: rsp.booking.extra_instructions }
     $scope.job = rsp
     $scope.job.contractor_count = $scope.job.contractors.length
     $scope.job.date_text = moment(rsp.date, 'YYYY-MM-DD').format 'ddd, MMM D'
