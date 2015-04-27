@@ -104,7 +104,7 @@ class Host::PropertiesController < Host::AuthController
                 current_user.update_attribute :vip_count, current_user.vip_count + 1
               end
               cost = Booking.cost(property, booking.services, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
-              if coupon && (coupon.limit == 0 || coupon.applied(current_user) <= coupon.limit)
+              if coupon && (coupon.limit == 0 || coupon.applied(current_user) < coupon.limit)
                 booking.coupons.push coupon
                 cost = Booking.cost(property, booking.services, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, coupon.id)
               end

@@ -89,7 +89,7 @@ class Host::BookingsController < Host::AuthController
     timezone = Timezone::Zone.new :zone => Property.find(params[:property_id]).zone
     time = timezone.time Time.now
     today = time.to_date
-    if coupon && coupon.status == :active && (coupon.limit == 0 || coupon.applied(current_user) <= coupon.limit) && (!coupon.expiration || coupon.expiration >= today)
+    if coupon && coupon.status == :active && (coupon.limit == 0 || coupon.applied(current_user) < coupon.limit) && (!coupon.expiration || coupon.expiration >= today)
       amount = coupon.amount / 100.0
       amount = params[:total].to_i * (coupon.amount / 100.0) if coupon.discount_type == :percentage
       remaining = -1
