@@ -39,18 +39,18 @@ module Admin::InventoryHelper
   end
 
   def toiletries(jobs)
-    jobs.reduce(0) {|acc, job| acc + (if job.toiletries != nil then job.toiletries else 0 end)}
+    jobs.reduce(0) {|acc, job| acc + (job.toiletries ||= 0)}
   end
 
   def dirty_king_sheets(jobs)
-    jobs.reduce(0) {|acc, job| acc + (if job.king_sheets != nil then job.king_sheets else 0 end)}
+    jobs.reduce(0) {|acc, job| acc + (job.king_sheets ||= 0)}
   end
 
   def dirty_twin_sheets(jobs)
-    jobs.reduce(0) {|acc, job| acc + (if job.twin_sheets != nil then job.twin_sheets else 0 end)}
+    jobs.reduce(0) {|acc, job| acc + (job.twin_sheets ||= 0)}
   end
 
   def dirty_sheets(jobs)
-    jobs.reduce(0) {|acc, job| acc + (if job.king_sheets != nil then job.king_sheets else 0 end) + (if job.twin_sheets != nil then job.twin_sheets else 0 end)}
+    jobs.reduce(0) {|acc, job| acc + (job.king_sheets ||= 0) + (job.twin_sheets ||= 0)}
   end
 end
