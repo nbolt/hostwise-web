@@ -80,15 +80,6 @@ class Booking < ActiveRecord::Base
       rsp[:no_access_fee] = PRICING['no_access_fee']
       rsp[:cost] += PRICING['no_access_fee']
     end
-    if first_booking_discount
-      discount = PRICING['first_booking_discount']
-      if discount <= rsp[:cost]
-        rsp[:first_booking_discount] = discount
-      else
-        rsp[:first_booking_discount] = rsp[:cost]
-      end
-      rsp[:cost] -= rsp[:first_booking_discount]
-    end
     if extra_king_sets # this tracks extra queen or full sets
       rsp[:extra_king_sets] ||= 0
       extra_king_sets.to_i.times { rsp[:extra_king_sets] += PRICING['queen_linens'] }
@@ -110,6 +101,15 @@ class Booking < ActiveRecord::Base
       amount = rsp[:cost] * (coupon.amount / 100.0) if coupon.discount_type == :percentage
       rsp[:coupon_cost] = amount
       rsp[:cost] -= amount
+    end
+    if first_booking_discount
+      discount = PRICING['first_booking_discount']
+      if discount <= rsp[:cost]
+        rsp[:first_booking_discount] = discount
+      else
+        rsp[:first_booking_discount] = rsp[:cost]
+      end
+      rsp[:cost] -= rsp[:first_booking_discount]
     end
     rsp
   end
