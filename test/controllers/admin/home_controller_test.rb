@@ -7,6 +7,6 @@ describe Admin::HomeController do
     login_user(user_name_11)
 
     get :index
-    assert_redirected_to  '/jobs'
+    assert_redirected_to  '/dashboard'
   end
 end
