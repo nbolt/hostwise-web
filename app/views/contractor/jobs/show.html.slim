@@ -123,6 +123,9 @@
           .service ng:repeat='service in job.extra_services'
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
+        .services ng:show="job.booking.extra_instructions != ''"
+          .title Special Requests
+          p ng:bind='job.booking.extra_instructions'
       .section.team ng:show='show_team()'
         .head
           .icon
@@ -148,7 +151,7 @@
               .value ng:bind='::job.twin_bed_count'
             .supply.toiletries
               .name Toiletry Kits:
-              .value ng:bind='::job.toiletries'
+              .value ng:bind='::job.toiletry_count'
       .section.actions
         div ng:switch='job.status'
           .phase.active ng:switch-default=''
@@ -360,7 +363,7 @@
                           .box decrement='checklist.checklist_settings.inventory_count.bath_mats' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.bath_mats'
                           .box increment='checklist.checklist_settings.inventory_count.bath_mats' +
-                        .label Bath Mats                                                               r
+                        .label Bath Mats
                     .div.teal
                     .icon-button.teal.right ng:class='begin_cleaning_class()' ng:click='to_cleaning()'
                       .icon
@@ -386,12 +389,12 @@
                     |  {{job.booking.property.additional_info}}
                   .div.teal
                   .text
-                    strong Special Requests:
+                    strong.teal Special Requests:
                     |  {{job.booking.extra_instructions}}
                   .div.teal
                   div ng:show='job.booking.extra_king_sets > 0 || job.booking.extra_twin_sets > 0 || job.booking.extra_toiletry_sets > 0'
                     .text
-                      strong Extras:
+                      strong.teal Extras:
                       |  This customer has requested to leave extra sets on site in the closet.
                     .supplies
                       .supply
@@ -402,7 +405,7 @@
                         .value ng:bind='::job.twin_bed_count'
                       .supply.toiletries
                         .name Toiletry Kits:
-                        .value ng:bind='::job.toiletries'
+                        .value ng:bind='::job.toiletry_count'
                   .icon-button.teal.right ng:class='complete_cleaning_class()' ng:click='complete_cleaning()'
                     .icon
                       .fa.fa-chevron-right

@@ -785,22 +785,29 @@
                 width: 320px
           &.edit
             padding: 25px 60px
+            @media phone
+              padding: 25px 20px
             .title
               color: teal
               font-weight: 600
+              font-size: 1.05em
               @media phone
                 text-align: center
             .buttons
+              margin: 35px auto
               .button
                 color: heavy-gray
                 display: block
                 background-color: white
                 border: thin solid #EFF0F2
                 padding: 15px
-                margin: 20px
+                margin: 30px 20px
+                border-radius: 3px
+                text-align: center
                 .text
                   margin: 0
                   font-weight: 600
+                  font-size: 14px
                 &:hover
                   color: teal
                 &.red
@@ -832,7 +839,7 @@
                   margin-left: 8px
               .text
                 text-align: center
-                font-size: 1.25em
+                font-size: 1.2em
                 margin-top: 5px
             &.one
               .button
@@ -850,7 +857,7 @@
                   width: 90px
           &.side
             display: none
-            &.active
+            &.active, &.edit
               display: inline-block
           &.payment
             padding: 25px 40px
@@ -922,6 +929,9 @@
             &.side
               width: 488px
               padding: 25px 40px
+              @media phone
+                padding: 25px 20px
+                width: 100%
             @media portrait_tablet
               width: 700px
               padding: 50px 100px
@@ -950,7 +960,7 @@
               .counter
                 display: inline-block
                 vertical-align: top
-                width: 30%
+                width: 31%
                 @media phone
                   width: 50%
                 .label
@@ -1264,16 +1274,15 @@
             color: red
   .discount
     margin-top: 25px
-    @media phone
-      text-align: center
     .text
       display: inline-block
       font-weight: 600
       margin-top: 6px
       width: 200px
       @media phone
-        display: block
+        display: inline-block
         margin: auto
+        width: auto
     .input
       display: inline-block
       width: 168px
