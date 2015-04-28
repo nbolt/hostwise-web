@@ -180,13 +180,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
           if day.date == $scope.same_day_booking
             day.same_day_booking = $scope.pricing.late_same_day
             day.total += $scope.pricing.late_same_day unless rsp.late_same_day
-          if rsp.first_booking_discount && !first_booking_discount_applied
-            if day.total >= $scope.pricing.first_booking_discount
-              day.first_booking_discount = $scope.pricing.first_booking_discount
-            else
-              day.first_booking_discount = day.total
+          if rsp.first_booking_discount_cost && !first_booking_discount_applied
+            day.first_booking_discount = rsp.first_booking_discount_cost
             day.total -= day.first_booking_discount
             first_booking_discount_applied = true
+          if rsp.first_booking_discount
+            day.first_booking_discount = rsp.first_booking_discount
           if rsp.coupon_cost
             day.coupon = true
             day.coupon_cost = rsp.coupon_cost

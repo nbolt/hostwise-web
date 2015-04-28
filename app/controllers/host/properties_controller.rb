@@ -237,8 +237,10 @@ class Host::PropertiesController < Host::AuthController
       cost = Booking.cost property, services, params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id) || params[:coupon_id]
       render json: cost
     else
+      discount = if Booking.by_user(current_user)[0] || current_user.migrated then false else true end
+      discount_cost = Booking.cost property, services, params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], discount
       cost = Booking.cost property, services, params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets]
-      cost[:first_booking_discount] = if Booking.by_user(current_user)[0] || current_user.migrated then false else true end
+      cost[:first_booking_discount_cost] = discount_cost[:first_booking_discount]
       render json: cost
     end
   end
