@@ -74,44 +74,44 @@ class Job < ActiveRecord::Base
 
   attr_accessor :current_user, :distance
 
-  def self.revenue_by_weeks date
-    jobs = Job.on_month(date.month).where('status_cd > 2')
-    jobs_by_week = []
-    date.week_split.each do |week|
-      week = week.compact
-      jobs_by_week.push jobs.in_week(week, date).reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)} unless week[0] > date.day
+  def self.revenue_by_months date
+    revenue = []
+    4.times do |i|
+      month = (date - i.months).month
+      jobs = Job.on_month(month).where('status_cd > 2')
+      revenue.unshift({ month: month, revenue: jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)} })
     end
-    jobs_by_week
+    revenue.select {|r| r[:revenue] > 0}
   end
 
-  def self.serviced_by_weeks date
-    jobs = Job.on_month(date.month).where('status_cd > 2')
-    jobs_by_week = []
-    date.week_split.each do |week|
-      week = week.compact
-      jobs_by_week.push jobs.in_week(week, date).count unless week[0] > date.day
+  def self.serviced_by_months date
+    serviced = []
+    4.times do |i|
+      month = (date - i.months).month
+      jobs = Job.on_month(month).where('status_cd > 2')
+      serviced.unshift({ month: month, serviced: jobs.count })
     end
-    jobs_by_week
+    serviced.select {|r| r[:serviced] > 0}
   end
 
-  def self.properties_by_weeks date
-    jobs = Job.on_month(date.month).where('jobs.status_cd > 2').to_a.uniq { |job| job.chain(:booking, :property, :id) }
-    jobs_by_week = []
-    date.week_split.each do |week|
-      week = week.compact
-      jobs_by_week.push Job.jobs_in_week(jobs, week, date).count unless week[0] > date.day
+  def self.properties_by_months date
+    properties = []
+    4.times do |i|
+      month = (date - i.months).month
+      jobs = Job.on_month(month).where('status_cd > 2').to_a.uniq { |job| job.chain(:booking, :property, :id) }
+      properties.unshift({ month: month, properties: jobs.count })
     end
-    jobs_by_week
+    properties.select {|r| r[:properties] > 0}
   end
 
-  def self.hosts_by_weeks date
-    jobs = Job.on_month(date.month).where('jobs.status_cd > 2').to_a.uniq { |job| job.chain(:booking, :user, :id) }
-    jobs_by_week = []
-    date.week_split.each do |week|
-      week = week.compact
-      jobs_by_week.push Job.jobs_in_week(jobs, week, date).count unless week[0] > date.day
+  def self.hosts_by_months date
+    hosts = []
+    4.times do |i|
+      month = (date - i.months).month
+      jobs = Job.on_month(month).where('status_cd > 2').to_a.uniq { |job| job.chain(:booking, :user, :id) }
+      hosts.unshift({ month: month, hosts: jobs.count })
     end
-    jobs_by_week
+    hosts.select {|r| r[:hosts] > 0}
   end
 
   def self.jobs_in_week jobs, week, date
