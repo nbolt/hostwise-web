@@ -115,7 +115,7 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    total_cost = (adjusted_cost / 100.0) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost + extra_king_sets_cost + extra_twin_sets_cost + extra_toiletry_sets_cost - first_booking_discount_cost - (refunded_cost / 100.0) - (coupon_cost / 100.0)
+    total_cost = (adjusted_cost / 100.0) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost + extra_king_sets_cost + extra_twin_sets_cost + extra_toiletry_sets_cost - first_booking_discount_cost - (coupon_cost / 100.0)
     if cancelled? || couldnt_access?
       total_cost -= linen_cost                # |
       total_cost -= toiletries_cost           # |
@@ -130,7 +130,7 @@ class Booking < ActiveRecord::Base
   end
 
   def original_cost
-    (cost - (adjusted_cost / 100.0) + (refunded_cost / 100.0)).round 2
+    (cost - (adjusted_cost / 100.0)).round 2
   end
 
   def pricing_hash
