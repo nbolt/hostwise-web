@@ -80,7 +80,7 @@ class Job < ActiveRecord::Base
     booking.property.twin_beds + booking.extra_twin_sets if booking
   end
 
-  def toiletries
+  def toiletry_count
     booking.property.bathrooms + booking.extra_toiletry_sets if booking
   end
 

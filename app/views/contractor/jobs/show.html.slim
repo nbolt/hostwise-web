@@ -151,7 +151,7 @@
               .value ng:bind='::job.twin_bed_count'
             .supply.toiletries
               .name Toiletry Kits:
-              .value ng:bind='::job.toiletries'
+              .value ng:bind='::job.toiletry_count'
       .section.actions
         div ng:switch='job.status'
           .phase.active ng:switch-default=''
@@ -405,7 +405,7 @@
                         .value ng:bind='::job.twin_bed_count'
                       .supply.toiletries
                         .name Toiletry Kits:
-                        .value ng:bind='::job.toiletries'
+                        .value ng:bind='::job.toiletry_count'
                   .icon-button.teal.right ng:class='complete_cleaning_class()' ng:click='complete_cleaning()'
                     .icon
                       .fa.fa-chevron-right
