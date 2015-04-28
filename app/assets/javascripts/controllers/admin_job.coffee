@@ -52,6 +52,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
         $scope.job.king_bed_count              = rsp.king_beds
         $scope.job.twin_bed_count              = rsp.twin_beds
         $scope.job.toiletries                  = rsp.toiletries
+        $scope.refresh_invoice()
         ngDialog.closeAll()
 
   $scope.update_instructions = ->

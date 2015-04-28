@@ -207,6 +207,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
             day.discount = $scope.discount
             day.discount = day.total if day.discount > day.total
             day.total -= day.discount
+          day.total = parseFloat day.total.toFixed(2)
           $scope.total += day.total
           _($scope.selected_services).each (v,k) -> day[k] = rsp[k] if v
           $scope.days.push day
@@ -298,6 +299,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
       $http.post("/properties/#{$scope.property.slug}/#{$scope.selected_booking}/update", {
         payment: id
         services: services_array()
+        coupon_id: $scope.coupon_id
         extra_king_sets: $scope.extra.king_sets
         extra_twin_sets: $scope.extra.twin_sets
         extra_toiletry_sets: $scope.extra.toiletry_sets

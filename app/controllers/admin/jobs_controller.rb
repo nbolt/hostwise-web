@@ -36,7 +36,10 @@ class Admin::JobsController < Admin::AuthController
   end
 
   def update_extras
-    job.booking.update_attributes(extra_king_sets: params[:extras][:king_sets], extra_twin_sets: params[:extras][:twin_sets], extra_toiletry_sets: params[:extras][:toiletry_sets])
+    job.booking.update_attributes(extra_king_sets: params[:extras][:king_sets],
+                                  extra_twin_sets: params[:extras][:twin_sets],
+                                  extra_toiletry_sets: params[:extras][:toiletry_sets])
+    job.booking.update_cost!
     render json: { success: true, king_beds: job.king_bed_count, twin_beds: job.twin_bed_count, toiletries: job.toiletries, extra_king_sets: job.booking.extra_king_sets, extra_twin_sets: job.booking.extra_twin_sets, extra_toiletry_sets: job.booking.extra_toiletry_sets }
   end
 
