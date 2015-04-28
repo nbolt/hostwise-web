@@ -441,6 +441,7 @@ GEM
     webmock (1.21.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
+    week_of_month (1.2.3.2)
 
 PLATFORMS
   ruby
@@ -517,3 +518,4 @@ DEPENDENCIES
   uglifier
   vcr
   webmock
+  week_of_month

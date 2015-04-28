@@ -108,6 +108,8 @@ Rails.application.routes.draw do
     post  '/coupons/:action' => 'coupons'
     post  '/coupons/:id/:action' => 'coupons'
     post  '/jobs/:action' => 'jobs'
+    get   '/dashboard' => 'dashboard#index'
+    match '/dashboard/:action' => 'dashboard', via: [:get, :post]
     get   '/login_as/:id' => 'auth#login_as'
   end
 

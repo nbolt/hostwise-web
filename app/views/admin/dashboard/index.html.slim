@@ -1,0 +1,33 @@
+.xenon.custom.charts ng:controller='admin_dash'
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          span ${{total_monthly_revenue}}
+          |  Monthly Revenue
+        .panel-body
+          canvas#chart-revenue
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          span ng:bind='total_jobs_serviced'
+          |  Jobs Serviced
+        .panel-body
+          canvas#chart-serviced
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          span ng:bind='total_properties_serviced'
+          |  Properties Serviced
+        .panel-body
+          canvas#chart-properties
+  .row
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          span ng:bind='total_hosts_serviced'
+          |  Hosts Serviced
+        .panel-body
+          canvas#chart-hosts

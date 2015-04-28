@@ -35,6 +35,8 @@ class Job < ActiveRecord::Base
     date = date.to_date if date.class == Time
     where(date: date)
   }
+  scope :on_month, -> (month) { where('extract(month from jobs.date) = ?', month) }
+  scope :in_week, -> (week, date) { where('extract(year from jobs.date) = ? and extract(month from jobs.date) = ? and extract(day from jobs.date) in (?)', date.year, date.month, week) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
   scope :scheduled, -> { where(status_cd: 1) }
@@ -71,6 +73,50 @@ class Job < ActiveRecord::Base
   before_save :assign_man_hours
 
   attr_accessor :current_user, :distance
+
+  def self.revenue_by_weeks date
+    jobs = Job.on_month(date.month).where('status_cd > 2')
+    jobs_by_week = []
+    date.week_split.each do |week|
+      week = week.compact
+      jobs_by_week.push jobs.in_week(week, date).reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)} unless week[0] > date.day
+    end
+    jobs_by_week
+  end
+
+  def self.serviced_by_weeks date
+    jobs = Job.on_month(date.month).where('status_cd > 2')
+    jobs_by_week = []
+    date.week_split.each do |week|
+      week = week.compact
+      jobs_by_week.push jobs.in_week(week, date).count unless week[0] > date.day
+    end
+    jobs_by_week
+  end
+
+  def self.properties_by_weeks date
+    jobs = Job.on_month(date.month).where('jobs.status_cd > 2').to_a.uniq { |job| job.chain(:booking, :property, :id) }
+    jobs_by_week = []
+    date.week_split.each do |week|
+      week = week.compact
+      jobs_by_week.push Job.jobs_in_week(jobs, week, date).count unless week[0] > date.day
+    end
+    jobs_by_week
+  end
+
+  def self.hosts_by_weeks date
+    jobs = Job.on_month(date.month).where('jobs.status_cd > 2').to_a.uniq { |job| job.chain(:booking, :user, :id) }
+    jobs_by_week = []
+    date.week_split.each do |week|
+      week = week.compact
+      jobs_by_week.push Job.jobs_in_week(jobs, week, date).count unless week[0] > date.day
+    end
+    jobs_by_week
+  end
+
+  def self.jobs_in_week jobs, week, date
+    jobs.select {|job| job.date.year == date.year && job.date.month == date.month && week.index(job.date.day)}
+  end
 
   def king_bed_count
     booking.property.king_bed_count + booking.extra_king_sets if booking
