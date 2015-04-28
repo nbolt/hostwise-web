@@ -24,7 +24,7 @@ describe Booking do
     booking_late_same_day.cost.must_equal 245
 
     VCR.use_cassette('create_booking_first_booking_discount') { booking_first_booking_discount = create(:booking_first_booking_discount) }
-    booking_first_booking_discount.cost.must_equal 20
+    booking_first_booking_discount.cost.must_equal 200
   end
 
   it 'formats date correctly' do
