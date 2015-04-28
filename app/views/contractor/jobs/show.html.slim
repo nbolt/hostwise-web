@@ -123,6 +123,9 @@
           .service ng:repeat='service in job.extra_services'
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
+        .services ng:show="job.booking.extra_instructions != ''"
+          .title Special Requests
+          p ng:bind='job.booking.extra_instructions'
       .section.team ng:show='show_team()'
         .head
           .icon
