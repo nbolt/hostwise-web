@@ -22,7 +22,7 @@ class Admin::JobsController < Admin::AuthController
   end
 
   def export
-    @jobs = Job.all
+    @jobs = params[:jobs].map {|id| Job.find id}
   end
 
   def show

@@ -16,8 +16,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
     table = angular.element(table).dataTable()
     displayed = []
     currentlyDisplayed = table.fnSettings().aiDisplay
-    _(currentlyDisplayed).each (index) -> displayed.push( table.fnGetData(index)[0] )
-    #_(currentlyDisplayed).each (index) -> displayed.push( table.fnGetData(index)[0].match(/check-\d*/)[0].replace('check-', '') )
+    _(currentlyDisplayed).each (index) -> displayed.push( table.fnGetData(index)[0].match(/>\d*</)[0].replace('>', '').replace('<', '') )
     displayed
 
   $scope.fetch_jobs = ->
