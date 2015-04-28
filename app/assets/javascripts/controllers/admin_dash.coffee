@@ -3,37 +3,37 @@ AdminDashCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'n
   MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
   DEFAULT_LINE_CONFIG =
-    fillColor: "#B4DC94"
-    strokeColor: "#6AB634"
+    fillColor: "#2BAAB1"
+    strokeColor: "#218588"
 
   $http.get('/dashboard/revenue').success (rsp) ->
     data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
-    $scope.avg_monthly_revenue = rsp.average
-    _(rsp.data).each (d) -> data.labels.push MONTHS[d.month-1]
+    $scope.total_revenue = rsp.total
+    _(rsp.data).each (d) -> data.labels.push(MONTHS[d.month-1] + " '" + d.year)
     data.datasets[0].label = 'Revenue'
     data.datasets[0].data = _(rsp.data).map (d) -> d.revenue
     $scope.init_revenue data
 
   $http.get('/dashboard/serviced').success (rsp) ->
     data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
-    $scope.avg_jobs_serviced = rsp.average
-    _(rsp.data).each (d) -> data.labels.push MONTHS[d.month-1]
+    $scope.total_jobs_serviced = rsp.total
+    _(rsp.data).each (d) -> data.labels.push(MONTHS[d.month-1] + " '" + d.year)
     data.datasets[0].label = 'Serviced'
     data.datasets[0].data = _(rsp.data).map (d) -> d.serviced
     $scope.init_serviced data
 
   $http.get('/dashboard/properties').success (rsp) ->
     data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
-    $scope.avg_properties_serviced = rsp.average
-    _(rsp.data).each (d) -> data.labels.push MONTHS[d.month-1]
+    $scope.total_properties_serviced = rsp.total
+    _(rsp.data).each (d) -> data.labels.push(MONTHS[d.month-1] + " '" + d.year)
     data.datasets[0].label = 'Properties'
     data.datasets[0].data = _(rsp.data).map (d) -> d.properties
     $scope.init_properties data
 
   $http.get('/dashboard/hosts').success (rsp) ->
     data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
-    $scope.avg_hosts_serviced = rsp.average
-    _(rsp.data).each (d) -> data.labels.push MONTHS[d.month-1]
+    $scope.total_hosts_serviced = rsp.total
+    _(rsp.data).each (d) -> data.labels.push(MONTHS[d.month-1] + " '" + d.year)
     data.datasets[0].label = 'Hosts'
     data.datasets[0].data = _(rsp.data).map (d) -> d.hosts
     $scope.init_hosts data

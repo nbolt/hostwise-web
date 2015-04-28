@@ -79,7 +79,7 @@ class Job < ActiveRecord::Base
     6.times do |i|
       date = (date - i.months)
       jobs = Job.on_month(date).where('status_cd > 2')
-      revenue.unshift({ month: date.month, revenue: jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)} })
+      revenue.unshift({ month: date.month, year: date.year.to_s[2..-1], revenue: jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)} })
     end
     revenue.select {|r| r[:revenue] > 0}
   end
@@ -89,7 +89,7 @@ class Job < ActiveRecord::Base
     6.times do |i|
       date = (date - i.months)
       jobs = Job.on_month(date).where('status_cd > 2')
-      serviced.unshift({ month: date.month, serviced: jobs.count })
+      serviced.unshift({ month: date.month, year: date.year.to_s[2..-1], serviced: jobs.count })
     end
     serviced.select {|r| r[:serviced] > 0}
   end
@@ -99,7 +99,7 @@ class Job < ActiveRecord::Base
     6.times do |i|
       date = (date - i.months)
       jobs = Job.on_month(date).where('status_cd > 2').to_a.uniq { |job| job.chain(:booking, :property, :id) }
-      properties.unshift({ month: date.month, properties: jobs.count })
+      properties.unshift({ month: date.month, year: date.year.to_s[2..-1], properties: jobs.count })
     end
     properties.select {|r| r[:properties] > 0}
   end
@@ -109,7 +109,7 @@ class Job < ActiveRecord::Base
     6.times do |i|
       date = (date - i.months)
       jobs = Job.on_month(date).where('status_cd > 2').to_a.uniq { |job| job.chain(:booking, :user, :id) }
-      hosts.unshift({ month: date.month, hosts: jobs.count })
+      hosts.unshift({ month: date.month, year: date.year.to_s[2..-1], hosts: jobs.count })
     end
     hosts.select {|r| r[:hosts] > 0}
   end

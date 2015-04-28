@@ -2,12 +2,12 @@
   .row
     .col-sm-12
       .panel.panel-default
-        .panel-heading Monthly Revenue
+        .panel-heading Revenue
         .panel-body
           .row
             .col-sm-3
-              p.text-medium Average Monthly Revenue
-              .super-large.text-secondary ng:bind-template='${{avg_monthly_revenue}}'
+              p.text-medium Total Revenue
+              .super-large.text-secondary ng:bind-template='${{total_revenue}}'
             .col-sm-9
               canvas#chart-revenue
   .row
@@ -17,8 +17,8 @@
         .panel-body
           .row
             .col-sm-3
-              p.text-medium Average Jobs Serviced
-              .super-large.text-secondary ng:bind='avg_jobs_serviced'
+              p.text-medium Total Jobs Serviced
+              .super-large.text-secondary ng:bind='total_jobs_serviced'
             .col-sm-9
               canvas#chart-serviced
   .row
@@ -28,8 +28,8 @@
         .panel-body
           .row
             .col-sm-3
-              p.text-medium Average Properties Serviced
-              .super-large.text-secondary ng:bind='avg_properties_serviced'
+              p.text-medium Unique Properties Serviced
+              .super-large.text-secondary ng:bind='total_properties_serviced'
             .col-sm-9
               canvas#chart-properties
   .row
@@ -39,7 +39,7 @@
         .panel-body
           .row
             .col-sm-3
-              p.text-medium Average Hosts Serviced
-              .super-large.text-secondary ng:bind='avg_hosts_serviced'
+              p.text-medium Unique Hosts Serviced
+              .super-large.text-secondary ng:bind='total_hosts_serviced'
             .col-sm-9
               canvas#chart-hosts
