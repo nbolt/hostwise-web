@@ -11,7 +11,7 @@ CouponsCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spinner', 
   $scope.cancel_process = -> ngDialog.closeAll()
 
   $scope.amount_class = ->
-    switch $scope.coupon.discount_type_cd
+    switch $scope.coupon and $scope.coupon.discount_type_cd
       when '0'
         'dollar'
       when '1'
