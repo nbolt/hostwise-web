@@ -89,7 +89,7 @@ class Job < ActiveRecord::Base
     6.times do |i|
       date = (date - i.months)
       jobs = Job.standard.on_month(date).where('status_cd > 2')
-      payouts.unshift({ month: date.month, year: date.year.to_s[2..-1], payouts: jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + p.amount} } / 100.0 })
+      payouts.unshift({ month: date.month, year: date.year.to_s[2..-1], payouts: jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)} } / 100.0 })
     end
     payouts.select {|r| r[:payouts] > 0}
   end
@@ -100,7 +100,7 @@ class Job < ActiveRecord::Base
       date = (date - i.months)
       jobs = Job.standard.on_month(date).where('status_cd > 2')
       revenue = jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)}
-      payouts = jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + p.amount} } / 100.0
+      payouts = jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)} } / 100.0
       profit.unshift({ month: date.month, year: date.year.to_s[2..-1], profit: revenue - payouts })
     end
     profit.select {|r| r[:profit] > 0}

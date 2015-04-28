@@ -9,14 +9,14 @@ class Admin::DashboardController < Admin::AuthController
 
   def payouts
     data  = Job.payouts_by_months(Date.today)
-    total = Job.standard.where('status_cd > 2').reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + p.amount}} / 100.0
+    total = Job.standard.where('status_cd > 2').reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)}} / 100.0
     render json: { data: data, total: number_with_precision(total, precision: 2, delimiter: ',') }
   end
 
   def profit
     data  = Job.profit_by_months(Date.today)
     revenue = Job.standard.where('status_cd > 2').reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)}
-    payouts = Job.standard.where('status_cd > 2').reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + p.amount}} / 100.0
+    payouts = Job.standard.where('status_cd > 2').reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)}} / 100.0
     total = revenue - payouts
     render json: { data: data, total: number_with_precision(total, precision: 2, delimiter: ',') }
   end
