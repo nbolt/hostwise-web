@@ -1,3 +1,40 @@
-- if Rails.env.staging? || Rails.env.production?
+- if Rails.env.staging? || Rails.env.production? || Rails.env.development?
+
+
   javascript:
-    window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set._.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');$.src='//v2.zopim.com/?2kYe5yljsWfi9WOrnrdMCeyTUpNqLIn4';z.t=+new Date;$.type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+    new DESK.Widget({ 
+      version: 1, 
+      site: 'hostwise.desk.com', 
+      port: '80', 
+      type: 'chat', 
+      displayMode: 0,  //0 for popup, 1 for lightbox
+      features: {  
+              offerAlways: false, 
+              offerAgentsOnline: true, 
+              offerRoutingAgentsAvailable: false,  
+              offerEmailIfChatUnavailable: false 
+      },  
+      fields: { 
+              ticket: { 
+                      // desc: &#x27;&#x27;,
+      // labels_new: &#x27;&#x27;,
+      // priority: &#x27;&#x27;,
+      // subject: &#x27;&#x27;
+              }, 
+              interaction: { 
+                      // email: &#x27;&#x27;,
+      // name: &#x27;&#x27;
+              }, 
+              chat: { 
+                      //subject: '' 
+              }, 
+              customer: { 
+                      // company: &#x27;&#x27;,
+      // desc: &#x27;&#x27;,
+      // first_name: &#x27;&#x27;,
+      // last_name: &#x27;&#x27;,
+      // locale_code: &#x27;&#x27;,
+      // title: &#x27;&#x27;
+              } 
+      } 
+    }).render();  
