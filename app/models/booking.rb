@@ -108,6 +108,7 @@ class Booking < ActiveRecord::Base
     end
     if first_booking_discount
       discount = PRICING['first_booking_discount']
+      binding.pry
       if discount <= rsp[:cost]
         rsp[:first_booking_discount] = discount
       else
