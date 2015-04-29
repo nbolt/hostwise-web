@@ -79,7 +79,7 @@ class Job < ActiveRecord::Base
     6.times do |i|
       date = (date - i.months)
       jobs = Job.standard.on_month(date).where('status_cd > 2')
-      revenue.unshift({ month: date.month, year: date.year.to_s[2..-1], revenue: jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)} })
+      revenue.unshift({ month: date.month, year: date.year.to_s[2..-1], revenue: jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)} })
     end
     revenue.select {|r| r[:revenue] > 0}
   end
