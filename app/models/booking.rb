@@ -95,15 +95,6 @@ class Booking < ActiveRecord::Base
       extra_toiletry_sets.to_i.times { rsp[:extra_toiletry_sets] += PRICING['toiletries'] }
       rsp[:cost] += rsp[:extra_toiletry_sets]
     end
-    if first_booking_discount
-      discount = PRICING['first_booking_discount']
-      if discount <= rsp[:cost]
-        rsp[:first_booking_discount] = discount
-      else
-        rsp[:first_booking_discount] = rsp[:cost]
-      end
-      rsp[:cost] -= rsp[:first_booking_discount]
-    end
     if coupon_id
       coupon = Coupon.find coupon_id
       amount = coupon.amount / 100.0
@@ -144,6 +135,10 @@ class Booking < ActiveRecord::Base
 
   def original_cost
     (cost - (adjusted_cost / 100.0)).round 2
+  end
+
+  def prediscount_cost
+    cost + first_booking_discount_cost + (coupon_cost > 0 && (coupon_cost / 100.0) || 0)
   end
 
   def pricing_hash
