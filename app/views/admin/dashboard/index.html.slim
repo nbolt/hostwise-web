@@ -1,15 +1,27 @@
 .xenon.custom.charts ng:controller='admin_dash'
   .row
-    .col-sm-12
+    .col-sm-4
       .panel.panel-default
-        .panel-heading Revenue
+        .panel-heading YTD Revenue
         .panel-body
-          .row
-            .col-sm-3
-              p.text-medium Total Revenue
-              .super-large.text-secondary ng:bind-template='${{total_revenue}}'
-            .col-sm-9
-              canvas#chart-revenue
+          p.text-medium Total Revenue
+          .super-large.text-secondary ng:bind-template='${{total_revenue}}'
+  .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading
+          | {{last_month}} Revenue
+        .panel-body
+          p.text-medium Last Month's Revenue
+          .super-large.text-secondary ng:bind-template='${{last_month_revenue}}'
+  .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading
+          | {{month}} Revenue
+        .panel-body
+          p.text-medium This Month's Revenue
+          .super-large.text-secondary ng:bind-template='${{monthly_revenue}}'
   /.row
   /  .col-sm-12
   /    .panel.panel-default
@@ -22,35 +34,76 @@
   /          .col-sm-9
   /            canvas#chart-payouts
   .row
-    .col-sm-12
+    .col-sm-4
       .panel.panel-default
-        .panel-heading Jobs Serviced
+        .panel-heading YTD Jobs Serviced
         .panel-body
-          .row
-            .col-sm-3
-              p.text-medium Total Jobs Serviced
-              .super-large.text-secondary ng:bind='total_jobs_serviced'
-            .col-sm-9
-              canvas#chart-serviced
+          p.text-medium Total Jobs Serviced
+          .super-large.text-secondary ng:bind='total_jobs_serviced'
+
   .row
-    .col-sm-12
+    .col-sm-4
       .panel.panel-default
-        .panel-heading Properties Serviced
+        .panel-heading
+          | {{last_month}} Jobs Serviced
         .panel-body
-          .row
-            .col-sm-3
-              p.text-medium Unique Properties Serviced
-              .super-large.text-secondary ng:bind='total_properties_serviced'
-            .col-sm-9
-              canvas#chart-properties
+          p.text-medium Jobs Serviced Last Month
+          .super-large.text-secondary ng:bind='last_month_jobs_serviced'
   .row
-    .col-sm-12
+    .col-sm-4
       .panel.panel-default
-        .panel-heading Hosts Serviced
+        .panel-heading
+          | {{month}} Jobs Serviced
         .panel-body
-          .row
-            .col-sm-3
-              p.text-medium Unique Hosts Serviced
-              .super-large.text-secondary ng:bind='total_hosts_serviced'
-            .col-sm-9
-              canvas#chart-hosts
+          p.text-medium Jobs Serviced This Month
+          .super-large.text-secondary ng:bind='monthly_jobs_serviced'
+
+  .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading YTD Properties Serviced
+        .panel-body
+          p.text-medium Unique Properties Serviced
+          .super-large.text-secondary ng:bind='total_properties_serviced'
+
+  .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading
+          | {{last_month}} Properties Serviced
+        .panel-body
+          p.text-medium Unique Properties Serviced Last Month
+          .super-large.text-secondary ng:bind='last_month_properties_serviced'
+    .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading
+          | {{month}} Properties Serviced
+        .panel-body
+          p.text-medium Unique Properties Serviced This Month
+          .super-large.text-secondary ng:bind='monthly_properties_serviced'
+
+  .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading YTD Hosts Serviced
+        .panel-body
+          p.text-medium Unique Hosts Serviced
+          .super-large.text-secondary ng:bind='total_hosts_serviced'
+  .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading
+          | {{last_month}} Hosts Serviced
+        .panel-body
+          p.text-medium Unique Hosts Serviced Last Month
+          .super-large.text-secondary ng:bind='last_month_hosts_serviced'
+
+  .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading
+          | {{month}} Hosts Serviced
+        .panel-body
+          p.text-medium Unique Hosts Serviced This Month
+          .super-large.text-secondary ng:bind='monthly_hosts_serviced'
