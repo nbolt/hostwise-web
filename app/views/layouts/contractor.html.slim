@@ -20,10 +20,13 @@ html
     = csrf_meta_tags
     = yield :head
     = render 'common/analytics'
+    link href="https://d218iqt4mo6adh.cloudfront.net/assets/widget_embed_191.css" media="screen" rel="stylesheet" type="text/css"
+    script src="https://d218iqt4mo6adh.cloudfront.net/assets/widget_embed_libraries_191.js" type="text/javascript"
 
   body class="#{body_class}" ng:controller='app' ng-cloak=''
     = render 'common/spinner'
     = render 'common/header'
+    = render 'common/live_chat'
     #sidebar-container
       #sidebar
         .section
