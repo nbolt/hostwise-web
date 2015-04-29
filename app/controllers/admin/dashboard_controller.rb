@@ -3,7 +3,7 @@ class Admin::DashboardController < Admin::AuthController
 
   def revenue
     data  = Job.revenue_by_months(Date.today)
-    total = Job.standard.where('status_cd > 2').reduce(0) {|acc, job| acc + (job.chain(:booking, :cost) || 0)}
+    total = Job.standard.where('status_cd > 2').reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)}
     render json: { data: data, total: number_with_precision(total, precision: 2, delimiter: ',') }
   end
 
