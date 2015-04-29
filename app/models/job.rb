@@ -36,6 +36,7 @@ class Job < ActiveRecord::Base
     where(date: date)
   }
   scope :on_month, -> (date) { where('extract(month from jobs.date) = ? and extract(year from jobs.date) = ?', date.month, date.year) }
+  scope :on_year, -> (date) { where('extract(year from jobs.date) = ?', date.year) }
   scope :in_week, -> (week, date) { where('extract(year from jobs.date) = ? and extract(month from jobs.date) = ? and extract(day from jobs.date) in (?)', date.year, date.month, week) }
   scope :today, -> { on_date(Time.now) }
   scope :distribution, -> { where(distribution: true) }
@@ -74,14 +75,9 @@ class Job < ActiveRecord::Base
 
   attr_accessor :current_user, :distance
 
-  def self.revenue_by_months date
-    revenue = []
-    6.times do |i|
-      date = (date - i.months)
-      jobs = Job.standard.on_month(date).where('status_cd > 2')
-      revenue.unshift({ month: date.month, year: date.year.to_s[2..-1], revenue: jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)} })
-    end
-    revenue.select {|r| r[:revenue] > 0}
+  def self.revenue_on_month date
+    jobs = Job.standard.on_month(date).where('status_cd > 2')
+    jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)}
   end
 
   def self.payouts_by_months date
@@ -94,34 +90,16 @@ class Job < ActiveRecord::Base
     payouts.select {|r| r[:payouts] > 0}
   end
 
-  def self.serviced_by_months date
-    serviced = []
-    6.times do |i|
-      date = (date - i.months)
-      jobs = Job.standard.complete.on_month(date)
-      serviced.unshift({ month: date.month, year: date.year.to_s[2..-1], serviced: jobs.count })
-    end
-    serviced.select {|r| r[:serviced] > 0}
+  def self.serviced_on_month date
+    Job.standard.complete.on_month(date).count
   end
 
-  def self.properties_by_months date
-    properties = []
-    6.times do |i|
-      date = (date - i.months)
-      jobs = Job.standard.complete.on_month(date).to_a.uniq { |job| job.chain(:booking, :property, :id) }
-      properties.unshift({ month: date.month, year: date.year.to_s[2..-1], properties: jobs.count })
-    end
-    properties.select {|r| r[:properties] > 0}
+  def self.properties_on_month date
+    Job.standard.complete.on_month(date).to_a.uniq { |job| job.chain(:booking, :property, :id) }.count
   end
 
-  def self.hosts_by_months date
-    hosts = []
-    6.times do |i|
-      date = (date - i.months)
-      jobs = Job.standard.complete.on_month(date).to_a.uniq { |job| job.chain(:booking, :user, :id) }
-      hosts.unshift({ month: date.month, year: date.year.to_s[2..-1], hosts: jobs.count })
-    end
-    hosts.select {|r| r[:hosts] > 0}
+  def self.hosts_on_month date
+    Job.standard.complete.on_month(date).to_a.uniq { |job| job.chain(:booking, :user, :id) }.count
   end
 
   def self.jobs_in_week jobs, week, date
