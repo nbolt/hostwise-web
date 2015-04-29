@@ -6,14 +6,14 @@ javascript:
   }
 
 
-- if Rails.env.production? || Rails.env.staging? || Rails.env.development?
+- if Rails.env.production?
   javascript:
     init_segmentio()
 - else
   javascript:
     analytics={};analytics.track=function(){};analytics.identify=function(){};analytics.page=function(){}
 
-- if (Rails.env.production? || Rails.env.staging? || Rails.env.development?) && logged_in?
+- if Rails.env.production? && logged_in?
   javascript:
     analytics.identify("#{ current_user.id }", {
         name: "#{ current_user.name }",
