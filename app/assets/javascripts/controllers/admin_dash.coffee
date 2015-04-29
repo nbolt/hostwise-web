@@ -14,15 +14,6 @@ AdminDashCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'n
     data.datasets[0].data = _(rsp.data).map (d) -> d.revenue
     $scope.init_revenue data
 
-<<<<<<< HEAD
-  $http.get('/dashboard/payouts').success (rsp) ->
-    data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
-    $scope.total_payouts = rsp.total
-    _(rsp.data).each (d) -> data.labels.push(MONTHS[d.month-1] + " '" + d.year)
-    data.datasets[0].label = 'Payouts'
-    data.datasets[0].data = _(rsp.data).map (d) -> d.payouts
-    $scope.init_payouts data
-=======
   #$http.get('/dashboard/payouts').success (rsp) ->
   #  data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
   #  $scope.total_payouts = rsp.total
@@ -30,15 +21,6 @@ AdminDashCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'n
   #  data.datasets[0].label = 'Payouts'
   #  data.datasets[0].data = _(rsp.data).map (d) -> d.payouts
   #  $scope.init_payouts data
-
-  $http.get('/dashboard/profit').success (rsp) ->
-    data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
-    $scope.total_profit = rsp.total
-    _(rsp.data).each (d) -> data.labels.push(MONTHS[d.month-1] + " '" + d.year)
-    data.datasets[0].label = 'Profit'
-    data.datasets[0].data = _(rsp.data).map (d) -> d.profit
-    $scope.init_profit data
->>>>>>> hotfix
 
   $http.get('/dashboard/serviced').success (rsp) ->
     data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
