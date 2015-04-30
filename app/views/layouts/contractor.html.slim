@@ -11,7 +11,8 @@ html
 
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'css_imports'
-    = javascript_include_tag :application, 'data-turbolinks-track' => true
+    = javascript_include_tag :application
+    /, 'data-turbolinks-track' => true
     = javascript_include_tag 'https://js.stripe.com/v2', async: true, onload: 'stripe_loaded()'
     = javascript_include_tag 'http://pubsub.fanout.io/static/faye-browser-min.js', async: true, onload: 'fanout_loaded()'
     = javascript_include_tag 'https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js', async: true, onload: 'mapbox_loaded()'
@@ -25,8 +26,7 @@ html
 
   body class="#{body_class}" ng:controller='app' ng-cloak=''
     = render 'common/spinner'
-    = render 'common/header'
-    = render 'common/live_chat'
+    = render 'common/header' 
     #sidebar-container
       #sidebar
         .section
