@@ -23,25 +23,25 @@
             div
               .row
                 label Address
-                input type='text' required='' placeholder='Street Address' ng:model='form.address1'
+                input type='text' required='' placeholder='Street Address' ng:model='form.address1' ng:keypress="($event.which === 13) ? step(1) : 0"
                 .caption Address Line 1
               .row.two
                 div
-                  input type='text' placeholder='Apt/Unit/#' ng:model='form.address2'
+                  input type='text' placeholder='Apt/Unit/#' ng:model='form.address2' ng:keypress="($event.which === 13) ? step(1) : 0"
                   .caption Unit # (optional)
                 div
-                  input type='text' maxlength=5 required='' placeholder='Zip Code' ng:model='form.zip'
+                  input type='text' maxlength=5 required='' placeholder='Zip Code' ng:model='form.zip' ng:keypress="($event.which === 13) ? step(1) : 0"
                   .caption Zip Code
               br
               .row
                 label Property Contact Number
-                input type='text' placeholder='(###) ###-####' ng:model='form.phone_number' ui-mask='(999) 999-9999'
+                input type='text' placeholder='(###) ###-####' ng:model='form.phone_number' ui-mask='(999) 999-9999' ng:keypress="($event.which === 13) ? step(1) : 0"
           .vr
           .section.action
             div
               .row
-                label Property Nickname 
-                input type='text' placeholder='i.e. Venice Loft, San Diego Apt, etc.' ng:model='form.title'
+                label Property Nickname
+                input type='text' placeholder='i.e. Venice Loft, San Diego Apt, etc.' ng:model='form.title' ng:keypress="($event.which === 13) ? step(1) : 0"
               .row
                 .icon-button.teal ng:click='step(1)'
                   .icon
