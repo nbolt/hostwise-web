@@ -29,6 +29,7 @@
             th Property
             th Size
             th Date
+            th Nickname
             th Address
             th Customer
             th Phone
@@ -49,6 +50,7 @@
             th Property
             th Size
             th.date Date
+            th Nickname
             th Address
             th Customer
             th Phone
@@ -69,6 +71,7 @@
             th Property
             th Size
             th Date
+            th Nickname
             th Address
             th Customer
             th Phone
@@ -91,6 +94,7 @@
               a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='job.booking.property.id'
             td ng:bind='job.booking.property.property_size'
             td ng:bind="job.date | date:'MM/dd/yyyy':'UTC'"
+            td ng:bind='job.booking.property.nickname'
             td ng:bind='job.booking.property.neighborhood_address'
             td
               a.teal ng:href="/hosts/{{job.booking.user.id}}/edit" ng:bind='job.booking.user.name'
