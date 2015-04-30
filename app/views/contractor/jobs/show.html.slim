@@ -246,6 +246,7 @@
               .text Job in Progress...
           .checklist-phases ng:show='checklist'
             .phase.arrival ng:class='arrival_class()'
+              .number 1
               .header
                 .text Arrival Tasks
               .content
@@ -370,6 +371,7 @@
                         .fa.fa-chevron-right
                       .text Begin Cleaning
             .phase.cleaning ng:class='cleaning_class()'
+              .number 2
               .header
                 .text Begin Cleaning
               .content
@@ -411,6 +413,7 @@
                       .fa.fa-chevron-right
                     .text Cleaning Completed
             .phase.qa ng:class='qa_class()'
+              .number 3
               .header
                 .text Quality Assurance
               .content

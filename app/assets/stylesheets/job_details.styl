@@ -475,6 +475,15 @@
             line-height: 25px
       &.actions
         .phase
+          .number
+            float: left
+            font-weight: bold
+            margin: 13px 0 0 20px
+            color: dark-gray
+            border: 2px dark-gray solid
+            border-radius: 100%
+            box-sizing: border-box
+            padding: 3px 8px 3px 8px
           strong.teal
             color: teal
           .supplies
@@ -517,6 +526,9 @@
               border-bottom: 0
             .content
               max-height: 2000px
+            .number
+              color: white
+              border-color: white
           &.complete
             .header
               background-color: light-teal
@@ -524,6 +536,9 @@
               border-bottom: thin solid dark-teal
             .content
               max-height: 0
+            .number
+              color: white
+              border-color: white
           &.cant_access
             .div
               &.gray
