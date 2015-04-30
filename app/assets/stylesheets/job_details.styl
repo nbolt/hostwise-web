@@ -784,6 +784,15 @@
               vertical-align: top
               font-size: 1.6em
               overflow: auto
+              .progress_circle
+                float: right
+                margin: 5px 5px 0 0
+                height: 8px
+                width: 8px
+                border: 2px white solid
+                border-radius: 100%
+                &.complete
+                  background-color: white
               .icon
                 margin-top: 8px
               &:last-child
@@ -791,6 +800,10 @@
               &.active
                 background-color: white
                 color: teal
+                .progress_circle
+                  border: 2px teal solid
+                  &.complete
+                    background-color: teal
               &:hover
                 cursor: pointer
             &.thirds .tab

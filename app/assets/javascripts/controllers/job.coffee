@@ -270,15 +270,19 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.bedroom_class = (num) ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings["bedroom_#{num}"]).filter((v,k) -> v).length == 9
+        angular.element('.phase.qa .tab.bedrooms .progress_circle').addClass 'complete'
         ''
       else
+        angular.element('.phase.qa .tab.living-room .progress_circle').removeClass 'complete'
         'disabled'
     else
+      angular.element('.phase.qa .tab.living-room .progress_circle').removeClass 'complete'
       'disabled'
 
   $scope.bathroom_class = (num) ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length == 9
+        angular.element('.phase.qa .tab.bathrooms .progress_circle').addClass 'complete'
         ''
       else
         'disabled'
@@ -288,6 +292,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.kitchen_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings.kitchen).filter((v,k) -> v).length == 11
+        angular.element('.phase.qa .tab.kitchen .progress_circle').addClass 'complete'
         ''
       else
         'disabled'
@@ -297,6 +302,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.living_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length == 3
+        angular.element('.phase.qa .tab.living-room .progress_circle').addClass 'complete'
         ''
       else
         'disabled'
@@ -344,6 +350,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       if num == $scope.job.booking.property.checklist_bedrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.bathrooms').addClass 'active'
+        angular.element('.phase.qa .tab.bedrooms .progress_circle').addClass 'complete'
       else
         $scope.active_bedroom += 1
       scroll '.phase.cleaning'
@@ -354,6 +361,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       if num == $scope.job.booking.property.bathrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.kitchen').addClass 'active'
+        angular.element('.phase.qa .tab.bathrooms .progress_circle').addClass 'complete'
         null
       else
         $scope.active_bathroom += 1
@@ -364,6 +372,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     if $scope.kitchen_class() == ''
       angular.element('.phase.qa .tab').removeClass 'active'
       angular.element('.phase.qa .tab.living-room').addClass 'active'
+      angular.element('.phase.qa .tab.kitchen .progress_circle').addClass 'complete'
       scroll '.phase.cleaning'
       null
 
@@ -371,6 +380,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     if $scope.living_class() == ''
       angular.element('.phase.qa .tab').removeClass 'active'
       angular.element('.phase.qa .tab.photos').addClass 'active'
+      angular.element('.phase.qa .tab.living-room .progress_circle').addClass 'complete'
       scroll '.phase.cleaning'
       null
 
