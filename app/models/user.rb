@@ -96,6 +96,10 @@ class User < ActiveRecord::Base
     properties.map(&:bookings).flatten
   end
 
+  def transactions
+    bookings.map(&:transactions).flatten.sort_by(&:created_at)
+  end
+
   def coupons
     bookings.map(&:coupons).flatten
   end

@@ -63,6 +63,23 @@ class Host::PropertiesController < Host::AuthController
   end
 
   def book
+    payment = Payment.find params[:payment]
+    if current_user.transactions.empty? || current_user.transactions[-1].failed?
+      begin
+        Stripe::Charge.create(
+          amount: 100,
+          currency: 'usd',
+          customer: current_user.stripe_customer_id,
+          source: payment.stripe_id,
+          statement_descriptor: "HostWise Preauth"[0..21], # 22 characters max
+          metadata: { preauth: true, user_id: current_user.id },
+          capture: false
+        )
+      rescue Stripe::CardError
+        render json: { success: false, message: "There is a problem with your card, please contact us is the problem persists." }
+        return
+      end
+    end
     if params[:dates]
       bookings = []
       coupon = Coupon.find params[:coupon_id] if params[:coupon_id]
@@ -95,7 +112,7 @@ class Host::PropertiesController < Host::AuthController
               unless Booking.by_user(current_user)[0] || current_user.migrated
                 booking.first_booking_discount = true
               end
-              booking.payment = Payment.find params[:payment]
+              booking.payment = payment
               params[:services].each do |service|
                 booking.services.push Service.where(name: service)[0]
               end
