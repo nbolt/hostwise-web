@@ -124,7 +124,7 @@ class Job < ActiveRecord::Base
 
   def priority contractor=nil
     contractor ||= current_user
-    ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].priority if contractor
+    ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].then(:priority) if contractor
   end
 
   def tomorrow? date
