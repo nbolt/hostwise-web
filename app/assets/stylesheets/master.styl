@@ -199,11 +199,6 @@ header
         font-family: gotham-bold
       @media phone
         display: none
-  #chat_link {
-    position: absolute
-    top: 25px
-    left: 200px
-  }
   nav
     float: right
     margin-top: 14px
@@ -3202,21 +3197,17 @@ body .select2-drop-mask
 
 a.a-desk-widget.a-desk-widget-chat
   position: fixed
-  left: 240px
-  bottom: 50px
-  z-index: 1
-  background: url('/images/chat.png') !important
-  height: 51px
-  width: 55px !important
+  left: 0
+  bottom: 0
+  position: absolute
   background-color: black
-  @media landscape_tablet
-    left: 80px
-  @media portrait_tablet
-    left: 80px
-  @media phone
-    display: none
-    
-body.admin a.a-desk-widget.a-desk-widget-chat
-  left: 80px
-  display: none !important
   
+#chat_link
+  position: absolute
+  right: 200px
+  top: 24px
+  i 
+    display: inline-block
+  .text
+    margin-left: 10px
+    display: inline-block

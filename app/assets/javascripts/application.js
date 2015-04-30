@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require angular
 //= require angular-cookies.min
 //= require angular-file-upload
