@@ -39,6 +39,13 @@ group :test do
   gem 'timecop'
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
+end
+
 gem 'coveralls', require: false, group: :test
 gem 'pry-rails', groups: [:test, :development]
 
