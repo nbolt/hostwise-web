@@ -11,9 +11,10 @@ dependencies:
     - ./node_modules/protractor/bin/webdriver-manager update
 
 test:
-  post:
+  override:
     - bundle exec rake test
-    - RAILS_ENV=test bundle exec rails s &
+    - RAILS_ENV=test bundle exec rails s
+      background: true
     - bundle exec rake test:e2e
 
 deployment:
