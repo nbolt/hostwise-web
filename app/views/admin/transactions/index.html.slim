@@ -30,6 +30,7 @@
                 tr
                   th.no-sorting
                     /input.cbr type="checkbox"
+                  th Booking ID
                   th Job ID
                   th Property ID
                   th Client ID
@@ -43,6 +44,7 @@
                 tr
                   th.no-sorting
                     /input.cbr type="checkbox"
+                  th Booking ID
                   th Job ID
                   th Property ID
                   th Client ID
@@ -56,6 +58,7 @@
                 tr
                   th.no-sorting
                     /input.cbr type="checkbox"
+                  th Booking ID
                   th Job ID
                   th Property ID
                   th Client ID
@@ -70,6 +73,7 @@
                   td ng:click='check_booking(booking)'
                     div ng:show='booking.payment_status_cd == 0' style='text-align:center'
                       input.cbr type="checkbox" id='booking-{{booking.id}}'
+                  td ng:bind='::booking.id'
                   td
                     a.teal ng:href='/jobs/{{booking.job.id}}' ng:bind='::booking.job.id'
                   td
@@ -107,6 +111,7 @@
               thead
                 tr
                   th.no-sorting
+                  th Booking ID
                   th Job ID
                   th Property ID
                   th Client ID
@@ -119,6 +124,7 @@
               thead.search
                 tr
                   th.no-sorting
+                  th Booking ID
                   th Job ID
                   th Property ID
                   th Client ID
@@ -131,6 +137,7 @@
               tfoot
                 tr
                   th.no-sorting
+                  th Booking ID
                   th Job ID
                   th Property ID
                   th Client ID
@@ -145,6 +152,7 @@
                   td ng:click='check_job(job)'
                     div ng:show='job.total_payout != "Pending" && job.status != "Paid"' style='text-align:center'
                       input.cbr type="checkbox" id='job-{{job.id}}'
+                  td ng:bind='::job.booking.id'
                   td
                     a.teal ng:href='/jobs/{{job.id}}' ng:bind='::job.id'
                   td
