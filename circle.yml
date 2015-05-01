@@ -4,6 +4,11 @@ general:
       - master
       - develop
 
+dependencies:
+  pre:
+    - npm install phantomjs
+    - npm install protractor
+
 deployment:
   staging:
     branch: develop

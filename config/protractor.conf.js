@@ -12,7 +12,7 @@ exports.config = {
 
   baseUrl: 'http://hostwise-web.dev/',
 
-  framework: 'jasmine',
+  framework: 'jasmine2',
 
   jasmineNodeOpts: {
     defaultTimeoutInterval: 30000
