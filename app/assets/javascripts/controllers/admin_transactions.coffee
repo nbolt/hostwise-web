@@ -222,7 +222,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           else
             start_date = moment(start,   'MM/DD/YYYY')
             end_date   = moment(end,     'MM/DD/YYYY')
-            date       = moment(data[4], 'YYYY-MM-DD')
+            date       = moment(data[5], 'YYYY-MM-DD')
 
             date >= start_date && date <= end_date
 
