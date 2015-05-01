@@ -50,7 +50,7 @@ CSV.foreach "#{Rails.root}/db/data/neighborhoods.csv" do |row|
   neighborhood = Neighborhood.find_or_create_by(name: name)
   zips.each do |z|
     zip = ZipCode.find_or_create_by(code: z)
-    if neighborhood.zips.where(code: z).empty?
+    if neighborhood.zip_codes.where(code: z).empty?
       zip.neighborhood = neighborhood
       zip.save
     end
