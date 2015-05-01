@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'selenium-webdriver'
 
 describe 'run' do
-  #command: user=jman8615@gmail.com pwd=jman8615! rspec spec/tests/airbnb_spec.rb -fs
+  #command: user=jman8615@gmail.com pwd=jman8615! rspec spec/tests/airbnb_spec.rb
   username = ENV['user']
   password = ENV['pwd']
   site = 'https://www.airbnb.com'
