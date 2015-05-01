@@ -3,6 +3,6 @@ namespace :test do
     ENV['RAILS_ENV'] = 'test'
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean
-    system "protractor #{Rails.root.join('config', 'protractor.conf.js')} --baseUrl=http://localhost:3000"
+    system "./node_modules/protractor/bin/protractor #{Rails.root.join('config', 'protractor.conf.js')} --baseUrl=http://localhost:3000"
   end
 end
