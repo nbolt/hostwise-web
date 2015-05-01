@@ -26,7 +26,7 @@ unless City.first
   end
 end
 
-unless Zip.first
+unless ZipCode.first
   CSV.foreach "#{Rails.root}/db/data/zips.csv" do |row|
     zip_code  = row[0]
     city      = row[1]
@@ -34,13 +34,13 @@ unless Zip.first
     state     = row[3]
     state_id  = State.find_by_abbr!(state).id
     county_id = County.find_by_name_and_state_id!(county, state_id).id
-    Zip.create_with(city_id: City.find_by_name_and_county_id!(city, county_id).id).find_or_create_by!(code: zip_code)
+    ZipCode.create_with(city_id: City.find_by_name_and_county_id!(city, county_id).id).find_or_create_by!(code: zip_code)
   end
 end
 
 CSV.foreach "#{Rails.root}/db/data/service_zips.csv" do |row|
   code = row[0]
-  zip  = Zip.where(code: code)[0]
+  zip  = ZipCode.where(code: code)[0]
   zip.update_attribute :serviced, true unless zip.serviced
 end
 
@@ -49,7 +49,7 @@ CSV.foreach "#{Rails.root}/db/data/neighborhoods.csv" do |row|
   zips = row[1..-1]
   neighborhood = Neighborhood.find_or_create_by(name: name)
   zips.each do |z|
-    zip = Zip.find_or_create_by(code: z)
+    zip = ZipCode.find_or_create_by(code: z)
     if neighborhood.zips.where(code: z).empty?
       zip.neighborhood = neighborhood
       zip.save

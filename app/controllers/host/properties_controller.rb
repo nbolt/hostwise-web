@@ -172,7 +172,7 @@ class Host::PropertiesController < Host::AuthController
           return
         end
 
-        zip = Zip.serviced.where(code: params[:form][:zip]).first
+        zip = ZipCode.serviced.where(code: params[:form][:zip]).first
         unless zip
           UnservicedZip.create(code: params[:zip], email: current_user.email)
           render json: { success: false, message: 'Zip code is not within our area of service' }

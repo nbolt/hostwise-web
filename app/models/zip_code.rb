@@ -1,6 +1,8 @@
-class Zip < ActiveRecord::Base
+class ZipCode < ActiveRecord::Base
+  self.table_name = 'zips'
+
   belongs_to :neighborhood
-  belongs_to :city, inverse_of: :zips
+  belongs_to :city, inverse_of: :zipcodes
 
   validates :city, presence: true
   validates :code, presence: true, uniqueness: {case_sensitive: false}
