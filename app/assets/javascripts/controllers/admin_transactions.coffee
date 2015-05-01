@@ -210,7 +210,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ],
-          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null,null]
+          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null,null,null]
         })
 
         $.fn.dataTable.ext.search.push (settings, data, index) ->
@@ -285,7 +285,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ],
-          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null,null]
+          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null,null,null]
         })
 
         angular.element('#example-2 thead.search th').each (index) ->
