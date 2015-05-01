@@ -8,6 +8,13 @@ dependencies:
   pre:
     - npm install phantomjs
     - npm install protractor
+    - ./node_modules/protractor/bin/webdriver-manager update
+
+test:
+  post:
+    - bundle exec rake test
+    - RAILS_ENV=test bundle exec rails s &
+    - bundle exec rake test:e2e
 
 deployment:
   staging:

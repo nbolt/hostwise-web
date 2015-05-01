@@ -7,7 +7,7 @@ exports.config = {
 
   capabilities: {
     'browserName': 'phantomjs',
-    'phantomjs.binary.path': 'node_modules/.bin/phantomjs'
+    'phantomjs.binary.path': './node_modules/phantomjs/bin/phantomjs'
   },
 
   baseUrl: 'http://hostwise-web.dev/',
