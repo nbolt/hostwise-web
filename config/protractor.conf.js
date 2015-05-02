@@ -11,9 +11,9 @@ exports.config = {
   //  'phantomjs.binary.path': './node_modules/phantomjs/bin/phantomjs'
   //},
 
-  //capabilities: {
-  //  'browserName': 'firefox'
-  //},
+  capabilities: {
+    'browserName': 'firefox'
+  },
 
   baseUrl: 'http://hostwise-web.dev:3000',
 
