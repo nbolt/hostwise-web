@@ -4,6 +4,8 @@ if Rails.env.test?
   user.save
   user.update_attributes(phone_confirmed: true, activation_state: 'active')
 
+  user.properties.create(title: 'Test', address1: '1317 S Bundy Dr', zip: '90025')
+
   CSV.foreach "#{Rails.root}/db/data/service_zips.csv" do |row|
     code = row[0]
     zip  = ZipCode.create(code: code)
