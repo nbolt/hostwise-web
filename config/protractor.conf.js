@@ -15,7 +15,7 @@ exports.config = {
   //  'browserName': 'firefox'
   //},
 
-  baseUrl: 'http://hostwise-web.dev',
+  baseUrl: 'http://hostwise-web.dev:3000',
 
   framework: 'jasmine2',
 

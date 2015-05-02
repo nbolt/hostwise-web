@@ -7,6 +7,8 @@ general:
 machine:
   hosts:
     hostwise-web.dev: 127.0.0.1
+    host.hostwise-web.dev: 127.0.0.1
+    contractor.hostwise-web.dev: 127.0.0.1
 
 dependencies:
   pre:

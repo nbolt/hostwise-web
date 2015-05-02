@@ -7,7 +7,7 @@ describe DistributionCenter do
 		VCR.use_cassette('create_venice_center') { venice_center = create(:venice_center) }
 		VCR.use_cassette('create_city_center') { city_center = create(:city_center) }
 		VCR.use_cassette('create_plano_center') { plano_center = create(:plano_center) }
-		VCR.use_cassette('create_zip_3') { zip_3 = create(:zip_3) }
+		#VCR.use_cassette('create_zip_3') { zip_3 = create(:zip_3) }
 		VCR.use_cassette('create_zip_1') { zip_1 = create(:zip_1) }
 
 		no_zip = create(:no_zip)

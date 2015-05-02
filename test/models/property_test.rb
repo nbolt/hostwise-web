@@ -58,8 +58,8 @@ describe Property do
     VCR.use_cassette('create_property_1') { property_1 = create(:property_1) }
     property_1.neighborhood.must_equal 'Preston Meadow, Plano, 75093'
 
-    zip_2 = create(:zip_2)
-    zip_2.code.must_equal zip_2.code # load zip
+    #zip_2 = create(:zip_2)
+    #zip_2.code.must_equal zip_2.code # load zip
 
     VCR.use_cassette('create_property_8') { property_8 = create(:property_8) }
     property_8.neighborhood.must_equal 'Los Angeles, 90023'
@@ -107,8 +107,8 @@ describe Property do
     property_1.neighborhood_address.must_equal '4408 Lone Tree Dr, Preston Meadow, 75093'
  
     VCR.use_cassette('create_property_8') { property_8 = create(:property_8) }
-    VCR.use_cassette('create_zip_2') { zip_2 = create(:zip_2) }
-    zip_2.must_equal zip_2
+    #VCR.use_cassette('create_zip_2') { zip_2 = create(:zip_2) }
+    #zip_2.must_equal zip_2
     property_8.neighborhood_address.must_equal '3100 Wynwood Ln, Los Angeles, 90023'
 
     VCR.use_cassette('create_property_10') { property_10 = create(:property_10) }
