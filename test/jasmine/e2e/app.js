@@ -10,6 +10,6 @@ describe('hostwise', function(){
   })
 
   it('be signed in', function(){
-    expect(browser.getCurrentUrl()).toBe('http://host.hostwise-web.dev:3000/properties/first');
+    expect(browser.getCurrentUrl()).toBe('http://host.hostwise-web.dev:3000/properties/first')
   })
 })

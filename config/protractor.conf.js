@@ -6,10 +6,10 @@ exports.config = {
     '../test/jasmine/e2e/**/*.js'
   ],
 
-  capabilities: {
-    'browserName': 'phantomjs',
-    'phantomjs.binary.path': './node_modules/phantomjs/bin/phantomjs'
-  },
+  //capabilities: {
+  //  'browserName': 'phantomjs',
+  //  'phantomjs.binary.path': './node_modules/phantomjs/bin/phantomjs'
+  //},
 
   //capabilities: {
   //  'browserName': 'firefox'
