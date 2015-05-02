@@ -19,6 +19,7 @@ test:
     - bundle exec rake test
     - bundle exec rails s:
         background: true
+    - sudo echo "127.0.0.1 hostwise-web.dev" >> /etc/hosts
     - bundle exec rake test:e2e
 
 deployment:
