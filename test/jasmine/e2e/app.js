@@ -7,10 +7,9 @@ describe('hostwise', function(){
     $('.signin.modal .field.email input').sendKeys('test@email.com')
     $('.signin.modal .field.password input').sendKeys('test')
     $('.signin.modal form button').click()
-    browser.waitForAngular()
   })
 
-  it('should be awesome', function(){
-    expect(browser.getCurrentUrl()).toBe('https://angularjs.org/');
+  it('be signed in', function(){
+    expect(browser.getCurrentUrl()).toBe('http://host.hostwise-web.dev:3000/properties/first');
   })
 })
