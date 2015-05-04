@@ -285,6 +285,7 @@ GEM
     minitest (5.5.1)
     minitest-around (0.3.1)
       minitest (~> 5.0)
+    minitest-profile (0.0.2)
     minitest-rails (2.1.1)
       minitest (~> 5.4)
       railties (~> 4.1)
@@ -527,6 +528,7 @@ DEPENDENCIES
   ledermann-rails-settings
   mandrill_mailer
   minitest-around
+  minitest-profile
   minitest-rails
   newrelic_rpm
   oink

@@ -8,6 +8,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "minitest/rails"
 require "minitest/spec"
+require 'minitest/profile'
 require 'stripe'
 
 DatabaseCleaner.strategy = :transaction

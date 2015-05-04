@@ -33,6 +33,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'minitest-rails'
   gem 'minitest-around'
+  gem 'minitest-profile'
   gem 'vcr'
   gem 'webmock'
   gem 'factory_girl_rails'
