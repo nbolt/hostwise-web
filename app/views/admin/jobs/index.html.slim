@@ -104,7 +104,7 @@
               p ng:bind='job.status'
               .badge.badge-red ng:show='is_same_day_cancellation(job)' SDC
             td ng:bind-template="${{job.booking.cost}}"
-            td ng:bind='job.service_list'
+            td ng:bind='job.booking.service_list'
             td ng:bind='job.total_kings'
             td ng:bind='job.total_twins'
             td ng:bind='job.total_toiletries'
