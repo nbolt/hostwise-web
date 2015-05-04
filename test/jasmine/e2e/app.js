@@ -11,7 +11,6 @@ describe('hostwise', function(){
 
   it('should be signed in', function(){
     expect(browser.getCurrentUrl()).toBe('http://host.hostwise-web.dev:3000/')
-    browser.driver.sleep(500)
   })
 
   describe('new property flow:', function(){
@@ -74,6 +73,8 @@ describe('hostwise', function(){
           browser.waitForAngular()
         }
       })
+      browser.driver.sleep(500)
+      console.log($('.content-group.step-one .foot .right .button'))
       $('.content-group.step-one .foot .right .button').click()
       browser.waitForAngular()
       $('.content-group.step-additional .foot .right .button').click()
@@ -81,6 +82,7 @@ describe('hostwise', function(){
       $('.content-group.step-two .payment-tab.active #card-number').sendKeys('4242424242424242')
       $('.content-group.step-two .payment-tab.active #expiry-date').sendKeys('11/20')
       $('.content-group.step-two .payment-tab.active #cv-code').sendKeys('123')
+      console.log($('.content-group.step-two .foot .right .button'))
       $('.content-group.step-two .foot .right .button').click()
       browser.driver.sleep(500)
       browser.waitForAngular()
