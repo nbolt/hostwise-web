@@ -12,13 +12,7 @@ machine:
 
 dependencies:
   pre:
-    - npm install phantomjs
-    - npm install protractor
     - ./node_modules/protractor/bin/webdriver-manager update
-
-database:
-  post:
-    - bundle exec rake db:seed
 
 test:
   override:

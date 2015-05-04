@@ -23,25 +23,25 @@
             div
               .row
                 label Address
-                input type='text' required='' placeholder='Street Address' ng:model='form.address1' ng:keypress="($event.which === 13) ? step(1) : 0"
+                input type='text' required='' placeholder='Street Address' ng:model='form.address1' ng:keypress="($event.which === 13) ? step(1) : 0" id='address1'
                 .caption Address Line 1
               .row.two
                 div
-                  input type='text' placeholder='Apt/Unit/#' ng:model='form.address2' ng:keypress="($event.which === 13) ? step(1) : 0"
+                  input type='text' placeholder='Apt/Unit/#' ng:model='form.address2' ng:keypress="($event.which === 13) ? step(1) : 0" id='address2'
                   .caption Unit # (optional)
                 div
-                  input type='text' maxlength=5 required='' placeholder='Zip Code' ng:model='form.zip' ng:keypress="($event.which === 13) ? step(1) : 0"
+                  input type='text' maxlength=5 required='' placeholder='Zip Code' ng:model='form.zip' ng:keypress="($event.which === 13) ? step(1) : 0" id='zip_code'
                   .caption Zip Code
               br
               .row
                 label Property Contact Number
-                input type='text' placeholder='(###) ###-####' ng:model='form.phone_number' ui-mask='(999) 999-9999' ng:keypress="($event.which === 13) ? step(1) : 0"
+                input type='text' placeholder='(###) ###-####' ng:model='form.phone_number' ui-mask='(999) 999-9999' ng:keypress="($event.which === 13) ? step(1) : 0" id='contact_number'
           .vr
           .section.action
             div
               .row
                 label Property Nickname
-                input type='text' placeholder='i.e. Venice Loft, San Diego Apt, etc.' ng:model='form.title' ng:keypress="($event.which === 13) ? step(1) : 0"
+                input type='text' placeholder='i.e. Venice Loft, San Diego Apt, etc.' ng:model='form.title' ng:keypress="($event.which === 13) ? step(1) : 0" id='nickname'
               .row
                 .icon-button.teal ng:click='step(1)'
                   .icon
@@ -77,14 +77,14 @@
           .section.bed-type
             div
               .row.two
-                div
+                div#bedrooms
                   label Bedrooms
                   input type='hidden' placeholder='Select' required='' ng:model='form.bedrooms' ui-select2='rooms()'
-                div
+                div#bathrooms
                   label Bathrooms
                   input type='hidden' placeholder='Select' required='' ng:model='form.bathrooms' ui-select2='rooms()'
               .row.four.bed-types
-                div
+                div#kings
                   label Bed Types
                   input type='hidden' placeholder='Select' required='' ng:model='form.king_beds' ui-select2='beds()'
                   .caption King(s)
