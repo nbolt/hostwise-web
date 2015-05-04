@@ -50,7 +50,6 @@ describe('hostwise', function(){
 
   describe('booking flow:', function(){
     it('can book successfully', function(){
-      console.log('hi')
       $('header .logo .fa-bars').isDisplayed().then(function(displayed){
         if (displayed) $('header .logo .fa-bars').click()
       })
@@ -58,10 +57,6 @@ describe('hostwise', function(){
       browser.waitForAngular()
       $('#properties .property').click()
       browser.waitForAngular()
-      browser.driver.sleep(1000)
-      $('.column.cal table td.active.day').isDisplayed().then(function(displayed){
-        console.log(displayed)
-      })
       $('.column.cal table td.active.day').click()
       browser.waitForAngular()
       confirm = $('.content-group.static.next-day .action.confirm')
@@ -77,6 +72,10 @@ describe('hostwise', function(){
           confirm.click()
           browser.waitForAngular()
         }
+      })
+      browser.driver.sleep(1000)
+      $('.content-group.step-one .foot .right .button').isDisplayed().then(function(displayed){
+        console.log(displayed)
       })
       $('.content-group.step-one .foot .right .button').click()
       browser.waitForAngular()
