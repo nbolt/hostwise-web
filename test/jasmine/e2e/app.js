@@ -57,14 +57,12 @@ describe('hostwise', function(){
       browser.waitForAngular()
       $('#properties .property').click()
       browser.waitForAngular()
-      $$('.column.cal table td.active.day').get(1).isDisplayed().then(function(displayed){
-        console.log(displayed)
-      })
+      $$('.column.cal table td.active.day').get(1).click()
+      browser.waitForAngular()
+      browser.driver.sleep(500)
       $('.content-group.step-one .foot .right .button').isDisplayed().then(function(displayed){
         console.log(displayed)
       })
-      $$('.column.cal table td.active.day').get(1).click()
-      browser.waitForAngular()
       $('.content-group.step-one .foot .right .button').click()
       browser.waitForAngular()
       $('.content-group.step-additional .foot .right .button').click()
