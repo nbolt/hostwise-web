@@ -10,10 +10,6 @@ machine:
     host.hostwise-web.dev: 127.0.0.1
     contractor.hostwise-web.dev: 127.0.0.1
 
-dependencies:
-  pre:
-    - ./node_modules/protractor/bin/webdriver-manager update
-
 test:
   override:
     - bundle exec rake test

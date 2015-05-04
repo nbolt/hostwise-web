@@ -1,5 +1,6 @@
 describe('hostwise', function(){
   beforeAll(function(){
+    browser.driver.manage().window().maximize()
     browser.get('/')
     browser.waitForAngular()
     $('nav .login').click()
@@ -13,8 +14,8 @@ describe('hostwise', function(){
     expect(browser.getCurrentUrl()).toBe('http://host.hostwise-web.dev:3000/')
   })
 
-  describe('can add new property', function(){
-    it('successfully', function(){
+  describe('new property flow:', function(){
+    it('can enter property details', function(){
       $('#sidebar-container .section.new-property a').click()
       browser.waitForAngular()
       $('.property-form-container .step.one input#address1').sendKeys('338 Rennie Ave')
@@ -39,9 +40,47 @@ describe('hostwise', function(){
       $('.property-form-container .step.three .row > .icon-button').click()
     })
 
-    it('works', function(){
+    it('property saved successfully', function(){
       browser.get('/')
       expect($$('#properties .property').count()).toBe(1)
+    })
+  })
+
+  describe('booking flow:', function(){
+    it('can book successfully', function(){
+      $('#sidebar-container .section.properties a').click()
+      browser.waitForAngular()
+      $('#properties .property').click()
+      browser.waitForAngular()
+      $('.column.cal table td.active.day').click()
+      browser.waitForAngular()
+      confirm = $('.content-group.static.next-day .action.confirm')
+      confirm.isDisplayed().then(function(displayed){
+        if (displayed){
+          confirm.click()
+          browser.waitForAngular()
+        }
+      })
+      confirm = $('.content-group.static.same-day .action.confirm')
+      confirm.isDisplayed().then(function(displayed){
+        if (displayed){
+          confirm.click()
+          browser.waitForAngular()
+        }
+      })
+      $('.content-group.step-one .foot .right .button').click()
+      browser.waitForAngular()
+      $('.content-group.step-additional .foot .right .button').click()
+      browser.waitForAngular()
+      $('.content-group.step-two .payment-tab.active #card-number').sendKeys('4242424242424242')
+      $('.content-group.step-two .payment-tab.active #expiry-date').sendKeys('11/20')
+      $('.content-group.step-two .payment-tab.active #cv-code').sendKeys('123')
+      $('.content-group.step-two .foot .right .button').click()
+      browser.driver.sleep(500)
+      browser.waitForAngular()
+      $('.content-group.static.booked').isDisplayed().then(function(displayed){
+        expect(displayed).toBe(true)
+      })
     })
   })
 })

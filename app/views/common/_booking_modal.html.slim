@@ -354,25 +354,25 @@ script#booking-modal type="text/ng-template"
             .payment-tab.credit-card.active
               .field.card-number
                 .label Card Number
-                input data-stripe='number' ng:model='$parent.card.number'
+                input#card-number data-stripe='number' ng:model='$parent.card.number'
               .row.two
                 .field.expiry
                   .label Expiry Date
-                  input data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
+                  input#expiry-date data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
                 .field.cvc
                   .label CV Code
-                  input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
+                  input#cv-code data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
             a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
         .foot
           .left
             .button.grey ng:click='change_dates()' Change Dates
           .right
-            .button.teal.right#book
+            .button.teal.right#book ng:click='book()'
               .icon.spin
                 .spinner
               .icon.check
                 i.icon-check
-              .text ng:click='book()' Confirm & Book
+              .text Confirm & Book
       .content-group.static.booked
         .header
           .icon
