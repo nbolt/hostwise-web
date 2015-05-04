@@ -50,6 +50,7 @@ describe('hostwise', function(){
 
   describe('booking flow:', function(){
     it('can book successfully', function(){
+      console.log('hi')
       $('header .logo .fa-bars').isDisplayed().then(function(displayed){
         if (displayed) $('header .logo .fa-bars').click()
       })
@@ -57,6 +58,10 @@ describe('hostwise', function(){
       browser.waitForAngular()
       $('#properties .property').click()
       browser.waitForAngular()
+      browser.driver.sleep(1000)
+      $('.column.cal table td.active.day').isDisplayed().then(function(displayed){
+        console.log(displayed)
+      })
       $('.column.cal table td.active.day').click()
       browser.waitForAngular()
       confirm = $('.content-group.static.next-day .action.confirm')
@@ -73,9 +78,6 @@ describe('hostwise', function(){
           browser.waitForAngular()
         }
       })
-      $('.content-group.step-one .foot .right .button').isDisplayed().then(function(displayed){
-        console.log(displayed)
-      })
       $('.content-group.step-one .foot .right .button').click()
       browser.waitForAngular()
       $('.content-group.step-additional .foot .right .button').click()
@@ -83,9 +85,6 @@ describe('hostwise', function(){
       $('.content-group.step-two .payment-tab.active #card-number').sendKeys('4242424242424242')
       $('.content-group.step-two .payment-tab.active #expiry-date').sendKeys('11/20')
       $('.content-group.step-two .payment-tab.active #cv-code').sendKeys('123')
-      $('.content-group.step-two .foot .right .button').isDisplayed().then(function(displayed){
-        console.log(displayed)
-      })
       $('.content-group.step-two .foot .right .button').click()
       browser.driver.sleep(500)
       browser.waitForAngular()
