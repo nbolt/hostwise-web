@@ -1,6 +1,5 @@
 describe('hostwise', function(){
   beforeAll(function(){
-    browser.driver.manage().window().setSize(480, 720)
     browser.get('/')
     browser.waitForAngular()
     $('nav .login').click()
@@ -17,7 +16,9 @@ describe('hostwise', function(){
 
   describe('new property flow:', function(){
     it('can enter property details', function(){
-      $('header .logo .fa-bars').click()
+      $('header .logo .fa-bars').isDisplayed().then(function(displayed){
+        if (displayed) $('header .logo .fa-bars').click()
+      })
       $('#sidebar-container .section.new-property a').click()
       browser.waitForAngular()
       $('.property-form-container .step.one input#address1').sendKeys('338 Rennie Ave')
@@ -50,7 +51,9 @@ describe('hostwise', function(){
 
   describe('booking flow:', function(){
     it('can book successfully', function(){
-      $('header .logo .fa-bars').click()
+      $('header .logo .fa-bars').isDisplayed().then(function(displayed){
+        if (displayed) $('header .logo .fa-bars').click()
+      })
       $('#sidebar-container .section.properties a').click()
       browser.waitForAngular()
       $('#properties .property').click()
