@@ -84,6 +84,56 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
   $scope.is_same_day_cancellation = (job) ->
     job.status_cd == 6 && job.booking.status_cd == 2
 
+  convert_date = (date) ->
+    moment(date, 'YYYY-MM-DD').toDate()
+
+  $scope.next_ten_days_jobs = (jobs) ->
+    count = 0
+    current_date = new Date()
+    _(jobs).each (job) ->
+      converted_date = convert_date(job.date)
+      if (converted_date > current_date) && (converted_date <= (current_date.setDate(current_date.getDate() + 10)) )
+        count += 1
+    return count
+
+  $scope.unclaimed_next_two_days_jobs = (jobs) ->
+    count = 0
+    current_date = new Date()
+    _(jobs).each (job) ->
+      converted_date = convert_date(job.date)
+      if (converted_date > current_date) && (converted_date <= (current_date.setDate(current_date.getDate() + 2)) ) && (job.status_cd == 0)
+        count += 1
+    return count
+
+  $scope.completed_last_month = (jobs) ->
+    current_date = new Date()
+    last_month = current_date.getMonth() - 1
+    count = 0
+    _(jobs).each (job) ->
+      converted_date = convert_date(job.date)
+      if (converted_date.getMonth() == last_month) && (job.status_cd == 3)
+        count += 1
+    return count
+
+  $scope.cancelled_last_month = (jobs) ->
+    current_date = new Date()
+    last_month = current_date.getMonth() - 1
+    count = 0
+    _(jobs).each (job) ->
+      converted_date = convert_date(job.date)
+      if (converted_date.getMonth() == last_month) && (job.status_cd == 6)
+        count += 1
+    return count
+
+  $scope.percent_growth = (jobs) ->
+    monthly_growth = []
+    date = new Date()
+    month_subtractor = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    _(month_subtractor).each (subtractor) ->
+      date.setMonth(date.getMonth() - subtractor)
+    return monthly_growth
+    
+
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id
 

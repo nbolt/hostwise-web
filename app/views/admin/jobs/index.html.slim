@@ -1,13 +1,34 @@
 .xenon.custom ng:controller='admin_jobs'
   .panel.panel-default.stats
     .panel-heading
-      | Total Jobs
+      | Metrics
     .panel-body
       .row
-        .col-sm-3
+        .col-sm-2
           p.text-medium Total number of jobs
           .super-large.text-secondary
             | {{jobs.length}}
+        .col-sm-2
+          p.text-medium Total next 10 days
+          .super-large.text-secondary
+            | {{next_ten_days_jobs(jobs)}}
+        .col-sm-2
+          p.text-medium Unclaimed next 2 days
+          .super-large.text-secondary
+            | {{unclaimed_next_two_days_jobs(jobs)}}
+        .col-sm-2
+          p.text-medium Jobs completed last month
+          .super-large.text-secondary
+            | {{completed_last_month(jobs)}}
+        .col-sm-2
+          p.text-medium Jobs cancelled last month
+          .super-large.text-secondary
+            | {{cancelled_last_month(jobs)}}
+      .row
+        .col-sm-6
+          p.text-medium % monthly growth
+          .super-large.text-secondary
+            | {{percent_growth(jobs)}}
 
   .panel.panel-default
     .panel-heading
