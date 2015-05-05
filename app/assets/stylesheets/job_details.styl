@@ -790,9 +790,18 @@
                 height: 8px
                 width: 8px
                 border: 2px white solid
-                border-radius: 100%
+                border-radius: 50%
+                background-image: linear-gradient(126deg, transparent 50%, white 50%, black 0%), linear-gradient(90deg, white 50%, transparent 50%, black 0%)
+
                 &.complete
                   background-color: white
+                  .icon
+                    display: block
+                .icon
+                  font-size: 0.4em 
+                  margin: -3px 0 0 -1px
+                  display: none
+                  color: teal
               .icon
                 margin-top: 8px
               &:last-child
@@ -804,6 +813,8 @@
                   border: 2px teal solid
                   &.complete
                     background-color: teal
+                    .icon
+                      color: white
               &:hover
                 cursor: pointer
             &.thirds .tab

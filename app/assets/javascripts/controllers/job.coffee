@@ -168,7 +168,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.found_damage = ->
     $scope.checklist.checklist_settings.damage_inspection.damage = true
-
+    
   $scope.show_applicant = ->
     $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0 and $scope.job.training
 

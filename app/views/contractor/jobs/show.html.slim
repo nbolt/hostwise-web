@@ -420,18 +420,29 @@
                 .tabs.fifths
                   .tab.bedrooms.active ng:click="to_tab('bedrooms', 'qa')"
                     .progress_circle ng:class='bedroom_circle_class($index+1)'
+                      .icon
+                        i.icon-check
                     .icon
                       i.icon-bed
                   .tab.bathrooms ng:click="to_tab('bathrooms', 'qa')"
                     .progress_circle ng:class='bathroom_circle_class($index+1)'
+                      .icon
+                        i.icon-check
+                    .icon
                     .icon
                       i.icon-bath
                   .tab.kitchen ng:click="to_tab('kitchen', 'qa')"
                     .progress_circle ng:class='kitchen_circle_class()'
+                      .icon
+                        i.icon-check
+                    .icon
                     .icon
                       i.icon-kitchen
                   .tab.living-room ng:click="to_tab('living-room', 'qa')"
                     .progress_circle ng:class='living_circle_class()'
+                      .icon
+                        i.icon-check
+                    .icon
                     .icon
                       i.icon-livingroom
                   .tab.photos ng:click="to_tab('photos', 'qa')"
