@@ -80,14 +80,9 @@ class Job < ActiveRecord::Base
     jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)}
   end
 
-  def self.payouts_by_months date
-    payouts = []
-    6.times do |i|
-      date = (date - i.months)
-      jobs = Job.standard.on_month(date).where('status_cd > 2')
-      payouts.unshift({ month: date.month, year: date.year.to_s[2..-1], payouts: jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)} } / 100.0 })
-    end
-    payouts.select {|r| r[:payouts] > 0}
+  def self.payouts_on_month date
+    jobs = Job.standard.on_month(date).where('status_cd > 2')
+    jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)} } / 100.0
   end
 
   def self.serviced_on_month date

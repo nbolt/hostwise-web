@@ -1,10 +1,50 @@
 .xenon.custom ng:controller='admin_transactions'
+  .metrics#customer-metrics.active
+    .row.top
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading YTD Revenue
+          .panel-body
+            p.text-medium Total revenue this year
+            .super-large.text-secondary ng:bind-template='${{total_revenue}}'
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading MTD Revenue
+          .panel-body
+            p.text-medium Total revenue this month
+            .super-large.text-secondary ng:bind-template='${{monthly_revenue}}'
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading Monthly Growth
+          .panel-body
+            p.text-medium Revenue growth last month
+            .super-large.text-secondary ng:bind-template='{{monthly_growth}}%'
+  .metrics#contractor-metrics
+    .row.top
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading YTD Paid Out
+          .panel-body
+            p.text-medium Total paid out this year
+            .super-large.text-secondary ng:bind-template='${{total_payouts}}'
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading MTD Paid Out
+          .panel-body
+            p.text-medium Total paid out this month
+            .super-large.text-secondary ng:bind-template='${{monthly_payouts}}'
+      .col-sm-4
+        .panel.panel-default
+          .panel-heading Next Pay Period
+          .panel-body
+            p.text-medium Total pending payouts this week
+            .super-large.text-secondary ng:bind-template='${{pending_payouts}}'
   .col-md-12
     ul.nav.nav-tabs.nav-tabs-justified
-      li.active
+      li.active ng:click='activate_customers()'
         a href='#customers' data-toggle='tab'
           | Customers
-      li
+      li ng:click='activate_contractors()'
         a href='#contractors' data-toggle='tab'
           | Contractors
     .tab-content
