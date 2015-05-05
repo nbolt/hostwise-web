@@ -26,7 +26,6 @@ class Admin::DashboardController < Admin::AuthController
   def serviced
     this_month = Job.serviced_on_month(Date.today)
     last_month = Job.serviced_on_month(Date.today - 1.month)
-    pending = 
     total = Job.on_year(Date.today).standard.complete.count
     render json: { this_month: number_with_delimiter(this_month), last_month: number_with_delimiter(last_month), total: number_with_delimiter(total) }
   end
