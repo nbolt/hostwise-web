@@ -60,9 +60,6 @@ describe('hostwise', function(){
       $$('.column.cal table td.active.day').get(1).click()
       browser.waitForAngular()
       browser.driver.sleep(500)
-      $('.content-group.step-one .foot .right .button').isDisplayed().then(function(displayed){
-        console.log(displayed)
-      })
       $('.content-group.step-one .foot .right .button').click()
       browser.waitForAngular()
       $('.content-group.step-additional .foot .right .button').click()

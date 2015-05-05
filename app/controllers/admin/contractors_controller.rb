@@ -76,7 +76,7 @@ class Admin::ContractorsController < Admin::AuthController
 
       if user.valid?
         user.save
-        contractor_profile_params = params[:contractor][:contractor_profile]
+        contractor_profile_params = params[:contractor_profile]
         profile = user.contractor_profile
         profile.address1 = contractor_profile_params[:address1]
         profile.address2 = contractor_profile_params[:address2]
