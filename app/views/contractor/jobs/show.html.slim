@@ -431,8 +431,8 @@
                   .tab.bathrooms ng:click="to_tab('bathrooms', 'qa')"
                     .progress_circle ng:class='bathroom_circle_class($index+1)'
                       .top_right.sector ng:class='bathroom_quarter_class($index+1)'
-                      .bottom_right.sector ng:class='bedroom_half_class($index+1)'
-                      .bottom_left.sector ng:class='bedroom_two_thirds_class($index+1)'
+                      .bottom_right.sector ng:class='bathroom_half_class($index+1)'
+                      .bottom_left.sector ng:class='bathroom_two_thirds_class($index+1)'
                       .icon
                         i.icon-check
                     .icon
@@ -459,6 +459,12 @@
                     .icon
                       i.icon-livingroom
                   .tab.photos ng:click="to_tab('photos', 'qa')"
+                    .progress_circle ng:class=''
+                      .top_right.sector ng:class=''
+                      .bottom_right.sector ng:class=''
+                      .bottom_left.sector ng:class=''
+                      .icon
+                        i.icon-check
                     .icon
                       i.icon-cam
                 .pad
