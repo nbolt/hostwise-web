@@ -4,22 +4,24 @@
       | Metrics
     .panel-body
       .row
-        .col-sm-2
+        .col-sm-3
           p.text-medium Total number of jobs
           .super-large.text-secondary
             | {{jobs.length}}
-        .col-sm-2
+        .col-sm-3
           p.text-medium Jobs in the next 10 days
           .super-large.text-secondary ng:bind='next_ten_days_jobs()'
         .col-sm-3
           p.text-medium Unclaimed jobs within the next 2 days
           .super-large.text-secondary ng:bind='unclaimed_next_two_days_jobs()'
-        .col-sm-2
+        .col-sm-3
           p.text-medium Jobs completed last month
           .super-large.text-secondary ng:bind='completed_last_month()'
-        .col-sm-2
+    .panel-body
+      .row
+        .col-sm-3
           p.text-medium Monthly Growth
-          .super-large.text-secondary ng:bind-template='{{monthly_growth()}}%'
+          .super-large.text-secondary ng:bind-template='{{monthly_growth().toFixed(2)}}%'
   .panel.panel-default
     .panel-heading
       h3.panel-title Jobs

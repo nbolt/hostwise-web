@@ -1,7 +1,8 @@
 - show_book_service = current_user.host? && current_user.properties.present?
 header
   nav header-nav=''
-    a#chat_link href='#' onclick="window.open('http://hostwise.desk.com:80/customer/widget/chats/new?', 'assistly_chat','resizable=1, status=0, toolbar=0,width=640,height=700')"
+    - unless current_user.role_cd == 0
+      a#chat_link href='#' onclick="window.open('http://hostwise.desk.com:80/customer/widget/chats/new?', 'assistly_chat','resizable=1, status=0, toolbar=0,width=640,height=700')"
         i.icon-contact
         .text Chat now!
     #user.link.hover
