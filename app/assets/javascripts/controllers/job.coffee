@@ -279,6 +279,15 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       'disabled'
 
+  $scope.sector_class = (tab, num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings[tab]).filter((v,k) -> v).length >= num
+        'visible'
+      else
+        ''
+    else
+      ''
+
   $scope.complete_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if $scope.room_class('living_room', 3) == '' && $scope.room_class('kitchen', 11) == '' && $scope.photos_class() == '' &&
