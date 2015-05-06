@@ -4,6 +4,19 @@ general:
       - master
       - develop
 
+machine:
+  hosts:
+    hostwise-web.dev: 127.0.0.1
+    host.hostwise-web.dev: 127.0.0.1
+    contractor.hostwise-web.dev: 127.0.0.1
+
+test:
+  override:
+    - bundle exec rake test
+    - bundle exec rails s:
+        background: true
+    - bundle exec rake test:e2e
+
 deployment:
   staging:
     branch: develop

@@ -475,6 +475,15 @@
             line-height: 25px
       &.actions
         .phase
+          .number
+            float: left
+            font-weight: bold
+            margin: 13px 0 0 20px
+            color: dark-gray
+            border: 2px dark-gray solid
+            border-radius: 100%
+            box-sizing: border-box
+            padding: 3px 8px 3px 8px
           strong.teal
             color: teal
           .supplies
@@ -517,6 +526,9 @@
               border-bottom: 0
             .content
               max-height: 2000px
+            .number
+              color: white
+              border-color: white
           &.complete
             .header
               background-color: light-teal
@@ -524,6 +536,9 @@
               border-bottom: thin solid dark-teal
             .content
               max-height: 0
+            .number
+              color: white
+              border-color: white
           &.cant_access
             .div
               &.gray
@@ -646,8 +661,8 @@
                       cursor: pointer
                   .new-photo
                     overflow: auto
-                    width: 50px
-                    height: 50px
+                    width: 60px
+                    height: 60px
                     color: white
                     font-size: 1.4em
                     border-radius: 50%
@@ -658,7 +673,7 @@
                     &:hover
                       cursor: pointer
                     .icon
-                      margin-top: 10px
+                      margin-top: 10px 
                 &.damage
                   .damage-photos
                     display: none
@@ -769,6 +784,15 @@
               vertical-align: top
               font-size: 1.6em
               overflow: auto
+              .progress_circle
+                float: right
+                margin: 5px 5px 0 0
+                height: 8px
+                width: 8px
+                border: 2px white solid
+                border-radius: 100%
+                &.complete
+                  background-color: white
               .icon
                 margin-top: 8px
               &:last-child
@@ -776,6 +800,10 @@
               &.active
                 background-color: white
                 color: teal
+                .progress_circle
+                  border: 2px teal solid
+                  &.complete
+                    background-color: teal
               &:hover
                 cursor: pointer
             &.thirds .tab

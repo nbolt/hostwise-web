@@ -1,56 +1,29 @@
 module Admin::InventoryHelper
   def king_bed_count(jobs)
-    king_bed_count = 0
-    jobs.each do |job|
-      if job.king_beds != nil
-        king_bed_count += job.king_beds 
-      end
-    end
-    king_bed_count
+    jobs.select{|j| j.occasion_cd == 0}.reduce(0) {|acc, job| acc + (job.king_beds || 0)}
   end
 
   def twin_bed_count(jobs)
-    twin_bed_count = 0
-    jobs.each do |job|
-      if job.twin_beds != nil
-        twin_bed_count += job.twin_beds 
-      end
-    end
-    twin_bed_count
+    jobs.select{|j| j.occasion_cd == 0}.reduce(0) {|acc, job| acc + (job.twin_beds || 0)}
   end
 
   def bed_count(jobs)
-    bed_count = 0
-    jobs.each do |job|
-      if job.king_beds != nil
-        bed_count += job.king_beds
-      end
-      if job.twin_beds != nil
-        bed_count += job.twin_beds
-      end
-      if job.queen_beds != nil
-        bed_count += job.queen_beds
-      end
-      if job.full_beds != nil
-        bed_count += job.full_beds
-      end
-    end
-    bed_count
+    jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :property, :beds) || 0)}
   end
 
   def toiletries(jobs)
-    jobs.reduce(0) {|acc, job| acc + (job.toiletries ||= 0)}
+    jobs.reduce(0) {|acc, job| acc + (job.toiletries || 0)}
   end
 
   def dirty_king_sheets(jobs)
-    jobs.reduce(0) {|acc, job| acc + (job.king_sheets ||= 0)}
+    jobs.select{|j| j.occasion_cd == 1}.reduce(0) {|acc, job| acc + (job.king_beds || 0)}
   end
 
   def dirty_twin_sheets(jobs)
-    jobs.reduce(0) {|acc, job| acc + (job.twin_sheets ||= 0)}
+    jobs.select{|j| j.occasion_cd == 1}.reduce(0) {|acc, job| acc + (job.twin_beds || 0)}
   end
 
   def dirty_sheets(jobs)
-    jobs.reduce(0) {|acc, job| acc + (job.king_sheets ||= 0) + (job.twin_sheets ||=0 )}
+    dirty_king_sheets(jobs) + dirty_twin_sheets(jobs)
   end
 end

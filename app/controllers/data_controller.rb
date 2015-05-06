@@ -14,7 +14,7 @@ class DataController < ApplicationController
   end
 
   def service_available
-    zip = Zip.serviced.where(code: params[:zip]).first
+    zip = ZipCode.serviced.where(code: params[:zip]).first
     UnservicedZip.create(code: params[:zip], email: current_user.email) unless zip
     render json: zip
   end

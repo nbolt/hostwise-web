@@ -7,7 +7,7 @@ class DistributionCenter < ActiveRecord::Base
   attr_accessor :distance
 
   def neighborhood
-    zip = Zip.where(code: self.zip)[0]
+    zip = ZipCode.where(code: self.zip)[0]
     if zip
       if zip.neighborhood && zip.neighborhood.name != city
         "#{zip.neighborhood.name}, #{city}"

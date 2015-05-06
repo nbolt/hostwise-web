@@ -166,6 +166,9 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       ''
 
+  $scope.found_damage = ->
+    $scope.checklist.checklist_settings.damage_inspection.damage = true
+
   $scope.show_applicant = ->
     $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0 and $scope.job.training
 
@@ -276,6 +279,15 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       'disabled'
 
+  $scope.bedroom_circle_class = (num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings["bedroom_#{num}"]).filter((v,k) -> v).length == 9
+        'complete'
+      else
+        ''
+    else
+      ''
+
   $scope.bathroom_class = (num) ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length == 9
@@ -284,6 +296,15 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
         'disabled'
     else
       'disabled'
+
+  $scope.bathroom_circle_class = (num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length == 9
+        'complete'
+      else
+        ''
+    else
+      ''
 
   $scope.kitchen_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings
@@ -294,6 +315,15 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       'disabled'
 
+  $scope.kitchen_circle_class = ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings.kitchen).filter((v,k) -> v).length == 11
+        'complete'
+      else
+        ''
+    else
+      ''
+
   $scope.living_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length == 3
@@ -302,6 +332,15 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
         'disabled'
     else
       'disabled'
+
+  $scope.living_circle_class = ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length == 3
+        'complete'
+      else
+        ''
+    else
+      ''
 
   $scope.complete_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings
@@ -354,6 +393,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       if num == $scope.job.booking.property.bathrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.kitchen').addClass 'active'
+        angular.element('.phase.qa .tab.bathrooms .progress_circle').addClass 'complete'
         null
       else
         $scope.active_bathroom += 1

@@ -1,12 +1,15 @@
 - show_book_service = current_user.host? && current_user.properties.present?
 header
   nav header-nav=''
+    a#chat_link href='#' onclick="window.open('http://hostwise.desk.com:80/customer/widget/chats/new?', 'assistly_chat','resizable=1, status=0, toolbar=0,width=640,height=700')"
+        i.icon-contact
+        .text Chat now!
     #user.link.hover
       .drop-container
         .drop-arrow
         .drop
           .links
-            = render "#{current_user.role}/account_settings"
+            = render "#{current_user.role}/account_settings"  
       .name ng:show='user'
         | Hi,&nbsp;
         strong ng:bind='::user.first_name'
@@ -36,7 +39,4 @@ header
     .fa.fa-bars menu-dropdown=''
   /= render 'common/live_chat'
   a href='#' onclick="window.open('http://hostwise.desk.com:80/customer/widget/chats/new?', 'assistly_chat','resizable=1, status=0, toolbar=0,width=640,height=700')"
-    #chat_link 
-      i.icon-contact
-      .text Chat now!
 = render 'common/booking_modal' if show_book_service

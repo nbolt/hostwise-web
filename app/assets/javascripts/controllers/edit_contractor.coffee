@@ -49,7 +49,8 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
 
   $scope.update_account = ->
     $http.put("/contractors/#{$scope.id}/update", {
-      contractor: $scope.contractor
+      contractor: _($scope.contractor).clone(),
+      contractor_profile: _($scope.contractor.contractor_profile).clone()
     }).success (rsp) ->
       if rsp.success
         spinner.startSpin()

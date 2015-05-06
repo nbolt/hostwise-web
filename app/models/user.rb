@@ -96,6 +96,10 @@ class User < ActiveRecord::Base
     properties.map(&:bookings).flatten
   end
 
+  def transactions
+    bookings.map(&:transactions).flatten.sort_by(&:created_at)
+  end
+
   def coupons
     bookings.map(&:coupons).flatten
   end
@@ -167,7 +171,7 @@ class User < ActiveRecord::Base
   end
 
   def drop_job job, admin=false
-    primary = ContractorJobs.where(job_id: job.id, user_id: self.id)[0].primary
+    primary = ContractorJobs.where(job_id: job.id, user_id: self.id)[0].then(:primary)
     job.contractors.destroy self
     job.size = job.contractors.count if job.booking && job.contractors.count >= job.minimum_job_size
     if self.contractor_profile.position == :trainee

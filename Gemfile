@@ -32,11 +32,20 @@ group :test do
   gem 'rr'
   gem 'shoulda-matchers'
   gem 'minitest-rails'
+  gem 'minitest-around'
+  gem 'minitest-profile'
   gem 'vcr'
   gem 'webmock'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'timecop'
+end
+
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
 end
 
 gem 'coveralls', require: false, group: :test

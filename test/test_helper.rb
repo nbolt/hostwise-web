@@ -8,10 +8,12 @@ require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "minitest/rails"
 require "minitest/spec"
+require 'minitest/profile'
 require 'stripe'
 
 DatabaseCleaner.strategy = :transaction
-DatabaseCleaner.clean
+DatabaseCleaner.start
+load Rails.root + "db/seeds.rb"
 
 # To add Capybara feature tests add `gem "minitest-rails-capybara"`
 # to the test group in the Gemfile and uncomment the following:
@@ -25,6 +27,12 @@ module Stripe
     def self.check_ssl_cert(uri, ca_file)
       true
     end
+  end
+end
+
+class Minitest::Spec
+  around do |tests|
+    DatabaseCleaner.cleaning(&tests)
   end
 end
 

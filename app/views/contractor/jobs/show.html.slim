@@ -246,7 +246,8 @@
               .text Job in Progress...
           .checklist-phases ng:show='checklist'
             .phase.arrival ng:class='arrival_class()'
-              .header
+              .number 1
+              .header ng:click='found_damage()'
                 .text Arrival Tasks
               .content
                 .tabs.thirds
@@ -370,6 +371,7 @@
                         .fa.fa-chevron-right
                       .text Begin Cleaning
             .phase.cleaning ng:class='cleaning_class()'
+              .number 2
               .header
                 .text Begin Cleaning
               .content
@@ -411,20 +413,25 @@
                       .fa.fa-chevron-right
                     .text Cleaning Completed
             .phase.qa ng:class='qa_class()'
+              .number 3
               .header
                 .text Quality Assurance
               .content
                 .tabs.fifths
                   .tab.bedrooms.active ng:click="to_tab('bedrooms', 'qa')"
+                    .progress_circle ng:class='bedroom_circle_class($index+1)'
                     .icon
                       i.icon-bed
                   .tab.bathrooms ng:click="to_tab('bathrooms', 'qa')"
+                    .progress_circle ng:class='bathroom_circle_class($index+1)'
                     .icon
                       i.icon-bath
                   .tab.kitchen ng:click="to_tab('kitchen', 'qa')"
+                    .progress_circle ng:class='kitchen_circle_class()'
                     .icon
                       i.icon-kitchen
                   .tab.living-room ng:click="to_tab('living-room', 'qa')"
+                    .progress_circle ng:class='living_circle_class()'
                     .icon
                       i.icon-livingroom
                   .tab.photos ng:click="to_tab('photos', 'qa')"
@@ -675,23 +682,17 @@
                       .snap-photo.kitchen
                         .existing-photo ng:show='checklist.kitchen_photo.url' ng:file-select='' ng:model='kitchen_photo' ng:multiple='false'
                           img ng:src='{{checklist.kitchen_photo.url}}'
-                        .new-photo ng:hide='checklist.kitchen_photo.url' ng:file-select='' ng:model='kitchen_photo' ng:multiple='false'
-                          .icon
-                            i.icon-cam
-                        .label 1 Kitchen
+                        .new-photo ng:hide='checklist.kitchen_photo.url' ng:file-select='' ng:model='kitchen_photo' ng:multiple='false' style='background-image:url(/images/sample_kitchen.png);'
+                        .label 1 Kitchen 
                       .snap-photo.bedroom
                         .existing-photo ng:show='checklist.bedroom_photo.url' ng:file-select='' ng:model='bedroom_photo' ng:multiple='false'
                           img ng:src='{{checklist.bedroom_photo.url}}'
-                        .new-photo ng:hide='checklist.bedroom_photo.url' ng:file-select='' ng:model='bedroom_photo' ng:multiple='false'
-                          .icon
-                            i.icon-cam
+                        .new-photo ng:hide='checklist.bedroom_photo.url' ng:file-select='' ng:model='bedroom_photo' ng:multiple='false' style='background-image:url(/images/sample_bedroom.png);'
                         .label 1 Bedroom
                       .snap-photo.bathroom
                         .existing-photo ng:show='checklist.bathroom_photo.url' ng:file-select='' ng:model='bathroom_photo' ng:multiple='false'
                           img ng:src='{{checklist.bathroom_photo.url}}'
-                        .new-photo ng:hide='checklist.bathroom_photo.url' ng:file-select='' ng:model='bathroom_photo' ng:multiple='false'
-                          .icon
-                            i.icon-cam
+                        .new-photo ng:hide='checklist.bathroom_photo.url' ng:file-select='' ng:model='bathroom_photo' ng:multiple='false' style='background-image:url(/images/sample_bathroom.png);'
                         .label 1 Bathroom
                     .text
                       | When you tap
