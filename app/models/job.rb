@@ -76,12 +76,12 @@ class Job < ActiveRecord::Base
   attr_accessor :current_user, :distance
 
   def self.revenue_on_month date
-    jobs = Job.standard.on_month(date).where('status_cd > 2')
+    jobs = Job.standard.on_month(date).where('bookings.status_cd > 0 and jobs.status_cd > 2').includes(:booking).references(:bookings)
     jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)}
   end
 
   def self.payouts_on_month date
-    jobs = Job.standard.on_month(date).where('status_cd > 2')
+    jobs = Job.standard.on_month(date).where('bookings.status_cd > 0 and jobs.status_cd > 2').includes(:booking).references(:bookings)
     jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)} } / 100.0
   end
 
