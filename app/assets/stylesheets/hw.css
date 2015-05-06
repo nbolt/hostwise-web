@@ -414,6 +414,9 @@ ul.pl-main-nav li a.active{
 .login{background:#2a7376;}
 
 @media only screen and (max-width: 768px) {
+  .pl-account-nav .phone_number {
+    display: none;
+  }
 
   nav.pl-nav{
     width:100%;
