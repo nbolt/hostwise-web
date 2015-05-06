@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505174301) do
+ActiveRecord::Schema.define(version: 20150506225420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,17 +119,17 @@ ActiveRecord::Schema.define(version: 20150505174301) do
     t.integer  "discounted_cost",             default: 0
     t.string   "discounted_reason",           default: ""
     t.string   "overage_reason",              default: ""
+    t.boolean  "refunded",                    default: false
+    t.integer  "refunded_cost",               default: 0
+    t.string   "refunded_reason"
+    t.string   "stripe_refund_id"
     t.integer  "extra_king_sets",             default: 0
     t.integer  "extra_twin_sets",             default: 0
     t.integer  "extra_toiletry_sets",         default: 0
     t.string   "extra_instructions",          default: ""
-    t.boolean  "refunded",                    default: false
-    t.integer  "refunded_cost",               default: 0
-    t.string   "refunded_reason"
     t.integer  "extra_king_sets_cost",        default: 0
     t.integer  "extra_twin_sets_cost",        default: 0
     t.integer  "extra_toiletry_sets_cost",    default: 0
-    t.string   "stripe_refund_id"
     t.integer  "coupon_cost",                 default: 0
   end
 
@@ -509,6 +509,7 @@ ActiveRecord::Schema.define(version: 20150505174301) do
     t.datetime "updated_at"
     t.boolean  "serviced",                    default: false
     t.integer  "neighborhood_id"
+    t.boolean  "restricted",                  default: false
   end
 
   add_index "zips", ["city_id"], name: "index_zips_on_city_id", using: :btree
