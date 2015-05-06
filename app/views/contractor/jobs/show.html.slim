@@ -420,12 +420,19 @@
                 .tabs.fifths
                   .tab.bedrooms.active ng:click="to_tab('bedrooms', 'qa')"
                     .progress_circle ng:class='bedroom_circle_class($index+1)'
+                      .top_right.sector ng:class='bedroom_quarter_class($index+1)'
+                      .bottom_right.sector ng:class='bedroom_half_class($index+1)'
+                      .bottom_left.sector ng:class='bedroom_two_thirds_class($index+1)'
+                      .inner
                       .icon
                         i.icon-check
                     .icon
                       i.icon-bed
                   .tab.bathrooms ng:click="to_tab('bathrooms', 'qa')"
                     .progress_circle ng:class='bathroom_circle_class($index+1)'
+                      .top_right.sector ng:class='bathroom_quarter_class($index+1)'
+                      .bottom_right.sector ng:class='bedroom_half_class($index+1)'
+                      .bottom_left.sector ng:class='bedroom_two_thirds_class($index+1)'
                       .icon
                         i.icon-check
                     .icon
@@ -433,6 +440,9 @@
                       i.icon-bath
                   .tab.kitchen ng:click="to_tab('kitchen', 'qa')"
                     .progress_circle ng:class='kitchen_circle_class()'
+                      .top_right.sector ng:class='kitchen_quarter_class()'
+                      .bottom_right.sector ng:class='kitchen_half_class()'
+                      .bottom_left.sector ng:class='kitchen_two_thirds_class()'
                       .icon
                         i.icon-check
                     .icon
@@ -440,6 +450,9 @@
                       i.icon-kitchen
                   .tab.living-room ng:click="to_tab('living-room', 'qa')"
                     .progress_circle ng:class='living_circle_class()'
+                      .top_right.sector ng:class='living_quarter_class()'
+                      .bottom_right.sector ng:class='living_half_class()'
+                      .bottom_left.sector ng:class='living_two_thirds_class()'
                       .icon
                         i.icon-check
                     .icon

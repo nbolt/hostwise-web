@@ -168,7 +168,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.found_damage = ->
     $scope.checklist.checklist_settings.damage_inspection.damage = true
-    
+
   $scope.show_applicant = ->
     $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0 and $scope.job.training
 
@@ -288,6 +288,33 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       ''
 
+  $scope.bedroom_quarter_class = (num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings["bedroom_#{num}"]).filter((v,k) -> v).length >= 2
+        'visible'
+      else
+        ''
+    else
+      ''
+
+  $scope.bedroom_half_class = (num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings["bedroom_#{num}"]).filter((v,k) -> v).length >= 5
+        'visible'
+      else
+        ''
+    else
+      ''
+
+  $scope.bedroom_two_thirds_class = (num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings["bedroom_#{num}"]).filter((v,k) -> v).length >= 7
+        'visible'
+      else
+        ''
+    else
+      ''
+
   $scope.bathroom_class = (num) ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length == 9
@@ -301,6 +328,33 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length == 9
         'complete'
+      else
+        ''
+    else
+      ''
+
+  $scope.bathroom_quarter_class = (num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length >= 2
+        'visible'
+      else
+        ''
+    else
+      ''
+
+  $scope.bathroom_half_class = (num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length >= 5
+        'visible'
+      else
+        ''
+    else
+      ''
+
+  $scope.bathroom_two_thirds_class = (num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length >= 7
+        'visible'
       else
         ''
     else
@@ -324,6 +378,33 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       ''
 
+  $scope.kitchen_quarter_class = ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings.kitchen).filter((v,k) -> v).length >= 3
+        'visible'
+      else
+        ''
+    else
+      ''
+
+  $scope.kitchen_half_class = ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings.kitchen).filter((v,k) -> v).length >= 6
+        'visible'
+      else
+        ''
+    else
+      ''
+
+  $scope.kitchen_two_thirds_class = ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings.kitchen).filter((v,k) -> v).length >= 9
+        'visible'
+      else
+        ''
+    else
+      ''
+
   $scope.living_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length == 3
@@ -337,6 +418,33 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     if $scope.checklist && $scope.checklist.checklist_settings
       if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length == 3
         'complete'
+      else
+        ''
+    else
+      ''
+
+  $scope.living_quarter_class = ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length >= 1
+        'visible'
+      else
+        ''
+    else
+      ''
+
+  $scope.living_half_class = ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length >= 2
+        'visible'
+      else
+        ''
+    else
+      ''
+
+  $scope.living_two_thirds_class = ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length >= 2
+        'visible'
       else
         ''
     else
