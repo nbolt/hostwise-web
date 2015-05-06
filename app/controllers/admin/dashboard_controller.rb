@@ -7,10 +7,10 @@ class Admin::DashboardController < Admin::AuthController
       active: User.active_contractors.count,
       inactive: User.inactive_contractors.count,
       new: User.new_contractors.count,
-      highest_paid: {
+      highest_paid: highest_paid && {
         name: User.find(highest_paid[0]).name,
         amount: highest_paid[1]
-      }
+      } || nil
     }
   end
 
