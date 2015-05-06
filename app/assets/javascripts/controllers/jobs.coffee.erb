@@ -137,7 +137,7 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
   #load_faye = $interval((->
   #  if $window.faye_loaded
   #    $interval.cancel(load_faye)
-  #    faye = new Faye.Client "http://pubsub.fanout.io/r/<%= ENV['FANOUT_ID'] %>/bayeux"
+  #    faye = new Faye.Client "https://pubsub.fanout.io/r/<%= ENV['FANOUT_ID'] %>/bayeux"
   #    faye.subscribe '/jobs', (data) -> refresh_jobs()
   #), 200)
 
