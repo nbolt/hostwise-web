@@ -247,17 +247,17 @@
           .checklist-phases ng:show='checklist'
             .phase.arrival ng:class='arrival_class()'
               .number 1
-              .header ng:click='found_damage()'
+              .header ng:click='to_arrival_tasks()'
                 .text Arrival Tasks
               .content
                 .tabs.thirds
-                  .tab.arrival.active
+                  .tab.arrival.active ng:click="to_tab('arrival', 'arrival')"
                     .icon
                       i.icon-flag
-                  .tab.damage
+                  .tab.damage ng:click="to_tab('damage', 'arrival')"
                     .icon
                       i.icon-mag
-                  .tab.inventory
+                  .tab.inventory ng:click="to_tab('inventory', 'arrival')"
                     .icon
                       i.icon-count
                   /.tab.confirmation
@@ -419,50 +419,50 @@
               .content
                 .tabs.fifths
                   .tab.bedrooms.active ng:click="to_tab('bedrooms', 'qa')"
-                    .progress_circle ng:class='bedroom_circle_class($index+1)'
-                      .top_right.sector ng:class='bedroom_quarter_class($index+1)'
-                      .bottom_right.sector ng:class='bedroom_half_class($index+1)'
-                      .bottom_left.sector ng:class='bedroom_two_thirds_class($index+1)'
+                    .progress_circle ng:class="circle_class('bedroom_' + $index+1, 9)"
+                      .top_right.sector ng:class="sector_class('bedroom_' + $index+1, 2)"
+                      .bottom_right.sector ng:class="sector_class('bedroom_' + $index+1, 5)"
+                      .bottom_left.sector ng:class="sector_class('bedroom_' + $index+1, 7)"
                       .inner
                       .icon
                         i.icon-check
                     .icon
                       i.icon-bed
                   .tab.bathrooms ng:click="to_tab('bathrooms', 'qa')"
-                    .progress_circle ng:class='bathroom_circle_class($index+1)'
-                      .top_right.sector ng:class='bathroom_quarter_class($index+1)'
-                      .bottom_right.sector ng:class='bathroom_half_class($index+1)'
-                      .bottom_left.sector ng:class='bathroom_two_thirds_class($index+1)'
+                    .progress_circle ng:class="circle_class('bathroom_' + $index+1, 9)"
+                      .top_right.sector ng:class="sector_class('bathroom_' + $index+1, 2)"
+                      .bottom_right.sector ng:class="sector_class('bathroom_' + $index+1, 5)"
+                      .bottom_left.sector ng:class="sector_class('bathroom_' + $index+1, 7)"
                       .icon
                         i.icon-check
                     .icon
                     .icon
                       i.icon-bath
                   .tab.kitchen ng:click="to_tab('kitchen', 'qa')"
-                    .progress_circle ng:class='kitchen_circle_class()'
-                      .top_right.sector ng:class='kitchen_quarter_class()'
-                      .bottom_right.sector ng:class='kitchen_half_class()'
-                      .bottom_left.sector ng:class='kitchen_two_thirds_class()'
+                    .progress_circle ng:class="circle_class('kitchen', 11)"
+                      .top_right.sector ng:class="sector_class('kitchen', 3)"
+                      .bottom_right.sector ng:class="sector_class('kitchen', 6)"
+                      .bottom_left.sector ng:class="sector_class('kitchen', 9)"
                       .icon
                         i.icon-check
                     .icon
                     .icon
                       i.icon-kitchen
                   .tab.living-room ng:click="to_tab('living-room', 'qa')"
-                    .progress_circle ng:class='living_circle_class()'
-                      .top_right.sector ng:class='living_quarter_class()'
-                      .bottom_right.sector ng:class='living_half_class()'
-                      .bottom_left.sector ng:class='living_two_thirds_class()'
+                    .progress_circle ng:class="circle_class('living_room', 3)"
+                      .top_right.sector ng:class="sector_class('living_room', 1)"
+                      .bottom_right.sector ng:class="sector_class('living_room', 2)"
+                      .bottom_left.sector ng:class="sector_class('living_room', 2)"
                       .icon
                         i.icon-check
                     .icon
                     .icon
                       i.icon-livingroom
                   .tab.photos ng:click="to_tab('photos', 'qa')"
-                    .progress_circle ng:class=''
-                      .top_right.sector ng:class=''
-                      .bottom_right.sector ng:class=''
-                      .bottom_left.sector ng:class=''
+                    .progress_circle ng:class="circle_photos_class()"
+                      .top_right.sector ng:class="sector_photos_class(1)"
+                      .bottom_right.sector ng:class="sector_photos_class(2)"
+                      .bottom_left.sector ng:class="sector_photos_class(2)"
                       .icon
                         i.icon-check
                     .icon
@@ -530,7 +530,7 @@
                             strong Floor:
                             |  Vacuum/Mop (under bed, in closet)
                         .div.teal
-                        .icon-button.teal.right ng:class='bedroom_class($index+1)' ng:click='complete_bedroom($index+1)'
+                        .icon-button.teal.right ng:class='room_class("bedroom_" + ($index+1), 9)' ng:click='complete_bedroom($index+1)'
                           .icon
                             .fa.fa-chevron-right
                           .text ng:hide='$index+2 > job.booking.property.bedrooms' Bedroom {{$index+2}}
@@ -597,7 +597,7 @@
                             strong Restocking:
                             |  toilet paper, hand soap, toiletries (shampoo, conditioner, etc.)
                         .div.teal
-                        .icon-button.teal.right ng:class='bathroom_class($index+1)' ng:click='complete_bathroom($index+1)'
+                        .icon-button.teal.right ng:class='room_class("bathroom_" + ($index+1), 9)' ng:click='complete_bathroom($index+1)'
                           .icon
                             .fa.fa-chevron-right
                           .text ng:hide='$index+2 > job.booking.property.bathrooms' Bathroom {{$index+2}}
@@ -672,7 +672,7 @@
                           strong Restocking:
                           |  paper towels, hand soap, trash bags, dish detergent
                     .div.teal
-                    .icon-button.teal.right ng:class='kitchen_class()' ng:click='complete_kitchen()'
+                    .icon-button.teal.right ng:class='room_class("kitchen", 11)' ng:click='complete_kitchen()'
                       .icon
                         .fa.fa-chevron-right
                       .text Complete Kitchen
@@ -699,7 +699,7 @@
                           strong Floor:
                           |  vacuum/mop (under furniture)
                     .div.teal
-                    .icon-button.teal.right ng:class='living_class()' ng:click='complete_living()'
+                    .icon-button.teal.right ng:class='room_class("living_room", 3)' ng:click='complete_living()'
                       .icon
                         .fa.fa-chevron-right
                       .text Complete Living Room
