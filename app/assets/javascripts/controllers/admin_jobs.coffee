@@ -107,7 +107,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
   $scope.monthly_growth = ->
     last_month  = jobs_last_month()
     last_month2 = jobs_last_month2()
-    (last_month - last_month2) / last_month2 * 100
+    Math.round((last_month - last_month2) / last_month2 * 10000) / 100
 
   jobs_last_month = ->
     jobs = _($scope.jobs).filter (job) ->

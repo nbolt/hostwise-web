@@ -52,7 +52,7 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
   $scope.monthly_growth = ->
     users_last_month  = _($scope.users).filter (host) -> moment(host.created_at, 'YYYY-MM-DD') >= moment().subtract(1, 'months')
     users_last_month2 = _($scope.users).filter (host) -> moment(host.created_at, 'YYYY-MM-DD') >= moment().subtract(2, 'months') && moment(host.created_at, 'YYYY-MM-DD') <= moment().subtract(1, 'months')
-    Math.round( ((users_last_month.length - users_last_month2.length) / users_last_month2.length * 100) * 100 ) / 100
+    Math.round((users_last_month.length - users_last_month2.length) / users_last_month2.length * 10000) / 100
   
   $scope.fetch_hosts()
 
