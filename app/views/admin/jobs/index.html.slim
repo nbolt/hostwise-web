@@ -1,5 +1,5 @@
 .xenon.custom ng:controller='admin_jobs'
-  .panel.panel-default.stats
+  .panel.panel-default.stats.metrics.active
     .panel-heading
       | Metrics
     .panel-body
@@ -9,25 +9,18 @@
           .super-large.text-secondary
             | {{jobs.length}}
         .col-sm-2
-          p.text-medium Total next 10 days
-          .super-large.text-secondary
-            | {{next_ten_days_jobs(jobs)}}
-        .col-sm-2
-          p.text-medium Unclaimed next 2 days
-          .super-large.text-secondary
-            | {{unclaimed_next_two_days_jobs(jobs)}}
+          p.text-medium Jobs in the next 10 days
+          .super-large.text-secondary ng:bind='next_ten_days_jobs()'
+        .col-sm-3
+          p.text-medium Unclaimed jobs within the next 2 days
+          .super-large.text-secondary ng:bind='unclaimed_next_two_days_jobs()'
         .col-sm-2
           p.text-medium Jobs completed last month
-          .super-large.text-secondary
+          .super-large.text-secondary ng:bind='completed_last_month()'
             | {{completed_last_month(jobs)}}
         .col-sm-2
-          p.text-medium Jobs cancelled last month
-          .super-large.text-secondary
-            | {{cancelled_last_month(jobs)}}
-      .row
-        .col-sm-6
-          p.text-medium % monthly growth
-          .super-large.text-secondary
+          p.text-medium Monthly Growth
+          .super-large.text-secondary ng:bind-template='{{monthly_growth()}}%'
 
   .panel.panel-default
     .panel-heading

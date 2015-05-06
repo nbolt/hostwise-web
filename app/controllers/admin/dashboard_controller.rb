@@ -6,7 +6,7 @@ class Admin::DashboardController < Admin::AuthController
     last_month = Job.revenue_on_month(Date.today - 1.month)
     last_month2 = Job.revenue_on_month(Date.today - 2.months)
     if this_month > 0 && last_month > 0
-      growth = last_month2 / last_month * 100
+      growth = (last_month - last_month2) / last_month2 * 100
     else
       growth = 0
     end
