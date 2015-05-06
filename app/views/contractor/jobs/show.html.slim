@@ -419,20 +419,20 @@
               .content
                 .tabs.fifths
                   .tab.bedrooms.active ng:click="to_tab('bedrooms', 'qa')"
-                    .progress_circle ng:class="circle_class('bedroom_' + $index+1, 9)"
-                      .top_right.sector ng:class="sector_class('bedroom_' + $index+1, 2)"
-                      .bottom_right.sector ng:class="sector_class('bedroom_' + $index+1, 5)"
-                      .bottom_left.sector ng:class="sector_class('bedroom_' + $index+1, 7)"
+                    .progress_circle ng:class="circle_class('bedroom_' + ($index+1), 9)"
+                      .top_right.sector ng:class="sector_class('bedroom_' + ($index+1), 2)"
+                      .bottom_right.sector ng:class="sector_class('bedroom_' + ($index+1), 5)"
+                      .bottom_left.sector ng:class="sector_class('bedroom_' + ($index+1), 7)"
                       .inner
                       .icon
                         i.icon-check
                     .icon
                       i.icon-bed
                   .tab.bathrooms ng:click="to_tab('bathrooms', 'qa')"
-                    .progress_circle ng:class="circle_class('bathroom_' + $index+1, 9)"
-                      .top_right.sector ng:class="sector_class('bathroom_' + $index+1, 2)"
-                      .bottom_right.sector ng:class="sector_class('bathroom_' + $index+1, 5)"
-                      .bottom_left.sector ng:class="sector_class('bathroom_' + $index+1, 7)"
+                    .progress_circle ng:class="circle_class('bathroom_' + ($index+1), 9)"
+                      .top_right.sector ng:class="sector_class('bathroom_' + ($index+1), 2)"
+                      .bottom_right.sector ng:class="sector_class('bathroom_' + ($index+1), 5)"
+                      .bottom_left.sector ng:class="sector_class('bathroom_' + ($index+1), 7)"
                       .icon
                         i.icon-check
                     .icon
