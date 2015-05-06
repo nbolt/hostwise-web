@@ -28,6 +28,31 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
     _(user.properties).each (property) ->
       services += property.bookings.length
     services <= 5
+
+  $scope.active_hosts = ->
+    active = _($scope.users).filter (host) -> _(host.properties).find (property) -> property.active_bookings[0]
+    active.length
+  
+  $scope.bookings_per_host = ->
+    if $scope.users
+      Math.round(_($scope.users).reduce(((acc, host) ->
+        acc + _(host.properties).reduce(((acc, property) -> acc + property.active_bookings.length + property.past_bookings.length), 0)
+      ), 0) / $scope.users.length * 100) / 100
+    else
+      0
+  
+  $scope.properties_per_host = ->
+    if $scope.users
+      Math.round(_($scope.users).reduce(((acc, host) ->
+        acc + host.properties.length
+      ), 0) / $scope.users.length * 100) / 100
+    else
+      0
+
+  $scope.monthly_growth = ->
+    users_last_month  = _($scope.users).filter (host) -> moment(host.created_at, 'YYYY-MM-DD') >= moment().subtract(1, 'months')
+    users_last_month2 = _($scope.users).filter (host) -> moment(host.created_at, 'YYYY-MM-DD') >= moment().subtract(2, 'months') && moment(host.created_at, 'YYYY-MM-DD') <= moment().subtract(1, 'months')
+    Math.round( ((users_last_month.length - users_last_month2.length) / users_last_month2.length * 100) * 100 ) / 100
   
   $scope.fetch_hosts()
 

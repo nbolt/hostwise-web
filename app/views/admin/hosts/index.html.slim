@@ -1,18 +1,25 @@
 .xenon.custom ng:controller='customers'
-  .panel.panel-default.stats
+  .panel.panel-default.stats.metrics.active
     .panel-heading
-      | Total Customers
+      | Metrics
     .panel-body
       .row
-        .col-sm-3
-          p.text-medium Total number of customers
+        .col-sm-2
+          p.text-medium Total number of hosts
           .super-large.text-secondary
             | {{users.length}}
+        .col-sm-2
+          p.text-medium Active hosts
+          .super-large.text-secondary ng:bind='active_hosts()'
         .col-sm-3
-          #reqs-per-second style=("height: 150px;")
-        .col-sm-6
-          #reqs-per-second-chart style=("height: 150px;")
-
+          p.text-medium Average bookings per host
+          .super-large.text-secondary ng:bind='bookings_per_host()'
+        .col-sm-2
+          p.text-medium Avg properties per host
+          .super-large.text-secondary ng:bind='properties_per_host()'
+        .col-sm-2
+          p.text-medium Monthly Growth
+          .super-large.text-secondary ng:bind-template='{{monthly_growth()}}%'
   .panel.panel-default
     .panel-heading
       h3.panel-title Customers

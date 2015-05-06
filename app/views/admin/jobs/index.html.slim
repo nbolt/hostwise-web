@@ -17,11 +17,9 @@
         .col-sm-2
           p.text-medium Jobs completed last month
           .super-large.text-secondary ng:bind='completed_last_month()'
-            | {{completed_last_month(jobs)}}
         .col-sm-2
           p.text-medium Monthly Growth
           .super-large.text-secondary ng:bind-template='{{monthly_growth()}}%'
-
   .panel.panel-default
     .panel-heading
       h3.panel-title Jobs
