@@ -82,6 +82,11 @@ GEM
     breach-mitigation-rails (0.2.2)
       activesupport
       rack
+    browsermob-proxy (0.2.0)
+      childprocess (~> 0.5)
+      har
+      multi_json (~> 1.0)
+      rest-client
     builder (3.2.2)
     byebug (4.0.4)
       columnize (= 0.9.0)
@@ -239,6 +244,10 @@ GEM
     geocoder (1.2.8)
     globalid (0.3.3)
       activesupport (>= 4.1.0)
+    har (0.1.0)
+      jschematic (>= 0.1.0)
+      json
+      launchy (>= 0.3.7)
     haversine_distance (1.0.0)
     hike (1.2.3)
     hitimes (1.2.2)
@@ -260,11 +269,15 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.2)
       railties (>= 3.2.16)
+    jschematic (0.1.0)
+      addressable
     json (1.8.2)
     jwt (1.4.1)
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     lazy_loader (2.0.20140328.22.37.12)
     ledermann-rails-settings (2.3.0)
       activerecord (>= 3.1)
@@ -503,6 +516,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   breach-mitigation-rails
+  browsermob-proxy (~> 0.2.0)
   capybara
   carrierwave
   carrierwave_direct

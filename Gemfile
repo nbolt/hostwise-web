@@ -46,6 +46,7 @@ group :development, :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'browsermob-proxy', '~> 0.2.0'
 end
 
 gem 'coveralls', require: false, group: :test
