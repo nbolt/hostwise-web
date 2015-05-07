@@ -4,6 +4,26 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
   $scope.payment = { discount: { percentage: 0, amount: 0, reason: '' }, overage: { percentage: 0, amount: 0, reason: '' } }
   $scope.refund  = { percentage: 0, amount: 0, reason: '' }
 
+  $http.get('/dashboard/revenue').success (rsp) ->
+    $scope.total_revenue      = rsp.total
+    $scope.monthly_revenue    = rsp.this_month
+    $scope.monthly_growth     = rsp.growth
+
+  $http.get('/dashboard/payouts').success (rsp) ->
+    $scope.total_payouts      = rsp.total
+    $scope.monthly_payouts    = rsp.this_month
+    $scope.pending_payouts    = rsp.pending
+
+  $scope.activate_customers = ->
+    angular.element('.metrics').removeClass 'active'
+    angular.element('#customer-metrics').addClass 'active'
+    null
+
+  $scope.activate_contractors = ->
+    angular.element('.metrics').removeClass 'active'
+    angular.element('#contractor-metrics').addClass 'active'
+    null
+
   $scope.export_bookings = ->
     bookings = filtered_data('#example-1', 'booking')
     $http.post('/transactions/export_bookings.csv', {bookings: bookings}).success (rsp) ->

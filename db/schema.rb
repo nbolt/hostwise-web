@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424194909) do
+ActiveRecord::Schema.define(version: 20150506225420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,22 +119,41 @@ ActiveRecord::Schema.define(version: 20150424194909) do
     t.integer  "discounted_cost",             default: 0
     t.string   "discounted_reason",           default: ""
     t.string   "overage_reason",              default: ""
+    t.boolean  "refunded",                    default: false
+    t.integer  "refunded_cost",               default: 0
+    t.string   "refunded_reason"
+    t.string   "stripe_refund_id"
     t.integer  "extra_king_sets",             default: 0
     t.integer  "extra_twin_sets",             default: 0
     t.integer  "extra_toiletry_sets",         default: 0
     t.string   "extra_instructions",          default: ""
-    t.boolean  "refunded",                    default: false
-    t.integer  "refunded_cost",               default: 0
-    t.string   "refunded_reason"
     t.integer  "extra_king_sets_cost",        default: 0
     t.integer  "extra_twin_sets_cost",        default: 0
     t.integer  "extra_toiletry_sets_cost",    default: 0
-    t.string   "stripe_refund_id"
     t.integer  "coupon_cost",                 default: 0
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
   add_index "bookings", ["property_id"], name: "index_bookings_on_property_id", using: :btree
+
+  create_table "bots", force: :cascade do |t|
+    t.string   "host_name"
+    t.string   "profile_id"
+    t.string   "profile_url"
+    t.string   "property_id"
+    t.string   "property_name"
+    t.string   "property_url"
+    t.integer  "status_cd"
+    t.integer  "source_cd"
+    t.boolean  "super_host"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "address"
+    t.string   "property_type"
+    t.integer  "num_bedrooms",  default: 0
+    t.integer  "num_bathrooms", default: 0
+    t.integer  "num_beds",      default: 0
+  end
 
   create_table "checklists", force: :cascade do |t|
     t.integer  "contractor_job_id"
@@ -472,7 +491,6 @@ ActiveRecord::Schema.define(version: 20150424194909) do
     t.string   "activation_state"
     t.string   "activation_token"
     t.datetime "activation_token_expires_at"
-    t.integer  "status_cd",                                   default: 1
     t.boolean  "migrated",                                    default: false
     t.integer  "vip_count",                                   default: 0
     t.integer  "booking_count"
@@ -491,6 +509,7 @@ ActiveRecord::Schema.define(version: 20150424194909) do
     t.datetime "updated_at"
     t.boolean  "serviced",                    default: false
     t.integer  "neighborhood_id"
+    t.boolean  "restricted",                  default: false
   end
 
   add_index "zips", ["city_id"], name: "index_zips_on_city_id", using: :btree

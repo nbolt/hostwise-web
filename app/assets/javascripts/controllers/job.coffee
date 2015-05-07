@@ -4,6 +4,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.job_status = 'blocked'
   $scope.active_bedroom = 1
   $scope.active_bathroom = 1
+  $scope.arrival = true
 
   $http.get($window.location.href + '.json').success (rsp) ->
     $scope.job = rsp
@@ -166,6 +167,8 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       ''
 
+  $scope.to_arrival_tasks = -> $scope.arrival = false
+
   $scope.show_applicant = ->
     $scope.job and $scope.job.applicants and $scope.job.applicants.length > 0 and $scope.job.training
 
@@ -176,7 +179,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     $scope.job and $scope.job.team_members and $scope.job.team_members.length > 0 and !$scope.job.training
 
   $scope.in_arrival_tasks = ->
-    unless $scope.arrival_tasks() && $scope.damage_inspection() && $scope.inventory_count()
+    unless $scope.arrival_tasks() && $scope.damage_inspection() && $scope.inventory_count() && $scope.arrival
       true
     else
       false
@@ -267,52 +270,62 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     else
       'disabled'
 
-  $scope.bedroom_class = (num) ->
+  $scope.room_class = (tab, num) ->
     if $scope.checklist && $scope.checklist.checklist_settings
-      if _($scope.checklist.checklist_settings["bedroom_#{num}"]).filter((v,k) -> v).length == 9
+      if _($scope.checklist.checklist_settings[tab]).filter((v,k) -> v).length == num
         ''
       else
         'disabled'
     else
       'disabled'
 
-  $scope.bathroom_class = (num) ->
+  $scope.sector_class = (tab, num) ->
     if $scope.checklist && $scope.checklist.checklist_settings
-      if _($scope.checklist.checklist_settings["bathroom_#{num}"]).filter((v,k) -> v).length == 9
-        ''
+      if _($scope.checklist.checklist_settings[tab]).filter((v,k) -> v).length >= num
+        'visible'
       else
-        'disabled'
-    else
-      'disabled'
-
-  $scope.kitchen_class = ->
-    if $scope.checklist && $scope.checklist.checklist_settings
-      if _($scope.checklist.checklist_settings.kitchen).filter((v,k) -> v).length == 11
         ''
-      else
-        'disabled'
     else
-      'disabled'
-
-  $scope.living_class = ->
-    if $scope.checklist && $scope.checklist.checklist_settings
-      if _($scope.checklist.checklist_settings.living_room).filter((v,k) -> v).length == 3
-        ''
-      else
-        'disabled'
-    else
-      'disabled'
+      ''
 
   $scope.complete_class = ->
     if $scope.checklist && $scope.checklist.checklist_settings
-      if $scope.living_class() == '' && $scope.kitchen_class() == '' && $scope.photos_class() == '' &&
-         $scope.bathroom_class($scope.job.booking.property.bathrooms) == '' &&
-         $scope.bedroom_class($scope.job.booking.property.checklist_bedrooms) == ''
+      if $scope.room_class('living_room', 3) == '' && $scope.room_class('kitchen', 11) == '' && $scope.photos_class() == '' &&
+         $scope.room_class('bathroom_' + $scope.job.booking.property.bathrooms, 9) == '' &&
+         $scope.room_class('bedroom_' + $scope.job.booking.property.checklist_bedrooms, 9) == ''
         ''
       else
         'disabled'
     else
       'disabled'
+
+  $scope.circle_class = (tab, num) ->
+    if $scope.checklist && $scope.checklist.checklist_settings
+      if _($scope.checklist.checklist_settings[tab]).filter((v,k) -> v).length == num
+        'complete'
+      else
+        ''
+    else
+      ''
+
+  $scope.circle_photos_class = ->
+    if $scope.checklist && ($scope.checklist.kitchen_photo.url || ($scope.kitchen_photo && $scope.kitchen_photo[0])) && ($scope.checklist.bedroom_photo.url || ($scope.bedroom_photo && $scope.bedroom_photo[0])) && ($scope.checklist.bathroom_photo.url || ($scope.bathroom_photo && $scope.bathroom_photo[0]))
+      'complete'
+    else
+      ''
+
+  $scope.sector_photos_class = (num) ->
+    if $scope.checklist
+      count = 0
+      count += 1 if $scope.checklist.kitchen_photo.url  || ($scope.kitchen_photo && $scope.kitchen_photo[0])
+      count += 1 if $scope.checklist.bedroom_photo.url  || ($scope.bedroom_photo && $scope.bedroom_photo[0])
+      count += 1 if $scope.checklist.bathroom_photo.url || ($scope.bathroom_photo && $scope.bathroom_photo[0])
+      if count >= num
+        'visible'
+      else
+        ''
+    else
+      ''
 
   $scope.to_tab = (tab, phase) ->
     angular.element(".phase.#{phase} .tab").removeClass 'active'
@@ -334,13 +347,14 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
   $scope.to_cleaning = ->
     if $scope.begin_cleaning_class() == ''
       $scope.checklist.checklist_settings.inventory_count.complete = true
+      $scope.arrival = true
       scroll '.phase.cleaning'
     null
 
   $scope.complete_cleaning = -> $scope.checklist.checklist_settings.cleaning.cleaned = true
 
   $scope.complete_bedroom = (num) ->
-    if $scope.bedroom_class(num) == ''
+    if $scope.room_class('bedroom_' + num, 9) == ''
       if num == $scope.job.booking.property.checklist_bedrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.bathrooms').addClass 'active'
@@ -350,10 +364,11 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     null
 
   $scope.complete_bathroom = (num) ->
-    if $scope.bathroom_class(num) == ''
+    if $scope.room_class('bathroom_' + num, 9) == ''
       if num == $scope.job.booking.property.bathrooms
         angular.element('.phase.qa .tab').removeClass 'active'
         angular.element('.phase.qa .tab.kitchen').addClass 'active'
+        angular.element('.phase.qa .tab.bathrooms .progress_circle').addClass 'complete'
         null
       else
         $scope.active_bathroom += 1
@@ -361,14 +376,14 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     null
 
   $scope.complete_kitchen = ->
-    if $scope.kitchen_class() == ''
+    if $scope.room_class('kitchen', 11) == ''
       angular.element('.phase.qa .tab').removeClass 'active'
       angular.element('.phase.qa .tab.living-room').addClass 'active'
       scroll '.phase.cleaning'
       null
 
   $scope.complete_living = ->
-    if $scope.living_class() == ''
+    if $scope.room_class('living_room', 3) == ''
       angular.element('.phase.qa .tab').removeClass 'active'
       angular.element('.phase.qa .tab.photos').addClass 'active'
       scroll '.phase.cleaning'

@@ -1,18 +1,23 @@
 exports.config = {
-  allScriptsTimeout: 11000,
+  allScriptsTimeout: 15000,
 
   specs: [
+    '../test/jasmine/e2e/*.js',
     '../test/jasmine/e2e/**/*.js'
   ],
 
+  //capabilities: {
+  //  'browserName': 'phantomjs',
+  //  'phantomjs.binary.path': './node_modules/phantomjs/bin/phantomjs'
+  //},
+
   capabilities: {
-    'browserName': 'phantomjs',
-    'phantomjs.binary.path': 'node_modules/.bin/phantomjs'
+    'browserName': 'firefox'
   },
 
-  baseUrl: 'http://hostwise-web.dev/',
+  baseUrl: 'http://hostwise-web.dev:3000',
 
-  framework: 'jasmine',
+  framework: 'jasmine2',
 
   jasmineNodeOpts: {
     defaultTimeoutInterval: 30000

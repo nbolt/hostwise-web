@@ -16,13 +16,18 @@ class Host::PaymentsController < Host::AuthController
           render json: { success: false, message: 'Prepaid cards not accepted.'}
           return
         else
-          payment = current_user.payments.create({
-                                                   stripe_id: card.id,
-                                                   last4: card.last4,
-                                                   card_type: card.brand.downcase.gsub(' ', '_'),
-                                                   fingerprint: card.fingerprint,
-                                                   status: :active
-                                                 })
+          existing_payment = current_user.payments.where(fingerprint: card.fingerprint)[0]
+          if existing_payment
+            payment = existing_payment
+          else
+            payment = current_user.payments.build({
+                                                     stripe_id: card.id,
+                                                     last4: card.last4,
+                                                     card_type: card.brand.downcase.gsub(' ', '_'),
+                                                     fingerprint: card.fingerprint,
+                                                     status: :active
+                                                   })
+          end
         end
       end
       payment.primary = true if first_payment

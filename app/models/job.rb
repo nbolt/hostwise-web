@@ -76,18 +76,13 @@ class Job < ActiveRecord::Base
   attr_accessor :current_user, :distance
 
   def self.revenue_on_month date
-    jobs = Job.standard.on_month(date).where('status_cd > 2')
+    jobs = Job.standard.on_month(date).where('bookings.status_cd > 0 and jobs.status_cd > 2').includes(:booking).references(:bookings)
     jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)}
   end
 
-  def self.payouts_by_months date
-    payouts = []
-    6.times do |i|
-      date = (date - i.months)
-      jobs = Job.standard.on_month(date).where('status_cd > 2')
-      payouts.unshift({ month: date.month, year: date.year.to_s[2..-1], payouts: jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)} } / 100.0 })
-    end
-    payouts.select {|r| r[:payouts] > 0}
+  def self.payouts_on_month date
+    jobs = Job.standard.on_month(date).where('bookings.status_cd > 0 and jobs.status_cd > 2').includes(:booking).references(:bookings)
+    jobs.reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)} } / 100.0
   end
 
   def self.serviced_on_month date
@@ -137,7 +132,7 @@ class Job < ActiveRecord::Base
 
   def next_job contractor=nil
     contractor ||= current_user
-    contractor.jobs.on_date(date).where('status_cd = 1 AND contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
+    contractor.jobs.on_date(date).where('status_cd in (1,2) AND contractor_jobs.priority > ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[0]
   end
 
   def prev_job contractor=nil

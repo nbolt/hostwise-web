@@ -21,6 +21,12 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope
         })
       ),1000)
 
+    $http.get('/dashboard/team_members').success (rsp) ->
+      $scope.active_team_members   = rsp.active
+      $scope.inactive_team_members = rsp.inactive
+      $scope.new_team_members      = rsp.new
+      $scope.highest_paid          = rsp.highest_paid
+
   $scope.show_signup = ->
     ngDialog.open template: 'sign-up', className: 'auth full'
 

@@ -14,7 +14,7 @@ class DataController < ApplicationController
   end
 
   def service_available
-    zip = Zip.serviced.where(code: params[:zip]).first
+    zip = ZipCode.serviced.where(code: params[:zip]).first
     UnservicedZip.create(code: params[:zip], email: current_user.email) unless zip
     render json: zip
   end
@@ -37,7 +37,7 @@ class DataController < ApplicationController
       selected_jobs = []; num = 0; processed = 0; offset = (params[:page].to_i - 1) * JOBS_PER_PAGE
       while selected_jobs.count < JOBS_PER_PAGE && jobs[num]
         job = jobs[num]
-        if !job.previous_team_job && !job.training && (job.first_job_of_day(current_user) || job.contractor_hours(current_user) + job.man_hours <= MAX_MAN_HOURS)
+        if !ZipCode.where(code: job.booking.property.zip)[0].restricted && !job.previous_team_job && !job.training && (job.first_job_of_day(current_user) || job.contractor_hours(current_user) + job.man_hours <= MAX_MAN_HOURS)
           processed += 1
           selected_jobs.push job if processed > offset && processed <= offset + JOBS_PER_PAGE
         end

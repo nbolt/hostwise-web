@@ -1,3 +1,3 @@
 class Neighborhood < ActiveRecord::Base
-  has_many :zips
+  has_many :zip_codes
 end
