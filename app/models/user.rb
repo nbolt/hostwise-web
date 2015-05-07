@@ -33,6 +33,9 @@ class User < ActiveRecord::Base
   scope :trainees, -> { where('position_cd = 1').includes(:contractor_profile).references(:contractor_profile) }
   scope :team_members, -> { where('position_cd in (2,3) ').includes(:contractor_profile).references(:contractor_profile) }
   scope :contractors, -> { where(role_cd: 2) }
+  scope :active_contractors, -> { where('role_cd = 2 and date >= ?', Time.now).includes(:jobs).references(:jobs) }
+  scope :inactive_contractors, -> { where('role_cd = 2').where.not('date >= ?', Time.now - 3.weeks).includes(:jobs).references(:jobs) }
+  scope :new_contractors, -> { where('role_cd = 2 and created_at >= ?', Time.now - 3.weeks) }
   scope :available_contractors, -> (booking) {
     day =
       case booking.date.wday
@@ -62,6 +65,29 @@ class User < ActiveRecord::Base
   validates_length_of :secondary_phone, is: 10, if: lambda { self.secondary_phone.present? }
 
   attr_accessor :step
+
+  def self.payouts_on_month date
+    jobs = Job.standard.on_month(date).where('bookings.status_cd > 0 and jobs.status_cd > 2').includes(:booking).references(:bookings)
+    payouts = {}
+    jobs.each do |job|
+      job.contractors.each do |user|
+        if user.chain(:contractor_profile, :stripe_recipient_id)
+          total = 0
+
+          user.payouts.unprocessed.each do |payout|
+            total += payout.total
+          end
+
+          if total > 0
+            payouts[user.id] ||= 0
+            payouts[user.id] = payouts[user.id] + total
+          end
+        end
+      end
+    end
+    payouts.each {|id, n| (payouts[id] /= 100.0).round 2}
+    payouts.sort_by {|id, n| -n}
+  end
 
   def name
     if first_name.present? && last_name.present?

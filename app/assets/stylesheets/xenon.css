@@ -6712,6 +6712,9 @@ input.xenon .form-control.form-focus-gray:focus {
 .xenon .super-large {
   font-size: 48px;
 }
+.xenon .large {
+  font-size: 36px;
+}
 .xenon .inline {
   display: inline-block !important;
 }

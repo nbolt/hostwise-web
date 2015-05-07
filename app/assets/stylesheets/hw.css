@@ -408,11 +408,15 @@ ul.pl-main-nav li a.active{
   float:right;
 }
 
+.pl-account-nav .phone_number {display: inline-block; font-size: 1.2em; font-weight: 600; margin-right: 30px;}
 .pl-account-nav .btn{width:120px; padding:1em 0;}
 .pl-signup{margin-left:10px; background:#2baab0;}
 .login{background:#2a7376;}
 
 @media only screen and (max-width: 768px) {
+  .pl-account-nav .phone_number {
+    display: none;
+  }
 
   nav.pl-nav{
     width:100%;

@@ -1,12 +1,25 @@
 class Admin::DashboardController < Admin::AuthController
   include ActionView::Helpers::NumberHelper
 
+  def team_members
+    highest_paid = User.payouts_on_month(Date.today - 1.month)[0]
+    render json: {
+      active: User.active_contractors.count,
+      inactive: User.inactive_contractors.count,
+      new: User.new_contractors.count,
+      highest_paid: highest_paid && {
+        name: User.find(highest_paid[0]).name,
+        amount: highest_paid[1]
+      } || nil
+    }
+  end
+
   def revenue
     this_month = Job.revenue_on_month(Date.today)
     last_month = Job.revenue_on_month(Date.today - 1.month)
     last_month2 = Job.revenue_on_month(Date.today - 2.months)
     if this_month > 0 && last_month > 0
-      growth = last_month2 / last_month * 100
+      growth = ((last_month - last_month2) / last_month2 * 100).round 2
     else
       growth = 0
     end

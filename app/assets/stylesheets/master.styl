@@ -3210,7 +3210,7 @@ a.a-desk-widget.a-desk-widget-chat
   bottom: 0
   position: absolute
   background-color: black
-  
+
 #chat_link
   display: inline-block
   margin: 1px 15px 0 0
@@ -3219,8 +3219,12 @@ a.a-desk-widget.a-desk-widget-chat
   padding: 7px 11px 7px 11px
   border-radius: 3px
   z-index: 500
-  i 
+  @media phone
+    margin: 0
+  i
     display: inline-block
   .text
     margin-left: 10px
     display: inline-block
+    @media phone
+      display: none

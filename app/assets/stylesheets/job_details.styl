@@ -787,12 +787,40 @@
               .progress_circle
                 float: right
                 margin: 5px 5px 0 0
-                height: 8px
-                width: 8px
+                height: 12px
+                width: 12px
                 border: 2px white solid
                 border-radius: 100%
+                overflow: hidden
+                position: relative
                 &.complete
                   background-color: white
+                  .icon
+                    display: block
+                .sector 
+                  height: 6px
+                  width: 6px
+                  background-color: white
+                  position: absolute
+                  border-radius: none
+                  display: none
+                  &.visible
+                    display: block
+                .top_right
+                  top: 0
+                  right: 0
+                .bottom_right
+                  bottom: 0
+                  right: 0
+                .bottom_left
+                  bottom: 0
+                  left: 0
+                .icon
+                  position: absolute
+                  font-size: 0.4em 
+                  margin: -1px 0 0 1px
+                  display: none
+                  color: teal
               .icon
                 margin-top: 8px
               &:last-child
@@ -802,8 +830,13 @@
                 color: teal
                 .progress_circle
                   border: 2px teal solid
+                  .sector
+                    background-color: teal
                   &.complete
                     background-color: teal
+                    .icon
+                      display: none
+                      color: white
               &:hover
                 cursor: pointer
             &.thirds .tab

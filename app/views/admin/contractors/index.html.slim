@@ -1,24 +1,30 @@
 .xenon.custom.contractors ng:controller='contractors'
+  .panel.panel-default.stats.metrics.active
+    .panel-heading
+      | Metrics
+    .panel-body
+      .row
+        .col-sm-2
+          p.text-medium Total Team Members
+          .super-large.text-secondary ng:bind='users.length'
+        .col-sm-2
+          p.text-medium Active Team Members
+          .super-large.text-secondary ng:bind='active_team_members'
+        .col-sm-2
+          p.text-medium Inactive Team Members
+          .super-large.text-secondary ng:bind='inactive_team_members'
+        .col-sm-2
+          p.text-medium New Team Members
+          .super-large.text-secondary ng:bind='new_team_members'
+        .col-sm-4
+          p.text-medium Highest Paid Team Member Last Month
+          .large.text-secondary
+            | {{highest_paid.name}} - ${{highest_paid.amount}}
   .actions
     .icon-button.teal ng:click='show_signup()'
       .icon
         i.icon-team
       .text Create Team Member
-  .panel.panel-default.stats
-    .panel-heading
-      | Total Team Members
-    .panel-body
-      .row
-        .col-sm-3
-          p.text-medium Total Mentors
-          .super-large.text-secondary.teal ng:bind='mentors.length'
-        .col-sm-3
-          p.text-medium Total Contractors
-          .super-large.text-secondary.red ng:bind='contractors.length'
-        .col-sm-3
-          p.text-medium Total Applicants
-          .super-large.text-secondary.gold ng:bind='applicants.length'
-
   .panel.panel-default
     .panel-heading
       h3.panel-title Team Members
