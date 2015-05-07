@@ -33,7 +33,7 @@ class Admin::DashboardController < Admin::AuthController
     pending = 0
     User.all.each {|user| user.payouts.unprocessed.each {|payout| pending += payout.total} if user.chain(:contractor_profile, :stripe_recipient_id)}
     total = Job.standard.where('status_cd > 2').reduce(0) {|acc, job| acc + job.payouts.reduce(0) {|a,p| a + (p.amount || 0)}} / 100.0
-    render json: { this_month: number_with_precision(this_month, precision: 2, delimiter: ','), total: number_with_precision(total, precision: 2, delimiter: ','), pending: number_with_precision(pending, precision: 2, delimiter: ',') }
+    render json: { this_month: number_with_precision(this_month, precision: 2, delimiter: ','), total: number_with_precision(total, precision: 2, delimiter: ','), pending: number_with_precision(pending / 100, precision: 2, delimiter: ',') }
   end
 
   def serviced
