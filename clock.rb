@@ -160,8 +160,8 @@ module Clockwork
 
   every(1.hour, 'payments:process', at: '**:00')
   every(1.hour, 'payments:report', at: '**:00')
-  every(1.week, 'payouts:process', at: 'Wednesday 22:00')
-  every(1.week, 'payouts:report', at: 'Wednesday 20:00')
+  every(1.week, 'payouts:process', at: 'Thursday 05:00')
+  every(1.week, 'payouts:report', at: 'Thursday 03:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')
   every(1.hour, 'jobs:check_no_shows', at: '**:30')
   every(10.minutes, 'jobs:check_timers')
