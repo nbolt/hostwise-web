@@ -12,11 +12,28 @@
           p.text-medium Active hosts
           .super-large.text-secondary ng:bind='active_hosts()'
         .col-sm-2
+          p.text-medium Inactive hosts
+          .super-large.text-secondary ng:bind='inactive_hosts()'
+        .col-sm-2
+          p.text-medium Idle 2 weeks hosts
+          .super-large.text-secondary ng:bind='idle_hosts()'
+        .col-sm-2
+          p.text-medium Dead hosts
+          .super-large.text-secondary ng:bind='dead_hosts()'
+        .col-sm-2
+          p.text-medium Highest HK
+          .super-large.text-secondary ng:bind=''
+    .panel-body
+      .row
+        .col-sm-2
           p.text-medium Average bookings per host
           .super-large.text-secondary ng:bind='bookings_per_host()'
         .col-sm-2
           p.text-medium Avg properties per host
           .super-large.text-secondary ng:bind='properties_per_host()'
+        .col-sm-2
+          p.text-medium Avg monthly bookings per host
+          .super-large.text-secondary ng:bind='monthly_bookings_per_host()'
         .col-sm-2
           p.text-medium Monthly Growth
           .super-large.text-secondary ng:bind-template='{{monthly_growth()}}%'

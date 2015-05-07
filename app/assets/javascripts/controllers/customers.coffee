@@ -30,9 +30,63 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
     services <= 5
 
   $scope.active_hosts = ->
-    active = _($scope.users).filter (host) -> _(host.properties).find (property) -> property.active_bookings[0]
-    active.length
+    if $scope.users
+      count = 0
+      _($scope.users).each (host) ->
+        active_properties = 0
+        _(host.properties).each (property) ->    
+          _(property.active_bookings).each (booking) ->
+            if moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(1, 'weeks')
+              active_properties += 1
+        if active_properties >= 1
+          count += 1
+      return count
+    else 
+      0
   
+  $scope.inactive_hosts = ->
+    if $scope.users
+      count = 0
+      _($scope.users).each (host) ->
+        active_properties = 0
+        _(host.properties).each (property) ->    
+          _(property.active_bookings).each (booking) ->
+            if (moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(1, 'weeks') ) || ( moment(booking.date, 'YYYY-MM-DD') >= moment() )
+              active_properties += 1
+        if active_properties == 0
+          count += 1
+      return count
+    else 
+
+  $scope.idle_hosts = ->
+    if $scope.users
+      count = 0
+      _($scope.users).each (host) ->
+        active_properties = 0
+        _(host.properties).each (property) ->    
+          _(property.active_bookings).each (booking) ->
+            if (moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(2, 'weeks') ) || ( moment(booking.date, 'YYYY-MM-DD') >= moment() )
+              active_properties += 1
+        if active_properties == 0
+          count += 1
+      return count
+    else 
+
+
+  $scope.dead_hosts = ->
+    if $scope.users
+      count = 0
+      _($scope.users).each (host) ->
+        active_properties = 0
+        _(host.properties).each (property) ->    
+          _(property.active_bookings).each (booking) ->
+            if (moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(4, 'weeks') ) || ( moment(booking.date, 'YYYY-MM-DD') >= moment() )
+              active_properties += 1
+        if active_properties == 0
+          count += 1
+      return count
+    else 
+
   $scope.bookings_per_host = ->
     if $scope.users
       Math.round(_($scope.users).reduce(((acc, host) ->
@@ -48,6 +102,16 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
       ), 0) / $scope.users.length * 100) / 100
     else
       0
+
+  $scope.monthly_bookings_per_host = ->
+    count = 0
+    _($scope.users).each (host) ->
+      _(host.properties).each (property) ->
+        _(property.bookings).each (booking) ->
+          if moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(1, 'months')
+            count += 1
+    count = count / $scope.users.length
+    return count
 
   $scope.monthly_growth = ->
     users_last_month  = _($scope.users).filter (host) -> moment(host.created_at, 'YYYY-MM-DD') >= moment().subtract(1, 'months')
