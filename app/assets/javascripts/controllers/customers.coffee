@@ -30,9 +30,18 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
     services <= 5
 
   $scope.active_hosts = ->
-    active = _($scope.users).filter (host) -> _(host.properties).find (property) -> property.active_bookings[0]
-    active.length
-  
+    if $scope.users
+      count = 0
+      _($scope.users).each (host) ->
+        active_properties = 0
+        _(host.properties).each (property) ->    
+          booking = property.active_bookings[property.active_bookings.length-1]
+          active_properties += 1 if moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(1, 'weeks')
+        count += 1 if active_properties >= 1
+      return count
+    else 
+      0
+
   $scope.bookings_per_host = ->
     if $scope.users
       Math.round(_($scope.users).reduce(((acc, host) ->
