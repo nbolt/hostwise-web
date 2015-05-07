@@ -265,7 +265,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       ''
 
   $scope.photos_class = ->
-    if $scope.checklist && $scope.checklist.kitchen_photo.url && $scope.checklist.bedroom_photo.url && $scope.checklist.bathroom_photo.url
+    if $scope.checklist && ($scope.checklist.kitchen_photo.url || ($scope.kitchen_photo && $scope.kitchen_photo[0])) && ($scope.checklist.bedroom_photo.url || ($scope.bedroom_photo && $scope.bedroom_photo[0])) && ($scope.checklist.bathroom_photo.url || ($scope.bathroom_photo && $scope.bathroom_photo[0]))
       ''
     else
       'disabled'
@@ -281,7 +281,19 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.sector_class = (tab, num) ->
     if $scope.checklist && $scope.checklist.checklist_settings
-      if _($scope.checklist.checklist_settings[tab]).filter((v,k) -> v).length >= num
+      if tab.slice(0,7) == 'bedroom'
+        num = num * $scope.job.booking.property.checklist_bedrooms
+        count = 0
+        _($scope.range $scope.job.booking.property.checklist_bedrooms).each (i) ->
+          count += _($scope.checklist.checklist_settings["bedroom_#{i+1}"]).filter((v,k) -> v).length
+        if count >= num then 'visible' else ''
+      else if tab.slice(0,8) == 'bathroom'
+        num = num * $scope.job.booking.property.bathrooms
+        count = 0
+        _($scope.range $scope.job.booking.property.bathrooms).each (i) ->
+          count += _($scope.checklist.checklist_settings["bathroom_#{i+1}"]).filter((v,k) -> v).length
+        if count >= num then 'visible' else ''
+      else if _($scope.checklist.checklist_settings[tab]).filter((v,k) -> v).length >= num
         'visible'
       else
         ''
@@ -301,7 +313,19 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
 
   $scope.circle_class = (tab, num) ->
     if $scope.checklist && $scope.checklist.checklist_settings
-      if _($scope.checklist.checklist_settings[tab]).filter((v,k) -> v).length == num
+      if tab.slice(0,7) == 'bedroom'
+        num = num * $scope.job.booking.property.checklist_bedrooms
+        count = 0
+        _($scope.range $scope.job.booking.property.checklist_bedrooms).each (i) ->
+          count += _($scope.checklist.checklist_settings["bedroom_#{i+1}"]).filter((v,k) -> v).length
+        if count == num then 'complete' else ''
+      else if tab.slice(0,8) == 'bathroom'
+        num = num * $scope.job.booking.property.bathrooms
+        count = 0
+        _($scope.range $scope.job.booking.property.bathrooms).each (i) ->
+          count += _($scope.checklist.checklist_settings["bathroom_#{i+1}"]).filter((v,k) -> v).length
+        if count == num then 'complete' else ''
+      else if _($scope.checklist.checklist_settings[tab]).filter((v,k) -> v).length == num
         'complete'
       else
         ''
