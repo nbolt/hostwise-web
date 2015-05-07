@@ -53,7 +53,7 @@ class Job < ActiveRecord::Base
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
     standard.days(contractor).where(state_cd: states, status_cd: 0)
-    .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ?', contractor.id, Date.today)
+    .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ? and date <= ?', contractor.id, Date.today, Date.today + 2.weeks)
     .order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   }
   scope :upcoming, -> (contractor) { standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
