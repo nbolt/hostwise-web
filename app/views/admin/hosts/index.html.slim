@@ -11,7 +11,7 @@
         .col-sm-2
           p.text-medium Active hosts
           .super-large.text-secondary ng:bind='active_hosts()'
-        .col-sm-2
+        .col-sm-3
           p.text-medium Average bookings per host
           .super-large.text-secondary ng:bind='bookings_per_host()'
         .col-sm-2
@@ -20,7 +20,6 @@
         .col-sm-2
           p.text-medium Monthly Growth
           .super-large.text-secondary ng:bind-template='{{monthly_growth()}}%'
-      .row
   .panel.panel-default
     .panel-heading
       h3.panel-title Customers
