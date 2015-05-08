@@ -92,20 +92,20 @@ describe HomeController do
     get :user
     assert_response :success
     body = JSON.parse(response.body)
-    body['email'].must_equal 'dustinj593@gmail.com'
+    body['user']['email'].must_equal 'dustinj593@gmail.com'
 
     logout_user
     login_user(user_name_10)
     get :user
     assert_response :success
     body = JSON.parse(response.body)
-    body['email'].must_equal 'dustinjones600@gmail.com'
+    body['user']['email'].must_equal 'dustinjones600@gmail.com'
 
     logout_user
     login_user(user_name_11)
     get :user
     assert_response :success
     body = JSON.parse(response.body)
-    body['email'].must_equal 'david.siqi.kong@gmail.com'
+    body['user']['email'].must_equal 'david.siqi.kong@gmail.com'
   end
 end
