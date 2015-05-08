@@ -20,7 +20,7 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
     $scope.job.extra_services = _(rsp.booking.services).filter (s) -> s.extra
     $scope.staging = _($scope.job.standard_services).find (s) -> s.display == 'Staging'
-    $scope.vip = $scope.job.state_cd == 1 unless $scope.staging #always show staging if it is a staging and vip job
+    $scope.vip = $scope.job.state_cd == 1 unless $scope.staging # always show staging if it is a staging and vip job
     $scope.job.hide_details = $scope.job and $scope.job.status_cd == 1 and moment(rsp.date, 'YYYY-MM-DD').diff(moment().startOf('day'), 'days') > 0
 
     $timeout -> $scope.jobQ.resolve()

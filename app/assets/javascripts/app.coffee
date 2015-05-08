@@ -9,25 +9,20 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
     else
       $http.get('/user').success (rsp) ->
         if rsp
-          $scope.user = rsp
+          $scope.user = rsp.user
           $scope.user.payment_prefs = _($scope.user.payments).filter (payment) -> payment.status_cd == 1 or payment.status_cd == 2
           $scope.user.payment_prefs = _($scope.user.payment_prefs).sortBy (payment) -> payment.id
           $scope.user.payments = _($scope.user.payments).filter (payment) -> payment.status_cd == 1
           if $scope.user.role is 'admin'
             $scope.user_fetched.resolve()
           if $scope.user.role is 'host'
-            $scope.user.properties = _($scope.user.properties).filter (property) -> property.active
-            _($scope.user.properties).each (property) ->
-              property.next_service_date = moment(property.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if property.next_service_date
             $scope.user_fetched.resolve()
           if $scope.user.role is 'contractor'
             $scope.user.earnings = $scope.user.earnings.toFixed 2
             $scope.user.unpaid = $scope.user.unpaid.toFixed 2
-            _($scope.user.jobs).each (job) -> job.contractor_count = job.contractors.length if job.contractors
             if $scope.user.contractor_profile.position_cd == 1
-              training_jobs = _(_($scope.user.jobs).groupBy (job) -> moment(job.date, 'YYYY-MM-DD')).sortBy (v,k) -> moment(k, 'ddd MMM DD YYYY').unix()
               $scope.user.training_jobs = []
-              _(training_jobs).each (jobs) ->
+              _($scope.user.training).each (jobs) ->
                 training = {}
                 training.jobs = _(jobs).reject (job) -> job.distribution
                 training.distribution_job = _(jobs).find (job) -> job.occasion_cd == 0

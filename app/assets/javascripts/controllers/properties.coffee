@@ -36,9 +36,9 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
         days_diff = $scope.selected_date.diff(moment().startOf('day'), 'days')
         hour = moment().hours()
         minute = moment().minutes()
-        if days_diff == 0 and hour <= 14 and minute <= 59 #same day booking before 3pm
+        if days_diff == 0 and hour <= 14 and minute <= 59 # same day booking before 3pm
           $scope.$broadcast 'same_day_confirmation'
-        else if days_diff == 1 and hour >= 22 #next day booking after 10pm
+        else if days_diff == 1 and hour >= 22 # next day booking after 10pm
           $scope.$broadcast 'next_day_confirmation'
     }
 
@@ -93,7 +93,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
 
   $scope.exists = () ->
     if $scope.property.active_bookings
-      _($scope.property.bookings).find (b) -> b.id.toString() == $scope.selected_booking.toString() if $scope.selected_booking
+      _($scope.property.active_bookings).find (b) -> b.id.toString() == $scope.selected_booking.toString() if $scope.selected_booking
 
   $scope.address = (property) ->
     parts = property.full_address.split ','
@@ -103,7 +103,7 @@ PropertyHomeCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', ($scop
     $http.get('/data/properties', {params: {term: $scope.term, sort: $scope.sort}}).success (rsp) ->
       if $scope.user
         $scope.show_properties = true
-        $scope.user.properties = rsp if $scope.user
+        $scope.user.properties = rsp.properties if $scope.user
         _($scope.user.properties).each (property) ->
           property.next_service_date = moment(property.next_service_date, 'YYYY-MM-DD').format('MM/DD/YY') if property.next_service_date
 

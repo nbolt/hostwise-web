@@ -118,6 +118,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def training
+    training_jobs = jobs.order(:date).group_by(&:date)
+    training_jobs.each {|d, js| js.each {|j| j.current_user = self}}
+    training_jobs.as_json(methods: [:payout_integer, :payout_fractional, :staging], include: {distribution_center: {methods: [:short_address, :full_address]}, booking: {include: [property: {methods: [:full_address], include: [user: {methods: [:name]}]}]}})
+  end
+
   def bookings
     properties.map(&:bookings).flatten
   end

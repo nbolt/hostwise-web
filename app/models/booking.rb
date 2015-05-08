@@ -239,6 +239,7 @@ class Booking < ActiveRecord::Base
           metadata: metadata
         )
         transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount)
+        UserMailer.service_completed(self).then(:deliver) if user.settings(:service_completion).email
         save
       rescue Stripe::CardError => e
         err  = e.json_body[:error]

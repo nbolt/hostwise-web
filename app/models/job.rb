@@ -137,7 +137,7 @@ class Job < ActiveRecord::Base
 
   def prev_job contractor=nil
     contractor ||= current_user
-    contractor.jobs.on_date(date).where('contractor_jobs.priority < ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs)[-1]
+    contractor.jobs.on_date(date).where('contractor_jobs.priority < ?', priority(contractor)).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs).last
   end
 
   def payout contractor=nil
@@ -226,7 +226,7 @@ class Job < ActiveRecord::Base
   def first_job_of_day contractor=nil
     contractor ||= current_user
     if contractor
-      if contractor.jobs.on_date(date)[0] then false else true end
+      if contractor.jobs.on_date(date).first then false else true end
     end
   end
 
@@ -249,7 +249,7 @@ class Job < ActiveRecord::Base
   def previous_team_job contractor=nil
     contractor ||= current_user
     if contractor
-      if contractor.jobs.on_date(date).team[0] then true else false end
+      if contractor.jobs.on_date(date).team.first then true else false end
     end
   end
 

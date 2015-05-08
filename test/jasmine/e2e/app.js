@@ -59,7 +59,7 @@ describe('hostwise', function(){
       browser.waitForAngular()
       $$('.column.cal table td.active.day').get(1).click()
       browser.waitForAngular()
-      browser.driver.sleep(500)
+      browser.driver.sleep(750)
       $('.content-group.step-one .foot .right .button').click()
       browser.waitForAngular()
       $('.content-group.step-additional .foot .right .button').click()
@@ -68,7 +68,7 @@ describe('hostwise', function(){
       $('.content-group.step-two .payment-tab.active #expiry-date').sendKeys('11/20')
       $('.content-group.step-two .payment-tab.active #cv-code').sendKeys('123')
       $('.content-group.step-two .foot .right .button').click()
-      browser.driver.sleep(500)
+      browser.driver.sleep(750)
       browser.waitForAngular()
       $('.content-group.static.booked').isDisplayed().then(function(displayed){
         expect(displayed).toBe(true)

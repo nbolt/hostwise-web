@@ -1,4 +1,3 @@
-- show_book_service = current_user.host? && current_user.properties.present?
 header
   nav header-nav=''
     - unless current_user.role_cd == 0
@@ -16,23 +15,22 @@ header
         strong ng:bind='::user.first_name'
       .arrow
         i.icon-acc-open
-    - if show_book_service
-      .link.head-button ng:controller='property_search' properties-dropdown=''
-        .icon-button.teal
-          .icon
-            i.icon-calendar
-          .text Book Service
-        .drop-container.properties
-          .drop-arrow
-          .drop
-            .search
-              .input
-                i.icon-search
-                input type='text' placeholder='Search Properties' ng:model='property_search'
-                i.icon-close ng:click='clear()'
-            .links
-              a ng:repeat='property in user.properties' ng:click='quick_add(property); $event.stopPropagation()'
-                .link ng:bind='::property.nickname' data-ellipsis=''
+    .link.head-button ng:controller='property_search' properties-dropdown=''
+      .icon-button.teal
+        .icon
+          i.icon-calendar
+        .text Book Service
+      .drop-container.properties
+        .drop-arrow
+        .drop
+          .search
+            .input
+              i.icon-search
+              input type='text' placeholder='Search Properties' ng:model='property_search'
+              i.icon-close ng:click='clear()'
+          .links
+            a ng:repeat='property in user.properties' ng:click='quick_add(property); $event.stopPropagation()'
+              .link ng:bind='::property.nickname' data-ellipsis=''
   .logo
     a href="#{root_path}"
       img.hw src='/images/header.png'
@@ -40,4 +38,5 @@ header
     .fa.fa-bars menu-dropdown=''
   /= render 'common/live_chat'
   a href='#' onclick="window.open('http://hostwise.desk.com:80/customer/widget/chats/new?', 'assistly_chat','resizable=1, status=0, toolbar=0,width=640,height=700')"
-= render 'common/booking_modal' if show_book_service
+
+= render 'common/booking_modal'

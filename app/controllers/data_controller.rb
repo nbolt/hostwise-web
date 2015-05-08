@@ -10,7 +10,7 @@ class DataController < ApplicationController
   end
 
   def properties
-    render json: Property.by_user(current_user).search(params[:term], params[:sort]).to_json(include: {property_photos: {}, bookings: {include: [:job]}}, methods: [:primary_photo, :nickname, :short_address, :full_address, :next_service_date])
+    render json: Property.by_user(current_user).search(params[:term], params[:sort]), each_serializer: UserPropertySerializer, root: :properties
   end
 
   def service_available

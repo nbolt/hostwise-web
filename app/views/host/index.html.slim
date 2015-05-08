@@ -10,7 +10,7 @@
   #properties ng:init='init()' ng:show='show_properties'
     = render 'common/alert'
     .property ng:repeat='property in user.properties' ng:click='toProperty(property)'
-      =render '/host/properties/row'
+      = render '/host/properties/row'
     a.new-property href='/properties/new'
       .container
         i.icon-add
