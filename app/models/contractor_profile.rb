@@ -3,7 +3,7 @@ class ContractorProfile < ActiveRecord::Base
   belongs_to :market
 
   before_validation :standardize_address
-  before_save :create_stripe_recipient, :fetch_zone, :handle_position_change, :assign_market
+  before_save :create_stripe_recipient, :fetch_zone, :handle_position_change
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
@@ -15,6 +15,10 @@ class ContractorProfile < ActiveRecord::Base
 
   def current_position
     {id: position_cd.to_s, text: display_position.upcase}
+  end
+
+  def market_hash
+    {id: market.id, text: market.name}
   end
 
   def display_position
@@ -83,11 +87,11 @@ class ContractorProfile < ActiveRecord::Base
     end
   end
 
-  private
-
   def assign_market
-    self.market = Market.near(zip)[0]
+    self.market = Market.near(self.zip)[0]
   end
+
+  private
 
   def fetch_zone
     if !zone && lng

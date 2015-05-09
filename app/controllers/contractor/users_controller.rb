@@ -16,6 +16,7 @@ class Contractor::UsersController < Contractor::AuthController
         profile.emergency_contact_first_name = edit_profile_params[:emergency_contact_first_name]
         profile.emergency_contact_last_name = edit_profile_params[:emergency_contact_last_name]
         profile.emergency_contact_phone = edit_profile_params[:emergency_contact_phone]
+        profile.assign_market
         if profile.save
           render json: { success: true }
         else

@@ -14,6 +14,7 @@
                 | {{::contractor.name}}
               .row ng:show='contractor.contractor_profile'
                 input.position type='hidden' ng:change='change_status()' ng:model='contractor.contractor_profile.position' ui-select2='position()'
+                input.market type='hidden' ng:change='change_market()' ng:model='contractor.contractor_profile.market_hash' ui-select2='marketHash()'
               .created_at ng:bind-template="Created {{contractor.created_at | date:'MM/dd/yy':'UTC'}}"
               .location ng:show='contractor.contractor_profile'
                 | {{::contractor.contractor_profile.city}}, {{::contractor.contractor_profile.state}}
@@ -170,7 +171,9 @@
     | Do you wish to
     span ng:click='open_deletion()'  delete {{contractor.first_name}}'s account?
     = render 'common/account_deletion_modal'
+
 = render 'common/change_status_modal'
+= render 'common/change_market_modal'
 = render 'common/complete_contract_modal'
 = render 'common/approve_bgc_modal'
 = render 'common/deny_bgc_modal'
