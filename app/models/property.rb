@@ -150,10 +150,6 @@ class Property < ActiveRecord::Base
     "#{bedrooms}BD/#{bathrooms}BA"
   end
 
-  def assign_zip
-    self.zip_code = ZipCode.where(code: self.zip)[0]
-  end
-
   private
 
   def assign_zip

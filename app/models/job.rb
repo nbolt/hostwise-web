@@ -31,10 +31,6 @@ class Job < ActiveRecord::Base
     now = zone && timezone.time(Time.now) || Time.now
     where('date >= ?', now)
   }
-  scope :within_market, -> (zip) {
-    market = Market.near(zip)[0]
-    market && where('markets.id = ?', market.id).references(:markets).includes(booking: {property: {zip_code: :market}}) || where(id:nil)
-  }
   scope :on_date, -> (date) {
     date = date.to_date if date.class == Time
     where(date: date)
