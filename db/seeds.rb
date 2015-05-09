@@ -82,3 +82,6 @@ Service.find_or_create_by(name: 'pool', display: 'Pool Area', extra: true)
 Service.find_or_create_by(name: 'patio', display: 'Balcony / Patio', extra: true)
 Service.find_or_create_by(name: 'windows', display: 'Exterior Windows', extra: true)
 Service.find_or_create_by(name: 'preset', display: 'Staging', hidden: true)
+
+Market.find_or_create_by(name: 'Los Angeles',  lat: 34.052234, lng: -118.243685)
+Market.find_or_create_by(name: 'Palm Springs', lat: 33.830296, lng: -116.545292)
