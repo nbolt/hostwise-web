@@ -1,8 +1,9 @@
 class ContractorProfile < ActiveRecord::Base
   belongs_to :user
+  belongs_to :market
 
   before_validation :standardize_address
-  before_save :create_stripe_recipient, :fetch_zone, :handle_position_change
+  before_save :create_stripe_recipient, :fetch_zone, :handle_position_change, :assign_market
 
   as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
 
@@ -83,6 +84,10 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   private
+
+  def assign_market
+    self.market = Market.near(zip)[0]
+  end
 
   def fetch_zone
     if !zone && lng

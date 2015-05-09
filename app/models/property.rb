@@ -18,11 +18,8 @@ class Property < ActiveRecord::Base
   has_many :property_photos, autosave: true, dependent: :destroy
 
   before_validation :standardize_address
-<<<<<<< HEAD
-  before_save :fetch_zone
-=======
+
   before_save :fetch_zone, :assign_zip
->>>>>>> 2a2cc3a... before_create -> before_save
 
   validates_numericality_of :phone_number, only_integer: true, if: lambda { self.phone_number.present? }
   validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
