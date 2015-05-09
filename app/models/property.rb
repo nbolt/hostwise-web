@@ -19,8 +19,7 @@ class Property < ActiveRecord::Base
   has_many :property_photos, autosave: true, dependent: :destroy
 
   before_validation :standardize_address
-  before_save :fetch_zone
-  before_create :assign_zip
+  before_save :fetch_zone, :assign_zip
 
   validates_numericality_of :phone_number, only_integer: true, if: lambda { self.phone_number.present? }
   validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
@@ -156,6 +155,10 @@ class Property < ActiveRecord::Base
   end
 
   private
+
+  def assign_zip
+    self.zip_code = ZipCode.where(code: self.zip)[0]
+  end
 
   def fetch_zone
     if !zone && lng

@@ -1,3 +1,17 @@
+DistributionCenter.create(name: 'Venice Warehouse', address1:'1020 Lake St',address2:'#9',city:'Los Angeles',state:'CA',zip:'90291') unless DistributionCenter.where(address1:'1020 Lake St')[0]
+DistributionCenter.create(name: 'Mid-City Warehouse', address1:'3430 South La Brea Avenue',city:'Los Angeles',state:'CA',zip:'90016') unless DistributionCenter.where(address1:'3430 S LA Brea Ave')[0]
+
+Service.find_or_create_by(name: 'cleaning', display: 'Cleaning', extra: false)
+Service.find_or_create_by(name: 'linens', display: 'Linens & Towels', extra: false)
+Service.find_or_create_by(name: 'toiletries', display: 'Toiletries', extra: false)
+Service.find_or_create_by(name: 'pool', display: 'Pool Area', extra: true)
+Service.find_or_create_by(name: 'patio', display: 'Balcony / Patio', extra: true)
+Service.find_or_create_by(name: 'windows', display: 'Exterior Windows', extra: true)
+Service.find_or_create_by(name: 'preset', display: 'Staging', hidden: true)
+
+Market.find_or_create_by(name: 'Los Angeles',  lat: 34.052234, lng: -118.243685)
+Market.find_or_create_by(name: 'Palm Springs', lat: 33.830296, lng: -116.545292)
+
 if Rails.env.test?
   user = User.new(email: 'test@email.com', first_name: 'Test', last_name: 'User', role_cd: 1)
   user.password = 'test'
@@ -71,14 +85,3 @@ CSV.foreach "#{Rails.root}/db/data/neighborhoods.csv" do |row|
     end
   end
 end
-
-DistributionCenter.create(name: 'Venice Warehouse', address1:'1020 Lake St',address2:'#9',city:'Los Angeles',state:'CA',zip:'90291') unless DistributionCenter.where(address1:'1020 Lake St')[0]
-DistributionCenter.create(name: 'Mid-City Warehouse', address1:'3430 South La Brea Avenue',city:'Los Angeles',state:'CA',zip:'90016') unless DistributionCenter.where(address1:'3430 S LA Brea Ave')[0]
-
-Service.find_or_create_by(name: 'cleaning', display: 'Cleaning', extra: false)
-Service.find_or_create_by(name: 'linens', display: 'Linens & Towels', extra: false)
-Service.find_or_create_by(name: 'toiletries', display: 'Toiletries', extra: false)
-Service.find_or_create_by(name: 'pool', display: 'Pool Area', extra: true)
-Service.find_or_create_by(name: 'patio', display: 'Balcony / Patio', extra: true)
-Service.find_or_create_by(name: 'windows', display: 'Exterior Windows', extra: true)
-Service.find_or_create_by(name: 'preset', display: 'Staging', hidden: true)

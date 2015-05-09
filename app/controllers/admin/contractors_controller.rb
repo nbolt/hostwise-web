@@ -28,7 +28,7 @@ class Admin::ContractorsController < Admin::AuthController
 
     respond_to do |format|
       format.html
-      format.json { render json: @contractor, serializer: ContractorSerializer }
+      format.json { render json: @contractor, serializer: ContractorSerializer, meta: { markets: Market.all } }
     end
   end
 
@@ -68,6 +68,10 @@ class Admin::ContractorsController < Admin::AuthController
                         end
 
       user.contractor_profile.position = params[:status].downcase.to_sym
+      user.contractor_profile.save
+      render json: user, serializer: ContractorSerializer
+    elsif params[:market].present?
+      user.contractor_profile.market = Market.find params[:market]
       user.contractor_profile.save
       render json: user, serializer: ContractorSerializer
     else

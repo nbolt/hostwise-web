@@ -1,5 +1,6 @@
 class ContractorProfile < ActiveRecord::Base
   belongs_to :user
+  belongs_to :market
 
   before_validation :standardize_address
   before_save :create_stripe_recipient, :fetch_zone, :handle_position_change
@@ -14,6 +15,10 @@ class ContractorProfile < ActiveRecord::Base
 
   def current_position
     {id: position_cd.to_s, text: display_position.upcase}
+  end
+
+  def market_hash
+    {id: market.id, text: market.name}
   end
 
   def display_position
@@ -80,6 +85,10 @@ class ContractorProfile < ActiveRecord::Base
     else
       false
     end
+  end
+
+  def assign_market
+    self.market = Market.near(self.zip, 50)[0]
   end
 
   private

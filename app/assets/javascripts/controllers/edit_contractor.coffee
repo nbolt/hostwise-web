@@ -7,6 +7,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     unless $scope.contractor
       spinner.startSpin()
       $http.get(window.location.href + '.json').success (rsp) ->
+        $scope.markets = rsp.meta.markets
         $scope.contractor = rsp.contractor
         $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position if $scope.contractor.contractor_profile
         $scope.contractor.total_completed_jobs = _($scope.contractor.jobs).filter((job) -> job.status_cd == 3).length
@@ -47,6 +48,14 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     initSelection: (el, cb) ->
     }
 
+  $scope.marketHash = ->
+    {
+    dropdownCssClass: 'details'
+    minimumResultsForSearch: -1
+    data: -> { results: _($scope.markets).map (market) -> { id: market.id, text: market.name } },
+    initSelection: (el, cb) ->
+    }
+
   $scope.update_account = ->
     $http.put("/contractors/#{$scope.id}/update", {
       contractor_profile: _($scope.contractor.contractor_profile).clone(),
@@ -68,6 +77,10 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     $scope.warning = if $scope.contractor.contractor_profile.test_session_completed then '' else 'This applicant has not finished test & tips session.'
     ngDialog.open template: 'change-status-modal', controller: 'edit-contractor', className: 'status full', scope: $scope
 
+  $scope.change_market = ->
+    $scope.selected_market = angular.element('.market').select2('data')
+    ngDialog.open template: 'change-market-modal', controller: 'edit-contractor', className: 'status full', scope: $scope
+
   $scope.cancel_status = ->
     ngDialog.closeAll()
 
@@ -75,6 +88,15 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     $http.put("/contractors/#{$scope.id}/update", {
       contractor: $scope.contractor
       status: $scope.selected_status.text
+    }).success (rsp) ->
+      $scope.contractor = rsp.contractor
+      $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position if $scope.contractor.contractor_profile
+      angular.element('.status .steps').css('margin-left', -360)
+
+  $scope.confirm_market = ->
+    $http.put("/contractors/#{$scope.id}/update", {
+      contractor: $scope.contractor
+      market: $scope.selected_market.id
     }).success (rsp) ->
       $scope.contractor = rsp.contractor
       $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position if $scope.contractor.contractor_profile
