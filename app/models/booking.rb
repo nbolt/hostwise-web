@@ -16,8 +16,11 @@ class Booking < ActiveRecord::Base
   has_many :transactions, through: :booking_transactions, source: :stripe_transaction
   has_many :successful_transactions, -> { where(status_cd: 0) },  through: :booking_transactions, source: :stripe_transaction
 
+  scope :on_date, -> (date) {
+    date = date.to_date if date.class == Time
+    where(date: date)
+  }
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
-  scope :on_date, -> (date) { where('extract(year from date) = ? and extract(month from date) = ? and extract(day from date) = ?', date.year, date.month, date.day) }
   scope :today, -> { where('date = ?', Date.today) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
   scope :upcoming, -> (user) { where(status_cd: [1,4]).where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
