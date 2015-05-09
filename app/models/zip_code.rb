@@ -1,7 +1,7 @@
 class ZipCode < ActiveRecord::Base
   self.table_name = 'zips'
 
-  before_create :assign_market
+  before_save :assign_market
 
   belongs_to :market
   belongs_to :neighborhood
@@ -13,7 +13,9 @@ class ZipCode < ActiveRecord::Base
 
   scope :serviced, -> { where(serviced: true) }
 
+  private
+
   def assign_market
-    self.market = Market.near(code)[0]
+    self.market = Market.near(code)[0] if serviced
   end
 end
