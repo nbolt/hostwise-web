@@ -6,6 +6,7 @@ class ZipCode < ActiveRecord::Base
   belongs_to :market
   belongs_to :neighborhood
   belongs_to :city, inverse_of: :zip_codes
+  has_many :properties
 
   validates :city, presence: true
   validates :code, presence: true, uniqueness: {case_sensitive: false}
