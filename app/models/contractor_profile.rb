@@ -88,7 +88,7 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   def assign_market
-    self.market = Market.near(self.zip)[0]
+    self.market = Market.near(self.zip, 50)[0]
   end
 
   private
