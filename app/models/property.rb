@@ -12,6 +12,7 @@ class Property < ActiveRecord::Base
   as_enum :property_type, house: 0, condo: 1
 
   belongs_to :user
+  belongs_to :zip_code, foreign_key: :zip_id
   has_many :bookings, autosave: true, dependent: :destroy
   has_many :active_bookings, -> { active.order(:date) }, autosave: true, dependent: :destroy, class_name: 'Booking'
   has_many :past_bookings, -> { where('bookings.status_cd in (3,5)').order(:date) }, class_name: 'Booking'
@@ -19,6 +20,7 @@ class Property < ActiveRecord::Base
 
   before_validation :standardize_address
   before_save :fetch_zone
+  before_create :assign_zip
 
   validates_numericality_of :phone_number, only_integer: true, if: lambda { self.phone_number.present? }
   validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
@@ -147,6 +149,10 @@ class Property < ActiveRecord::Base
 
   def rooms
     "#{bedrooms}BD/#{bathrooms}BA"
+  end
+
+  def assign_zip
+    self.zip_code = ZipCode.where(code: self.zip)[0]
   end
 
   private
