@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150509000206) do
+ActiveRecord::Schema.define(version: 20150509004510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,7 +235,10 @@ ActiveRecord::Schema.define(version: 20150509000206) do
     t.string   "docusign_id"
     t.string   "zone"
     t.boolean  "verified",                     default: false
+    t.integer  "market_id"
   end
+
+  add_index "contractor_profiles", ["market_id"], name: "index_contractor_profiles_on_market_id", using: :btree
 
   create_table "counties", force: :cascade do |t|
     t.integer  "state_id"
@@ -543,6 +546,7 @@ ActiveRecord::Schema.define(version: 20150509000206) do
   add_foreign_key "checklists", "contractor_jobs"
   add_foreign_key "contractor_jobs", "users"
   add_foreign_key "contractor_photos", "checklists"
+  add_foreign_key "contractor_profiles", "markets"
   add_foreign_key "job_distribution_centers", "distribution_centers"
   add_foreign_key "job_distribution_centers", "jobs"
   add_foreign_key "payments", "users"

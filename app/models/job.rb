@@ -31,14 +31,11 @@ class Job < ActiveRecord::Base
     now = zone && timezone.time(Time.now) || Time.now
     where('date >= ?', now)
   }
-  scope :within_market, -> (zip) {
-    market = Market.near(zip)[0]
-    market && where('markets.id = ?', market.id).references(:markets).includes(booking: {property: {zip_code: :market}}) || where(id:nil)
-  }
   scope :on_date, -> (date) {
     date = date.to_date if date.class == Time
     where(date: date)
   }
+  scope :within_market, -> (contractor) { where('markets.id = ?', contractor.contractor_profile.market.id).references(:markets).includes(booking: {property: {zip_code: :market}}) || where(id:nil) }
   scope :on_month, -> (date) { where('extract(month from jobs.date) = ? and extract(year from jobs.date) = ?', date.month, date.year) }
   scope :on_year, -> (date) { where('extract(year from jobs.date) = ?', date.year) }
   scope :in_week, -> (week, date) { where('extract(year from jobs.date) = ? and extract(month from jobs.date) = ? and extract(day from jobs.date) in (?)', date.year, date.month, week) }
@@ -56,8 +53,7 @@ class Job < ActiveRecord::Base
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
-    standard.days(contractor).where(state_cd: states, status_cd: 0)
-    .within_market(contractor.contractor_profile.zip)
+    standard.days(contractor).within_market(contractor).where(state_cd: states, status_cd: 0)
     .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and jobs.date >= ? and jobs.date <= ?', contractor.id, Date.today, Date.today + 2.weeks)
     .order('jobs.date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   }
