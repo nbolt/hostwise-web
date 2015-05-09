@@ -11,11 +11,16 @@ module Clockwork
         timezone = Timezone::Zone.new :zone => booking.property.zone
         time = timezone.time Time.now
         if time.hour == 22
-          if booking.status_cd == 5
-            booking.update_cost!
-            TwilioJob.perform_later("+1#{booking.property.phone_number}", "HostWise was unable to access your property today. Having waited 30 minutes to resolve this issue, we had to move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
-          end
+          booking.update_cost! if booking.status_cd == 5
           booking.charge!
+        end
+      end
+    when 'jobs:notify_no_access'
+      Booking.where(payment_status_cd: 0, status_cd: 5).each do |booking|
+        timezone = Timezone::Zone.new :zone => booking.property.zone
+        time = timezone.time Time.now
+        if time.hour == 16 && time.to_date == booking.date
+          TwilioJob.perform_later("+1#{booking.property.phone_number}", "HostWise was unable to access your property today. Having waited 30 minutes to resolve this issue, we had to move on to help another customer. A small charge of $#{PRICING['no_access_fee']} will be billed to your account in order to pay the housekeepers for their time.")
         end
       end
     when 'payouts:process'
@@ -162,6 +167,7 @@ module Clockwork
   every(1.hour, 'payments:report', at: '**:00')
   every(1.week, 'payouts:process', at: 'Thursday 05:00')
   every(1.week, 'payouts:report', at: 'Thursday 03:00')
+  every(1.hour, 'jobs:notify_no_access', at: '**:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')
   every(1.hour, 'jobs:check_no_shows', at: '**:30')
   every(10.minutes, 'jobs:check_timers')
