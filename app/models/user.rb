@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
     payouts = {}
     Payout.on_month(date).paid.each do |payout|
       payouts[payout.user_id] ||= 0
-      payouts[payout.user_id] += payout.total
+      payouts[payout.user_id] += (payout.total || 0)
     end
     payouts.each {|id, n| (payouts[id] /= 100.0).round 2}
     payouts.sort_by {|id, n| -n}
