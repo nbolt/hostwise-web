@@ -90,6 +90,7 @@ class Contractor::UsersController < Contractor::AuthController
 
       if profile.valid?
         profile.user = user
+        profile.assign_market
         profile.save
 
         user.settings(:new_open_job).sms = true
