@@ -16,6 +16,6 @@ class ZipCode < ActiveRecord::Base
   private
 
   def assign_market
-    self.market = Market.near(code)[0] if serviced
+    self.market = Market.near(code, 50)[0] if serviced
   end
 end
