@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506225420) do
+ActiveRecord::Schema.define(version: 20150509000206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,17 +119,17 @@ ActiveRecord::Schema.define(version: 20150506225420) do
     t.integer  "discounted_cost",             default: 0
     t.string   "discounted_reason",           default: ""
     t.string   "overage_reason",              default: ""
+    t.boolean  "refunded",                    default: false
+    t.integer  "refunded_cost",               default: 0
+    t.string   "refunded_reason"
+    t.string   "stripe_refund_id"
     t.integer  "extra_king_sets",             default: 0
     t.integer  "extra_twin_sets",             default: 0
     t.integer  "extra_toiletry_sets",         default: 0
     t.string   "extra_instructions",          default: ""
-    t.boolean  "refunded",                    default: false
-    t.integer  "refunded_cost",               default: 0
-    t.string   "refunded_reason"
     t.integer  "extra_king_sets_cost",        default: 0
     t.integer  "extra_twin_sets_cost",        default: 0
     t.integer  "extra_toiletry_sets_cost",    default: 0
-    t.string   "stripe_refund_id"
     t.integer  "coupon_cost",                 default: 0
   end
 
@@ -310,6 +310,14 @@ ActiveRecord::Schema.define(version: 20150506225420) do
     t.float    "man_hours"
   end
 
+  create_table "markets", force: :cascade do |t|
+    t.string   "name"
+    t.float    "lat"
+    t.float    "lng"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "messages", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "body"
@@ -394,7 +402,10 @@ ActiveRecord::Schema.define(version: 20150506225420) do
     t.float    "lat"
     t.float    "lng"
     t.string   "zone"
+    t.integer  "zip_id"
   end
+
+  add_index "properties", ["zip_id"], name: "index_properties_on_zip_id", using: :btree
 
   create_table "property_photos", force: :cascade do |t|
     t.string   "photo"
@@ -510,9 +521,11 @@ ActiveRecord::Schema.define(version: 20150506225420) do
     t.boolean  "serviced",                    default: false
     t.integer  "neighborhood_id"
     t.boolean  "restricted",                  default: false
+    t.integer  "market_id"
   end
 
   add_index "zips", ["city_id"], name: "index_zips_on_city_id", using: :btree
+  add_index "zips", ["market_id"], name: "index_zips_on_market_id", using: :btree
   add_index "zips", ["neighborhood_id"], name: "index_zips_on_neighborhood_id", using: :btree
 
   add_foreign_key "availabilities", "users"
@@ -533,6 +546,8 @@ ActiveRecord::Schema.define(version: 20150506225420) do
   add_foreign_key "job_distribution_centers", "distribution_centers"
   add_foreign_key "job_distribution_centers", "jobs"
   add_foreign_key "payments", "users"
+  add_foreign_key "properties", "zips"
   add_foreign_key "service_notifications", "users"
+  add_foreign_key "zips", "markets"
   add_foreign_key "zips", "neighborhoods"
 end

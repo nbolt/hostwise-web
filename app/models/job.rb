@@ -31,6 +31,10 @@ class Job < ActiveRecord::Base
     now = zone && timezone.time(Time.now) || Time.now
     where('date >= ?', now)
   }
+  scope :within_market, -> (zip) {
+    market = Market.near(zip)[0]
+    market && where('markets.id = ?', market.id).references(:markets).includes(booking: {property: {zip_code: :market}}) || where(id:nil)
+  }
   scope :on_date, -> (date) {
     date = date.to_date if date.class == Time
     where(date: date)
@@ -53,8 +57,9 @@ class Job < ActiveRecord::Base
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
     standard.days(contractor).where(state_cd: states, status_cd: 0)
-    .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and date >= ? and date <= ?', contractor.id, Date.today, Date.today + 2.weeks)
-    .order('date ASC').includes(:contractor_jobs).references(:contractor_jobs)
+    within_market(contractor.contractor_profile.zip)
+    .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and jobs.date >= ? and jobs.date <= ?', contractor.id, Date.today, Date.today + 2.weeks)
+    .order('jobs.date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   }
   scope :upcoming, -> (contractor) { standard.where(status_cd: [0, 1]).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :past, -> (contractor) { standard.where(status_cd: 3).where('contractor_jobs.user_id = ?', contractor.id).order('date ASC').includes(:contractor_jobs).references(:contractor_jobs) }
