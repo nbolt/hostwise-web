@@ -152,13 +152,10 @@ class Property < ActiveRecord::Base
 
   private
 
-<<<<<<< HEAD
-=======
   def assign_zip
     self.zip_code = ZipCode.where(code: self.zip)[0]
   end
 
->>>>>>> 2a2cc3a... before_create -> before_save
   def fetch_zone
     if !zone && lng
       timezone = Timezone::Zone.new :latlon => [lat, lng]
