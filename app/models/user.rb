@@ -67,23 +67,10 @@ class User < ActiveRecord::Base
   attr_accessor :step
 
   def self.payouts_on_month date
-    jobs = Job.standard.on_month(date).where('bookings.status_cd > 0 and jobs.status_cd > 2').includes(:booking).references(:bookings)
     payouts = {}
-    jobs.each do |job|
-      job.contractors.each do |user|
-        if user.chain(:contractor_profile, :stripe_recipient_id)
-          total = 0
-
-          user.payouts.unprocessed.each do |payout|
-            total += payout.total
-          end
-
-          if total > 0
-            payouts[user.id] ||= 0
-            payouts[user.id] = payouts[user.id] + total
-          end
-        end
-      end
+    Payout.on_month(date).paid.each do |payout|
+      payouts[payout.user_id] ||= 0
+      payouts[payout.user_id] += payout.total
     end
     payouts.each {|id, n| (payouts[id] /= 100.0).round 2}
     payouts.sort_by {|id, n| -n}
