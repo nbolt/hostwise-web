@@ -9,6 +9,7 @@ class Payout < ActiveRecord::Base
   scope :unprocessed, -> { where(status_cd: 0) }
   scope :pending, -> { where(status_cd: 1) }
   scope :paid, -> { where(status_cd: 2) }
+  scope :on_month, -> (date) { where('extract(month from payouts.created_at) = ? and extract(year from payouts.created_at) = ?', date.month, date.year) }
 
   def total
     amount + adjusted_amount if amount
