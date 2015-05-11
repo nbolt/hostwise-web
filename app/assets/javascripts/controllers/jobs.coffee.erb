@@ -13,12 +13,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
     angular.element("#jobs .tab-content .tab.#{name}").addClass 'active'
     null
 
-  $scope.is_new_customer = (host) ->
-    services = 0
-    _(host.properties).each (property) ->
-      services += property.bookings.length
-    services <= 5
-
   $scope.filters = ->
     {
       dropdownCssClass: 'details'
@@ -96,15 +90,16 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
       _($scope.tabs).each (tab) ->
         $http.get("/data/jobs?page=#{$scope.page}", {params: {scope: tab.name, sort: $scope.filter.id}}).success (rsp) ->
           if tab.name == 'open'
-            $scope.jobs_count = rsp.jobs_count
-            angular.element('.tab-content .tab:eq(0)').addClass 'active' if !tab.days
-            days = JSON.parse rsp.jobs
-          else
-            days = rsp
+            $scope.jobs_count = rsp.meta.jobs_count
+            angular.element('.tab-content .tab:eq(0)').addClass 'active' if !tab.day
+          jobs = rsp.jobs
+          days = _(rsp.jobs).groupBy 'date'
+          days = _(days).map (v,k) -> [k, v]
+          _(days).each (day) -> day[1] = _(day[1]).sortBy (job) -> job.priority if tab.name == 'upcoming'
 
           _(days).each (day) ->
             day.push {}
-            date = moment.utc(day[0],"MM-DD-YY")
+            date = moment.utc(day[0],"YYYY-MM-DD")
             date_text = date.format("ddd, MMM D")
             if date.month() == moment().month()
               if date.date() == moment().date()

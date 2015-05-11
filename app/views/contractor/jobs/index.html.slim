@@ -65,8 +65,7 @@
                   .rooms
                     i.icon-house ng:if='job.booking.property.property_type_cd == 0'
                     i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
-                    .text
-                      | {{job.booking.property.bedrooms}}BD/{{job.booking.property.bathrooms}}BA
+                    .text ng:bind='job.booking.property.property_size'
                   .size
                     i.icon-person
                     .text ng:bind='::job.size'

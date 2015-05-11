@@ -44,13 +44,10 @@ class DataController < ApplicationController
         num += 1
       end
       selected_jobs.each {|j| j.current_user = current_user}
-      jobs = selected_jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
-      render json: { jobs_count: processed, jobs: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}}) }
+      render json: selected_jobs, each_serializer: DataJobsSerializer, meta: { jobs_count: processed }, root: :jobs
     else
       jobs.each {|j| j.current_user = current_user}
-      jobs = jobs.group_by{|job| job.date.strftime '%m-%d-%y'}.sort_by{|date| Date.strptime(date[0], '%m-%d-%y')}
-      jobs = jobs.each {|jobs| jobs[1] = jobs[1].sort_by{|job| job.priority}} if params[:scope] == 'upcoming'
-      render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
+      render json: jobs, each_serializer: DataJobsSerializer, root: :jobs
     end
   end
 
