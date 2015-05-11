@@ -1,1 +1,1 @@
-Geocoder.configure(lookup: :google, cache: Rails.cache)
+Geocoder.configure(lookup: :google, cache: Rails.cache, use_https: true, api_key: ENV['GOOGLE_API_KEY'])
