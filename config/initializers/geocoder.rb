@@ -1,1 +1,1 @@
-Geocoder.configure(lookup: :nominatim, http_headers: { "User-Agent" => "www.hostwise.com" })
+Geocoder.configure(lookup: :google)
