@@ -1,1 +1,1 @@
-Geocoder.configure(lookup: :google)
+Geocoder.configure(lookup: :google, cache: Rails.cache)
