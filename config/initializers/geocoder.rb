@@ -1,1 +1,1 @@
-Geocoder.configure(lookup: :google, cache: Rails.cache, use_https: true, api_key: ENV['GOOGLE_API_KEY'])
+Geocoder.configure(lookup: :smarty_streets, cache: Rails.cache, use_https: true, api_key: ['be3ffba5-6059-4c70-8dff-92978ab8dec4', 'sl4776At3RB7VDM7kXOw'])
