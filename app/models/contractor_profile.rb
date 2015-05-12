@@ -18,7 +18,7 @@ class ContractorProfile < ActiveRecord::Base
   end
 
   def market_hash
-    {id: market.id, text: market.name}
+    {id: market.id, text: market.name} if market
   end
 
   def display_position

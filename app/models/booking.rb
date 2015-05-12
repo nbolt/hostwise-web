@@ -136,12 +136,16 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  def coupon_dollar_cost
+    coupon_cost > 0 && coupon_cost / 100.0 || 0
+  end
+
   def original_cost
     (cost - (adjusted_cost / 100.0)).round 2
   end
 
   def prediscount_cost
-    cost + first_booking_discount_cost + (coupon_cost > 0 && (coupon_cost / 100.0) || 0)
+    cost + first_booking_discount_cost + coupon_dollar_cost
   end
 
   def pricing_hash
@@ -160,7 +164,7 @@ class Booking < ActiveRecord::Base
       extra_twin_sets: extra_twin_sets_cost,
       extra_toiletry_sets: extra_toiletry_sets_cost,
       first_booking_discount: first_booking_discount_cost,
-      refunded_cost: refunded_cost,
+      refunded_cost: refunded_cost / 100.0,
       overage_cost: overage_cost / 100.0,
       discounted_cost: discounted_cost / 100.0
     }
