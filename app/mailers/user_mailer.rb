@@ -151,6 +151,17 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
+  def announcement(user, template)
+    mandrill do
+      mandrill_mail template: template,
+                    to: {email: user.email, name: user.name},
+                    vars: {},
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
   def booking_confirmation(booking)
     mandrill do
       date = booking.date.strftime('%b %e, %Y')
