@@ -23,6 +23,8 @@
   .panel.panel-default
     .panel-heading
       h3.panel-title Jobs
+      .select2-head
+        input type='hidden' ui:select2='marketHash()' ng:model='market'
       .btn.btn-gray.btn-icon style='margin-right: 25px' ng:click='export_csv()'
           i.icon-details
           span Export CSV
@@ -38,6 +40,7 @@
           tr
             th ID
             th Property
+            th Location
             th Size
             th Date
             th Nickname
@@ -59,6 +62,7 @@
           tr
             th ID
             th Property
+            th.location Location
             th Size
             th.date Date
             th Nickname
@@ -80,6 +84,7 @@
           tr
             th ID
             th Property
+            th Location
             th Size
             th Date
             th Nickname
@@ -103,6 +108,7 @@
               a.teal ng:href='/jobs/{{job.id}}' ng:bind='job.id'
             td
               a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='job.booking.property.id'
+            td ng:bind='job.booking.property.zip_code.market.name'
             td ng:bind='job.booking.property.property_size'
             td ng:bind="job.date | date:'MM/dd/yyyy':'UTC'"
             td ng:bind='job.booking.property.nickname'

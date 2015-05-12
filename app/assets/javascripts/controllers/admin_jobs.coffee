@@ -4,6 +4,8 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
   $scope.filter = {id:'all',text:'All'}
   $scope.search = ''
 
+  $http.get('/data/markets').success (rsp) -> $scope.markets = rsp.markets
+
   $scope.export_csv = ->
     jobs = filtered_data('#example-1')
     $http.post('/jobs/export.csv', {jobs: jobs}).success (rsp) ->
@@ -46,6 +48,8 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ]
         })
+
+        $scope.table = table
 
         $.fn.dataTable.ext.search.push (settings, data, index) ->
           start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
@@ -131,6 +135,18 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
       data: [{id:'all',text:'All'},{id:'active',text:'Active'},{id:'future',text:'Future'}]
       initSelection: (el, cb) ->
     }
+
+  $scope.marketHash = ->
+    {
+      dropdownCssClass: 'details'
+      minimumResultsForSearch: -1
+      placeholder: 'Market'
+      data: -> { results: _($scope.markets).map (market) -> { id: market.id, text: market.name } },
+      initSelection: (el, cb) ->
+    }
+
+  $scope.$watch 'market', (n,o) -> if n
+    angular.element('th.location input').val($scope.market.text).trigger($.Event 'change')
 
   $scope.$watch 'filter.id', (n,o) -> $scope.fetch_jobs() if o != undefined && o != n
 

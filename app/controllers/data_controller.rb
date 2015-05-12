@@ -13,6 +13,10 @@ class DataController < ApplicationController
     render json: Property.by_user(current_user).search(params[:term], params[:sort]), each_serializer: UserPropertySerializer, root: :properties
   end
 
+  def markets
+    render json: Market.all, root: :markets
+  end
+
   def service_available
     zip = ZipCode.serviced.where(code: params[:zip]).first
     UnservicedZip.create(code: params[:zip], email: current_user.email) unless zip
