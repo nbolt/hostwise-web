@@ -29,8 +29,10 @@ else
   DistributionCenter.create(name: 'Venice Warehouse', address1:'1020 Lake St',address2:'#9',city:'Los Angeles',state:'CA',zip:'90291') unless DistributionCenter.where(address1:'1020 Lake St')[0]
   DistributionCenter.create(name: 'Mid-City Warehouse', address1:'3430 South La Brea Avenue',city:'Los Angeles',state:'CA',zip:'90016') unless DistributionCenter.where(address1:'3430 S LA Brea Ave')[0]
   
-  Market.find_or_create_by(name: 'Los Angeles',  lat: 34.052234, lng: -118.243685)
-  Market.find_or_create_by(name: 'Palm Springs', lat: 33.830296, lng: -116.545292)
+  Market.find_or_create_by(name: 'Los Angeles',   lat: 34.052234, lng: -118.243685)
+  Market.find_or_create_by(name: 'Palm Springs',  lat: 33.830296, lng: -116.545292)
+  Market.find_or_create_by(name: 'Orange County', lat: 33.717471, lng: -117.831143)
+  Market.find_or_create_by(name: 'San Diego',     lat: 32.715738, lng: -117.161084)
 
   unless State.first
     CSV.foreach("#{Rails.root}/db/data/states.csv") do |row|
