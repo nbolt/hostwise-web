@@ -187,6 +187,15 @@ script#booking-modal type="text/ng-template"
           .icon
             i.icon-calendar
           .text Select Date(s) & Services
+        .steps
+          .step.current
+            .text 1. Date & Services
+          .step
+            .text 2. Extra Options
+          .step
+            .text 3. Select a Time
+          .step
+            .text 4. Finish & Pay
         .content.cal
           .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
         .content
@@ -224,6 +233,15 @@ script#booking-modal type="text/ng-template"
           .icon
             i.icon-calendar
           .text Additional Options
+        .steps
+          .step.complete
+            .text 1. Date & Services
+          .step.current
+            .text 2. Extra Options
+          .step
+            .text 3. Select a Time
+          .step
+            .text 4. Finish & Pay
         .content.extras
           .linens
             h3 Do you want to add an extra sets of linens and towels or toiletries?
@@ -263,12 +281,96 @@ script#booking-modal type="text/ng-template"
                 | {{service_total}}
               .text.per
                 | / Service
+            .button.teal.auto ng:click='select_time()' Select Time
+      .content-group.step-three ng:if='!exists()'
+        .header
+          .icon
+            i.icon-calendar
+          .text Select a Time
+        .steps
+          .step.complete
+            .text 1. Date & Services
+          .step.complete
+            .text 2. Extra Options
+          .step.current
+            .text 3. Select a Time
+          .step
+            .text 4. Finish & Pay
+        .content.extras
+          .linens
+            h3 When would you like HostWise to arrive?
+            h5 Save money by being flexible, or specify a time to pay based on demand.
+          .timeboxes
+            .box.any ng:click='choose_any()'
+              .text
+                | Between 7am - 6pm
+                span ng:bind-template='${{any_total()}}'
+            .box.flex.chosen ng:click='choose_flex()'
+              .text
+                | Between 10am - 4pm
+                span ng:bind-template='${{service_total}}'
+            .box.premium
+              .text ng:click='choose_time_modal()' Choose your time
+              .times
+                .timeslot ng:click='choose_time(8)'
+                  .time 7-8 AM
+                  .price ${{time_total(8)}}
+                .timeslot ng:click='choose_time(9)'
+                  .time 8-9 AM
+                  .price ${{time_total(9)}}
+                .timeslot ng:click='choose_time(10)'
+                  .time 9-10 AM
+                  .price ${{time_total(10)}}
+                .timeslot ng:click='choose_time(11)'
+                  .time 10-11 AM
+                  .price ${{time_total(11)}}
+                .timeslot ng:click='choose_time(12)'
+                  .time 11-12 PM
+                  .price ${{time_total(12)}}
+                .timeslot ng:click='choose_time(13)'
+                  .time 12-1 PM
+                  .price ${{time_total(13)}}
+                .timeslot ng:click='choose_time(14)'
+                  .time 1-2 PM
+                  .price ${{time_total(14)}}
+                .timeslot ng:click='choose_time(15)'
+                  .time 2-3 PM
+                  .price ${{time_total(15)}}
+                .timeslot ng:click='choose_time(16)'
+                  .time 3-4 PM
+                  .price ${{time_total(16)}}
+                .timeslot ng:click='choose_time(17)'
+                  .time 4-5 PM
+                  .price ${{time_total(17)}}
+                .timeslot ng:click='choose_time(18)'
+                  .time 5-6 PM
+                  .price ${{time_total(18)}}
+        .foot.next
+          .left
+            .button.grey ng:click='change_dates()' Change Dates
+          .right
+            .total
+              .text.dollar
+                | $
+              .text.amount
+                | {{service_total}}
+              .text.per
+                | / Service
             .button.teal.auto ng:click='select_payment()' Select Payment
-      .content-group.step-two ng:if='!exists()'
+      .content-group.step-four ng:if='!exists()'
         .header
           .icon
             i.icon-calendar
           .text Confirm Booking & Payment
+        .steps
+          .step.complete
+            .text 1. Date & Services
+          .step.complete
+            .text 2. Extra Options
+          .step.complete
+            .text 3. Select a Time
+          .step.current
+            .text 4. Finish & Pay
         .content.details
           .invoice Invoice
           .days
@@ -378,6 +480,15 @@ script#booking-modal type="text/ng-template"
           .icon
             i.icon-calendar
           .text Booking Confirmed
+        .steps
+          .step.complete
+            .text 1. Date & Services
+          .step.complete
+            .text 2. Extra Options
+          .step.complete
+            .text 3. Select a Time
+          .step.complete
+            .text 4. Finish & Pay
         .content.confirmation.teal
           i.icon-check
           .title-text You're all set!

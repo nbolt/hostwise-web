@@ -13,6 +13,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.refresh_booking = false
   $scope.show_back = false
   $scope.discount = 0
+  $scope.chosen_time = 'flex'
 
   if $scope.selected_booking
     booking = _($scope.property.active_bookings).find (booking) -> booking.id == parseInt($scope.selected_booking)
@@ -26,6 +27,55 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
         angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
         $scope.selected_services[service.name] = true
         $scope.calculate_pricing()
+
+  angular.element('.ngdialog.booking').on('click', -> angular.element('.timeboxes .times').fadeOut())
+
+  $scope.any_total = -> Math.round($scope.service_total * 0.9 * 100) / 100
+
+  $scope.time_total = (time) ->
+    total = $scope.service_total * 1.5
+    switch time
+      when 8 then total *= 0.8
+      when 9 then total *= 0.9
+      when 10 then total *= 1.1
+      when 11 then total *= 1.2
+      when 12 then total *= 1.2
+      when 13 then total *= 1.2
+      when 14 then total *= 1.1
+      when 15 then total *= 0.9
+      when 16 then total *= 0.8
+      when 17 then total *= 0.8
+      when 18 then total *= 0.8
+    Math.round(total * 100) / 100
+
+  $scope.choose_any = ->
+    $scope.chosen_time = 'any'
+    angular.element('.timeboxes .box').removeClass 'chosen'
+    angular.element('.timeboxes .box.any').addClass 'chosen'
+    angular.element('.timeboxes .box.premium .text').text 'Choose your time'
+    null
+
+  $scope.choose_flex = ->
+    $scope.chosen_time = 'flex'
+    angular.element('.timeboxes .box').removeClass 'chosen'
+    angular.element('.timeboxes .box.flex').addClass 'chosen'
+    angular.element('.timeboxes .box.premium .text').text 'Choose your time'
+    null
+
+  $scope.choose_time_modal = ->
+    angular.element('.timeboxes .times').fadeIn()
+    null
+
+  $scope.choose_time = (time) ->
+    $scope.chosen_time = time
+    angular.element('.timeboxes .times').fadeOut()
+    angular.element('.timeboxes .box').removeClass 'chosen'
+    angular.element('.timeboxes .box.premium').addClass 'chosen'
+    if time < 12 then meridian = 'a' else meridian = 'p'
+    time1 = time - 1; time1 -= 12 if time1 > 12
+    time2 = time;     time2 -= 12 if time2 > 12
+    angular.element('.timeboxes .box.premium .text').text "#{time1} - #{time2}#{meridian}m - $#{$scope.time_total($scope.chosen_time)}"
+    null
 
   $scope.payment_screen = (type) ->
     angular.element('.booking.modal .content.payment > div').hide()
@@ -57,13 +107,16 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
       $scope.calculate_pricing()
     null
 
+  $scope.select_time = -> $scope.slide 'step-three'
+
   $scope.select_payment = ->
-    if $scope.payment.id is 'new'
-      $scope.payment_screen 'new'
-    else
-      $scope.payment_screen 'existing'
-    $scope.slide 'step-two'
-    $scope.calculate_pricing()
+    if $scope.chosen_time
+      if $scope.payment.id is 'new'
+        $scope.payment_screen 'new'
+      else
+        $scope.payment_screen 'existing'
+      $scope.slide 'step-four'
+      $scope.calculate_pricing()
 
   $scope.back = ->
     angular.element('.content.side').hide()
@@ -128,6 +181,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
           late_next_day: $scope.next_day_booking
           late_same_day: $scope.same_day_booking
           coupon_id: $scope.coupon_id
+          timeslot: $scope.chosen_time
         }).success (rsp) ->
           $scope.booking = false
           spinner.stopSpin()
@@ -158,11 +212,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $scope.calculate_pricing = ->
     first_booking_discount_applied = false
+    service_total = 0
     $scope.total = 0
     $scope.days = []
     remaining = $scope.remaining
     $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
-      $scope.service_total = rsp.cost
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
       cancellation_cost = 0 if cancellation_cost < 0
       twenty_percent = +(cancellation_cost * 0.2).toFixed(2)
@@ -207,9 +261,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
             day.discount = day.total if day.discount > day.total
             day.total -= day.discount
           day.total = parseFloat day.total.toFixed(2)
+          service_total = day.total if day.total > service_total
           $scope.total += day.total
           _($scope.selected_services).each (v,k) -> day[k] = rsp[k] if v
           $scope.days.push day
+      $scope.service_total = service_total
       $scope.total = 0 if $scope.total < 0
 
   $scope.slide = (type) ->

@@ -486,6 +486,28 @@
     .modal
       background-color: white
       overflow: hidden
+      .steps
+        height: 40px
+        .step
+          display: inline-block
+          text-align: center
+          width: 25%
+          height: 100%
+          box-sizing: border-box
+          border-bottom: 2px solid #E5E7EA
+          border-right: thin solid #D9DADD
+          background-color: #EDEEF1
+          &:last-child
+            border-right: none
+          &.current, &.complete
+            background-color: #E8E9EA
+          &.current
+            border-bottom: 2px solid #C4C8CE
+          &.complete
+            border-bottom: 2px solid teal
+          .text
+            color: #9B9B9B
+            margin-top: 10px
       .header
         background-color: teal
         color: white
@@ -500,10 +522,10 @@
           top: 0
           left: 0
           height: 50px
-          line-height: 50px
+          line-height: 45px
           width: 50px
-          font-size: 1.6em
-          padding-left: 9px
+          font-size: 1.4em
+          padding-left: 11px
           box-sizing: border-box
           transition: background-color 1s ease-in-out, opacity .5s ease-in-out
         .text
@@ -522,10 +544,12 @@
           background-color: orange
       .content-container
         width: 100%
-        height: 620px
+        height: 660px
         overflow: hidden
         @media phone
           height: 100%
+        &.exist
+          height: 620px
         .content-group
           height: auto
           display: none
@@ -753,6 +777,72 @@
                   &.per
                     vertical-align: bottom
                     margin: 0 30px 4px 6px
+          .timeboxes
+            margin-top: 80px
+            .box
+              background-color: white
+              border: thin solid #EBECEF
+              border-radius: 4px
+              padding: 15px
+              text-align: center
+              width: 300px
+              margin: 0 auto 12px
+              position: relative
+              box-sizing: border-box
+              .text
+                color: darker-gray
+                font-weight: 600
+                span
+                  color: teal
+                  margin-left: 10px
+              .times
+                display: none
+                position: absolute
+                top: -190px
+                left: 30px
+                width: 240px
+                background-color: white
+                border-radius: 4px
+                border: thin solid #EBECEF
+                .timeslot
+                  font-weight: 600
+                  padding: 8px
+                  .time, .price
+                    display: inline-block
+                  .time
+                    width: 115px
+                  .price
+                    color: teal
+                  &:hover
+                    cursor: pointer
+                    background-color: #E8ECEF
+              &:hover
+                cursor: pointer
+              &.chosen, &:hover
+                background-color: teal
+                .text
+                  color: white
+                  span
+                    color: white
+              &.chosen
+                &::before
+                  content: '\e80d'
+                  color: #83CCCF
+                  position: absolute
+                  top: 10px
+                  left: 10px
+                  font-family: "hw-icons"
+                  font-style: normal
+                  font-weight: normal
+                  speak: none
+                  display: inline-block
+                  text-decoration: inherit
+                  width: 1em
+                  text-align: center
+                  font-variant: normal
+                  text-transform: none
+                  line-height: 1em
+                  font-size: 1.9em
         .content
           width: 488px
           height: 518px
