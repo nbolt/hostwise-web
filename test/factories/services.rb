@@ -4,27 +4,26 @@ FactoryGirl.define do
   end
 
   factory :linens, class: Service do
-  	name 'linens'
+    name 'linens'
   end
 
   factory :toiletries, class: Service do
-  	name 'toiletries'
+    name 'toiletries'
   end
 
   factory :pool, class: Service do
-  	name 'pool'
+    name 'pool'
   end
 
-
   factory :patio, class: Service do
-  	name 'patio'
+    name 'patio'
   end
 
   factory :windows, class: Service do
-  	name 'windows'
+    name 'windows'
   end
 
   factory :preset, class: Service do
-  	name 'preset'
+    name 'preset'
   end
 end
