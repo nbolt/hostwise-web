@@ -58,7 +58,7 @@ class Host::BookingsController < Host::AuthController
           other_jobs = contractor.jobs.standard.on_date(booking.date)
           if other_jobs[0]
             other_jobs[0].handle_distribution_jobs contractor
-            Job.set_priorities contractor.jobs.on_date(booking.date), contractor
+            Job.set_priorities contractor, booking.date
           else
             contractor.jobs.distribution.on_date(booking.date).destroy_all
           end

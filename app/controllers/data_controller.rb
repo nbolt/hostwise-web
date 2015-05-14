@@ -17,6 +17,10 @@ class DataController < ApplicationController
     render json: Market.all, root: :markets
   end
 
+  def timeslots
+    render json: { timeslots: PRICING['timeslots'] }
+  end
+
   def service_available
     zip = ZipCode.serviced.where(code: params[:zip]).first
     UnservicedZip.create(code: params[:zip], email: current_user.email) unless zip
@@ -41,7 +45,7 @@ class DataController < ApplicationController
       selected_jobs = []; num = 0; processed = 0; offset = (params[:page].to_i - 1) * JOBS_PER_PAGE
       while selected_jobs.count < JOBS_PER_PAGE && jobs[num]
         job = jobs[num]
-        if current_user.can_claim_job?(job)
+        if current_user.can_claim_job?(job)[:success]
           processed += 1
           selected_jobs.push job if processed > offset && processed <= offset + JOBS_PER_PAGE
         end

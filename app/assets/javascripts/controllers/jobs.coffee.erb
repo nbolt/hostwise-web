@@ -40,7 +40,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
           _rsp.unshift job if _rsp[0]
           day[1] = _rsp
           angular.element("#job-#{job.id}").addClass 'claimed'
-          refresh_claimed()
         else
           angular.element("#job-#{job.id} .flash").css('opacity', 1).text rsp.message
           $timeout((-> angular.element("#job-#{job.id}").fadeOut()), 4000)
@@ -72,7 +71,8 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
   refresh_claimed = ->
     $http.get("/data/jobs", {params: {scope: 'upcoming', sort: $scope.filter.id}}).success (rsp) ->
       tab = _($scope.tabs).find (tab) -> tab.name == 'upcoming'
-      tab.days = rsp
+      tab.days = _(rsp.jobs).groupBy 'date'
+      tab.days = _(tab,days).map (v,k) -> [k, v]
       tab.count = _(tab.days).reduce(((acc, day) -> acc + day[1].length), 0)
       _(tab.days).each (day) ->
         day.push {}
@@ -92,7 +92,6 @@ JobsCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', 'spinne
           if tab.name == 'open'
             $scope.jobs_count = rsp.meta.jobs_count
             angular.element('.tab-content .tab:eq(0)').addClass 'active' if !tab.day
-          jobs = rsp.jobs
           days = _(rsp.jobs).groupBy 'date'
           days = _(days).map (v,k) -> [k, v]
           _(days).each (day) -> day[1] = _(day[1]).sortBy (job) -> job.priority if tab.name == 'upcoming'

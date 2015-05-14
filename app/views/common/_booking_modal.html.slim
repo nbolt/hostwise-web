@@ -301,20 +301,13 @@ script#booking-modal type="text/ng-template"
             h3 When would you like HostWise to arrive?
             h5 Save money by being flexible, or specify a time to pay based on demand.
           .timeboxes
-            .box.any ng:click='choose_any()'
-              .text
-                | Between 7am - 6pm
-                span ng:bind-template='${{any_total()}}'
-            .box.flex.chosen ng:click='choose_flex()'
+            .box.flex ng:click='choose_flex()'
               .text
                 | Between 10am - 4pm
                 span ng:bind-template='${{service_total}}'
             .box.premium
               .text ng:click='choose_time_modal()' Choose your time
               .times
-                .timeslot ng:click='choose_time(8)'
-                  .time 7-8 AM
-                  .price ${{time_total(8)}}
                 .timeslot ng:click='choose_time(9)'
                   .time 8-9 AM
                   .price ${{time_total(9)}}

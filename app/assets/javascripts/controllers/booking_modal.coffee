@@ -28,32 +28,26 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
         $scope.selected_services[service.name] = true
         $scope.calculate_pricing()
 
-  angular.element('.ngdialog.booking').on('click', -> angular.element('.timeboxes .times').fadeOut())
-
-  $scope.any_total = -> Math.round($scope.service_total * 0.9 * 100) / 100
+  $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
   $scope.time_total = (time) ->
-    total = $scope.service_total * 1.5
-    switch time
-      when 8 then total *= 0.8
-      when 9 then total *= 0.9
-      when 10 then total *= 1.1
-      when 11 then total *= 1.2
-      when 12 then total *= 1.2
-      when 13 then total *= 1.2
-      when 14 then total *= 1.1
-      when 15 then total *= 0.9
-      when 16 then total *= 0.8
-      when 17 then total *= 0.8
-      when 18 then total *= 0.8
-    Math.round(total * 100) / 100
-
-  $scope.choose_any = ->
-    $scope.chosen_time = 'any'
-    angular.element('.timeboxes .box').removeClass 'chosen'
-    angular.element('.timeboxes .box.any').addClass 'chosen'
-    angular.element('.timeboxes .box.premium .text').text 'Choose your time'
-    null
+    if $scope.timeslots
+      if $scope.service_total == 0
+        0
+      else
+        total = $scope.service_total - $scope.cleaning_cost
+        switch time
+          when 9  then total += $scope.cleaning_cost * $scope.timeslots[9]
+          when 10 then total += $scope.cleaning_cost * $scope.timeslots[10]
+          when 11 then total += $scope.cleaning_cost * $scope.timeslots[11]
+          when 12 then total += $scope.cleaning_cost * $scope.timeslots[12]
+          when 13 then total += $scope.cleaning_cost * $scope.timeslots[13]
+          when 14 then total += $scope.cleaning_cost * $scope.timeslots[14]
+          when 15 then total += $scope.cleaning_cost * $scope.timeslots[15]
+          when 16 then total += $scope.cleaning_cost * $scope.timeslots[16]
+          when 17 then total += $scope.cleaning_cost * $scope.timeslots[17]
+          when 18 then total += $scope.cleaning_cost * $scope.timeslots[18]
+        Math.round(total * 100) / 100
 
   $scope.choose_flex = ->
     $scope.chosen_time = 'flex'
@@ -64,6 +58,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $scope.choose_time_modal = ->
     angular.element('.timeboxes .times').fadeIn()
+    $timeout((->
+      angular.element('.ngdialog.booking').on('click', ->
+        angular.element('.timeboxes .times').fadeOut()
+        angular.element('.ngdialog.booking').off('click')
+      )
+    ), 500)
     null
 
   $scope.choose_time = (time) ->
@@ -216,7 +216,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     $scope.total = 0
     $scope.days = []
     remaining = $scope.remaining
-    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
+    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
+      $scope.cleaning_cost = rsp.contractor_service_cost
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
       cancellation_cost = 0 if cancellation_cost < 0
       twenty_percent = +(cancellation_cost * 0.2).toFixed(2)

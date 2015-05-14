@@ -151,15 +151,13 @@ class User < ActiveRecord::Base
     jobs.cancelled
   end
 
-  def claim_job job, admin=false
+  def can_claim_job? job, admin=false
     jobs_today = self.jobs.on_date(job.date)
     team_members = job.contractors.team_members
     if team_members.count == job.size && !admin
       { success: false, message: "Job already has assigned number of contractors" }
     elsif team_members.count == job.size && admin && team_members.find {|c| (c.jobs.on_date(job.date) - [job]).find {|j| j.contractors.count > 1}}
       { success: false, message: "Can't create team job as other team members already have team jobs for this day" }
-    elsif man_hours(job.date) + job.man_hours > MAX_MAN_HOURS && !admin
-      { success: false, message: "Job would surpass maximum number of contractor man hours for the day" }
     elsif job.training
       { success: false, message: "Can't claim jobs with applicants attached" }
     elsif job.size > 1 && jobs_today.find {|job| job.contractors.count > 1}
@@ -168,6 +166,19 @@ class User < ActiveRecord::Base
       { success: false, message: "Can't claim a cancelled job" }
     elsif payments.empty?
       { success: false, message: "Cannot claim jobs until you setup a payout method" }
+    elsif !job.fits_in_day(self)
+      { success: false, message: "Job not within available hours" }
+    else
+      { success: true }
+    end
+  end
+
+  def claim_job job, admin=false
+    jobs_today = self.jobs.on_date(job.date)
+    team_members = job.contractors.team_members
+    rsp = can_claim_job?(job,admin)
+    if !rsp[:success]
+      { success: false, message: rsp[:message] }
     elsif job.contractors.index self
       { success: true }
     else
@@ -180,7 +191,7 @@ class User < ActiveRecord::Base
         job.save
       end
       job.handle_distribution_jobs self
-      job.contractors.each {|contractor| Job.set_priorities contractor.jobs.on_date(job.date), contractor}
+      job.contractors.each {|contractor| Job.set_priorities contractor, job.date}
       unless Rails.env.test?
         fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
         fanout.publish_async 'jobs', {}
@@ -192,6 +203,7 @@ class User < ActiveRecord::Base
   def drop_job job, admin=false
     primary = ContractorJobs.where(job_id: job.id, user_id: self.id)[0].then(:primary)
     job.contractors.destroy self
+    job.booking.update_attribute :custom_timeslot, nil if job.contractors.empty? && job.booking.timeslot == 'flex'
     job.size = job.contractors.count if job.booking && job.contractors.count >= job.minimum_job_size
     if self.contractor_profile.position == :trainee
       job.training = false
@@ -201,7 +213,7 @@ class User < ActiveRecord::Base
     end
     job.save
     job.handle_distribution_jobs self
-    Job.set_priorities self.jobs.on_date(job.date), self
+    Job.set_priorities self, job.date
 
     if admin
       TwilioJob.perform_later("+1#{self.phone_number}", "Oops! Looks like job ##{job.id} on #{job.formatted_date} was cancelled. Sorry about this!")
@@ -225,8 +237,7 @@ class User < ActiveRecord::Base
         ContractorJobs.where(job_id: job.id, user_id: mentors[0].then(:id) || team_members[0].id)[0].update_attribute :primary, true if primary
         team_members.each do |contractor|
           job.handle_distribution_jobs contractor
-          jobs = contractor.jobs.on_date(job.date)
-          Job.set_priorities jobs, contractor
+          Job.set_priorities contractor, job.date
         end
       end
     end

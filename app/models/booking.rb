@@ -43,10 +43,9 @@ class Booking < ActiveRecord::Base
     services.map(&:display).join ', '
   end
 
-  def self.cost property, services, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
+  def self.cost property, services, timeslot = 'flex', extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
     pool_service = Service.where(name: 'pool')[0]
-    total = 0
-    rsp = {}
+    rsp = {cost:0}
     services.each do |service|
       case service.name
         when 'cleaning'
@@ -57,9 +56,11 @@ class Booking < ActiveRecord::Base
           property.queen_beds.times { rsp[:linens] += PRICING['queen_linens'] }
           property.full_beds.times  { rsp[:linens] += PRICING['full_linens']  }
           property.twin_beds.times  { rsp[:linens] += PRICING['twin_linens']  }
+          rsp[:cost] += rsp[:linens]
         when 'toiletries'
           rsp[:toiletries] ||= 0
           property.bathrooms.times  { rsp[:toiletries] += PRICING['toiletries']  }
+          rsp[:cost] += rsp[:toiletries]
         when 'pool'
           rsp[:pool] = PRICING['pool']
         when 'patio'
@@ -70,7 +71,23 @@ class Booking < ActiveRecord::Base
           rsp[:preset] = PRICING['preset'][property.beds]
       end
     end
-    rsp[:cost] = rsp.reduce(0){|total, service| total + service[1]}
+    rsp[:contractor_service_cost] = (rsp[:cleaning] || 0) + (rsp[:pool] || 0) + (rsp[:patio] || 0) + (rsp[:windows] || 0) + (rsp[:preset] || 0)
+    if timeslot != 'flex'
+      case timeslot.to_i
+      when 9  then rsp[:contractor_service_cost] *= PRICING['timeslots'][9]
+      when 10 then rsp[:contractor_service_cost] *= PRICING['timeslots'][10]
+      when 11 then rsp[:contractor_service_cost] *= PRICING['timeslots'][11]
+      when 12 then rsp[:contractor_service_cost] *= PRICING['timeslots'][12]
+      when 13 then rsp[:contractor_service_cost] *= PRICING['timeslots'][13]
+      when 14 then rsp[:contractor_service_cost] *= PRICING['timeslots'][14]
+      when 15 then rsp[:contractor_service_cost] *= PRICING['timeslots'][15]
+      when 16 then rsp[:contractor_service_cost] *= PRICING['timeslots'][16]
+      when 17 then rsp[:contractor_service_cost] *= PRICING['timeslots'][17]
+      when 18 then rsp[:contractor_service_cost] *= PRICING['timeslots'][18]
+      end
+    end
+    rsp[:contractor_service_cost] = rsp[:contractor_service_cost].round 2
+    rsp[:cost] += rsp[:contractor_service_cost]
     if late_next_day
       rsp[:late_next_day] = PRICING['late_next_day']
       rsp[:cost] += PRICING['late_next_day']
@@ -122,14 +139,14 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    total_cost = (adjusted_cost / 100.0) + cleaning_cost + linen_cost + toiletries_cost + pool_cost + patio_cost + windows_cost + staging_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost + extra_king_sets_cost + extra_twin_sets_cost + extra_toiletry_sets_cost - first_booking_discount_cost - (coupon_cost / 100.0)
+    total_cost = (adjusted_cost / 100.0) + contractor_service_cost + linen_cost + toiletries_cost + late_next_day_cost + late_same_day_cost + no_access_fee_cost + extra_king_sets_cost + extra_twin_sets_cost + extra_toiletry_sets_cost - first_booking_discount_cost - (coupon_cost / 100.0)
     if cancelled? || couldnt_access?
-      total_cost -= linen_cost                # |
-      total_cost -= toiletries_cost           # |
-      total_cost -= extra_king_sets_cost      # | NOTE: tests needed [mutation coverage]
-      total_cost -= extra_twin_sets_cost      # |
-      total_cost -= extra_toiletry_sets_cost  # |
-      total_cost = 0 if total_cost < 0        # |
+      total_cost -= linen_cost
+      total_cost -= toiletries_cost
+      total_cost -= extra_king_sets_cost
+      total_cost -= extra_twin_sets_cost
+      total_cost -= extra_toiletry_sets_cost
+      total_cost = 0 if total_cost < 0
       [PRICING['cancellation'], (total_cost * 0.2).round(2)].max
     else
       total_cost
@@ -146,6 +163,10 @@ class Booking < ActiveRecord::Base
 
   def prediscount_cost
     cost + first_booking_discount_cost + coupon_dollar_cost
+  end
+
+  def scheduled_time
+    custom_timeslot || timeslot
   end
 
   def pricing_hash
@@ -186,7 +207,8 @@ class Booking < ActiveRecord::Base
   end
 
   def update_cost!
-    cost = Booking.cost(property, services, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
+    cost = Booking.cost(property, services, timeslot, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
+    self.contractor_service_cost     = cost[:contractor_service_cost] || 0
     self.cleaning_cost               = cost[:cleaning] || 0
     self.linen_cost                  = cost[:linens] || 0
     self.toiletries_cost             = cost[:toiletries] || 0

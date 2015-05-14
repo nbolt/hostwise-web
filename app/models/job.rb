@@ -50,6 +50,8 @@ class Job < ActiveRecord::Base
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
+  scope :timed, -> { where('bookings.timeslot != ? or bookings.custom_timeslot is not null', 'flex').includes(:booking).references(:bookings) }
+  scope :flex, -> { where('bookings.timeslot = ? and bookings.custom_timeslot is null', 'flex').includes(:booking).references(:bookings) }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
@@ -390,43 +392,123 @@ class Job < ActiveRecord::Base
     end
   end
 
-  def self.set_priorities jobs, contractor
-    standard_jobs = jobs.standard
-    paths = []
-    (DistributionCenter.all.map{|dc| [dc, dc]} + DistributionCenter.all.to_a.permutation(2).to_a).each do |dc_permutation|
-      standard_jobs.to_a.permutation(standard_jobs.length).to_a.each do |jobs_permutation|
-        team_job = standard_jobs.find {|job| job.contractors.count > 1}
-        jobs_permutation = jobs_permutation - [team_job]
-        properties = jobs_permutation.map {|job| job.booking.property}
+  def self.organize_day contractor, date
+    hours = []; hours[9] = nil
+    jobs  = contractor.jobs.standard.on_date(date)
+    count = 0
+    index = nil
 
-        pre_path = [contractor.contractor_profile]
-        pre_path.append dc_permutation[0] if jobs.distribution[0]
-        pre_path.append team_job.booking.property if team_job
-
-        post_path = [contractor.contractor_profile]
-        post_path.unshift dc_permutation[1] if jobs.distribution[0]
-
-        path = pre_path + properties + post_path
-        distance = 0
-        (path.length - 1).times {|i| distance += Haversine.distance(path[i].lat, path[i].lng, path[i+1].lat, path[i+1].lng)}
-
-        pre_path[-1] = team_job if pre_path[-1].class == Property
-        paths.push([distance, pre_path[1..-1] + jobs_permutation + post_path[0..-2]])
-      end
+    jobs.timed.each do |job|
+      start_hour = job.booking.timeslot.to_i - 9
+      end_hour   = (job.booking.timeslot.to_i + job.man_hours).floor - 9
+      (start_hour..end_hour).each {|hour| hours[hour] = job.id}
     end
-    chosen_path = paths.sort_by {|path| path[0]}[0]
 
-    chosen_path[1].each_with_index do |location, index|
-      if location.class == DistributionCenter
-        if index == 0
-          jobs.distribution.pickup[0].distribution_center = location
-          ContractorJobs.where(job_id: jobs.distribution.pickup[0].id, user_id: contractor.id)[0].update_attribute :priority, index
+    (jobs.flex.team + jobs.flex.single).each  do |job|
+      range  = job.man_hours.floor
+      ranges = []
+      hours[2..7].each_with_index do |hour, i|
+        if hour || i == 5
+          ranges.push([index, count]) if index && count > range
+          count = 0; index = nil
         else
-          jobs.distribution.dropoff[0].distribution_center = location
-          ContractorJobs.where(job_id: jobs.distribution.dropoff[0].id, user_id: contractor.id)[0].update_attribute :priority, index
+          count += 1
+          index ||= i + 2
         end
-      else
-        ContractorJobs.where(job_id: location.id, user_id: contractor.id)[0].update_attribute :priority, index
+      end
+      i = jobs.flex.count > 1 && 0 || -1
+      slot = ranges.sort_by! {|r| r[1]}[i]
+      (slot[0]..(range + slot[0])).each {|hour| hours[hour] = job.id}
+    end
+
+    hours
+  end
+
+  def fits_in_day contractor
+    count = 0; index = nil
+    hours = Job.organize_day contractor, date
+
+    if booking.scheduled_time == 'flex'
+      range  = man_hours.floor
+      ranges = []
+      hours[2..7].each_with_index do |hour, i|
+        if hour || i == 5
+          ranges.push([index, count]) if index && count > range
+          count = 0; index = nil
+        else
+          count += 1
+          index ||= i + 2
+        end
+      end
+      slot = ranges.sort_by! {|r| r[1]}[0]
+      slot && true || false
+    else
+      start_hour = booking.scheduled_time.to_i - 9
+      end_hour   = (booking.scheduled_time.to_i + man_hours).floor - 9
+      hours[start_hour..end_hour].compact.empty?
+    end
+  end
+
+  def self.set_priorities contractor, date
+    jobs = contractor.jobs.on_date(date)
+    if jobs.standard.any? {|job| job.booking.scheduled_time != 'flex'}
+      hours = Job.organize_day(contractor, date).uniq.compact
+      hours.uniq.each_with_index do |id, index|
+        ContractorJobs.where(user_id: contractor.id, job_id: id)[0].update_attribute :priority, index + 1
+        job = Job.find id
+        if job.size > 1 && job.contractors.count == 1 && job.booking.timeslot == 'flex'
+          prev_job = Job.find hours[index-1]
+          if prev_job
+            if prev_job.booking.scheduled_time == 'flex'
+              job.booking.update_attribute :custom_timeslot, '11'
+            else
+              job.booking.update_attribute :custom_timeslot, (prev_job.booking.scheduled_time.to_i + prev_job.man_hours).floor + 1
+            end
+          else
+          end
+        end
+      end
+      if jobs.distribution.present?
+        ContractorJobs.where(user_id: contractor.id, job_id: jobs.pickup[0].id)[0].update_attribute :priority, 0
+        ContractorJobs.where(user_id: contractor.id, job_id: jobs.dropoff[0].id)[0].update_attribute :priority, hours.count + 1
+      end
+    else
+      paths = []
+      (DistributionCenter.all.map{|dc| [dc, dc]} + DistributionCenter.all.to_a.permutation(2).to_a).each do |dc_permutation|
+        jobs.standard.to_a.permutation(jobs.standard.length).to_a.each do |jobs_permutation|
+          team_job = jobs.standard.find {|job| job.contractors.count > 1}
+          jobs_permutation = jobs_permutation - [team_job]
+          properties = jobs_permutation.map {|job| job.booking.property}
+
+          pre_path = [contractor.contractor_profile]
+          pre_path.append dc_permutation[0] if jobs.distribution[0]
+          pre_path.append team_job.booking.property if team_job
+
+          post_path = [contractor.contractor_profile]
+          post_path.unshift dc_permutation[1] if jobs.distribution[0]
+
+          path = pre_path + properties + post_path
+          distance = 0
+          (path.length - 1).times {|i| distance += Haversine.distance(path[i].lat, path[i].lng, path[i+1].lat, path[i+1].lng)}
+
+          pre_path[-1] = team_job if pre_path[-1].class == Property
+          paths.push([distance, pre_path[1..-1] + jobs_permutation + post_path[0..-2]])
+        end
+      end
+      chosen_path = paths.sort_by {|path| path[0]}[0]
+
+      chosen_path[1].each_with_index do |location, index|
+        if location.class == DistributionCenter
+          if index == 0
+            jobs.distribution.pickup[0].distribution_center = location
+            ContractorJobs.where(job_id: jobs.distribution.pickup[0].id, user_id: contractor.id)[0].update_attribute :priority, index
+          else
+            jobs.distribution.dropoff[0].distribution_center = location
+            ContractorJobs.where(job_id: jobs.distribution.dropoff[0].id, user_id: contractor.id)[0].update_attribute :priority, index
+          end
+        else
+          ContractorJobs.where(job_id: location.id, user_id: contractor.id)[0].update_attribute :priority, index
+        end
       end
     end
   end
