@@ -60,7 +60,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           else
             start_date = moment(start,   'MM/DD/YYYY')
             end_date   = moment(end,     'MM/DD/YYYY')
-            date       = moment(data[3], 'MM/DD/YYYY')
+            date       = moment(data[4], 'MM/DD/YYYY')
 
             date >= start_date && date <= end_date
 
