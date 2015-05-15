@@ -24,6 +24,7 @@ class Booking < ActiveRecord::Base
   scope :today, -> { where('date = ?', Date.today) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
   scope :upcoming, -> (user) { where(status_cd: [1,4]).where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date > ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
+  scope :complete, -> (user) { where(status_cd: [3,5]).where('bookings.property_id = properties.id and properties.user_id = ? and bookings.date <= ?', user.id, Date.today).order(date: :asc).includes(:property).references(:property) }
   scope :future, -> { where('date >= ?', Date.today) }
   scope :past, -> { where('date < ?', Date.today) }
   scope :by_user, -> (user) { where('user_id = ? and bookings.status_cd != ?', user.id, 0).includes(property: [:user]).references(:user) }

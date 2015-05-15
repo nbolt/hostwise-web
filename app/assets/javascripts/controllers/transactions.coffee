@@ -8,12 +8,18 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
         tab.transactions = rsp
         if tab.name is 'completed'
           $scope.tab tab.name
+          tab.transactions = _(tab.transactions).filter (transaction) -> transaction.cost > 0
           _(tab.transactions).each (transaction) ->
-            transaction.bookings = _(transaction.bookings).select (booking) -> booking.user.id == $scope.user.id
-            transaction.date = transaction.charged_at
-            transaction.properties = _(transaction.bookings).map((booking) -> booking.property.nickname).join ', '
-            transaction.payment = transaction.bookings[0].payment.last4
-            transaction.total = (transaction.amount / 100).toFixed(2)
+            #transaction.bookings = _(transaction.bookings).select (booking) -> booking.user.id == $scope.user.id
+            #transaction.date = transaction.charged_at
+            #transaction.properties = _(transaction.bookings).map((booking) -> booking.property.nickname).join ', '
+            #transaction.payment = transaction.bookings[0].payment.last4
+            #transaction.total = (transaction.amount / 100).toFixed(2)
+            transaction.date = transaction.date
+            transaction.property = transaction.property.nickname
+            transaction.services = booked_services transaction.services
+            transaction.payment = transaction.payment.last4
+            transaction.total = transaction.cost.toFixed(2)
         else if tab.name is 'upcoming'
           _(tab.transactions).each (transaction) ->
             transaction.date = transaction.date
@@ -39,7 +45,7 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
 
   $scope.breakdown_modal = (transaction) ->
     $http.get("/transactions/#{transaction.id}").success (rsp) ->
-      $scope.bookings = rsp.bookings
+      $scope.booking = rsp.booking
       $scope.total = _($scope.bookings).reduce(((acc, booking) -> acc + booking.cost), 0)
       ngDialog.open template: 'transaction-breakdown-modal', className: 'edit full', scope: $scope
 
