@@ -1,6 +1,5 @@
 namespace :migrate do
   task transactions: :environment do
-    Transaction.all.each {|t| t.update_attribute :charged_at, t.created_at}
     ids = Transaction.all.map(&:stripe_charge_id)
     ids = ids.select{|id| ids.count(id) > 1}.uniq
     ids.each do |id|
