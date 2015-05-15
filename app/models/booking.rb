@@ -291,7 +291,7 @@ class Booking < ActiveRecord::Base
   end
 
   def last_transaction
-    transactions.order(created_at: :asc).last
+    transactions.order(charged_at: :asc).last
   end
 
   def same_day_cancellation

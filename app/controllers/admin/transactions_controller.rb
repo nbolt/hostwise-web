@@ -41,6 +41,7 @@ class Admin::TransactionsController < Admin::AuthController
       {
         user: User.find(user_id),
         booking_groups: bookings.group_by {|booking| booking.payment.id}.map do |payment_id, bookings|
+          bookings = bookings.select {|booking| booking.payment_status == 0}
           {
             payment: Payment.find(payment_id),
             total: (bookings.reduce(0) {|acc, booking| acc + booking.cost} * 100).to_i,
@@ -62,6 +63,8 @@ class Admin::TransactionsController < Admin::AuthController
             statement_descriptor: "HostWise"[0..21], # 22 characters max
             metadata: metadata
           )
+          transaction = Transaction.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total])
+          booking_group[:bookings].each {|booking| transaction.bookings << booking; booking.save}
 
           booking_group[:bookings].each do |booking|
             booking.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total])
