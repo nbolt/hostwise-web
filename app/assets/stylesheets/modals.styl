@@ -488,6 +488,8 @@
       overflow: hidden
       .steps
         height: 40px
+        @media phone
+          display: none
         .step
           display: inline-block
           text-align: center
@@ -556,6 +558,10 @@
           vertical-align: top
           opacity: 0
           transition: opacity .4s ease-in-out
+          &.step-additional, &.step-three
+            .foot .right .total
+              @media phone
+                display: none
           &.next-day, &.same-day, &.staging
             .check-container
               .fee
@@ -1085,6 +1091,10 @@
                     border-bottom-right-radius: 3px
                 input.box
                   border-radius: 0
+                  -webkit-text-fill-color: heavy-gray
+                  -webkit-opacity: 1
+                  -webkit-appearance: none
+                  background: white
           &.confirmation
             background-color: white
             width: 976px
