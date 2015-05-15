@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150514002256) do
+ActiveRecord::Schema.define(version: 20150515192314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -482,6 +482,7 @@ ActiveRecord::Schema.define(version: 20150514002256) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "amount"
+    t.date     "charged_at"
   end
 
   create_table "unserviced_zips", force: :cascade do |t|

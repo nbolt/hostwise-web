@@ -20,11 +20,7 @@
                   i.icon-acc-open
               th
                 a href='' ng:click="predicate = 'property'; reverse=!reverse"
-                  | Property
-                  i.icon-acc-open
-              th
-                a href='' ng:click="predicate = 'services'; reverse=!reverse"
-                  | Total
+                  | Properties
                   i.icon-acc-open
               th
                 a href='' ng:click="predicate = 'payment'; reverse=!reverse"
@@ -37,11 +33,11 @@
             tr ng:repeat='transaction in tab.transactions | orderBy:predicate:reverse'
               td.date ng:bind="::transaction.date | date: 'MM/dd/yyyy':'UTC'"
               td.property
-                | {{transaction.property}}
-              td.services
-                | {{transaction.services}}
+                | {{transaction.properties}}
               td.payment
                 | **** {{transaction.payment}}
-              td.total
+              td.total ng:click='breakdown_modal(transaction)'
                 | ${{transaction.total}}
+
 = render 'common/file_export_modal'
+= render 'common/transaction_breakdown_modal'

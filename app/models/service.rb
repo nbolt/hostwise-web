@@ -4,4 +4,8 @@ class Service < ActiveRecord::Base
 
   scope :extra, -> { where(extra: true, hidden: false) }
   scope :standard, -> { where(extra: false, hidden: false) }
+
+  def serializer_display
+    display
+  end
 end

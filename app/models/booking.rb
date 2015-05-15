@@ -39,6 +39,14 @@ class Booking < ActiveRecord::Base
 
   attr_accessor :vip
 
+  def preset_cost
+    staging_cost
+  end
+
+  def linens_cost
+    linen_cost
+  end
+
   def service_list
     services.map(&:display).join ', '
   end
@@ -149,6 +157,7 @@ class Booking < ActiveRecord::Base
       total_cost = 0 if total_cost < 0
       [PRICING['cancellation'], (total_cost * 0.2).round(2)].max
     else
+      total_cost = 0 if total_cost < 0
       total_cost
     end
   end

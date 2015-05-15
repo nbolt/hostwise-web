@@ -1,0 +1,83 @@
+script#transaction-breakdown-modal type="text/ng-template"
+  .modal
+    .header
+      .text Transaction Details
+    .content
+      .transaction-details
+        .days
+          .day collapse='' ng:repeat='booking in bookings'
+            .total
+              .arrow
+                i.icon-acc-open
+              .text ng:bind-template='{{booking.property.nickname}} - {{booking.date}}'
+              .price ${{booking.cost}}
+            .day-services
+              .service.discount ng:show="booking.first_booking_discount"
+                .text First Booking Discount
+                .price
+                  | (-$
+                  span ng:bind="booking.first_booking_discount_cost"
+                  | )
+              .service.discount ng:show='booking.coupon_cost > 0'
+                .text Coupon
+                .price
+                  | (-$
+                  span ng:bind="booking.coupon_cost / 100.0"
+                  | )
+              .service.discount ng:show='booking.discounted'
+                .text Discount ({{booking.discounted_reason}})
+                .price
+                  | (-$
+                  span ng:bind="booking.discounted_cost / 100.0"
+                  | )
+              .service.discount ng:show='booking.refunded'
+                .text Refund ({{booking.refunded_reason}})
+                .price
+                  | (-$
+                  span ng:bind="booking.refunded_cost / 100.0"
+                  | )
+              .late ng:show="booking.extra_king_sets > 0"
+                .text ng:bind-template='{{booking.extra_king_sets}} Extra King Sets'
+                .price
+                  | $
+                  span ng:bind="booking.extra_king_sets_cost"
+              .late ng:show="booking.extra_twin_sets > 0"
+                .text ng:bind-template='{{booking.extra_twin_sets}} Extra Twin Sets'
+                .price
+                  | $
+                  span ng:bind="booking.extra_twin_sets_cost"
+              .late ng:show="booking.extra_toiletry_sets > 0"
+                .text ng:bind-template='{{booking.extra_toiletry_sets}} Extra Toiletry Sets'
+                .price
+                  | $
+                  span ng:bind="booking.extra_toiletry_sets_cost"
+              .late ng:show="booking.late_next_day"
+                .text Late Day Booking Fee
+                .price
+                  | $
+                  span ng:bind="booking.late_next_day_cost"
+              .late ng:show="booking.late_same_day"
+                .text Same Day Booking Fee
+                .price
+                  | $
+                  span ng:bind="booking.late_same_day_cost"
+              .late ng:show="booking.overage"
+                .text Overage ({{booking.overage_reason}})
+                .price
+                  | $
+                  span ng:bind="booking.overage_cost / 100.0"
+              .service ng:repeat='service in booking.services'
+                .text ng:bind='service.serializer_display'
+                .price
+                  | $
+                  span ng:bind="service_cost(booking, service)"
+        .total
+          .text Total
+          .price ${{total}}
+        .paid
+          .right ng:bind='bookings[0].payment.serializer_display'
+          .left Paid with:
+    .footer
+      .buttons
+        .button.white ng:click='cancel_process()'
+          .text Close

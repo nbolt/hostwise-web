@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     get   '/notifications' => 'notifications#index'
     put   '/notifications/update' => 'notifications#update'
     get   '/transactions' => 'transactions#index'
+    get   '/transactions/:id' => 'transactions#show'
     get   '/last_services' => 'users#last_services'
     post  '/bookings/apply_discount' => 'bookings#apply_discount'
     match '/users/:action' => 'users', via: [:get, :post]

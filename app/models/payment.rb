@@ -16,6 +16,10 @@ class Payment < ActiveRecord::Base
     "#{card_type.titleize} #{last4}"
   end
 
+  def serializer_display
+    display
+  end
+
   private
 
   def set_card_type

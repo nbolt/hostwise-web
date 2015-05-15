@@ -13,9 +13,9 @@ machine:
 test:
   override:
     - bundle exec rake test
-    - bundle exec rails s:
-        background: true
-    - bundle exec rake test:e2e
+    # - bundle exec rails s:
+    #    background: true
+    # - bundle exec rake test:e2e
 
 deployment:
   staging:
