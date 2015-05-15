@@ -3,31 +3,7 @@ EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
   url = window.location.href.split('/')
   $scope.id = url[url.length-2]
 
-  $http.get(window.location.href + '.json').success (rsp) ->
-    $scope.host = rsp
-    _($scope.host.properties).each (property) ->
-      #property.revenue = _(property.bookings).reduce(((acc, booking) -> acc + booking.cost), 0)
-      property.revenue = 0
-      _(property.bookings).each (booking) ->
-        if booking.status_cd == 3
-          property.revenue += booking.cost
-        else if booking.status_cd == 1
-          if booking.late_next_day || booking.late_same_day
-            property.revenue += booking.cost
-          else
-            property.revenue += 0
-
-    $scope.host.total_spent = 0
-    _($scope.host.properties).each (property) ->
-      _(property.bookings).each (booking) ->
-        if booking.status_cd == 3
-          $scope.host.total_spent += booking.cost
-        else if booking.status_cd == 1
-          if booking.late_next_day || booking.late_same_day
-            $scope.host.total_spent += booking.cost
-          else
-            $scope.host.total_spent += 0
-
+  $http.get(window.location.href + '.json').success (rsp) -> $scope.host = rsp
 
   $scope.count_bookings = ->
     if $scope.host

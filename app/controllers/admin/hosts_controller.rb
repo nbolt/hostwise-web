@@ -2,14 +2,14 @@ class Admin::HostsController < Admin::AuthController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: User.hosts.to_json(include: {properties: {include: {bookings: {}, active_bookings: {}, past_bookings: {include: {successful_transactions: {}}}}}}, methods: [:name, :avatar, :next_service_date, :display_phone_number]) }
+      format.json { render json: User.hosts.to_json(include: {properties: {include: {bookings: {}, active_bookings: {}, past_bookings: {include: {successful_transactions: {}}}}}}, methods: [:name, :avatar, :next_service_date, :display_phone_number, :total_spent]) }
     end
   end
 
   def edit
     respond_to do |format|
       format.html
-      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {methods: [:last_service_date, :next_service_date], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar]) }
+      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {methods: [:last_service_date, :next_service_date, :revenue], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar, :total_spent]) }
       #format.json { render json: User.find(params[:id]), serializer: HostSerializer }
     end
   end

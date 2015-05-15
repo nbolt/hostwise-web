@@ -7,13 +7,6 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
       _($scope.users).each (user) ->
         user.upcoming_jobs = 0
         user.completed_jobs = 0
-        user.total_spent = 0
-        _(user.properties).each (property) ->
-          user.upcoming_jobs += property.active_bookings.length
-          user.completed_jobs += property.past_bookings.length
-          if user.completed_jobs > 0
-            _(property.past_bookings).each (booking) ->
-              _(booking.successful_transactions).each (transaction) -> user.total_spent += transaction.amount/100
       spinner.stopSpin()
       $timeout((->
         angular.element("#example-1").dataTable({
@@ -36,7 +29,7 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
         active_properties = 0
         _(host.properties).each (property) ->    
           booking = property.active_bookings[property.active_bookings.length-1]
-          active_properties += 1 if moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(1, 'weeks')
+          active_properties += 1 if booking && moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(1, 'weeks')
         count += 1 if active_properties >= 1
       return count
     else 

@@ -119,6 +119,10 @@ class User < ActiveRecord::Base
     bookings.map(&:transactions).flatten.sort_by(&:created_at)
   end
 
+  def total_spent
+    (transactions.select{|t| t.successful?}.map(&:amount).sum / 100.0).round 2
+  end
+
   def coupons
     bookings.map(&:coupons).flatten
   end

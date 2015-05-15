@@ -139,6 +139,16 @@ ActiveRecord::Schema.define(version: 20150514002256) do
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
   add_index "bookings", ["property_id"], name: "index_bookings_on_property_id", using: :btree
 
+  create_table "bot_accounts", force: :cascade do |t|
+    t.string   "email"
+    t.string   "password"
+    t.integer  "status_cd"
+    t.date     "last_run"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "source_cd"
+  end
+
   create_table "bots", force: :cascade do |t|
     t.string   "host_name"
     t.string   "profile_id"
