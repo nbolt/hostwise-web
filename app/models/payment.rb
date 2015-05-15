@@ -13,7 +13,7 @@ class Payment < ActiveRecord::Base
   scope :primary, -> { where(primary: true) }
 
   def display
-    "#{card_type.titleize} #{last4}" if card_type.present?
+    "#{(card_type || bank_name).then :titleize} #{last4}"
   end
 
   def serializer_display
