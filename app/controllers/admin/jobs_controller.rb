@@ -35,6 +35,10 @@ class Admin::JobsController < Admin::AuthController
     end
   end
 
+  def contractors
+    render json: job.contractors, each_serializer: JobContractorSerializer, root: :contractors
+  end
+
   def update_extras
     job.booking.update_attributes(extra_king_sets: params[:extras][:king_sets],
                                   extra_twin_sets: params[:extras][:twin_sets],
@@ -84,7 +88,11 @@ class Admin::JobsController < Admin::AuthController
     end
 
     payout.save
-    render json: { success: true }
+
+    total_payout = job.payouts.reduce(0) {|acc, payout| acc + payout.total}
+    adjusted_payout = job.payouts.reduce(0) {|acc, payout| acc + payout.adjusted_amount}
+
+    render json: { success: true, total_payout: total_payout / 100.0, adjusted_payout: adjusted_payout / 100.0 }
   end
 
   def booking_cost

@@ -138,14 +138,15 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
 
   $scope.edit_payout_modal = (job) ->
     $scope.selected_payout = job
-    $scope.contractors = _(job.contractors).clone()
-    _($scope.contractors).each (contractor) ->
-      contractor.payout = _(contractor.payouts).find (payout) -> payout.job_id == job.id
-    if $scope.contractors.length == 1
-      $scope.select_contractor $scope.contractors[0]
-    else
-      $scope.selected_contractor = null
-    ngDialog.open template: 'edit-payout-modal', className: 'edit-pay info full', scope: $scope
+    $http.get("/jobs/#{job.id}/contractors").success (rsp) ->
+      $scope.contractors = rsp.contractors
+      _($scope.contractors).each (contractor) ->
+        contractor.payout = _(contractor.payouts).find (payout) -> payout.job_id == job.id
+      if $scope.contractors.length == 1
+        $scope.select_contractor $scope.contractors[0]
+      else
+        $scope.selected_contractor = null
+      ngDialog.open template: 'edit-payout-modal', className: 'edit-pay info full', scope: $scope
 
   $scope.edit_payment_modal = (booking) ->
     $scope.selected_payment = booking
@@ -191,18 +192,10 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         ngDialog.closeAll()
         angular.element("#payout-#{job.id} td:nth-last-child(2)").addClass 'modified'
         angular.element("#payout-#{job.id} td:last-child").addClass 'modified'
-        contractor = _(job.contractors).find (contractor) -> contractor.id == $scope.selected_contractor.id
-        payout = _(contractor.payouts).find (payout) -> payout.job_id == job.id
-        payout.subtracted_amount = parseFloat($scope.payout.discount.amount) * 100
-        payout.subtracted_reason = $scope.payout.discount.reason
-        payout.additional_amount = parseFloat($scope.payout.overage.amount) * 100
-        payout.additional_reason = $scope.payout.overage.reason
-        payout = _(job.payouts).find (p) -> p.id == payout.id
-        payout.total = $scope.updated_payout() * 100
-        payout.adjusted_amount = adjusted_payout() * 100
-        job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0)
-        job.total_payout = "$#{(job.total_payout/100).toFixed(2)}"
-        job.adjusted_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.adjusted_amount), 0) / 100
+        job.total_payout = rsp.total_payout
+        job.total_payout = "$#{job.total_payout.toFixed(2)}"
+        job.adjusted_payout = rsp.adjusted_payout
+        console.log rsp
         if job.adjusted_payout >= 0
           job.adjusted_payout = "$#{job.adjusted_payout.toFixed(2)}"
         else
