@@ -71,9 +71,8 @@ class Admin::TransactionsController < Admin::AuthController
           end
         rescue Stripe::CardError => e
           err  = e.json_body[:error]
-          booking_group[:bookings].each do |booking|
-            booking.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: booking_group[:total])
-          end
+          transaction = Transaction.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: booking_group[:total])
+          booking_group[:bookings].each {|booking| transaction.bookings << booking}
           UserMailer.generic_notification("Stripe Payment Failed - ***#{booking_group[:payment].last4}", "Booking IDs: #{booking_group[:bookings].map(&:id).join(', ').to_s}").then(:deliver)
           false
         end
