@@ -12,7 +12,6 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
             transaction.bookings = _(transaction.bookings).select (booking) -> booking.user.id == $scope.user.id
             transaction.date = transaction.charged_at
             transaction.properties = _(transaction.bookings).map((booking) -> booking.property.nickname).join ', '
-            #transaction.services = booked_services transaction.booking.services
             transaction.payment = transaction.bookings[0].payment.last4
             transaction.total = (transaction.amount / 100).toFixed(2)
         else if tab.name is 'upcoming'

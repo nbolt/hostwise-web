@@ -18,9 +18,13 @@
                 a href='' ng:click="predicate = 'date'; reverse=!reverse"
                   | Date
                   i.icon-acc-open
-              th
+              th ng:if='tab.name == "completed"'
                 a href='' ng:click="predicate = 'property'; reverse=!reverse"
                   | Properties
+                  i.icon-acc-open
+              th ng:if='tab.name == "upcoming"'
+                a href='' ng:click="predicate = 'property'; reverse=!reverse"
+                  | Property
                   i.icon-acc-open
               th
                 a href='' ng:click="predicate = 'payment'; reverse=!reverse"
@@ -32,8 +36,10 @@
                   i.icon-acc-open
             tr ng:repeat='transaction in tab.transactions | orderBy:predicate:reverse'
               td.date ng:bind="::transaction.date | date: 'MM/dd/yyyy':'UTC'"
-              td.property
+              td.property ng:if='tab.name == "completed"'
                 | {{transaction.properties}}
+              td.property ng:if='tab.name == "upcoming"'
+                | {{transaction.property}}
               td.payment
                 | **** {{transaction.payment}}
               td.total ng:click='breakdown_modal(transaction)'
