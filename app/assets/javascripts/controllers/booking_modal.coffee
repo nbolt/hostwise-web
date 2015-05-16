@@ -13,7 +13,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.refresh_booking = false
   $scope.show_back = false
   $scope.discount = 0
-  $scope.chosen_time = 'flex'
 
   if $scope.selected_booking
     booking = _($scope.property.active_bookings).find (booking) -> booking.id == parseInt($scope.selected_booking)
@@ -30,12 +29,19 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
+  $scope.format_chosen_time = ->
+    time = parseInt $scope.chosen_time
+    if time < 12 then meridian = 'a' else meridian = 'p'
+    time1 = time - 1; time1 -= 12 if time1 > 12
+    time2 = time;     time2 -= 12 if time2 > 12
+    "#{time1} - #{time2} #{meridian}m"
+
   $scope.time_total = (time) ->
     if $scope.timeslots
-      if $scope.service_total == 0
+      if $scope.flex_service_total() == 0
         0
       else
-        total = $scope.service_total - $scope.cleaning_cost
+        total = $scope.flex_service_total() - $scope.cleaning_cost
         switch time
           when 9  then total += $scope.cleaning_cost * $scope.timeslots[9]
           when 10 then total += $scope.cleaning_cost * $scope.timeslots[10]
@@ -51,6 +57,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $scope.choose_flex = ->
     $scope.chosen_time = 'flex'
+    $scope.calculate_pricing()
     angular.element('.timeboxes .box').removeClass 'chosen'
     angular.element('.timeboxes .box.flex').addClass 'chosen'
     angular.element('.timeboxes .box.premium .text').text 'Choose your time'
@@ -68,6 +75,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $scope.choose_time = (time) ->
     $scope.chosen_time = time
+    $scope.calculate_pricing()
     angular.element('.timeboxes .times').fadeOut()
     angular.element('.timeboxes .box').removeClass 'chosen'
     angular.element('.timeboxes .box.premium').addClass 'chosen'
@@ -210,6 +218,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $scope.load_pricing = -> $http.get('/cost').success (rsp) -> $scope.pricing = rsp
 
+  $scope.flex_service_total = -> $scope.service_total - ($scope.timeslot_cost || 0)
+
   $scope.calculate_pricing = ->
     first_booking_discount_applied = false
     service_total = 0
@@ -217,7 +227,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     $scope.days = []
     remaining = $scope.remaining
     $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
-      $scope.cleaning_cost = rsp.contractor_service_cost
+      $scope.timeslot_cost = rsp.timeslot_cost
+      $scope.cleaning_cost = rsp.orig_service_cost
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
       cancellation_cost = 0 if cancellation_cost < 0
       twenty_percent = +(cancellation_cost * 0.2).toFixed(2)

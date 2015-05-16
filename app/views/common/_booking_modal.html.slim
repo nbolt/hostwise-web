@@ -304,7 +304,7 @@ script#booking-modal type="text/ng-template"
             .box.flex ng:click='choose_flex()'
               .text
                 | Between 10am - 4pm
-                span ng:bind-template='${{service_total}}'
+                span ng:bind-template='${{flex_service_total()}}'
             .box.premium
               .text ng:click='choose_time_modal()' Choose your time
               .times
@@ -485,14 +485,18 @@ script#booking-modal type="text/ng-template"
         .content.confirmation.teal
           i.icon-check
           .title-text You're all set!
-          .check-container.border
+          .check-container.border ng:if='chosen_time != "flex"'
+            .message We will arrive between {{format_chosen_time()}}
+          .check-container.border ng:if='chosen_time == "flex"'
             .check.out
               .time 10 AM
               .text CHECK-OUT
             .check.in
               .time 4 PM
               .text CHECK-IN
-          .subtext
+          .subtext ng:if='chosen_time != "flex"'
+            | Don't forget! Please make sure your guests check-out before our arrival time to guarantee the best clean!
+          .subtext ng:if='chosen_time == "flex"'
             | Don't forget! Please make sure your guests check-out by 10:00 AM.
             br
               | HostWise will arrive between

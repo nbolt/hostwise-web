@@ -81,6 +81,7 @@ class Booking < ActiveRecord::Base
       end
     end
     rsp[:contractor_service_cost] = (rsp[:cleaning] || 0) + (rsp[:pool] || 0) + (rsp[:patio] || 0) + (rsp[:windows] || 0) + (rsp[:preset] || 0)
+    rsp[:orig_service_cost] = rsp[:contractor_service_cost]
     if timeslot != 'flex'
       case timeslot.to_i
       when 9  then rsp[:contractor_service_cost] *= PRICING['timeslots'][9]
@@ -94,6 +95,7 @@ class Booking < ActiveRecord::Base
       when 17 then rsp[:contractor_service_cost] *= PRICING['timeslots'][17]
       when 18 then rsp[:contractor_service_cost] *= PRICING['timeslots'][18]
       end
+      rsp[:timeslot_cost] = rsp[:contractor_service_cost] - rsp[:orig_service_cost]
     end
     rsp[:contractor_service_cost] = rsp[:contractor_service_cost].round 2
     rsp[:cost] += rsp[:contractor_service_cost]
