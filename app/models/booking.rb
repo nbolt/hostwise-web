@@ -95,9 +95,9 @@ class Booking < ActiveRecord::Base
       when 17 then rsp[:contractor_service_cost] *= PRICING['timeslots'][17]
       when 18 then rsp[:contractor_service_cost] *= PRICING['timeslots'][18]
       end
-      rsp[:timeslot_cost] = rsp[:contractor_service_cost] - rsp[:orig_service_cost]
     end
-    rsp[:contractor_service_cost] = rsp[:contractor_service_cost].round 2
+    rsp[:contractor_service_cost] = rsp[:contractor_service_cost].round
+    rsp[:timeslot_cost] = rsp[:contractor_service_cost] - rsp[:orig_service_cost]
     rsp[:cost] += rsp[:contractor_service_cost]
     if late_next_day
       rsp[:late_next_day] = PRICING['late_next_day']
@@ -220,6 +220,7 @@ class Booking < ActiveRecord::Base
 
   def update_cost!
     cost = Booking.cost(property, services, timeslot, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
+    self.timeslot_cost               = cost[:timeslot_cost] || 0
     self.contractor_service_cost     = cost[:contractor_service_cost] || 0
     self.cleaning_cost               = cost[:cleaning] || 0
     self.linen_cost                  = cost[:linens] || 0

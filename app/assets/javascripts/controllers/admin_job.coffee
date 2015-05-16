@@ -43,6 +43,8 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
       else
         load_job(rsp)
 
+  $scope.abs = (num) -> Math.abs num
+
   $scope.update_extras = ->
     $http.post($window.location.href + '/update_extras', extras: $scope.extra).success (rsp) ->
       if rsp.success

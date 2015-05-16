@@ -216,6 +216,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
       else
         defer.resolve $scope.payment.id
 
+  $scope.abs = (num) -> Math.abs num
+
   $scope.load_pricing = -> $http.get('/cost').success (rsp) -> $scope.pricing = rsp
 
   $scope.flex_service_total = -> $scope.service_total - ($scope.timeslot_cost || 0)
@@ -238,6 +240,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
           day = {}
           day.total = rsp.cost
           day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
+          day.timeslot_cost = rsp.timeslot_cost
           $scope.next_day_booking = day.date if rsp.late_next_day
           $scope.same_day_booking = day.date if rsp.late_same_day
           if day.date == $scope.next_day_booking

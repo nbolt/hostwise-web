@@ -228,6 +228,17 @@
                   | (-$
                   span ng:bind="job.booking.refunded_cost / 100.0"
                   | )
+              .service.discount ng:show="job.booking.timeslot_cost < 0"
+                .text Timeslot
+                .price
+                  | (-$
+                  span ng:bind="abs(job.booking.timeslot_cost)"
+                  | )
+              .late ng:show="job.booking.timeslot_cost > 0"
+                .text Premium Timeslot
+                .price
+                  | $
+                  span ng:bind="job.booking.timeslot_cost"
               .late ng:show="job.booking.extra_king_sets > 0"
                 .text ng:bind-template='{{extra.king_sets}} Extra King Sets'
                 .price
