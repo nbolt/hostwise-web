@@ -46,12 +46,15 @@ class Admin::BookingsController < Admin::AuthController
     refunded = params[:refunded_cost].to_f * 100
 
     if refunded > booking.refunded_cost
-      booking.refunded        = true
-      booking.adjusted        = true
-      booking.adjusted_cost   = booking.adjusted_cost - refunded
-      booking.refunded_cost   = refunded
-      booking.refunded_reason = params[:refunded_reason]
-      booking.process_refund!
+      if booking.process_refund!
+        booking.refunded        = true
+        booking.adjusted        = true
+        booking.adjusted_cost   = booking.adjusted_cost - refunded
+        booking.refunded_cost   = refunded
+        booking.refunded_reason = params[:refunded_reason]
+      else
+        render json: { success: false, message: "Refund failed." }
+      end
     else
       render json: { success: false, message: "Can't refund for an amount less than what you've already refunded." }
       return
