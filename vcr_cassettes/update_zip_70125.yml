@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.smartystreets.com/zipcode?auth-id=be3ffba5-6059-4c70-8dff-92978ab8dec4&auth-token=sl4776At3RB7VDM7kXOw&zipcode=70125
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Accept, Content-Type, Content-Length, Referer, Origin, Host, x-include-invalid,
+        x-standardize-only
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      X-Account-Header:
+      - 374379a6-0000-0000-0000-000000000000
+      X-Server-Name:
+      - zipapi-002-newark
+      Date:
+      - Mon, 18 May 2015 23:18:43 GMT
+      Content-Length:
+      - '355'
+    body:
+      encoding: UTF-8
+      string: |
+        [{"input_index":0,"city_states":[{"city":"New Orleans","state_abbreviation":"LA","state":"Louisiana","mailable_city":true},{"city":"Broadmoor","state_abbreviation":"LA","state":"Louisiana","mailable_city":false}],"zipcodes":[{"zipcode":"70125","zipcode_type":"S","county_fips":"22071","county_name":"Orleans","latitude":29.95065,"longitude":-90.10453}]}]
+    http_version: 
+  recorded_at: Mon, 18 May 2015 23:18:44 GMT
+recorded_with: VCR 2.9.3

@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.smartystreets.com/zipcode?auth-id=be3ffba5-6059-4c70-8dff-92978ab8dec4&auth-token=sl4776At3RB7VDM7kXOw&zipcode=91350
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Accept, Content-Type, Content-Length, Referer, Origin, Host, x-include-invalid,
+        x-standardize-only
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      X-Account-Header:
+      - 374379a6-0000-0000-0000-000000000000
+      X-Server-Name:
+      - zipapi-002-newark
+      Date:
+      - Mon, 18 May 2015 23:17:29 GMT
+      Content-Length:
+      - '822'
+    body:
+      encoding: UTF-8
+      string: |
+        [{"input_index":0,"city_states":[{"city":"Santa Clarita","state_abbreviation":"CA","state":"California","mailable_city":true},{"city":"Agua Dulce","state_abbreviation":"CA","state":"California","mailable_city":true},{"city":"Bouquet Canyon","state_abbreviation":"CA","state":"California","mailable_city":false},{"city":"Green Valley","state_abbreviation":"CA","state":"California","mailable_city":true},{"city":"Mint Canyon","state_abbreviation":"CA","state":"California","mailable_city":false},{"city":"Saugus","state_abbreviation":"CA","state":"California","mailable_city":false},{"city":"Sleepy Valley","state_abbreviation":"CA","state":"California","mailable_city":false}],"zipcodes":[{"zipcode":"91350","zipcode_type":"S","county_fips":"06037","county_name":"Los Angeles","latitude":34.44021,"longitude":-118.516}]}]
+    http_version: 
+  recorded_at: Mon, 18 May 2015 23:17:30 GMT
+recorded_with: VCR 2.9.3

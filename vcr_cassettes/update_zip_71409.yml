@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.smartystreets.com/zipcode?auth-id=be3ffba5-6059-4c70-8dff-92978ab8dec4&auth-token=sl4776At3RB7VDM7kXOw&zipcode=71409
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Accept, Content-Type, Content-Length, Referer, Origin, Host, x-include-invalid,
+        x-standardize-only
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      X-Account-Header:
+      - 374379a6-0000-0000-0000-000000000000
+      X-Server-Name:
+      - zipapi-002-newark
+      Date:
+      - Mon, 18 May 2015 23:19:27 GMT
+      Content-Length:
+      - '865'
+    body:
+      encoding: UTF-8
+      string: |
+        [{"input_index":0,"city_states":[{"city":"Boyce","state_abbreviation":"LA","state":"Louisiana","mailable_city":true},{"city":"Alfalfa","state_abbreviation":"LA","state":"Louisiana","mailable_city":false},{"city":"Cotile","state_abbreviation":"LA","state":"Louisiana","mailable_city":false},{"city":"Gardner","state_abbreviation":"LA","state":"Louisiana","mailable_city":true},{"city":"Hotwells","state_abbreviation":"LA","state":"Louisiana","mailable_city":false},{"city":"McNutt","state_abbreviation":"LA","state":"Louisiana","mailable_city":false},{"city":"Rapides","state_abbreviation":"LA","state":"Louisiana","mailable_city":false},{"city":"Wilda","state_abbreviation":"LA","state":"Louisiana","mailable_city":false}],"zipcodes":[{"zipcode":"71409","zipcode_type":"S","county_fips":"22079","county_name":"Rapides","latitude":31.30834,"longitude":-92.68193}]}]
+    http_version: 
+  recorded_at: Mon, 18 May 2015 23:19:27 GMT
+recorded_with: VCR 2.9.3
