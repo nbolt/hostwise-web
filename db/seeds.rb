@@ -23,7 +23,7 @@ if Rails.env.test?
   CSV.foreach "#{Rails.root}/db/data/service_zips.csv" do |row|
     code = row[0]
     zip  = ZipCode.create(code: code)
-    zip.update_attribute :serviced, true unless zip.serviced
+    VCR.use_cassette("update_zip_#{zip.code}") { zip.update_attribute :serviced, true }
   end
 else
   DistributionCenter.create(name: 'Venice Warehouse', address1:'1020 Lake St',address2:'#9',city:'Los Angeles',state:'CA',zip:'90291') unless DistributionCenter.where(address1:'1020 Lake St')[0]

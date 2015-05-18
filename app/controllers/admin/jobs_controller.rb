@@ -152,7 +152,6 @@ class Admin::JobsController < Admin::AuthController
         job.booking.update_attribute :status, :deleted
       end
 
-      job.update_attribute :status_cd, 6
       job.contractors.each do |contractor|
         contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100) if job.booking.same_day_cancellation
         job.contractors.destroy contractor
