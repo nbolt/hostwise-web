@@ -10,6 +10,7 @@ class Property < ActiveRecord::Base
 
   as_enum :rental_type, full_time: 0, part_time: 1
   as_enum :property_type, house: 0, condo: 1
+  as_enum :linen_handling, purchase: 0, rental: 1, in_unit: 2
 
   belongs_to :user
   belongs_to :zip_code, foreign_key: :zip_id

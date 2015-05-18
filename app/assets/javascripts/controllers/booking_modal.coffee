@@ -13,6 +13,59 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.refresh_booking = false
   $scope.show_back = false
   $scope.discount = 0
+  $scope.linen_handling = null
+  
+  if $scope.property.linen_handling_cd == 0
+    $scope.steps = [
+      {
+        num: 1
+        name: 'services'
+        display: 'Date & Services'
+      },
+      {
+        num: 2
+        name: 'extras'
+        display: 'Extra Options'
+      },
+      {
+        num: 3
+        name: 'time'
+        display: 'Select a Time'
+      },
+      {
+        num: 4
+        name: 'pay'
+        display: 'Finish & Pay'
+      }
+    ]
+  else
+    $scope.steps = [
+      {
+        num: 1
+        name: 'services'
+        display: 'Date & Services'
+      },
+      {
+        num: 2
+        name: 'linens'
+        display: 'Linens & Towels'
+      },
+      {
+        num: 3
+        name: 'extras'
+        display: 'Extra Options'
+      },
+      {
+        num: 4
+        name: 'time'
+        display: 'Select a Time'
+      },
+      {
+        num: 5
+        name: 'pay'
+        display: 'Finish & Pay'
+      }
+    ]
 
   if $scope.selected_booking
     booking = _($scope.property.active_bookings).find (booking) -> booking.id == parseInt($scope.selected_booking)
@@ -28,6 +81,20 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
         $scope.calculate_pricing()
 
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
+
+  $scope.steps_class = -> $scope.property.linen_handling_cd == 0 && 'four' || 'five'
+
+  $scope.step_class = (step, name) ->
+    if name
+      name = _($scope.steps).find (step) -> step.name == name
+      if step.num < name.num
+        'complete'
+      else if step.num == name.num
+        'current'
+      else
+        ''
+    else
+      'complete'
 
   $scope.format_chosen_time = ->
     time = parseInt $scope.chosen_time
@@ -61,6 +128,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     angular.element('.timeboxes .box').removeClass 'chosen'
     angular.element('.timeboxes .box.flex').addClass 'chosen'
     angular.element('.timeboxes .box.premium .text').text 'Choose your time'
+    null
+
+  $scope.select_handling = (num, name) ->
+    $scope.linen_handling = num
+    angular.element('.linen-boxes .box').removeClass 'selected'
+    angular.element(".linen-boxes .box.#{name}").addClass 'selected'
     null
 
   $scope.choose_time_modal = ->
@@ -111,11 +184,18 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     else if no_dates()
       flash 'failure', 'Please select at least one date'
     else
-      $scope.slide 'step-additional'
+      if $scope.property.linen_handling_cd == 0
+        $scope.slide 'step-additional'
+      else
+        $scope.slide 'step-linens'
       $scope.calculate_pricing()
     null
 
-  $scope.select_time = -> $scope.slide 'step-three'
+  $scope.select_time = ->
+    if $scope.property.linen_handling_cd == 0
+      $scope.slide 'step-three'
+    else
+      $scope.slide 'step-three' if $scope.linen_handling != null
 
   $scope.select_payment = ->
     if $scope.chosen_time
@@ -190,6 +270,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
           late_same_day: $scope.same_day_booking
           coupon_id: $scope.coupon_id
           timeslot: $scope.chosen_time
+          handling: $scope.linen_handling
         }).success (rsp) ->
           $scope.booking = false
           spinner.stopSpin()

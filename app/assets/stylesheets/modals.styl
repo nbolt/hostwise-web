@@ -490,10 +490,13 @@
         height: 40px
         @media phone
           display: none
+        &.four .step
+          width: 25%
+        &.five .step
+          width: 20%
         .step
           display: inline-block
           text-align: center
-          width: 25%
           height: 100%
           box-sizing: border-box
           border-bottom: 2px solid #E5E7EA
@@ -1052,6 +1055,75 @@
               padding: 8px 12px
               width: 100%
               margin: 30px 0
+            .linen-boxes
+              margin-top: 30px
+              .box
+                display: inline-block
+                background-color: white
+                border: thin solid #EBECEF
+                border-radius: 5px
+                width: 150px
+                vertical-align: top
+                width: 30%
+                margin-right: 5%
+                box-sizing: border-box
+                padding: 20px
+                text-align: center
+                &:last-child
+                  margin-right: 0
+                .title
+                  font-weight: 600
+                  font-size: 1.1em
+                  border-bottom: thin solid #EBECEF
+                  padding-bottom: 10px
+                  margin-bottom: 20px
+                  color: heavy-gray
+                span
+                  color: teal
+                .price
+                  font-weight: 600
+                  font-size: 1.1em
+                  margin-bottom: 20px
+                  color: heavy-gray
+                  span
+                    font-size: 1.5em
+                    margin-right: 5px
+                .text
+                  padding-bottom: 20px
+                  border-bottom: thin solid #EBECEF
+                  margin-bottom: 10px
+                  font-size: 0.9em
+                  min-height: 120px
+                .button
+                  border-radius: 5px
+                  background-color: #EDEEF1
+                  color: heavy-gray
+                  font-weight: 600
+                  margin-top: 14px
+                  position: relative
+                &:hover
+                  cursor: pointer
+                &:hover .button, &.selected .button
+                  background-color: teal
+                  color: white
+                  &::before
+                    content: '\e80d'
+                    color: #83CCCF
+                    position: absolute
+                    top: 6px
+                    left: 6px
+                    font-family: "hw-icons"
+                    font-style: normal
+                    font-weight: normal
+                    speak: none
+                    display: inline-block
+                    text-decoration: inherit
+                    width: 1em
+                    text-align: center
+                    font-variant: normal
+                    text-transform: none
+                    line-height: 1em
+                    font-size: 1.5em
             .counters
               .counter
                 display: inline-block

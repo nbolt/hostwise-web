@@ -37,6 +37,7 @@ class Booking < ActiveRecord::Base
 
   as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3, manual: 4, couldnt_access: 5
   as_enum :payment_status, pending: 0, completed: 1
+  as_enum :linen_handling, purchase: 0, rental: 1, in_unit: 2
 
   attr_accessor :vip
 

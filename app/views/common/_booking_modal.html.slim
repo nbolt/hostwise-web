@@ -198,15 +198,9 @@ script#booking-modal type="text/ng-template"
           .icon
             i.icon-calendar
           .text Select Date(s) & Services
-        .steps
-          .step.current
-            .text 1. Date & Services
-          .step
-            .text 2. Extra Options
-          .step
-            .text 3. Select a Time
-          .step
-            .text 4. Finish & Pay
+        .steps ng:class='steps_class()'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "services")'
+            .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.cal
           .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
         .content
@@ -239,20 +233,63 @@ script#booking-modal type="text/ng-template"
               .text.per
                 | / Service
             .button.teal ng:click='next()' Next
+      .content-group.step-linens ng:if='!exists()'
+        .header
+          .icon
+            i.icon-calendar
+          .text Linens & Towels
+        .steps ng:class='steps_class()'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "linens")'
+            .text ng:bind-template='{{step.num}}. {{step.display}}'
+        .content.extras
+          .linens
+            h3 Select your linens & towels option
+            h5 We have three options to accommodate your hosting style!
+          .linen-boxes
+            .box.purchase ng:click='select_handling(0, "purchase")'
+              .title Purchase
+              .price
+                span $13
+                | / Bed
+              .text
+                span $299 per bed setup fee,
+                |  and then you never have to worry about replacing your linens & towels from rips or stains. We guarantee and replace them for free.
+              .button.chosen Select
+            .box.rental ng:click='select_handling(1, "rental")'
+              .title Rental Program
+              .price
+                span $19
+                | / Bed
+              .text Using our commercially cleaned and pressed 5-star linens and towels will guarantee the best guest experience &mdash; great experience equals great reviews.
+              .button Select
+            .box.in-unit ng:click='select_handling(2, "in-unit")'
+              .title In-unit Laundering
+              .price
+                span $10
+                | / Load
+              .text
+                | Already have your beds setup with linens and towels? If you have an
+                span  in-unit washer and dryer
+                |  we'll take care of it for you.
+              .button Select
+        .foot.next
+          .right
+            .total
+              .text.dollar
+                | $
+              .text.amount
+                | {{service_total}}
+              .text.per
+                | / Service
+            .button.teal ng:click='select_time()' Select Time
       .content-group.step-additional ng:if='!exists()'
         .header
           .icon
             i.icon-calendar
           .text Additional Options
-        .steps
-          .step.complete
-            .text 1. Date & Services
-          .step.current
-            .text 2. Extra Options
-          .step
-            .text 3. Select a Time
-          .step
-            .text 4. Finish & Pay
+        .steps ng:class='steps_class()'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "extras")'
+            .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.extras
           .linens
             h3 Do you want to add an extra sets of linens and towels or toiletries?
@@ -298,15 +335,9 @@ script#booking-modal type="text/ng-template"
           .icon
             i.icon-calendar
           .text Select a Time
-        .steps
-          .step.complete
-            .text 1. Date & Services
-          .step.complete
-            .text 2. Extra Options
-          .step.current
-            .text 3. Select a Time
-          .step
-            .text 4. Finish & Pay
+        .steps ng:class='steps_class()'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "time")'
+            .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.extras
           .linens
             h3 When would you like HostWise to arrive?
@@ -366,15 +397,9 @@ script#booking-modal type="text/ng-template"
           .icon
             i.icon-calendar
           .text Confirm Booking & Payment
-        .steps
-          .step.complete
-            .text 1. Date & Services
-          .step.complete
-            .text 2. Extra Options
-          .step.complete
-            .text 3. Select a Time
-          .step.current
-            .text 4. Finish & Pay
+        .steps ng:class='steps_class()'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "pay")'
+            .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.details
           .invoice Invoice
           .days
@@ -495,15 +520,9 @@ script#booking-modal type="text/ng-template"
           .icon
             i.icon-calendar
           .text Booking Confirmed
-        .steps
-          .step.complete
-            .text 1. Date & Services
-          .step.complete
-            .text 2. Extra Options
-          .step.complete
-            .text 3. Select a Time
-          .step.complete
-            .text 4. Finish & Pay
+        .steps ng:class='steps_class()'
+          .step ng:repeat='step in steps' ng:class='step_class(step)'
+            .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.confirmation.teal
           i.icon-check
           .title-text You're all set!
