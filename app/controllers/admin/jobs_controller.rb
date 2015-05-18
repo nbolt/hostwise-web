@@ -143,6 +143,8 @@ class Admin::JobsController < Admin::AuthController
     when :cant_access
       job.booking.update_attribute :status_cd, 5
       job.booking.update_cost!
+    when :cancelled
+      job.contractors.each {|contractor| contractor.drop_job job, true}
     end
     render json: { success: true }
   end
