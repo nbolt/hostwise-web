@@ -7,7 +7,7 @@ class Payment < ActiveRecord::Base
 
   before_create :set_card_type
 
-  validates :fingerprint, uniqueness: true, allow_nil: true
+  # validates :fingerprint, uniqueness: true, allow_nil: true
 
   scope :active, -> { where(status_cd: 1) }
   scope :primary, -> { where(primary: true) }
