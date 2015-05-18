@@ -46,7 +46,7 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
   $scope.breakdown_modal = (transaction) ->
     $http.get("/transactions/#{transaction.id}").success (rsp) ->
       $scope.booking = rsp.booking
-      $scope.total = _($scope.bookings).reduce(((acc, booking) -> acc + booking.cost), 0)
+      #$scope.total = _($scope.bookings).reduce(((acc, booking) -> acc + booking.cost), 0)
       ngDialog.open template: 'transaction-breakdown-modal', className: 'edit full', scope: $scope
 
   $scope.service_cost = (booking, service) -> booking["#{service.name}_cost"]

@@ -73,7 +73,8 @@ script#transaction-breakdown-modal type="text/ng-template"
                   span ng:bind="service_cost(booking, service)"
         .total
           .text Total
-          .price ${{total}}
+          .price ${{booking.cost}}
+          /.price ${{total}}
         .paid
           .right ng:bind='booking.payment.serializer_display'
           .left Paid with:
