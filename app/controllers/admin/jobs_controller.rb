@@ -144,7 +144,38 @@ class Admin::JobsController < Admin::AuthController
       job.booking.update_attribute :status_cd, 5
       job.booking.update_cost!
     when :cancelled
-      job.contractors.each {|contractor| contractor.drop_job job, true}
+      UserMailer.cancelled_booking_notification(job.booking).then(:deliver)
+
+      if job.booking.same_day_cancellation
+        job.booking.update_attribute :status, :cancelled
+      else
+        job.booking.update_attribute :status, :deleted
+      end
+
+      job.update_attribute :status_cd, 6
+      job.contractors.each do |contractor|
+        contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100) if job.booking.same_day_cancellation
+        job.contractors.destroy contractor
+        other_jobs = contractor.jobs.standard.on_date(job.date)
+        if other_jobs[0]
+          other_jobs[0].handle_distribution_jobs contractor
+          Job.set_priorities contractor, job.date
+        else
+          contractor.jobs.distribution.on_date(job.date).destroy_all
+        end
+        if contractor.contractor_profile.position == :trainee
+          TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
+        else
+          TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Looks like job ##{job.id} on #{job.formatted_date} was cancelled. Sorry about this!")
+        end
+      end
+
+      if job.booking.same_day_cancellation
+        job.booking.update_cost!
+        UserMailer.booking_same_day_cancellation(job.booking).then(:deliver)
+      else
+        UserMailer.booking_cancellation(job.booking).then(:deliver)
+      end
     end
     render json: { success: true }
   end
