@@ -12,13 +12,15 @@ if Rails.env.test?
   
   Market.find_or_create_by(name: 'Los Angeles',  lat: 34.052234, lng: -118.243685)
   Market.find_or_create_by(name: 'Palm Springs', lat: 33.830296, lng: -116.545292)
-  
-  user = User.new(email: 'test@email.com', first_name: 'Test', last_name: 'User', role_cd: 1)
-  user.password = 'test'
-  user.save
-  user.update_attributes(phone_confirmed: true, activation_state: 'active')
+    
+  if ENV['e2e']
+    user = User.new(email: 'test@email.com', first_name: 'Test', last_name: 'User', role_cd: 1)
+    user.password = 'test'
+    user.save
+    user.update_attributes(phone_confirmed: true, activation_state: 'active')
 
-  VCR.use_cassette('create_test_property') { user.properties.create(title: 'Test', address1: '1317 S Bundy Dr', zip: '90025') }
+    VCR.use_cassette('create_test_property') { user.properties.create(title: 'Test', address1: '1317 S Bundy Dr', zip: '90025') }
+  end
 
   CSV.foreach "#{Rails.root}/db/data/service_zips.csv" do |row|
     code = row[0]

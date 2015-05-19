@@ -32,9 +32,9 @@ http_interactions:
       X-Account-Header:
       - 374379a6-0000-0000-0000-000000000000
       X-Server-Name:
-      - streetapi-002-chicago
+      - streetapi-001-chicago
       Date:
-      - Tue, 12 May 2015 21:46:02 GMT
+      - Thu, 14 May 2015 20:02:22 GMT
       Content-Length:
       - '903'
     body:
@@ -42,10 +42,10 @@ http_interactions:
       string: |
         [{"input_index":0,"candidate_index":0,"delivery_line_1":"1020 Lake St # 9","last_line":"Venice CA 90291-6562","delivery_point_barcode":"902916562992","components":{"primary_number":"1020","street_name":"Lake","street_suffix":"St","secondary_number":"9","secondary_designator":"#","city_name":"Venice","state_abbreviation":"CA","zipcode":"90291","plus4_code":"6562","delivery_point":"99","delivery_point_check_digit":"2"},"metadata":{"record_type":"H","zip_type":"Standard","county_fips":"06037","county_name":"Los Angeles","carrier_route":"C001","congressional_district":"33","building_default_indicator":"Y","rdi":"Residential","elot_sequence":"0517","elot_sort":"A","latitude":33.99892,"longitude":-118.46254,"precision":"Zip7","time_zone":"Pacific","utc_offset":-8,"dst":true},"analysis":{"dpv_match_code":"S","dpv_footnotes":"AACC","dpv_cmra":"N","dpv_vacant":"N","active":"N","footnotes":"N#S#"}}]
     http_version: 
-  recorded_at: Tue, 12 May 2015 21:46:02 GMT
+  recorded_at: Thu, 14 May 2015 20:02:22 GMT
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=33.99892,-118.46254&timestamp=1431467162
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=33.99892,-118.46254&timestamp=1431633742
     body:
       encoding: US-ASCII
       string: ''
@@ -64,7 +64,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 12 May 2015 21:46:02 GMT
+      - Thu, 14 May 2015 20:02:22 GMT
       Pragma:
       - no-cache
       Expires:
@@ -98,5 +98,5 @@ http_interactions:
            "timeZoneName" : "Pacific Daylight Time"
         }
     http_version: 
-  recorded_at: Tue, 12 May 2015 21:46:02 GMT
+  recorded_at: Thu, 14 May 2015 20:02:22 GMT
 recorded_with: VCR 2.9.3
