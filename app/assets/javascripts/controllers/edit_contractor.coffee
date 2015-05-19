@@ -14,7 +14,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
         $scope.contractor.total_cancelled_jobs = _($scope.contractor.jobs).filter((job) -> job.status_cd == 6).length
         $scope.contractor.jobs = _($scope.contractor.jobs).filter (job) -> !job.distribution
         _($scope.contractor.jobs).each (job) ->
-          job.service_list = _(_(job.booking.services).map((service) -> service.name)).join ', '
+          job.service_list = job.booking.service_list
           job.total_kings = job.booking.property.king_bed_count
           job.total_twins = job.booking.property.twin_beds
           job.total_toiletries = job.booking.property.bathrooms

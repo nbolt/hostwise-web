@@ -274,7 +274,6 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     $http.get('/jobs.json?filter=complete').success (rsp) ->
       $scope.jobs = rsp.jobs
       _($scope.jobs).each (job) ->
-        job.contractor_names = _(_(job.contractors).map((contractor) -> contractor.name)).join ', '
         if job.payouts[0]
           job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0)
           job.total_payout = "$#{(job.total_payout/100).toFixed(2)}"
