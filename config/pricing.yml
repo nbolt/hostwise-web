@@ -11,10 +11,11 @@ patio_payout: 7
 windows: 10
 windows_payout: 7
 toiletries: 10
-king_linens: 16
-queen_linens: 15
-full_linens: 15
-twin_linens: 13
+
+linens:
+  in_unit: 10
+  purchase: 13
+  rental: 19
 
 timeslots:
   9:  0.8

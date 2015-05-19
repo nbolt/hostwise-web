@@ -121,10 +121,10 @@ class Host::PropertiesController < Host::AuthController
                 booking.vip = true
                 current_user.update_attribute :vip_count, current_user.vip_count + 1
               end
-              cost = Booking.cost(property, booking.services, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
+              cost = Booking.cost(property, booking.services, booking.linen_handling, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
               if coupon && (coupon.limit == 0 || coupon.applied(current_user) < coupon.limit)
                 booking.coupons.push coupon
-                cost = Booking.cost(property, booking.services, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, coupon.id)
+                cost = Booking.cost(property, booking.services, booking.linen_handling, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, coupon.id)
               end
               booking.timeslot_cost               = cost[:timeslot_cost] || 0
               booking.contractor_service_cost     = cost[:contractor_service_cost] || 0
@@ -254,12 +254,19 @@ class Host::PropertiesController < Host::AuthController
   def booking_cost
     services = params[:services].map {|s| Service.where(name: s)[0] if s[1]}.compact
     if booking
-      cost = Booking.cost property, services, booking.timeslot, params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id) || params[:coupon_id]
+      cost = Booking.cost property, services, booking.linen_handling, (params[:timeslot] || booking.timeslot), params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id) || params[:coupon_id]
       render json: cost
     else
+      linen_handling =
+        case params[:handling].to_i
+        when 0 then :purchase
+        when 1 then :rental
+        when 2 then :in_unit
+        else :rental
+        end
       discount = if Booking.by_user(current_user)[0] || current_user.migrated then false else true end
-      discount_cost = Booking.cost property, services, params[:timeslot], params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], discount
-      cost = Booking.cost property, services, params[:timeslot], params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets]
+      discount_cost = Booking.cost property, services, linen_handling, params[:timeslot], params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], discount
+      cost = Booking.cost property, services, linen_handling, params[:timeslot], params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets]
       cost[:first_booking_discount_cost] = discount_cost[:first_booking_discount]
       render json: cost
     end

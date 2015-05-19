@@ -53,7 +53,7 @@ class Booking < ActiveRecord::Base
     services.map(&:display).join ', '
   end
 
-  def self.cost property, services, timeslot = 'flex', extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
+  def self.cost property, services, linen_handling, timeslot = 'flex', extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
     pool_service = Service.where(name: 'pool')[0]
     rsp = {cost:0}
     services.each do |service|
@@ -62,10 +62,7 @@ class Booking < ActiveRecord::Base
           rsp[:cleaning] = PRICING[property.property_type.to_s][property.bedrooms][property.bathrooms]
         when 'linens'
           rsp[:linens] ||= 0
-          property.king_beds.times  { rsp[:linens] += PRICING['king_linens']  }
-          property.queen_beds.times { rsp[:linens] += PRICING['queen_linens'] }
-          property.full_beds.times  { rsp[:linens] += PRICING['full_linens']  }
-          property.twin_beds.times  { rsp[:linens] += PRICING['twin_linens']  }
+          property.beds.times { rsp[:linens] += PRICING['linens'][linen_handling.to_s] }
           rsp[:cost] += rsp[:linens]
         when 'toiletries'
           rsp[:toiletries] ||= 0
@@ -220,7 +217,7 @@ class Booking < ActiveRecord::Base
   end
 
   def update_cost!
-    cost = Booking.cost(property, services, timeslot, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
+    cost = Booking.cost(property, services, linen_handling, timeslot, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
     self.timeslot_cost               = cost[:timeslot_cost] || 0
     self.contractor_service_cost     = cost[:contractor_service_cost] || 0
     self.cleaning_cost               = cost[:cleaning] || 0

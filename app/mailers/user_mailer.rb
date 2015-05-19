@@ -216,7 +216,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                         account_num: booking.payment.last4,
                         services: booking.services.map {|service| {
                           display: service.display,
-                          cost: Booking.cost(booking.property, booking.services, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id))[service.name.to_sym]
+                          cost: Booking.cost(booking.property, booking.services, booking.linen_handling, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id))[service.name.to_sym]
                         }},
                         price: "$#{booking.cost}",
                         late_same_day: booking.late_same_day,

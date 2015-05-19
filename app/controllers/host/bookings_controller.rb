@@ -8,7 +8,7 @@ class Host::BookingsController < Host::AuthController
 
   def update
     if params[:services]
-      booking.payment = Payment.find params[:payment]
+      booking.payment = Payment.find params[:payment] if params[:payment]
       booking.services.each do |service|
         booking.services.destroy service unless params[:services].find {|s| service.name == s}
       end
@@ -28,6 +28,10 @@ class Host::BookingsController < Host::AuthController
         booking.extra_toiletry_sets = params[:extra_toiletry_sets]
       end
       booking.coupons.push(Coupon.find params[:coupon_id]) if params[:coupon_id]
+      if params[:timeslot]
+        booking.update_attribute :timeslot, params[:timeslot]
+        # handle existing contractor
+      end
       if booking.save
         booking.update_cost!
         booking.job.handle_distribution_jobs booking.job.primary_contractor if booking.job.primary_contractor
@@ -72,7 +76,6 @@ class Host::BookingsController < Host::AuthController
 
       if params[:apply_fee]
         booking.update_cost!
-        booking.charge!
         UserMailer.booking_same_day_cancellation(booking).then(:deliver)
       else
         UserMailer.booking_cancellation(booking).then(:deliver)

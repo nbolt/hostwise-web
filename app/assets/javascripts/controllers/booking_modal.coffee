@@ -85,16 +85,22 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.steps_class = -> $scope.property.linen_handling_cd == 0 && 'four' || 'five'
 
   $scope.step_class = (step, name) ->
-    if name
-      name = _($scope.steps).find (step) -> step.name == name
-      if step.num < name.num
-        'complete'
-      else if step.num == name.num
-        'current'
+    if $scope.steps
+      if name
+        name = _($scope.steps).find (step) -> step.name == name
+        if name
+          if step.num < name.num
+            'complete'
+          else if step.num == name.num
+            'current'
+          else
+            ''
+        else
+          ''
       else
-        ''
+        'complete'
     else
-      'complete'
+      ''
 
   $scope.format_chosen_time = ->
     time = parseInt $scope.chosen_time
@@ -132,6 +138,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $scope.select_handling = (num, name) ->
     $scope.linen_handling = num
+    $scope.calculate_pricing()
     angular.element('.linen-boxes .box').removeClass 'selected'
     angular.element(".linen-boxes .box.#{name}").addClass 'selected'
     null
@@ -219,6 +226,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.edit_extras = ->
     angular.element('.content.side').hide()
     angular.element('.content.side.extras').css 'display', 'inline-block'
+    $scope.show_back = true
+
+  $scope.change_time = ->
+    angular.element('.content.side').hide()
+    angular.element('.content.side.time').css 'display', 'inline-block'
     $scope.show_back = true
 
   $scope.edit_services = ->
@@ -309,7 +321,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     $scope.total = 0
     $scope.days = []
     remaining = $scope.remaining
-    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
+    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, handling: $scope.linen_handling, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
       $scope.timeslot_cost = rsp.timeslot_cost
       $scope.cleaning_cost = rsp.orig_service_cost
       cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
@@ -455,6 +467,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
         extra_twin_sets: $scope.extra.twin_sets
         extra_toiletry_sets: $scope.extra.toiletry_sets
         extra_instructions: $scope.extra.instructions
+        timeslot: $scope.chosen_time
       }).success (rsp) ->
         spinner.stopSpin()
         if rsp.success

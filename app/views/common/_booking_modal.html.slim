@@ -97,10 +97,54 @@ script#booking-modal type="text/ng-template"
               .text Edit Services
             .button ng:click='edit_extras()'
               .text Edit Extras
+            .button ng:click='change_time()'
+              .text Change Time
             .button ng:click='change_payment()'
               .text Change Payment
             .button.red ng:click='to_booking_cancellation() '
               .text Cancel Booking
+        .content.side.time
+          .linens
+            h3 When would you like HostWise to arrive?
+            h5 Save money by being flexible, or specify a time to pay based on demand.
+          .timeboxes
+            .box.flex ng:click='choose_flex()'
+              .text
+                | Between 10am - 4pm
+                span ng:bind-template='${{flex_service_total()}}'
+            .box.premium
+              .text ng:click='choose_time_modal()' Choose your time
+              .times
+                .timeslot ng:click='choose_time(9)'
+                  .time 8-9 AM
+                  .price ${{time_total(9)}}
+                .timeslot ng:click='choose_time(10)'
+                  .time 9-10 AM
+                  .price ${{time_total(10)}}
+                .timeslot ng:click='choose_time(11)'
+                  .time 10-11 AM
+                  .price ${{time_total(11)}}
+                .timeslot ng:click='choose_time(12)'
+                  .time 11-12 PM
+                  .price ${{time_total(12)}}
+                .timeslot ng:click='choose_time(13)'
+                  .time 12-1 PM
+                  .price ${{time_total(13)}}
+                .timeslot ng:click='choose_time(14)'
+                  .time 1-2 PM
+                  .price ${{time_total(14)}}
+                .timeslot ng:click='choose_time(15)'
+                  .time 2-3 PM
+                  .price ${{time_total(15)}}
+                .timeslot ng:click='choose_time(16)'
+                  .time 3-4 PM
+                  .price ${{time_total(16)}}
+                .timeslot ng:click='choose_time(17)'
+                  .time 4-5 PM
+                  .price ${{time_total(17)}}
+                .timeslot ng:click='choose_time(18)'
+                  .time 5-6 PM
+                  .price ${{time_total(18)}}
         .content.side.extras
           .linens
             h3 Do you want to add an extra sets of linens and towels or toiletries?

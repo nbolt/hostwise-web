@@ -176,7 +176,7 @@ class Admin::JobsController < Admin::AuthController
         UserMailer.booking_cancellation(job.booking).then(:deliver)
       end
     end
-    render json: { success: true }
+    render json: { success: true, job: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}}) }
   end
 
   def update_state
