@@ -195,7 +195,6 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         job.total_payout = rsp.total_payout
         job.total_payout = "$#{job.total_payout.toFixed(2)}"
         job.adjusted_payout = rsp.adjusted_payout
-        console.log rsp
         if job.adjusted_payout >= 0
           job.adjusted_payout = "$#{job.adjusted_payout.toFixed(2)}"
         else
@@ -230,12 +229,14 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
           end   = angular.element("##{settings.nTable.id} thead.search th.date input:last-child").val()
 
+          i = 5; i = 4 if settings.nTable.id == 'example-2'
+
           if !start || !end || start == '' || end == ''
             true
           else
             start_date = moment(start,   'MM/DD/YYYY')
             end_date   = moment(end,     'MM/DD/YYYY')
-            date       = moment(data[5], 'YYYY-MM-DD')
+            date       = moment(data[i], 'YYYY-MM-DD')
 
             date >= start_date && date <= end_date
 
