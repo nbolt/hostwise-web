@@ -2,7 +2,21 @@ require 'spec_helper'
 require 'selenium-webdriver'
 
 describe 'homeaway' do
+  include ActionView::Helpers::TextHelper
+
+  def send_report(type, report)
+    UserMailer.report("homeaway #{type}", simple_format(report.join('<br>')), 'andre@hostwise.com').then(:deliver)
+  end
+
+  def logout(driver)
+    driver.find_element(:xpath, '//li[@id="user-dropdown"]//a[@id="user-drop"]').click
+    sleep 3
+    driver.find_element(:xpath, '//a[@id="signout"]').click
+    sleep 5
+  end
+
   it 'create account', type: 'signup' do
+    report = []
     server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
     server.start
     proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
@@ -11,7 +25,7 @@ describe 'homeaway' do
     site = 'https://www.homeaway.com'
 
     account_limit = ENV['account_limit'].to_i
-    puts "creating #{account_limit} accounts..."
+    report << "creating #{account_limit} accounts..."
 
     account_limit.times do
       first_name = ['michelle', 'michal', 'donna', 'jeann', 'carol'].sample
@@ -46,23 +60,21 @@ describe 'homeaway' do
                                'source' => :homeaway,
                                'last_run' => Date.yesterday})
         acct.save
-        puts "homeaway account created: #{email}"
+        report << "homeaway account created: #{email}"
         sleep 5
-
-        #logout
-        driver.find_element(:xpath, '//li[@id="user-dropdown"]//a[@id="user-drop"]').click
-        sleep 3
-        driver.find_element(:xpath, '//a[@id="signout"]').click
-        sleep 5
+        logout driver
       rescue Exception => e
-        puts e
+        report << e
       end
     end
 
     driver.quit
+    server.stop
+    send_report 'signup', report
   end
 
   it 'scrape properties', type: 'scrape' do
+    report = []
     server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
     server.start
     proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
@@ -71,7 +83,7 @@ describe 'homeaway' do
     site = 'https://www.homeaway.com'
 
     location = URI.unescape ENV['location']
-    puts "scraping properties at #{location}..."
+    report << "scraping properties at #{location}..."
 
     driver.navigate.to site
     search_form = driver.find_element(:xpath, '//form[@name="searchForm"]')
@@ -91,7 +103,7 @@ describe 'homeaway' do
 
       collection = driver.find_element(:xpath, '//div[@class="js-listHitCollectionView preview-container"]')
       listings = collection.find_elements(:xpath, '//h3[@class="listing-title"]//a[@class="listing-url"]')
-      puts "page: #{i} -> listings: #{listings.size}"
+      report << "page: #{i} -> listings: #{listings.size}"
 
       result_hash = {}
       listings.each do |listing|
@@ -129,7 +141,7 @@ describe 'homeaway' do
           end
 
           #store all scraped data
-          puts "name: #{user_name}, property id: #{key}, property name: #{value[:property_name]}, property url: #{value[:property_url]}, property type: #{property_type}, bedrooms: #{num_bedrooms}, bathrooms: #{num_bathrooms}"
+          report << "name: #{user_name}, property id: #{key}, property name: #{value[:property_name]}, property url: #{value[:property_url]}, property type: #{property_type}, bedrooms: #{num_bedrooms}, bathrooms: #{num_bathrooms}"
           bot = Bot.new({'host_name' => user_name,
                          'property_id' => key,
                          'property_name' => value[:property_name],
@@ -142,15 +154,18 @@ describe 'homeaway' do
                          'super_host' => false})
           bot.save
         rescue Exception => e
-          puts "HomeAway error for #{key} #{value}: #{e}"
+          report << "HomeAway error for #{key} #{value}: #{e}"
         end
       end
     end
 
     driver.quit
+    server.stop
+    send_report 'scrape', report
   end
 
   it 'make inquiry', type: 'booking' do
+    report = []
     server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
     server.start
     proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
@@ -159,12 +174,13 @@ describe 'homeaway' do
     site = 'https://www.homeaway.com'
 
     message_limit = ENV['message_limit'].to_i
+    account_limit = ENV['account_limit'].to_i
     messages = ["Hey |name|!\n\nI love your vacation rental. You should check out HostWise.com, (first clean free) I use them and if I refer a free service then I get another free service! :) You can do the same!",
                 "Hey |name|!\n\nLooks like your vacation rental would be a perfect fit for our company, HostWise.com. Our company was created by hosts, for hosts. We automate the entire home turnover for you and guarantee a 5 star clean rating every time. Give us a try for first time for free, no strings attached. Not sure if you have many more properties, but if so we do offer enterprise pricing discounts as well! :)",
                 "Hey |name|!\n\nI just started using HostWise.com to clean and turnover my property and think your property would be a perfect fit for them too. First service is free, no strings attached, I just got a coupon code for 10% off 3 services if your are interested I can give it to you!\n\nCheers!"]
 
-    accounts = BotAccount.where('status_cd = 1 and source_cd = 1 and last_run < ?', Date.today)
-    puts "accounts: #{accounts.count}"
+    accounts = BotAccount.where('status_cd = 1 and source_cd = 1 and last_run < ?', Date.today).limit(account_limit)
+    report << "accounts: #{accounts.count}"
     accounts.each do |account|
       username = account.email
       password = account.password
@@ -181,7 +197,7 @@ describe 'homeaway' do
 
       total_message = 0
       records = Bot.where(source_cd: 1, status_cd: 1)
-      puts "records: #{records.count}"
+      report << "records: #{records.count}"
       records.each do |record|
         break if total_message >= message_limit  #STOP when limit reaches
         next if Bot.where(source_cd: 1, host_name: record.host_name, status_cd: 2).present? #SKIP when same host already been messaged
@@ -209,26 +225,26 @@ describe 'homeaway' do
           # booking_form.submit
           total_message += 1
           sleep 5
-          puts "contacted host #{record.host_name} for property #{record.property_name}"
-          # record.status = :contacted
-          # record.save
+          report << "contacted host #{record.host_name} for property #{record.property_name}"
+            # record.status = :contacted
+            # record.save
         rescue Exception => e
-          puts "HomeAway error for #{record.id}: #{e}"
+          report << "HomeAway error for #{record.id}: #{e}"
         end
       end
 
-      account.last_run = Date.today
-      account.save
+      if total_message > 0
+        account.last_run = Date.today
+        account.save
+      end
 
-      #logout
       driver.get site
       sleep 2
-      driver.find_element(:xpath, '//li[@id="user-dropdown"]//a[@id="user-drop"]').click
-      sleep 1
-      driver.find_element(:xpath, '//a[@id="signout"]').click
-      sleep 5
+      logout driver
     end
 
     driver.quit
+    server.stop
+    send_report 'booking', report
   end
 end

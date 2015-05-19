@@ -2,7 +2,22 @@ require 'spec_helper'
 require 'selenium-webdriver'
 
 describe 'airbnb' do
+  include ActionView::Helpers::TextHelper
+
+  def send_report(type, report)
+    UserMailer.report("airbnb #{type}", simple_format(report.join('<br>')), 'andre@hostwise.com').then(:deliver)
+  end
+
+  def logout(driver)
+    sleep 3
+    driver.find_element(:xpath, '//a[@id="header-avatar-trigger"]').click
+    sleep 3
+    driver.find_element(:xpath, '//a[@class="no-crawl link-reset menu-item header-logout"]').click
+    sleep 5
+  end
+
   it 'create account', type: 'signup' do
+    report = []
     server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
     server.start
     proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
@@ -10,7 +25,7 @@ describe 'airbnb' do
     driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
     site = 'https://www.airbnb.com'
     account_limit = ENV['account_limit'].to_i
-    puts "creating #{account_limit} accounts..."
+    report << "creating #{account_limit} accounts..."
 
     account_limit.times do
       first_name = ['michelle', 'michal', 'donna', 'jeann', 'carol'].sample
@@ -41,44 +56,51 @@ describe 'airbnb' do
       end
       login_form.submit
       sleep 3
+
+      begin
+        #contact customer support warning
+        alert = driver.find_element(:xpath, '//div[@id="signup-modal-content"]//div[@class="alert alert-with-icon alert-error alert-header panel-header hidden-element"]')
+        if alert.displayed?
+          report << "account #{email} requires further action: #{alert.text}"
+          next
+        end
+      rescue Exception => e
+      end
+
       driver.navigate.to site
 
       begin
         if driver.find_element(:xpath, '//div[@class="flash-container"]//div[contains(., "Account access is limited until you complete verification")]').displayed?
-          puts "account #{email} requires further verification."
+          report << "account #{email} requires further verification."
         end
         if driver.find_element(:xpath, '//div[@class="alert alert-with-icon alert-error alert-header panel-header hidden-element"]').displayed?
-          puts 'process blocked: please try again later'
+          report << 'process blocked: please try again later'
           break
         end
         driver.find_element(:xpath, '//div[@class="modal-content"]//div[@class="panel-footer"]//button[contains(., "Skip")]').click
       rescue Exception => e
       end
 
-      begin
-        acct = BotAccount.new({'email' => email,
-                               'password' => pwd,
-                               'status' => :active,
-                               'source' => :airbnb,
-                               'last_run' => Date.yesterday})
-        acct.save
-        puts "airbnb account created: #{email}"
-        sleep 5
+      acct = BotAccount.new({'email' => email,
+                             'password' => pwd,
+                             'status' => :active,
+                             'source' => :airbnb,
+                             'last_run' => Date.yesterday})
+      acct.save
+      report << "airbnb account created: #{email}"
+      sleep 5
 
-        #logout
-        driver.find_element(:xpath, '//a[@id="header-avatar-trigger"]').click
-        sleep 3
-        driver.find_element(:xpath, '//a[@class="no-crawl link-reset menu-item header-logout"]').click
-        sleep 5
-      rescue Exception => e
-        puts e
-      end
+      logout driver
     end
 
     driver.quit
+    server.stop
+
+    send_report 'signup', report
   end
 
   it 'scrape properties', type: 'scrape' do
+    report = []
     server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
     server.start
     proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
@@ -89,7 +111,7 @@ describe 'airbnb' do
 
     #search
     location = ENV['location']
-    puts "scraping properties at #{location}..."
+    report << "scraping properties at #{location}..."
     search_form = driver.find_element(:xpath, '//form[@id="search_form"]')
     search_form.find_element(:xpath, '//input[@id="location"]').send_keys location
     search_form.submit
@@ -103,7 +125,7 @@ describe 'airbnb' do
       sleep 1
       search_results = driver.find_element(:xpath, '//div[@class="search-results"]//div[@class="row listings-container"]')
       items = search_results.find_elements(:xpath, '//div[@class="listing"]')
-      puts "page: #{i} -> items: #{items.size}"
+      report << "page: #{i} -> items: #{items.size}"
 
       result_hash = {}
       items.each do |item|
@@ -148,7 +170,7 @@ describe 'airbnb' do
           end
 
           #store all scraped data
-          puts "user: #{value[:user_id]}, name: #{user_name}, property id: #{key}, property name: #{value[:property_name]}, property url: #{value[:property_url]}, profile url: #{value[:profile_url]}, superhost: #{superhost.present?}, address: #{address}, property type: #{property_type}, bedrooms: #{num_bedrooms}, bathrooms: #{num_bathrooms}, beds: #{num_beds}"
+          report << "user: #{value[:user_id]}, name: #{user_name}, property id: #{key}, property name: #{value[:property_name]}, property url: #{value[:property_url]}, profile url: #{value[:profile_url]}, superhost: #{superhost.present?}, address: #{address}, property type: #{property_type}, bedrooms: #{num_bedrooms}, bathrooms: #{num_bathrooms}, beds: #{num_beds}"
           bot = Bot.new({'host_name' => user_name,
                          'profile_id' => value[:user_id],
                          'profile_url' => value[:profile_url],
@@ -165,15 +187,19 @@ describe 'airbnb' do
                          'super_host' => superhost.present?})
           bot.save
         rescue Exception => e
-          puts "AirBnb error for #{key} #{value}: #{e}"
+          report << "AirBnb error for #{key} #{value}: #{e}"
         end
       end
     end
 
     driver.quit
+    server.stop
+
+    send_report 'scrape', report
   end
 
   it 'make inquiry', type: 'booking' do
+    report = []
     server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
     server.start
     proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
@@ -182,21 +208,22 @@ describe 'airbnb' do
     site = 'https://www.airbnb.com'
     month_limit = 5
     message_limit = ENV['message_limit'].to_i
+    account_limit = ENV['account_limit'].to_i
     messages = ["Hey |name|!\n\nI love your vacation rental. You should check out HostWise[.com], (first clean free) I use them and if I refer a free service then I get another free service! :) You can do the same!",
                 "Hey |name|!\n\nLooks like your vacation rental would be a perfect fit for our company, HostWise[.com]. Our company was created by hosts, for hosts. We automate the entire home turnover for you and guarantee a 5 star clean rating every time. Give us a try for first time for free, no strings attached. Not sure if you have many more properties, but if so we do offer enterprise pricing discounts as well! :)",
                 "Hey |name|!\n\nI just started using HostWise[.com] and they are giving me 5 star cleaning ratings across the board. Figured I would pass it on to spread the word as much as possible! :) It's super easy to set up your property, took me less than 5 mins, Cheers!"]
 
-    accounts = BotAccount.where('status_cd = 1 and source_cd = 0 and last_run < ?', Date.today)
-    puts "accounts: #{accounts.count}"
+    accounts = BotAccount.where('status_cd = 1 and source_cd = 0 and last_run < ?', Date.today).limit(account_limit)
+    report << "accounts: #{accounts.count}"
     accounts.each do |account|
       username = account.email
       password = account.password
       driver.navigate.to site
 
       driver.find_element(:xpath, '//li[@id="login"]//a').click
-      sleep 1
+      sleep 3
 
-      puts "logging into account: #{username}"
+      report << "logging into account: #{username}"
       login_form = driver.find_element(:xpath, '//form[@class="signin-form login-form"]')
       login_form.find_element(:xpath, '//input[@id="signin_email"]').send_keys username
       login_form.find_element(:xpath, '//input[@id="signin_password"]').send_keys password
@@ -209,14 +236,18 @@ describe 'airbnb' do
           if driver.find_element(:xpath, 'h3[@class="text-special"]').text == 'Account Disabled'
             account.status = :deactivated
             account.save
+            driver.navigate.to site
+            logout driver
             next
           end
         end
         #update account status if account required further verification
         if driver.find_element(:xpath, '//div[@class="flash-container"]//div[contains(., "Account access is limited until you complete verification")]').displayed?
-          puts "account #{email} requires further verification."
+          report << "account #{email} requires further verification."
           account.status = :pending
           account.save
+          driver.navigate.to site
+          logout driver
           next
         end
       rescue Exception => e
@@ -224,8 +255,9 @@ describe 'airbnb' do
 
       #loop through each result
       total_message = 0
-      records = Bot.where(source_cd: 0, status_cd: 1, super_host: ENV['super_host'] == 'true')
-      puts "records: #{records.count}"
+      records = Bot.where(source_cd: 0, status_cd: 1, super_host: ENV['super_host'] == 'true').to_a
+      records.keep_if { |record| Bot.where(status_cd: 2, profile_id: record.profile_id).count == 0 }
+      report << "records: #{records.count}"
       records.each do |record|
         break if total_message >= message_limit  #STOP when limit reaches
         next if Bot.where(source_cd: 0, profile_id: record.profile_id, status_cd: 2).present? #SKIP when same host already been messaged
@@ -297,31 +329,32 @@ describe 'airbnb' do
 
           error_box = contact_form.find_element(:xpath, '//div[@id="messaging-errors"]')
           if error_box.displayed? && !error_box.text.include?("You've contacted this host before")
-            puts "failed booking #{record.id} #{record.host_name} at property #{record.property_name}"
+            report << "failed booking #{record.id} #{record.host_name} at property #{record.property_name}"
           else
-            contact_form.submit
+            #contact_form.submit
             total_message += 1
             sleep 5
-            puts "contacted host #{record.host_name} for property #{record.property_name}"
-            record.status = :contacted
-            record.save
+            report << "contacted host #{record.host_name} for property #{record.property_name}"
+            #record.status = :contacted
+            #record.save
           end
         rescue Exception => e
-          puts "AirBnb error for #{record.id}: #{e}"
+          report << "AirBnb error for #{record.id}: #{e}"
         end
       end
 
-      account.last_run = Date.today
-      account.save
+      if total_message > 0
+        account.last_run = Date.today
+        account.save
+      end
 
-      #logout
       driver.navigate.to site
-      driver.find_element(:xpath, '//a[@id="header-avatar-trigger"]').click
-      sleep 3
-      driver.find_element(:xpath, '//a[@class="no-crawl link-reset menu-item header-logout"]').click
-      sleep 5
+      logout driver
     end
 
     driver.quit
+    server.stop
+
+    send_report 'booking', report
   end
 end

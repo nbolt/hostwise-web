@@ -5,6 +5,17 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   DEFAULT_REPLY_TO = 'HostWise <support@hostwise.com>'
 
+  def report(subject, body, email)
+    mandrill_mail template: 'generic-notification',
+                  subject: subject,
+                  to: {email: email},
+                  vars: {
+                    'BODY' => body
+                  },
+                  inline_css: true,
+                  async: true
+  end
+
   def generic_notification(subject, body)
     mandrill do
       mandrill_mail template: 'generic-notification',
