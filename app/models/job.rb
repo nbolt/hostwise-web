@@ -105,15 +105,15 @@ class Job < ActiveRecord::Base
   end
 
   def king_bed_count
-    booking.property.king_bed_count + booking.extra_king_sets if booking
+    if booking && has_linens? then booking.property.king_bed_count + booking.extra_king_sets else 0 end
   end
 
   def twin_bed_count
-    booking.property.twin_beds + booking.extra_twin_sets if booking
+    if booking && has_linens? then booking.property.twin_beds + booking.extra_twin_sets else 0 end
   end
 
   def toiletry_count
-    booking.property.bathrooms + booking.extra_toiletry_sets if booking
+    if booking && has_toiletries? then booking.property.bathrooms + booking.extra_toiletry_sets else 0 end
   end
 
   def contractor_names
