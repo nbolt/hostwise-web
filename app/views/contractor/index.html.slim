@@ -37,7 +37,7 @@
           .icon
             i.icon-job-order
           .text.active
-            | 9:30 AM
+            | {{user.pickup_job.formatted_time}}
             span Inventory Pickup
           .text.complete Completed
       .job.standard ng:repeat='job in user.standard_jobs' ng:class="job_class(job)" ng:click="goto(job.id)"

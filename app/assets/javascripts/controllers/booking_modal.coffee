@@ -1,4 +1,4 @@
-BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner', 'ngDialog', ($scope, $http, $timeout, $q, $rootScope, spinner, ngDialog) ->
+BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope', 'spinner', 'ngDialog', ($scope, $http, $timeout, $window, $q, $rootScope, spinner, ngDialog) ->
 
   last_payment = null
   $scope.days = []
@@ -373,6 +373,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
       angular.element('.booking.modal .content-container .content-group').css 'display', 'none'
       angular.element(".booking.modal .content-container .content-group.#{type}").css 'display', 'block'
       $timeout((->angular.element(".booking.modal .content-container .content-group.#{type}").css 'opacity', 1),50)
+      if ($($window).width() <= 480)
+        if (type == 'step-linens')
+          owl = angular.element('.linen-boxes').owlCarousel({items: 1, loop: true, dots: false, smartSpeed: 500})
+          angular.element('.linen-boxes').prepend("<div class='nav'> <div class='next'><div class='icon'><i class='icon-job-start'/></div></div> <div class='prev'><div class='icon'><i class='icon-job-start'/></div></div> </div>")
+          angular.element('.linen-boxes .next').click -> owl.trigger('next.owl.carousel')
+          angular.element('.linen-boxes .prev').click -> owl.trigger('prev.owl.carousel')
+        if (angular.element(".booking.modal .content-container .content-group.#{type}").outerHeight() < $($window).height())
+          angular.element(".booking.modal .content-container .content-group.#{type} .content").css 'min-height', $($window).height() - 102
     ), 400)
     $scope.refresh_booking = true if type is 'cancelled' or type is 'booked'
     null

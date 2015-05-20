@@ -110,6 +110,15 @@ class Job < ActiveRecord::Base
       meridian = 'A'; meridian = 'P' if time > 11
       time -= 12 if time > 12
       "#{time} #{meridian}M"
+    elsif distribution
+      if distribution_timeslot
+        time = distribution_timeslot.to_i - 1
+        meridian = 'A'; meridian = 'P' if time > 11
+        time -= 12 if time > 12
+        "#{time} #{meridian}M"
+      else
+        '9 AM'
+      end
     else
       'flex'
     end
@@ -511,6 +520,11 @@ class Job < ActiveRecord::Base
         else
           jobs.distribution.pickup[0].update_attribute :distribution_timeslot, first_job.booking.timeslot.to_i - 1
         end
+        centers = DistributionCenter.all.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
+        jobs.pickup[0].distribution_center = DistributionCenter.find centers[0][0]
+        centers = DistributionCenter.all.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
+        jobs.dropoff[0].distribution_center = DistributionCenter.find centers[0][0]
+        jobs.pickup[0].save; jobs.dropoff[0].save
       end
     else
       paths = []
@@ -544,13 +558,15 @@ class Job < ActiveRecord::Base
             ContractorJobs.where(job_id: jobs.distribution.pickup[0].id, user_id: contractor.id)[0].update_attribute :priority, index
             next_job = chosen_path[1][index+1]
             if next_job.booking.timeslot == 'flex'
-              jobs.distribution.pickup[0].update_attribute :distribution_timeslot, '10'
+              jobs.distribution.pickup[0].distribution_timeslot = '10'
             else
-              jobs.distribution.pickup[0].update_attribute :distribution_timeslot, next_job.booking.timeslot.to_i - 1
+              jobs.distribution.pickup[0].distribution_timeslot = next_job.booking.timeslot.to_i - 1
             end
+            jobs.distribution.pickup[0].save
           else
             jobs.distribution.dropoff[0].distribution_center = location
             ContractorJobs.where(job_id: jobs.distribution.dropoff[0].id, user_id: contractor.id)[0].update_attribute :priority, index
+            jobs.distribution.dropoff[0].save
           end
         else
           ContractorJobs.where(job_id: location.id, user_id: contractor.id)[0].update_attribute :priority, index
