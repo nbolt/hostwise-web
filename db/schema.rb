@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150518181734) do
+ActiveRecord::Schema.define(version: 20150520173358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -304,28 +304,29 @@ ActiveRecord::Schema.define(version: 20150518181734) do
   create_table "jobs", force: :cascade do |t|
     t.integer  "status_cd"
     t.integer  "booking_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "distribution", default: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.boolean  "distribution",          default: false
     t.integer  "king_beds"
     t.integer  "queen_beds"
     t.integer  "full_beds"
     t.integer  "twin_beds"
-    t.integer  "size",         default: 1
+    t.integer  "size",                  default: 1
     t.integer  "toiletries"
-    t.boolean  "training",     default: false
+    t.boolean  "training",              default: false
     t.date     "date"
-    t.integer  "state_cd",     default: 0
+    t.integer  "state_cd",              default: 0
     t.integer  "occasion_cd"
     t.datetime "cant_access"
-    t.integer  "king_sheets",  default: 0
-    t.integer  "twin_sheets",  default: 0
-    t.integer  "pillow_count", default: 0
-    t.integer  "bath_towels",  default: 0
-    t.integer  "hand_towels",  default: 0
-    t.integer  "face_towels",  default: 0
-    t.integer  "bath_mats",    default: 0
+    t.integer  "king_sheets",           default: 0
+    t.integer  "twin_sheets",           default: 0
+    t.integer  "pillow_count",          default: 0
+    t.integer  "bath_towels",           default: 0
+    t.integer  "hand_towels",           default: 0
+    t.integer  "face_towels",           default: 0
+    t.integer  "bath_mats",             default: 0
     t.float    "man_hours"
+    t.string   "distribution_timeslot"
   end
 
   create_table "markets", force: :cascade do |t|

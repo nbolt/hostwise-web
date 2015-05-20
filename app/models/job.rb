@@ -396,11 +396,11 @@ class Job < ActiveRecord::Base
         distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: date, occasion_cd: 0) unless distribution_job
         not_complete = true if team_job.not_complete?
         if team_job.has_linens?
-          supplies[:king_beds] += team_job.booking.property.king_beds unless job.booking.linen_handling == :in_unit
-          supplies[:king_beds] += team_job.booking.property.queen_beds unless job.booking.linen_handling == :in_unit
-          supplies[:king_beds] += team_job.booking.property.full_beds unless job.booking.linen_handling == :in_unit
+          supplies[:king_beds] += team_job.booking.property.king_beds unless team_job.booking.linen_handling == :in_unit
+          supplies[:king_beds] += team_job.booking.property.queen_beds unless team_job.booking.linen_handling == :in_unit
+          supplies[:king_beds] += team_job.booking.property.full_beds unless team_job.booking.linen_handling == :in_unit
           supplies[:king_beds] += team_job.booking.extra_king_sets
-          supplies[:twin_beds] += team_job.booking.property.twin_beds unless job.booking.linen_handling == :in_unit
+          supplies[:twin_beds] += team_job.booking.property.twin_beds unless team_job.booking.linen_handling == :in_unit
           supplies[:twin_beds] += team_job.booking.extra_twin_sets
         end
         if team_job.has_toiletries?
@@ -429,7 +429,8 @@ class Job < ActiveRecord::Base
 
   def self.organize_day contractor, date, job=nil
     hours = []; hours[9] = nil
-    jobs  = contractor.jobs.standard.on_date(date).where('jobs.id != ?', job.then(:id))
+    jobs  = contractor.jobs.standard.on_date(date)
+    jobs  = jobs.where('jobs.id != ?', job.id) if job
     count = 0
     index = nil
 
@@ -493,15 +494,23 @@ class Job < ActiveRecord::Base
         ContractorJobs.where(user_id: contractor.id, job_id: id)[0].update_attribute :priority, index + 1
         job = Job.find id
         if index > 0 then prev_job = Job.find hours[index-1] else prev_job = nil end
-        if prev_job
-          job.booking.update_attribute :custom_timeslot, (prev_job.booking.scheduled_time.to_i + prev_job.man_hours).floor + 1
-        else
-          job.booking.update_attribute :custom_timeslot, '11'
+        if job.booking.timeslot == 'flex'
+          if prev_job
+            job.booking.update_attribute :custom_timeslot, (prev_job.booking.scheduled_time.to_i + prev_job.man_hours).floor + 1
+          else
+            job.booking.update_attribute :custom_timeslot, '11'
+          end
         end
       end
       if jobs.distribution.present?
         ContractorJobs.where(user_id: contractor.id, job_id: jobs.pickup[0].id)[0].update_attribute :priority, 0
         ContractorJobs.where(user_id: contractor.id, job_id: jobs.dropoff[0].id)[0].update_attribute :priority, hours.count + 1
+        first_job = Job.find hours[0]
+        if first_job.booking.timeslot == 'flex'
+          jobs.distribution.pickup[0].update_attribute :distribution_timeslot, '10'
+        else
+          jobs.distribution.pickup[0].update_attribute :distribution_timeslot, first_job.booking.timeslot.to_i - 1
+        end
       end
     else
       paths = []
@@ -533,12 +542,26 @@ class Job < ActiveRecord::Base
           if index == 0
             jobs.distribution.pickup[0].distribution_center = location
             ContractorJobs.where(job_id: jobs.distribution.pickup[0].id, user_id: contractor.id)[0].update_attribute :priority, index
+            next_job = chosen_path[1][index+1]
+            if next_job.booking.timeslot == 'flex'
+              jobs.distribution.pickup[0].update_attribute :distribution_timeslot, '10'
+            else
+              jobs.distribution.pickup[0].update_attribute :distribution_timeslot, next_job.booking.timeslot.to_i - 1
+            end
           else
             jobs.distribution.dropoff[0].distribution_center = location
             ContractorJobs.where(job_id: jobs.distribution.dropoff[0].id, user_id: contractor.id)[0].update_attribute :priority, index
           end
         else
           ContractorJobs.where(job_id: location.id, user_id: contractor.id)[0].update_attribute :priority, index
+          if index > 0 then prev_job = chosen_path[1][index-1] else prev_job = nil end
+          if location.booking.timeslot == 'flex'
+            if prev_job && prev_job.class != DistributionCenter
+              location.booking.update_attribute :custom_timeslot, (prev_job.booking.scheduled_time.to_i + prev_job.man_hours).floor + 1
+            else
+              location.booking.update_attribute :custom_timeslot, '11'
+            end
+          end
         end
       end
     end
