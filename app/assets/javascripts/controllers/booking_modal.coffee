@@ -54,11 +54,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         when 2 then 'in-unit'
     $timeout((->
       angular.element(".step-linens .box.#{linen_handling}").addClass 'selected'
-      if booking.timeslot == 'flex'
+      if booking.timeslot_type_cd == 0
         $scope.chosen_time = 'flex'
         angular.element(".step-three .box.flex").addClass 'chosen'
       else
-        time = parseInt booking.timeslot
+        time = booking.timeslot
         $scope.chosen_time = time
         angular.element(".step-three .box.premium").addClass 'chosen'
         if time < 12 then meridian = 'a' else meridian = 'p'

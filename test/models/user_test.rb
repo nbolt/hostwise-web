@@ -14,5 +14,9 @@ describe User do
     user_1.claim_job booking_4.job
     user_1.jobs.on_date(booking_1.job.date).count.must_equal 4
     user_1.jobs.on_date(booking_3.job.date).count.must_equal 4
+    Booking.find(booking_1.id).timeslot.must_equal 16
+    Booking.find(booking_2.id).timeslot.must_equal 11
+    Booking.find(booking_3.id).timeslot.must_equal 11
+    Booking.find(booking_4.id).timeslot.must_equal 14
   end
 end
