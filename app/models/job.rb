@@ -116,15 +116,39 @@ class Job < ActiveRecord::Base
   end
 
   def king_bed_count
-    if booking && has_linens? then booking.property.king_bed_count + booking.extra_king_sets else 0 end
+    if booking && has_linens?
+      if booking.linen_handling == :in_unit
+        booking.extra_king_sets
+      else
+        booking.property.king_bed_count + booking.extra_king_sets
+      end
+    else
+      0
+    end
   end
 
   def twin_bed_count
-    if booking && has_linens? then booking.property.twin_beds + booking.extra_twin_sets else 0 end
+    if booking && has_linens?
+      if booking.linen_handling == :in_unit
+        booking.extra_twin_sets
+      else
+        booking.property.twin_beds + booking.extra_twin_sets
+      end
+    else
+      0
+    end
   end
 
   def toiletry_count
-    if booking && has_toiletries? then booking.property.bathrooms + booking.extra_toiletry_sets else 0 end
+    if booking && has_toiletries?
+      if booking.linen_handling == :in_unit
+        booking.extra_toiletry_sets
+      else
+        booking.property.bathrooms + booking.extra_toiletry_sets
+      end
+    else
+      0
+    end
   end
 
   def contractor_names
@@ -354,11 +378,11 @@ class Job < ActiveRecord::Base
         single_jobs.each do |job|
           not_complete = true if job.not_complete?
           if job.has_linens?
-            supplies[:king_beds] += job.booking.property.king_beds
-            supplies[:king_beds] += job.booking.property.queen_beds
-            supplies[:king_beds] += job.booking.property.full_beds
+            supplies[:king_beds] += job.booking.property.king_beds unless job.booking.linen_handling == :in_unit
+            supplies[:king_beds] += job.booking.property.queen_beds unless job.booking.linen_handling == :in_unit
+            supplies[:king_beds] += job.booking.property.full_beds unless job.booking.linen_handling == :in_unit
             supplies[:king_beds] += job.booking.extra_king_sets
-            supplies[:twin_beds] += job.booking.property.twin_beds
+            supplies[:twin_beds] += job.booking.property.twin_beds unless job.booking.linen_handling == :in_unit
             supplies[:twin_beds] += job.booking.extra_twin_sets
           end
           if job.has_toiletries?
@@ -372,11 +396,11 @@ class Job < ActiveRecord::Base
         distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: date, occasion_cd: 0) unless distribution_job
         not_complete = true if team_job.not_complete?
         if team_job.has_linens?
-          supplies[:king_beds] += team_job.booking.property.king_beds
-          supplies[:king_beds] += team_job.booking.property.queen_beds
-          supplies[:king_beds] += team_job.booking.property.full_beds
+          supplies[:king_beds] += team_job.booking.property.king_beds unless job.booking.linen_handling == :in_unit
+          supplies[:king_beds] += team_job.booking.property.queen_beds unless job.booking.linen_handling == :in_unit
+          supplies[:king_beds] += team_job.booking.property.full_beds unless job.booking.linen_handling == :in_unit
           supplies[:king_beds] += team_job.booking.extra_king_sets
-          supplies[:twin_beds] += team_job.booking.property.twin_beds
+          supplies[:twin_beds] += team_job.booking.property.twin_beds unless job.booking.linen_handling == :in_unit
           supplies[:twin_beds] += team_job.booking.extra_twin_sets
         end
         if team_job.has_toiletries?
