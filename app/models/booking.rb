@@ -111,17 +111,17 @@ class Booking < ActiveRecord::Base
     end
     if extra_king_sets # this tracks extra queen or full sets
       rsp[:extra_king_sets] ||= 0
-      extra_king_sets.to_i.times { rsp[:extra_king_sets] += PRICING['queen_linens'] }
+      extra_king_sets.to_i.times { rsp[:extra_king_sets] += PRICING['linens'][linen_handling.to_s] }
       rsp[:cost] += rsp[:extra_king_sets]
     end
     if extra_twin_sets # this tracks extra twin sets
       rsp[:extra_twin_sets] ||= 0
-      extra_twin_sets.to_i.times { rsp[:extra_twin_sets] += PRICING['twin_linens'] }
+      extra_twin_sets.to_i.times { rsp[:extra_twin_sets] += PRICING['linens'][linen_handling.to_s] }
       rsp[:cost] += rsp[:extra_twin_sets]
     end
     if extra_toiletry_sets # this tracks extra toiletry sets
       rsp[:extra_toiletry_sets] ||= 0
-      extra_toiletry_sets.to_i.times { rsp[:extra_toiletry_sets] += PRICING['toiletries'] }
+      extra_toiletry_sets.to_i.times { rsp[:extra_toiletry_sets] += PRICING['linens'][linen_handling.to_s] }
       rsp[:cost] += rsp[:extra_toiletry_sets]
     end
     if coupon_id
