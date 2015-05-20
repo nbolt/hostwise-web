@@ -121,6 +121,9 @@
           .service ng:repeat='service in job.standard_services'
             i.icon class="icon-serv-{{service.name}}"
             .name ng:bind='::service.display'
+          .service ng:if='job.booking.linen_handling_cd == 2'
+            img src='/images/laundry_icon.png' style='height:25px;margin:5px 17px 0 3px'
+            .name In-unit Laundry
         .services ng:show='job.extra_services[0]'
           .title Extra Services
           .service ng:repeat='service in job.extra_services'
