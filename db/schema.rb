@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150520223506) do
+ActiveRecord::Schema.define(version: 20150520232705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -423,6 +423,7 @@ ActiveRecord::Schema.define(version: 20150520223506) do
     t.string   "zone"
     t.integer  "zip_id"
     t.integer  "linen_handling_cd"
+    t.date     "purchase_date"
   end
 
   add_index "properties", ["zip_id"], name: "index_properties_on_zip_id", using: :btree
@@ -433,6 +434,16 @@ ActiveRecord::Schema.define(version: 20150520223506) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  create_table "property_transactions", force: :cascade do |t|
+    t.integer  "property_id"
+    t.integer  "stripe_transaction_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "property_transactions", ["property_id"], name: "index_property_transactions_on_property_id", using: :btree
+  add_index "property_transactions", ["stripe_transaction_id"], name: "index_property_transactions_on_stripe_transaction_id", using: :btree
 
   create_table "quiz_stages", force: :cascade do |t|
     t.integer  "contractor_profile_id"
@@ -569,6 +580,8 @@ ActiveRecord::Schema.define(version: 20150520223506) do
   add_foreign_key "job_distribution_centers", "jobs"
   add_foreign_key "payments", "users"
   add_foreign_key "properties", "zips"
+  add_foreign_key "property_transactions", "properties"
+  add_foreign_key "property_transactions", "transactions", column: "stripe_transaction_id"
   add_foreign_key "service_notifications", "users"
   add_foreign_key "zips", "markets"
   add_foreign_key "zips", "neighborhoods"

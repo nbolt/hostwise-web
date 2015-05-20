@@ -6,6 +6,28 @@ require './config/environment'
 module Clockwork
   handler do |job|
     case job
+    when 'subscriptions:process'
+      Property.purchased.each do |property|
+        timezone = Timezone::Zone.new :zone => property.zone
+        time = timezone.time Time.now
+        if time.hour == 23 && (property.last_transaction.then(:status) == :failed || time.day == property.purchase_date.day && time.month == property.purchase_date.month)
+          begin
+            amount = 299 * property.beds * 100
+            rsp = Stripe::Charge.create(
+              amount: amount,
+              currency: 'usd',
+              customer: property.user.stripe_customer_id,
+              source: property.user.payments.primary[0].stripe_id,
+              statement_descriptor: "HostWise"[0..21], # 22 characters max
+              metadata: { property_id: property.id }
+            )
+            property.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount)
+          rescue Stripe::CardError => e
+            err  = e.json_body[:error]
+            property.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount)
+          end
+        end
+      end
     when 'payments:process'
       Booking.where(payment_status_cd: 0, status_cd: [2,3,5]).each do |booking|
         timezone = Timezone::Zone.new :zone => booking.property.zone
@@ -13,6 +35,7 @@ module Clockwork
         if time.hour == 22
           booking.update_cost! if booking.status_cd == 5
           booking.charge!
+          booking.property.update_attribute :purchase_date, time if booking.property.linen_handling_cd == 0 && !booking.property.purchase_date
         end
       end
     when 'jobs:notify_no_access'
@@ -163,6 +186,7 @@ module Clockwork
     end
   end
 
+  every(1.hour, 'subscriptions:process', at: '**:00')
   every(1.hour, 'payments:process', at: '**:00')
   every(1.hour, 'payments:report', at: '**:00')
   every(1.week, 'payouts:process', at: 'Thursday 05:00')

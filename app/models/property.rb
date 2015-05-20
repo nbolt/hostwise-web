@@ -18,6 +18,8 @@ class Property < ActiveRecord::Base
   has_many :active_bookings, -> { active.order(:date) }, autosave: true, dependent: :destroy, class_name: 'Booking'
   has_many :past_bookings, -> { where('bookings.status_cd in (3,5)').order(:date) }, class_name: 'Booking'
   has_many :property_photos, autosave: true, dependent: :destroy
+  has_many :property_transactions, class_name: 'PropertyTransactions', dependent: :destroy
+  has_many :transactions, through: :property_transactions, source: :stripe_transaction
 
   before_validation :standardize_address
   before_save :fetch_zone, :assign_zip
@@ -26,6 +28,7 @@ class Property < ActiveRecord::Base
   validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
   validates_presence_of :access_info, :parking_info, :trash_disposal, :restocking_info, if: lambda { step == 3 }
 
+  scope :purchased, -> { where('linen_handling_cd = 0 and purchase_date is not null') }
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :by_user, -> (user) { where(user_id: user.id) }
@@ -47,6 +50,10 @@ class Property < ActiveRecord::Base
 
   def revenue
     Transaction.where('booking_transactions.booking_id in (?)', bookings.map(&:id)).includes(:booking_transactions).references(:booking_transactions).sum(:amount) / 100.0
+  end
+
+  def last_transaction
+    transactions.order(charged_at: :asc).last
   end
 
   def next_service_date

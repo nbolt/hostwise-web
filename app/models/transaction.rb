@@ -1,6 +1,8 @@
 class Transaction < ActiveRecord::Base
   has_many :booking_transactions, class_name: 'BookingTransactions', dependent: :destroy, foreign_key: :stripe_transaction_id
   has_many :bookings, through: :booking_transactions
+  has_many :property_transactions, class_name: 'PropertyTransactions', dependent: :destroy, foreign_key: :stripe_transaction_id
+  has_many :properties, through: :property_transactions
   as_enum :status, successful: 0, failed: 1, pending: 2
 
   before_create :set_charged_at
