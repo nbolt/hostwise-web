@@ -1,243 +1,7 @@
 script#booking-modal type="text/ng-template"
   .booking.modal ng:controller='booking_modal'
-    .content-container ng:class="exists() && 'exist'"
-      .content-group.existing ng:if='exists()'
-        .header
-          .icon
-            i.icon-calendar
-          .text Confirm Booking & Payment
-        .content
-          .content-side-container
-            .content-side.details
-              .invoice Invoice
-              .days
-                .day collapse='' ng:repeat='day in days'
-                  .total
-                    .arrow
-                      i.icon-acc-open
-                    .text ng:bind='::day.date'
-                    .price ${{day.total}}
-                  .day-services
-                    .service.discount ng:show="day.first_booking_discount"
-                      .text First Booking Discount
-                      .price
-                        | (-$
-                        span ng:bind="day.first_booking_discount"
-                        | )
-                    .service.discount ng:show="day.discounted"
-                      .text Discount
-                      .price
-                        | (-$
-                        span ng:bind="day.discounted_cost"
-                        | )
-                    .service.discount ng:show="day.coupon"
-                      .text Coupon
-                      .price
-                        | (-$
-                        span ng:bind="day.coupon_cost"
-                        | )
-                    .service.discount ng:show="day.timeslot_cost < 0"
-                      .text Timeslot
-                      .price
-                        | (-$
-                        span ng:bind="abs(day.timeslot_cost)"
-                        | )
-                    .late ng:show="day.timeslot_cost > 0"
-                      .text Premium Timeslot
-                      .price
-                        | $
-                        span ng:bind="day.timeslot_cost"
-                    .late ng:show="day.next_day_booking"
-                      .text Late Day Booking Fee
-                      .price
-                        | $
-                        span ng:bind="day.next_day_booking"
-                    .late ng:show="day.same_day_booking"
-                      .text Same Day Booking Fee
-                      .price
-                        | $
-                        span ng:bind="day.same_day_booking"
-                    .late ng:show="day.overage"
-                      .text Overage
-                      .price
-                        | $
-                        span ng:bind="day.overage_cost"
-                    - Service.all.each do |service|
-                      .service ng:show="day.#{service.name}"
-                        .text= service.display
-                        .price
-                          | $
-                          span ng:bind="day.#{service.name}"
-                    .extra-set ng:show='extra.king_sets > 0'
-                      .text ng:bind-template='{{extra.king_sets}} Extra King Set'
-                      .price
-                        | $
-                        span ng:bind='day.extra_king_sets'
-                    .extra-set ng:show='extra.twin_sets > 0'
-                      .text ng:bind-template='{{extra.twin_sets}} Extra Twin Set'
-                      .price
-                        | $
-                        span ng:bind='day.extra_twin_sets'
-                    .extra-set ng:show='extra.toiletry_sets > 0'
-                      .text ng:bind-template='{{extra.toiletry_sets}} Extra Toiletry Set'
-                      .price
-                        | $
-                        span ng:bind='day.extra_toiletry_sets'
-              .total
-                .text Total
-                .price ${{total}}
-              .discount ng:show='!days[0].coupon || coupon_id'
-                .text id='discount-text' Enter Discount Code
-                .input id='discount-code' style='position:relative'
-                  input type='text' ng:model='$parent.discount_code'
-        .content.side.active.edit
-          .title What would you like to edit?
-          .buttons
-            .button ng:click='edit_services()'
-              .text Edit Services
-            .button ng:click='edit_extras()'
-              .text Edit Extras
-            .button ng:click='change_time()'
-              .text Change Time
-            .button ng:click='change_payment()'
-              .text Change Payment
-            .button.red ng:click='to_booking_cancellation() '
-              .text Cancel Booking
-        .content.side.time
-          .linens
-            h3 When would you like HostWise to arrive?
-            h5 Save money by being flexible, or specify a time to pay based on demand.
-          .timeboxes
-            .box.flex ng:click='choose_flex()'
-              .text
-                | Between 10am - 4pm
-                span ng:bind-template='${{flex_service_total()}}'
-            .box.premium
-              .text ng:click='choose_time_modal()' Choose your time
-              .times
-                .timeslot ng:click='choose_time(9)'
-                  .time 8-9 AM
-                  .price ${{time_total(9)}}
-                .timeslot ng:click='choose_time(10)'
-                  .time 9-10 AM
-                  .price ${{time_total(10)}}
-                .timeslot ng:click='choose_time(11)'
-                  .time 10-11 AM
-                  .price ${{time_total(11)}}
-                .timeslot ng:click='choose_time(12)'
-                  .time 11-12 PM
-                  .price ${{time_total(12)}}
-                .timeslot ng:click='choose_time(13)'
-                  .time 12-1 PM
-                  .price ${{time_total(13)}}
-                .timeslot ng:click='choose_time(14)'
-                  .time 1-2 PM
-                  .price ${{time_total(14)}}
-                .timeslot ng:click='choose_time(15)'
-                  .time 2-3 PM
-                  .price ${{time_total(15)}}
-                .timeslot ng:click='choose_time(16)'
-                  .time 3-4 PM
-                  .price ${{time_total(16)}}
-                .timeslot ng:click='choose_time(17)'
-                  .time 4-5 PM
-                  .price ${{time_total(17)}}
-                .timeslot ng:click='choose_time(18)'
-                  .time 5-6 PM
-                  .price ${{time_total(18)}}
-        .content.side.extras
-          .linens
-            h3 Do you want to add an extra sets of linens and towels or toiletries?
-            h5 Great for variable beds and pullout couches to accommodate extra guests.
-            .counters
-              .counter
-                .boxes
-                  .box decrement='extra.king_sets' -
-                  input.box type='text' disabled='disabled' ng:model='extra.king_sets'
-                  .box increment='extra.king_sets' +
-                .label King/Queen Set
-              .counter
-                .boxes
-                  .box decrement='extra.twin_sets' -
-                  input.box type='text' disabled='disabled' ng:model='extra.twin_sets'
-                  .box increment='extra.twin_sets' +
-                .label Full/Twin Set
-              .counter
-                .boxes
-                  .box decrement='extra.toiletry_sets' -
-                  input.box type='text' disabled='disabled' ng:model='extra.toiletry_sets'
-                  .box increment='extra.toiletry_sets' +
-                .label Guest Toiletries
-          hr
-          .instructions
-            h3 Anything specific we should know besides the usual?
-            h5 If you have any special requests please let us know here.
-            textarea ng:model='extra.instructions'
-        .content.side.services
-          .services
-            .title =t('booking.modal.services_title')
-            - Service.standard.each do |service|
-              .service class="#{service.name}"
-                i.icon class="icon-serv-#{service.name}"
-                .text= service.display
-                label.switch.red
-                  input type='checkbox' toggle-service="#{service.name}"
-                  i
-          .extra
-            .title =t('booking.modal.extras_title')
-            - Service.extra.each do |service|
-              .service class="#{service.name}"
-                i.icon class="icon-serv-#{service.name}"
-                .text= service.display
-                label.switch.red
-                  input type='checkbox' toggle-service="#{service.name}"
-                  i
-        .content.side.payment
-          div.existing-payment
-            .payment-title Select Payment Method
-            .payment-method.existing
-              .icon
-                .typcn.typcn-credit-card
-              input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
-          div.new-payment
-            .payment-title Add Payment Method
-            .payment-method
-              input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
-            .payment-tab.ach
-              .field.name
-                .label Name On Account
-                input ng:model='$parent.bank.name'
-              .row.two
-                .field.account-number
-                  .label Account Number
-                  input ng:model='$parent.bank.account_number'
-                .field.routing-number
-                  .label Routing Number
-                  input ng:model='$parent.bank.routing_number'
-            .payment-tab.credit-card.active
-              .field.card-number
-                .label Card Number
-                input data-stripe='number' ng:model='$parent.card.number'
-              .row.two
-                .field.expiry
-                  .label Expiry Date
-                  input data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
-                .field.cvc
-                  .label CV Code
-                  input data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
-            a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
-        .foot.save
-          .right
-            .total ng:if='!exists()'
-              .text.dollar
-                | $
-              .text.amount
-                | {{service_total}}
-              .text.per
-                | / Service
-            .button.white ng:if='exists()' style='margin-right:15px' ng:show='show_back' ng:click='back()' Back
-            .button.teal ng:click='update()' Save
-      .content-group.step-one ng:if='!exists()'
+    .content-container
+      .content-group.step-one
         .header
           .icon
             i.icon-calendar
@@ -245,10 +9,15 @@ script#booking-modal type="text/ng-template"
         .steps ng:class='steps_class()'
           .step ng:repeat='step in steps' ng:class='step_class(step, "services")'
             .text ng:bind-template='{{step.num}}. {{step.display}}'
-        .content.cal
+        .content.cal ng:if='!exists()'
           .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
+        .content.edit ng:if='exists()'
+          .title Actions
+          .buttons
+            .button.red ng:click='to_booking_cancellation() '
+              .text Cancel Booking
         .content
-          div ng:if='!exists()'
+          div
             .services
               .title =t('booking.modal.services_title')
               - Service.standard.each do |service|
@@ -277,7 +46,7 @@ script#booking-modal type="text/ng-template"
               .text.per
                 | / Service
             .button.teal ng:click='next()' Next
-      .content-group.step-linens ng:if='!exists()'
+      .content-group.step-linens
         .header
           .icon
             i.icon-calendar
@@ -286,36 +55,41 @@ script#booking-modal type="text/ng-template"
           .step ng:repeat='step in steps' ng:class='step_class(step, "linens")'
             .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.extras
-          .linens
-            h3 Select your linens & towels option
-            h5 We have three options to accommodate your hosting style!
-          .linen-boxes
-            .box.purchase ng:click='select_handling(0, "purchase")'
-              .title Purchase
-              .price
-                span $13
-                | / Bed
-              .text
-                span $299 per bed setup fee,
-                |  and then you never have to worry about replacing your linens & towels from rips or stains. We guarantee and replace them for free.
-              .button.chosen Select
-            .box.rental ng:click='select_handling(1, "rental")'
-              .title Rental Program
-              .price
-                span $19
-                | / Bed
-              .text Using our commercially cleaned and pressed 5-star linens and towels will guarantee the best guest experience &mdash; great experience equals great reviews.
-              .button Select
-            .box.in-unit ng:click='select_handling(2, "in-unit")'
-              .title In-unit Laundering
-              .price
-                span $10
-                | / Load
-              .text
-                | Already have your beds setup with linens and towels? If you have an
-                span  in-unit washer and dryer
-                |  we'll take care of it for you.
-              .button Select
+          div.exists ng:if='booking.linen_handling_cd == 0'
+            .icon
+              img src='/images/badge.png'
+            .text You have purchased linens & towels for this property
+          div ng:if='booking.linen_handling_cd != 0'
+            .linens
+              h3 Select your linens & towels option
+              h5 We have three options to accommodate your hosting style!
+            .linen-boxes
+              .box.purchase ng:click='select_handling(0, "purchase")'
+                .title Purchase
+                .price
+                  span $13
+                  | / Bed
+                .text
+                  span $299 per bed setup fee,
+                  |  and then you never have to worry about replacing your linens & towels from rips or stains. We guarantee and replace them for free.
+                .button.chosen Select
+              .box.rental ng:click='select_handling(1, "rental")'
+                .title Rental Program
+                .price
+                  span $19
+                  | / Bed
+                .text Using our commercially cleaned and pressed 5-star linens and towels will guarantee the best guest experience &mdash; great experience equals great reviews.
+                .button Select
+              .box.in-unit ng:click='select_handling(2, "in-unit")'
+                .title In-unit Laundering
+                .price
+                  span $10
+                  | / Load
+                .text
+                  | Already have your beds setup with linens and towels? If you have an
+                  span  in-unit washer and dryer
+                  |  we'll take care of it for you.
+                .button Select
         .foot.next
           .right
             .total
@@ -325,8 +99,8 @@ script#booking-modal type="text/ng-template"
                 | {{service_total}}
               .text.per
                 | / Service
-            .button.teal ng:click='select_time()' Select Time
-      .content-group.step-additional ng:if='!exists()'
+            .button.teal ng:click='select_extras()' Select Extras
+      .content-group.step-additional
         .header
           .icon
             i.icon-calendar
@@ -374,7 +148,7 @@ script#booking-modal type="text/ng-template"
               .text.per
                 | / Service
             .button.teal.auto ng:click='select_time()' Select Time
-      .content-group.step-three ng:if='!exists()'
+      .content-group.step-three
         .header
           .icon
             i.icon-calendar
@@ -436,7 +210,7 @@ script#booking-modal type="text/ng-template"
               .text.per
                 | / Service
             .button.teal.auto ng:click='select_payment()' Select Payment
-      .content-group.step-four ng:if='!exists()'
+      .content-group.step-four
         .header
           .icon
             i.icon-calendar
@@ -553,7 +327,7 @@ script#booking-modal type="text/ng-template"
           .left
             .button.grey ng:click='change_dates()' Change Dates
           .right
-            .button.teal.right#book ng:click='book()'
+            .button.teal.right#book ng:click='selected_booking && update() || book()'
               .icon.spin
                 .spinner
               .icon.check

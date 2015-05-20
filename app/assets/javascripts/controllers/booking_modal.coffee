@@ -15,61 +15,57 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
   $scope.discount = 0
   $scope.linen_handling = null
   
-  if $scope.property.linen_handling_cd == 0
-    $scope.steps = [
-      {
-        num: 1
-        name: 'services'
-        display: 'Date & Services'
-      },
-      {
-        num: 2
-        name: 'extras'
-        display: 'Extra Options'
-      },
-      {
-        num: 3
-        name: 'time'
-        display: 'Select a Time'
-      },
-      {
-        num: 4
-        name: 'pay'
-        display: 'Finish & Pay'
-      }
-    ]
-  else
-    $scope.steps = [
-      {
-        num: 1
-        name: 'services'
-        display: 'Date & Services'
-      },
-      {
-        num: 2
-        name: 'linens'
-        display: 'Linens & Towels'
-      },
-      {
-        num: 3
-        name: 'extras'
-        display: 'Extra Options'
-      },
-      {
-        num: 4
-        name: 'time'
-        display: 'Select a Time'
-      },
-      {
-        num: 5
-        name: 'pay'
-        display: 'Finish & Pay'
-      }
-    ]
+  $scope.steps = [
+    {
+      num: 1
+      name: 'services'
+      display: 'Date & Services'
+    },
+    {
+      num: 2
+      name: 'linens'
+      display: 'Linens & Towels'
+    },
+    {
+      num: 3
+      name: 'extras'
+      display: 'Extra Options'
+    },
+    {
+      num: 4
+      name: 'time'
+      display: 'Select a Time'
+    },
+    {
+      num: 5
+      name: 'pay'
+      display: 'Finish & Pay'
+    }
+  ]
 
   if $scope.selected_booking
     booking = _($scope.property.active_bookings).find (booking) -> booking.id == parseInt($scope.selected_booking)
+    $scope.linen_handling = booking.linen_handling_cd
     $scope.extra = {king_sets: booking.extra_king_sets, twin_sets: booking.extra_twin_sets, toiletry_sets: booking.extra_toiletry_sets, instructions: booking.extra_instructions}
+    linen_handling =
+      switch booking.linen_handling_cd
+        when 0 then 'purchase'
+        when 1 then 'rental'
+        when 2 then 'in-unit'
+    $timeout((->
+      angular.element(".step-linens .box.#{linen_handling}").addClass 'selected'
+      if booking.timeslot == 'flex'
+        $scope.chosen_time = 'flex'
+        angular.element(".step-three .box.flex").addClass 'chosen'
+      else
+        time = parseInt booking.timeslot
+        $scope.chosen_time = time
+        angular.element(".step-three .box.premium").addClass 'chosen'
+        if time < 12 then meridian = 'a' else meridian = 'p'
+        time1 = time - 1; time1 -= 12 if time1 > 12
+        time2 = time;     time2 -= 12 if time2 > 12
+    ),1000)
+    $scope.booking = booking
   else
     $scope.extra = {king_sets: 0, twin_sets: 0, toiletry_sets: 0}
 
@@ -82,7 +78,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
 
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
-  $scope.steps_class = -> $scope.property.linen_handling_cd == 0 && 'four' || 'five'
+  $scope.steps_class = -> 'five'
 
   $scope.step_class = (step, name) ->
     if $scope.steps
@@ -191,18 +187,13 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
     else if no_dates()
       flash 'failure', 'Please select at least one date'
     else
-      if $scope.property.linen_handling_cd == 0
-        $scope.slide 'step-additional'
-      else
-        $scope.slide 'step-linens'
+      $scope.slide 'step-linens'
       $scope.calculate_pricing()
     null
 
-  $scope.select_time = ->
-    if $scope.property.linen_handling_cd == 0
-      $scope.slide 'step-three'
-    else
-      $scope.slide 'step-three' if $scope.linen_handling != null
+  $scope.select_time = -> $scope.slide 'step-three'
+
+  $scope.select_extras = -> $scope.slide 'step-additional' if $scope.linen_handling != null || $scope.property.linen_handling_cd == 0
 
   $scope.select_payment = ->
     if $scope.chosen_time
@@ -468,6 +459,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$q', '$rootScope', 'spinner'
         extra_toiletry_sets: $scope.extra.toiletry_sets
         extra_instructions: $scope.extra.instructions
         timeslot: $scope.chosen_time
+        handling: $scope.linen_handling
       }).success (rsp) ->
         spinner.stopSpin()
         if rsp.success

@@ -67,9 +67,9 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
         days_diff = $scope.selected_date.diff(moment().startOf('day'), 'days')
         hour = moment().hours()
         minute = moment().minutes()
-        if days_diff == 0 and hour <= 14 and minute <= 59 #same day booking before 3pm
+        if days_diff == 0 and hour <= 14 and minute <= 59 # same day booking before 3pm
           $scope.$broadcast 'same_day_confirmation'
-        else if days_diff == 1 and hour >= 22 #next day booking after 10pm
+        else if days_diff == 1 and hour >= 22 # next day booking after 10pm
           $scope.$broadcast 'next_day_confirmation'
     }
 
@@ -195,15 +195,15 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
           $scope.selected_services[service.name] = true
           angular.element(".booking.modal .services .service.#{service.name}, .booking.modal .extra .service.#{service.name}").addClass 'active'
           angular.element(".booking.modal .services .service.#{service.name} input, .booking.modal .extra .service.#{service.name} input").attr 'checked', true
-        $timeout((->$scope.$broadcast 'existing_booking'),100)
         $scope.$broadcast 'calculate_pricing'
+        $timeout((->$scope.$broadcast 'booking_selection'),100)
     else
       days_diff = $scope.selected_date.diff(moment().startOf('day'), 'days')
       hour = moment().hours()
       minute = moment().minutes()
-      if days_diff == 0 and hour <= 14 and minute <= 59 #same day booking before 3pm
+      if days_diff == 0 and hour <= 14 and minute <= 59 # same day booking before 3pm
         $timeout((->$scope.$broadcast 'same_day_confirmation'),100)
-      else if days_diff == 1 and hour >= 22 #next day booking after 10pm
+      else if days_diff == 1 and hour >= 22 # next day booking after 10pm
         $timeout((->$scope.$broadcast 'next_day_confirmation'),100)
       else
         $timeout((->$scope.$broadcast 'booking_selection'),100)

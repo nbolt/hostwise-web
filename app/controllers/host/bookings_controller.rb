@@ -32,6 +32,10 @@ class Host::BookingsController < Host::AuthController
         booking.update_attribute :timeslot, params[:timeslot]
         # handle existing contractor
       end
+      if params[:handling]
+        booking.update_attribute :linen_handling_cd, params[:handling]
+        property.update_attribute :linen_handling_cd, params[:handling]
+      end
       if booking.save
         booking.update_cost!
         booking.job.handle_distribution_jobs booking.job.primary_contractor if booking.job.primary_contractor

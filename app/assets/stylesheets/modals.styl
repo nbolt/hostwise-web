@@ -561,6 +561,25 @@
           vertical-align: top
           opacity: 0
           transition: opacity .4s ease-in-out
+          &.step-linens .exists
+            .icon
+              text-align: center
+              background-color: white
+              padding: 20px
+              border-radius: 50%
+              margin: auto
+              width: 100px
+              img
+                height: 100px
+            .text
+              color: heavy-gray
+              text-align: center
+              width: 400px
+              font-size: 1.8em
+              margin: 60px auto
+              padding: 20px 0
+              border-top: thin solid gray
+              border-bottom: thin solid gray
           &.step-additional, &.step-three
             .foot .right .total
               @media phone
@@ -685,7 +704,7 @@
                 vertical-align: top
               .button
                 margin-top: 9px
-                width: 90px
+                width: 100px
                 .icon, .text
                   display: inline-block
                   vertical-align: top
