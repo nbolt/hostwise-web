@@ -49,7 +49,10 @@
             i.icon-house ng:if='job.booking.property.property_type_cd == 0'
             i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
             .text
-              | {{job.booking.property.bedrooms}}BD/{{job.booking.property.bathrooms}}BA
+              | {{job.booking.property.property_size}}
+          .timeslot ng:if='job.formatted_time != "flex"'
+            i.icon-job-order
+            .text ng:bind='job.formatted_time'
           .id
             i.icon-person
             .text ng:bind='::job.contractor_count'

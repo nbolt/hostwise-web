@@ -60,10 +60,11 @@
               .id style='display:inline-block'
                 i.icon-person
                 .text ng:bind='::job.contractor_count'
-              .est ng:show='job.man_hours'
-                i.icon-timer-outline
-                .text
-                  | {{job.man_hours}} hours (est.)
+              .timeslot
+                i.icon-job-order
+                .text ng:if='job.formatted_time == "flex"' Flex Window
+                .text.teal ng:if='job.formatted_time != "flex"' Specific Time
+                .text style='margin-left:3px' ng:bind-template=' - {{job.formatted_time}}'
   .row.uneven
     .block.customer
       .head

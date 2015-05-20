@@ -37,7 +37,7 @@ class Contractor::JobsController < Contractor::AuthController
       end
       format.json do
         job.current_user = current_user
-        render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :next_job, :prev_job, :cant_access_seconds_left, :man_hours, :primary, :king_bed_count, :twin_bed_count, :toiletry_count, :is_last_job_of_day, :index_in_day], include: {distribution_center: {methods: [:full_address]}, contractors: {methods: [:name, :display_phone_number, :avatar], include: {contractor_profile: {}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type]}}}})
+        render json: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :next_job, :prev_job, :cant_access_seconds_left, :man_hours, :primary, :king_bed_count, :twin_bed_count, :toiletry_count, :is_last_job_of_day, :index_in_day], include: {distribution_center: {methods: [:full_address]}, contractors: {methods: [:name, :display_phone_number, :avatar], include: {contractor_profile: {}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :nickname, :property_type, :property_size]}}}})
       end
     end
   end
@@ -73,10 +73,10 @@ class Contractor::JobsController < Contractor::AuthController
     unless job.status == :cant_access
       job.update_attributes(status_cd: 5, cant_access: Time.now)
       staging = Rails.env.staging? && '[STAGING] ' || ''
-      if params[:property_occupied].present? #property occupied
+      if params[:property_occupied].present? # property occupied
         TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}. There are still guests occupying the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
         TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and guests are still occupying the property. This is for job ##{job.id}.")
-      else #can't access
+      else # can't access
         TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}. We are having trouble accessing the property. Please call the housekeeper ASAP at #{job.primary_contractor.display_phone_number} to resolve this issue.")
         TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has arrived at property #{job.booking.property.id} and cannot access. This is for job ##{job.id}.")
       end

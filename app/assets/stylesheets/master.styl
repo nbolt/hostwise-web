@@ -738,6 +738,26 @@ form
       margin-bottom: 10px
       height: 116px
       cursor: pointer
+      .time
+        background-color: teal
+        padding: 8px
+        padding-bottom: 9px
+        .icon
+          font-size: 1.2em
+          margin-right: 8px
+        .text
+          margin-top: 2px
+          font-weight: 600
+          &.complete
+            display: none
+          span
+            font-weight: normal
+            margin-left: 10px
+        .icon, .text
+          display: inline-block
+          vertical-align: top
+        .icon, .text
+          color: white
       .bottom
         border-top: 2px solid lighter-gray
         height: 40px
@@ -867,25 +887,36 @@ form
         color: heavy-gray
       &.complete, &.couldnt_access
         background-color: teal
-        color: white
+        color: dark-teal
+        .time
+          border-top: thin solid #60BFC4
+          .active
+            display: none
+          .complete
+            display: inline-block
         .photo
           background-color: teal
           box-shadow: teal_shadow
           .timer i
-            color: white
+            color: dark-teal
+        .right span
+          color: dark-teal
         .address1, .title .icon, .name
-          color: white
+          color: dark-teal
         .bottom
-          border-top: 2px solid #39babe
-          color: white
+          border-top: thin solid #60BFC4
+          color: dark-teal
           .payout
-            background-color: teal
+            background-color: #31A1A7
             color: white
+            .pricing
+              border-bottom: 2px solid yellow
             i
-              color: white
+              color: dark-teal
           .text, .rooms i
-            color: white
+            color: dark-teal
         .address
+          color: dark-teal !important
           margin-top: 36px
           font-size: 1em
         .order
@@ -1795,6 +1826,22 @@ form
         width: 100%
       &:last-child
         margin-right: 0
+      .message
+        background-color: white
+        padding: 15px
+        border-radius: 3px
+        margin-bottom: 15px
+        .icon, .text
+          display: inline-block
+          vertical-align: top
+        .text
+          color: #868687
+          margin-top: 8px
+        .icon
+          color: #5E7A7A
+          margin-right: 15px
+          img
+            height: 34px
       .section
         background-color: white
         border-radius: 3px

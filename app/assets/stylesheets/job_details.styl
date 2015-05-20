@@ -131,6 +131,25 @@
     @media phone
       height: auto
       font-size: 0.9em
+    &.standard
+      height: 190px
+      @media phone
+        height: 181px
+    &.pickup
+      height: 141px
+      .photo
+        height: 51px
+        .timer
+          margin-top: 8px
+      .right
+        @media phone
+          height: 94px
+      @media phone
+        height: 132px
+    &.dropoff
+      height: 150px
+      @media phone
+        height: 145px
     .flag
       position: absolute
       right: -2px
@@ -225,10 +244,23 @@
         width: auto
       .left
         padding: 15px 18px
-      .id, .rooms, .text, .est
+      .id, .rooms, .text, .est, .timeslot
         display: inline-block
         vertical-align: top
         color: dark-gray
+      .timeslot
+        margin-left: 20px
+        .text
+          color: heavy-gray
+          font-weight: 600
+          &.teal
+            color: teal
+        i
+          color: heavy-gray
+          display: inline-block
+          vertical-align: top
+          font-size: 1.1em
+          margin: -2px 5px 0 0
       .id
         display: none
         margin-left: 20px
@@ -270,7 +302,7 @@
       display: block
       padding: 10px
       width: 100px
-      height: 100px
+      height: 99px
       padding: 25px
       background-color: lighter-gray
       float: left

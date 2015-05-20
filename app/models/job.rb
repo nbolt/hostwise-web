@@ -104,6 +104,17 @@ class Job < ActiveRecord::Base
     jobs.select {|job| job.date.year == date.year && job.date.month == date.month && week.index(job.date.day)}
   end
 
+  def formatted_time
+    if booking && booking.scheduled_time.to_i > 0
+      time = booking.scheduled_time.to_i - 1
+      meridian = 'A'; meridian = 'P' if time > 11
+      time -= 12 if time > 12
+      "#{time} #{meridian}M"
+    else
+      'flex'
+    end
+  end
+
   def king_bed_count
     if booking && has_linens? then booking.property.king_bed_count + booking.extra_king_sets else 0 end
   end
@@ -514,6 +525,10 @@ class Job < ActiveRecord::Base
   private
 
   def assign_man_hours
-    self.man_hours = MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size if booking
+    if booking
+      hours = MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size
+      hours += 1 if booking.linen_handling == :in_unit
+      self.man_hours = hours
+    end
   end
 end
