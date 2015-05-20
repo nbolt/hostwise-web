@@ -46,7 +46,7 @@ class Admin::BookingsController < Admin::AuthController
     refunded = params[:refunded_cost].to_f * 100
 
     if refunded > booking.refunded_cost
-      if booking.process_refund!
+      if booking.process_refund! params[:refunded_reason]
         booking.refunded        = true
         booking.adjusted        = true
         booking.adjusted_cost   = booking.adjusted_cost - refunded
