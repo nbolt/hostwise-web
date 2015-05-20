@@ -56,7 +56,7 @@
                 i.icon-house ng:if='job.booking.property.property_type_cd == 0'
                 i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
                 .text
-                  | {{job.booking.property.bedrooms}}BD/{{job.booking.property.bathrooms}}BA
+                  | {{job.booking.property.property_size}}
               .id style='display:inline-block'
                 i.icon-person
                 .text ng:bind='::job.contractor_count'
@@ -65,6 +65,9 @@
                 .text ng:if='job.formatted_time == "flex"' Flex Window
                 .text.teal ng:if='job.formatted_time != "flex"' Specific Time
                 .text style='margin-left:3px' ng:bind-template=' - {{job.formatted_time}}'
+              .linens
+                img src='/images/badge.png'
+                .text This host has purchased linens & towels for this property
   .row.uneven
     .block.customer
       .head

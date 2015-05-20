@@ -29,7 +29,11 @@ class Host::BookingsController < Host::AuthController
       end
       booking.coupons.push(Coupon.find params[:coupon_id]) if params[:coupon_id]
       if params[:timeslot]
-        booking.update_attribute :timeslot, params[:timeslot]
+        if params[:timeslot] == 'flex'
+          booking.update_attributes(timeslot: nil, timeslot_type_cd: 0)
+        else
+          booking.update_attributes(timeslot: params[:timeslot], timeslot_type_cd: 1)
+        end
         booking.job.contractors.each do |contractor|
           if booking.job.fits_in_day contractor
             Job.set_priorities contractor, booking.date

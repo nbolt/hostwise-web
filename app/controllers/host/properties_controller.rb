@@ -89,7 +89,13 @@ class Host::PropertiesController < Host::AuthController
             month = k.split('-')[0]
             year  = k.split('-')[1]
             date = Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d')
-            booking = property.bookings.build(date: date, timeslot: params[:timeslot], linen_handling_cd: params[:handling] || property.linen_handling_cd)
+            booking = property.bookings.build(date: date, linen_handling_cd: params[:handling] || property.linen_handling_cd)
+            if params[:timeslot] == 'flex'
+              booking.timeslot_type_cd = 0
+            else
+              booking.timeslot_type_cd = 1
+              booking.timeslot = params[:timeslot]
+            end
             property.update_attribute :linen_handling_cd, params[:handling] if params[:handling]
             unless booking.duplicate?
               if params[:late_next_day].present?

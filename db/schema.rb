@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150520173358) do
+ActiveRecord::Schema.define(version: 20150520223506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,8 +92,8 @@ ActiveRecord::Schema.define(version: 20150520173358) do
     t.integer  "property_id"
     t.integer  "payment_id"
     t.date     "date"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.integer  "status_cd",                   default: 1
     t.integer  "payment_status_cd",           default: 0
     t.boolean  "late_next_day",               default: false
@@ -131,11 +131,11 @@ ActiveRecord::Schema.define(version: 20150520173358) do
     t.integer  "extra_twin_sets_cost",        default: 0
     t.integer  "extra_toiletry_sets_cost",    default: 0
     t.integer  "coupon_cost",                 default: 0
-    t.string   "timeslot",                    default: "flex"
     t.integer  "contractor_service_cost",     default: 0
-    t.string   "custom_timeslot"
     t.integer  "timeslot_cost"
     t.integer  "linen_handling_cd"
+    t.integer  "timeslot"
+    t.integer  "timeslot_type_cd"
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -326,7 +326,7 @@ ActiveRecord::Schema.define(version: 20150520173358) do
     t.integer  "face_towels",           default: 0
     t.integer  "bath_mats",             default: 0
     t.float    "man_hours"
-    t.string   "distribution_timeslot"
+    t.integer  "distribution_timeslot"
   end
 
   create_table "markets", force: :cascade do |t|

@@ -38,6 +38,7 @@ class Booking < ActiveRecord::Base
   as_enum :status, deleted: 0, active: 1, cancelled: 2, completed: 3, manual: 4, couldnt_access: 5
   as_enum :payment_status, pending: 0, completed: 1
   as_enum :linen_handling, purchase: 0, rental: 1, in_unit: 2
+  as_enum :timeslot_type, flex: 0, premium: 1
 
   attr_accessor :vip
 
@@ -53,7 +54,7 @@ class Booking < ActiveRecord::Base
     services.map(&:display).join ', '
   end
 
-  def self.cost property, services, linen_handling, timeslot = 'flex', extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
+  def self.cost property, services, linen_handling, timeslot, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
     pool_service = Service.where(name: 'pool')[0]
     rsp = {cost:0}
     services.each do |service|
@@ -80,19 +81,17 @@ class Booking < ActiveRecord::Base
     end
     rsp[:contractor_service_cost] = (rsp[:cleaning] || 0) + (rsp[:pool] || 0) + (rsp[:patio] || 0) + (rsp[:windows] || 0) + (rsp[:preset] || 0)
     rsp[:orig_service_cost] = rsp[:contractor_service_cost]
-    if timeslot != 'flex'
-      case timeslot.to_i
-      when 9  then rsp[:contractor_service_cost] *= PRICING['timeslots'][9]
-      when 10 then rsp[:contractor_service_cost] *= PRICING['timeslots'][10]
-      when 11 then rsp[:contractor_service_cost] *= PRICING['timeslots'][11]
-      when 12 then rsp[:contractor_service_cost] *= PRICING['timeslots'][12]
-      when 13 then rsp[:contractor_service_cost] *= PRICING['timeslots'][13]
-      when 14 then rsp[:contractor_service_cost] *= PRICING['timeslots'][14]
-      when 15 then rsp[:contractor_service_cost] *= PRICING['timeslots'][15]
-      when 16 then rsp[:contractor_service_cost] *= PRICING['timeslots'][16]
-      when 17 then rsp[:contractor_service_cost] *= PRICING['timeslots'][17]
-      when 18 then rsp[:contractor_service_cost] *= PRICING['timeslots'][18]
-      end
+    case timeslot.to_i
+    when 9  then rsp[:contractor_service_cost] *= PRICING['timeslots'][9]
+    when 10 then rsp[:contractor_service_cost] *= PRICING['timeslots'][10]
+    when 11 then rsp[:contractor_service_cost] *= PRICING['timeslots'][11]
+    when 12 then rsp[:contractor_service_cost] *= PRICING['timeslots'][12]
+    when 13 then rsp[:contractor_service_cost] *= PRICING['timeslots'][13]
+    when 14 then rsp[:contractor_service_cost] *= PRICING['timeslots'][14]
+    when 15 then rsp[:contractor_service_cost] *= PRICING['timeslots'][15]
+    when 16 then rsp[:contractor_service_cost] *= PRICING['timeslots'][16]
+    when 17 then rsp[:contractor_service_cost] *= PRICING['timeslots'][17]
+    when 18 then rsp[:contractor_service_cost] *= PRICING['timeslots'][18]
     end
     rsp[:contractor_service_cost] = rsp[:contractor_service_cost].round
     rsp[:timeslot_cost] = rsp[:contractor_service_cost] - rsp[:orig_service_cost]
@@ -173,10 +172,6 @@ class Booking < ActiveRecord::Base
 
   def prediscount_cost
     cost + first_booking_discount_cost + coupon_dollar_cost
-  end
-
-  def scheduled_time
-    custom_timeslot || timeslot
   end
 
   def pricing_hash

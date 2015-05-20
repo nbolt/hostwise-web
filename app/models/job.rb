@@ -50,8 +50,8 @@ class Job < ActiveRecord::Base
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
-  scope :timed, -> { where('bookings.timeslot != ? or bookings.custom_timeslot is not null', 'flex').includes(:booking).references(:bookings) }
-  scope :flex, -> { where('bookings.timeslot = ? and bookings.custom_timeslot is null', 'flex').includes(:booking).references(:bookings) }
+  scope :timed, -> { where('bookings.timeslot is not null').includes(:booking).references(:bookings) }
+  scope :flex, -> { where('bookings.timeslot is null').includes(:booking).references(:bookings) }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
@@ -105,14 +105,14 @@ class Job < ActiveRecord::Base
   end
 
   def formatted_time
-    if booking && booking.scheduled_time.to_i > 0
-      time = booking.scheduled_time.to_i - 1
+    if booking && booking.timeslot_type_cd == 1
+      time = booking.timeslot - 1
       meridian = 'A'; meridian = 'P' if time > 11
       time -= 12 if time > 12
       "#{time} #{meridian}M"
     elsif distribution
       if distribution_timeslot
-        time = distribution_timeslot.to_i - 1
+        time = distribution_timeslot - 1
         meridian = 'A'; meridian = 'P' if time > 11
         time -= 12 if time > 12
         "#{time} #{meridian}M"
@@ -440,12 +440,11 @@ class Job < ActiveRecord::Base
     hours = []; hours[9] = nil
     jobs  = contractor.jobs.standard.on_date(date)
     jobs  = jobs.where('jobs.id != ?', job.id) if job
-    count = 0
-    index = nil
+    count = 0; index = nil
 
     jobs.timed.each do |job|
-      start_hour = job.booking.timeslot.to_i - 9
-      end_hour   = (job.booking.timeslot.to_i + job.man_hours).floor - 9
+      start_hour = job.booking.timeslot - 9
+      end_hour   = (job.booking.timeslot + job.man_hours).floor - 9
       (start_hour..end_hour).each {|hour| hours[hour] = job.id}
     end
 
@@ -454,6 +453,7 @@ class Job < ActiveRecord::Base
       ranges = []
       hours[2..7].each_with_index do |hour, i|
         if hour || i == 5
+          count += 1 unless hour
           ranges.push([index, count]) if index && count > range
           count = 0; index = nil
         else
@@ -473,7 +473,7 @@ class Job < ActiveRecord::Base
     count = 0; index = nil
     hours = Job.organize_day contractor, date, self
 
-    if booking.scheduled_time == 'flex'
+    if booking.timeslot_type == :flex
       range  = man_hours.floor
       ranges = []
       hours[2..7].each_with_index do |hour, i|
@@ -489,25 +489,25 @@ class Job < ActiveRecord::Base
       slot = ranges.sort_by! {|r| r[1]}[0]
       slot && true || false
     else
-      start_hour = booking.scheduled_time.to_i - 9
-      end_hour   = (booking.scheduled_time.to_i + man_hours).floor - 9
+      start_hour = booking.timeslot - 9
+      end_hour   = (booking.timeslot + man_hours).floor - 9
       hours[start_hour..end_hour].compact.empty?
     end
   end
 
   def self.set_priorities contractor, date
     jobs = contractor.jobs.on_date(date)
-    if jobs.standard.any? {|job| job.booking.scheduled_time != 'flex'}
+    if jobs.standard.any? {|job| job.booking.timeslot}
       hours = Job.organize_day(contractor, date).uniq.compact
       hours.each_with_index do |id, index|
         ContractorJobs.where(user_id: contractor.id, job_id: id)[0].update_attribute :priority, index + 1
         job = Job.find id
         if index > 0 then prev_job = Job.find hours[index-1] else prev_job = nil end
-        if job.booking.timeslot == 'flex'
+        if job.booking.timeslot_type == :flex
           if prev_job
-            job.booking.update_attribute :custom_timeslot, (prev_job.booking.scheduled_time.to_i + prev_job.man_hours).floor + 1
+            job.booking.update_attribute :timeslot, (prev_job.booking.timeslot + prev_job.man_hours).floor + 1
           else
-            job.booking.update_attribute :custom_timeslot, '11'
+            job.booking.update_attribute :timeslot, 11
           end
         end
       end
@@ -515,10 +515,10 @@ class Job < ActiveRecord::Base
         ContractorJobs.where(user_id: contractor.id, job_id: jobs.pickup[0].id)[0].update_attribute :priority, 0
         ContractorJobs.where(user_id: contractor.id, job_id: jobs.dropoff[0].id)[0].update_attribute :priority, hours.count + 1
         first_job = Job.find hours[0]
-        if first_job.booking.timeslot == 'flex'
-          jobs.distribution.pickup[0].update_attribute :distribution_timeslot, '10'
+        if first_job.booking.timeslot_type == :flex
+          jobs.distribution.pickup[0].update_attribute :distribution_timeslot, 10
         else
-          jobs.distribution.pickup[0].update_attribute :distribution_timeslot, first_job.booking.timeslot.to_i - 1
+          jobs.distribution.pickup[0].update_attribute :distribution_timeslot, first_job.booking.timeslot - 1
         end
         centers = DistributionCenter.all.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
         jobs.pickup[0].distribution_center = DistributionCenter.find centers[0][0]
@@ -557,10 +557,10 @@ class Job < ActiveRecord::Base
             jobs.distribution.pickup[0].distribution_center = location
             ContractorJobs.where(job_id: jobs.distribution.pickup[0].id, user_id: contractor.id)[0].update_attribute :priority, index
             next_job = chosen_path[1][index+1]
-            if next_job.booking.timeslot == 'flex'
-              jobs.distribution.pickup[0].distribution_timeslot = '10'
+            if next_job.booking.timeslot_type == :flex
+              jobs.distribution.pickup[0].distribution_timeslot = 10
             else
-              jobs.distribution.pickup[0].distribution_timeslot = next_job.booking.timeslot.to_i - 1
+              jobs.distribution.pickup[0].distribution_timeslot = next_job.booking.timeslot - 1
             end
             jobs.distribution.pickup[0].save
           else
@@ -571,11 +571,11 @@ class Job < ActiveRecord::Base
         else
           ContractorJobs.where(job_id: location.id, user_id: contractor.id)[0].update_attribute :priority, index
           if index > 0 then prev_job = chosen_path[1][index-1] else prev_job = nil end
-          if location.booking.timeslot == 'flex'
+          if location.booking.timeslot_type == :flex
             if prev_job && prev_job.class != DistributionCenter
-              location.booking.update_attribute :custom_timeslot, (prev_job.booking.scheduled_time.to_i + prev_job.man_hours).floor + 1
+              location.booking.update_attribute :timeslot, (prev_job.booking.timeslot + prev_job.man_hours).floor + 1
             else
-              location.booking.update_attribute :custom_timeslot, '11'
+              location.booking.update_attribute :timeslot, 11
             end
           end
         end
