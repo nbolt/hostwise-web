@@ -54,6 +54,7 @@ class Admin::BookingsController < Admin::AuthController
         booking.refunded_reason = params[:refunded_reason]
       else
         render json: { success: false, message: "Refund failed." }
+        return
       end
     else
       render json: { success: false, message: "Can't refund for an amount less than what you've already refunded." }
