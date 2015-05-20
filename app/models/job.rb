@@ -492,13 +492,11 @@ class Job < ActiveRecord::Base
       hours.each_with_index do |id, index|
         ContractorJobs.where(user_id: contractor.id, job_id: id)[0].update_attribute :priority, index + 1
         job = Job.find id
-        if job.size > 1 && job.contractors.count == 1 && job.booking.timeslot == 'flex'
-          if index > 0 then prev_job = Job.find hours[index-1] else prev_job = nil end
-          if prev_job
-            job.booking.update_attribute :custom_timeslot, (prev_job.booking.scheduled_time.to_i + prev_job.man_hours).floor + 1
-          else
-            job.booking.update_attribute :custom_timeslot, '11'
-          end
+        if index > 0 then prev_job = Job.find hours[index-1] else prev_job = nil end
+        if prev_job
+          job.booking.update_attribute :custom_timeslot, (prev_job.booking.scheduled_time.to_i + prev_job.man_hours).floor + 1
+        else
+          job.booking.update_attribute :custom_timeslot, '11'
         end
       end
       if jobs.distribution.present?
