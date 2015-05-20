@@ -34,4 +34,24 @@ namespace :email_campaign do
     end
     puts 'Email sent successfully.'
   end
+
+  task first_service_free_reminder: :environment do
+    users = User.where(role_cd: 1, activation_state: 'active')
+    puts "Sending #{users.count} email..."
+    users.each do |user|
+      booking_count = user.properties.reduce(0) {|acc, property| acc + property.bookings.count}
+      UserMailer.announcement(user, 'first-service-free-campaign').then(:deliver) unless booking_count > 0
+    end
+    puts 'Email sent successfully.'
+  end
+
+  task retention_promo: :environment do
+    users = User.where(role_cd: 1, activation_state: 'active')
+    puts "Sending #{users.count} email..."
+    users.each do |user|
+      booking_count = user.properties.reduce(0) {|acc, property| acc + property.bookings.count}
+      UserMailer.announcement(user, 'retention-promo-campaign').then(:deliver) if booking_count > 0
+    end
+    puts 'Email sent successfully.'
+  end
 end
