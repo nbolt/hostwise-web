@@ -30,7 +30,13 @@ class Host::BookingsController < Host::AuthController
       booking.coupons.push(Coupon.find params[:coupon_id]) if params[:coupon_id]
       if params[:timeslot]
         booking.update_attribute :timeslot, params[:timeslot]
-        # handle existing contractor
+        booking.job.contractors.each do |contractor|
+          if booking.job.fits_in_day contractor
+            Job.set_priorities contractor, booking.date
+          else
+            contractor.drop_job booking.job
+          end
+        end
       end
       if params[:handling]
         booking.update_attribute :linen_handling_cd, params[:handling]

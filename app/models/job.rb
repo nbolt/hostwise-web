@@ -403,9 +403,9 @@ class Job < ActiveRecord::Base
     end
   end
 
-  def self.organize_day contractor, date
+  def self.organize_day contractor, date, job=nil
     hours = []; hours[9] = nil
-    jobs  = contractor.jobs.standard.on_date(date)
+    jobs  = contractor.jobs.standard.on_date(date).where('jobs.id != ?', job.then(:id))
     count = 0
     index = nil
 
@@ -437,7 +437,7 @@ class Job < ActiveRecord::Base
 
   def fits_in_day contractor
     count = 0; index = nil
-    hours = Job.organize_day contractor, date
+    hours = Job.organize_day contractor, date, self
 
     if booking.scheduled_time == 'flex'
       range  = man_hours.floor
