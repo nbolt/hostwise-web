@@ -201,11 +201,11 @@ class Booking < ActiveRecord::Base
     }
   end
 
-  def process_refund! reason=nil
+  def process_refund! amount, reason=nil
     if last_transaction.then(:status) == :successful && !stripe_refund_id
       charge = Stripe::Charge.retrieve(last_transaction.stripe_charge_id)
       begin
-        refund = charge.refunds.create(amount: charge.amount, reason: reason, metadata: {booking_id: self.id})
+        refund = charge.refunds.create(amount: amount, reason: reason, metadata: {booking_id: self.id})
         self.update_attribute :stripe_refund_id, refund.id
         true
       rescue Stripe::InvalidRequestError
