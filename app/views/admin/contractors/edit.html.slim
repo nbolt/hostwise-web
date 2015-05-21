@@ -87,7 +87,7 @@
           .section
             i.icon-earnings
             h3 Outstanding Balance
-            h3.teal ng:bind-template='${{contractor.earnings.toFixed(2)}}'
+            h3.teal ng:bind-template='${{contractor.unpaid}}'
           .section
             i.icon-alert-ok
             h3 Jobs Completed
@@ -96,68 +96,35 @@
             i.icon-close
             h3 Jobs Canceled
             h3.red ng:bind='contractor.total_cancelled_jobs'
-      .step.three.xenon.custom
-        .panel.panel-default
-          .panel-heading
-            h3.panel-title Jobs
-          .panel-body.table-responsive
-            table#example-1.table.table-striped.table-bordered cellspacing="0" width="100%"
-              thead
-                tr
-                  th ID
-                  th Property
-                  th Size
-                  th Date
-                  th Address
-                  th Customer
-                  th Phone
-                  th Status
-                  th Cost
-                  th Services
-                  th King Set(s)
-                  th Twin Set(s)
-                  th Toiletries Set(s)
-                  th Type
-              tfoot
-                tr
-                  th ID
-                  th Property
-                  th Size
-                  th Date
-                  th Address
-                  th Customer
-                  th Phone
-                  th Status
-                  th Cost
-                  th Services
-                  th King Set(s)
-                  th Twin Set(s)
-                  th Toiletries Set(s)
-                  th Type
-              tbody
-                tr ng:repeat='job in contractor.jobs'
-                  td
-                    a.teal ng:href='/jobs/{{job.id}}' ng:bind='job.id'
-                  td
-                    a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='job.booking.property.id'
-                  td ng:bind='job.booking.property.property_size'
-                  td ng:bind="job.date | date:'MM/dd/yyyy':'UTC'"
-                  td ng:bind='job.booking.property.neighborhood_address'
-                  td
-                    a.teal ng:href="/hosts/{{job.booking.user.id}}/edit" ng:bind='job.booking.user.name'
-                    .badge.badge-blue ng:show='is_new_customer(job.booking.user)' new
-                  td ng:bind='job.booking.property.display_phone_number'
-                  td
-                    p ng:bind='job.status'
-                    .badge.badge-red ng:show='is_same_day_cancellation(job)' SDC
-                  td ng:bind-template="${{job.booking.cost}}"
-                  td ng:bind='job.service_list'
-                  td ng:bind='job.total_kings'
-                  td ng:bind='job.total_twins'
-                  td ng:bind='job.total_toiletries'
-                  td
-                    .badge style='margin-bottom:7px' ng:hide='job.state_cd == 0 && job.staging' ng:bind='job.state' ng:class='state_class(job)'
-                    .badge.badge-red ng:show='job.staging' staging
+      .step.three.schedule
+        .head
+          i.icon-schedule
+          .text Contractor Schedule
+        .jobs
+          .day ng:repeat='day in contractor.days' ng:click='open_day(day)' id='day-{{day[2].id}}'
+            .date ng:bind='day[0]'
+            .count
+              span style='margin-right:5px' ng:bind='day[2].job_count'
+              span ng:if='day[2].job_count > 1' jobs
+              span ng:if='day[2].job_count == 1' job
+            .dropdown
+              .job ng:repeat='job in day[1]'
+                div ng:if='job.occasion_cd == 0'
+                  .line
+                    span Inventory Pickup
+                    span ng:bind='job.distribution_center.name'
+                  .line
+                    span ng:bind='job.formatted_time'
+                div ng:if='!job.distribution'
+                  .line
+                    span ng:bind='job.booking.user.name'
+                    span ng:bind='job.booking.property.neighborhood_address'
+                    span.teal ng:bind='job.booking.property.property_size'
+                  .line
+                    span ng:bind='job.formatted_time'
+                    span ng:if='job.booking.timeslot_type_cd == 0' Flex Window
+                    span ng:if='job.booking.timeslot_type_cd == 1' Specific Time
+                    span.teal ng:bind-template='${{job.payout.amount / 100}}'
 
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to

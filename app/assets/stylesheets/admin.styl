@@ -65,6 +65,60 @@
 
 .edit-contractor
   box-shadow: none
+  .step.schedule
+    background-color: white
+    .head
+      padding: 14px
+      .text
+        display: inline-block
+        vertical-align: top
+      i
+        margin-right: 10px
+    .jobs
+      .day
+        padding: 14px
+        border-top: thin solid gray
+        &:hover
+          cursor: pointer
+          background-color: lighter-gray
+        .date, .count
+          display: inline-block
+          vertical-align: top
+          font-weight: 600
+        .date
+          width: 200px
+        .count
+          color: teal
+          margin-left: 10px
+        .dropdown
+          max-height: 0
+          overflow: hidden
+          transition: max-height .4s ease-in-out, margin-top .4s ease-in-out
+          box-sizing: border-box
+          .job
+            padding: 8px
+            border-bottom: thin solid gray
+            &:last-child
+              border-bottom: 0
+            .line
+              &:first-child
+                margin-bottom: 6px
+              span
+                color: darker-gray
+                margin-left: 10px
+                &.teal
+                  color: teal
+                &:first-child
+                  font-weight: 600
+                  color: black
+                  margin-right: 0
+        &.active
+          background-color: lighter-gray
+          .dropdown
+            padding-top: 4px
+            margin-top: 8px
+            border-top: thin solid gray
+            max-height: 250px
   form
     .select2-container
       font-size: 14px

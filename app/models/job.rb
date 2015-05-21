@@ -105,7 +105,7 @@ class Job < ActiveRecord::Base
   end
 
   def formatted_time
-    if booking && booking.timeslot_type_cd == 1
+    if booking.then(:timeslot)
       time = booking.timeslot - 1
       meridian = 'A'; meridian = 'P' if time > 11
       time -= 12 if time > 12

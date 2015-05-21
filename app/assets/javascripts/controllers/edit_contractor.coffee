@@ -7,38 +7,43 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
     unless $scope.contractor
       spinner.startSpin()
       $http.get(window.location.href + '.json').success (rsp) ->
+        spinner.stopSpin()
         $scope.markets = rsp.meta.markets
         $scope.contractor = rsp.contractor
         $scope.contractor.contractor_profile.position = $scope.contractor.contractor_profile.current_position if $scope.contractor.contractor_profile
         $scope.contractor.total_completed_jobs = _($scope.contractor.jobs).filter((job) -> job.status_cd == 3).length
         $scope.contractor.total_cancelled_jobs = _($scope.contractor.jobs).filter((job) -> job.status_cd == 6).length
-        $scope.contractor.jobs = _($scope.contractor.jobs).filter (job) -> !job.distribution
+        $scope.contractor.jobs = _($scope.contractor.jobs).filter (job) -> !job.distribution || job.occasion_cd == 0
         _($scope.contractor.jobs).each (job) ->
-          job.service_list = job.booking.service_list
-          job.total_kings = job.booking.property.king_bed_count
-          job.total_twins = job.booking.property.twin_beds
-          job.total_toiletries = job.booking.property.bathrooms
-          job.status = switch job.status_cd
-            when 0 then 'open'
-            when 1 then 'scheduled'
-            when 2 then 'in progress'
-            when 3 then 'completed'
-            when 4 then 'past due'
-            when 5 then "can't access"
-            when 6 then 'cancelled'
-          job.state = switch job.state_cd
-            when 0 then 'normal'
-            when 1 then 'vip'
-            when 2 then 'hidden'
+          unless job.distribution
+            job.service_list = job.booking.service_list
+            job.total_kings = job.booking.property.king_bed_count
+            job.total_twins = job.booking.property.twin_beds
+            job.total_toiletries = job.booking.property.bathrooms
+            job.status = switch job.status_cd
+              when 0 then 'open'
+              when 1 then 'scheduled'
+              when 2 then 'in progress'
+              when 3 then 'completed'
+              when 4 then 'past due'
+              when 5 then "can't access"
+              when 6 then 'cancelled'
+            job.state = switch job.state_cd
+              when 0 then 'normal'
+              when 1 then 'vip'
+              when 2 then 'hidden'
+        $scope.contractor.days = _(_(_($scope.contractor.jobs).groupBy((job) -> job.date)).map((jobs, date) -> [date, jobs])).sortBy (day) -> day[0]
+        $scope.contractor.days = _($scope.contractor.days).map (day) -> [moment(day[0]).format('dddd, MMMM Do'), _(day[1]).sortBy (job) -> _(job.contractor_jobs).find((cj) -> cj.user_id == $scope.contractor.id && cj.job_id == job.id).priority]
+        _($scope.contractor.days).each (day) -> [day[0], _(day[1]).each (job) -> job.payout = _(job.payouts).find((payout) -> payout.user_id == $scope.contractor.id)]
+        $scope.contractor.days = _($scope.contractor.days).map (day, i) -> [day[0], day[1], {
+          id: i
+          job_count: _(day[1]).filter((job) -> !job.distribution).length
+        }]
 
-        spinner.stopSpin()
-        $timeout((->
-          table = angular.element("#example-1").dataTable({
-            aLengthMenu: [
-              [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
-            ]
-          })
-        ),500)
+  $scope.open_day = (day) ->
+    angular.element('.day').removeClass 'active'
+    angular.element("#day-#{day[2].id}").addClass 'active'
+    null
 
   $scope.position = ->
     {
