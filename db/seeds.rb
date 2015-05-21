@@ -64,7 +64,8 @@ else
     end
   end
 
-  unless ZipCode.first
+  num_zips = CSV.foreach("#{Rails.root}/db/data/zips.csv").reduce(0) {|a,z| a + 1}
+  unless ZipCode.count == num_zips
     CSV.foreach "#{Rails.root}/db/data/zips.csv" do |row|
       zip_code  = row[0]
       city      = row[1]

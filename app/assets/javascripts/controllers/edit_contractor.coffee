@@ -32,7 +32,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
               when 0 then 'normal'
               when 1 then 'vip'
               when 2 then 'hidden'
-        $scope.contractor.days = _(_(_($scope.contractor.jobs).groupBy((job) -> job.date)).map((jobs, date) -> [date, jobs])).sortBy (day) -> day[0]
+        $scope.contractor.days = _(_(_($scope.contractor.jobs).groupBy((job) -> job.date)).map((jobs, date) -> [date, jobs])).sortBy (day) -> -day[0]
         $scope.contractor.days = _($scope.contractor.days).map (day) -> [moment(day[0]).format('dddd, MMMM Do'), _(day[1]).sortBy (job) -> _(job.contractor_jobs).find((cj) -> cj.user_id == $scope.contractor.id && cj.job_id == job.id).priority]
         _($scope.contractor.days).each (day) -> [day[0], _(day[1]).each (job) -> job.payout = _(job.payouts).find((payout) -> payout.user_id == $scope.contractor.id)]
         $scope.contractor.days = _($scope.contractor.days).map (day, i) -> [day[0], day[1], {

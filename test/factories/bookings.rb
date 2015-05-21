@@ -25,6 +25,7 @@ FactoryGirl.define do |booking|
       booking.services << create(:cleaning)
       booking.services << create(:linens)
       booking.services << create(:pool)
+      booking.services << create(:toiletries)
       booking.update_cost!
       create(:job_2, booking: booking)
     end
