@@ -50,7 +50,10 @@ section#banner-pricing.pl-panel ng:controller='pricing'
                 td.alignright
                   span.teal
                     strong $190
-          a.btn.outlined href='' ng:click='view_pricing()' View Full Pricing
+          a.btn.outlined href='' ng:click='view_pricing()'
+            span View Full Pricing
+            span.circle
+              i
         .p-teal.p-content
           h4.navy Extra Services
           p.gray Don't forget to ask about our extras!
@@ -71,36 +74,63 @@ section#banner-pricing.pl-panel ng:controller='pricing'
                 td.alignright
                   span.teal
                     strong $10
+        #p-home-staging.p-gray.p-content
+          h4.navy Home Staging
+          p.gray Property already clean and just in need of prepping for your next guest?
+          table.gray
+            thead
+              tr
+                td.dark-gray Based on Number of Beds
+                td.alignright
+            tbody
+              tr
+                td 1–3 beds
+                td.alignright
+                  span.teal
+                    strong $60
+              tr
+                td 6 beds
+                td.alignright
+                  span.teal
+                    strong $105
+              tr
+                td 8 beds
+                td.alignright
+                  span.teal
+                    strong $135
+              tr
+                td 10 beds
+                td.alignright
+                  span.teal
+                    strong $165
+          a.btn.outlined href='' ng:click='view_staging()'
+            span View Full Pricing
+            span.circle
+              i
       .col.span_4_of_12
         #p-linens.p-content
           h4.navy Linens &amp; Towels
           p.gray Our luxury, hotel-grade linens &amp; towels are commercially laundered and pressed at hotel laundering facilities.
-          table.gray
-            thead
-              tr
-                td.dark-gray Bed Type
-                td
-            tbody
-              tr
-                td Twin
-                td.alignright
-                  span.red
-                    strong $19
-              tr
-                td Full
-                td.alignright
-                  span.red
-                    strong $19
-              tr
-                td Queen
-                td.alignright
-                  span.red
-                    strong $19
-              tr
-                td King
-                td.alignright
-                  span.red
-                    strong $19
+          table.p-program.gray
+            tr#purchase-plan
+              td
+                img alt=("Purchase") src="/images/purchase.png"
+              td
+                h5.dark-gray Purchase Plan
+                .outlined
+                  span
+                    strong ${{pricing.linens.purchase}}
+                    | &nbsp;/ Bed
+                .p-caption * $299 for 2 sets
+            tr#rental-program
+              td
+                img alt=("Rent") src="/images/rent.png"
+              td
+                h5.dark-gray Rental Program
+                .outlined
+                  span
+                    strong ${{pricing.linens.rental}}
+                    | &nbsp;/ Bed
           h5.dark-gray.alignleft Each Set Includes:
           table.p-details.gray
             tbody
@@ -132,36 +162,20 @@ section#banner-pricing.pl-panel ng:controller='pricing'
                   span style="float:right"
                     strong x1
           p.gray.alignleft Extra towels available on request.
-        .p-gray.p-content
-          h4.navy Home Staging
-          p.gray Property already clean and just in need of prepping for your next guest?
-          table.gray
-            thead
-              tr
-                td.dark-gray Based on Number of Beds
-                td.alignright
-            tbody
-              tr
-                td 1–3 beds
-                td.alignright
-                  span.teal
-                    strong $60
-              tr
-                td 6 beds
-                td.alignright
-                  span.teal
-                    strong $105
-              tr
-                td 8 beds
-                td.alignright
-                  span.teal
-                    strong $135
-              tr
-                td 10 beds
-                td.alignright
-                  span.teal
-                    strong $165
-          a.btn.outlined href='' ng:click='view_staging()' View Full Pricing
+          a.btn.outlined href='/linensandtowels'
+            span Learn More
+            span.circle
+              i
+        #p-laundry.p-light-gray.p-content
+          .p-left
+            img alt=("Laundry") src="/images/laundry.png"
+          .p-right
+            h5.dark-gray In-Unit Laundry
+            .outlined
+              span
+                strong ${{pricing.linens.in_unit}}
+                | &nbsp;/ Load
+          .p-caption * 1 bedroom is 1 load. Must have modern in-unit machines.
       .col.span_4_of_12
         #p-toiletries.p-content
           h4.navy Guest Toiletries

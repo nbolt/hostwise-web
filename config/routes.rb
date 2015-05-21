@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   scope module: 'host', constraints: { subdomain: 'host' } do
     get   '/' => 'home#index'
     get   '/pricing' => 'home#pricing', as: :host_pricing
+    get   '/linensandtowels' => 'home#linenandtowel', as: :host_linenandtowel
     get   '/faq' => 'home#faq', as: :host_faq
     get   '/contact' => 'home#contact', as: :host_contact
     get   '/properties/new'   => 'properties#new'
@@ -121,6 +122,7 @@ Rails.application.routes.draw do
   get '/signup' => 'home#signup', as: :signup, constraints: {subdomain: 'www'}
   get '/signout' => 'home#signout', as: :signout
   get '/pricing' => 'home#pricing', as: :pricing
+  get '/linensandtowels' => 'home#linenandtowel', as: :linenandtowel
   get '/faq' => 'home#faq', as: :faq
   get '/about' => 'home#about', as: :about, constraints: {subdomain: 'www'}
   get '/contact' => 'home#contact', as: :contact

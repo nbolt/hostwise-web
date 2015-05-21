@@ -16,6 +16,10 @@ class Host::HomeController < Host::AuthController
     render 'host/pricing'
   end
 
+  def linenandtowel
+    render 'host/linenandtowel'
+  end
+
   def contact
     render 'common/_contact'
   end

@@ -24,6 +24,10 @@ class HomeController < ApplicationController
     render 'common/_faq'
   end
 
+  def linenandtowel
+    render 'common/_linenandtowel'
+  end
+
   def cost
     render json: PRICING.to_json
   end
