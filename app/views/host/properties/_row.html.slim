@@ -19,3 +19,8 @@
         i.icon-house ng:if='property.property_type == "house"'
         i.icon-apt ng:if='property.property_type == "condo"'
         .text ng:bind='property.property_size'
+      .linen-program ng:if='property.linen_handling_cd == 0'
+        .icon
+          img src='/images/badge.png'
+        .text Linens & Towels
+
