@@ -247,7 +247,7 @@ class UserMailer < MandrillMailer::TemplateMailer
                         extra_toiletry_sets: booking.extra_toiletry_sets > 0,
                         extra_toiletry_sets_cost: booking.extra_toiletry_sets_cost,
                         coupon: booking.coupon_cost > 0,
-                        coupon_cost: booking.coupon_cost,
+                        coupon_cost: booking.coupon_cost / 100.0,
                         timeslot_overage: booking.timeslot_cost > 0,
                         timeslot_discount: booking.timeslot_cost < 0,
                         timeslot_cost: booking.timeslot_cost.abs,

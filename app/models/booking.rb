@@ -125,14 +125,14 @@ class Booking < ActiveRecord::Base
     end
     if coupon_id
       coupon = Coupon.find coupon_id
-      amount = coupon.amount / 100.0
+      amount = coupon.amount
       amount = rsp[:cost] * (coupon.amount / 100.0) if coupon.discount_type == :percentage
       if amount <= rsp[:cost]
-        rsp[:coupon_cost] = amount
+        rsp[:coupon_cost] = amount * 100
       else
-        rsp[:coupon_cost] = rsp[:cost]
+        rsp[:coupon_cost] = rsp[:cost] * 100
       end
-      rsp[:cost] -= rsp[:coupon_cost]
+      rsp[:cost] -= (rsp[:coupon_cost] / 100.0)
     end
     if first_booking_discount
       discount = PRICING['first_booking_discount']
