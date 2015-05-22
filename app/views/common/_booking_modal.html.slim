@@ -250,6 +250,11 @@ script#booking-modal type="text/ng-template"
                     | (-$
                     span ng:bind="abs(day.timeslot_cost)"
                     | )
+                .late ng:show="day.linen_handling_cost"
+                  .text Linen & Towels Purchase Program
+                  .price
+                    | $
+                    span ng:bind="day.linen_handling_cost"
                 .late ng:show="day.timeslot_cost > 0"
                   .text Premium Timeslot
                   .price
