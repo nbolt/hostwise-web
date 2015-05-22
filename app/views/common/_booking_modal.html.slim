@@ -53,11 +53,11 @@ script#booking-modal type="text/ng-template"
           .step ng:repeat='step in steps' ng:class='step_class(step, "linens")' prev='step-one'
             .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.extras
-          div.exists ng:if='booking.linen_handling_cd == 0'
+          div.exists ng:if='property.linen_handling_cd == 0'
             .icon
               img src='/images/badge.png'
             .text You have purchased linens & towels for this property
-          div ng:if='booking.linen_handling_cd != 0'
+          div ng:if='property.linen_handling_cd != 0'
             .linens
               h3 Select your linens & towels option
               h5 We have three options to accommodate your hosting style!
