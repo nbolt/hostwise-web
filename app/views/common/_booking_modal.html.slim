@@ -12,7 +12,8 @@ script#booking-modal type="text/ng-template"
         .content.cal ng:if='!exists()'
           .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
         .content.edit ng:if='exists()'
-          .title Actions
+          .selected-time
+            img src='/images/datetime.png'
           .buttons
             .button.red ng:click='to_booking_cancellation() '
               .text Cancel Booking
