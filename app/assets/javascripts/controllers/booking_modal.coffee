@@ -169,10 +169,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   unless $scope.payment && $scope.payment.id
     if $scope.user.payments && $scope.user.payments[0]
-      payment = $scope.user.payments[0]
+      payment = _($scope.user.payments).find (payment) -> payment.primary
       payment_type = if payment.card_type then payment.card_type.capitalize() else payment.bank_name.capitalize()
-      $scope.payment.id = payment.id
-      $scope.payment.text = "#{payment_type} ending in #{payment.last4}"
+      $scope.payment_id = payment.id
     else
       $scope.payment.id = 'new'
       $scope.payment.text = 'Add New Payment'

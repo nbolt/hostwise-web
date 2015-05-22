@@ -304,7 +304,7 @@ script#booking-modal type="text/ng-template"
             .payment-method.existing
               .icon
                 .typcn.typcn-credit-card
-              input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment'
+              input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment' value='{{payment_id}}'
           div.new-payment
             .payment-title Add Payment Method
             .payment-method
