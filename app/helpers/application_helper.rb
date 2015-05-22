@@ -3,6 +3,10 @@ module ApplicationHelper
     controller.controller_name == 'properties' && controller.action_name == 'first'
   end
 
+  def property?
+    controller.controller_name == 'properties' && controller.action_name == 'show'
+  end
+
   def pricing?
     controller.controller_name == 'home' && controller.action_name == 'pricing'
   end
@@ -26,6 +30,7 @@ module ApplicationHelper
     class_name = 'faq-body' if faq?
     class_name = 'contact-body' if contact?
     class_name = 'quiz-body' if quiz?
+    class_name = 'property-body' if property?
     return class_name
   end
 end

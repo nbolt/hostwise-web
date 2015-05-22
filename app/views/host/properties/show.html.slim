@@ -1,177 +1,200 @@
 #property ng:controller='property'
-  .page-title
-    i.icon-notebook
-    | Property Details
-  .property
-    .edit ng:click='edit()'
-      i.icon-edit-gear
-    .photo
-      img image-on-load='property_image()' ng:src='{{image}}'
-    .right
-      .top
-        .title
-          .name ng:bind='property.nickname'
-          .address ng:bind='property.full_address'
-        .beds
-          .text Beds
-          .bed ng:if='property.king_beds == 1'
-            | {{property.king_beds}} King
-          .bed ng:if='property.king_beds > 1'
-            | {{property.king_beds}} Kings
-          .bed ng:if='property.queen_beds == 1'
-            | {{property.queen_beds}} Queen
-          .bed ng:if='property.queen_beds > 1'
-            | {{property.queen_beds}} Queens
-          .bed ng:if='property.full_beds > 0'
-            | {{property.full_beds}} Full
-          .bed ng:if='property.twin_beds == 1'
-            | {{property.twin_beds}} Twin
-          .bed ng:if='property.twin_beds > 1'
-            | {{property.twin_beds}} Twins
-      .bottom
-        a href='javascript:void(0)' ng:click='edit_booking()'
-          .next-service ng:show='property.next_service_date'
-            i.icon-calendar
+  .marketing ng:if='property.linen_handling_cd != 0'
+    .purchase-option
+      .left
+        img src='/images/morethan3_all.png'
+      .right
+        h4 Why Purchase?
+        .desc
+          strong $299 for two 18lb sets for each bed.
+          | &nbsp;Save money by purchasing if you have more than 3 guests per month. Commercially laundered and pressed.
+        .learn-more
+          a.btn.outlined href='/linensandtowels'
+            span Learn More
+            span.circle
+              i
+    .rent-option
+      .left
+        img src='/images/lessthan3_all.png'
+      .right
+        h4 Why Rent?
+        .desc
+          strong Same quality. Same quantity.
+          | &nbsp;Save money by renting if you have less than 3 guests per month. Commercially laundered and pressed.
+  .inner-container
+    .page-title
+      i.icon-notebook
+      | Property Details
+    .property
+      .edit ng:click='edit()'
+        i.icon-edit-gear
+      .photo
+        img image-on-load='property_image()' ng:src='{{image}}'
+      .right
+        .top
+          .title
+            .name ng:bind='property.nickname'
+            .address ng:bind='property.full_address'
+          .beds
+            .text Beds
+            .bed ng:if='property.king_beds == 1'
+              | {{property.king_beds}} King
+            .bed ng:if='property.king_beds > 1'
+              | {{property.king_beds}} Kings
+            .bed ng:if='property.queen_beds == 1'
+              | {{property.queen_beds}} Queen
+            .bed ng:if='property.queen_beds > 1'
+              | {{property.queen_beds}} Queens
+            .bed ng:if='property.full_beds > 0'
+              | {{property.full_beds}} Full
+            .bed ng:if='property.twin_beds == 1'
+              | {{property.twin_beds}} Twin
+            .bed ng:if='property.twin_beds > 1'
+              | {{property.twin_beds}} Twins
+        .bottom
+          a href='javascript:void(0)' ng:click='edit_booking()'
+            .next-service ng:show='property.next_service_date'
+              i.icon-calendar
+              .text
+                | Next Service
+                strong style='margin-left:6px' ng:bind='property.next_service_date'
+          .left
+            .id
+              | ID&nbsp;
+              span ng:bind='property.id'
+            .rooms
+              i.icon-house ng:if='property.property_type_cd == 0'
+              i.icon-apt ng:if='property.property_type_cd == 1'
+              .text
+                | {{property.bedrooms}}BD/{{property.bathrooms}}BA
+    #columns
+      .column.cal
+        .section.cal
+          .head
+            .icon
+              i.icon-calendar
+            .text Book Service Date(s)
+          .calendar calendar='' options='calendar_options' dates='__'
+        .section.upcoming.services
+          .head
+            .icon
+              .pf.icon-service
             .text
-              | Next Service
-              strong style='margin-left:6px' ng:bind='property.next_service_date'
-        .left
-          .id
-            | ID&nbsp;
-            span ng:bind='property.id'
-          .rooms
-            i.icon-house ng:if='property.property_type_cd == 0'
-            i.icon-apt ng:if='property.property_type_cd == 1'
+              strong
+                | {{property.active_bookings.length}}
+              |  Upcoming Services
+            .arrow
+              i.icon-acc-open ng:click='toggle($event)'
+          .book ng:if='!property.active_bookings[0]'
+            .msg
+              i.icon-alert-exclamation
+              span No upcoming service dates
+            a href='' ng:click='quick_add(property)' Book Service
+          .table ng:if='property.active_bookings[0]'
+            table
+              thead
+                tr
+                  th.date
+                    a href='' ng:click="predicate = 'parsed_date_short'; reverse=!reverse"
+                      | Date
+                  th.id
+                    a href='' ng:click="predicate = 'id'; reverse=!reverse"
+                      | Job ID
+                  th.services
+                    a href='' ng:click="predicate = 'display_services'; reverse=!reverse"
+                      | Services
+                  th
+                    a href='' ng:click="predicate = 'cost'; reverse=!reverse"
+                      | Total
+              tbody
+                tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.active_bookings | itemsPerPage: 5' pagination-id='upcoming'
+                  td ng:bind='::booking.parsed_date_short'
+                  td.id.link ng:bind='::booking.id' ng:click='edit_booking(booking)'
+                  td.services
+                    .text ng:bind='::booking.display_services'
+                  td ${{::booking.cost}}
+          dir-pagination-controls pagination-id='upcoming' template-url='/templates/pagination.tpl.html'
+        .section.past.services ng:if='property.past_bookings[0]'
+          .head
+            .icon
+              .pf.icon-past
             .text
-              | {{property.bedrooms}}BD/{{property.bathrooms}}BA
-  #columns
-    .column.cal
-      .section.cal
-        .head
+              strong
+                | {{property.past_bookings.length}}
+              |  Past Services
+            .arrow
+              i.icon-acc-open ng:click='toggle($event)'
+          .table
+            table
+              thead
+                tr
+                  th.date
+                    a href='' ng:click="predicate = 'parsed_date_short'; reverse=!reverse"
+                      | Date
+                  th.id
+                    a href='' ng:click="predicate = 'id'; reverse=!reverse"
+                      | Job ID
+                  th.services
+                    a href='' ng:click="predicate = 'display_services'; reverse=!reverse"
+                      | Services
+                  th
+                    a href='' ng:click="predicate = 'cost'; reverse=!reverse"
+                      | Total
+              tbody
+                tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.past_bookings | reverse | itemsPerPage: 5' pagination-id='past'
+                  td ng:bind='::booking.parsed_date_short'
+                  td.id ng:bind='::booking.id'
+                  td.services
+                    .text ng:bind='::booking.display_services'
+                  td ${{::booking.cost}}
+          dir-pagination-controls pagination-id='past' template-url='/templates/pagination.tpl.html'
+      .column.info
+        .message ng:if='property.linen_handling_cd == 0'
           .icon
-            i.icon-calendar
-          .text Book Service Date(s)
-        .calendar calendar='' options='calendar_options' dates='__'
-      .section.upcoming.services
-        .head
-          .icon
-            .pf.icon-service
-          .text
-            strong
-              | {{property.active_bookings.length}}
-            |  Upcoming Services
-          .arrow
-            i.icon-acc-open ng:click='toggle($event)'
-        .book ng:if='!property.active_bookings[0]'
-          .msg
-            i.icon-alert-exclamation
-            span No upcoming service dates
-          a href='' ng:click='quick_add(property)' Book Service
-        .table ng:if='property.active_bookings[0]'
-          table
-            thead
-              tr
-                th.date
-                  a href='' ng:click="predicate = 'parsed_date_short'; reverse=!reverse"
-                    | Date
-                th.id
-                  a href='' ng:click="predicate = 'id'; reverse=!reverse"
-                    | Job ID
-                th.services
-                  a href='' ng:click="predicate = 'display_services'; reverse=!reverse"
-                    | Services
-                th
-                  a href='' ng:click="predicate = 'cost'; reverse=!reverse"
-                    | Total
-            tbody
-              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.active_bookings | itemsPerPage: 5' pagination-id='upcoming'
-                td ng:bind='::booking.parsed_date_short'
-                td.id.link ng:bind='::booking.id' ng:click='edit_booking(booking)'
-                td.services
-                  .text ng:bind='::booking.display_services'
-                td ${{::booking.cost}}
-        dir-pagination-controls pagination-id='upcoming' template-url='/templates/pagination.tpl.html'
-      .section.past.services ng:if='property.past_bookings[0]'
-        .head
-          .icon
-            .pf.icon-past
-          .text
-            strong
-              | {{property.past_bookings.length}}
-            |  Past Services
-          .arrow
-            i.icon-acc-open ng:click='toggle($event)'
-        .table
-          table
-            thead
-              tr
-                th.date
-                  a href='' ng:click="predicate = 'parsed_date_short'; reverse=!reverse"
-                    | Date
-                th.id
-                  a href='' ng:click="predicate = 'id'; reverse=!reverse"
-                    | Job ID
-                th.services
-                  a href='' ng:click="predicate = 'display_services'; reverse=!reverse"
-                    | Services
-                th
-                  a href='' ng:click="predicate = 'cost'; reverse=!reverse"
-                    | Total
-            tbody
-              tr ng:class="$index % 2 != 0 && 'gray'" dir-paginate='booking in property.past_bookings | reverse | itemsPerPage: 5' pagination-id='past'
-                td ng:bind='::booking.parsed_date_short'
-                td.id ng:bind='::booking.id'
-                td.services
-                  .text ng:bind='::booking.display_services'
-                td ${{::booking.cost}}
-        dir-pagination-controls pagination-id='past' template-url='/templates/pagination.tpl.html'
-    .column.info
-      .message ng:if='::property.linen_handling_cd == 0'
-        .icon
-          img src='/images/badge.png'
-        .text You have purchased linens & towels for this property
-      #map
-      .section.instructions
-        .head ng:click="expand('instructions')"
-          .icon
-            .pf.icon-service
-          .text Property Instructions
-          .arrow
-            i.icon-acc-open ng:click='toggle($event)'
-        .instruction ng:if='property.parking_info'
-          .edit ng:click='edit_parking()'
-            i.icon-edit-gear
-          .content
-            .title Parking Instructions
-            .text ng:bind='property.parking_info'
-        .instruction ng:if='property.access_info'
-          .edit ng:click='edit_access()'
-            i.icon-edit-gear
-          .content
-            .title Access Information
-            .text ng:bind='property.access_info'
-        .instruction ng:if='property.restocking_info'
-          .edit ng:click='edit_restocking()'
-            i.icon-edit-gear
-          .content
-            .title Restocking Information
-            .text ng:bind='property.restocking_info'
-        .instruction ng:if='property.trash_disposal'
-          .edit ng:click='edit_trash()'
-            i.icon-edit-gear
-          .content
-            .title Trash Disposal
-            .text ng:bind='property.trash_disposal'
-        .instruction ng:if='property.additional_info'
-          .edit ng:click='edit_additional()'
-            i.icon-edit-gear
-          .content
-            .title Additional Information
-            .text ng:bind='property.additional_info'
-  .deactivate
-    | Do you wish to permanently
-    span ng:click='open_deactivation()' ng:show='property.active'  deactivate this property?
-    span ng:click='open_reactivation()' ng:hide='property.active'  reactivate this property?
+            img src='/images/badge.png'
+          .text You have purchased linens & towels for this property
+        #map
+        .section.instructions
+          .head ng:click="expand('instructions')"
+            .icon
+              .pf.icon-service
+            .text Property Instructions
+            .arrow
+              i.icon-acc-open ng:click='toggle($event)'
+          .instruction ng:if='property.parking_info'
+            .edit ng:click='edit_parking()'
+              i.icon-edit-gear
+            .content
+              .title Parking Instructions
+              .text ng:bind='property.parking_info'
+          .instruction ng:if='property.access_info'
+            .edit ng:click='edit_access()'
+              i.icon-edit-gear
+            .content
+              .title Access Information
+              .text ng:bind='property.access_info'
+          .instruction ng:if='property.restocking_info'
+            .edit ng:click='edit_restocking()'
+              i.icon-edit-gear
+            .content
+              .title Restocking Information
+              .text ng:bind='property.restocking_info'
+          .instruction ng:if='property.trash_disposal'
+            .edit ng:click='edit_trash()'
+              i.icon-edit-gear
+            .content
+              .title Trash Disposal
+              .text ng:bind='property.trash_disposal'
+          .instruction ng:if='property.additional_info'
+            .edit ng:click='edit_additional()'
+              i.icon-edit-gear
+            .content
+              .title Additional Information
+              .text ng:bind='property.additional_info'
+    .deactivate
+      | Do you wish to permanently
+      span ng:click='open_deactivation()' ng:show='property.active'  deactivate this property?
+      span ng:click='open_reactivation()' ng:hide='property.active'  reactivate this property?
 
 = render 'common/property_edit_modal'
 = render 'common/property_access_modal'
