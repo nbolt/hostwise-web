@@ -115,6 +115,10 @@
                 td ${{::booking.cost}}
         dir-pagination-controls pagination-id='past' template-url='/templates/pagination.tpl.html'
     .column.info
+      .message ng:if='property.linen_handling_cd == 0'
+        .icon
+          img src='/images/badge.png'
+        .text You have purchased linens & towels for this property
       #map
       .section.instructions
         .head ng:click="expand('instructions')"
