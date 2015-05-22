@@ -488,6 +488,7 @@
       overflow: hidden
       .steps
         height: 40px
+        font-size: 15px
         @media phone
           display: none
         &.four .step
@@ -790,6 +791,7 @@
                               width: 30px
                               top: 5px
               .total
+                display: none
                 margin-top: 4px
                 .text
                   display: inline-block
@@ -812,17 +814,28 @@
               border: thin solid #EBECEF
               border-radius: 4px
               padding: 15px
-              text-align: center
               width: 300px
               margin: 0 auto 12px
               position: relative
               box-sizing: border-box
+              img
+                display: inline-block
+                width: 50px
               .text
                 color: darker-gray
                 font-weight: 600
+                display: inline-block
+                vertical-align: top
+                line-height: 50px
+                margin-left: 10px
+                width: 200px
+                text-align: center
                 span
                   color: teal
                   margin-left: 10px
+                .icon-acc-open
+                  color: teal
+                  margin-left: 20px
               .times
                 display: none
                 position: absolute
@@ -852,25 +865,8 @@
                   color: white
                   span
                     color: white
-              &.chosen
-                &::before
-                  content: '\e80d'
-                  color: #83CCCF
-                  position: absolute
-                  top: 10px
-                  left: 10px
-                  font-family: "hw-icons"
-                  font-style: normal
-                  font-weight: normal
-                  speak: none
-                  display: inline-block
-                  text-decoration: inherit
-                  width: 1em
-                  text-align: center
-                  font-variant: normal
-                  text-transform: none
-                  line-height: 1em
-                  font-size: 1.9em
+                  .icon-acc-open
+                    color: white
         .content
           width: 488px
           height: 518px
@@ -1367,12 +1363,15 @@
               font-size: 1.1em
               font-weight: 700
               color: teal
-              border-bottom: thin solid border-gray
               padding-bottom: 20px
             .service
-              border-bottom: thin solid border-gray
-              padding: 10px 0
+              background-color: white
+              border: thin solid border-gray
+              border-radius: 5px
+              padding: 7px 0
               position: relative
+              &:nth-child(3)
+                margin: 5px 0
               &:last-child
                 @media phone
                   border-bottom: 0
@@ -1399,7 +1398,7 @@
               label
                 position: absolute
                 right: 10px
-                top: 18px
+                top: 15px
           .payment
             width: 300px
             margin: 5px auto
