@@ -1131,7 +1131,8 @@
                   right: 0
               .box
                 display: inline-block
-                background-color: white
+                background-color: #E3E6E7
+                color: heavy-gray
                 border: thin solid #EBECEF
                 border-radius: 5px
                 width: 150px
@@ -1147,40 +1148,59 @@
                   margin: auto !important
                 &:last-child
                   margin-right: 0
+                img
+                  height: 60px
+                  margin-bottom: 10px
                 .title
                   font-weight: 600
                   font-size: 1.1em
-                  border-bottom: thin solid #EBECEF
+                  border-bottom: thin solid #BFC5CD
                   padding-bottom: 10px
                   margin-bottom: 20px
                   color: heavy-gray
-                span
-                  color: teal
                 .price
-                  font-weight: 600
                   font-size: 1.1em
                   margin-bottom: 20px
-                  color: heavy-gray
+                  background-color: white
+                  border-radius: 20px
+                  padding: 5px
                   span
-                    font-size: 1.5em
                     margin-right: 5px
                 .text
                   padding-bottom: 20px
-                  border-bottom: thin solid #EBECEF
+                  border-bottom: thin solid #BFC5CD
                   margin-bottom: 10px
                   font-size: 0.9em
-                  min-height: 120px
+                  min-height: 90px
+                  color: #818B97
+                  span
+                    font-weight: 600
                 .button
                   border-radius: 5px
-                  background-color: #EDEEF1
+                  background-color: #ECEDEF
                   color: heavy-gray
                   font-weight: 600
                   margin-top: 14px
                   position: relative
+                &.purchase
+                  .price
+                    color: #3686BC
+                  /*&:hover .button, &.selected .button
+                    background-color: #3686BC*/
+                &.rental
+                  .price
+                    color: #F69F41
+                  /*&:hover .button, &.selected .button
+                    background-color: #F69F41*/
+                &.in-unit
+                  .price
+                    color: #EE5E6B
+                  /*&:hover .button, &.selected .button
+                    background-color: #EE5E6B*/
                 &:hover
                   cursor: pointer
                 &:hover .button, &.selected .button
-                  background-color: teal
+                  background-color: #3686BC
                   color: white
                   &::before
                     content: '\e80d'

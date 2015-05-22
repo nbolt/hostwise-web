@@ -63,30 +63,32 @@ script#booking-modal type="text/ng-template"
               h5 We have three options to accommodate your hosting style!
             .linen-boxes
               .box.purchase ng:click='select_handling(0, "purchase")'
+                img src='/images/purchase.png'
                 .title Purchase
                 .price
                   span $13
                   | / Bed
                 .text
-                  span $299 per bed setup fee,
-                  |  and then you never have to worry about replacing your linens & towels from rips or stains. We guarantee and replace them for free.
+                  span $299 for two 18lb sets for each bed.
+                  |  Save money by renting if you have more than three guests a month.
                 .button.chosen Select
               .box.rental ng:click='select_handling(1, "rental")'
+                img src='/images/rent.png'
                 .title Rental Program
                 .price
                   span $19
                   | / Bed
-                .text Using our commercially cleaned and pressed 5-star linens and towels will guarantee the best guest experience &mdash; great experience equals great reviews.
+                .text
+                  span Same quanity, same quality.
+                  |  Save money by renting if you have less than three guests a month.
                 .button Select
               .box.in-unit ng:click='select_handling(2, "in-unit")'
+                img src='/images/laundry.png'
                 .title In-unit Laundering
                 .price
                   span $10
                   | / Load
-                .text
-                  | Already have your beds setup with linens and towels? If you have an
-                  span  in-unit washer and dryer
-                  |  we'll take care of it for you.
+                .text We can wash your linens & towels if you have an in-unit modern washer and dryer.
                 .button Select
         .foot.next
           .right
