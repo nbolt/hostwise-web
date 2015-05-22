@@ -12,8 +12,12 @@ script#booking-modal type="text/ng-template"
         .content.cal ng:if='!exists()'
           .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
         .content.edit ng:if='exists()'
-          .selected-time
+          .icon
             img src='/images/datetime.png'
+          .text
+            .date ng:bind='booking.formatted_date'
+            .time ng:if='booking.timeslot_type_cd == 0' Between 10 - 4
+            .time ng:if='booking.timeslot_type_cd == 1' Between {{booking.display_timeslot_1}} - {{booking.display_timeslot_2}}
           .buttons
             .button.red ng:click='to_booking_cancellation() '
               .text Cancel Booking
@@ -39,13 +43,6 @@ script#booking-modal type="text/ng-template"
                     i
         .foot.next
           .right
-            .total
-              .text.dollar
-                | $
-              .text.amount
-                | {{service_total}}
-              .text.per
-                | / Service
             .button.teal ng:click='next()' Next
       .content-group.step-linens
         .header
@@ -53,7 +50,7 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Linens & Towels
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "linens")'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "linens")' prev='step-one'
             .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.extras
           div.exists ng:if='booking.linen_handling_cd == 0'
@@ -93,13 +90,7 @@ script#booking-modal type="text/ng-template"
                 .button Select
         .foot.next
           .right
-            .total
-              .text.dollar
-                | $
-              .text.amount
-                | {{service_total}}
-              .text.per
-                | / Service
+            .button.grey ng:click='prev()' Back
             .button.teal ng:click='select_extras()' Select Extras
       .content-group.step-additional
         .header
@@ -107,7 +98,7 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Additional Options
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "extras")'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "extras")' prev='step-linens'
             .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.extras
           .linens
@@ -138,16 +129,8 @@ script#booking-modal type="text/ng-template"
             h5 If you have any special requests please let us know here.
             textarea ng:model='extra.instructions'
         .foot.next
-          .left
-            .button.grey ng:click='change_dates()' Change Dates
           .right
-            .total
-              .text.dollar
-                | $
-              .text.amount
-                | {{service_total}}
-              .text.per
-                | / Service
+            .button.grey ng:click='prev()' Back
             .button.teal.auto ng:click='select_time()' Select Time
       .content-group.step-three
         .header
@@ -155,7 +138,7 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Select a Time
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "time")'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "time")' prev='step-additional'
             .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.extras
           .linens
@@ -204,16 +187,8 @@ script#booking-modal type="text/ng-template"
                   .time 5-6 PM
                   .price ${{time_total(18)}}
         .foot.next
-          .left
-            .button.grey ng:click='change_dates()' Change Dates
           .right
-            .total
-              .text.dollar
-                | $
-              .text.amount
-                | {{service_total}}
-              .text.per
-                | / Service
+            .button.grey ng:click='prev()' Back
             .button.teal.auto ng:click='select_payment()' Select Payment
       .content-group.step-four
         .header
@@ -221,7 +196,7 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Confirm Booking & Payment
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "pay")'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "pay")' prev='step-three'
             .text ng:bind-template='{{step.num}}. {{step.display}}'
         .content.details
           .invoice Invoice
@@ -335,7 +310,7 @@ script#booking-modal type="text/ng-template"
             a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
         .foot
           .left
-            .button.grey ng:click='change_dates()' Change Dates
+            .button.grey ng:click='prev()' Back
           .right
             .button.teal.right#book ng:click='selected_booking && update() || book()'
               .icon.spin

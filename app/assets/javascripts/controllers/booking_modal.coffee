@@ -64,6 +64,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         if time < 12 then meridian = 'a' else meridian = 'p'
         time1 = time - 1; time1 -= 12 if time1 > 12
         time2 = time;     time2 -= 12 if time2 > 12
+        $scope.booking.display_timeslot_1 = time1
+        $scope.booking.display_timeslot_2 = time2
+        $scope.booking.formatted_date = moment($scope.booking.date).format 'MMMM D, YYYY'
+        angular.element('.timeboxes .box.premium .text').text "#{time1} - #{time2}#{meridian}m - $#{$scope.time_total($scope.chosen_time)}"
     ),1000)
     $scope.booking = booking
   else
@@ -389,6 +393,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     ), 400)
     $scope.refresh_booking = true if type is 'cancelled' or type is 'booked'
     null
+
+  $scope.prev = -> $scope.slide angular.element('.step.complete:visible:last').attr 'prev'
 
   $scope.confirm_booking = -> ngDialog.closeAll()
   $scope.confirm_cancellation = -> ngDialog.closeAll()

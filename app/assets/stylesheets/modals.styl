@@ -562,6 +562,20 @@
           vertical-align: top
           opacity: 0
           transition: opacity .4s ease-in-out
+          &.step-one
+            .content.edit
+              .icon
+                margin-top: 80px
+                text-align: center
+                img
+                  height: 150px
+              .text
+                text-align: center
+                margin-top: 20px
+                font-size: 1.2em
+                .date
+                  font-weight: 600
+                  margin-bottom: 10px
           &.step-linens .exists
             .icon
               text-align: center
@@ -705,11 +719,20 @@
               .button
                 margin-top: 9px
                 width: 100px
+                border-radius: 3px
                 .icon, .text
                   display: inline-block
                   vertical-align: top
                 &.auto
                   width: auto
+                &.grey
+                  background-color: white
+                  color: heavy-gray
+                  margin-right: 15px
+                  width: 124px
+                  box-sizing: border-box
+                  &:hover
+                    background-color: #FAFAFA
                 &.right
                   margin: 0
                   padding: 0
