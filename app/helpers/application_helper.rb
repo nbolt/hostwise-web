@@ -11,6 +11,10 @@ module ApplicationHelper
     controller.controller_name == 'home' && controller.action_name == 'index'
   end
 
+  def linens_and_towels?
+    controller.controller_name == 'home' && controller.action_name == 'linenandtowel'
+  end
+
   def pricing?
     controller.controller_name == 'home' && controller.action_name == 'pricing'
   end
@@ -36,6 +40,7 @@ module ApplicationHelper
     class_name = 'quiz-body' if quiz?
     class_name = 'property-body' if property?
     class_name = 'property-list-body' if logged_in? && current_user.role == :host && property_list?
+    class_name = 'linen-program-body' if linens_and_towels?
     return class_name
   end
 end

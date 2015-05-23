@@ -112,11 +112,16 @@ body.admin
           img
             width: 180px
         .right
+          width: 65%
+          margin: 0 0 0 5%
+          @media phone
+            width: auto
+            margin: 0
           h4
             @media landscape_tablet
               margin: 20px 0
           .desc
-            width: 500px
+            width: 450px
             @media landscape_tablet
               width: 350px
             @media portrait_tablet
@@ -130,6 +135,215 @@ body.admin
            .learn-more
               margin-top: 0
               top: 50%
+
+.linen-program-body
+  .body
+    padding: 0
+    margin-top: 48px
+    background-color: light-gray
+    @media phone
+      margin: 48px 0 0
+    .linen-program
+      .block1
+        .col3
+          .right
+            width: 300px
+            padding-top: 60px
+            @media phone
+              width: auto
+              padding-top: 0
+          img.count
+            width: 25%
+            top: 75px
+            @media tablet
+              right: 50px
+            @media phone
+              width: 80%
+        .col4
+          .feature img
+            width: 45%
+            @media phone
+              width: 30%
+      .linen-marketing
+        .purchase-option, .rent-option
+          .right
+            width: 65%
+            margin: 0 0 0 5%
+            @media phone
+              width: 100%
+              margin: 0
+
+.linen-program
+  .block1
+    background-color: #f1f1f1
+    .col3
+      position: relative
+      .right
+        width: 500px
+        margin-left: 300px
+        padding-top: 70px
+        @media tablet
+          width: 300px
+          margin-left: 250px
+        @media phone
+          margin-left: 0
+          width: auto
+          padding: 0 30px
+        h4
+          font-size: 16px
+          font-weight: bold
+          text-transform: capitalize
+          color: dark-blue
+          margin-bottom: 20px
+        .desc
+          font-size: 14px
+          color: darker-gray
+          line-height: 20px
+          strong
+            color: light-blue
+        #price-table .outlined
+          text-align: center
+          padding: 5px 0
+          margin: 20px 0 0
+          width: 150px
+          background-color: white
+          color: light-blue
+          @media phone
+            margin: 30px auto
+          span
+            font-size: 14px
+      img.badge
+        position: absolute
+        left: 60px
+        top: 50px
+        width: 200px
+        @media tablet
+          width: 170px
+          top: 60px
+        @media phone
+          position: static
+          display: block
+          margin: 0 auto
+          padding: 30px 0
+      img.count
+        position: absolute
+        right: 150px
+        top: 50px
+        width: 25%
+        @media tablet
+          top: 75px
+        @media phone
+          position: static
+          width: 90%
+          margin: 0 auto
+          display: block
+    .col4
+      padding: 100px 120px 60px
+      @media phone
+        padding: 40px 20px
+      .feature
+        display: inline-block
+        vertical-align: top
+        width: 21%
+        margin: 0 2%
+        text-align: center
+        @media phone
+          width: 100%
+          text-align: left
+          margin: 20px 0
+        h3
+          text-transform: capitalize
+          font-size: 14px
+          font-weight: bold
+          margin-bottom: 10px
+          @media phone
+            margin-top: 10px
+        h6
+          font-size: 13px
+          color: darker-gray
+        img
+          width: 45%
+          margin-bottom: 30px
+          @media phone
+            float: left
+            width: 30%
+            margin-bottom: 0
+            margin-right: 30px
+  .block2
+    text-align: center
+    background-color: lighter-gray
+    padding: 50px 0
+    h2
+      color: light-blue
+      text-transform: capitalize
+      font-size: 24px
+    hr
+      background: none repeat scroll 0 0 rgba(0, 0, 0, 0.25)
+      @media phone
+        margin: 30px auto
+    img
+      margin: 0 auto
+    img#compare-hort
+      width: 80%
+      @media phone
+        display: none
+    img#compare-vert
+      display: none
+      @media phone
+        display: block
+        width: 60%
+    .caption
+      font-size: 13px
+      margin-top: 30px
+      @media phone
+        padding: 0 30px
+  .block3
+    .purchase-option, .rent-option
+      padding: 60px 3%
+      @media phone
+        padding: 30px 3%
+    .purchase-option
+      background-color: light-gray
+      .desc strong
+        color: light-orange
+      #price-table .outlined
+        color: light-orange
+    .rent-option
+      background-color: gray
+      .desc strong
+        color: heavy-gray
+      #price-table .outlined
+        color: darker-red
+    .right
+      h4
+        font-size: 16px
+        text-transform: capitalize
+        font-weight: bold
+        margin-bottom: 15px
+        @media phone
+          text-align: left
+          padding: 30px 10px 0
+      .desc
+        font-size: 13px
+        @media phone
+          text-align: left
+          padding: 0 10px
+      #price-table .outlined
+        text-align: center
+        padding: 5px 0
+        margin: 20px 0 0
+        width: 150px
+        background-color: white
+        @media phone
+          margin: 20px auto 0
+        span
+          font-size: 14px
+      .caption
+        font-size: 12px
+        position: absolute
+        margin-top: 10px
+        @media phone
+          position: static
 
 .property-body
   .body
@@ -3467,8 +3681,8 @@ a.a-desk-widget.a-desk-widget-chat
         @media landscape_tablet
           width: 120px
     .right
-      width: 65%
-      margin-left: 5%
+      width: 60%
+      margin: 0 5%
       position: relative
       @media phone
         width: 100%
