@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   get  '/password_resets/:id/edit' => 'password_resets#edit', as: :edit_password_reset
   put  '/password_resets/:id' => 'password_resets#update'
 
+  scope module: 'api', constraints: { subdomain: 'api' } do
+    get '/login' => 'auth#login'
+    get '/user' => 'users#show'
+  end
+
   scope module: 'host', constraints: { subdomain: 'host' } do
     get   '/' => 'home#index'
     get   '/pricing' => 'home#pricing', as: :host_pricing

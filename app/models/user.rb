@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   before_validation :format_phone_number
   before_save :count_bookings
   after_save :handle_deactivation
+  before_create :generate_auth_token
 
   has_many :properties, dependent: :destroy
   has_many :payments, autosave: true, dependent: :destroy
@@ -292,6 +293,10 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def generate_auth_token
+    self.auth_token = SecureRandom.uuid.gsub(/\-/,'')
+  end
 
   def count_bookings
     self.booking_count = properties.reduce(0) {|acc, property| acc + property.bookings.count}
