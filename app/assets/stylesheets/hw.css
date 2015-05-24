@@ -1584,6 +1584,10 @@ ul.pl-main-nav li a.active{
   #p-laundry .p-left img {
     width: 120px;
   }
+  .p-content {
+    width: 80%;
+    padding: 30px 10%;
+  }
 }
 
 #price-table table.p-details{
