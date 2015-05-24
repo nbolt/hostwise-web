@@ -75,7 +75,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   unless $scope.selected_booking
     $http.get("/properties/#{$scope.property.slug}/last_services").success (rsp) ->
-      _(rsp.services).each (service) ->
+      _(rsp.services).each (service) -> # unless service.name == 'toiletries'
         angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
         $scope.selected_services[service.name] = true
         $scope.calculate_pricing()
@@ -187,9 +187,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.next = ->
     if !services_array()[0]
-      flash 'failure', 'Please select at least one service'
+      $scope.flash 'failure', 'Please select at least one service'
     else if no_dates()
-      flash 'failure', 'Please select at least one date'
+      $scope.flash 'failure', 'Please select at least one date'
     else
       $scope.slide 'step-linens'
       $scope.calculate_pricing()
@@ -248,7 +248,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         exp_year: exp_year
       , (_, rsp) ->
         if rsp.error
-          flash "failure", rsp.error.message
+          $scope.flash "failure", rsp.error.message
           defer.reject() if defer
         else
           $http.post('/payments/add',{stripe_id:rsp.id,payment_method:$scope.payment_method}).success (rsp) ->
@@ -256,7 +256,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
               $scope.$emit 'fetch_user'
               defer.resolve rsp.payment.id if defer
             else
-              flash 'failure', rsp.message
+              $scope.flash 'failure', rsp.message
               defer.reject() if defer
 
   $scope.book = ->
@@ -293,7 +293,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
               })
             null
           else
-            flash 'failure', rsp.message
+            $scope.flash 'failure', rsp.message
       ), ->
         $scope.booking = false
         spinner.stopSpin()
@@ -484,7 +484,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         if rsp.success
           $scope.to_booking_confirmation()
         else
-          flash 'failure', rsp.message
+          $scope.flash 'failure', rsp.message
     ),(-> spinner.stopSpin()))
 
     if $scope.payment.id == 'new'
@@ -492,7 +492,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     else
       defer.resolve $scope.payment.id
 
-  flash = (type, msg) ->
+  $scope.flash = (type, msg) ->
     unless $scope.flashing
       $scope.flashing = true
       content_group_el = angular.element('.booking.modal .content-group').filter(':visible')
