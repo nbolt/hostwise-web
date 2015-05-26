@@ -14,7 +14,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
   $scope.show_back = false
   $scope.discount = 0
   $scope.linen_handling = null
-  
+
   $scope.steps = [
     {
       num: 1
@@ -75,10 +75,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   unless $scope.selected_booking
     $http.get("/properties/#{$scope.property.slug}/last_services").success (rsp) ->
-      _(rsp.services).each (service) -> # unless service.name == 'toiletries'
-        angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
-        $scope.selected_services[service.name] = true
-        $scope.calculate_pricing()
+      _(rsp.services).each (service) ->
+        unless service.name == 'toiletries'
+          angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
+          $scope.selected_services[service.name] = true
+          $scope.calculate_pricing()
 
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
