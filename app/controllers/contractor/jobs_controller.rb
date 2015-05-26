@@ -52,7 +52,7 @@ class Contractor::JobsController < Contractor::AuthController
         staging = Rails.env.staging? && '[STAGING] ' || ''
         TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has resolved the issue at property #{job.booking.property.id}.")
       else
-        TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived at #{job.booking.property.full_address}") if job.booking.property.user.settings(:porter_arrived).sms
+        TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has arrived. Your housekeeper is #{job.primary_contractor.name} and can be reached at #{job.primary_contractor.display_phone_number}.") if job.booking.property.user.settings(:porter_arrived).sms
       end
     end
 
@@ -63,7 +63,7 @@ class Contractor::JobsController < Contractor::AuthController
     if job.status == :scheduled
       job.update_attribute :status_cd, 3
       next_job = job.next_job(current_user)
-      TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise is on the way to clean #{next_job.booking.property.full_address}. We will contact you when we arrive.") if next_job.then(:booking) && next_job.booking.property.user.settings(:porter_en_route).sms
+      TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise housekeeper #{next_job.primary_contractor.name} is on the way to #{next_job.booking.property.nickname}. You can reach #{next_job.primary_contractor.name} at #{next_job.primary_contractor.display_phone_number}.") if next_job.then(:booking) && next_job.booking.property.user.settings(:porter_en_route).sms
     end
 
     render json: { success: true, next_job: next_job.then(:id) }
@@ -136,7 +136,7 @@ class Contractor::JobsController < Contractor::AuthController
 
       job.contractors.each do |contractor|
         next_job = job.next_job contractor
-        TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise is on the way to clean #{next_job.booking.property.full_address}. We will contact you when we arrive.") if next_job && next_job.booking && next_job.booking.property.user.settings(:porter_en_route).sms
+        TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise housekeeper #{next_job.primary_contractor.name} is on the way to #{next_job.booking.property.nickname}. You can reach #{next_job.primary_contractor.name} at #{next_job.primary_contractor.display_phone_number}.") if next_job && next_job.booking && next_job.booking.property.user.settings(:porter_en_route).sms
       end
 
       if job.booking
