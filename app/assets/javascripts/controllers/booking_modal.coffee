@@ -198,7 +198,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.select_time = -> $scope.slide 'step-three'
 
-  $scope.select_extras = -> $scope.slide 'step-additional' if $scope.linen_handling != null || $scope.property.linen_handling_cd == 0
+  $scope.select_extras = ->
+    if $scope.linen_handling != null || $scope.property.linen_handling_cd == 0
+      $scope.slide 'step-additional'
+    else
+      $scope.flash 'failure', 'Please select one option'
 
   $scope.select_payment = ->
     if $scope.chosen_time
@@ -208,6 +212,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         $scope.payment_screen 'existing'
       $scope.slide 'step-four'
       $scope.calculate_pricing()
+    else
+      $scope.flash 'failure', 'Please select a time'
 
   $scope.back = ->
     angular.element('.content.side').hide()

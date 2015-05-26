@@ -1442,8 +1442,8 @@ ul.pl-main-nav li a.active{
 }
 
 #p-linens{
-  -webkit-box-shadow:inset 0 10px 0 0 #3085bd;
-  box-shadow:inset 0 10px 0 0 #3085bd;
+  -webkit-box-shadow:inset 0 10px 0 0 #3185BE;
+  box-shadow:inset 0 10px 0 0 #3185BE;
 }
 
 #p-toiletries{
@@ -1491,16 +1491,16 @@ ul.pl-main-nav li a.active{
 }
 
 #p-linens .p-program #rental-program .outlined span {
-  color: #f69e41;
+  color: #F8A034;
 }
 
 #p-linens .outlined {
-  color: #3085bd;
+  color: #3185BE;
   margin-top: 30px;
 }
 
 #p-linens .outlined .circle {
-  background-color: #3085bd;
+  background-color: #3185BE;
 }
 
 #p-linens .p-caption{
@@ -1510,7 +1510,7 @@ ul.pl-main-nav li a.active{
 }
 
 #p-linens .p-program .outlined{
-  color: #3085bd;
+  color: #3185BE;
   padding: 7px;
   width: 90%;
   text-align: center;
@@ -1529,7 +1529,7 @@ ul.pl-main-nav li a.active{
 }
 
 #p-laundry .outlined{
-  color: #DE5464;
+  color: #F05D69;
   padding: 7px;
   width: 70%;
   text-align: center;
