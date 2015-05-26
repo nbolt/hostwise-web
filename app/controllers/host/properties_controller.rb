@@ -96,7 +96,17 @@ class Host::PropertiesController < Host::AuthController
               booking.timeslot_type_cd = 1
               booking.timeslot = params[:timeslot]
             end
-            property.update_attribute :linen_handling_cd, params[:handling] if params[:handling]
+            if params[:handling]
+              property.update_attribute :linen_handling_cd, params[:handling]
+              if property.linen_handling_cd == 0
+                property.bookings.active.future.each do |booking|
+                  unless booking.linen_handling_cd == 0
+                    booking.update_attribute :linen_handling_cd, params[:handling]
+                    booking.update_cost!
+                  end
+                end
+              end
+            end
             unless booking.duplicate?
               if params[:late_next_day].present?
                 booking.late_next_day = true if date.strftime('%b %-d, %Y') == params[:late_next_day]

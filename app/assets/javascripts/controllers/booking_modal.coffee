@@ -75,11 +75,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   unless $scope.selected_booking
     $http.get("/properties/#{$scope.property.slug}/last_services").success (rsp) ->
-      _(rsp.services).each (service) ->
-        unless service.name == 'toiletries'
-          angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
-          $scope.selected_services[service.name] = true
-          $scope.calculate_pricing()
+      _(rsp.services).each (service) -> unless service.name == 'toiletries'
+        angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
+        $scope.selected_services[service.name] = true
+        $scope.calculate_pricing()
 
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
@@ -139,7 +138,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.select_handling = (num, name) ->
     $scope.linen_handling = num
-    $scope.linen_handling_chosen = true
+    $scope.linen_handling_chosen = true if num == 0
     $scope.calculate_pricing()
     angular.element('.linen-boxes .box').removeClass 'selected'
     angular.element(".linen-boxes .box.#{name}").addClass 'selected'
@@ -202,7 +201,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     if $scope.linen_handling != null || $scope.property.linen_handling_cd == 0
       $scope.slide 'step-additional'
     else
-      $scope.flash 'failure', 'Please select one option'
+      $scope.flash 'failure', 'Please select a linen & towels option'
 
   $scope.select_payment = ->
     if $scope.chosen_time
@@ -213,7 +212,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
       $scope.slide 'step-four'
       $scope.calculate_pricing()
     else
-      $scope.flash 'failure', 'Please select a time'
+      $scope.flash 'failure', 'Please select a service time'
 
   $scope.back = ->
     angular.element('.content.side').hide()
@@ -315,7 +314,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.load_pricing = -> $http.get('/cost').success (rsp) -> $scope.pricing = rsp
 
-  $scope.flex_service_total = -> $scope.service_total - ($scope.timeslot_cost || 0)
+  $scope.flex_service_total = -> $scope.service_total - ($scope.timeslot_cost || 0) - ($scope.linen_handling_chosen && 299 || 0)
 
   $scope.calculate_pricing = ->
     first_booking_discount_applied = false
