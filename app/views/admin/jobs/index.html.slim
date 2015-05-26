@@ -42,6 +42,7 @@
             th Property
             th Location
             th Size
+            th Linen
             th Date
             th Nickname
             th Address
@@ -64,6 +65,7 @@
             th Property
             th.location Location
             th Size
+            th Linen
             th.date Date
             th Nickname
             th Address
@@ -86,6 +88,7 @@
             th Property
             th Location
             th Size
+            th Linen
             th Date
             th Nickname
             th Address
@@ -110,6 +113,7 @@
               a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='job.booking.property.id'
             td ng:bind='job.booking.property.zip_code.market.name'
             td ng:bind='job.booking.property.property_size'
+            td ng:bind='job.linen_handling'
             td ng:bind="job.date | date:'MM/dd/yyyy':'UTC'"
             td ng:bind='job.booking.property.nickname'
             td ng:bind='job.booking.property.neighborhood_address'

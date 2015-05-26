@@ -6,7 +6,7 @@ class Admin::PropertiesController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: properties.to_json(methods: [:neighborhood_address, :nickname, :property_size, :next_service_date, :last_service_date], include: {user: {methods: [:name]}, bookings: {methods: [:cost]}})
+        render json: properties.to_json(methods: [:neighborhood_address, :nickname, :property_size, :next_service_date, :last_service_date, :linen_handling], include: {user: {methods: [:name]}, bookings: {methods: [:cost]}})
       end
     end
   end
