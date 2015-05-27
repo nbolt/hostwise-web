@@ -171,7 +171,11 @@ class Booking < ActiveRecord::Base
   end
 
   def prediscount_cost
-    cost + first_booking_discount_cost + coupon_dollar_cost
+    if cancelled? || couldnt_access?
+      cost
+    else
+      cost + first_booking_discount_cost + coupon_dollar_cost + refunded_cost
+    end
   end
 
   def pricing_hash

@@ -32,9 +32,9 @@ http_interactions:
       X-Account-Header:
       - 374379a6-0000-0000-0000-000000000000
       X-Server-Name:
-      - streetapi-003-ashburn
+      - streetapi-002-phoenix
       Date:
-      - Thu, 14 May 2015 20:02:23 GMT
+      - Wed, 27 May 2015 19:13:45 GMT
       Content-Length:
       - '859'
     body:
@@ -42,10 +42,10 @@ http_interactions:
       string: |
         [{"input_index":0,"candidate_index":0,"delivery_line_1":"3430 S LA Brea Ave","last_line":"Los Angeles CA 90016-5258","delivery_point_barcode":"900165258301","components":{"primary_number":"3430","street_predirection":"S","street_name":"LA Brea","street_suffix":"Ave","city_name":"Los Angeles","state_abbreviation":"CA","zipcode":"90016","plus4_code":"5258","delivery_point":"30","delivery_point_check_digit":"1"},"metadata":{"record_type":"S","zip_type":"Standard","county_fips":"06037","county_name":"Los Angeles","carrier_route":"C027","congressional_district":"37","rdi":"Commercial","elot_sequence":"0066","elot_sort":"D","latitude":34.02376,"longitude":-118.35541,"precision":"Zip9","time_zone":"Pacific","utc_offset":-8,"dst":true},"analysis":{"dpv_match_code":"Y","dpv_footnotes":"AABB","dpv_cmra":"N","dpv_vacant":"N","active":"Y","footnotes":"N#"}}]
     http_version: 
-  recorded_at: Thu, 14 May 2015 20:02:23 GMT
+  recorded_at: Wed, 27 May 2015 19:13:45 GMT
 - request:
     method: get
-    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=34.02376,-118.35541&timestamp=1431633743
+    uri: https://maps.googleapis.com/maps/api/timezone/json?key=AIzaSyDX8lS8r8alRk3yHGFE7cZq1nRCjsc0DmA&location=34.02376,-118.35541&timestamp=1432754025
     body:
       encoding: US-ASCII
       string: ''
@@ -64,7 +64,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Thu, 14 May 2015 20:02:23 GMT
+      - Wed, 27 May 2015 19:13:45 GMT
       Pragma:
       - no-cache
       Expires:
@@ -98,5 +98,5 @@ http_interactions:
            "timeZoneName" : "Pacific Daylight Time"
         }
     http_version: 
-  recorded_at: Thu, 14 May 2015 20:02:23 GMT
+  recorded_at: Wed, 27 May 2015 19:13:45 GMT
 recorded_with: VCR 2.9.3
