@@ -166,6 +166,10 @@ class Booking < ActiveRecord::Base
     coupon_cost > 0 && coupon_cost / 100.0 || 0
   end
 
+  def refunded_dollar_cost
+    refunded_cost > 0 && refunded_cost / 100.0 || 0
+  end
+
   def original_cost
     (cost - (adjusted_cost / 100.0)).round 2
   end
@@ -174,7 +178,7 @@ class Booking < ActiveRecord::Base
     if cancelled? || couldnt_access?
       cost
     else
-      cost + first_booking_discount_cost + coupon_dollar_cost + refunded_cost
+      cost + first_booking_discount_cost + coupon_dollar_cost + refunded_dollar_cost
     end
   end
 
