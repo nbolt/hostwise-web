@@ -15,6 +15,7 @@ html
     = csrf_meta_tags
     = yield :head
     = render 'common/analytics'
+    = render 'common/mouseflow'
 
   body.grey.plain ng:controller='app' ng-cloak=''
     = render 'common/spinner'
