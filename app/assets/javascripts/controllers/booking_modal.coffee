@@ -136,6 +136,14 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     angular.element('.timeboxes .box.premium .text').text 'Choose your time'
     null
 
+  $scope.learn_purchase = ->
+    $scope.slide 'learn-purchase'
+    null
+
+  $scope.dismiss_purchase = ->
+    $scope.slide 'step-linens'
+    null
+
   $scope.select_handling = (num, name) ->
     $scope.linen_handling = num
     $scope.linen_handling_chosen = true if num == 0
@@ -201,7 +209,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     if $scope.linen_handling != null || $scope.property.linen_handling_cd == 0
       $scope.slide 'step-additional'
     else
-      $scope.flash 'failure', 'Please select a linen & towels option'
+      $scope.flash 'failure', 'Please select a linens & towels option'
 
   $scope.select_payment = ->
     if $scope.chosen_time

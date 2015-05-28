@@ -62,38 +62,71 @@ script#booking-modal type="text/ng-template"
               h3 Select your linens & towels option
               h5 We have three options to accommodate your hosting style!
             .linen-boxes
-              .box.purchase ng:click='select_handling(0, "purchase")'
+              .box.purchase
                 img src='/images/purchase.png'
                 .title Purchase
+                hr
                 .price
                   span $13
                   | / Bed
                 .text
                   span $299 for two 18lb sets for each bed.
                   |  Save money by renting if you have more than three guests a month.
-                .button.chosen Select
-              .box.rental ng:click='select_handling(1, "rental")'
+                  .btn.outlined ng:click='learn_purchase()'
+                    span Learn More
+                    span.circle
+                      i
+                .button.chosen ng:click='select_handling(0, "purchase")'
+                  | Select
+              .box.rental
                 img src='/images/rent.png'
-                .title Rental Program
+                .title Rent
+                hr
                 .price
                   span $19
                   | / Bed
                 .text
                   span Same quanity, same quality.
                   |  Save money by renting if you have less than three guests a month.
-                .button Select
-              .box.in-unit ng:click='select_handling(2, "in-unit")'
+                .button  ng:click='select_handling(1, "rental")'
+                  | Select
+              .box.in-unit
                 img src='/images/laundry.png'
-                .title In-unit Laundering
+                .title In-Unit Laundry
+                hr
                 .price
                   span $10
                   | / Load
                 .text We can wash your linens & towels if you have an in-unit modern washer and dryer.
-                .button Select
+                .button ng:click='select_handling(2, "in-unit")'
+                  | Select
         .foot.next
           .right
             .button.grey ng:click='prev()' Back
             .button.teal ng:click='select_extras()' Select Extras
+      .content-group.learn-purchase
+        .content
+          img.purchase-icon src='/images/purchase.png'
+          .col2
+            .left
+              h3 Linens & Towels Purchase Program
+              h6
+                strong
+                  | Save money
+                | &nbsp;by purchasing if you have more than 3 guests per month. Commercially laundered and pressed for $13 a turn.
+              #price-table
+                .outlined
+                  span
+                    strong $299
+                    | &nbsp;for 2 sets
+            .right
+              img.count src='/images/setcount.png'
+          img.compare-hort src='/images/price_compare_horiz.png'
+          img.compare-vert src='/images/price_compare_vert.png'
+          .btn.outlined ng:click='dismiss_purchase()'
+            span Back to Options
+            span.circle
+              i
       .content-group.step-additional
         .header
           .icon
