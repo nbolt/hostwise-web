@@ -133,11 +133,11 @@ class User < ActiveRecord::Base
   end
 
   def earnings
-    payouts.where(status_cd: 1).reduce(0){|acc, payout| acc + payout.amount} / 100.0
+    payouts.where(status_cd: 2).reduce(0){|acc, payout| acc + payout.total} / 100.0
   end
 
   def unpaid
-    payouts.where(status_cd: 0).reduce(0){|acc, payout| acc + payout.amount} / 100.0
+    payouts.where(status_cd: 0).reduce(0){|acc, payout| acc + payout.total} / 100.0
   end
 
   def man_hours date
