@@ -36,7 +36,7 @@ FactoryGirl.define do |booking|
     status_cd 1
     linen_handling_cd 1
     timeslot_type 0
-    association :property, factory: :property_2
+    association :property, factory: :property_1
     after(:create) do |booking|
       booking.services << create(:cleaning)
       booking.services << create(:linens)

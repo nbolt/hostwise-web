@@ -2,6 +2,7 @@ FactoryGirl.define do |job|
   factory :job_1, class: Job do
     date Date.new(2016, 4, 18)
     status_cd 0
+    size 1
     association :booking, factory: :booking_1
   end
 
@@ -15,7 +16,7 @@ FactoryGirl.define do |job|
   factory :job_3, class: Job do
     date Date.new(2016, 4, 19)
     status_cd 0
-    size 2
+    size 1
     association :booking, factory: :booking_3
   end
 
