@@ -18,7 +18,7 @@ namespace :email_campaign do
   end
 
   task dynamic_schedule_launch: :environment do
-    users = User.where(role_cd: 1, activation_state: 'active')
+    users = User.hosts.select {|user| user.bookings.present? && user.bookings.sort_by{|b| b.date}[-1].date >= Date.today - 2.months}
     puts "Sending #{users.count} email..."
     users.each do |user|
       UserMailer.announcement(user, 'dynamic-schedule-launch').then(:deliver)
@@ -27,7 +27,7 @@ namespace :email_campaign do
   end
 
   task buy_rent_program_launch: :environment do
-    users = User.where(role_cd: 1, activation_state: 'active')
+    users = User.hosts.select {|user| user.bookings.present? && user.bookings.sort_by{|b| b.date}[-1].date >= Date.today - 2.weeks}
     puts "Sending #{users.count} email..."
     users.each do |user|
       UserMailer.announcement(user, 'buy-vs-rent-program-launch').then(:deliver)
