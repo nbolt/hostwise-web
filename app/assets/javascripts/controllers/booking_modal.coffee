@@ -43,6 +43,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     }
   ]
 
+  $timeout((-> angular.element('.ngdialog-close').click(-> ngDialog.closeAll())), 1000)
+
   if $scope.selected_booking
     booking = _($scope.property.active_bookings).find (booking) -> booking.id == parseInt($scope.selected_booking)
     $scope.linen_handling = booking.linen_handling_cd

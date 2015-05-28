@@ -22,25 +22,24 @@ script#booking-modal type="text/ng-template"
             .button.red ng:click='to_booking_cancellation() '
               .text Cancel Booking
         .content
-          div
-            .services
-              .title =t('booking.modal.services_title')
-              - Service.standard.each do |service|
-                .service.active class="#{service.name}"
-                  i.icon class="icon-serv-#{service.name}"
-                  .text= service.display
-                  label.switch.red
-                    input type='checkbox' toggle-service="#{service.name}"
-                    i
-            .extra
-              .title =t('booking.modal.extras_title')
-              - Service.extra.each do |service|
-                .service class="#{service.name}"
-                  i.icon class="icon-serv-#{service.name}"
-                  .text= service.display
-                  label.switch.red
-                    input type='checkbox' toggle-service="#{service.name}"
-                    i
+          .services
+            .title =t('booking.modal.services_title')
+            - Service.standard.each do |service|
+              .service.active class="#{service.name}"
+                i.icon class="icon-serv-#{service.name}"
+                .text= service.display
+                label.switch.red
+                  input type='checkbox' toggle-service="#{service.name}"
+                  i
+          .extra
+            .title =t('booking.modal.extras_title')
+            - Service.extra.each do |service|
+              .service class="#{service.name}"
+                i.icon class="icon-serv-#{service.name}"
+                .text= service.display
+                label.switch.red
+                  input type='checkbox' toggle-service="#{service.name}"
+                  i
         .foot.next
           .right
             .button.teal ng:click='next()' Next
