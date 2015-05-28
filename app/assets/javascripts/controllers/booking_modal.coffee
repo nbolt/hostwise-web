@@ -133,7 +133,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     $scope.calculate_pricing()
     angular.element('.timeboxes .box').removeClass 'chosen'
     angular.element('.timeboxes .box.flex').addClass 'chosen'
-    angular.element('.timeboxes .box.premium .text').text 'Choose your time'
+    angular.element('.timeboxes .box.premium .text').html 'Choose your time<i class="icon-acc-open" />'
     null
 
   $scope.learn_purchase = ->

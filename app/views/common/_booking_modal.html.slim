@@ -71,7 +71,7 @@ script#booking-modal type="text/ng-template"
                   | / Bed
                 .text
                   span $299 for two 18lb sets for each bed.
-                  |  Save money by renting if you have more than three guests a month.
+                  |  Save money by renting if you have more than 3 guests a month.
                   .btn.outlined ng:click='learn_purchase()'
                     span Learn More
                     span.circle
@@ -87,7 +87,7 @@ script#booking-modal type="text/ng-template"
                   | / Bed
                 .text
                   span Same quanity, same quality.
-                  |  Save money by renting if you have less than three guests a month.
+                  |  Save money by renting if you have less than 3 guests a month.
                 .button  ng:click='select_handling(1, "rental")'
                   | Select
               .box.in-unit
@@ -308,40 +308,40 @@ script#booking-modal type="text/ng-template"
           .discount
             .text id='discount-text' Enter Discount Code
             .input id='discount-code' style='position:relative'
-              input type='text' ng:model='$parent.discount_code'
+              input type='text' ng:model='discount_code'
         .content.payment
           div.existing-payment
             .payment-title Select Payment Method
             .payment-method.existing
               .icon
                 .typcn.typcn-credit-card
-              input type='hidden' ui-select2='paymentHash()' ng:model='$parent.payment' value='{{payment_id}}'
+              input type='hidden' ui-select2='paymentHash()' ng:model='payment' value='{{payment_id}}'
           div.new-payment
             .payment-title Add Payment Method
             .payment-method
-              input type='hidden' ui-select2='paymentMethodHash()' ng:model='$parent.payment_method' value='credit-card'
+              input type='hidden' ui-select2='paymentMethodHash()' ng:model='payment_method' value='credit-card'
             .payment-tab.ach
               .field.name
                 .label Name On Account
-                input ng:model='$parent.bank.name'
+                input ng:model='bank.name'
               .row.two
                 .field.account-number
                   .label Account Number
-                  input ng:model='$parent.bank.account_number'
+                  input ng:model='bank.account_number'
                 .field.routing-number
                   .label Routing Number
-                  input ng:model='$parent.bank.routing_number'
+                  input ng:model='bank.routing_number'
             .payment-tab.credit-card.active
               .field.card-number
                 .label Card Number
-                input#card-number data-stripe='number' ng:model='$parent.card.number'
+                input#card-number data-stripe='number' ng:model='card.number'
               .row.two
                 .field.expiry
                   .label Expiry Date
-                  input#expiry-date data-stripe='expiry' ui:mask='99/99' ng:model='$parent.card.expiry' placeholder='MM/YY'
+                  input#expiry-date data-stripe='expiry' ui:mask='99/99' ng:model='card.expiry' placeholder='MM/YY'
                 .field.cvc
                   .label CV Code
-                  input#cv-code data-stripe='cvc' ng:model='$parent.card.cvc' placeholder='123'
+                  input#cv-code data-stripe='cvc' ng:model='card.cvc' placeholder='123'
             a href='' ng:show='user.payments.length > 0' ng:click="payment_screen('existing')" Use existing payment methods
         .foot
           .left
