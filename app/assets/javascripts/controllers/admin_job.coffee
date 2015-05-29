@@ -34,6 +34,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
         unless rsp.success
           $scope.reset_status = true
           angular.element('.states .message').css 'opacity', 1
+          angular.element('.states .message .text').text rsp.message
           $timeout((-> angular.element('.states .message').css 'opacity', 0), 2000)
 
   $scope.$watch 'state', (n,o) -> if o != undefined

@@ -7,8 +7,8 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Select Date(s) & Services
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "services")'
-            .text ng:bind-template='{{step.num}}. {{step.display}}'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "services", $index)'
+            .text ng:bind-template='{{step_num(step)}}. {{step.display}}'
         .content.cal ng:if='!exists()'
           .calendar calendar='' options='modal_calendar_options' dates='chosen_dates'
         .content.edit ng:if='exists()'
@@ -49,8 +49,8 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Linens & Towels
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "linens")' prev='step-one'
-            .text ng:bind-template='{{step.num}}. {{step.display}}'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "linens", $index)' prev='step-one'
+            .text ng:bind-template='{{step_num(step)}}. {{step.display}}'
         .content.extras
           div.exists ng:if='property.linen_handling_cd == 0'
             .icon
@@ -132,8 +132,8 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Additional Options
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "extras")' prev='step-linens'
-            .text ng:bind-template='{{step.num}}. {{step.display}}'
+          .step.extras ng:repeat='step in steps' ng:class='step_class(step, "extras", $index)'
+            .text ng:bind-template='{{step_num(step)}}. {{step.display}}'
         .content.extras
           .linens
             h3 Do you want to add extra sets of linens and towels or toiletries?
@@ -172,8 +172,8 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Select a Time
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "time")' prev='step-additional'
-            .text ng:bind-template='{{step.num}}. {{step.display}}'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "time", $index)' prev='step-additional'
+            .text ng:bind-template='{{step_num(step)}}. {{step.display}}'
         .content.extras
           .linens
             h3 When would you like HostWise to arrive?
@@ -230,8 +230,8 @@ script#booking-modal type="text/ng-template"
             i.icon-calendar
           .text Confirm Booking & Payment
         .steps ng:class='steps_class()'
-          .step ng:repeat='step in steps' ng:class='step_class(step, "pay")' prev='step-three'
-            .text ng:bind-template='{{step.num}}. {{step.display}}'
+          .step ng:repeat='step in steps' ng:class='step_class(step, "pay", $index)' prev='step-three'
+            .text ng:bind-template='{{step_num(step)}}. {{step.display}}'
         .content.details
           .invoice Invoice
           .days
@@ -359,7 +359,7 @@ script#booking-modal type="text/ng-template"
           .text Booking Confirmed
         .steps ng:class='steps_class()'
           .step ng:repeat='step in steps' ng:class='step_class(step)'
-            .text ng:bind-template='{{step.num}}. {{step.display}}'
+            .text ng:bind-template='{{step_num(step)}}. {{step.display}}'
         .content.confirmation.teal
           i.icon-check
           .title-text You're all set!

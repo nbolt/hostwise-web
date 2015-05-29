@@ -17,29 +17,29 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.steps = [
     {
-      num: 1
       name: 'services'
       display: 'Date & Services'
+      visible: true
     },
     {
-      num: 2
       name: 'linens'
       display: 'Linens & Towels'
+      visible: true
     },
     {
-      num: 3
       name: 'extras'
       display: 'Extra Options'
+      visible: true
     },
     {
-      num: 4
       name: 'time'
       display: 'Select a Time'
+      visible: true
     },
     {
-      num: 5
       name: 'pay'
       display: 'Finish & Pay'
+      visible: true
     }
   ]
 
@@ -84,25 +84,38 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
-  $scope.steps_class = -> 'five'
+  $scope.steps_class = -> if _($scope.steps).filter((step) -> step.visible).length == 4 then 'four' else 'five'
 
-  $scope.step_class = (step, name) ->
+  $scope.step_class = (step, name, index) ->
     if $scope.steps
       if name
         name = _($scope.steps).find (step) -> step.name == name
         if name
-          if step.num < name.num
-            'complete'
-          else if step.num == name.num
-            'current'
+          if step.visible
+            if index < _($scope.steps).indexOf name
+              'complete'
+            else if index == _($scope.steps).indexOf name
+              'current'
+            else
+              ''
           else
-            ''
+            'hidden'
         else
           ''
       else
         'complete'
     else
       ''
+
+  $scope.step_num = (step) ->
+    if _($scope.steps).find((step) -> step.name == 'linens').visible
+      _($scope.steps).indexOf(step) + 1
+    else
+      index = _($scope.steps).indexOf(step)
+      if index == 0
+        1
+      else
+        index
 
   $scope.format_chosen_time = ->
     time = parseInt $scope.chosen_time
@@ -201,8 +214,13 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     else if no_dates()
       $scope.flash 'failure', 'Please select at least one date'
     else
-      $scope.slide 'step-linens'
       $scope.calculate_pricing()
+      if _(services_array()).find((service) -> service == 'linens')
+        $scope.slide 'step-linens'
+        $timeout((-> _($scope.steps).find((service) -> service.name == 'linens').visible = true),300)
+      else
+        $scope.slide 'step-additional'
+        $timeout((-> _($scope.steps).find((service) -> service.name == 'linens').visible = false),300)
     null
 
   $scope.select_time = -> $scope.slide 'step-three'
@@ -410,7 +428,15 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     $scope.refresh_booking = true if type is 'cancelled' or type is 'booked'
     null
 
-  $scope.prev = -> $scope.slide angular.element('.step.complete:visible:last').attr 'prev'
+  $scope.prev = ->
+    last_complete = angular.element('.step.complete:visible:last')
+    if last_complete.hasClass('extras')
+      if _($scope.steps).find((step) -> step.name == 'linens').visible
+        $scope.slide 'step-linens'
+      else
+        $scope.slide 'step-one'
+    else
+      $scope.slide last_complete.attr 'prev'
 
   $scope.confirm_booking = -> ngDialog.closeAll()
   $scope.confirm_cancellation = -> ngDialog.closeAll()
