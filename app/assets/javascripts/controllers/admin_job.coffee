@@ -26,7 +26,15 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
     ), 200)
 
   $scope.$watch 'status', (n,o) -> if o != undefined && o.id != n.id
-    $http.post($window.location.href + '/update_status', {status: $scope.status.id}).success (rsp) -> load_job(JSON.parse rsp.job)
+    if $scope.reset_status
+      $scope.reset_status = false
+    else
+      $http.post($window.location.href + '/update_status', {status: $scope.status.id}).success (rsp) ->
+        load_job(JSON.parse rsp.job)
+        unless rsp.success
+          $scope.reset_status = true
+          angular.element('.states .message').css 'opacity', 1
+          $timeout((-> angular.element('.states .message').css 'opacity', 0), 2000)
 
   $scope.$watch 'state', (n,o) -> if o != undefined
     $http.post($window.location.href + '/update_state', {state: $scope.state.id})

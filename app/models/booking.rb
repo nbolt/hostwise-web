@@ -20,6 +20,7 @@ class Booking < ActiveRecord::Base
     date = date.to_date if date.class == Time
     where(date: date)
   }
+  scope :on_month, -> (date) { where('extract(month from bookings.date) = ? and extract(year from bookings.date) = ?', date.month, date.year) }
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
   scope :today, -> { where('date = ?', Date.today) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }
@@ -267,7 +268,7 @@ class Booking < ActiveRecord::Base
     elsif payment.stripe_id
       amount = (cost * 100).to_i
       begin
-        metadata = { job_id: job.id, booking_id: self.id, user_id: user.id, user_email: user.email }
+        metadata = { job_id: job.id, booking_id: self.id, user_id: user.id, user_email: user.email, service_date: self.date.to_s }
         if cancelled?
           metadata[:cancellation] = true
         elsif couldnt_access?
@@ -282,8 +283,9 @@ class Booking < ActiveRecord::Base
           metadata: metadata
         )
         transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount)
-        UserMailer.service_completed(self).then(:deliver) if user.settings(:service_completion).email
         save
+        UserMailer.service_completed(self).then(:deliver) if user.settings(:service_completion).email
+        true
       rescue Stripe::CardError => e
         err  = e.json_body[:error]
         transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount)

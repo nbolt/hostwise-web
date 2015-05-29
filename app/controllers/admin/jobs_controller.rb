@@ -136,11 +136,14 @@ class Admin::JobsController < Admin::AuthController
   end
 
   def update_status
+    success = false; message = 'status update not allowed'
     if job.status_cd < 3
       case params[:status]
       when 3
+        success = true; message = nil
         job.complete!
       when 6
+        success = true; message = nil
         job.update_attribute :status_cd, 6
 
         UserMailer.cancelled_booking_notification(job.booking).then(:deliver)
@@ -176,7 +179,7 @@ class Admin::JobsController < Admin::AuthController
         end
       end
     end
-    render json: { success: true, job: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count, :property_size], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}}) }
+    render json: { success: success, message: message, job: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count, :property_size], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}}) }
   end
 
   def update_state
