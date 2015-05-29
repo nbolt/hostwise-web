@@ -179,7 +179,7 @@ class Booking < ActiveRecord::Base
     if cancelled? || couldnt_access?
       cost
     else
-      cost + first_booking_discount_cost + coupon_dollar_cost + refunded_dollar_cost
+      cost + first_booking_discount_cost + coupon_dollar_cost
     end
   end
 
