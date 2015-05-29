@@ -65,7 +65,7 @@
                 .text ng:if='job.formatted_time == "flex"' Flex Window
                 .text.teal ng:if='job.formatted_time != "flex"' Specific Time
                 .text style='margin-left:3px' ng:bind-template=' - {{job.formatted_time}}'
-              .linens
+              .linens ng:if='job.booking.property.linen_handling_cd == 0'
                 img src='/images/badge.png'
                 .text This host has purchased linens & towels for this property
   .row.uneven
