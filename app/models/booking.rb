@@ -64,7 +64,7 @@ class Booking < ActiveRecord::Base
           rsp[:cleaning] = PRICING[property.property_type.to_s][property.bedrooms][property.bathrooms]
         when 'linens'
           rsp[:linens] ||= 0
-          property.beds.times { rsp[:linens] += PRICING['linens'][linen_handling.to_s] }
+          property.beds.times { rsp[:linens] += PRICING['linens'][linen_handling.then(:to_s) || 'rental'] }
           rsp[:cost] += rsp[:linens]
         when 'toiletries'
           rsp[:toiletries] ||= 0

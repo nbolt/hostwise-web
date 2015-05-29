@@ -45,6 +45,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $timeout((-> angular.element('.ngdialog-close').click(-> ngDialog.closeAll())), 1000)
 
+  services_array = ->
+    services = []
+    _($scope.selected_services).each (selected, service) ->
+      services.push service if selected
+    services
+
   if $scope.selected_booking
     booking = _($scope.property.active_bookings).find (booking) -> booking.id == parseInt($scope.selected_booking)
     $scope.linen_handling = booking.linen_handling_cd
@@ -72,6 +78,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         angular.element('.timeboxes .box.premium .text').text "#{time1} - #{time2}#{meridian}m - $#{$scope.time_total($scope.chosen_time)}"
     ),1000)
     $scope.booking = booking
+    $timeout((->
+      unless _(services_array()).find((service) -> service == 'linens')
+        _($scope.steps).find((step) -> step.name == 'linens').visible = false
+    ), 500)
   else
     $scope.extra = {king_sets: 0, twin_sets: 0, toiletry_sets: 0}
 
@@ -81,6 +91,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
         $scope.selected_services[service.name] = true
         $scope.calculate_pricing()
+      unless _(services_array()).find((service) -> service == 'linens')
+        _($scope.steps).find((step) -> step.name == 'linens').visible = false
 
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
@@ -590,10 +602,13 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
       angular.element('.booking.modal .content.payment .payment-tab.ach').addClass 'active'
 
   $scope.$watch 'selected_services.linens', (n,o) ->
-    if !n && $scope.selected_services['preset']
-      $scope.selected_services['preset'] = false
-      $scope.selected_services['cleaning'] = true
-      angular.element('.ngdialog .service.cleaning input').prop 'checked', true
+    if !n
+      $scope.linen_handling = null
+      angular.element('.linen-boxes .box').removeClass 'selected'
+      if $scope.selected_services['preset']
+        $scope.selected_services['preset'] = false
+        $scope.selected_services['cleaning'] = true
+        angular.element('.ngdialog .service.cleaning input').prop 'checked', true
 
   $scope.$watch 'selected_services.preset', (n,o) ->
     if n
@@ -620,12 +635,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
   $rootScope.$on 'ngDialog.closing', (e, $dialog) ->
     $scope.$emit 'refresh_bookings' if $scope.refresh_booking
     window.location = $scope.redirect_to if $scope.redirect_to
-
-  services_array = ->
-    services = []
-    _($scope.selected_services).each (selected, service) ->
-      services.push service if selected
-    services
 
   no_dates = ->
     chosen = false
