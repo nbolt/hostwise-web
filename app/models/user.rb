@@ -192,7 +192,7 @@ class User < ActiveRecord::Base
       job.contractor_jobs[0].update_attribute :primary, true if job.contractors.count == 1
       job.size = team_members.count if team_members.count > job.size
       if team_members.count == job.size
-        job.scheduled!
+        job.scheduled! if job.status_cd < 3 || job.status_cd == 5
         job.save
       end
       job.handle_distribution_jobs self
@@ -214,7 +214,7 @@ class User < ActiveRecord::Base
       job.training = false
     else
       job.training = false if self.contractor_profile.position == :trainer
-      job.open!
+      job.open! unless job.status_cd > 2
     end
     job.save
     job.handle_distribution_jobs self

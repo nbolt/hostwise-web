@@ -25,7 +25,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
             }).addTo map
     ), 200)
 
-  $scope.$watch 'status', (n,o) -> if o != undefined
+  $scope.$watch 'status', (n,o) -> if o != undefined && o.id != n.id
     $http.post($window.location.href + '/update_status', {status: $scope.status.id}).success (rsp) -> load_job(JSON.parse rsp.job)
 
   $scope.$watch 'state', (n,o) -> if o != undefined

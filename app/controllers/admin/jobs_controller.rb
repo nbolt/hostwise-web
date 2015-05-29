@@ -136,47 +136,47 @@ class Admin::JobsController < Admin::AuthController
   end
 
   def update_status
-    job.update_attribute :status_cd, params[:status]
-    case job.status
-    when :completed
-      job.complete!
-    when :cant_access
-      job.booking.update_attribute :status_cd, 5
-      job.booking.update_cost!
-    when :cancelled
-      UserMailer.cancelled_booking_notification(job.booking).then(:deliver)
+    if job.status_cd < 3
+      case params[:status]
+      when 3
+        job.complete!
+      when 6
+        job.update_attribute :status_cd, 6
 
-      if job.booking.same_day_cancellation
-        job.booking.update_attribute :status, :cancelled
-      else
-        job.booking.update_attribute :status, :deleted
-      end
+        UserMailer.cancelled_booking_notification(job.booking).then(:deliver)
 
-      job.contractors.each do |contractor|
-        contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100) if job.booking.same_day_cancellation
-        job.contractors.destroy contractor
-        other_jobs = contractor.jobs.standard.on_date(job.date)
-        if other_jobs[0]
-          other_jobs[0].handle_distribution_jobs contractor
-          Job.set_priorities contractor, job.date
+        if job.booking.same_day_cancellation
+          job.booking.update_attribute :status, :cancelled
         else
-          contractor.jobs.distribution.on_date(job.date).destroy_all
+          job.booking.update_attribute :status, :deleted
         end
-        if contractor.contractor_profile.position == :trainee
-          TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
-        else
-          TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Looks like job ##{job.id} on #{job.formatted_date} was cancelled. Sorry about this!")
-        end
-      end
 
-      if job.booking.same_day_cancellation
-        job.booking.update_cost!
-        UserMailer.booking_same_day_cancellation(job.booking).then(:deliver)
-      else
-        UserMailer.booking_cancellation(job.booking).then(:deliver)
+        job.contractors.each do |contractor|
+          contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100) if job.booking.same_day_cancellation
+          job.contractors.destroy contractor
+          other_jobs = contractor.jobs.standard.on_date(job.date)
+          if other_jobs[0]
+            other_jobs[0].handle_distribution_jobs contractor
+            Job.set_priorities contractor, job.date
+          else
+            contractor.jobs.distribution.on_date(job.date).destroy_all
+          end
+          if contractor.contractor_profile.position == :trainee
+            TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Your Test & Tips session on #{job.formatted_date} was cancelled. Please select another session!")
+          else
+            TwilioJob.perform_later("+1#{contractor.phone_number}", "Oops! Looks like job ##{job.id} on #{job.formatted_date} was cancelled. Sorry about this!")
+          end
+        end
+
+        if job.booking.same_day_cancellation
+          job.booking.update_cost!
+          UserMailer.booking_same_day_cancellation(job.booking).then(:deliver)
+        else
+          UserMailer.booking_cancellation(job.booking).then(:deliver)
+        end
       end
     end
-    render json: { success: true, job: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}}) }
+    render json: { success: true, job: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count, :property_size], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}}) }
   end
 
   def update_state
