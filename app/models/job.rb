@@ -161,7 +161,7 @@ class Job < ActiveRecord::Base
   end
 
   def contractor_names
-    (contractors + payouts.map(&:user)).uniq.map(&:name).join ', '
+    (contractors + payouts.map(&:user)).uniq.compact.map(&:name).join ', '
   end
 
   def priority contractor=nil
