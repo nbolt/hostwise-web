@@ -148,7 +148,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.select_handling = (num, name) ->
     $scope.linen_handling = num
-    $scope.linen_handling_chosen = true if num == 0
+    if num == 0 then $scope.linen_handling_chosen = true else $scope.linen_handling_chosen = false
     $scope.calculate_pricing()
     angular.element('.linen-boxes .box').removeClass 'selected'
     angular.element(".linen-boxes .box.#{name}").addClass 'selected'
@@ -324,7 +324,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.load_pricing = -> $http.get('/cost').success (rsp) -> $scope.pricing = rsp
 
-  $scope.flex_service_total = -> $scope.service_total - ($scope.timeslot_cost || 0) - ($scope.linen_handling_chosen && 299 || 0)
+  $scope.flex_service_total = -> $scope.service_total - ($scope.timeslot_cost || 0) - ($scope.linen_handling_chosen && 299 * $scope.property.beds || 0)
 
   $scope.calculate_pricing = ->
     first_booking_discount_applied = false
