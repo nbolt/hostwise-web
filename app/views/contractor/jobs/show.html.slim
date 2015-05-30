@@ -13,7 +13,7 @@
       .icontain
         i.icon-job-order
     .text ng:bind='job.formatted_time'
-  .laundry
+  .laundry ng:show='job.booking.linen_handling_cd == 2'
     .icon
       img src='/images/laundry.png'
     .text
