@@ -62,6 +62,10 @@
                       | .{{::job.payout_fractional}}
                 .flash.error
                 .left
+                  .timeslot.first
+                    i.icon-job-order
+                    .text ng:if="job.formatted_time != 'flex'" ng:bind='job.formatted_time'
+                    .text ng:if="job.formatted_time == 'flex'" 10 - 4 PM
                   .rooms
                     i.icon-house ng:if='job.booking.property.property_type_cd == 0'
                     i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
