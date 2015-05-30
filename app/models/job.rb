@@ -120,7 +120,15 @@ class Job < ActiveRecord::Base
         '9 AM'
       end
     else
-      'flex'
+      if current_user
+        hours = Job.organize_day current_user, date, self
+        time = hours.index(id) + 8
+        meridian = 'A'; meridian = 'P' if time > 11
+        time -= 12 if time > 12
+        "#{time} #{meridian}M"
+      else
+        'flex'
+      end
     end
   end
 
@@ -448,7 +456,9 @@ class Job < ActiveRecord::Base
       (start_hour..end_hour).each {|hour| hours[hour] = job.id}
     end
 
-    (jobs.flex.team + jobs.flex.single).each  do |job|
+    flex_jobs = jobs.flex.team + jobs.flex.single
+    flex_jobs += [job] if job
+    flex_jobs.each  do |job|
       range  = job.man_hours.floor
       ranges = []
       hours[2..7].each_with_index do |hour, i|
@@ -471,7 +481,7 @@ class Job < ActiveRecord::Base
 
   def fits_in_day contractor
     count = 0; index = nil
-    hours = Job.organize_day contractor, date, self
+    hours = Job.organize_day contractor, date
 
     if booking.timeslot_type == :flex
       range  = man_hours.floor

@@ -63,8 +63,8 @@ class DataController < ApplicationController
     job = Job.find params[:id]
     jobs = Job.on_date(job.date).open current_user
     jobs.each {|j| j.current_user = current_user}
-    jobs = jobs.select {|job| !job.previous_team_job && !job.training && (job.first_job_of_day || job.contractor_hours + job.man_hours <= MAX_MAN_HOURS)}
-    render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
+    jobs = jobs.select {|job| current_user.can_claim_job? job}
+    render json: jobs.to_json(methods: [:payout, :payout_integer, :payout_fractional, :staging, :man_hours, :contractor_hours, :formatted_time], include: {contractors: {}, booking: {methods: :cost, include: {property: {include: {user: {methods: :name}}, methods: [:short_address, :full_address, :primary_photo, :neighborhood]}}}})
   end
 
   def transactions
