@@ -29,7 +29,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
         job.total_kings = job.booking.property.king_bed_count
         job.total_twins = job.booking.property.twin_beds
         job.total_toiletries = job.booking.property.bathrooms
-        job.linen_handling = switch job.booking.property.linen_handling_cd
+        job.linen_handling = switch job.booking.linen_handling_cd
           when 0 then 'purchase'
           when 1 then 'rental'
           when 2 then 'in-unit laundry'
