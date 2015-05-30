@@ -73,6 +73,8 @@
             .section
               h2 Property ID
             .section
+              h2 Nickname
+            .section
               h2 Date Added
             .section
               h2 City
@@ -90,7 +92,10 @@
                 a href="/properties/{{::property.id}}"
                   p.teal ng:bind='::property.id'
               .section
-                p.dark-gray ng:bind='::property.created_at'
+                a href="/properties/{{::property.id}}"
+                  p.teal ng:bind='::property.nickname'
+              .section
+                p.dark-gray ng:bind='::property.display_created_at'
               .section
                 p.dark-gray ng:bind='::property.city'
               .section

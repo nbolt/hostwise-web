@@ -88,6 +88,10 @@ class Property < ActiveRecord::Base
     title || address1
   end
 
+  def display_created_at
+    created_at.strftime('%Y-%m-%d')
+  end
+
   def display_phone_number
     if phone_number
       first  = phone_number[0..2]
