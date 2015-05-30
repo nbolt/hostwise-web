@@ -53,7 +53,7 @@ class Property < ActiveRecord::Base
   end
 
   def last_transaction
-    transactions.order(charged_at: :asc).last
+    transactions.order(charged_at: :asc, created_at: :asc).last
   end
 
   def next_service_date

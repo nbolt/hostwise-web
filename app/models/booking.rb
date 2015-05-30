@@ -298,7 +298,7 @@ class Booking < ActiveRecord::Base
   end
 
   def last_transaction
-    transactions.order(charged_at: :asc).last
+    transactions.order(charged_at: :asc, created_at: :asc).last
   end
 
   def same_day_cancellation
@@ -336,7 +336,7 @@ class Booking < ActiveRecord::Base
   end
 
   def check_transaction
-    if self.payment_status != :completed && last_transaction && last_transaction.successful?
+    if self.payment_status != :completed && transactions.where(status_cd:0).count > 0
       self.payment_status = :completed
     end
   end
