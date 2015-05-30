@@ -40,6 +40,7 @@
           tr
             th ID
             th Property
+            th Time
             th Location
             th Size
             th Linen
@@ -63,6 +64,7 @@
           tr
             th ID
             th Property
+            th Time
             th.location Location
             th Size
             th Linen
@@ -86,6 +88,7 @@
           tr
             th ID
             th Property
+            th Time
             th Location
             th Size
             th Linen
@@ -111,6 +114,7 @@
               a.teal ng:href='/jobs/{{job.id}}' ng:bind='job.id'
             td
               a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='job.booking.property.id'
+            td ng:bind='job.formatted_time'
             td ng:bind='job.booking.property.zip_code.market.name'
             td ng:bind='job.booking.property.property_size'
             td ng:bind='job.linen_handling'

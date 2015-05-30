@@ -29,6 +29,8 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
         job.total_kings = job.booking.property.king_bed_count
         job.total_twins = job.booking.property.twin_beds
         job.total_toiletries = job.booking.property.bathrooms
+        timeslot = if job.booking.timeslot_type_cd == 0 then 'Flex - ' else 'Specific - '
+        job.formatted_time = timeslot + job.formatted_time
         job.linen_handling = switch job.booking.linen_handling_cd
           when 0 then 'purchase'
           when 1 then 'rental'
