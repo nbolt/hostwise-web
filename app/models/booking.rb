@@ -264,7 +264,7 @@ class Booking < ActiveRecord::Base
     if self.payment_status == :completed
       false
     elsif cost == 0
-      save
+      self.update_attribute :payment_status_cd, 1
     elsif payment.stripe_id
       amount = (cost * 100).to_i
       begin
@@ -336,7 +336,7 @@ class Booking < ActiveRecord::Base
   end
 
   def check_transaction
-    if self.payment_status != :completed && last_transaction && last_transaction.successful? || cost == 0
+    if self.payment_status != :completed && last_transaction && last_transaction.successful?
       self.payment_status = :completed
     end
   end
