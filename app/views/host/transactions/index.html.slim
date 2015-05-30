@@ -35,15 +35,15 @@
                 a href='' ng:click="predicate = 'total'; reverse=!reverse"
                   | Total
                   i.icon-acc-open
-            tr ng:repeat='transaction in tab.transactions | orderBy:predicate:reverse'
+            tr ng:repeat='transaction in tab.transactions | orderBy:predicate:reverse' id='t-{{transaction.id}}'
               td.date ng:bind="::transaction.date | date: 'MM/dd/yyyy':'UTC'"
               td.property ng:if='tab.name == "completed"'
                 /| {{transaction.properties}}
-                | {{transaction.property}}
+                | {{transaction.property.nickname}}
               td.property ng:if='tab.name == "upcoming"'
-                | {{transaction.property}}
+                | {{transaction.property.nickname}}
               td.payment
-                | **** {{transaction.payment}}
+                | **** {{transaction.payment.last4}}
               td.total ng:click='breakdown_modal(transaction)'
                 | ${{transaction.total}}
 
