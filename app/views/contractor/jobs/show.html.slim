@@ -8,9 +8,19 @@
 
     = direct_upload_form_for @bathroom_photo, html: { id: 'bathroom_photo' } do |f|
       = f.file_field :bathroom_photo
-  .page-title
-    i.icon-notebook
-    .text Job {{index_in_day + 1}} Details
+  .timeslot
+    .icon
+      .icontain
+        i.icon-job-order
+    .text ng:bind='job.formatted_time'
+  .laundry
+    .icon
+      img src='/images/laundry.png'
+    .text
+      .title In-Unit Laundry
+      .sub
+        | This customer has requested in unit laundry.
+        span  Make sure you start the first load right away.
   .job
     .flag ng:class='pricing_class()'
     .photo
@@ -50,9 +60,6 @@
             i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
             .text
               | {{job.booking.property.property_size}}
-          .timeslot ng:if='job.formatted_time != "flex"'
-            i.icon-job-order
-            .text ng:bind='job.formatted_time'
           .id
             i.icon-person
             .text ng:bind='::job.contractor_count'

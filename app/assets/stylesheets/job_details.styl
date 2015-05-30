@@ -112,6 +112,49 @@
 #job-details, #jobs, .container.contractor .jobs, .ngdialog.claim .modal
   > form
     display: none
+  > .timeslot
+    background-color: teal
+    color: white
+    text-align: center
+    padding: 18px
+    font-size: 2em
+    border-radius: 3px
+    .icon
+      margin-right: 20px
+      background-color: light-teal
+      border-radius: 50%
+      text-align: center
+      height: 52px
+      width: 52px
+      .icontain
+        margin-top: 6px
+    .text
+      font-weight: 600
+    .icon, .text
+      display: inline-block
+  > .laundry
+    background-color: white
+    border-radius: 3px
+    margin-top: 20px
+    min-height: 80px
+    padding: 20px
+    .icon
+      float: left
+      img
+        height: 80px
+    .text
+      margin-left: 120px
+      color: #7E8692
+      .title
+        font-size: 1.2em
+        font-weight: 600
+        margin-top: 8px
+        color: heavy-gray
+      .sub
+        font-size: .9em
+        margin-top: 8px
+        span
+          font-weight: 600
   .distribution-job
     background-color: white
     padding: 20px
@@ -273,7 +316,6 @@
         display: none
         margin-left: 20px
       .est
-        display: none
         margin-left: 30px
         @media phone
           margin-left: 5px
