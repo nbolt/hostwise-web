@@ -55,7 +55,7 @@ class Booking < ActiveRecord::Base
     services.map(&:display).join ', '
   end
 
-  def self.cost property, services, linen_handling, timeslot, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
+  def self.cost property, services, linen_handling, timeslot_type, timeslot, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
     pool_service = Service.where(name: 'pool')[0]
     rsp = {cost:0}
     services.each do |service|
@@ -82,17 +82,19 @@ class Booking < ActiveRecord::Base
     end
     rsp[:contractor_service_cost] = (rsp[:cleaning] || 0) + (rsp[:pool] || 0) + (rsp[:patio] || 0) + (rsp[:windows] || 0) + (rsp[:preset] || 0)
     rsp[:orig_service_cost] = rsp[:contractor_service_cost]
-    case timeslot.to_i
-    when 9  then rsp[:contractor_service_cost] *= PRICING['timeslots'][9]
-    when 10 then rsp[:contractor_service_cost] *= PRICING['timeslots'][10]
-    when 11 then rsp[:contractor_service_cost] *= PRICING['timeslots'][11]
-    when 12 then rsp[:contractor_service_cost] *= PRICING['timeslots'][12]
-    when 13 then rsp[:contractor_service_cost] *= PRICING['timeslots'][13]
-    when 14 then rsp[:contractor_service_cost] *= PRICING['timeslots'][14]
-    when 15 then rsp[:contractor_service_cost] *= PRICING['timeslots'][15]
-    when 16 then rsp[:contractor_service_cost] *= PRICING['timeslots'][16]
-    when 17 then rsp[:contractor_service_cost] *= PRICING['timeslots'][17]
-    when 18 then rsp[:contractor_service_cost] *= PRICING['timeslots'][18]
+    if timeslot_type != :flex
+      case timeslot.to_i
+      when 9  then rsp[:contractor_service_cost] *= PRICING['timeslots'][9]
+      when 10 then rsp[:contractor_service_cost] *= PRICING['timeslots'][10]
+      when 11 then rsp[:contractor_service_cost] *= PRICING['timeslots'][11]
+      when 12 then rsp[:contractor_service_cost] *= PRICING['timeslots'][12]
+      when 13 then rsp[:contractor_service_cost] *= PRICING['timeslots'][13]
+      when 14 then rsp[:contractor_service_cost] *= PRICING['timeslots'][14]
+      when 15 then rsp[:contractor_service_cost] *= PRICING['timeslots'][15]
+      when 16 then rsp[:contractor_service_cost] *= PRICING['timeslots'][16]
+      when 17 then rsp[:contractor_service_cost] *= PRICING['timeslots'][17]
+      when 18 then rsp[:contractor_service_cost] *= PRICING['timeslots'][18]
+      end
     end
     rsp[:contractor_service_cost] = rsp[:contractor_service_cost].round
     rsp[:timeslot_cost] = rsp[:contractor_service_cost] - rsp[:orig_service_cost]
@@ -221,7 +223,7 @@ class Booking < ActiveRecord::Base
   end
 
   def update_cost!
-    cost = Booking.cost(property, services, linen_handling, timeslot, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
+    cost = Booking.cost(property, services, linen_handling, timeslot_type, timeslot, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
     self.timeslot_cost               = cost[:timeslot_cost] || 0
     self.contractor_service_cost     = cost[:contractor_service_cost] || 0
     self.cleaning_cost               = cost[:cleaning] || 0
