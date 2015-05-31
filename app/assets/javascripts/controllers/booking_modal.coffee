@@ -602,7 +602,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
       angular.element('.booking.modal .content.payment .payment-tab.ach').addClass 'active'
 
   $scope.$watch 'selected_services.linens', (n,o) ->
-    if !n
+    if !n && o
       $scope.linen_handling = null
       angular.element('.linen-boxes .box').removeClass 'selected'
       if $scope.selected_services['preset']
