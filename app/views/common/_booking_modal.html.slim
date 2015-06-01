@@ -59,7 +59,6 @@ script#booking-modal type="text/ng-template"
           div ng:if='property.linen_handling_cd != 0'
             .linens
               h3 Select your linens & towels option
-              h5 We have three options to accommodate your hosting style!
             .linen-boxes
               .box.purchase
                 img src='/images/purchase.png'
@@ -104,6 +103,7 @@ script#booking-modal type="text/ng-template"
             .button.grey ng:click='prev()' Back
             .button.teal ng:click='select_extras()' Select Extras
       .content-group.learn-purchase
+        i.close ng:click='dismiss_purchase()'
         .content
           img.purchase-icon src='/images/purchase.png'
           .col2
@@ -160,7 +160,6 @@ script#booking-modal type="text/ng-template"
           hr
           .instructions
             h3 Anything specific we should know besides the usual?
-            h5 If you have any special requests please let us know here.
             textarea ng:model='extra.instructions'
         .foot.next
           .right
