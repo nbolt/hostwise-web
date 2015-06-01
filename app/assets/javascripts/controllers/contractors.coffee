@@ -2,6 +2,8 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope
 
   promise = null
 
+  $http.get('/data/markets').success (rsp) -> $scope.markets = rsp.markets
+
   $scope.fetch_contractors = ->
     spinner.startSpin()
     $http.get(window.location.href + '.json').success (rsp) ->
@@ -14,11 +16,23 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope
         user.bgc_status = background_check_status(user)
       spinner.stopSpin()
       $timeout((->
-        angular.element("#example-1").dataTable({
+        table = angular.element("#example-1").dataTable({
           aLengthMenu: [
             [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
           ]
         })
+        $scope.table = table
+
+        angular.element('#example-1 thead.search th').each (index) ->
+          unless angular.element(@).html() == ''
+            if angular.element(@).html() == 'Date'
+              angular.element(@).html "<input><input>"
+              angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
+              angular.element(@).children('input').datepicker()
+            else
+              angular.element(@).html "<input>"
+              angular.element(@).children('input').on 'keyup change', ->
+                table.fnFilter angular.element(@).val(), index
       ),1000)
 
     $http.get('/dashboard/team_members').success (rsp) ->
@@ -35,6 +49,18 @@ ContractorsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope
     promise = $timeout (->
       $http.get('/data/contractors', {params: {term: n}}).success (rsp) -> $scope.users = rsp if $scope.users
     ), 400
+
+  $scope.marketHash = ->
+    {
+    dropdownCssClass: 'details'
+    minimumResultsForSearch: -1
+    placeholder: 'Market'
+    data: -> { results: _($scope.markets).map (market) -> { id: market.id, text: market.name } },
+    initSelection: (el, cb) ->
+    }
+
+  $scope.$watch 'market', (n,o) -> if n
+    angular.element('th.market input').val($scope.market.text).trigger($.Event 'change')
 
   background_check_status = (user) ->
     if user.background_check

@@ -28,6 +28,8 @@
   .panel.panel-default
     .panel-heading
       h3.panel-title Team Members
+      .select2-head
+        input type='hidden' ui:select2='marketHash()' ng:model='market'
       .panel-options
         a data-toggle="panel" href="#"
           span.collapse-icon &ndash;
@@ -42,6 +44,24 @@
             th Name
             th Joined
             th City
+            th Market
+            th Email
+            th Phone
+            th Position
+            th Status
+            th
+              | Contract
+              br Signed
+            th
+              | BGC
+              br Status
+        thead.search
+          tr
+            th ID
+            th Name
+            th Joined
+            th City
+            th.market Market
             th Email
             th Phone
             th Position
@@ -58,6 +78,7 @@
             th Name
             th Joined
             th City
+            th Market
             th Email
             th Phone
             th Position
@@ -76,6 +97,7 @@
               a.teal ng:href='/contractors/{{user.id}}/edit' ng:bind='user.name'
             td ng:bind="user.created_at | date:'MM/dd/yyyy':'UTC'"
             td ng:bind='user.contractor_profile.city'
+            td ng:bind='user.contractor_profile.market.name'
             td ng:bind='user.email'
             td ng:bind='user.display_phone_number'
             td ng:bind='user.contractor_profile.display_position'
