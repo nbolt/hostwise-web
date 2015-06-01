@@ -1411,7 +1411,9 @@ ul.pl-main-nav li a.active{
 }
 
 #price-table .outlined span {
-  font-size: 0.8em;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  text-transform: capitalize;
 }
 
 #price-table .outlined .circle{
