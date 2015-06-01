@@ -308,7 +308,7 @@ class User < ActiveRecord::Base
 
   def handle_deactivation
     if activation_state_changed? && activation_state == 'deactivated'
-      self.jobs.where(status_cd: [0,1]).each do |job|
+      self.jobs.standard.where(status_cd: [0,1]).each do |job|
         self.drop_job job, true
       end
 
