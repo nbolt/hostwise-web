@@ -26,4 +26,11 @@ FactoryGirl.define do |job|
     size 2
     association :booking, factory: :booking_4
   end
+
+  factory :job_5, class: Job do
+    date Date.new(2016, 4, 18)
+    status_cd 0
+    size 1
+    association :booking, factory: :booking_5
+  end
 end

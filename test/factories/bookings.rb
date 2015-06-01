@@ -3,7 +3,7 @@ FactoryGirl.define do |booking|
     date Date.new(2016, 4, 18)
     status_cd 1
     timeslot_type 1
-    timeslot 16
+    timeslot 14
     linen_handling_cd 1
     association :property, factory: :property_1
     after(:create) do |booking|
@@ -58,6 +58,22 @@ FactoryGirl.define do |booking|
       booking.services << create(:pool)
       booking.update_cost!
       create(:job_4, booking: booking)
+    end
+  end
+
+  factory :booking_5, class: Booking do
+    date Date.new(2016, 4, 18)
+    status_cd 1
+    linen_handling_cd 1
+    timeslot_type 0
+    association :property, factory: :property_3
+    after(:create) do |booking|
+      booking.services << create(:cleaning)
+      booking.services << create(:linens)
+      booking.services << create(:pool)
+      booking.services << create(:toiletries)
+      booking.update_cost!
+      create(:job_5, booking: booking)
     end
   end
 end

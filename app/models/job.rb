@@ -445,6 +445,21 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def self.find_hours hours, range, times
+    count = 0; index = nil; ranges=[]
+    hours[times[0]..times[1]].each_with_index do |hour, i|
+      if hour || i == hours[times[0]..times[1]].length - 1
+        count += 1 unless hour
+        ranges.push([index, count]) if index && count > range
+        count = 0; index = nil
+      else
+        count += 1
+        index ||= i + times[0]
+      end
+    end
+    ranges
+  end
+
   def self.organize_day contractor, date, job=nil, admin=false
     hours = []; hours[9] = nil
     jobs  = contractor.jobs.standard.on_date(date)
@@ -461,32 +476,12 @@ class Job < ActiveRecord::Base
     flex_jobs += [job] if job
     flex_jobs.each  do |job|
       range  = job.man_hours.floor
-      ranges = []
-      hours[2..7].each_with_index do |hour, i|
-        if hour || i == 5
-          count += 1 unless hour
-          ranges.push([index, count]) if index && count > range
-          count = 0; index = nil
-        else
-          count += 1
-          index ||= i + 2
-        end
-      end
-      count = 0; index = nil
+      ranges = Job.find_hours hours, range, [2, 7]
       if ranges.empty? && admin
         timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
         time = timezone.time Time.now
-        if time.to_date == self.date then start = time.hour - 8 else start = 0 end
-        hours[start..-1].each_with_index do |hour, i|
-          if hour || i == 5
-            count += 1 unless hour
-            ranges.push([index, count]) if index && count > range
-            count = 0; index = nil
-          else
-            count += 1
-            index ||= i + 2
-          end
-        end
+        if time.to_date == date then start = time.hour - 8 else start = 0 end
+        ranges = Job.find_hours hours, range, [start, -1]
       end
       i = jobs.flex.count > 1 && 0 || -1
       slot = ranges.sort_by! {|r| r[1]}[i]
@@ -502,32 +497,12 @@ class Job < ActiveRecord::Base
 
     if booking.timeslot_type == :flex
       range  = man_hours.floor
-      ranges = []
-      hours[2..7].each_with_index do |hour, i|
-        if hour || i == 5
-          count += 1 unless hour
-          ranges.push([index, count]) if index && count > range
-          count = 0; index = nil
-        else
-          count += 1
-          index ||= i + 2
-        end
-      end
-      count = 0; index = nil
+      ranges = Job.find_hours hours, range, [2, 7]
       if ranges.empty? && admin
         timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
         time = timezone.time Time.now
         if time.to_date == self.date then start = time.hour - 8 else start = 0 end
-        hours[start..-1].each_with_index do |hour, i|
-          if hour || i == 5
-            count += 1 unless hour
-            ranges.push([index, count]) if index && count > range
-            count = 0; index = nil
-          else
-            count += 1
-            index ||= i + 2
-          end
-        end
+        ranges = Job.find_hours hours, range, [start, -1]
       end
       slot = ranges.sort_by! {|r| r[1]}[0]
       slot && true || false
