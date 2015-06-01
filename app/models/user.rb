@@ -171,7 +171,7 @@ class User < ActiveRecord::Base
       { success: false, message: "Can't claim a cancelled job" }
     elsif payments.empty?
       { success: false, message: "Cannot claim jobs until you setup a payout method" }
-    elsif !job.fits_in_day(self)
+    elsif !job.fits_in_day(self, admin)
       { success: false, message: "Job not within available hours" }
     else
       { success: true }
@@ -181,7 +181,7 @@ class User < ActiveRecord::Base
   def claim_job job, admin=false
     jobs_today = self.jobs.on_date(job.date)
     team_members = job.contractors.team_members
-    rsp = can_claim_job?(job,admin)
+    rsp = can_claim_job?(job, admin)
     if !rsp[:success]
       { success: false, message: rsp[:message] }
     elsif job.contractors.index self
@@ -196,7 +196,7 @@ class User < ActiveRecord::Base
         job.save
       end
       job.handle_distribution_jobs self
-      job.contractors.each {|contractor| Job.set_priorities contractor, job.date}
+      job.contractors.each {|contractor| Job.set_priorities contractor, job.date, admin}
       unless Rails.env.test?
         fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
         fanout.publish_async 'jobs', {}

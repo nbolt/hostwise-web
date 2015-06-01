@@ -445,7 +445,7 @@ class Job < ActiveRecord::Base
     end
   end
 
-  def self.organize_day contractor, date, job=nil
+  def self.organize_day contractor, date, job=nil, admin=false
     hours = []; hours[9] = nil
     jobs  = contractor.jobs.standard.on_date(date)
     jobs  = jobs.where('jobs.id != ?', job.id) if job
@@ -472,6 +472,22 @@ class Job < ActiveRecord::Base
           index ||= i + 2
         end
       end
+      count = 0; index = nil
+      if ranges.empty? && admin
+        timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
+        time = timezone.time Time.now
+        if time.to_date == self.date then start = time.hour - 8 else start = 0 end
+        hours[start..-1].each_with_index do |hour, i|
+          if hour || i == 5
+            count += 1 unless hour
+            ranges.push([index, count]) if index && count > range
+            count = 0; index = nil
+          else
+            count += 1
+            index ||= i + 2
+          end
+        end
+      end
       i = jobs.flex.count > 1 && 0 || -1
       slot = ranges.sort_by! {|r| r[1]}[i]
       (slot[0]..(range + slot[0])).each {|hour| hours[hour] = job.id}
@@ -480,7 +496,7 @@ class Job < ActiveRecord::Base
     hours
   end
 
-  def fits_in_day contractor
+  def fits_in_day contractor, admin=false
     count = 0; index = nil
     hours = Job.organize_day contractor, date
 
@@ -497,6 +513,22 @@ class Job < ActiveRecord::Base
           index ||= i + 2
         end
       end
+      count = 0; index = nil
+      if ranges.empty? && admin
+        timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
+        time = timezone.time Time.now
+        if time.to_date == self.date then start = time.hour - 8 else start = 0 end
+        hours[start..-1].each_with_index do |hour, i|
+          if hour || i == 5
+            count += 1 unless hour
+            ranges.push([index, count]) if index && count > range
+            count = 0; index = nil
+          else
+            count += 1
+            index ||= i + 2
+          end
+        end
+      end
       slot = ranges.sort_by! {|r| r[1]}[0]
       slot && true || false
     else
@@ -506,10 +538,10 @@ class Job < ActiveRecord::Base
     end
   end
 
-  def self.set_priorities contractor, date
+  def self.set_priorities contractor, date, admin=false
     jobs = contractor.jobs.on_date(date)
     if jobs.standard.any? {|job| job.booking.timeslot_type_cd == 1}
-      hours = Job.organize_day(contractor, date).uniq.compact
+      hours = Job.organize_day(contractor, date, nil, admin).uniq.compact
       hours.each_with_index do |id, index|
         ContractorJobs.where(user_id: contractor.id, job_id: id)[0].update_attribute :priority, index + 1
         job = Job.find id
