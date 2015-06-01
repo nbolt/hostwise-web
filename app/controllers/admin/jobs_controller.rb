@@ -106,7 +106,7 @@ class Admin::JobsController < Admin::AuthController
     if rsp[:success]
       TwilioJob.perform_later("+1#{contractor.phone_number}", "You have been assigned a new HostWise job on #{job.formatted_date}.")
       job.current_user = current_user
-      render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address, :nickname], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
+      render json: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count, :property_size], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
     else
       render json: { failure: true, message: rsp[:message] }
     end
@@ -116,7 +116,7 @@ class Admin::JobsController < Admin::AuthController
     contractor = User.find params[:contractor_id]
     contractor.drop_job job, true
     job.current_user = current_user
-    render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional], include: {contractors: {methods: [:name, :display_phone_number]}, booking: {methods: [:cost], include: {services: {}, property: {methods: [:primary_photo, :full_address], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
+    render json: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count, :property_size], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
   end
 
   def add_service
