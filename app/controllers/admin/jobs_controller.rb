@@ -17,28 +17,69 @@ class Admin::JobsController < Admin::AuthController
     total = jobs.count
 
     if data
-      jobs = jobs.search(data['search']['value']) if data['search']['value'].present?
-      data['columns'].each do |column|
-        value = column['search']['value'].then(:downcase)
-        if value.present?
+      jobs = jobs.search(data['search']['value']).to_a if data['search']['value'].present?
+      if params[:dash] == 'jobs'
+        data['columns'].each do |column|
+          value = column['search']['value'].then(:downcase)
+          if value.present?
+            jobs =
+              case column['data']
+              when 0 then jobs.select {|job| job.id.to_s.match value}
+              when 1 then jobs.select {|job| job.booking.property.id.to_s.match value}
+              when 2 then jobs.select {|job| "#{job.booking.timeslot_type_cd == 0 && 'Flex' || 'Specific'} - #{job.formatted_time}".match value}
+              when 3 then jobs.select {|job| job.booking.property.zip_code.market.name.downcase.match value}
+              when 4 then jobs.select {|job| job.booking.property.property_size.downcase.match value}
+              when 5 then jobs.select {|job| job.booking.linen_handling.to_s.match value}
+              when 6 then jobs.select {|job| job.date.strftime('%m/%d/%Y').match value}
+              when 7 then jobs.select {|job| job.booking.property.nickname.downcase.match value}
+              when 8 then jobs.select {|job| job.booking.property.neighborhood_address.downcase.match value}
+              when 9 then jobs.select {|job| job.booking.user.name.downcase.match value}
+              when 10 then jobs.select {|job| job.booking.user.phone_number.match value}
+              when 11 then jobs.select {|job| job.status.to_s.match value}
+              when 12 then jobs.select {|job| "$#{job.booking.cost}".match value}
+              when 13 then jobs.select {|job| job.booking.service_list.downcase.match value}
+              when 20 then jobs.select {|job| job.contractor_names.downcase.match value}
+              when 21 then jobs.select {|job| job.state.to_s.downcase.match value}
+              end
+          end
+        end
+        data['order'].each do |order|
+          dir = if order['dir'] == 'asc' then 1 else -1 end
           jobs =
-            case column['data']
-            when 0 then jobs.select {|job| job.id.to_s.match value}
-            when 1 then jobs.select {|job| job.property.id.to_s.match value}
-            when 2 then jobs.select {|job| "#{job.booking.timeslot_type_cd == 0 && 'Flex' || 'Specific'} - #{job.formatted_time}".match value}
-            when 3 then jobs.select {|job| job.booking.property.zip_code.market.name.downcase.match value}
-            when 4 then jobs.select {|job| job.booking.property.property_size.downcase.match value}
-            when 5 then jobs.select {|job| job.booking.linen_handling.to_s.match value}
-            when 6 then jobs.select {|job| job.date.strftime('%m/%d/%Y').match value}
-            when 7 then jobs.select {|job| job.booking.property.nickname.downcase.match value}
-            when 8 then jobs.select {|job| job.booking.property.neighborhood_address.downcase.match value}
-            when 9 then jobs.select {|job| job.booking.user.name.downcase.match value}
-            when 10 then jobs.select {|job| job.booking.user.phone_number.match value}
-            when 11 then jobs.select {|job| job.status.to_s.match value}
-            when 12 then jobs.select {|job| "$#{job.booking.cost}".match value}
-            when 13 then jobs.select {|job| job.booking.service_list.downcase.match value}
-            when 20 then jobs.select {|job| job.contractor_names.downcase.match value}
-            when 21 then jobs.select {|job| job.state.to_s.downcase.match value}
+            case order['column']
+            when 0 then jobs.sort_by {|job| dir * job.id}
+            when 1 then jobs.sort_by {|job| dir * job.booking.property.id}
+            when 6 then jobs.sort_by {|job| dir * job.date.to_time.to_i}
+            end
+        end
+      else
+        data['columns'].each do |column|
+          value = column['search']['value'].then(:downcase)
+          if value.present?
+            jobs =
+              case column['data']
+              when 0 then jobs
+              when 1 then jobs.select {|job| job.id.to_s.match value}
+              when 2 then jobs.select {|job| job.booking.property.id.to_s.match value}
+              when 3 then jobs.select {|job| job.booking.user.id.to_s.match value}
+              when 4 then jobs.select {|job| job.date.strftime('%m/%d/%Y').match value}
+              when 5 then jobs.select {|job| job.booking.user.name.downcase.match value}
+              when 6 then jobs.select {|job| job.contractor_names.downcase.match value}
+              when 7 then jobs.select {|job| job.status.to_s.match value}
+              when 8 then jobs # adjusted payout
+              when 9 then jobs # total payout
+              end
+          end
+        end
+        data['order'].each do |order|
+          dir = if order['dir'] == 'asc' then 1 else -1 end
+          jobs =
+            case order['column']
+            when 0 then jobs
+            when 1 then jobs.sort_by {|job| dir * job.id}
+            when 2 then jobs.sort_by {|job| dir * job.booking.property.id}
+            when 3 then jobs.sort_by {|job| dir * job.booking.user.id}
+            when 4 then jobs.sort_by {|job| dir * job.date.to_time.to_i}
             end
         end
       end

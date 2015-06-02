@@ -89,6 +89,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
 
   $scope.refund_modal = (booking) ->
     unless booking.refunded
+      booking = _($scope.bookings).find (b) -> b.id == booking
       $scope.selected_payment = booking
       $scope.refund  = { amount: booking.refunded_cost / 100, reason: booking.refunded_reason }
       $scope.refund_amount_update()
@@ -110,6 +111,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         $scope.selected_payment.adjusted_cost = "$#{$scope.selected_payment.adjusted_cost.toFixed(2)}"
       else
         $scope.selected_payment.adjusted_cost = "(-$#{($scope.selected_payment.adjusted_cost * -1).toFixed(2)})"
+      angular.element($scope.bookings_table).DataTable().ajax.reload()
 
   $scope.process_payments_modal = -> ngDialog.open template: 'process-payments-confirmation', className: 'info full', scope: $scope
   $scope.cancel_process = -> ngDialog.closeAll()
@@ -137,6 +139,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         job.status = 'Paid'
 
   $scope.edit_payout_modal = (job) ->
+    job = _($scope.jobs).find (j) -> j.id == job
     $scope.selected_payout = job
     $http.get("/jobs/#{job.id}/contractors").success (rsp) ->
       $scope.contractors = rsp.contractors
@@ -149,6 +152,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       ngDialog.open template: 'edit-payout-modal', className: 'edit-pay info full', scope: $scope
 
   $scope.edit_payment_modal = (booking) ->
+    booking = _($scope.bookings).find (b) -> b.id == booking
     $scope.selected_payment = booking
     $scope.payment = { discount: { amount: booking.discounted_cost / 100, reason: booking.discounted_reason }, overage: { amount: booking.overage_cost / 100, reason: booking.overage_reason } }
     $scope.payment_discount_amount_update()
@@ -185,6 +189,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         booking.discounted_reason = $scope.payment.discount.reason
         booking.overage_cost      = parseFloat($scope.payment.overage.amount) * 100
         booking.overage_reason    = $scope.payment.overage.reason
+        angular.element($scope.bookings_table).DataTable().ajax.reload()
 
   $scope.edit_payout = (job) ->
     $http.post("/jobs/#{job.id}/edit_payout", {payout_id: $scope.selected_contractor.payout.id, adjusted_cost: adjusted_payout(), overage_cost: $scope.payout.overage.amount, discounted_cost: $scope.payout.discount.amount, overage_reason: $scope.payout.overage.reason, discounted_reason: $scope.payout.discount.reason}).success (rsp) ->
@@ -199,32 +204,16 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           job.adjusted_payout = "$#{job.adjusted_payout.toFixed(2)}"
         else
           job.adjusted_payout = "(-$#{(job.adjusted_payout * -1).toFixed(2)})"
+        angular.element($scope.jobs_table).DataTable().ajax.reload()
 
   $scope.fetch_bookings = ->
-    spinner.startSpin()
-    $http.get('/bookings.json?filter=complete').success (rsp) ->
-      $scope.bookings = JSON.parse rsp.bookings
-      _($scope.bookings).each (booking) ->
-        booking.adjusted_cost = booking.adjusted_cost / 100
-        if booking.adjusted_cost >= 0
-          booking.adjusted_cost = "$#{booking.adjusted_cost.toFixed(2)}"
-        else
-          booking.adjusted_cost = "(-$#{(booking.adjusted_cost * -1).toFixed(2)})"
-        booking.cost = booking.cost.toFixed 2
-        booking.selected = false
-        booking.status =
-          switch booking.payment_status_cd
-            when 0 then 'Open'
-            when 1 then 'Received'
-      spinner.stopSpin()
-      $timeout((->
-        table = angular.element("#example-1").dataTable({
-          aLengthMenu: [
-            [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
-          ],
-          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null,null,null]
-        })
-
+    table = angular.element("#example-1").dataTable({
+      aLengthMenu: [
+        [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+      ]
+      aoColumns: [{bSortable:false},null,null,null,null,{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false}]
+      serverSide: true
+      fnInitComplete: (->
         $.fn.dataTable.ext.search.push (settings, data, index) ->
           start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
           end   = angular.element("##{settings.nTable.id} thead.search th.date input:last-child").val()
@@ -268,39 +257,35 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           else
             $chcks.prop('checked', false).trigger('change');
         )
-      ),500)
+      )
+      ajax: (data, cb, settings) ->
+        $http.get('/bookings.json?filter=complete', {params: {data: data}}).success (rsp) ->
+          $scope.bookings = JSON.parse rsp.bookings
+          _($scope.bookings).each (booking) ->
+            booking.adjusted_cost = booking.adjusted_cost / 100
+            if booking.adjusted_cost >= 0
+              booking.adjusted_cost = "$#{booking.adjusted_cost.toFixed(2)}"
+            else
+              booking.adjusted_cost = "(-$#{(booking.adjusted_cost * -1).toFixed(2)})"
+            booking.cost = booking.cost.toFixed 2
+            booking.selected = false
+            booking.status =
+              switch booking.payment_status_cd
+                when 0 then 'Open'
+                when 1 then 'Received'
+          data_bookings = _($scope.bookings).map (booking) -> [(if booking.payment_status_cd == 0 then "<div style='text-align:center'><input class='cbr' type='checkbox' id='booking-#{booking.id}' /></div>" else ''), booking.id, "<a href='/jobs/#{booking.job.id}' class='teal'>#{booking.job.id}</a>", "<a href='/properties/#{booking.property.id}' class='teal'>#{booking.property.id}</a>", "<a href='/hosts/#{booking.user.id}/edit' class='teal'>#{booking.user.id}</a>", booking.date, "<a href='/hosts/#{booking.user.id}/edit' class='teal'>#{booking.user.name}</a>", booking.status, (if booking.payment_status_cd == 1 then "<div class='btn btn-xs #{$scope.refund_class(booking)}' onclick='javascript:$(this).scope().refund_modal(#{booking.id})'>#{$scope.refund_text(booking)}</div>" else null), booking.adjusted_cost, (if booking.payment_status_cd == 0 then "<a class='teal' href='javascript:void(0)' onclick='javascript:$(this).scope().edit_payment_modal(#{booking.id})'>$#{booking.cost}</a>" else "<span>$#{booking.cost}</span>")]
+          cb({data:data_bookings,recordsTotal:rsp.meta.total,recordsFiltered:rsp.meta.filtered})
+    })
+    $scope.bookings_table = table
 
   $scope.fetch_jobs = ->
-    spinner.startSpin()
-    $http.get('/jobs.json?filter=complete').success (rsp) ->
-      $scope.jobs = rsp.jobs
-      _($scope.jobs).each (job) ->
-        if job.payouts[0]
-          job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0)
-          job.total_payout = "$#{(job.total_payout/100).toFixed(2)}"
-          job.adjusted_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.adjusted_amount), 0) / 100
-          if job.adjusted_payout >= 0
-            job.adjusted_payout = "$#{job.adjusted_payout.toFixed(2)}"
-          else
-            job.adjusted_payout = "(-$#{(job.adjusted_payout * -1).toFixed(2)})"
-        else
-          job.adjusted_payout = '$0.00'
-          job.total_payout = 'Pending'
-
-        if !job.payouts[0] || _(job.payouts).find((payout) -> payout.status_cd != 2)
-          job.status = 'Open'
-        else
-          job.status = 'Paid'
-
-      spinner.stopSpin()
-      $timeout((->
-        table = angular.element("#example-2").dataTable({
-          aLengthMenu: [
-            [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
-          ],
-          aoColumns: [{bSortable:false},null,null,null,null,null,null,null,null,null]
-        })
-
+    table = angular.element("#example-2").dataTable({
+      aLengthMenu: [
+        [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+      ]
+      aoColumns: [{bSortable:false},null,null,null,null,{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false}]
+      serverSide: true
+      fnInitComplete: (->
         angular.element('#example-2 thead.search th').each (index) ->
           unless angular.element(@).html() == ''
             if angular.element(@).html() == 'Date'
@@ -329,7 +314,31 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           else
             $chcks.prop('checked', false).trigger('change');
         )
-      ),500)
+      )
+      ajax: (data, cb, settings) ->
+        $http.get('/jobs.json?filter=complete', {params: {data:data}}).success (rsp) ->
+          $scope.jobs = rsp.jobs
+          _($scope.jobs).each (job) ->
+            if job.payouts[0]
+              job.total_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.total), 0)
+              job.total_payout = "$#{(job.total_payout/100).toFixed(2)}"
+              job.adjusted_payout = _(job.payouts).reduce(((acc, payout) -> acc + payout.adjusted_amount), 0) / 100
+              if job.adjusted_payout >= 0
+                job.adjusted_payout = "$#{job.adjusted_payout.toFixed(2)}"
+              else
+                job.adjusted_payout = "(-$#{(job.adjusted_payout * -1).toFixed(2)})"
+            else
+              job.adjusted_payout = '$0.00'
+              job.total_payout = 'Pending'
+
+            if !job.payouts[0] || _(job.payouts).find((payout) -> payout.status_cd != 2)
+              job.status = 'Open'
+            else
+              job.status = 'Paid'
+          data_jobs = _($scope.jobs).map (job) -> [(if job.total_payout != "Pending" && job.status != "Paid" then "<div style='text-align:center'><input class='cbr' type='checkbox' id='job-#{job.id}' /></div>" else ''), "<a href='/jobs/#{job.id}' class='teal'>#{job.id}</a>", "<a href='/properties/#{job.booking.property.id}' class='teal'>#{job.booking.property.id}</a>", "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.id}</a>", job.date, "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.name}</a>", job.contractor_names, job.status, job.adjusted_payout, (if job.total_payout != "Pending" && job.status != "Paid" then "<a class='teal' href='javascript:void(0)' onclick='javascript:$(this).scope().edit_payout_modal(#{job.id})'>#{job.total_payout}</a>" else "<span>#{job.total_payout}</span>")]
+          cb({data:data_jobs,recordsTotal:rsp.meta.total,recordsFiltered:rsp.meta.filtered})
+    })
+    $scope.jobs_table = table
 
   $scope.fetch_bookings()
   $scope.fetch_jobs()
