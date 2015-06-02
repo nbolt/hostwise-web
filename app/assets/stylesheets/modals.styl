@@ -523,6 +523,7 @@
         line-height: 50px
         height: 50px
         box-sizing: border-box
+        -webkit-transition: background-color 1s ease-in-out, height 1s ease-in-out
         transition: background-color 1s ease-in-out, height 1s ease-in-out
         .icon
           position: absolute
@@ -535,9 +536,11 @@
           font-size: 1.4em
           padding-left: 11px
           box-sizing: border-box
+          -webkit-transition: background-color 1s ease-in-out, opacity .5s ease-in-out
           transition: background-color 1s ease-in-out, opacity .5s ease-in-out
         .text
           text-align: center
+          -webkit-transition: opacity .5s ease-in-out
           transition: opacity .5s ease-in-out
           @media phone
             font-size: 14px
@@ -563,6 +566,7 @@
           display: none
           vertical-align: top
           opacity: 0
+          -webkit-transition: opacity .4s ease-in-out
           transition: opacity .4s ease-in-out
           &.step-one
             .content.edit
@@ -1664,6 +1668,7 @@
     .day-services
       max-height: 220px
       overflow: scroll
+      -webkit-transition: max-height .6s ease-in-out
       transition: max-height .6s ease-in-out
       .service, .late, .extra-set
         margin: 10px 0
