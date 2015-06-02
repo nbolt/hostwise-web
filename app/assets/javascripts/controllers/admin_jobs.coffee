@@ -32,7 +32,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
         ],
         serverSide: true,
         ajax: (data, cb, settings) ->
-          spinner.startSpin()
           $http.get('/jobs.json',{params: {search: $scope.search, filter: $scope.filter.id, data: data}}).success (rsp) ->
             $scope.jobs = rsp.jobs
             _($scope.jobs).each (job) ->
@@ -58,7 +57,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
                 when 0 then 'normal'
                 when 1 then 'vip'
                 when 2 then 'hidden'
-            spinner.stopSpin()
             # show new customers (.badge.badge-blue ng:show='is_new_customer(job.booking.user)' new)
             # show same day cancellation (.badge.badge-red ng:show='is_same_day_cancellation(job)' SDC)
             # show staging jobs
