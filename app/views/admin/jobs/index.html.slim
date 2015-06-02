@@ -7,19 +7,19 @@
         .col-sm-2
           p.text-medium Total number of jobs
           .super-large.text-secondary
-            | {{jobs.length}}
+            | {{metrics.total}}
         .col-sm-2
           p.text-medium Jobs in the next 10 days
-          .super-large.text-secondary ng:bind='next_ten_days_jobs()'
+          .super-large.text-secondary ng:bind='metrics.next_ten'
         .col-sm-3
           p.text-medium Unclaimed jobs within the next 2 days
-          .super-large.text-secondary ng:bind='unclaimed_next_two_days_jobs()'
+          .super-large.text-secondary ng:bind='metrics.unclaimed'
         .col-sm-2
           p.text-medium Jobs completed last month
-          .super-large.text-secondary ng:bind='completed_last_month()'
+          .super-large.text-secondary ng:bind='metrics.completed'
         .col-sm-3
           p.text-medium Monthly Growth
-          .super-large.text-secondary ng:bind-template='{{monthly_growth()}}%'
+          .super-large.text-secondary ng:bind-template='{{metrics.growth}}%'
   .panel.panel-default
     .panel-heading
       h3.panel-title Jobs
@@ -109,34 +109,3 @@
             th Contractor(s)
             th Type
         tbody
-          tr ng:repeat='job in jobs'
-            td
-              a.teal ng:href='/jobs/{{job.id}}' ng:bind='job.id'
-            td
-              a.teal ng:href='/properties/{{job.booking.property.id}}' ng:bind='job.booking.property.id'
-            td ng:bind='job.formatted_time'
-            td ng:bind='job.booking.property.zip_code.market.name'
-            td ng:bind='job.booking.property.property_size'
-            td ng:bind='job.linen_handling'
-            td ng:bind="job.date | date:'MM/dd/yyyy':'UTC'"
-            td ng:bind='job.booking.property.nickname'
-            td ng:bind='job.booking.property.neighborhood_address'
-            td
-              a.teal ng:href="/hosts/{{job.booking.user.id}}/edit" ng:bind='job.booking.user.name'
-              .badge.badge-blue ng:show='is_new_customer(job.booking.user)' new
-            td ng:bind='job.booking.property.display_phone_number'
-            td
-              p ng:bind='job.status'
-              .badge.badge-red ng:show='is_same_day_cancellation(job)' SDC
-            td ng:bind-template="${{job.booking.cost}}"
-            td ng:bind='job.booking.service_list'
-            td ng:bind='job.total_kings'
-            td ng:bind='job.total_twins'
-            td ng:bind='job.total_toiletries'
-            td ng:bind='job.booking.extra_king_sets'
-            td ng:bind='job.booking.extra_twin_sets'
-            td ng:bind='job.booking.extra_toiletry_sets'
-            td ng:bind='job.contractor_names'
-            td
-              .badge style='margin-bottom:7px' ng:hide='job.state_cd == 0 && job.staging' ng:bind='job.state' ng:class='state_class(job)'
-              .badge.badge-red ng:show='job.staging' staging

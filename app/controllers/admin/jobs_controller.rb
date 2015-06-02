@@ -2,6 +2,8 @@ class Admin::JobsController < Admin::AuthController
   expose(:job) { Job.find params[:id] }
 
   def index
+    data = if params[:data] then JSON.parse params[:data] else nil end
+    filtered_jobs = nil
     jobs = Job.standard
     case params[:filter]
     when 'complete'
@@ -12,17 +14,57 @@ class Admin::JobsController < Admin::AuthController
       jobs = jobs.future_from_today 'America/Los_Angeles'
     end
     jobs = jobs.search(params[:search]) if params[:search] && !params[:search].empty?
+    total = jobs.count
+
+    if data
+      jobs = jobs.search(data['search']['value']) if data['search']['value'].present?
+      data['columns'].each do |column|
+        value = column['search']['value'].then(:downcase)
+        if value.present?
+          jobs =
+            case column['data']
+            when 0 then jobs.select {|job| job.id.to_s.match value}
+            when 1 then jobs.select {|job| job.property.id.to_s.match value}
+            when 2 then jobs.select {|job| "#{job.booking.timeslot_type_cd == 0 && 'Flex' || 'Specific'} - #{job.formatted_time}".match value}
+            when 3 then jobs.select {|job| job.booking.property.zip_code.market.name.downcase.match value}
+            when 4 then jobs.select {|job| job.booking.property.property_size.downcase.match value}
+            when 5 then jobs.select {|job| job.booking.linen_handling.to_s.match value}
+            when 6 then jobs.select {|job| job.date.strftime('%m/%d/%Y').match value}
+            when 7 then jobs.select {|job| job.booking.property.nickname.downcase.match value}
+            when 8 then jobs.select {|job| job.booking.property.neighborhood_address.downcase.match value}
+            when 9 then jobs.select {|job| job.booking.user.name.downcase.match value}
+            when 10 then jobs.select {|job| job.booking.user.phone_number.match value}
+            when 11 then jobs.select {|job| job.status.to_s.match value}
+            when 12 then jobs.select {|job| "$#{job.booking.cost}".match value}
+            when 13 then jobs.select {|job| job.booking.service_list.downcase.match value}
+            when 20 then jobs.select {|job| job.contractor_names.downcase.match value}
+            when 21 then jobs.select {|job| job.state.to_s.downcase.match value}
+            end
+        end
+      end
+      filtered_jobs = jobs
+      jobs = Kaminari.paginate_array(jobs).page(data['start'] / data['length'] + 1).per(data['length'])
+    end
 
     respond_to do |format|
       format.html
       format.json do
-        render json: jobs.includes(booking: {property: {zip_code: {market: {}}}, user: {}})
+        render json: jobs, root: :jobs, meta: { total: total, filtered: filtered_jobs.then(:count) }
       end
     end
   end
 
   def export
     @jobs = params[:jobs].map {|id| Job.find id}
+  end
+
+  def metrics
+    total = Job.standard.count
+    next_ten = Job.standard.where('date > ? and date < ?', Date.yesterday, Date.today + 10.days).count
+    unclaimed = Job.standard.where('status_cd = 0 and date > ? and date < ?', Date.yesterday, Date.today + 3.days).count
+    completed = Job.standard.on_month(Date.today - 1.month).count
+    growth = (completed - Job.standard.on_month(Date.today - 2.months).count) / completed
+    render json: { total: total, next_ten: next_ten, unclaimed: unclaimed, completed: completed, growth: growth }
   end
 
   def show
@@ -32,6 +74,20 @@ class Admin::JobsController < Admin::AuthController
         job.current_user = current_user
         render json: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count, :property_size], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
       end
+    end
+  end
+
+  def clone
+    new_booking = job.booking.dup
+    job.booking.services.each {|service| new_booking.services.push service}
+    job.booking.coupons.each {|coupon| new_booking.coupons.push coupon}
+    new_booking.status_cd = 1
+    new_booking.payment_status_cd = 0
+    new_booking.timeslot_type_cd = 0
+    if new_booking.save
+      render json: { success: true, url: admin_job_url(new_booking.job) }
+    else
+      render json: { success: false }
     end
   end
 

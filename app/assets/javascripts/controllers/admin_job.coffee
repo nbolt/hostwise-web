@@ -54,6 +54,8 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
 
   $scope.abs = (num) -> Math.abs num
 
+  $scope.clone = -> $http.post($window.location.href + '/clone').success (rsp) -> $window.location = rsp.url
+
   $scope.update_extras = ->
     $http.post($window.location.href + '/update_extras', extras: $scope.extra).success (rsp) ->
       if rsp.success

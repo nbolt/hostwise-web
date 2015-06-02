@@ -1,10 +1,13 @@
 AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
 
   promise = null
+  $scope.metrics = {}
   $scope.filter = {id:'all',text:'All'}
   $scope.search = ''
 
   $http.get('/data/markets').success (rsp) -> $scope.markets = rsp.markets
+
+  $http.get('/jobs/metrics').success (rsp) -> $scope.metrics = { total: rsp.total, next_ten: rsp.next_ten, unclaimed: rsp.unclaimed, completed: rsp.completed, growth: rsp.growth }
 
   $scope.export_csv = ->
     jobs = filtered_data('#example-1')
@@ -22,65 +25,73 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
     displayed
 
   $scope.fetch_jobs = ->
-    spinner.startSpin()
-    $http.get('/jobs.json',{params: {search: $scope.search, filter: $scope.filter.id}}).success (rsp) ->
-      $scope.jobs = rsp.jobs
-      _($scope.jobs).each (job) ->
-        job.total_kings = job.booking.property.king_bed_count
-        job.total_twins = job.booking.property.twin_beds
-        job.total_toiletries = job.booking.property.bathrooms
-        timeslot = if job.booking.timeslot_type_cd == 0 then 'Flex - ' else 'Specific - '
-        job.formatted_time = timeslot + job.formatted_time
-        job.linen_handling = switch job.booking.linen_handling_cd
-          when 0 then 'purchase'
-          when 1 then 'rental'
-          when 2 then 'in-unit laundry'
-        job.status = switch job.status_cd
-          when 0 then 'open'
-          when 1 then 'scheduled'
-          when 2 then 'in progress'
-          when 3 then 'completed'
-          when 4 then 'past due'
-          when 5 then "can't access"
-          when 6 then 'cancelled'
-        job.state = switch job.state_cd
-          when 0 then 'normal'
-          when 1 then 'vip'
-          when 2 then 'hidden'
-      spinner.stopSpin()
-      $timeout((->
-        table = angular.element("#example-1").dataTable({
-          aLengthMenu: [
-            [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
-          ]
-        })
+    $timeout((->
+      table = angular.element("#example-1").dataTable({
+        aLengthMenu: [
+          [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+        ],
+        serverSide: true,
+        ajax: (data, cb, settings) ->
+          spinner.startSpin()
+          $http.get('/jobs.json',{params: {search: $scope.search, filter: $scope.filter.id, data: data}}).success (rsp) ->
+            $scope.jobs = rsp.jobs
+            _($scope.jobs).each (job) ->
+              job.display_date = 
+              job.total_kings = job.booking.property.king_bed_count
+              job.total_twins = job.booking.property.twin_beds
+              job.total_toiletries = job.booking.property.bathrooms
+              timeslot = if job.booking.timeslot_type_cd == 0 then 'Flex - ' else 'Specific - '
+              job.formatted_time = timeslot + job.formatted_time
+              job.linen_handling = switch job.booking.linen_handling_cd
+                when 0 then 'purchase'
+                when 1 then 'rental'
+                when 2 then 'in-unit laundry'
+              job.status = switch job.status_cd
+                when 0 then 'open'
+                when 1 then 'scheduled'
+                when 2 then 'in progress'
+                when 3 then 'completed'
+                when 4 then 'past due'
+                when 5 then "can't access"
+                when 6 then 'cancelled'
+              job.state = switch job.state_cd
+                when 0 then 'normal'
+                when 1 then 'vip'
+                when 2 then 'hidden'
+            spinner.stopSpin()
+            # show new customers (.badge.badge-blue ng:show='is_new_customer(job.booking.user)' new)
+            # show same day cancellation (.badge.badge-red ng:show='is_same_day_cancellation(job)' SDC)
+            # show staging jobs
+            data_jobs = _($scope.jobs).map (job) -> ["<a href='/jobs/#{job.id}' class='teal'>#{job.id}</a>", "<a href='/properties/#{job.booking.property.id}' class='teal'>#{job.booking.property.id}</a>", job.formatted_time, job.booking.property.zip_code.market.name, job.booking.property.property_size, job.linen_handling, job.display_date, job.booking.property.nickname, job.booking.property.neighborhood_address, "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.name}</a>", job.booking.property.display_phone_number, job.status, "$#{job.booking.cost}", job.booking.service_list, job.total_kings, job.total_twins, job.total_toiletries, job.booking.extra_king_sets, job.booking.extra_twin_sets, job.booking.extra_toiletry_sets, job.contractor_names, job.state]
+            cb({data:data_jobs,recordsTotal:rsp.meta.total,recordsFiltered:rsp.meta.filtered})
+      })
 
-        $scope.table = table
+      $scope.table = table
 
-        $.fn.dataTable.ext.search.push (settings, data, index) ->
-          start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
-          end   = angular.element("##{settings.nTable.id} thead.search th.date input:last-child").val()
+      $.fn.dataTable.ext.search.push (settings, data, index) ->
+        start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
+        end   = angular.element("##{settings.nTable.id} thead.search th.date input:last-child").val()
 
-          if !start || !end || start == '' || end == ''
-            true
+        if !start || !end || start == '' || end == ''
+          true
+        else
+          start_date = moment(start,   'MM/DD/YYYY')
+          end_date   = moment(end,     'MM/DD/YYYY')
+          date       = moment(data[6], 'MM/DD/YYYY')
+
+          date >= start_date && date <= end_date
+
+      angular.element('#example-1 thead.search th').each (index) ->
+        unless angular.element(@).html() == ''
+          if angular.element(@).html() == 'Date'
+            angular.element(@).html "<input><input>"
+            angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
+            angular.element(@).children('input').datepicker()
           else
-            start_date = moment(start,   'MM/DD/YYYY')
-            end_date   = moment(end,     'MM/DD/YYYY')
-            date       = moment(data[6], 'MM/DD/YYYY')
-
-            date >= start_date && date <= end_date
-
-        angular.element('#example-1 thead.search th').each (index) ->
-          unless angular.element(@).html() == ''
-            if angular.element(@).html() == 'Date'
-              angular.element(@).html "<input><input>"
-              angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
-              angular.element(@).children('input').datepicker()
-            else
-              angular.element(@).html "<input>"
-              angular.element(@).children('input').on 'keyup change', ->
-                table.fnFilter angular.element(@).val(), index
-      ),500)
+            angular.element(@).html "<input>"
+            angular.element(@).children('input').on 'keyup change', ->
+              table.fnFilter angular.element(@).val(), index
+    ),500)
 
   $scope.is_new_customer = (user) -> user.booking_count <= 5
 
@@ -96,40 +107,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
 
   convert_date = (date) ->
     moment(date, 'YYYY-MM-DD').toDate()
-
-  $scope.next_ten_days_jobs = ->
-    jobs = _($scope.jobs).filter (job) ->
-      moment(job.date, 'YYYY-MM-DD') >= moment() && moment(job.date, 'YYYY-MM-DD') <= moment().add(10, 'days')
-    jobs.length
-
-  $scope.unclaimed_next_two_days_jobs = ->
-    jobs = _($scope.jobs).filter (job) ->
-      job.status_cd == 0 && moment(job.date, 'YYYY-MM-DD') >= moment() && moment(job.date, 'YYYY-MM-DD') <= moment().add(2, 'days')
-    jobs.length
-
-  $scope.completed_last_month = ->
-    jobs = _($scope.jobs).filter (job) ->
-      job.status_cd == 3 &&
-      moment(job.date, 'YYYY-MM-DD').month() == moment().subtract(1, 'months').month() &&
-      moment(job.date, 'YYYY-MM-DD').year()  == moment().subtract(1, 'months').year()
-    jobs.length
-
-  $scope.monthly_growth = ->
-    last_month  = jobs_last_month()
-    last_month2 = jobs_last_month2()
-    Math.round((last_month - last_month2) / last_month2 * 10000) / 100
-
-  jobs_last_month = ->
-    jobs = _($scope.jobs).filter (job) ->
-      moment(job.date, 'YYYY-MM-DD').month() == moment().subtract(1, 'months').month() &&
-      moment(job.date, 'YYYY-MM-DD').year()  == moment().subtract(1, 'months').year()
-    jobs.length
-
-  jobs_last_month2 = ->
-    jobs = _($scope.jobs).filter (job) ->
-      moment(job.date, 'YYYY-MM-DD').month() == moment().subtract(2, 'months').month() &&
-      moment(job.date, 'YYYY-MM-DD').year()  == moment().subtract(2, 'months').year()
-    jobs.length
 
   $scope.search_property = (job) ->
     $scope.search = job.booking.property_id
