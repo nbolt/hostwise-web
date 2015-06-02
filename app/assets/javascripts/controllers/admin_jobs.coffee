@@ -32,24 +32,14 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
       aoColumns: [null,null,{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},null,{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false}]
       serverSide: true
       fnInitComplete: ->
-        $.fn.dataTable.ext.search.push (settings, data, index) ->
-          start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
-          end   = angular.element("##{settings.nTable.id} thead.search th.date input:last-child").val()
-
-          if !start || !end || start == '' || end == ''
-            true
-          else
-            start_date = moment(start,   'MM/DD/YYYY')
-            end_date   = moment(end,     'MM/DD/YYYY')
-            date       = moment(data[6], 'MM/DD/YYYY')
-
-            date >= start_date && date <= end_date
-
         angular.element('#example-1 thead.search th').each (index) ->
           unless angular.element(@).html() == ''
             if angular.element(@).html() == 'Date'
               angular.element(@).html "<input><input>"
-              angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
+              angular.element(@).children('input').on 'keyup change', ->
+                start = angular.element("#example-1 thead.search th.date input:first-child").val()
+                end   = angular.element("#example-1 thead.search th.date input:last-child").val()
+                table.fnFilter "#{start}|#{end}", index
               angular.element(@).children('input').datepicker()
             else
               angular.element(@).html "<input>"

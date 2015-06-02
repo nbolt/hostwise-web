@@ -30,7 +30,6 @@ class Admin::JobsController < Admin::AuthController
               when 3 then jobs.select {|job| job.booking.property.zip_code.market.name.downcase.match value}
               when 4 then jobs.select {|job| job.booking.property.property_size.downcase.match value}
               when 5 then jobs.select {|job| job.booking.linen_handling.to_s.match value}
-              when 6 then jobs.select {|job| job.date.strftime('%m/%d/%Y').match value}
               when 7 then jobs.select {|job| job.booking.property.nickname.downcase.match value}
               when 8 then jobs.select {|job| job.booking.property.neighborhood_address.downcase.match value}
               when 9 then jobs.select {|job| job.booking.user.name.downcase.match value}
@@ -40,6 +39,15 @@ class Admin::JobsController < Admin::AuthController
               when 13 then jobs.select {|job| job.booking.service_list.downcase.match value}
               when 20 then jobs.select {|job| job.contractor_names.downcase.match value}
               when 21 then jobs.select {|job| job.state.to_s.downcase.match value}
+              when 6 then jobs.select do |job|
+                from = value.split('|')[0]
+                to   = value.split('|')[1]
+                if from && to
+                  job.date >= Date.strptime(from, '%m/%d/%Y') && job.date <= Date.strptime(to, '%m/%d/%Y')
+                else
+                  true
+                end
+              end
               end
           end
         end
@@ -62,12 +70,20 @@ class Admin::JobsController < Admin::AuthController
               when 1 then jobs.select {|job| job.id.to_s.match value}
               when 2 then jobs.select {|job| job.booking.property.id.to_s.match value}
               when 3 then jobs.select {|job| job.booking.user.id.to_s.match value}
-              when 4 then jobs.select {|job| job.date.strftime('%m/%d/%Y').match value}
               when 5 then jobs.select {|job| job.booking.user.name.downcase.match value}
               when 6 then jobs.select {|job| job.contractor_names.downcase.match value}
               when 7 then jobs.select {|job| job.status.to_s.match value}
               when 8 then jobs # adjusted payout
               when 9 then jobs # total payout
+              when 4 then jobs.select do |job|
+                from = value.split('|')[0]
+                to   = value.split('|')[1]
+                if from && to
+                  job.date >= Date.strptime(from, '%m/%d/%Y') && job.date <= Date.strptime(to, '%m/%d/%Y')
+                else
+                  true
+                end
+              end
               end
           end
         end

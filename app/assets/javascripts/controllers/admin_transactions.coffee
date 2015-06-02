@@ -214,26 +214,14 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       aoColumns: [{bSortable:false},null,null,null,null,{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false}]
       serverSide: true
       fnInitComplete: (->
-        $.fn.dataTable.ext.search.push (settings, data, index) ->
-          start = angular.element("##{settings.nTable.id} thead.search th.date input:first-child").val()
-          end   = angular.element("##{settings.nTable.id} thead.search th.date input:last-child").val()
-
-          i = 5; i = 4 if settings.nTable.id == 'example-2'
-
-          if !start || !end || start == '' || end == ''
-            true
-          else
-            start_date = moment(start,   'MM/DD/YYYY')
-            end_date   = moment(end,     'MM/DD/YYYY')
-            date       = moment(data[i], 'YYYY-MM-DD')
-
-            date >= start_date && date <= end_date
-
         angular.element('#example-1 thead.search th').each (index) ->
           unless angular.element(@).html() == ''
             if angular.element(@).html() == 'Date'
               angular.element(@).html "<input><input>"
-              angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
+              angular.element(@).children('input').on 'keyup change', ->
+                start = angular.element("#example-1 thead.search th.date input:first-child").val()
+                end   = angular.element("#example-1 thead.search th.date input:last-child").val()
+                table.fnFilter "#{start}|#{end}", index
               angular.element(@).children('input').datepicker()
             else
               angular.element(@).html "<input>"
@@ -290,7 +278,10 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           unless angular.element(@).html() == ''
             if angular.element(@).html() == 'Date'
               angular.element(@).html "<input><input>"
-              angular.element(@).children('input').on 'keyup change', -> table.fnDraw()
+              angular.element(@).children('input').on 'keyup change', ->
+                start = angular.element("#example-2 thead.search th.date input:first-child").val()
+                end   = angular.element("#example-2 thead.search th.date input:last-child").val()
+                table.fnFilter "#{start}|#{end}", index
               angular.element(@).children('input').datepicker()
             else
               angular.element(@).html "<input>"

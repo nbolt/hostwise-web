@@ -31,16 +31,24 @@ class Admin::BookingsController < Admin::AuthController
           if value.present?
             @bookings =
               case column['data']
-              when 1 then @bookings.select {|booking| booking.id.to_s.match value}
-              when 2 then @bookings.select {|booking| booking.job.id.to_s.match value}
-              when 3 then @bookings.select {|booking| booking.property.id.to_s.match value}
-              when 4 then @bookings.select {|booking| booking.user.id.to_s.match value}
-              when 5 then @bookings.select {|booking| booking.date.to_s.match value}
-              when 6 then @bookings.select {|booking| booking.user.name.match value}
-              when 7 then @bookings.select {|booking| (booking.payment_status_cd == 0 && 'Open' || 'Received').match value}
-              when 8 then @bookings
-              when 9 then @bookings
+              when 1  then @bookings.select {|booking| booking.id.to_s.match value}
+              when 2  then @bookings.select {|booking| booking.job.id.to_s.match value}
+              when 3  then @bookings.select {|booking| booking.property.id.to_s.match value}
+              when 4  then @bookings.select {|booking| booking.user.id.to_s.match value}
+              when 6  then @bookings.select {|booking| booking.user.name.match value}
+              when 7  then @bookings.select {|booking| (booking.payment_status_cd == 0 && 'Open' || 'Received').match value}
+              when 8  then @bookings
+              when 9  then @bookings
               when 10 then @bookings
+              when 5  then @bookings.select do |booking|
+                from = value.split('|')[0]
+                to   = value.split('|')[1]
+                if from && to
+                  booking.date >= Date.strptime(from, '%m/%d/%Y') && booking.date <= Date.strptime(to, '%m/%d/%Y')
+                else
+                  true
+                end
+              end
               end
           end
         end
