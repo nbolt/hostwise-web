@@ -253,22 +253,11 @@ script#booking-modal type="text/ng-template"
                     | (-$
                     span ng:bind="day.discount"
                     | )
-                .service.discount ng:show="day.timeslot_cost < 0"
-                  .text Timeslot
-                  .price
-                    | (-$
-                    span ng:bind="abs(day.timeslot_cost)"
-                    | )
                 .late ng:show="day.linen_handling_cost"
                   .text Linen & Towels Purchase Program
                   .price
                     | $
                     span ng:bind="day.linen_handling_cost"
-                .late ng:show="day.timeslot_cost > 0"
-                  .text Premium Timeslot
-                  .price
-                    | $
-                    span ng:bind="day.timeslot_cost"
                 .late ng:show="day.next_day_booking"
                   .text Late Day Booking Fee
                   .price

@@ -419,7 +419,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
           day.total = parseFloat day.total.toFixed(2)
           service_total = day.total if day.total > service_total
           $scope.total += day.total
-          _($scope.selected_services).each (v,k) -> day[k] = rsp[k] if v
+          _($scope.selected_services).each (v,k) ->
+            if v
+              if (k is 'cleaning' or k is 'preset') and day.timeslot_cost
+                day[k] = rsp[k] + day.timeslot_cost
+              else
+                day[k] = rsp[k]
           $scope.days.push day
       $scope.service_total = service_total
       $scope.total = 0 if $scope.total < 0
