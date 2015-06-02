@@ -28,6 +28,14 @@ module Clockwork
           end
         end
       end
+    when 'subscriptions:report'
+      properties = []
+      Property.purchased.each do |property|
+        timezone = Timezone::Zone.new :zone => property.zone
+        time = timezone.time Time.now
+        subscriptions.push property if time.hour == 22 && (property.last_transaction.then(:status) == :failed || time.day == property.purchase_date.day && time.month == property.purchase_date.month)
+      end
+      UserMailer.subscriptions_report(properties).then(:deliver) if properties.present?
     when 'payments:process'
       Booking.where(payment_status_cd: 0, status_cd: [2,3,5]).each do |booking|
         timezone = Timezone::Zone.new :zone => booking.property.zone
@@ -187,6 +195,7 @@ module Clockwork
   end
 
   every(1.hour, 'subscriptions:process', at: '**:00')
+  every(1.hour, 'subscriptions:report', at: '**:30')
   every(1.hour, 'payments:process', at: '**:00')
   every(1.hour, 'payments:report', at: '**:00')
   every(1.week, 'payouts:process', at: 'Wednesday 05:00')

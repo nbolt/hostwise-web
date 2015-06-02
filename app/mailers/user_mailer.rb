@@ -1,4 +1,5 @@
 class UserMailer < MandrillMailer::TemplateMailer
+  include ActionView::Helpers::NumberHelper
 
   default from: 'support@hostwise.com'
   default from_name: 'HostWise'
@@ -453,6 +454,25 @@ class UserMailer < MandrillMailer::TemplateMailer
                         payout_additional_reason: payout.additional_reason,
                         payout_subtracted_reason: payout.subtracted_reason,
                         services: payout.job.booking.services.map(&:display).join(', ')
+                      }}
+                    },
+                    merge_language: 'handlebars',
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def subscriptions_report properties
+    mandrill do
+      mandrill_mail template: 'subscriptions-breakdown',
+                    to: Rails.application.config.support_notification_email,
+                    subject: "HostWise Linen Subscriptions Breakdown",
+                    vars: {
+                      properties: properties.map {|property| {
+                        name: property.nickname,
+                        property_id: property.id,
+                        amount: number_with_precision(299 * property.beds, precision: 2, delimiter: ',')
                       }}
                     },
                     merge_language: 'handlebars',
