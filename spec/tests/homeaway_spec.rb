@@ -166,18 +166,25 @@ describe 'homeaway' do
 
   it 'make inquiry', type: 'booking' do
     report = []
-    server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
-    server.start
-    proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
-    caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
-    driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    test = ENV['test'] == 'true'
+    use_proxy = ENV['proxy'] == 'true'
+
+    driver = Selenium::WebDriver.for :chrome
+    if use_proxy
+      server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
+      server.start
+      proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
+      caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
+      driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    end
     site = 'https://www.homeaway.com'
 
     message_limit = ENV['message_limit'].to_i
     account_limit = ENV['account_limit'].to_i
     messages = ["Hey |name|!\n\nI love your vacation rental. You should check out HostWise.com, (first clean free) I use them and if I refer a free service then I get another free service! :) You can do the same!",
                 "Hey |name|!\n\nLooks like your vacation rental would be a perfect fit for our company, HostWise.com. Our company was created by hosts, for hosts. We automate the entire home turnover for you and guarantee a 5 star clean rating every time. Give us a try for first time for free, no strings attached. Not sure if you have many more properties, but if so we do offer enterprise pricing discounts as well! :)",
-                "Hey |name|!\n\nI just started using HostWise.com to clean and turnover my property and think your property would be a perfect fit for them too. First service is free, no strings attached, I just got a coupon code for 10% off 3 services if your are interested I can give it to you!\n\nCheers!"]
+                "Hey |name|!\n\nI just started using HostWise.com to clean and turnover my property and think your property would be a perfect fit for them too. First service is free, no strings attached, I just got a coupon code for 10% off 3 services if your are interested I can give it to you!\n\nCheers!",
+                "Hi |name|,\n\nDo you use HostWise.com for housekeeping, linens, towels?"]
 
     accounts = BotAccount.where('status_cd = 1 and source_cd = 1 and last_run < ?', Date.today).limit(account_limit)
     report << "accounts: #{accounts.count}"
@@ -205,10 +212,12 @@ describe 'homeaway' do
         begin
           driver.get record.property_url
           sleep 5
-
-          driver.find_element(:xpath, '//ul[@class="nav nav-pills nav-pills-gt property-navigation js-propertyNav"]//a[@href="#map"]').click
-          sleep 1
-          driver.find_element(:xpath, '//button[@class="btn js-emailOwnerButton btn-block btn-large btn-primary "]').click
+          contact_btn = driver.find_element(:xpath, '//a[@class="btn-inquiry-link cta btn btn-inquiry js-emailOwnerButton btn-link"]') rescue nil
+          if contact_btn.present?
+            contact_btn.click
+          else
+            driver.find_element(:xpath, '//a[@class="btn-inquiry-button cta btn btn-inquiry js-emailOwnerButton btn-primary cta-primary"]').click
+          end
           sleep 3
 
           booking_form = driver.find_element(:xpath, '//form[@id="propertyInquiryForm"]')
@@ -217,17 +226,19 @@ describe 'homeaway' do
           input_num_adults = booking_form.find_element(:xpath, '//input[@name="numberOfAdults"]')
           input_num_adults.clear
           input_num_adults.send_keys '2'
-          message = messages[2].gsub '|name|', record.host_name
+          message = messages[3].gsub '|name|', record.host_name ||= 'host'
           textarea = booking_form.find_element(:xpath, '//textarea[@name="comments"]')
           textarea.clear
           textarea.send_keys message
           sleep 3
-          # booking_form.submit
+          booking_form.submit unless test
           total_message += 1
           sleep 5
           report << "contacted host #{record.host_name} for property #{record.property_name}"
-            # record.status = :contacted
-            # record.save
+          unless test
+            record.status = :contacted
+            record.save
+          end
         rescue Exception => e
           report << "HomeAway error for #{record.id}: #{e}"
         end
@@ -244,7 +255,7 @@ describe 'homeaway' do
     end
 
     driver.quit
-    server.stop
+    server.stop if use_proxy
     send_report 'booking', report
   end
 end

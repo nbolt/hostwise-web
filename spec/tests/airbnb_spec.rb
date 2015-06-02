@@ -242,6 +242,8 @@ describe 'airbnb' do
           end
         end
         #update account status if account required further verification
+        driver.navigate.to "#{site}/account"
+        sleep 3
         if driver.find_element(:xpath, '//div[@class="flash-container"]//div[contains(., "Account access is limited until you complete verification")]').displayed?
           report << "account #{email} requires further verification."
           account.status = :pending
