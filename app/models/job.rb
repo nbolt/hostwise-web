@@ -50,8 +50,8 @@ class Job < ActiveRecord::Base
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
-  scope :timed, -> { where('bookings.timeslot is not null').includes(:booking).references(:bookings) }
-  scope :flex, -> { where('bookings.timeslot is null').includes(:booking).references(:bookings) }
+  scope :timed, -> { where('bookings.timeslot_type_cd = 1').includes(:booking).references(:bookings) }
+  scope :flex, -> { where('bookings.timeslot_type_cd = 0').includes(:booking).references(:bookings) }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
