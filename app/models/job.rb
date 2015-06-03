@@ -461,7 +461,7 @@ class Job < ActiveRecord::Base
   end
 
   def self.organize_day contractor, date, job=nil, admin=false
-    hours = []; hours[9] = nil
+    hours = []; hours[11] = nil
     jobs  = contractor.jobs.standard.on_date(date)
     jobs  = jobs.where('jobs.id != ?', job.id) if job
     count = 0; index = nil
@@ -474,7 +474,7 @@ class Job < ActiveRecord::Base
 
     flex_jobs = jobs.untimed.team + jobs.untimed.single
     flex_jobs += [job] if job
-    flex_jobs.each  do |job|
+    flex_jobs.each do |job|
       range  = job.man_hours.floor
       ranges = Job.find_hours hours, range, [2, 7]
       if ranges.empty? && admin
