@@ -160,7 +160,6 @@ class Host::PropertiesController < Host::AuthController
               booking.extra_toiletry_sets_cost    = cost[:extra_toiletry_sets] || 0
               booking.coupon_cost                 = cost[:coupon_cost] || 0
               booking.save # need to check for errors
-              booking.job.handle_distribution_jobs booking.job.primary_contractor if booking.job.primary_contractor
               bookings.push booking
               UserMailer.new_booking_notification(booking).then(:deliver)
               UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email

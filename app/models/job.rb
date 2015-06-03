@@ -392,7 +392,7 @@ class Job < ActiveRecord::Base
     supplies = {king_beds:0,twin_beds:0,toiletries:0}
     not_complete = false
 
-    if standard_jobs.empty?
+    unless single_jobs[0] || team_job.then(:primary_contractor) == user
       jobs.distribution.destroy_all
     else
       if single_jobs[0]
@@ -414,7 +414,7 @@ class Job < ActiveRecord::Base
         end
       end
 
-      if team_job && team_job.contractors.count == 1
+      if team_job.then(:primary_contractor) == user
         distribution_job = user.jobs.create(distribution: true, status_cd: 1, date: date, occasion_cd: 0) unless distribution_job
         not_complete = true if team_job.not_complete?
         if team_job.has_linens?
