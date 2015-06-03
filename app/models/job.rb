@@ -121,11 +121,15 @@ class Job < ActiveRecord::Base
       end
     else
       if current_user
-        hours = Job.organize_day current_user, date, self
-        time = hours.index(id) + 8
-        meridian = 'A'; meridian = 'P' if time > 11
-        time -= 12 if time > 12
-        "#{time} #{meridian}M"
+        begin
+          hours = Job.organize_day current_user, date, self
+          time = hours.index(id) + 8
+          meridian = 'A'; meridian = 'P' if time > 11
+          time -= 12 if time > 12
+          "#{time} #{meridian}M"
+        rescue
+          'flex'
+        end
       else
         'flex'
       end
