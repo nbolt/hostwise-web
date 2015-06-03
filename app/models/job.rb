@@ -50,8 +50,8 @@ class Job < ActiveRecord::Base
   scope :standard, -> { where(distribution: false) }
   scope :single, -> { where('size = 1') }
   scope :team, -> { where('size > 1') }
-  scope :timed, -> { where('bookings.timeslot_type_cd = 1').includes(:booking).references(:bookings) }
-  scope :flex, -> { where('bookings.timeslot_type_cd = 0').includes(:booking).references(:bookings) }
+  scope :timed, -> { where('bookings.timeslot is not null').includes(:booking).references(:bookings) }
+  scope :untimed, -> { where('bookings.timeslot is null').includes(:booking).references(:bookings) }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
@@ -448,7 +448,9 @@ class Job < ActiveRecord::Base
   def self.find_hours hours, range, times
     count = 0; index = nil; ranges=[]
     hours[times[0]..times[1]].each_with_index do |hour, i|
-      unless hour
+      if hour
+        count = 0; index = nil
+      else
         count += 1
         index ||= i + times[0]
       end
@@ -472,7 +474,7 @@ class Job < ActiveRecord::Base
       (start_hour..end_hour).each {|hour| hours[hour] = job.id}
     end
 
-    flex_jobs = jobs.flex.team + jobs.flex.single
+    flex_jobs = jobs.untimed.team + jobs.untimed.single
     flex_jobs += [job] if job
     flex_jobs.each  do |job|
       range  = job.man_hours.floor
@@ -483,7 +485,7 @@ class Job < ActiveRecord::Base
         if time.to_date == date then start = time.hour - 8 else start = 0 end
         ranges = Job.find_hours hours, range, [start, -1]
       end
-      i = jobs.flex.count > 1 && 0 || -1
+      i = jobs.untimed.count > 1 && 0 || -1
       slot = ranges.sort_by! {|r| r[1]}[i]
       (slot[0]..(range + slot[0])).each {|hour| hours[hour] = job.id}
     end
