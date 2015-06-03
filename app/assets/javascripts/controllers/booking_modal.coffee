@@ -441,7 +441,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
           angular.element('.linen-boxes').prepend("<div class='nav'> <div class='next'><div class='icon'><i class='icon-job-start'/></div></div> <div class='prev'><div class='icon'><i class='icon-job-start'/></div></div> </div>")
           angular.element('.linen-boxes .next').click -> owl.trigger('next.owl.carousel')
           angular.element('.linen-boxes .prev').click -> owl.trigger('prev.owl.carousel')
-        if (angular.element(".booking.modal .content-container .content-group.#{type}").outerHeight() < $($window).height())
+        if type != 'step-four' && (angular.element(".booking.modal .content-container .content-group.#{type}").outerHeight() < $($window).height())
           angular.element(".booking.modal .content-container .content-group.#{type} .content").css 'min-height', $($window).height() - 102
     ), 400)
     $scope.refresh_booking = true if type is 'cancelled' or type is 'booked'

@@ -1013,6 +1013,8 @@
             text-transform: capitalize
             @media portrait_tablet
               margin: 15px auto 0
+            @media phone
+              display: block
             .circle
               background-color: light-blue
               border-radius: 50%
@@ -1135,6 +1137,9 @@
                   margin: 10px 0 5px
                 h5
                   font-weight: normal
+          &.details
+            @media phone
+              padding: 30px 20px !important
           &.payment
             padding: 25px 40px
             @media phone
@@ -1218,6 +1223,8 @@
               border: 0
               border-top: 1px solid light-gray
               margin: 50px auto
+              @media phone
+                margin: 30px auto
             h3
               color: teal
               margin: 10px 0 5px
@@ -1572,6 +1579,9 @@
                 position: absolute
                 right: 10px
                 top: 15px
+          .extra
+            @media phone
+              padding: 25px 0
           .payment
             width: 300px
             margin: 5px auto
@@ -1682,13 +1692,13 @@
       width: 200px
       @media phone
         display: inline-block
-        margin: auto
-        width: auto
+        width: 50%
     .input
       display: inline-block
       width: 168px
       @media phone
-        margin: 12px 0 25px
+        margin: 0
+        width: 50%
       input
         width: 100%
         background-color: gray
