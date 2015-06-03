@@ -14,7 +14,7 @@ PropertyCtrl = ['$scope', '$http', '$window', '$timeout', '$interval', '$upload'
     $scope.form = _(rsp).clone()
     load_bookings(rsp)
 
-  $http.get($window.location.href + '.json').success (rsp) ->
+  $http.get($window.location.href.split('?')[0] + '.json').success (rsp) ->
     $scope.property = rsp
     $scope.form = _(rsp).clone()
     load_bookings(rsp)
