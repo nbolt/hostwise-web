@@ -356,12 +356,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.load_pricing = -> $http.get('/cost').success (rsp) -> $scope.pricing = rsp
 
-  $scope.flex_service_total = -> $scope.service_total - ($scope.timeslot_cost || 0) - ($scope.linen_handling_chosen && 299 * $scope.property.beds || 0)
+  $scope.flex_service_total = -> $scope.service_total + $scope.first_booking_discount_cost - ($scope.timeslot_cost || 0) - ($scope.linen_handling_chosen && 299 * $scope.property.beds || 0)
 
   $scope.calculate_pricing = ->
     first_booking_discount_applied = false
     linen_handling_applied = false
-    service_total = 0
+    service_total = -1
     $scope.total = 0
     $scope.days = []
     remaining = $scope.remaining
@@ -417,8 +417,10 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
             day.discount = day.total if day.discount > day.total
             day.total -= day.discount
           day.total = parseFloat day.total.toFixed(2)
-          service_total = day.total if day.total > service_total
           $scope.total += day.total
+          if day.total > service_total
+            service_total = day.total
+            $scope.first_booking_discount_cost = day.first_booking_discount || 0
           _($scope.selected_services).each (v,k) ->
             if v
               if (k is 'cleaning' or k is 'preset') and day.timeslot_cost
