@@ -448,15 +448,13 @@ class Job < ActiveRecord::Base
   def self.find_hours hours, range, times
     count = 0; index = nil; ranges=[]
     hours[times[0]..times[1]].each_with_index do |hour, i|
-      if hour
+      if hour || i == hours[times[0]..times[1]].length - 1
+        count += 1 unless hour
+        ranges.push([index, count]) if index && count > range
         count = 0; index = nil
       else
         count += 1
         index ||= i + times[0]
-      end
-      if index && count > range
-        ranges.push([index, count])
-        count = 0; index = nil
       end
     end
     ranges
