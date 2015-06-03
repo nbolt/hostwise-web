@@ -3,6 +3,7 @@ require "test_helper"
 describe User do
   it 'claims jobs correctly' do
     user_1 = nil; user_2 = nil; booking_1 = nil; booking_2 = nil; booking_3 = nil; booking_4 = nil; booking_5 = nil
+
     VCR.use_cassette('create_user_1')    { user_1    = create(:user_1) }
     VCR.use_cassette('create_user_2')    { user_2    = create(:user_2) }
     VCR.use_cassette('create_booking_1') { booking_1 = create(:booking_1) }
@@ -10,7 +11,7 @@ describe User do
     VCR.use_cassette('create_booking_3') { booking_3 = create(:booking_3) }
     VCR.use_cassette('create_booking_4') { booking_4 = create(:booking_4) }
     VCR.use_cassette('create_booking_5') { booking_5 = create(:booking_5) }
-    
+
     user_1.claim_job booking_1.job
     user_1.claim_job booking_2.job
     user_1.drop_job  booking_2.job
