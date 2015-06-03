@@ -98,7 +98,7 @@
             .typcn.typcn-user
           .text Team Information
         .teammate ng:repeat='teammate in job.contractors'
-          .remove ng:click='remove(teammate)'
+          .remove ng:hide='not_editable()' ng:click='remove(teammate)'
             .typcn.typcn-times
           .number ng:bind='::teammate.display_phone_number'
           .icon
@@ -107,7 +107,7 @@
           .position ng:bind='::teammate.contractor_profile.display_position'
         .add-teammate
           .flash.failure
-          input type='hidden' ui-select2='teamHash()' ng:model='new_teammate' style='width:240px' placeholder='Add a Team Member'
+          input ng:hide='not_editable()' type='hidden' ui-select2='teamHash()' ng:model='new_teammate' style='width:240px' placeholder='Add a Team Member'
       .block.instructions
         .head
           .right
@@ -151,7 +151,7 @@
             .service class="#{service.name}"
               i.icon class="icon-serv-#{service.name}"
               .name= service.display
-              label.switch.red
+              label.switch.red ng:hide='not_editable()'
                 input type='checkbox' toggle-admin-service="#{service.name}"
                 i
         .services
@@ -160,13 +160,13 @@
             .service class="#{service.name}"
               i.icon class="icon-serv-#{service.name}"
               .name= service.display
-              label.switch.red
+              label.switch.red ng:hide='not_editable()'
                 input type='checkbox' toggle-admin-service="#{service.name}"
                 i
         .services.supplies
           .title Extra Services Requested
           .supplies
-            .edit ng:click='edit_extras_modal()' Edit
+            .edit ng:hide='not_editable()' ng:click='edit_extras_modal()' Edit
             .supply
               .value ng:bind='job.booking.extra_king_sets'
               .name King Set
@@ -197,7 +197,7 @@
         .services.supplies
           .title Special Requests
           .supplies
-            .edit ng:click='edit_instructions_modal()' Edit
+            .edit ng:hide='not_editable()' ng:click='edit_instructions_modal()' Edit
             p ng:bind='job.booking.extra_instructions'
       .block.invoice
         .head

@@ -82,6 +82,9 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
   $scope.remove = (contractor) ->
     $http.post($window.location.href + '/remove_contractor', {contractor_id: contractor.id}).success (rsp) -> load_job(rsp)
 
+  $scope.not_editable = ->
+    $scope.job and $scope.job.status_cd == 3
+
   $scope.stateHash = ->
     {
       minimumResultsForSearch: -1
