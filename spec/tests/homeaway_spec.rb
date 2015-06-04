@@ -210,8 +210,19 @@ describe 'homeaway' do
         next if Bot.where(source_cd: 1, host_name: record.host_name, status_cd: 2).present? #SKIP when same host already been messaged
 
         begin
-          driver.get record.property_url
+          puts record.property_url
+          driver.navigate.to record.property_url
           sleep 5
+
+          anchor = driver.find_element(:xpath, '//div[@class="pdp-left-col"]//div[@id="summary"]') rescue nil
+          unless anchor.present?
+            puts "page no longer exist: #{record.property_url}"
+            report << "page no longer exist: #{record.property_url}"
+            record.status = :deleted
+            record.save
+            next
+          end
+
           contact_btn = driver.find_element(:xpath, '//a[@class="btn-inquiry-link cta btn btn-inquiry js-emailOwnerButton btn-link"]') rescue nil
           if contact_btn.present?
             contact_btn.click
@@ -226,7 +237,7 @@ describe 'homeaway' do
           input_num_adults = booking_form.find_element(:xpath, '//input[@name="numberOfAdults"]')
           input_num_adults.clear
           input_num_adults.send_keys '2'
-          message = messages[3].gsub '|name|', record.host_name ||= 'host'
+          message = messages[2].gsub '|name|', record.host_name ||= 'host'
           textarea = booking_form.find_element(:xpath, '//textarea[@name="comments"]')
           textarea.clear
           textarea.send_keys message
@@ -240,6 +251,7 @@ describe 'homeaway' do
             record.save
           end
         rescue Exception => e
+          puts e
           report << "HomeAway error for #{record.id}: #{e}"
         end
       end
@@ -249,7 +261,7 @@ describe 'homeaway' do
         account.save
       end
 
-      driver.get site
+      driver.navigate.to site
       sleep 2
       logout driver
     end

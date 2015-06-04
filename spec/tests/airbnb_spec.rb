@@ -200,12 +200,19 @@ describe 'airbnb' do
 
   it 'make inquiry', type: 'booking' do
     report = []
-    server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
-    server.start
-    proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
-    caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
-    driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    test = ENV['test'] == 'true'
+    use_proxy = ENV['proxy'] == 'true'
+
+    driver = Selenium::WebDriver.for :chrome
+    if use_proxy
+      server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
+      server.start
+      proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
+      caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
+      driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    end
     site = 'https://www.airbnb.com'
+
     month_limit = 5
     message_limit = ENV['message_limit'].to_i
     account_limit = ENV['account_limit'].to_i
@@ -265,6 +272,7 @@ describe 'airbnb' do
         next if Bot.where(source_cd: 0, profile_id: record.profile_id, status_cd: 2).present? #SKIP when same host already been messaged
 
         begin
+          puts record.property_url
           driver.get record.property_url
           sleep 1
 
@@ -333,14 +341,17 @@ describe 'airbnb' do
           if error_box.displayed? && !error_box.text.include?("You've contacted this host before")
             report << "failed booking #{record.id} #{record.host_name} at property #{record.property_name}"
           else
-            #contact_form.submit
+            contact_form.submit unless test
             total_message += 1
             sleep 5
             report << "contacted host #{record.host_name} for property #{record.property_name}"
-            #record.status = :contacted
-            #record.save
+            unless test
+              record.status = :contacted
+              record.save
+            end
           end
         rescue Exception => e
+          puts e
           report << "AirBnb error for #{record.id}: #{e}"
         end
       end
@@ -355,8 +366,7 @@ describe 'airbnb' do
     end
 
     driver.quit
-    server.stop
-
+    server.stop if use_proxy
     send_report 'booking', report
   end
 end
