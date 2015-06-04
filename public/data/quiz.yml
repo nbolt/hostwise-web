@@ -2,86 +2,41 @@
   name: basic
   questions:
     -
-      question: What is the deadline to complete all jobs?
+      question: Each job has a start time. Should you
       id: q1
       options:
-        1: 4 pm
-        2: 5 pm
-        3: There is no deadline
-        4: Depends on how long it takes to clean
+        1: Ignore the start time
+        2: Arrive on time
+        3: Arrive within an hour of the start time
+        4: Contact the client to change the time
       answers:
         -
-          1
+          2
     -
-      question: What does HostWise do?
+      question: At what time should you arrive to the Warehouse to pick up supplies?
       id: q2
       options:
-        1: House cleaning + landscaping
-        2: Deep cleaning
-        3: Organizing closets & other special requests
-        4: 5-star, hotel-style housekeeping for vacation rentals
+        1: 9:30 am
+        2: 10 am
+        3: 30 minutes before my first job
+        4: The night before
       answers:
         -
-          4
+          3
     -
-      question: What are the 4 sins of housekeeping?
+      question: Does HostWise do in-unit laundry if requested by the client?
       id: q3
       options:
-        1: Hair anywhere in bathroom
-        2: Hair in or on the bed
-        3: Mildew anywhere in bathroom (sink, toilet, floor, shower, bath)
-        4: Trash anywhere in home
-        5: All of the above
-      answers:
-        -
-          5
-    -
-      question: What is the proper way of making beds?
-      id: q4
-      options:
-        1: Tuck all sheets and blankets very tight under mattress with hospital corners technique
-        2: Leave sheets hanging out on left and right sides of bed
-        3: Tuck sheets in but drape blanket on top
-        4: Don't make bed. Customer can do it
+        1: Yes, but only 75 minutes per load
+        2: Yes, but only 2 hours per load
+        3: Yes, even clothes
+        4: No
       answers:
         -
           1
-    -
-      question: Where should towels be placed?
-      id: q5
-      options:
-        1: In the bathroom. Towels that don't fit in the bathroom should be neatly placed on the bed
-        2: Folded and placed on the bed
-        3: In the kitchen
-        4: Hidden in bathroom drawers
-      answers:
-        -
-          1
-    -
-      question: When should you pick up linens and towels?
-      id: q6
-      options:
-        1: At 9:30 am before my scheduled jobs
-        2: At 10 am before my scheduled jobs
-        3: The night before my scheduled jobs
-        4: Twice a week
-      answers:
-        -
-          1
-    -
-      question: You cannot access the property. What should you do?
-      id: q7
-      options:
-        1: Call HostWise HQ
-        2: Try entering through a window
-        3: Go to next job
-        4: Select "cannot access property" on the app and call/text client
-      answers:
-        -
-          4
     -
       question: What are the "must have" cleaning supplies? (Select all that apply)
-      id: q8
+      id: q4
       options:
         1: Vacuum
         2: Mop
@@ -95,8 +50,30 @@
         -
           3
     -
+      question: You cannot access the property. What should you do?
+      id: q5
+      options:
+        1: Call HostWise HQ
+        2: Try entering through a window
+        3: Go to next job
+        4: Select "cannot access property" on the app and call/text client
+      answers:
+        -
+          4
+    -
+      question: Where should towels be placed?
+      id: q6
+      options:
+        1: In the bathroom. Towels that don't fit in the bathroom should be neatly placed on the bed
+        2: Folded and placed on the bed
+        3: In the kitchen
+        4: Hidden in bathroom drawers
+      answers:
+        -
+          1
+    -
       question: What is the best way to clean rugs?
-      id: q9
+      id: q7
       options:
         1: Pick them up, shake them out, then vacuum them
         2: Only vacuum them
@@ -106,44 +83,91 @@
         -
           1
     -
-      question: When do jobs start?
-      id: q10
+      question: What is the proper way of making beds?
+      id: q8
       options:
-        1: 10 am
-        2: 12 pm
-        3: 4 pm
-        4: At any time of the day
+        1: Tuck all sheets and blankets very tight under mattress with hospital corners technique
+        2: Leave sheets hanging out on left and right sides of bed
+        3: Tuck sheets in but drape blanket on top
+        4: Don't make bed. Customer can do it
       answers:
         -
           1
     -
-      question: What is the standard guest check-in time?
-      id: q11
+      question: Which of the following is true?
+      id: q9
       options:
-        1: 4 pm
-        2: 5 pm
-        3: Who cares
-        4: Whenever I finish the clean
+        1: Use your own cleaning supplies and materials
+        2: Use client's cleaning supplies and materials
+        3: Vacuum only if client has a vacuum
+        4: Leave perishable food in the fridge
       answers:
         -
           1
+    -
+      question: What does HostWise do?
+      id: q10
+      options:
+        1: House Cleaning + Landscaping
+        2: Deep cleaning
+        3: Organzing closets & other special requests
+        4: Hotel-style housekeeping for vacation rentals
+      answers:
+        -
+          4
+    -
+      question: What are the 6 sins of housekeeping?
+      id: q11
+      options:
+        1: Hair anywhere
+        2: Heavy dust
+        3: Mildew anywhere in bathroom (sink, toilet, floor, shower, bath)
+        4: Trash anywhere in home
+        5: Dirty floors
+        6: Stains on linen
+        7: All of the above
+      answers:
+        -
+          7
+    -
+      question: How do you remove hairs efficiently from surfaces?
+      id: q12
+      options:
+        1: Vacuuming
+        2: Mopping
+        3: Wipping
+        4: All of the above
+      answers:
+        -
+          4
+    -
+      question: What does in-unit laundry mean?
+      id: q13
+      options:
+        1: Wash all clothes for client
+        2: Wash sheets only
+        3: Wash all sheets, pillow cases and towels needed to complete the job
+        4: We don't do laundry at all
+      answers:
+        -
+          3
+    -
+      question: How many linen sets should you pick up at the Warehouse?
+      id: q14
+      options:
+        1: 5 every time
+        2: The amount specified in the HostWise App
+        3: Text HostWise Support for the answer
+        4: All of the above
+      answers:
+        -
+          2
 -
   name: advanced
   questions:
     -
-      question: The HostWise clean is specifically designed to amaze
-      id: q20
-      options:
-        1: The homeowner
-        2: The guests
-        3: Other team members
-        4: You
-      answers:
-        -
-          2
-    -
       question: What's the best hotel-style cleaning method?
-      id: q21
+      id: q20
       options:
         1: 1) Pre-soak bathrooms 2) Dust all surfaces 3) Vacuum all floors 4) Mop all floors
         2: 1) Mop all floors 2) Vacuum all floors 3) Dust all surfaces 4) Pre-soak bathrooms
@@ -153,8 +177,155 @@
         -
           1
     -
-      question: Which of the following do not need to be cleaned unless specified in the app? (Select all that apply)
+      question: Which of the following are 6 sins? (Select all that apply)
+      id: q21
+      options:
+        1: Hair anywhere
+        2: Logs in the fireplace
+        3: Trash anywhere
+        4: Stained linen
+        5: Dirty oven
+        6: All of the above
+      answers:
+        -
+          1
+        -
+          3
+        -
+          4
+    -
+      question: Which of the following are not part of the 6 sins? (Select all that apply)
       id: q22
+      options:
+        1: Hair anywhere
+        2: Messy garage
+        3: Mildew in the bathroom or kitchen
+        4: Unwashed clothes (shirts, pants, socks, etc.)
+        5: Heavy dust
+        6: All of the above
+      answers:
+        -
+          2
+        -
+          4
+    -
+      question: The HostWise clean is specifically designed to amaze
+      id: q23
+      options:
+        1: The homeowner
+        2: The guests
+        3: Other team members
+        4: You
+      answers:
+        -
+          2
+    -
+      question: What does HostWise do?
+      id: q24
+      options:
+        1: House Cleaning + Landscaping
+        2: Deep cleaning
+        3: Organzing closets & other special requests
+        4: 5-star, hotel-style housekeeping for vacation rentals
+      answers:
+        -
+          4
+    -
+      question: At what time should you arrive to the Warehouse to pick up supplies?
+      id: q25
+      options:
+        1: 9:30 am
+        2: 10 am
+        3: 30 minutes before my first job
+        4: The night before
+      answers:
+        -
+          3
+    -
+      question: A unit requires in-unit laundry. How long should you spend doing laundry?
+      id: q26
+      options:
+        1: As long as it takes
+        2: Place laundry in dryer and move on to the next job
+        3: Wait 75 minutes per load for wash and dry
+        4: We never do laundry
+      answers:
+        -
+          3
+    -
+      question: What is the proper way of making beds?
+      id: q27
+      options:
+        1: Tuck all sheets and blankets very tight under mattress with hospital corners technique
+        2: Leave sheets hanging out on left and right sides of bed
+        3: Tuck sheets in but drape blanket on top
+        4: Don't make bed. Customer can do it
+      answers:
+        -
+          1
+    -
+      question: Does HostWise do in-unit laundry if requested by the client?
+      id: q28
+      options:
+        1: Yes, but only 75 minutes per load
+        2: Yes, but only 2 hours per load
+        3: Yes, even clothes
+        4: No
+      answers:
+        -
+          1
+    -
+      question: What should you do if in-unit laundry takes more than 75 minutes per load? (Select all that apply)
+      id: q29
+      options:
+        1: Wait until everything dries
+        2: Place remaining wet laundry in dryer
+        3: Send a picture of the washer and dryer to Support
+        4: Let the client know that their washer/dryer do not fit our criteria for in-unit laundry
+        5: Drop your other jobs to make time for laundry
+      answers:
+        -
+          2
+        -
+          3
+        -
+          4
+    -
+      question: Each job has a start time. Should you
+      id: q30
+      options:
+        1: Ignore the start time
+        2: Arrive on time
+        3: Arrive within an hour of the start time
+        4: Contact the client to change the time
+      answers:
+        -
+          2
+    -
+      question: Which of the following is true?
+      id: q31
+      options:
+        1: Use your own cleaning supplies and materials
+        2: Use client's cleaning supplies and materials
+        3: Vacuum only if client has a vacuum
+        4: Leave perishable food in the fridge
+      answers:
+        -
+          1
+    -
+      question: When does HostWise pay out?
+      id: q32
+      options:
+        1: Payments are deposited by Friday
+        2: Payments are deposited every Wednesday
+        3: Payments are processed every day
+        4: HostWise pays by check
+      answers:
+        -
+          1
+    -
+      question: Which of the following do not need to be cleaned unless specified in the app? (Select all that apply)
+      id: q33
       options:
         1: Exteriors (balcony, patio, pool area)
         2: Windows
@@ -166,19 +337,8 @@
         -
           2
     -
-      question: Which of the following is true?
-      id: q23
-      options:
-        1: Use your own cleaning supplies and materials
-        2: Use client's cleaning supplies and materials
-        3: Vacuum only if client has a vacuum
-        4: Leave perishable food in the fridge
-      answers:
-        -
-          1
-    -
       question: Which of the following should be cleaned every time?
-      id: q24
+      id: q34
       options:
         1: Fridge, microwave, baseboards, light switches
         2: Balcony, exterior windows
@@ -189,7 +349,7 @@
           1
     -
       question: Where should you collect dirty linens and towels?
-      id: q25
+      id: q35
       options:
         1: In two separate plastic bags; linens in one, towels in the other
         2: In two separate pillow cases; linens in one, towels in the other
@@ -199,65 +359,30 @@
         -
           3
     -
-      question: What do you do upon arrival?
-      id: q26
+      question: Collecting dirty HostWise linens in each property is
+      id: q36
       options:
-        1: 1) Damage inspection 2) Inventory count 3) Start dishwasher 4) Pre-soak bathrooms
-        2: 1) Mop all floors 2) Dust all surfaces 3) Start dishwasher 4) Pre-soak bathrooms
-        3: 1) Start dishwasher 2) Damage inspection 3) Pre-soak bathrooms 4) Mop all floors
-        4: 1) Start dishwasher 2) Pre-soak bathrooms 3) Damage inspection 4) Dust all surfaces
-      answers:
-        -
-          1
-    -
-      question: How should towels be placed?
-      id: q27
-      options:
-        1: Body and hand towels on the bathroom rack, face towels folded in a fan placed on the sink, floor mat folded and placed across the bathtub wall/sink
-        2: Body, hand and face towels on the bathroom rack, floor mat folded across the bathtub wall/sink
-        3: Body, hand and face towels triple folded and placed on the bathroom sink, floor mat folded placed across the bathtub wall/sink
-        4: All towels should be triple or double folded on the sink, whichever looks best
-      answers:
-        -
-          1
-    -
-      question: At what time should you arrive to the Warehouse to pick up supplies?
-      id: q28
-      options:
-        1: 9:30 am
-        2: 10 am
-        3: 30 minutes before my job
-        4: The night before
+        1: A top priority. We lose clients when we leave dirty linen behind
+        2: Important but not a priority
+        3: Not my responsibility
+        4: Not part of my job
       answers:
         -
           1
     -
       question: How many linen sets should you pick up at the Warehouse?
-      id: q29
+      id: q37
       options:
         1: 5 every time
-        2: The amount specified when I open the HostWise App
+        2: The amount specified in the HostWise App
         3: Text HostWise Support for the answer
         4: All of the above
       answers:
         -
           2
     -
-      question: What are the most important focus points? (Select all that apply)
-      id: q30
-      options:
-        1: Presentation of beds, towels and toiletry kits
-        2: The 4 sins
-        3: Laundry
-        4: Vacuuming under carpets
-      answers:
-        -
-          1
-        -
-          2
-    -
       question: If guests are at the property
-      id: q31
+      id: q38
       options:
         1: Enter and clean property
         2: Call/Text client and wait 30 mins to hear back
@@ -267,8 +392,8 @@
         -
           2
     -
-      question: If client gives permission to clean around guests, please make sure to (Select all that apply)
-      id: q32
+      question: If clients give permission to clean around guests, please make sure to (Select all that apply)
+      id: q39
       options:
         1: Take pictures of cleaned floors, empty kitchen sinks, made beds and cleaned bathrooms
         2: Tell guests to leave property
@@ -279,9 +404,9 @@
           1
     -
       question: Under which of the following circumstances should you contact HostWise? (Select all that apply)
-      id: q33
+      id: q40
       options:
-        1: Job won't be finished by 4 pm
+        1: Job won't be started on time
         2: Must cancel my job
         3: Have difficulty finding parking
         4: Need entry instructions
@@ -292,7 +417,7 @@
           2
     -
       question: Under which circumstances should you contact HostWise? (Select all that apply)
-      id: q34
+      id: q41
       options:
         1: Client asks for extras (more towels, more linens)
         2: Client asks you to work directly for them
@@ -302,30 +427,19 @@
         -
           4
     -
-      question: When does HostWise pay out?
-      id: q35
-      options:
-        1: Payments are processed every Wednesday and are deposited by Friday
-        2: Payments are deposited every Wednesday
-        3: Payments are processed every day
-        4: HostWise pays by check
-      answers:
-        -
-          1
-    -
       question: Who do you contact if the entry instructions are incorrect?
-      id: q36
+      id: q42
       options:
         1: Contact the client
         2: Ask the neighbors
         3: Call or text HostWise
-        4: Yelp a local lock smith to open the door
+        4: You don't. Move on to next job
       answers:
         -
           1
     -
       question: What should be done for a HostWise client?
-      id: q37
+      id: q43
       options:
         1: Moving furniture
         2: Dishes
@@ -335,13 +449,48 @@
         -
           2
     -
-      question: When should you go to the Warehouse?
-      id: q38
+      question: What are the most important focus points? (Select all that apply)
+      id: q44
       options:
-        1: The night before my jobs
-        2: 9:30 am
-        3: Before 9 am
-        4: All of the above
+        1: Presentation of beds, towels and toiletry kits
+        2: The 6 sins
+        3: Laundry
+        4: Vacuuming under carpets
+      answers:
+        -
+          1
+        -
+          2
+    -
+      question: What do you do upon arrival?
+      id: q45
+      options:
+        1: 1) Damage inspection 2) Inventory count 3) Start dishwasher 4) Pre-soak bathrooms
+        2: 1) Mop all floors 2) Dust all surfaces 3) Start dishwasher 4) Pre-soak bathrooms
+        3: 1) Start dishwasher 2) Damage inspection 3) Pre-soak bathrooms 4) Mop all floors
+        4: 1) Start dishwasher 2) Pre-soak bathrooms 3) Damage inspection 4) Dust all surfaces
+      answers:
+        -
+          1
+    -
+      question: A client's notes ask for extra inventory in the notes section. What should you do?
+      id: q46
+      options:
+        1: Pickup extra inventory at the warehouse
+        2: Only pickup what the app tells you to pick up at the warehouse
+        3: Contact HostWise support
+        4: Contact the client
       answers:
         -
           2
+    -
+      question: What is the best way to ensure a 5-star service? (5-star service equals more money in your pocket)
+      id: q47
+      options:
+        1: Having all the essential gear listed in the manual
+        2: Purchasing hotel-grade cleaning materials from HostWise
+        3: Triple checking your work
+        4: All of the above
+      answers:
+        -
+          4
