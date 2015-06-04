@@ -1304,6 +1304,27 @@ form
           .email
             margin-top: 6px
             color: teal
+      &.checklist
+        .job-photos
+          padding: 20px
+          .photo
+            border-bottom: thin solid gray
+            padding-bottom: 10px
+            margin-bottom: 10px
+            &:last-child
+              border-bottom: none
+              padding-bottom: 0
+              margin-bottom: 0
+            img
+              width: 100px
+              display: inline-block
+              cursor: pointer
+            span
+              display: inline-block
+              vertical-align: top
+              line-height: 100px
+              padding-left: 100px
+              font-weight: bold
       &.services
         .services
           margin: 20px 20px 30px
@@ -1320,9 +1341,12 @@ form
             .name
               display: inline-block
               vertical-align: top
+              color: dark-gray
             label
               float: right
             &.active
+              .name
+                color: light-navy
               i
                 color: teal
           &.supplies

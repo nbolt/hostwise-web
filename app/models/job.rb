@@ -272,6 +272,10 @@ class Job < ActiveRecord::Base
     ContractorJobs.where(job_id: self.id, primary: true)[0].then(:checklist)
   end
 
+  def contractor_photos
+    checklist.then(:contractor_photos)
+  end
+
   def minimum_job_size
     if booking
       if (booking.property.bedrooms == 3 && booking.property.bathrooms >= 3) || booking.property.bedrooms > 3 then 2 else 1 end

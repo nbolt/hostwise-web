@@ -125,6 +125,13 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
     $http.get($window.location.href + '.json').success (rsp) ->
       load_job(rsp)
 
+  $scope.preview = (event) ->
+    $scope.preview_image = $(event.currentTarget).attr 'src'
+    ngDialog.open template: 'preview-image-modal', className: 'preview full', scope: $scope
+
+  $scope.show_checklist = ->
+    $scope.job and $scope.job.checklist and ($scope.job.checklist.bedroom_photo.url or $scope.job.checklist.kitchen_photo.url or $scope.job.checklist.bathroom_photo.url or $scope.job.checklist_photos.length > 0)
+
   load_job = (rsp) ->
     $scope.extra = { king_sets: rsp.booking.extra_king_sets, twin_sets: rsp.booking.extra_twin_sets, toiletry_sets: rsp.booking.extra_toiletry_sets, instructions: rsp.booking.extra_instructions }
     $scope.job = rsp
@@ -133,6 +140,7 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
     $scope.job.standard_services = _(rsp.booking.services).reject (s) -> s.extra
     $scope.job.extra_services    = _(rsp.booking.services).filter (s) -> s.extra
     $scope.job.contractors = _($scope.job.payouts).map((payout) -> payout.user) if $scope.job.status_cd == 6
+    $scope.job.checklist_photos = _($scope.job.contractor_photos).map((contractor_photo) -> contractor_photo.photo.url)
 
     switch $scope.job.state_cd
       when 0

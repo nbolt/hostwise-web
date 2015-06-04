@@ -76,9 +76,6 @@
   .row.uneven
     .block.customer
       .head
-        .right
-          .arrow
-            .typcn.typcn-chevron-right
         .photo
           img ng:src='{{::job.booking.property.user.avatar}}'
         .text Customer Info
@@ -91,9 +88,6 @@
     .blocks
       .block.team
         .head
-          .right
-            .arrow
-              .typcn.typcn-chevron-right
           .icon
             .typcn.typcn-user
           .text Team Information
@@ -110,9 +104,6 @@
           input ng:hide='not_editable()' type='hidden' ui-select2='teamHash()' ng:model='new_teammate' style='width:240px' placeholder='Add a Team Member'
       .block.instructions
         .head
-          .right
-            .arrow
-              .typcn.typcn-chevron-right
           .icon
             .typcn.typcn-document-text
           .text Property Instructions
@@ -137,11 +128,25 @@
             .title Additional Information
             .text ng:bind='::job.booking.property.additional_info'
     .blocks
+      .block.checklist ng:show='show_checklist()'
+        .head
+          i.icon.icon-photo
+          .text Job Photos
+        .job-photos
+          .photo ng:repeat='damage_photo in job.contractor_photos track by $index'
+            img ng:src='{{damage_photo.photo.url}}' ng:click='preview($event)'
+            span ng:bind-template='Damage {{$index+1}}'
+          .photo ng:if='job.checklist.bedroom_photo.url'
+            img ng:src='{{job.checklist.bedroom_photo.url}}' ng:click='preview($event)'
+            span Bedroom
+          .photo ng:if='job.checklist.kitchen_photo.url'
+            img ng:src='{{job.checklist.kitchen_photo.url}}' ng:click='preview($event)'
+            span Kitchen
+          .photo ng:if='job.checklist.bathroom_photo.url'
+            img ng:src='{{job.checklist.bathroom_photo.url}}' ng:click='preview($event)'
+            span Bathroom
       .block.services
         .head
-          .right
-            .arrow
-              .typcn.typcn-chevron-right
           .icon
             .typcn.typcn-document-text
           .text Service Details
@@ -201,9 +206,6 @@
             p ng:bind='job.booking.extra_instructions'
       .block.invoice
         .head
-          .right
-            .arrow
-              .typcn.typcn-chevron-right
           .icon
             .typcn.typcn-credit-card
           .text Invoice
@@ -292,3 +294,4 @@
 
   = render 'common/edit_extras_modal'
   = render 'common/edit_instructions_modal'
+  = render 'common/preview_image_modal'
