@@ -17,7 +17,7 @@ class Admin::HostsController < Admin::AuthController
   end
 
   def transfer
-    amount = params[:amount].to_i * 100
+    amount = params[:amount].to_f * 100
     recipient = Stripe::Account.retrieve contractor.contractor_profile.stripe_recipient_id
     rsp = Stripe::Transfer.create(
       :amount => amount,
