@@ -1,0 +1,14 @@
+script#transfer-modal type="text/ng-template"
+  .payment.modal
+    .steps
+      .step.one.active
+        .header.credit-card.active
+          .text Send Payment
+        .flash
+        .content
+          input type='text' ng:model='$parent.amount' placeholder='Amount' style='margin-bottom: 10px'
+          input type='text' ng:model='$parent.reason' placeholder='Reason'
+        .footer
+          .buttons
+            .button.teal ng:click='send_payment()'
+              .text Send Payment

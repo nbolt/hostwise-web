@@ -145,7 +145,7 @@ class User < ActiveRecord::Base
   end
 
   def last_payout_date
-    payouts.where(status_cd: 2).order('updated_at DESC').first.then(:updated_at)
+    payouts.where(status_cd: 2).order('updated_at DESC').first.then(:updated_at).strftime '%m/%d/%Y'
   end
 
   def completed_jobs
@@ -290,6 +290,10 @@ class User < ActiveRecord::Base
 
   def deactivated?
     self.activation_state == 'deactivated'
+  end
+
+  def primary_payment
+    payments.primary.first
   end
 
   private

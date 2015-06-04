@@ -3,6 +3,16 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
   url = window.location.href.split('/')
   $scope.id = url[url.length-2]
 
+  $scope.payment_modal = -> ngDialog.open template: 'transfer-modal', className: 'info full', scope: $scope
+
+  $scope.send_payment = ->
+    spinner.startSpin()
+    $http.post("/hosts/#{$scope.contractor.id}/transfer", {amount: $scope.amount, reason: $scope.reason}).success (rsp) ->
+      $scope.amount = null
+      $scope.reason = null
+      $scope.cancel_status()
+      spinner.stopSpin()
+
   $scope.fetch_contractor = ->
     unless $scope.contractor
       spinner.startSpin()

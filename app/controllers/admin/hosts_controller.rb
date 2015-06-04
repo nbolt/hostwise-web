@@ -1,4 +1,6 @@
 class Admin::HostsController < Admin::AuthController
+  expose(:contractor) { User.find_by_id params[:id] }
+
   def index
     respond_to do |format|
       format.html
@@ -12,6 +14,20 @@ class Admin::HostsController < Admin::AuthController
       format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {methods: [:last_service_date, :next_service_date, :revenue, :nickname, :display_created_at], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar, :total_spent]) }
       #format.json { render json: User.find(params[:id]), serializer: HostSerializer }
     end
+  end
+
+  def transfer
+    amount = params[:amount].to_i * 100
+    recipient = Stripe::Account.retrieve contractor.contractor_profile.stripe_recipient_id
+    rsp = Stripe::Transfer.create(
+      :amount => amount,
+      :currency => 'usd',
+      :destination => recipient.id,
+      :statement_descriptor => 'HostWise Payout',
+      :metadata => { reason: params[:reason] }
+    )
+    contractor.payouts.create(status_cd: 2, amount: amount, stripe_transfer_id: rsp.id, payout_type_cd: 1)
+    render json: { success: true }
   end
 
   def notes

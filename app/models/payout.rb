@@ -2,9 +2,10 @@ class Payout < ActiveRecord::Base
   belongs_to :user
   belongs_to :job
 
-  validates_uniqueness_of :job_id, scope: [:user_id]
+  validates_uniqueness_of :job_id, scope: [:user_id], allow_nil: true
 
   as_enum :status, unprocessed: 0, pending: 1, completed: 2, failed: 3
+  as_enum :payout_type, standard: 0, manual: 1
 
   scope :unprocessed, -> { where(status_cd: 0) }
   scope :pending, -> { where(status_cd: 1) }

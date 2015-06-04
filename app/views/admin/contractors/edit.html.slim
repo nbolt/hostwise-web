@@ -93,9 +93,9 @@
             h3 Jobs Completed
             h3.teal ng:bind='contractor.total_completed_jobs'
           .section
-            i.icon-close
-            h3 Jobs Canceled
-            h3.red ng:bind='contractor.total_cancelled_jobs'
+            i.icon-bank
+            h3 Bank Account
+            h3.teal.pointer ng:bind='contractor.primary_payment.last4' ng:click='payment_modal()'
       .step.three.schedule
         .head
           i.icon-schedule
@@ -144,3 +144,4 @@
 = render 'common/complete_contract_modal'
 = render 'common/approve_bgc_modal'
 = render 'common/deny_bgc_modal'
+= render 'common/transfer_modal'

@@ -98,6 +98,7 @@ Rails.application.routes.draw do
     put   '/hosts/:id/update' => 'hosts#update'
     post  '/hosts/:id/deactivate' => 'hosts#deactivate'
     post  '/hosts/:id/reactivate' => 'hosts#reactivate'
+    post  '/hosts/:id/transfer' => 'hosts#transfer'
     get   '/inventory' => 'inventory#index'
     post  '/inventory/:action' => 'inventory'
     get   '/bookings' => 'bookings#index'
