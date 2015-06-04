@@ -10,7 +10,7 @@
         input type='hidden' ui-select2='stateHash()' ng:model='state'
       .state
         input type='hidden' ui-select2='statusHash()' ng:model='status'
-      .action ng:hide='job.status_cd == 5' ng:click='clone()'
+      .action ng:show='job.status_cd == 5' ng:click='clone()'
         .button.teal
           .text Clone Job
       .message
