@@ -45,7 +45,12 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     displayed = []
     currentlyDisplayed = table.fnSettings().aiDisplay
     regexp = new RegExp("#{prefix}-\\d*")
-    _(currentlyDisplayed).each (index) -> displayed.push( table.fnGetData(index)[0].match(regexp)[0].replace("#{prefix}-", '') )
+    _(currentlyDisplayed).each (index) ->
+      switch prefix
+        when 'booking'
+          displayed.push( table.fnGetData(index)[1] )
+        when 'job'
+          displayed.push( table.fnGetData(index)[1].match(/>\d*</)[0].replace('>', '').replace('<', '') )
     displayed
 
   $scope.selected_payments = -> _($scope.bookings).filter (booking) -> booking.selected
