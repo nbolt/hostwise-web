@@ -222,7 +222,7 @@ module Clockwork
     end
   end
 
-  every(1.day,  'launder:notify_and_charge', at: '05:00')
+  #every(1.day,  'launder:notify_and_charge', at: '05:00')
   every(1.hour, 'subscriptions:process', at: '**:00')
   every(1.hour, 'subscriptions:report', at: '**:30')
   every(1.hour, 'payments:process', at: '**:00')
