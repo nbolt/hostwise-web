@@ -359,77 +359,78 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
   $scope.flex_service_total = -> $scope.service_total + $scope.first_booking_discount_cost - ($scope.timeslot_cost || 0) - ($scope.linen_handling_chosen && 299 * $scope.property.beds || 0)
 
   $scope.calculate_pricing = ->
-    first_booking_discount_applied = false
-    linen_handling_applied = false
-    service_total = -1
-    $scope.total = 0
-    $scope.days = []
-    remaining = $scope.remaining
-    $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, handling: $scope.linen_handling, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
-      $scope.timeslot_cost = rsp.timeslot_cost
-      $scope.cleaning_cost = rsp.orig_service_cost
-      cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
-      cancellation_cost = 0 if cancellation_cost < 0
-      twenty_percent = +(cancellation_cost * 0.2).toFixed(2)
-      $scope.pricing.cancellation = twenty_percent if twenty_percent > $scope.pricing.cancellation
-      _($scope.chosen_dates).each (v,k) ->
-        _(v).each (d) ->
-          day = {}
-          day.total = rsp.cost
-          day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
-          day.timeslot_cost = rsp.timeslot_cost
-          $scope.next_day_booking = day.date if rsp.late_next_day
-          $scope.same_day_booking = day.date if rsp.late_same_day
-          if day.date == $scope.next_day_booking
-            day.next_day_booking = $scope.pricing.late_next_day
-            day.total += $scope.pricing.late_next_day unless rsp.late_next_day
-          if day.date == $scope.same_day_booking
-            day.same_day_booking = $scope.pricing.late_same_day
-            day.total += $scope.pricing.late_same_day unless rsp.late_same_day
-          if $scope.linen_handling_chosen && !linen_handling_applied
-            day.linen_handling_cost = 299 * $scope.property.beds
-            day.total += day.linen_handling_cost
-            linen_handling_applied = true
-          if rsp.first_booking_discount_cost && !first_booking_discount_applied
-            day.first_booking_discount = rsp.first_booking_discount_cost
-            day.total -= day.first_booking_discount
-            first_booking_discount_applied = true
-          if rsp.first_booking_discount
-            day.first_booking_discount = rsp.first_booking_discount
-          if rsp.coupon_cost
-            day.coupon = true
-            day.coupon_cost = rsp.coupon_cost
-          if rsp.overage_cost
-            day.overage = true
-            day.overage_cost = rsp.overage_cost
-          if rsp.discounted_cost
-            day.discounted = true
-            day.discounted_cost = rsp.discounted_cost
-          if rsp.extra_king_sets
-            day.extra_king_sets = rsp.extra_king_sets
-          if rsp.extra_twin_sets
-            day.extra_twin_sets = rsp.extra_twin_sets
-          if rsp.extra_toiletry_sets
-            day.extra_toiletry_sets = rsp.extra_toiletry_sets
-          if (remaining == -1 || remaining > 0) && !$scope.selected_booking
-            remaining -= 1 if remaining > 0
-            day.discount = $scope.discount
-            day.discount = day.total if day.discount > day.total
-            day.total -= day.discount
-          day.total = parseFloat day.total.toFixed(2)
-          $scope.total += day.total
-          if day.total > service_total
-            service_total = day.total
-            $scope.first_booking_discount_cost = day.first_booking_discount || 0
-          _($scope.selected_services).each (v,k) ->
-            if v
-              if (k is 'cleaning' or k is 'preset') and day.timeslot_cost
-                day[k] = rsp[k] + day.timeslot_cost
-              else
-                day[k] = rsp[k]
-          $scope.days.push day
-      $scope.service_total = service_total
-      $scope.total = 0 if $scope.total < 0
+    if $scope.pricing
+      first_booking_discount_applied = false
+      linen_handling_applied = false
+      service_total = -1
+      $scope.total = 0
+      $scope.days = []
+      remaining = $scope.remaining
+      $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, handling: $scope.linen_handling, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
+        $scope.timeslot_cost = rsp.timeslot_cost
+        $scope.cleaning_cost = rsp.orig_service_cost
+        cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
+        cancellation_cost = 0 if cancellation_cost < 0
+        twenty_percent = +(cancellation_cost * 0.2).toFixed(2)
+        $scope.pricing.cancellation = twenty_percent if twenty_percent > $scope.pricing.cancellation
+        _($scope.chosen_dates).each (v,k) ->
+          _(v).each (d) ->
+            day = {}
+            day.total = rsp.cost
+            day.date  = moment("#{k}-#{d}", 'M-YYYY-D').format('MMM D, YYYY')
+            day.timeslot_cost = rsp.timeslot_cost
+            $scope.next_day_booking = day.date if rsp.late_next_day
+            $scope.same_day_booking = day.date if rsp.late_same_day
+            if day.date == $scope.next_day_booking
+              day.next_day_booking = $scope.pricing.late_next_day
+              day.total += $scope.pricing.late_next_day unless rsp.late_next_day
+            if day.date == $scope.same_day_booking
+              day.same_day_booking = $scope.pricing.late_same_day
+              day.total += $scope.pricing.late_same_day unless rsp.late_same_day
+            if $scope.linen_handling_chosen && !linen_handling_applied
+              day.linen_handling_cost = 299 * $scope.property.beds
+              day.total += day.linen_handling_cost
+              linen_handling_applied = true
+            if rsp.first_booking_discount_cost && !first_booking_discount_applied
+              day.first_booking_discount = rsp.first_booking_discount_cost
+              day.total -= day.first_booking_discount
+              first_booking_discount_applied = true
+            if rsp.first_booking_discount
+              day.first_booking_discount = rsp.first_booking_discount
+            if rsp.coupon_cost
+              day.coupon = true
+              day.coupon_cost = rsp.coupon_cost
+            if rsp.overage_cost
+              day.overage = true
+              day.overage_cost = rsp.overage_cost
+            if rsp.discounted_cost
+              day.discounted = true
+              day.discounted_cost = rsp.discounted_cost
+            if rsp.extra_king_sets
+              day.extra_king_sets = rsp.extra_king_sets
+            if rsp.extra_twin_sets
+              day.extra_twin_sets = rsp.extra_twin_sets
+            if rsp.extra_toiletry_sets
+              day.extra_toiletry_sets = rsp.extra_toiletry_sets
+            if (remaining == -1 || remaining > 0) && !$scope.selected_booking
+              remaining -= 1 if remaining > 0
+              day.discount = $scope.discount
+              day.discount = day.total if day.discount > day.total
+              day.total -= day.discount
+            day.total = parseFloat day.total.toFixed(2)
+            $scope.total += day.total
+            if day.total > service_total
+              service_total = day.total
+              $scope.first_booking_discount_cost = day.first_booking_discount || 0
+            _($scope.selected_services).each (v,k) ->
+              if v
+                if (k is 'cleaning' or k is 'preset') and day.timeslot_cost
+                  day[k] = rsp[k] + day.timeslot_cost
+                else
+                  day[k] = rsp[k]
+            $scope.days.push day
+        $scope.service_total = service_total
+        $scope.total = 0 if $scope.total < 0
 
   $scope.slide = (type) ->
     angular.element('.booking.modal .content-container .content-group').css 'opacity', 0

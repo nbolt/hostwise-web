@@ -2,7 +2,7 @@ class DistributionCenter < ActiveRecord::Base
   has_many :jobs, through: :job_distribution_centers
   has_many :job_distribution_centers, dependent: :destroy
 
-  as_enum :status_cd, inactive: 0, active: 1
+  as_enum :status, inactive: 0, active: 1
 
   scope :active,   -> { where(status_cd: 1) }
   scope :inactive, -> { where(status_cd: 0) }
