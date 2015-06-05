@@ -401,7 +401,7 @@ class Job < ActiveRecord::Base
     supplies = {king_beds:0,twin_beds:0,toiletries:0}
     not_complete = false
 
-    unless single_jobs[0] || team_job.then(:primary_contractor) == user
+    if (single_jobs.empty? || !single_jobs.any?(&:has_linens?)) && (!team_job.then(:has_linens?) || team_job.then(:primary_contractor) != user)
       jobs.distribution.destroy_all
     else
       if single_jobs[0]
