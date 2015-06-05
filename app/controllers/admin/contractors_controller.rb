@@ -25,6 +25,7 @@ class Admin::ContractorsController < Admin::AuthController
 
   def edit
     @contractor = User.find_by_id(params[:id])
+    @contractor.jobs.each{|j| j.current_user = current_user}
 
     respond_to do |format|
       format.html

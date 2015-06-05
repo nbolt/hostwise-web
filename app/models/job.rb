@@ -181,6 +181,11 @@ class Job < ActiveRecord::Base
     ContractorJobs.where(user_id: contractor.id, job_id: self.id)[0].then(:priority) if contractor
   end
 
+  def payout_amount contractor=nil
+    contractor ||= current_user
+    payout contractor if contractor
+  end
+
   def tomorrow? date
     if self.date == date + 1.day
       true
