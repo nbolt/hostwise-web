@@ -7,8 +7,8 @@ Service.find_or_create_by(name: 'windows', display: 'Exterior Windows', extra: t
 Service.find_or_create_by(name: 'preset', display: 'Staging', hidden: true)
 
 if Rails.env.test?
-  VCR.use_cassette('create_venice_warehouse') { DistributionCenter.create(name: 'Venice Warehouse', address1:'1020 Lake St',address2:'#9',city:'Los Angeles',state:'CA',zip:'90291') unless DistributionCenter.where(address1:'1020 Lake St')[0] }
-  VCR.use_cassette('create_mid-city_warehouse') { DistributionCenter.create(name: 'Mid-City Warehouse', address1:'3430 South La Brea Avenue',city:'Los Angeles',state:'CA',zip:'90016') unless DistributionCenter.where(address1:'3430 S LA Brea Ave')[0] }
+  VCR.use_cassette('create_venice_warehouse') { DistributionCenter.create(status_cd: 1, name: 'Venice Warehouse', address1:'1020 Lake St',address2:'#9',city:'Los Angeles',state:'CA',zip:'90291') unless DistributionCenter.where(address1:'1020 Lake St')[0] }
+  VCR.use_cassette('create_mid-city_warehouse') { DistributionCenter.create(status_cd: 1, name: 'Mid-City Warehouse', address1:'3430 South La Brea Avenue',city:'Los Angeles',state:'CA',zip:'90016') unless DistributionCenter.where(address1:'3430 S LA Brea Ave')[0] }
   
   Market.find_or_create_by(name: 'Los Angeles',  lat: 34.052234, lng: -118.243685)
   Market.find_or_create_by(name: 'Palm Springs', lat: 33.830296, lng: -116.545292)
