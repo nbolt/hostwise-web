@@ -7,7 +7,7 @@ module Clockwork
   handler do |job|
     case job
     when 'launder:notify_and_charge'
-      Property.all.each do |property|
+      Property.not_purchased.each do |property|
         last_booking = property.bookings.sort_by(&:date)[-1]
         if last_booking.chain(:job, :has_linens?)
           last_transaction = property.transactions.where(transaction_type_cd: 2).order(charged_at: :asc, created_at: :asc).last

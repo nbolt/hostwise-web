@@ -28,6 +28,7 @@ class Property < ActiveRecord::Base
   validates_length_of :phone_number, is: 10, if: lambda { self.phone_number.present? }
   validates_presence_of :access_info, :parking_info, :trash_disposal, :restocking_info, if: lambda { step == 3 }
 
+  scope :not_purchased, -> { where('linen_handling_cd > 0') }
   scope :purchased, -> { where('linen_handling_cd = 0 and purchase_date is not null') }
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
