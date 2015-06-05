@@ -87,7 +87,7 @@
             .text Call
           .number ng:bind='::job.booking.property.user.display_phone_number' ng:hide='is_applicant'
       #map ng:class="job.hide_details && 'full'"
-        a.direction.icon-button.teal target='_blank' ng:href="http://maps.apple.com/?q={{job.booking.property.full_address}}"
+        a.direction.icon-button.teal target='_blank' ng:href="http://maps.apple.com/?q={{job.booking.property.full_address_encoded}}"
           .icon
             i.icon-pin
           .text Get Directions

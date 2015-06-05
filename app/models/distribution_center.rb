@@ -31,6 +31,10 @@ class DistributionCenter < ActiveRecord::Base
     end
   end
 
+  def full_address_encoded
+    CGI::escape full_address
+  end
+
   private
 
   def fetch_zone

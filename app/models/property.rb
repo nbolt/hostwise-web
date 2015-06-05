@@ -130,6 +130,10 @@ class Property < ActiveRecord::Base
     end
   end
 
+  def full_address_encoded
+    CGI::escape full_address
+  end
+
   def beds
     king_beds + queen_beds + full_beds + twin_beds
   end
