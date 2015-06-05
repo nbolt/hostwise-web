@@ -26,11 +26,26 @@ module Clockwork
                 metadata: { property_id: property.id }
               )
               property.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount, transaction_type_cd: 2)
-              UserMailer.linen_recovery_charge(property).then(:deliver)
+              UserMailer.linen_recovery_charge(property, amount).then(:deliver)
             rescue Stripe::CardError => e
               err  = e.json_body[:error]
               property.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount, transaction_type_cd: 2)
             end
+          end
+        end
+      end
+    when 'launder:notify_and_charge_reports'
+      Property.not_purchased.each do |property|
+        last_booking = property.bookings.sort_by(&:date)[-1]
+        if last_booking.chain(:job, :has_linens?)
+          last_transaction = property.transactions.where(transaction_type_cd: 2).order(charged_at: :asc, created_at: :asc).last
+          diff = (Date.today - last_booking.date).to_i
+          if diff == 15
+            UserMailer.linen_recovery_notification_report(property).then(:deliver)
+          elsif diff >= 30 && (!last_transaction || last_transaction.status_cd != 0)
+            begin
+              amount = 150 * last_booking.linen_set_count
+              UserMailer.linen_recovery_charge_report(property, amount).then(:deliver)
           end
         end
       end
@@ -223,6 +238,7 @@ module Clockwork
   end
 
   #every(1.day,  'launder:notify_and_charge', at: '05:00')
+  #every(1.day,  'launder:notify_and_charge_reports', at: '04:00')
   every(1.hour, 'subscriptions:process', at: '**:00')
   every(1.hour, 'subscriptions:report', at: '**:30')
   every(1.hour, 'payments:process', at: '**:00')

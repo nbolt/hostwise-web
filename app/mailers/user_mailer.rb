@@ -533,13 +533,43 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
-  def linen_recovery_charge property
+  def linen_recovery_charge property, amount
     mandrill do
       mandrill_mail template: 'linen-recovery-charged',
                     to: {email: property.user.email, name: property.user.name},
                     vars: {
                       'NICKNAME' => property.nickname,
-                      'AMOUNT'   => 150 * property.bookings.sort_by(&:date)[-1].linen_set_count
+                      'AMOUNT'   => amount / 100.0
+                    },
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def linen_recovery_notification_report property
+    mandrill do
+      mandrill_mail template: 'linen-recovery-program-15-days-report',
+                    to: Rails.application.config.support_notification_email,
+                    vars: {
+                      'NICKNAME' => property.nickname,
+                      'ID'       => property.id
+                    },
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def linen_recovery_charge_report property, amount
+    mandrill do
+      mandrill_mail template: 'linen-recovery-charged-report',
+                    to: Rails.application.config.support_notification_email,
+                    vars: {
+                      'NICKNAME' => property.nickname,
+                      'AMOUNT'   => amount,
+                      'NAME'     => property.user.name,
+                      'ID'       => property.user.id
                     },
                     inline_css: true,
                     async: true,
@@ -550,6 +580,6 @@ class UserMailer < MandrillMailer::TemplateMailer
   private
 
   def mandrill
-    yield if Rails.env.production? || Rails.env.staging?
+    yield if Rails.env.production? || Rails.env.staging? || Rails.env.development?
   end
 end
