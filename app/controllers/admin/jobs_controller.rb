@@ -100,7 +100,7 @@ class Admin::JobsController < Admin::AuthController
         end
       end
       filtered_jobs = jobs
-      jobs = Kaminari.paginate_array(jobs).page(data['start'] / data['length'] + 1).per(data['length'])
+      jobs = Kaminari.paginate_array(jobs).page(data['start'] / data['length'] + 1).per(data['length']) if data['length'] > 0
     end
 
     respond_to do |format|

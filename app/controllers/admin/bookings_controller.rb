@@ -64,7 +64,7 @@ class Admin::BookingsController < Admin::AuthController
             end
         end
         filtered_bookings = @bookings
-        @bookings = Kaminari.paginate_array(@bookings).page(data['start'] / data['length'] + 1).per(data['length'])
+        @bookings = Kaminari.paginate_array(@bookings).page(data['start'] / data['length'] + 1).per(data['length']) if data['length'] > 0
       end
     end
 
