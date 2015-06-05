@@ -31,7 +31,7 @@ DistributionJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$
           attributionControl: false)
         markers = new L.LayerGroup().addTo(map)
         geocoder = L.mapbox.geocoder 'mapbox.places'
-        geocoder.query $scope.job.distribution_center.full_address, (err, data) ->
+        geocoder.query $scope.job.distribution_center.map_address, (err, data) ->
           if data.latlng
             map.setView([data.latlng[0], data.latlng[1]], 14)
             markers.clearLayers() # always clear previous markers

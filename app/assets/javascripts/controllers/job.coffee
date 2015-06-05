@@ -47,7 +47,8 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
           attributionControl: false)
         markers = new L.LayerGroup().addTo(map)
         geocoder = L.mapbox.geocoder 'mapbox.places'
-        geocoder.query $scope.job.booking.property.full_address, (err, data) ->
+        geocoder.query ($scope.job.booking.property.map_address), (err, data) ->
+          console.log data
           if data.latlng
             map.setView([data.latlng[0], data.latlng[1]], 14)
             markers.clearLayers() # always clear previous markers

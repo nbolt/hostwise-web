@@ -37,7 +37,7 @@ class Contractor::JobsController < Contractor::AuthController
       end
       format.json do
         job.current_user = current_user
-        render json: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :next_job, :prev_job, :cant_access_seconds_left, :man_hours, :primary, :king_bed_count, :twin_bed_count, :toiletry_count, :is_last_job_of_day, :index_in_day], include: {distribution_center: {methods: [:full_address, :full_address_encoded]}, contractors: {methods: [:name, :display_phone_number, :avatar], include: {contractor_profile: {}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :full_address_encoded, :nickname, :property_type, :property_size]}}}})
+        render json: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :next_job, :prev_job, :cant_access_seconds_left, :man_hours, :primary, :king_bed_count, :twin_bed_count, :toiletry_count, :is_last_job_of_day, :index_in_day], include: {distribution_center: {methods: [:full_address, :full_address_encoded, :map_address]}, contractors: {methods: [:name, :display_phone_number, :avatar], include: {contractor_profile: {}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :full_address_encoded, :map_address, :nickname, :property_type, :property_size]}}}})
       end
     end
   end

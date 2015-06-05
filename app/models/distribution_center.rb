@@ -35,6 +35,10 @@ class DistributionCenter < ActiveRecord::Base
     CGI::escape full_address
   end
 
+  def map_address
+    "#{address1}, #{city}, #{state} #{zip}"
+  end
+
   private
 
   def fetch_zone

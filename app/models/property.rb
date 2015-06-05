@@ -134,6 +134,10 @@ class Property < ActiveRecord::Base
     CGI::escape full_address
   end
 
+  def map_address
+    "#{address1}, #{city}, #{state} #{zip}"
+  end
+
   def beds
     king_beds + queen_beds + full_beds + twin_beds
   end
