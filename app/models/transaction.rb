@@ -5,7 +5,7 @@ class Transaction < ActiveRecord::Base
   has_many :properties, through: :property_transactions
 
   as_enum :status, successful: 0, failed: 1, pending: 2
-  as_enum :transaction_type, standard: 0, manual: 1
+  as_enum :transaction_type, standard: 0, manual: 1, linen_recovery: 2
 
   before_create :set_charged_at
 

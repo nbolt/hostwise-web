@@ -55,6 +55,10 @@ class Booking < ActiveRecord::Base
     services.map(&:display).join ', '
   end
 
+  def linen_set_count
+    job.king_bed_count + job.twin_bed_count
+  end
+
   def self.cost property, services, linen_handling, timeslot_type, timeslot, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false
     pool_service = Service.where(name: 'pool')[0]
     rsp = {cost:0}
@@ -284,13 +288,13 @@ class Booking < ActiveRecord::Base
           statement_descriptor: "HostWise #{id}"[0..21], # 22 characters max
           metadata: metadata
         )
-        transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount)
+        transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount, transaction_type_cd: 0)
         save
         UserMailer.service_completed(self).then(:deliver) if user.settings(:service_completion).email
         true
       rescue Stripe::CardError => e
         err  = e.json_body[:error]
-        transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount)
+        transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount, transaction_type_cd: 0)
         UserMailer.generic_notification("Stripe Payment Failed - ***#{payment.last4}: #{property.user.name}", "Booking ID: #{id}").then(:deliver)
         false
       end

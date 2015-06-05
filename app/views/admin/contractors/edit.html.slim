@@ -125,6 +125,7 @@
                     span ng:if='job.booking.timeslot_type_cd == 0' Flex Window
                     span ng:if='job.booking.timeslot_type_cd == 1' Specific Time
                     span.teal ng:bind-template='${{job.payout.amount / 100}}'
+      .step.four.payouts
 
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to

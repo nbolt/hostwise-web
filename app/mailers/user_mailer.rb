@@ -520,6 +520,35 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
+  def linen_recovery_notification property
+    mandrill do
+      mandrill_mail template: 'linen-recovery-program-15-days',
+                    to: property.user.email,
+                    subject: "HostWise Linen Recovery",
+                    vars: {
+                      'NICKNAME' => property.nickname
+                    },
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
+  def linen_recovery_charge property
+    mandrill do
+      mandrill_mail template: 'linen-recovery-charged',
+                    to: property.user.email,
+                    subject: "HostWise Linen Charge",
+                    vars: {
+                      'NICKNAME' => property.nickname,
+                      'AMOUNT'   => 150 * property.bookings.sort_by(&:date)[-1].linen_set_count
+                    },
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
   private
 
   def mandrill

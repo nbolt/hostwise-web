@@ -6,6 +6,34 @@ require './config/environment'
 module Clockwork
   handler do |job|
     case job
+    when 'launder:notify_and_charge'
+      Property.all.each do |property|
+        last_booking = property.bookings.sort_by(&:date)[-1]
+        if last_booking.chain(:job, :has_linens?)
+          last_transaction = property.transactions.where(transaction_type_cd: 2).order(charged_at: :asc, created_at: :asc).last
+          diff = (Date.today - last_booking.date).to_i
+          if diff == 15
+            UserMailer.linen_recovery_notification(property).then(:deliver)
+          elsif diff >= 30 && (!last_transaction || last_transaction.status_cd != 0)
+            begin
+              amount = 150 * last_booking.linen_set_count * 100
+              rsp = Stripe::Charge.create(
+                amount: amount,
+                currency: 'usd',
+                customer: property.user.stripe_customer_id,
+                source: property.user.payments.primary[0].stripe_id,
+                statement_descriptor: "HostWise Linen Recovery"[0..21], # 22 characters max
+                metadata: { property_id: property.id }
+              )
+              property.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount, transaction_type_cd: 2)
+              UserMailer.linen_recovery_charge(property).then(:deliver)
+            rescue Stripe::CardError => e
+              err  = e.json_body[:error]
+              property.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount, transaction_type_cd: 2)
+            end
+          end
+        end
+      end
     when 'subscriptions:process'
       Property.purchased.each do |property|
         timezone = Timezone::Zone.new :zone => property.zone
@@ -21,10 +49,10 @@ module Clockwork
               statement_descriptor: "HostWise"[0..21], # 22 characters max
               metadata: { property_id: property.id }
             )
-            property.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount)
+            property.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount, transaction_type_cd: 0)
           rescue Stripe::CardError => e
             err  = e.json_body[:error]
-            property.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount)
+            property.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount, transaction_type_cd: 0)
           end
         end
       end
@@ -194,6 +222,7 @@ module Clockwork
     end
   end
 
+  every(1.day,  'launder:notify_and_charge', at: '05:00')
   every(1.hour, 'subscriptions:process', at: '**:00')
   every(1.hour, 'subscriptions:report', at: '**:30')
   every(1.hour, 'payments:process', at: '**:00')
