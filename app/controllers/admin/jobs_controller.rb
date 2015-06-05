@@ -4,7 +4,7 @@ class Admin::JobsController < Admin::AuthController
   def index
     data = if params[:data] then JSON.parse params[:data] else nil end
     filtered_jobs = nil
-    jobs = Job.standard
+    jobs = Job.standard.includes(booking: {property: {zip_code: {market: {}}}, user: {}})
     case params[:filter]
     when 'complete'
       jobs = jobs.where(status_cd: [3,5,6]).where('bookings.status_cd != 0').includes(:booking).references(:bookings)
