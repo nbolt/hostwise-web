@@ -551,15 +551,15 @@ class Job < ActiveRecord::Base
         else
           jobs.distribution.pickup[0].update_attribute :distribution_timeslot, first_job.booking.timeslot - 1
         end
-        centers = DistributionCenter.all.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
+        centers = DistributionCenter.active.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
         jobs.pickup[0].distribution_center = DistributionCenter.find centers[0][0]
-        centers = DistributionCenter.all.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
+        centers = DistributionCenter.active.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
         jobs.dropoff[0].distribution_center = DistributionCenter.find centers[0][0]
         jobs.pickup[0].save; jobs.dropoff[0].save
       end
     else
       paths = []
-      (DistributionCenter.all.map{|dc| [dc, dc]} + DistributionCenter.all.to_a.permutation(2).to_a).each do |dc_permutation|
+      (DistributionCenter.active.map{|dc| [dc, dc]} + DistributionCenter.active.to_a.permutation(2).to_a).each do |dc_permutation|
         jobs.standard.to_a.permutation(jobs.standard.length).to_a.each do |jobs_permutation|
           team_job = jobs.standard.find {|job| job.contractors.count > 1}
           jobs_permutation = jobs_permutation - [team_job]
