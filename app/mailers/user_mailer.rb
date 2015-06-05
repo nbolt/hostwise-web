@@ -523,8 +523,7 @@ class UserMailer < MandrillMailer::TemplateMailer
   def linen_recovery_notification property
     mandrill do
       mandrill_mail template: 'linen-recovery-program-15-days',
-                    to: property.user.email,
-                    subject: "HostWise Linen Recovery",
+                    to: {email: property.user.email, name: property.user.name},
                     vars: {
                       'NICKNAME' => property.nickname
                     },
@@ -537,8 +536,7 @@ class UserMailer < MandrillMailer::TemplateMailer
   def linen_recovery_charge property
     mandrill do
       mandrill_mail template: 'linen-recovery-charged',
-                    to: property.user.email,
-                    subject: "HostWise Linen Charge",
+                    to: {email: property.user.email, name: property.user.name},
                     vars: {
                       'NICKNAME' => property.nickname,
                       'AMOUNT'   => 150 * property.bookings.sort_by(&:date)[-1].linen_set_count
