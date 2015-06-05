@@ -5,4 +5,5 @@ class ContractorSerializer < ActiveModel::Serializer
   has_one  :background_check
   has_one  :contractor_profile, serializer: ContractorProfileSerializer
   has_many :jobs, serializer: JobSerializer
+  has_many :payouts
 end
