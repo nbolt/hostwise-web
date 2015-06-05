@@ -212,7 +212,7 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
-  def service_completed(booking)
+  def service_completed booking
     mandrill do
       date = booking.date.strftime('%b %e, %Y')
       payment_method = booking.payment.stripe_id.present? ? booking.payment.card_type : booking.payment.bank_name
@@ -226,11 +226,13 @@ class UserMailer < MandrillMailer::TemplateMailer
                         address: booking.property.full_address,
                         payment_method: payment_method.upcase,
                         account_num: booking.payment.last4,
-                        services: booking.services.map {|service| {
-                          display: service.display,
-                          cost: Booking.cost(booking.property, booking.services, booking.linen_handling, booking.timeslot_type, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id))[service.name.to_sym]
-                        }},
                         price: "$#{booking.cost}",
+                        contractor_service: booking.contractor_service_cost > 0,
+                        contractor_service_cost: booking.contractor_service_cost,
+                        linens: booking.linens_cost > 0,
+                        linens_cost: booking.linens_cost,
+                        toiletries: booking.toiletries_cost > 0,
+                        toiletries_cost: booking.toiletries_cost,
                         late_same_day: booking.late_same_day,
                         late_next_day: booking.late_next_day,
                         first_booking_discount: booking.first_booking_discount,
@@ -249,9 +251,6 @@ class UserMailer < MandrillMailer::TemplateMailer
                         extra_toiletry_sets_cost: booking.extra_toiletry_sets_cost,
                         coupon: booking.coupon_cost > 0,
                         coupon_cost: booking.coupon_cost / 100.0,
-                        timeslot_overage: booking.timeslot_cost > 0,
-                        timeslot_discount: booking.timeslot_cost < 0,
-                        timeslot_cost: booking.timeslot_cost.abs,
                         prop_link: property_url(booking.property.slug)
                       },
                       merge_language: 'handlebars',
@@ -580,6 +579,6 @@ class UserMailer < MandrillMailer::TemplateMailer
   private
 
   def mandrill
-    yield if Rails.env.production? || Rails.env.staging?
+    yield if Rails.env.production? || Rails.env.staging? || Rails.env.development?
   end
 end
