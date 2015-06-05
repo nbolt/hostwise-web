@@ -44,7 +44,6 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
     table = angular.element(table).dataTable()
     displayed = []
     currentlyDisplayed = table.fnSettings().aiDisplay
-    regexp = new RegExp("#{prefix}-\\d*")
     _(currentlyDisplayed).each (index) ->
       switch prefix
         when 'booking'
