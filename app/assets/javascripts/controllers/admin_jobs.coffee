@@ -50,9 +50,6 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           $scope.jobs = rsp.jobs
           _($scope.jobs).each (job) ->
             job.display_date = moment(job.date).format 'MM/DD/YYYY'
-            job.total_kings = job.booking.property.king_bed_count
-            job.total_twins = job.booking.property.twin_beds
-            job.total_toiletries = job.booking.property.bathrooms
             timeslot = if job.booking.timeslot_type_cd == 0 then 'Flex - ' else 'Specific - '
             job.formatted_time = timeslot + job.formatted_time
             job.linen_handling = switch job.booking.linen_handling_cd
@@ -74,7 +71,7 @@ AdminJobsCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $time
           # show new customers (.badge.badge-blue ng:show='is_new_customer(job.booking.user)' new)
           # show same day cancellation (.badge.badge-red ng:show='is_same_day_cancellation(job)' SDC)
           # show staging jobs
-          data_jobs = _($scope.jobs).map (job) -> ["<a href='/jobs/#{job.id}' class='teal'>#{job.id}</a>", "<a href='/properties/#{job.booking.property.id}' class='teal'>#{job.booking.property.id}</a>", job.formatted_time, job.booking.property.zip_code.market.name, job.booking.property.property_size, job.linen_handling, job.display_date, job.booking.property.nickname, job.booking.property.neighborhood_address, "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.name}</a>", job.booking.property.display_phone_number, job.status, "$#{job.booking.cost}", job.booking.service_list, job.total_kings, job.total_twins, job.total_toiletries, job.booking.extra_king_sets, job.booking.extra_twin_sets, job.booking.extra_toiletry_sets, job.contractor_names, job.state]
+          data_jobs = _($scope.jobs).map (job) -> ["<a href='/jobs/#{job.id}' class='teal'>#{job.id}</a>", "<a href='/properties/#{job.booking.property.id}' class='teal'>#{job.booking.property.id}</a>", job.formatted_time, job.booking.property.zip_code.market.name, job.booking.property.property_size, job.linen_handling, job.display_date, job.booking.property.nickname, job.booking.property.neighborhood_address, "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.name}</a>", job.booking.property.display_phone_number, job.status, "$#{job.booking.cost}", job.booking.service_list, job.king_bed_count, job.twin_bed_count, job.toiletry_count, job.booking.extra_king_sets, job.booking.extra_twin_sets, job.booking.extra_toiletry_sets, job.contractor_names, job.state]
           cb({data:data_jobs,recordsTotal:rsp.meta.total,recordsFiltered:rsp.meta.filtered})
     })
     $scope.table = table
