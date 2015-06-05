@@ -127,7 +127,7 @@ class Booking < ActiveRecord::Base
     end
     if extra_toiletry_sets # this tracks extra toiletry sets
       rsp[:extra_toiletry_sets] ||= 0
-      extra_toiletry_sets.to_i.times { rsp[:extra_toiletry_sets] += PRICING['linens']['rental'] }
+      extra_toiletry_sets.to_i.times { rsp[:extra_toiletry_sets] += PRICING['toiletries'] }
       rsp[:cost] += rsp[:extra_toiletry_sets]
     end
     if coupon_id
