@@ -576,6 +576,17 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
+  def linen_feedback user
+    mandrill do
+      mandrill_mail template: 'linen-options-ui-feedback',
+                    to: user.email,
+                    vars: { 'NAME' => user.first_name },
+                    inline_css: true,
+                    async: true,
+                    headers: {'Reply-To' => DEFAULT_REPLY_TO}
+    end
+  end
+
   private
 
   def mandrill
