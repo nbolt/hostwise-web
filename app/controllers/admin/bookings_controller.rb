@@ -43,7 +43,7 @@ class Admin::BookingsController < Admin::AuthController
               when 5  then @bookings.select do |booking|
                 from = value.split('|')[0]
                 to   = value.split('|')[1]
-                if from && to
+                if from.present? && to.present?
                   booking.date >= Date.strptime(from, '%m/%d/%Y') && booking.date <= Date.strptime(to, '%m/%d/%Y')
                 else
                   true
