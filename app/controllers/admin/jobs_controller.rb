@@ -42,7 +42,7 @@ class Admin::JobsController < Admin::AuthController
               when 6 then jobs.select do |job|
                 from = value.split('|')[0]
                 to   = value.split('|')[1]
-                if from.present? && to.present?
+                if from.then(:present?) && to.then(:present?)
                   job.date >= Date.strptime(from, '%m/%d/%Y') && job.date <= Date.strptime(to, '%m/%d/%Y')
                 else
                   true
