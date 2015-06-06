@@ -314,6 +314,13 @@ class Booking < ActiveRecord::Base
     return false
   end
 
+  def next_day_cancellation
+    timezone = Timezone::Zone.new :zone => property.zone
+    day = (self.date.to_date - timezone.time(Time.now).to_date).to_i
+    return true if day == 0 || day == 1 # subject to cancellation if same day or the day before
+    return false
+  end
+
   def formatted_date
     date.strftime '%m/%d/%Y'
   end

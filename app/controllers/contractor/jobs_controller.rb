@@ -118,6 +118,11 @@ class Contractor::JobsController < Contractor::AuthController
 
   def drop
     if current_user.drop_job job
+      if job.booking.next_day_cancellation
+        current_user.update_attribute(:last_minute_cancellation_count, current_user.last_minute_cancellation_count + 1)
+        body = "#{current_user.name} (#{current_user.id}) just made a last minute cancellation for job <a href='http://admin.hostwise.com/jobs/#{job.id}'>#{job.id}</a>. #{current_user.name} has now made #{current_user.last_minute_cancellation_count} last minute cancellations."
+        UserMailer.generic_notification("Last Minute Contractor Cancellation - #{current_user.name}", body).then(:deliver)
+      end
       unless current_user.contractor_profile.trainee?
         User.available_contractors(job.booking).each do |contractor|
           UserMailer.new_open_job(contractor, job).then(:deliver) if contractor.settings(:new_open_job).email
