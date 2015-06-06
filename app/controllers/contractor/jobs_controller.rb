@@ -187,7 +187,7 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def checklist
-    checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].checklist
+    checklist = ContractorJobs.where(job_id: params[:job_id], user_id: params[:contractor_id])[0].then(:checklist)
     if checklist
       render json: checklist.to_json(methods: :checklist_settings, include: :contractor_photos)
     else

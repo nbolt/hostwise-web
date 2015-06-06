@@ -74,6 +74,8 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
                   item: k2
                   value: n
                 })
+        else
+          $window.location = '/'
 
   $scope.completed_job = ->
     $scope.job and $scope.job.status_cd == 3
