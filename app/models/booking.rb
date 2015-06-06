@@ -337,7 +337,7 @@ class Booking < ActiveRecord::Base
     if status_cd != 4
       job = self.build_job(status_cd: 0, date: date)
       job.state_cd = 1 if vip
-      job.size = 2 if (property.bedrooms == 3 && property.bathrooms >= 3) || property.bedrooms > 3
+      job.size = 2 if ((property.bedrooms == 3 && property.bathrooms >= 3) || property.bedrooms > 3) && !services.where(name: 'preset')[0]
     end
   end
 
