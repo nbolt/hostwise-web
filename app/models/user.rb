@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
   end
 
   def transactions
-    bookings.map(&:transactions).flatten.sort_by(&:created_at)
+    (bookings.map(&:transactions) + properties.map(&:transactions)).flatten.sort_by(&:created_at)
   end
 
   def total_spent
