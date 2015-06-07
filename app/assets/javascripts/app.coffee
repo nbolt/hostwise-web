@@ -26,11 +26,12 @@ AppCtrl = ['$scope', '$http', '$timeout', '$q', ($scope, $http, $timeout, $q) ->
                 training = {}
                 training.jobs = _(jobs).reject (job) -> job.distribution
                 training.distribution_job = _(jobs).find (job) -> job.occasion_cd == 0
-                date = moment(training.jobs[0].booking.date, 'YYYY-MM-DD')
-                training.date = date.format 'ddd, MMM D'
-                training.show = date.diff(moment().startOf('day'), 'days') >= 0
-                training.completed = !(_(training.jobs).reject (job) -> job.status_cd == 3)[0]
-                $scope.user.training_jobs.push training
+                if training.jobs[0]
+                  date = moment(training.jobs[0].booking.date, 'YYYY-MM-DD')
+                  training.date = date.format 'ddd, MMM D'
+                  training.show = date.diff(moment().startOf('day'), 'days') >= 0
+                  training.completed = !(_(training.jobs).reject (job) -> job.status_cd == 3)[0]
+                  $scope.user.training_jobs.push training
               $scope.user.training_completed = !(_($scope.user.training_jobs).reject (training) -> training.completed)[0]
               $scope.user_fetched.resolve()
             else
