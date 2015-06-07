@@ -620,7 +620,7 @@ class Job < ActiveRecord::Base
     if booking
       hours = MAN_HRS[booking.property.property_type.to_s][booking.property.bedrooms][booking.property.bathrooms] / size
       hours += 1 if booking.linen_handling == :in_unit
-      self.man_hours = hours
+      self.man_hours = (hours * 2).round / 2.0
     end
   end
 end
