@@ -32,7 +32,7 @@ class Booking < ActiveRecord::Base
   scope :active, -> { where(status_cd: 1) }
   scope :completed, -> {where(status_cd: 3) }
 
-  before_save :check_transaction
+  before_save :check_transaction, :update_linen_handling
   before_create :create_job
   after_create :attach_user
 
@@ -352,6 +352,10 @@ class Booking < ActiveRecord::Base
     if self.payment_status != :completed && transactions.where(status_cd:0).count > 0
       self.payment_status = :completed
     end
+  end
+
+  def update_linen_handling
+    self.linen_handling_cd = nil unless services.where(name: 'linens')[0]
   end
 
   def attach_user
