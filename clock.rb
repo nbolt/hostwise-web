@@ -46,6 +46,7 @@ module Clockwork
             begin
               amount = 150 * last_booking.linen_set_count
               UserMailer.linen_recovery_charge_report(property, amount).then(:deliver)
+            end
           end
         end
       end
