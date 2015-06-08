@@ -218,6 +218,7 @@ describe 'airbnb' do
     account_limit = ENV['account_limit'].to_i
     messages = ["Hey |name|!\n\nI love your vacation rental. You should check out HostWise[.com], (first clean free) I use them and if I refer a free service then I get another free service! :) You can do the same!",
                 "Hey |name|!\n\nLooks like your vacation rental would be a perfect fit for our company, HostWise[.com]. Our company was created by hosts, for hosts. We automate the entire home turnover for you and guarantee a 5 star clean rating every time. Give us a try for first time for free, no strings attached. Not sure if you have many more properties, but if so we do offer enterprise pricing discounts as well! :)",
+                "Hey |name|!\n\nI just started using HostWise[.com] to clean and turnover my property and think your property would be a perfect fit for them too. First service is free, no strings attached, I just got a coupon code for 10% off 3 services if your are interested I can give it to you!\n\nCheers!",
                 "Hey |name|!\n\nI just started using HostWise[.com] and they are giving me 5 star cleaning ratings across the board. Figured I would pass it on to spread the word as much as possible! :) It's super easy to set up your property, took me less than 5 mins, Cheers!"]
 
     accounts = BotAccount.where('status_cd = 1 and source_cd = 0 and last_run < ?', Date.today).limit(account_limit)
@@ -249,15 +250,19 @@ describe 'airbnb' do
           end
         end
         #update account status if account required further verification
-        driver.navigate.to "#{site}/account"
+        driver.get "#{site}/account"
         sleep 3
-        if driver.find_element(:xpath, '//div[@class="flash-container"]//div[contains(., "Account access is limited until you complete verification")]').displayed?
-          report << "account #{email} requires further verification."
-          account.status = :pending
-          account.save
-          driver.navigate.to site
-          logout driver
-          next
+        verify_id = driver.find_element(:xpath, '//div[@class="vid-intro text-copy"]//h2') rescue nil
+        if verify_id.present?
+          puts verify_id.text
+          if verify_id.text == 'We need to do a virtual ID check'
+            report << "account #{email} requires further verification."
+            account.status = :pending
+            account.save
+            driver.navigate.to site
+            logout driver
+            next
+          end
         end
       rescue Exception => e
       end
@@ -282,7 +287,7 @@ describe 'airbnb' do
           contact_form = driver.find_element(:xpath, '//form[@id="message_form"]')
 
           #set message
-          message = messages.sample.gsub '|name|', record.host_name
+          message = messages[2].gsub '|name|', record.host_name ||= 'host'
           textarea = contact_form.find_element(:xpath, '//textarea[@id="question"]')
           textarea.clear
           textarea.send_keys message

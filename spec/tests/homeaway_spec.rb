@@ -17,11 +17,16 @@ describe 'homeaway' do
 
   it 'create account', type: 'signup' do
     report = []
-    server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
-    server.start
-    proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
-    caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
-    driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    use_proxy = ENV['proxy'] == 'true'
+
+    driver = Selenium::WebDriver.for :chrome
+    if use_proxy
+      server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
+      server.start
+      proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
+      caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
+      driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    end
     site = 'https://www.homeaway.com'
 
     account_limit = ENV['account_limit'].to_i
@@ -69,20 +74,26 @@ describe 'homeaway' do
     end
 
     driver.quit
-    server.stop
+    server.stop if use_proxy
     send_report 'signup', report
   end
 
   it 'scrape properties', type: 'scrape' do
     report = []
-    server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
-    server.start
-    proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
-    caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
-    driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    use_proxy = ENV['proxy'] == 'true'
+
+    driver = Selenium::WebDriver.for :chrome
+    if use_proxy
+      server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
+      server.start
+      proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
+      caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
+      driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    end
     site = 'https://www.homeaway.com'
 
     location = URI.unescape ENV['location']
+    puts "scraping properties at #{location}..."
     report << "scraping properties at #{location}..."
 
     driver.navigate.to site
@@ -97,7 +108,7 @@ describe 'homeaway' do
     total = driver.find_element(:xpath, '//div[@class="pager pager-right pager-gt-search"]//li[@class="page"]').text.split('of').last.strip.remove(',').to_i
     last_page = (total.to_f / per_page.to_f).ceil.to_i
     puts "#{base_url}, #{per_page}, #{total}, #{last_page}"
-    (29..last_page).each do |i|
+    (23..last_page).each do |i|
       driver.navigate.to "#{base_url}/page:#{i}"
       sleep 1
 
@@ -119,6 +130,7 @@ describe 'homeaway' do
         next if Bot.where(source_cd: 1, property_id: key).present?
 
         begin
+          puts value[:property_url]
           driver.get value[:property_url]
           sleep 1
 
@@ -160,7 +172,7 @@ describe 'homeaway' do
     end
 
     driver.quit
-    server.stop
+    server.stop if use_proxy
     send_report 'scrape', report
   end
 
@@ -191,6 +203,7 @@ describe 'homeaway' do
     accounts.each do |account|
       username = account.email
       password = account.password
+      puts "logging into account: #{username}"
       driver.navigate.to site
 
       driver.find_element(:xpath, '//ul[@class="nav"]//a[@class="traveler-sign-in"]').click
@@ -243,12 +256,22 @@ describe 'homeaway' do
           textarea.send_keys message
           sleep 3
           booking_form.submit unless test
-          total_message += 1
           sleep 5
-          report << "contacted host #{record.host_name} for property #{record.property_name}"
           unless test
-            record.status = :contacted
-            record.save
+            alert = booking_form.find_element(:xpath, '//div[@id="inquiry-error"]') rescue nil
+            if alert.present?
+              puts "deactivated property #{record.property_name}"
+              report << "deactivated property #{record.property_name}"
+              record.status = :deleted
+              record.save
+            else
+              total_message += 1
+              report << "contacted host #{record.host_name} for property #{record.property_name}"
+              record.status = :contacted
+              record.save
+            end
+          else
+            total_message += 1
           end
         rescue Exception => e
           puts e
