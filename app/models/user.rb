@@ -145,7 +145,8 @@ class User < ActiveRecord::Base
   end
 
   def last_payout_date
-    payouts.where(status_cd: 2).order('updated_at DESC').first.then(:updated_at).strftime '%m/%d/%Y'
+    date = payouts.where(status_cd: 2).order('updated_at DESC').first.then(:updated_at)
+    date.strftime '%m/%d/%Y' if date
   end
 
   def completed_jobs
