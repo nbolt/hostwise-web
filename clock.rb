@@ -12,9 +12,9 @@ module Clockwork
         if last_booking.chain(:job, :has_linens?)
           last_transaction = property.transactions.where(transaction_type_cd: 2).order(charged_at: :asc, created_at: :asc).last
           diff = (Date.today - last_booking.date).to_i
-          if diff == 15
+          if diff == 7
             UserMailer.linen_recovery_notification(property).then(:deliver)
-          elsif diff >= 30 && (!last_transaction || last_transaction.status_cd != 0)
+          elsif diff >= 14 && (!last_transaction || last_transaction.status_cd != 0)
             begin
               amount = 150 * last_booking.linen_set_count * 100
               rsp = Stripe::Charge.create(
@@ -40,9 +40,9 @@ module Clockwork
         if last_booking.chain(:job, :has_linens?)
           last_transaction = property.transactions.where(transaction_type_cd: 2).order(charged_at: :asc, created_at: :asc).last
           diff = (Date.today - last_booking.date).to_i
-          if diff == 15
+          if diff == 7
             UserMailer.linen_recovery_notification_report(property).then(:deliver)
-          elsif diff >= 30 && (!last_transaction || last_transaction.status_cd != 0)
+          elsif diff >= 14 && (!last_transaction || last_transaction.status_cd != 0)
             begin
               amount = 150 * last_booking.linen_set_count
               UserMailer.linen_recovery_charge_report(property, amount).then(:deliver)
