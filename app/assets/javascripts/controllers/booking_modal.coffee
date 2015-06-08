@@ -75,7 +75,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         $scope.booking.display_timeslot_1 = time1
         $scope.booking.display_timeslot_2 = time2
         $scope.booking.formatted_date = moment($scope.booking.date).format 'MMMM D, YYYY'
-        angular.element('.timeboxes .box.premium .text').text "#{time1} - #{time2}#{meridian}m - $#{$scope.time_total($scope.chosen_time)}"
+        $scope.calculate_pricing()
+        $timeout((->angular.element('.timeboxes .box.premium .text').text "#{time1} - #{time2}#{meridian}m - $#{$scope.time_total($scope.chosen_time)}"),500)
     ),1000)
     $scope.booking = booking
     $timeout((->
@@ -87,7 +88,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   unless $scope.selected_booking
     $http.get("/properties/#{$scope.property.slug}/last_services").success (rsp) ->
-      _(rsp.services).each (service) -> unless service.name == 'toiletries'
+      _(rsp.services).each (service) ->
         angular.element(".ngdialog .service.#{service.name} input").prop 'checked', true
         $scope.selected_services[service.name] = true
         $scope.calculate_pricing()
