@@ -92,9 +92,13 @@ module Clockwork
         timezone = Timezone::Zone.new :zone => booking.property.zone
         time = timezone.time Time.now
         if time.hour == 22
-          booking.update_cost! if booking.status_cd == 5
-          booking.charge!
-          booking.property.update_attribute :purchase_date, time if booking.property.linen_handling_cd == 0 && !booking.property.purchase_date
+          begin
+            booking.update_cost! if booking.status_cd == 5
+            booking.charge!
+            booking.property.update_attribute :purchase_date, time if booking.property.linen_handling_cd == 0 && !booking.property.purchase_date
+          rescue
+            # report to appsignal
+          end
         end
       end
     when 'jobs:notify_no_access'
