@@ -1,6 +1,10 @@
 class DataController < ApplicationController
   include CsvHelper
 
+  def coupon_users
+    render json: User.hosts(params[:term])
+  end
+
   def cities
     render json: City.search(params[:term]).to_json(methods: :state, include: :county)
   end

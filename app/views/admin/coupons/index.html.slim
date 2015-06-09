@@ -33,6 +33,7 @@
             th Amount
             th Expiration
             th Limit
+            th Applied
         thead.search
           tr
             th ID
@@ -43,6 +44,7 @@
             th Amount
             th.date Expiration
             th Limit
+            th Applied
         tfoot
           tr
             th ID
@@ -53,6 +55,7 @@
             th Amount
             th Expiration
             th Limit
+            th Applied
         tbody
           tr ng:repeat='coupon in coupons'
             td
@@ -64,6 +67,7 @@
             td ng:bind='coupon.display_amount'
             td ng:bind='coupon.expiration'
             td ng:bind='coupon.limit'
+            td ng:bind='coupon.total_applied'
 
 = render 'common/create_coupon_modal'
 = render 'common/edit_coupon_modal'

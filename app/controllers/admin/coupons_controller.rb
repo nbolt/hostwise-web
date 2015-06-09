@@ -26,6 +26,9 @@ class Admin::CouponsController < Admin::AuthController
     coupon = Coupon.new coupon_params
     coupon.expiration = Date.strptime params[:coupon][:expiration], '%m/%d/%Y' if params[:coupon][:expiration]
     coupon.amount = params[:coupon][:amount].to_f * 100 if coupon.discount_type_cd == 0
+    params[:coupon][:customers].each do |customer|
+      coupon.users.push User.find(customer['id'])
+    end
     if coupon.save
       render json: { success: true }
     else
@@ -39,6 +42,13 @@ class Admin::CouponsController < Admin::AuthController
     coupon.expiration = Date.strptime params[:coupon][:expiration], '%m/%d/%Y' if params[:coupon][:expiration]
     coupon.amount = params[:coupon][:amount].to_f * 100 if coupon.discount_type_cd == 0
     coupon.limit ||= 0
+    coupon.users.each do |user|
+      coupon.users.destroy user unless params[:coupon][:customers].any? {|customer| customer['id'] == user.id}
+    end
+    params[:coupon][:customers].each do |customer|
+      user = User.find customer['id']
+      coupon.users.push user unless coupon.users.index user
+    end
     if coupon.save
       render json: { success: true }
     else
@@ -49,7 +59,7 @@ class Admin::CouponsController < Admin::AuthController
   private
 
   def coupon_params
-    params.require(:coupon).permit(:description, :code, :status_cd, :amount, :limit, :expiration, :discount_type_cd)
+    params.require(:coupon).permit(:description, :code, :status_cd, :amount, :limit, :expiration, :discount_type_cd, :user_id)
   end
 
 end

@@ -43,6 +43,10 @@ script#create-coupon-modal type="text/ng-template"
               .title Limit
               .input
                 input type='text' ng:model='coupon.limit'
+          .field
+            .title Customers
+            .input
+              input type='hidden' ui:select2='selectHash()' ng:model='coupon.customers' style='width:100%'
     .footer
       .buttons
         .button.white ng:click='cancel_process()'

@@ -1,3 +1,5 @@
 class CouponSerializer < ActiveModel::Serializer
-  attributes :id, :description, :code, :status, :status_cd, :discount_type, :discount_type_cd, :amount, :limit, :expiration, :display_amount
+  attributes :id, :description, :code, :status, :status_cd, :discount_type, :discount_type_cd, :amount, :limit, :expiration, :display_amount, :total_applied
+
+  has_many :users
 end

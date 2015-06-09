@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
   has_one  :availability, dependent: :destroy
   has_one  :background_check, dependent: :destroy
   has_many :service_notifications, dependent: :destroy
+  has_many :coupon_users, class_name: 'CouponUser', dependent: :destroy
+  has_many :coupons, through: :coupon_users
   has_many :payouts
 
   as_enum :role, admin: 0, host: 1, contractor: 2

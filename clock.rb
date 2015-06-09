@@ -6,6 +6,13 @@ require './config/environment'
 module Clockwork
   handler do |job|
     case job
+    when 'coupons:monitor'
+      coupons = []
+      Coupon.all.each do |coupon|
+        coupons.push(coupon) if (coupon.limit > 0 && coupon.limit < coupon.bookings.count) || (coupon.expiration && coupon.expiration < coupon.booking_coupons.order('created_at desc')[0].then(:date))
+      end
+      body = "Coupons that might be being abused: #{coupons.map(&:id)}"
+      UserMailer.generic_notification('Coupon abuse notification', body).then(:deliver)
     when 'launder:notify_and_charge'
       Property.not_purchased.each do |property|
         last_booking = property.bookings.sort_by(&:date)[-1]
@@ -249,5 +256,6 @@ module Clockwork
   every(1.hour, 'jobs:notify_no_access', at: '**:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')
   every(1.hour, 'jobs:check_no_shows', at: '**:30')
+  every(1.day,  'coupons:monitor')
   every(10.minutes, 'jobs:check_timers')
 end

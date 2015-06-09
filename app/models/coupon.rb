@@ -1,6 +1,8 @@
 class Coupon < ActiveRecord::Base
   has_many :booking_coupons, class_name: 'BookingCoupon', dependent: :destroy
   has_many :bookings, through: :booking_coupons
+  has_many :coupon_users, class_name: 'CouponUser', dependent: :destroy
+  has_many :users, through: :coupon_users
 
   validates_uniqueness_of :code
 
@@ -24,5 +26,9 @@ class Coupon < ActiveRecord::Base
 
   def applied user
     user.coupons.select{|c| c == self}.count
+  end
+
+  def total_applied
+    bookings.completed.count
   end
 end

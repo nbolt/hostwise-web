@@ -31,6 +31,19 @@ CouponsCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spinner', 
       if rsp.success
         $window.location = '/coupons'
 
+  $scope.selectHash = ->
+    {
+      data: []
+      tags: true
+      initSelection: (el, cb) ->
+      formatResult: (data) -> data.text
+      ajax:
+        url: '/data/coupon_users'
+        quietMillis: 400
+        data: (term) -> { term: term }
+        results: (data) -> { results: _(data.data).map((user) -> { id: user.id, text: user.name }) }
+    }
+
   $scope.fetch_coupons = ->
     spinner.startSpin()
     $http.get('/coupons.json').success (rsp) ->
@@ -38,6 +51,7 @@ CouponsCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spinner', 
       _($scope.coupons).each (coupon) ->
         coupon.expiration = moment(coupon.expiration, 'YYYY-MM-DD').format('MM/DD/YYYY') if coupon.expiration
         coupon.amount = coupon.amount / 100 if coupon.discount_type_cd == 0
+        coupon.customers = _(coupon.users).map (customer) -> { id: customer.id, text: customer.name }
       spinner.stopSpin()
       $timeout((->
         table = angular.element("#example-1").dataTable({
