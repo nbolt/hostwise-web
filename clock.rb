@@ -275,6 +275,6 @@ module Clockwork
   every(1.hour, 'jobs:notify_no_access', at: '**:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')
   every(1.hour, 'jobs:check_no_shows', at: '**:30')
-  every(1.day,  'coupons:monitor')
+  every(1.day,  'coupons:monitor', at: '22:00')
   every(10.minutes, 'jobs:check_timers')
 end
