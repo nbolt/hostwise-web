@@ -247,7 +247,6 @@ module Clockwork
               end
             end
           when 'jobs:check_timers'
-            0/0
             Job.where(status_cd: 5).each do |job|
               if job.booking.status != :couldnt_access && job.cant_access < Time.now.utc - 30.minutes
                 job.booking.update_attribute :status_cd, 5
