@@ -15,13 +15,13 @@ module Clockwork
       UserMailer.generic_notification('Coupon abuse notification', body).then(:deliver)
     when 'launder:notify_and_charge'
       Property.not_purchased.each do |property|
-        last_booking = property.bookings.sort_by(&:date)[-1]
+        last_booking = property.bookings.completed.sort_by(&:date)[-1]
         if last_booking.chain(:job, :has_linens?)
           last_transaction = property.transactions.where(transaction_type_cd: 2).order(charged_at: :asc, created_at: :asc).last
           diff = (Date.today - last_booking.date).to_i
-          if diff == 7
+          if diff == 15
             UserMailer.linen_recovery_notification(property).then(:deliver)
-          elsif diff >= 14 && (!last_transaction || last_transaction.status_cd != 0)
+          elsif diff >= 30 && (!last_transaction || (last_transaction.status_cd != 0 && last_transaction.bookings.index(last_booking)))
             begin
               amount = 150 * last_booking.linen_set_count * 100
               rsp = Stripe::Charge.create(
@@ -32,7 +32,9 @@ module Clockwork
                 statement_descriptor: "HostWise Linen Recovery"[0..21], # 22 characters max
                 metadata: { property_id: property.id }
               )
-              property.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount, transaction_type_cd: 2)
+              transaction = property.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount, transaction_type_cd: 2)
+              transaction.bookings.push last_booking
+              transaction.save
               UserMailer.linen_recovery_charge(property, amount).then(:deliver)
             rescue Stripe::CardError => e
               err  = e.json_body[:error]
