@@ -79,6 +79,19 @@ class User < ActiveRecord::Base
     payouts.sort_by {|id, n| -n}
   end
 
+  def status
+    last_booking = bookings.sort_by(&:date).last
+    if last_booking
+      if last_booking.date > Date.today - 1.month
+        'active'
+      else
+        'inactive'
+      end
+    else
+      'inactive'
+    end
+  end
+
   def name
     if first_name.present? && last_name.present?
       return "#{first_name} #{last_name[0]}."
@@ -297,6 +310,10 @@ class User < ActiveRecord::Base
 
   def primary_payment
     payments.primary.first
+  end
+
+  def property_count
+    properties.count
   end
 
   private
