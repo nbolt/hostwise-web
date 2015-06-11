@@ -19,6 +19,7 @@
 //= require angular-touch
 //= require angular-timer
 //= require angular-sanitize
+//= require angular-tooltips
 //= require dirPagination
 //= require mask
 //= require select2.min

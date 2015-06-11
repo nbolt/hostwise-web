@@ -227,7 +227,7 @@ class Host::PropertiesController < Host::AuthController
         render json: { success: true }
       when 2
         property = current_user.properties.build(property_params)
-        property.property_type_cd = params[:form][:property_type_cd]
+        property.property_type_cd = params[:form][:property_type][:id]
         property.bedrooms = params[:form][:bedrooms][:id]
         property.bathrooms = params[:form][:bathrooms][:id]
         if PRICING.chain(property.property_type.to_s, property.bedrooms, property.bathrooms)
@@ -241,8 +241,8 @@ class Host::PropertiesController < Host::AuthController
         property.active = true
         property.property_photos.build(photo: params[:file]) if params[:file].present?
 
-        property.property_type_cd = params[:form][:property_type_cd]
-        property.rental_type_cd = params[:form][:rental_type_cd]
+        property.property_type_cd = params[:form][:property_type][:id]
+        property.rental_type_cd = params[:form][:rental_type][:id]
         property.bedrooms = params[:form][:bedrooms][:id]
         property.bathrooms = params[:form][:bathrooms][:id]
         property.twin_beds = params[:form][:twin_beds][:id]

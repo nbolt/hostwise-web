@@ -1920,6 +1920,20 @@ form
         a
           color: teal
           text-decoration: none
+        .tooltip
+          width: 20px
+          height: 20px
+          border: 2px solid dark-gray
+          border-radius: 50%
+          display: block
+          text-align: center
+          color: dark-gray
+          position: absolute
+          top: 35px
+          right: -38px
+          outline: none
+          @media phone
+            right: 92px
         .vr
           border-left: 1px solid light-gray
           display: inline-block
@@ -1943,6 +1957,7 @@ form
           .row
             margin: 20px auto
             width: 80%
+            position: relative
             @media phone
               width: 95%
             &:first-child
@@ -2028,6 +2043,9 @@ form
               width: 100%
           &.home-type
             width: 35%
+            .select2-container
+              @media phone
+                width: 50%
             @media phone
               margin: 20px 0
               width: 100%

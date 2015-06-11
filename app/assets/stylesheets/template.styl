@@ -535,6 +535,20 @@ input[type=file]
   -moz-animation-delay: .4s,.8s !important;
 }
 
+.generic-tooltip._720kb-tooltip-medium
+  background: rgba(93, 93, 93, 1)
+  color: white
+  width: 200px
+  border: 2px solid heavy-gray
+  border-radius: 10px
+  margin-top: 8px
+
+.generic-tooltip ._720kb-tooltip-caret:before
+  border: 10px solid rgba(93, 93, 93, 1)
+
+.generic-tooltip._720kb-tooltip-bottom ._720kb-tooltip-caret:before
+  margin-left: -9px
+
 @keyframes loading-opacity {
   0% {
     opacity: 0;

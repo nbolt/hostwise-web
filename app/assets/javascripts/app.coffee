@@ -57,6 +57,7 @@ app = angular.module('porter', ['ngCookies',
                                 'ngTouch',
                                 'ngSanitize',
                                 'angular-carousel',
+                                '720kb.tooltips',
                                 'angularFileUpload',
                                 'timer',
                                 'angularUtils.directives.dirPagination'])

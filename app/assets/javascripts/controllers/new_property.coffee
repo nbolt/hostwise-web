@@ -3,7 +3,7 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
   $scope.num_steps = 3
   $scope.posting = false
   $scope.extras = {}
-  $scope.form = {rental_type_cd: 0, property_type_cd: 0}
+  $scope.form = {}
   $scope.form.twin_beds = {id:'0', text:'0'}
   $scope.form.full_beds = {id:'0', text:'0'}
   $scope.form.queen_beds = {id:'0', text:'0'}
@@ -16,6 +16,22 @@ NewPropertyCtrl = ['$scope', '$http', '$timeout', '$upload', '$location', 'spinn
 
   $scope.init = ->
     $scope.form.zip = getParam('zip')
+
+  $scope.property_type = ->
+    {
+    dropdownCssClass: 'details'
+    minimumResultsForSearch: -1
+    data: [{id:0,text:'House'},{id:1,text:'Condo'}]
+    initSelection: (el, cb) ->
+    }
+
+  $scope.rental_type = ->
+    {
+    dropdownCssClass: 'details'
+    minimumResultsForSearch: -1
+    data: [{id:0,text:'Full-time'},{id:1,text:'Part-time'}]
+    initSelection: (el, cb) ->
+    }
 
   $scope.rooms = ->
     {

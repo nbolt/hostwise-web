@@ -57,22 +57,14 @@
           .flash
           .section.home-type
             div
-              .row.check
+              .row
                 label Home Type
-                .radio
-                  input type='radio' id='house' value='0' ng:model='form.property_type_cd'
-                  label for='house' House
-                .radio
-                  input type='radio' id='condo' value='1' ng:model='form.property_type_cd'
-                  label for='condo' Apt/Condo
-              .row.check
+                input type='hidden' placeholder='Select' required='' ng:model='form.property_type' ui-select2='property_type()'
+              .row
                 label Rental Type
-                .radio
-                  input type='radio' id='full-time' value='0' ng:model='form.rental_type_cd'
-                  label for='full-time' Full-time
-                .radio
-                  input type='radio' id='part-time' value='1' ng:model='form.rental_type_cd'
-                  label for='part-time' Part-time
+                input type='hidden' placeholder='Select' required='' ng:model='form.rental_type' ui-select2='rental_type()'
+                a.tooltip href='' tooltips='' tooltip-title='' tooltip-class='generic-tooltip' tooltip-show-trigger='click' tooltip-hide-trigger='click' tooltip-content='* A full time rental is a property that is rented out all year round. A part time rental is a property that is rented out during only part of the year.' tooltip-side='bottom'
+                  span i
           .vr
           .section.bed-type
             div
