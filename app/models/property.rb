@@ -49,10 +49,6 @@ class Property < ActiveRecord::Base
     upcoming_bookings.active.sort_by(&:next_service_date) + no_upcoming.active
   end
 
-  def future_bookings
-    Property.upcoming_bookings
-  end
-
   def revenue
     Transaction.where('booking_transactions.booking_id in (?)', bookings.map(&:id)).includes(:booking_transactions).references(:booking_transactions).sum(:amount) / 100.0
   end
