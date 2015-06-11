@@ -4,9 +4,9 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
     spinner.startSpin()
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.users = rsp
-      _($scope.users).each (user) ->
-        user.upcoming_jobs = _(user.properties).reduce(((acc, property) -> acc + property.future_bookings.length), 0)
-        user.completed_jobs = _(user.properties).reduce(((acc, property) -> acc + property.past_bookings.length), 0)
+#      _($scope.users).each (user) ->
+#        user.upcoming_jobs = _(user.properties).reduce(((acc, property) -> acc + property.future_bookings.length), 0)
+#        user.completed_jobs = _(user.properties).reduce(((acc, property) -> acc + property.past_bookings.length), 0)
       spinner.stopSpin()
       $timeout((->
         angular.element("#example-1").dataTable({

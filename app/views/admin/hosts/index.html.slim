@@ -40,12 +40,12 @@
             th Phone
             th Status
             th Properties
-            th
-              | Completed
-              br Jobs
-            th
-              | Upcoming
-              br Jobs
+            /th
+            /  | Completed
+            /  br Jobs
+            /th
+            /  | Upcoming
+            /  br Jobs
             th
               | Next
               br Service
@@ -61,12 +61,12 @@
             th Phone
             th Status
             th Properties
-            th
-              | Completed
-              br Jobs
-            th
-              | Upcoming
-              br Jobs
+            /th
+            /  | Completed
+            /  br Jobs
+            /th
+            /  | Upcoming
+            /  br Jobs
             th
               | Next
               br Service
@@ -85,7 +85,7 @@
             td ng:bind='user.display_phone_number'
             td ng:bind='user.activation_state'
             td ng:bind='user.properties.length'
-            td ng:bind='user.completed_jobs'
-            td ng:bind='user.upcoming_jobs'
+            /td ng:bind='user.completed_jobs'
+            /td ng:bind='user.upcoming_jobs'
             td ng:bind="user.next_service_date | date:'MM/dd/yyyy':'UTC'"
             td ng:bind-template="${{user.total_spent}}"
