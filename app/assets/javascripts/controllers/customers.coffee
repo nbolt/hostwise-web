@@ -5,8 +5,8 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
     $http.get(window.location.href + '.json').success (rsp) ->
       $scope.users = rsp
       _($scope.users).each (user) ->
-        user.upcoming_jobs = 0
-        user.completed_jobs = 0
+        user.upcoming_jobs = _(user.properties).reduce(((acc, property) -> acc + property.future_bookings.length), 0)
+        user.completed_jobs = _(user.properties).reduce(((acc, property) -> acc + property.past_bookings.length), 0)
       spinner.stopSpin()
       $timeout((->
         angular.element("#example-1").dataTable({
@@ -27,12 +27,12 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
       count = 0
       _($scope.users).each (host) ->
         active_properties = 0
-        _(host.properties).each (property) ->    
+        _(host.properties).each (property) ->
           booking = property.active_bookings[property.active_bookings.length-1]
           active_properties += 1 if booking && moment(booking.date, 'YYYY-MM-DD') >= moment().subtract(1, 'weeks')
         count += 1 if active_properties >= 1
       return count
-    else 
+    else
       0
 
   $scope.bookings_per_host = ->
@@ -42,7 +42,7 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
       ), 0) / $scope.users.length * 100) / 100
     else
       0
-  
+
   $scope.properties_per_host = ->
     if $scope.users
       Math.round(_($scope.users).reduce(((acc, host) ->
@@ -55,7 +55,7 @@ CustomersCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, 
     users_last_month  = _($scope.users).filter (host) -> moment(host.created_at, 'YYYY-MM-DD') >= moment().subtract(1, 'months')
     users_last_month2 = _($scope.users).filter (host) -> moment(host.created_at, 'YYYY-MM-DD') >= moment().subtract(2, 'months') && moment(host.created_at, 'YYYY-MM-DD') <= moment().subtract(1, 'months')
     Math.round((users_last_month.length - users_last_month2.length) / users_last_month2.length * 10000) / 100
-  
+
   $scope.fetch_hosts()
 
 ]
