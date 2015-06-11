@@ -1,4 +1,5 @@
 class Admin::JobsController < Admin::AuthController
+  include CsvHelper
   expose(:job) { Job.find params[:id] }
 
   def index
@@ -108,6 +109,13 @@ class Admin::JobsController < Admin::AuthController
       format.json do
         render json: jobs, root: :jobs, meta: { total: total, filtered: filtered_jobs.then(:count) }
       end
+    end
+  end
+
+  def export_all
+    jobs = Job.standard.includes(booking: {property: {zip_code: {market: {}}}, user: {}})
+    respond_to do |format|
+      format.csv { send_data job_csv(jobs), filename: 'jobs.csv' }
     end
   end
 
