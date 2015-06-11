@@ -90,6 +90,9 @@ class Host::PropertiesController < Host::AuthController
             year  = k.split('-')[1]
             date = Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d')
             booking = property.bookings.build(date: date, linen_handling_cd: params[:handling] || property.linen_handling_cd)
+            params[:services].each do |service|
+              booking.services.push Service.where(name: service)[0]
+            end
             if params[:timeslot] == 'flex'
               booking.timeslot_type_cd = 0
             else
@@ -99,7 +102,7 @@ class Host::PropertiesController < Host::AuthController
             if params[:handling]
               property.update_attribute :linen_handling_cd, params[:handling]
               if property.linen_handling_cd == 0
-                property.bookings.active.future.each do |booking|
+                (property.bookings.active.future - [booking]).each do |booking|
                   unless booking.linen_handling_cd == 0
                     booking.update_attribute :linen_handling_cd, params[:handling]
                     booking.update_cost!
@@ -126,13 +129,10 @@ class Host::PropertiesController < Host::AuthController
               if params[:extra_toiletry_sets].present?
                 booking.extra_toiletry_sets = params[:extra_toiletry_sets]
               end
-              unless Booking.by_user(current_user)[0] || current_user.migrated
+              unless (Booking.by_user(current_user) - [booking])[0] || current_user.migrated
                 booking.first_booking_discount = true
               end
               booking.payment = payment
-              params[:services].each do |service|
-                booking.services.push Service.where(name: service)[0]
-              end
               if property.bookings.count == 0 && current_user.vip_count < VIP_CLEANINGS
                 booking.vip = true
                 current_user.update_attribute :vip_count, current_user.vip_count + 1

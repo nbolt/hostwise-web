@@ -355,7 +355,7 @@ class Booking < ActiveRecord::Base
   end
 
   def update_linen_handling
-    self.linen_handling_cd = nil unless services.where(name: 'linens')[0]
+    self.linen_handling_cd = nil unless services.where(name: 'linens')[0] || !id
   end
 
   def attach_user
