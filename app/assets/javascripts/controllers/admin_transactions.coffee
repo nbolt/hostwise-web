@@ -275,7 +275,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
       aLengthMenu: [
         [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
       ]
-      aoColumns: [{bSortable:false},null,null,null,null,{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false}]
+      aoColumns: [{bSortable:false},null,null,null,null,{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false},{bSortable:false}]
       serverSide: true
       fnInitComplete: (->
         angular.element('#example-2 thead.search th').each (index) ->
@@ -330,7 +330,7 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
               job.status = 'Open'
             else
               job.status = 'Paid'
-          data_jobs = _($scope.jobs).map (job) -> [(if job.total_payout != "Pending" && job.status != "Paid" then "<div style='text-align:center'><input class='cbr' type='checkbox' id='job-#{job.id}' /></div>" else ''), "<a href='/jobs/#{job.id}' class='teal'>#{job.id}</a>", "<a href='/properties/#{job.booking.property.id}' class='teal'>#{job.booking.property.id}</a>", "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.id}</a>", job.date, "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.name}</a>", job.contractor_names, job.status, job.adjusted_payout, (if job.total_payout != "Pending" && job.status != "Paid" then "<a class='teal' href='javascript:void(0)' onclick='javascript:$(this).scope().edit_payout_modal(#{job.id})'>#{job.total_payout}</a>" else "<span>#{job.total_payout}</span>")]
+          data_jobs = _($scope.jobs).map (job) -> [(if job.total_payout != "Pending" && job.status != "Paid" then "<div style='text-align:center'><input class='cbr' type='checkbox' id='job-#{job.id}' /></div>" else ''), "<a href='/jobs/#{job.id}' class='teal'>#{job.id}</a>", "<a href='/properties/#{job.booking.property.id}' class='teal'>#{job.booking.property.id}</a>", "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.id}</a>", job.date, "<a href='/hosts/#{job.booking.user.id}/edit' class='teal'>#{job.booking.user.name}</a>", job.contractor_names, job.status, job.adjusted_payout, (if job.total_payout != "Pending" && job.status != "Paid" then "<a class='teal' href='javascript:void(0)' onclick='javascript:$(this).scope().edit_payout_modal(#{job.id})'>#{job.total_payout}</a>" else "<span>#{job.total_payout}</span>"), job.contractor_payouts]
           cb({data:data_jobs,recordsTotal:rsp.meta.total,recordsFiltered:rsp.meta.filtered})
     })
     $scope.jobs_table = table

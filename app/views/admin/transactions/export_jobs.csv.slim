@@ -1,5 +1,5 @@
-- headers = ['TimeStamp', 'Job ID', 'Property ID', 'Status', 'Date', 'Client Name', 'Contractor Names', 'Payout Status', 'Contractor Payouts']
+- headers = ['TimeStamp', 'Job ID', 'Property ID', 'Status', 'Date', 'Client Name', 'Contractor Names', 'Payout Status', 'Total Payout', 'Contractor Payouts']
 
 = CSV.generate_line headers
 - @jobs.each do |job|
-  = CSV.generate_line([Time.now.strftime('%I:%M%p %m/%d/%Y'), job.id, job.booking.property.id, job.status, job.date.strftime, job.booking.user.name, job.contractor_names, job.payouts.where('status_cd != 2')[0] && 'Open' || 'Paid', job.contractor_payouts]).html_safe
+  = CSV.generate_line([Time.now.strftime('%I:%M%p %m/%d/%Y'), job.id, job.booking.property.id, job.status, job.date.strftime, job.booking.user.name, job.contractor_names, job.payouts.where('status_cd != 2')[0] && 'Open' || 'Paid', job.payouts.reduce(0) {|acc, payout| if payout.amount then acc + payout.total else acc end} / 100, job.contractor_payouts]).html_safe
