@@ -105,7 +105,7 @@ class Job < ActiveRecord::Base
   end
 
   def contractor_payouts
-    payouts.map {|payout| "#{payout.user.name} (#{((payout.amount && payout.total || 0) / 100)})"}.join ', '
+    payouts.map {|payout| "#{payout.user.name} (#{((payout.amount && payout.total || 0) / 100.0)})"}.join ', '
   end
 
   def formatted_time
