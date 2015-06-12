@@ -65,6 +65,8 @@ class ContractorProfile < ActiveRecord::Base
                   self.user.last_name
                 when 'ssn_last_4'
                   self.ssn[-4..-1]
+                when 'personal_id_number'
+                  self.ssn
                 when 'address'
                   { 'line1' => self.address1, 'line2' => self.address2, 'city' => self.city, 'state' => self.state, 'postal_code' => self.zip }
                 when 'personal_address'
