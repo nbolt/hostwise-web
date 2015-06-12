@@ -257,7 +257,7 @@ module Clockwork
           when 'bookings:nil_check'
             bookings = Booking.where('services.id is null').includes(:services).references(:services)
             body = "Bad data alert! These bookings have no services attached: #{bookings.map(&:id).join ', '}"
-            UserMailer.generic_notification("Bookings with no services alert", body).then(:deliver)
+            UserMailer.generic_notification("Bookings with no services alert", body).then(:deliver) if bookings.present?
           end
       end
     rescue Exception => exception
