@@ -80,7 +80,7 @@ class Host::PropertiesController < Host::AuthController
         return
       end
     end
-    if params[:dates]
+    if params[:dates].present? && params[:services].present?
       bookings = []
       coupon = Coupon.find params[:coupon_id] if params[:coupon_id]
       params[:dates].each do |k,v|
