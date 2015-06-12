@@ -14,6 +14,8 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
   $scope.show_back = false
   $scope.discount = 0
   $scope.linen_handling = null
+  $scope.calculating = false
+  $scope.slideQ = $q.defer()
 
   $scope.steps = [
     {
@@ -358,19 +360,23 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.abs = (num) -> Math.abs num
 
-  $scope.load_pricing = -> $http.get('/cost').success (rsp) -> $scope.pricing = rsp
+  $scope.load_pricing = -> $http.get('/cost').success (rsp) -> $scope.pricing = rsp; $scope.slideQ.resolve()
 
   $scope.flex_service_total = -> $scope.service_total + $scope.first_booking_discount_cost - ($scope.timeslot_cost || 0) - ($scope.linen_handling_chosen && 299 * $scope.property.beds || 0)
 
   $scope.calculate_pricing = ->
-    if $scope.pricing
+    if $scope.pricing && !$scope.calculating
       first_booking_discount_applied = false
       linen_handling_applied = false
       service_total = -1
       $scope.total = 0
       $scope.days = []
       remaining = $scope.remaining
+      $scope.calculating = true
+      $scope.slideQ = $q.defer()
       $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, handling: $scope.linen_handling, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
+        $scope.calculating = false
+        $scope.slideQ.resolve()
         $scope.timeslot_cost = rsp.timeslot_cost
         $scope.cleaning_cost = rsp.orig_service_cost
         cancellation_cost = rsp.cost - (rsp.linens || 0) - (rsp.toiletries || 0)
@@ -437,22 +443,23 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
         $scope.total = 0 if $scope.total < 0
 
   $scope.slide = (type) ->
-    angular.element('.booking.modal .content-container .content-group').css 'opacity', 0
-    $timeout((->
-      angular.element('.booking.modal .content-container .content-group').css 'display', 'none'
-      angular.element(".booking.modal .content-container .content-group.#{type}").css 'display', 'block'
-      $timeout((->angular.element(".booking.modal .content-container .content-group.#{type}").css 'opacity', 1),50)
-      if ($($window).width() <= 480)
-        if (type == 'step-linens')
-          owl = angular.element('.linen-boxes').owlCarousel({items: 1, loop: true, dots: false, smartSpeed: 500})
-          angular.element('.linen-boxes').prepend("<div class='nav'> <div class='next'><div class='icon'><i class='icon-job-start'/></div></div> <div class='prev'><div class='icon'><i class='icon-job-start'/></div></div> </div>")
-          angular.element('.linen-boxes .next').click -> owl.trigger('next.owl.carousel')
-          angular.element('.linen-boxes .prev').click -> owl.trigger('prev.owl.carousel')
-        if type != 'step-four' && (angular.element(".booking.modal .content-container .content-group.#{type}").outerHeight() < $($window).height())
-          angular.element(".booking.modal .content-container .content-group.#{type} .content").css 'min-height', $($window).height() - 102
-    ), 400)
-    $scope.refresh_booking = true if type is 'cancelled' or type is 'booked'
-    null
+    $scope.slideQ.promise.then ->
+      angular.element('.booking.modal .content-container .content-group').css 'opacity', 0
+      $timeout((->
+        angular.element('.booking.modal .content-container .content-group').css 'display', 'none'
+        angular.element(".booking.modal .content-container .content-group.#{type}").css 'display', 'block'
+        $timeout((->angular.element(".booking.modal .content-container .content-group.#{type}").css 'opacity', 1),50)
+        if ($($window).width() <= 480)
+          if (type == 'step-linens')
+            owl = angular.element('.linen-boxes').owlCarousel({items: 1, loop: true, dots: false, smartSpeed: 500})
+            angular.element('.linen-boxes').prepend("<div class='nav'> <div class='next'><div class='icon'><i class='icon-job-start'/></div></div> <div class='prev'><div class='icon'><i class='icon-job-start'/></div></div> </div>")
+            angular.element('.linen-boxes .next').click -> owl.trigger('next.owl.carousel')
+            angular.element('.linen-boxes .prev').click -> owl.trigger('prev.owl.carousel')
+          if type != 'step-four' && (angular.element(".booking.modal .content-container .content-group.#{type}").outerHeight() < $($window).height())
+            angular.element(".booking.modal .content-container .content-group.#{type} .content").css 'min-height', $($window).height() - 102
+      ), 400)
+      $scope.refresh_booking = true if type is 'cancelled' or type is 'booked'
+      null
 
   $scope.prev = ->
     last_complete = angular.element('.step.complete:visible:last')
