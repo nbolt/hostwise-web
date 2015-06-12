@@ -85,13 +85,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
     ), 500)
   else
     $scope.extra = {king_sets: 0, twin_sets: 0, toiletry_sets: 0}
-    $scope.linen_handling = $scope.property.linen_handling_cd if $scope.property
-    linen_handling =
-      switch $scope.linen_handling
-        when 0 then 'purchase'
-        when 1 then 'rental'
-        when 2 then 'in-unit'
-    $timeout((-> angular.element(".step-linens .box.#{linen_handling}").addClass 'selected'), 1000)
+    if $scope.property && $scope.property.linen_handling_cd == 0
+      $scope.linen_handling = 0
+      $timeout((-> angular.element(".step-linens .box.purchase").addClass 'selected'), 1000)
 
   unless $scope.selected_booking
     $http.get("/properties/#{$scope.property.slug}/last_services").success (rsp) ->
