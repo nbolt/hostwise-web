@@ -104,6 +104,10 @@ class Job < ActiveRecord::Base
     jobs.select {|job| job.date.year == date.year && job.date.month == date.month && week.index(job.date.day)}
   end
 
+  def contractor_payouts
+    payouts.map {|payout| "#{payout.user.name} (#{((payout.amount && payout.total || 0) / 100)})"}.join ', '
+  end
+
   def formatted_time
     if booking.then(:timeslot)
       time = booking.timeslot - 1
