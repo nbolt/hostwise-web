@@ -254,6 +254,10 @@ module Clockwork
                 TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} was unable to access property ##{job.booking.property.id} and the 30m timer has passed. They are now either leaving the property or have forgotten to notify us they've gotten in. This is for job ##{job.id}.")
               end
             end
+          when 'bookings:nil_check'
+            bookings = Booking.where('services.id is null').includes(:services).references(:services)
+            body = "Bad data alert! These bookings have no services attached: #{bookings.map(&:id).join ', '}"
+            UserMailer.generic_notification("Bookings with no services alert", body).then(:deliver)
           end
       end
     rescue Exception => exception
@@ -277,4 +281,5 @@ module Clockwork
   every(1.hour, 'jobs:check_no_shows', at: '**:30')
   every(1.day,  'coupons:monitor', at: '22:00')
   every(10.minutes, 'jobs:check_timers')
+  every(10.minutes, 'bookings:nil_check')
 end
