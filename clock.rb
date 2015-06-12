@@ -92,7 +92,7 @@ module Clockwork
             Property.purchased.each do |property|
               timezone = Timezone::Zone.new :zone => property.zone
               time = timezone.time Time.now
-              subscriptions.push property if time.hour == 22 && (property.last_transaction.then(:status) == :failed || time.day == property.purchase_date.day && time.month == property.purchase_date.month)
+              properties.push property if time.hour == 22 && (property.last_transaction.then(:status) == :failed || time.day == property.purchase_date.day && time.month == property.purchase_date.month)
             end
             UserMailer.subscriptions_report(properties).then(:deliver) if properties.present?
           when 'payments:process'
