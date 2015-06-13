@@ -224,7 +224,7 @@ class User < ActiveRecord::Base
   def drop_job job, admin=false
     primary = ContractorJobs.where(job_id: job.id, user_id: self.id)[0].then(:primary)
     job.contractors.destroy self
-    job.booking.update_attribute :timeslot, nil if job.contractors.empty? && job.booking.timeslot_type == :flex
+    job.booking.update_attributes(timeslot: nil, admin: false) if job.contractors.empty? && job.booking.timeslot_type == :flex
     job.size = job.contractors.count if job.booking && job.contractors.count >= job.minimum_job_size
     if self.contractor_profile.position == :trainee
       job.training = false

@@ -48,10 +48,10 @@ class Job < ActiveRecord::Base
   scope :training, -> { where(training: true) }
   scope :not_training, -> { where(training: false) }
   scope :standard, -> { where(distribution: false) }
-  scope :single, -> { where('size = 1') }
-  scope :team, -> { where('size > 1') }
-  scope :timed, -> { where('bookings.timeslot is not null').includes(:booking).references(:bookings) }
-  scope :untimed, -> { where('bookings.timeslot is null').includes(:booking).references(:bookings) }
+  scope :single, -> { where('jobs.size = 1') }
+  scope :team, -> { where('jobs.size > 1') }
+  scope :timed, -> { where('(bookings.timeslot is not null and jobs.size != 1) or bookings.timeslot_type_cd = 1').includes(booking: [:job]).references(:bookings, :jobs) }
+  scope :untimed, -> { where('(bookings.timeslot is null or jobs.size = 1) and bookings.timeslot_type_cd = 0').includes(booking: [:job]).references(:bookings, :jobs) }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
@@ -478,27 +478,29 @@ class Job < ActiveRecord::Base
   end
 
   def self.organize_day contractor, date, job=nil, admin=false
-    hours = []; hours[11] = nil
+    hours = []; hours[12] = nil
     jobs  = contractor.jobs.standard.on_date(date)
-    jobs  = jobs.where('jobs.id != ?', job.id) if job
     count = 0; index = nil
 
-    jobs.timed.each do |job|
+    timed_jobs = jobs.timed
+    timed_jobs += [job] if job && (job.booking.timeslot_type == :premium || (job.booking.timeslot && job.size > 1))
+    timed_jobs.each do |job|
       start_hour = job.booking.timeslot - 9
       end_hour   = (job.booking.timeslot + job.man_hours).floor - 9
       (start_hour..end_hour).each {|hour| hours[hour] = job.id}
     end
 
     flex_jobs = jobs.untimed.team + jobs.untimed.single
-    flex_jobs += [job] if job
+    flex_jobs += [job] if job && (job.booking.timeslot_type == :flex && (!job.booking.timeslot || job.size == 1))
     flex_jobs.each do |job|
       range  = job.man_hours.floor
       ranges = Job.find_hours hours, range, [2, 7]
-      if ranges.empty? && admin
+      if ranges.empty? && (admin || job.booking.admin)
         timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
         time = timezone.time Time.now
         if time.to_date == date then start = time.hour - 8 else start = 0 end
         ranges = Job.find_hours hours, range, [start, -1]
+        job.booking.update_attribute :admin, true if ranges[0]
       end
       i = jobs.untimed.count > 1 && 0 || -1
       slot = ranges.sort_by! {|r| r[1]}[i]
@@ -509,24 +511,11 @@ class Job < ActiveRecord::Base
   end
 
   def fits_in_day contractor, admin=false
-    count = 0; index = nil
-    hours = Job.organize_day contractor, date
-
-    if booking.timeslot_type == :flex
-      range  = man_hours.floor
-      ranges = Job.find_hours hours, range, [2, 7]
-      if ranges.empty? && admin
-        timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
-        time = timezone.time Time.now
-        if time.to_date == self.date then start = time.hour - 8 else start = 0 end
-        ranges = Job.find_hours hours, range, [start, -1]
-      end
-      slot = ranges.sort_by! {|r| r[1]}[0]
-      slot && true || false
-    else
-      start_hour = booking.timeslot - 9
-      end_hour   = (booking.timeslot + man_hours).floor - 9
-      hours[start_hour..end_hour].compact.empty?
+    begin
+      Job.organize_day contractor, date, self, admin
+      true
+    rescue
+      false
     end
   end
 
