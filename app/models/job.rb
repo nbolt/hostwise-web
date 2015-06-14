@@ -495,12 +495,11 @@ class Job < ActiveRecord::Base
     flex_jobs.each do |job|
       range  = job.man_hours.floor
       ranges = Job.find_hours hours, range, [2, 7]
-      if ranges.empty? && (admin || job.booking.admin)
+      if ranges.empty? && admin
         timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
         time = timezone.time Time.now
         if time.to_date == date then start = time.hour - 8 else start = 0 end
         ranges = Job.find_hours hours, range, [start, -1]
-        job.booking.update_attribute :admin, true if ranges[0]
       end
       i = jobs.untimed.count > 1 && 0 || -1
       slot = ranges.sort_by! {|r| r[1]}[i]
@@ -519,10 +518,10 @@ class Job < ActiveRecord::Base
     end
   end
 
-  def self.set_priorities contractor, date, admin=false
+  def self.set_priorities contractor, date
     jobs = contractor.jobs.on_date(date)
     if jobs.standard.any? {|job| job.booking.timeslot_type_cd == 1}
-      hours = Job.organize_day(contractor, date, nil, admin).uniq.compact
+      hours = Job.organize_day(contractor, date, nil, true).uniq.compact
       hours.each_with_index do |id, index|
         ContractorJobs.where(user_id: contractor.id, job_id: id)[0].update_attribute :priority, index + 1
         job = Job.find id

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150613014349) do
+ActiveRecord::Schema.define(version: 20150614152247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -137,7 +137,6 @@ ActiveRecord::Schema.define(version: 20150613014349) do
     t.integer  "linen_handling_cd"
     t.integer  "timeslot"
     t.integer  "timeslot_type_cd"
-    t.boolean  "admin",                       default: false
   end
 
   add_index "bookings", ["payment_id"], name: "index_bookings_on_payment_id", using: :btree
@@ -438,6 +437,7 @@ ActiveRecord::Schema.define(version: 20150613014349) do
     t.integer  "zip_id"
     t.integer  "linen_handling_cd"
     t.date     "purchase_date"
+    t.integer  "linen_count",            default: 0
   end
 
   add_index "properties", ["zip_id"], name: "index_properties_on_zip_id", using: :btree

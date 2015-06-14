@@ -212,7 +212,7 @@ class User < ActiveRecord::Base
         job.save
       end
       job.handle_distribution_jobs self
-      job.contractors.each {|contractor| Job.set_priorities contractor, job.date, admin}
+      job.contractors.each {|contractor| Job.set_priorities contractor, job.date}
       unless Rails.env.test?
         fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
         fanout.publish_async 'jobs', {}
@@ -224,7 +224,7 @@ class User < ActiveRecord::Base
   def drop_job job, admin=false
     primary = ContractorJobs.where(job_id: job.id, user_id: self.id)[0].then(:primary)
     job.contractors.destroy self
-    job.booking.update_attributes(timeslot: nil, admin: false) if job.contractors.empty? && job.booking.timeslot_type == :flex
+    job.booking.update_attribute :timeslot, nil if job.contractors.empty? && job.booking.timeslot_type == :flex
     job.size = job.contractors.count if job.booking && job.contractors.count >= job.minimum_job_size
     if self.contractor_profile.position == :trainee
       job.training = false
