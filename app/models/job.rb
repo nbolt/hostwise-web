@@ -477,7 +477,7 @@ class Job < ActiveRecord::Base
     ranges
   end
 
-  def self.organize_day contractor, date, job=nil, admin=false
+  def self.organize_day contractor, date, job=nil, admin=true
     hours = []; hours[12] = nil
     jobs  = contractor.jobs.standard.on_date(date)
     count = 0; index = nil
@@ -521,7 +521,7 @@ class Job < ActiveRecord::Base
   def self.set_priorities contractor, date
     jobs = contractor.jobs.on_date(date)
     if jobs.standard.any? {|job| job.booking.timeslot_type_cd == 1}
-      hours = Job.organize_day(contractor, date, nil, true).uniq.compact
+      hours = Job.organize_day(contractor, date).uniq.compact
       hours.each_with_index do |id, index|
         ContractorJobs.where(user_id: contractor.id, job_id: id)[0].update_attribute :priority, index + 1
         job = Job.find id
