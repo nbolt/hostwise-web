@@ -26,8 +26,10 @@ class Admin::CouponsController < Admin::AuthController
     coupon = Coupon.new coupon_params
     coupon.expiration = Date.strptime params[:coupon][:expiration], '%m/%d/%Y' if params[:coupon][:expiration]
     coupon.amount = params[:coupon][:amount].to_f * 100 if coupon.discount_type_cd == 0
-    params[:coupon][:customers].each do |customer|
-      coupon.users.push User.find(customer['id'])
+    if params[:coupon][:customers]
+      params[:coupon][:customers].each do |customer|
+        coupon.users.push User.find(customer['id'])
+      end
     end
     if coupon.save
       render json: { success: true }
