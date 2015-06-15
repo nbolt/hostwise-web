@@ -17,7 +17,7 @@ module Clockwork
           when 'coupons:monitor'
             coupons = []
             Coupon.all.each do |coupon|
-              coupons.push(coupon) if (coupon.limit > 0 && coupon.limit < coupon.bookings.count) || (coupon.expiration && coupon.booking_coupons.order('created_at desc')[0].then(:date) && coupon.expiration < coupon.booking_coupons.order('created_at desc')[0].then(:date))
+              coupons.push(coupon) if (coupon.limit > 0 && coupon.limit < coupon.bookings.count) || (coupon.expiration && coupon.bookings.any? {|booking| booking.date <= coupon.expiration})
             end
             body = "Coupons that might be being abused: #{coupons.map(&:id)}"
             UserMailer.generic_notification('Coupon abuse notification', body).then(:deliver)
