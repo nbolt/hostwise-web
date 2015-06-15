@@ -374,7 +374,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
       remaining = $scope.remaining
       $scope.calculating = true
       $scope.slideQ = $q.defer()
-      $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, handling: $scope.linen_handling, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking}).success (rsp) ->
+      $http.post("/properties/#{$scope.property.slug}/booking_cost", {services: $scope.selected_services, handling: $scope.linen_handling, timeslot: $scope.chosen_time, coupon_id: $scope.coupon_id, extra_king_sets: $scope.extra.king_sets, extra_twin_sets: $scope.extra.twin_sets, extra_toiletry_sets: $scope.extra.toiletry_sets, booking: $scope.selected_booking, dates: $scope.chosen_dates}).success (rsp) ->
         $scope.calculating = false
         $scope.slideQ.resolve()
         $scope.timeslot_cost = rsp.timeslot_cost
@@ -407,9 +407,6 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
               first_booking_discount_applied = true
             if rsp.first_booking_discount
               day.first_booking_discount = rsp.first_booking_discount
-            if rsp.coupon_cost
-              day.coupon = true
-              day.coupon_cost = rsp.coupon_cost
             if rsp.overage_cost
               day.overage = true
               day.overage_cost = rsp.overage_cost
@@ -422,10 +419,9 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
               day.extra_twin_sets = rsp.extra_twin_sets
             if rsp.extra_toiletry_sets
               day.extra_toiletry_sets = rsp.extra_toiletry_sets
-            if (remaining == -1 || remaining > 0) && !$scope.selected_booking
+            if (remaining == -1 || remaining > 0) && _(rsp.valid_dates).find((str) -> str == moment("#{k}-#{d}", 'M-YYYY-D').format('YYYY-MM-DD')) && !$scope.selected_booking
               remaining -= 1 if remaining > 0
-              day.discount = $scope.discount
-              day.discount = day.total if day.discount > day.total
+              day.discount = rsp.coupon_cost / 100
               day.total -= day.discount
             day.total = parseFloat day.total.toFixed(2)
             $scope.total += day.total
@@ -597,7 +593,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
       ), 4000)
 
   $scope.$watch 'discount_code', (n,o) -> if o != undefined && n != o
-    $http.post("/bookings/apply_discount", {code: n, total: $scope.total, property_id: $scope.property.id}).success (rsp) ->
+    $http.post("/bookings/apply_discount", {code: n, total: $scope.total, property_id: $scope.property.id, dates: $scope.chosen_dates}).success (rsp) ->
       if rsp.success
         angular.element('#discount-code input').attr('disabled', true)
         angular.element('#discount-code').addClass 'applied'

@@ -285,9 +285,11 @@ class Host::PropertiesController < Host::AuthController
       render json: cost
     else
       discount = if Booking.by_user(current_user)[0] || current_user.migrated then false else true end
-      discount_cost = Booking.cost property, services, linen_handling, (flex && :flex || :premium), params[:timeslot], params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], discount
+      discount_cost = Booking.cost property, services, linen_handling, (flex && :flex || :premium), params[:timeslot], params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], discount, false, false, false, params[:coupon_id], nil, params[:dates]
       cost = Booking.cost property, services, linen_handling, (flex && :flex || :premium), params[:timeslot], params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets]
       cost[:first_booking_discount_cost] = discount_cost[:first_booking_discount]
+      cost[:coupon_cost] = discount_cost[:coupon_cost]
+      cost[:valid_dates] = discount_cost[:valid_dates]
       render json: cost
     end
   end
