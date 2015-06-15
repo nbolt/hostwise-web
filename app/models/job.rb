@@ -143,7 +143,7 @@ class Job < ActiveRecord::Base
   def soiled_pickup_count
     if booking
       prev_booking = booking.property.bookings.completed.order('date desc')[0]
-      prev_booking.linen_set_count
+      prev_booking.then :linen_set_count
     end
   end
 
