@@ -30,7 +30,7 @@ class Booking < ActiveRecord::Base
   scope :past, -> { where('date < ?', Date.today) }
   scope :by_user, -> (user) { where('user_id = ? and bookings.status_cd != ?', user.id, 0).includes(property: [:user]).references(:user) }
   scope :active, -> { where(status_cd: 1) }
-  scope :completed, -> {where(status_cd: [3,5]) }
+  scope :completed, -> {where(status_cd: 3) }
 
   before_save :check_transaction, :update_linen_handling
   before_create :create_job

@@ -258,6 +258,17 @@ module Clockwork
             bookings = Booking.where('services.id is null').includes(:services).references(:services)
             body = "Bad data alert! These bookings have no services attached: #{bookings.map(&:id).join ', '}"
             UserMailer.generic_notification("Bookings with no services alert", body).then(:deliver) if bookings.present?
+          when 'linens:check_counts'
+            mismatched = []
+            jobs = Job.standard.complete.on_date(Date.yesterday)
+            jobs.each do |job|
+              king_sheets  = job.checklist.checklist_settings[:inventory_count]['king_sheets']
+              twin_sheets  = job.checklist.checklist_settings[:inventory_count]['twin_sheets']
+              total_sheets = king_sheets + twin_sheets
+              mismatched.push job if job.soiled_pickup_count != total_sheets
+            end
+            body = "These jobs have potential linens that were not picked up: #{mismatched.map(&:id).join ', '}"
+            UserMailer.generic_notification('Linen pickup mismatch', body).then(:deliver) if mismatched.present?
           end
       end
     rescue Exception => exception
@@ -280,6 +291,7 @@ module Clockwork
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')
   every(1.hour, 'jobs:check_no_shows', at: '**:30')
   every(1.day,  'coupons:monitor', at: '22:00')
+  every(1.day,  'linens:check_counts', at: '17:00')
   every(10.minutes, 'jobs:check_timers')
-  every(10.minutes, 'bookings:nil_check')
+  every(30.minutes, 'bookings:nil_check')
 end

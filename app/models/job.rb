@@ -140,6 +140,13 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def soiled_pickup_count
+    if booking
+      prev_booking = booking.property.bookings.completed.order('date desc')[0]
+      prev_booking.linen_set_count
+    end
+  end
+
   def king_bed_count
     if booking && has_linens?
       if booking.linen_handling == :in_unit
@@ -492,17 +499,17 @@ class Job < ActiveRecord::Base
 
     flex_jobs = jobs.untimed.team + jobs.untimed.single
     flex_jobs += [job] if job && (job.booking.timeslot_type == :flex && (!job.booking.timeslot || job.size == 1))
-    flex_jobs.each do |job|
+    # sort by target priority
+    flex_jobs.each_with_index do |job, index|
       range  = job.man_hours.floor
-      ranges = Job.find_hours hours, range, [2, 7]
+      ranges = Job.find_hours hours, range, [2, 7] # base start index on previous job
       if ranges.empty? && admin
         timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
         time = timezone.time Time.now
         if time.to_date == date then start = time.hour - 8 else start = 0 end
-        ranges = Job.find_hours hours, range, [start, -1]
+        ranges = Job.find_hours hours, range, [start, -1] # base start index on previous job
       end
-      i = jobs.untimed.count > 1 && 0 || -1
-      slot = ranges.sort_by! {|r| r[1]}[i]
+      slot = ranges[0]
       (slot[0]..(range + slot[0])).each {|hour| hours[hour] = job.id}
     end
 

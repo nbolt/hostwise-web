@@ -370,12 +370,22 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       angular.element(".phase.arrival .tab.inventory").addClass 'active'
       null
 
+  flash = (type, msg) ->
+    angular.element('.inventory .flash').css 'display', 'block'
+    $timeout((-> angular.element('.inventory .flash').text(msg).addClass(type).css 'opacity', 1), 50)
+
   $scope.to_cleaning = ->
-    if $scope.begin_cleaning_class() == ''
-      $scope.checklist.checklist_settings.inventory_count.complete = true
-      $scope.arrival = true
-      scroll '.phase.cleaning'
-    null
+    king_sheets = $scope.checklist.checklist_settings.inventory_count.king_sheets
+    twin_sheets = $scope.checklist.checklist_settings.inventory_count.twin_sheets
+    if $scope.job.soiled_pickup_count == king_sheets + twin_sheets || $scope.inventory_check
+      if $scope.begin_cleaning_class() == ''
+        $scope.checklist.checklist_settings.inventory_count.complete = true
+        $scope.arrival = true
+        scroll '.phase.cleaning'
+      null
+    else
+      $scope.inventory_check = true
+      flash 'info', "Our system indicates there are #{$scope.job.soiled_pickup_count} linen sets to pick up. Are you sure there are no others left in the residence?"
 
   $scope.complete_cleaning = -> $scope.checklist.checklist_settings.cleaning.cleaned = true
 

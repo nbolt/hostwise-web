@@ -37,7 +37,7 @@ class Contractor::JobsController < Contractor::AuthController
       end
       format.json do
         job.current_user = current_user
-        render json: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :next_job, :prev_job, :cant_access_seconds_left, :man_hours, :primary, :king_bed_count, :twin_bed_count, :toiletry_count, :is_last_job_of_day, :index_in_day], include: {distribution_center: {methods: [:full_address, :full_address_encoded, :map_address]}, contractors: {methods: [:name, :display_phone_number, :avatar], include: {contractor_profile: {}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :full_address_encoded, :map_address, :nickname, :property_type, :property_size]}}}})
+        render json: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :next_job, :prev_job, :cant_access_seconds_left, :man_hours, :primary, :king_bed_count, :twin_bed_count, :toiletry_count, :is_last_job_of_day, :index_in_day, :soiled_pickup_count], include: {distribution_center: {methods: [:full_address, :full_address_encoded, :map_address]}, contractors: {methods: [:name, :display_phone_number, :avatar], include: {contractor_profile: {}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {include: {property_photos: {}, user: {methods: [:avatar, :display_phone_number, :name]}}, methods: [:primary_photo, :full_address, :full_address_encoded, :map_address, :nickname, :property_type, :property_size]}}}})
       end
     end
   end
@@ -152,6 +152,13 @@ class Contractor::JobsController < Contractor::AuthController
         if property.user.settings(:service_completion).sms
           TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!", checklist_photos)
         end
+
+        king_sheets  = job.checklist.checklist_settings[:inventory_count]['king_sheets']
+        twin_sheets  = job.checklist.checklist_settings[:inventory_count]['twin_sheets']
+        total_sheets = king_sheets + twin_sheets
+        job.booking.property.update_attribute :linen_count, job.booking.property.linen_count + job.soiled_pickup_count - total_sheets
+        job.booking.property.update_attribute :linen_count, 0 if property.linen_count < 0
+        job.checklist.settings(:inventory_count).update_attributes(mismatch: true) if job.soiled_pickup_count != total_sheets
       end
     end
     render json: { success: true, next_job: job.next_job(current_user).then(:id), status_cd: job.status_cd }

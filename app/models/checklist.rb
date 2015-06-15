@@ -5,7 +5,7 @@ class Checklist < ActiveRecord::Base
   has_settings do |s|
     s.key :arrival_tasks, defaults: { dishes: false, bathrooms: false }
     s.key :damage_inspection, defaults: { damage: false }
-    s.key :inventory_count, defaults: { complete: false, king_sheets: 0, twin_sheets: 0, pillow_count: 0, bath_towels: 0, hand_towels: 0, face_towels: 0, bath_mats: 0 }
+    s.key :inventory_count, defaults: { complete: false, king_sheets: 0, twin_sheets: 0, pillow_count: 0, bath_towels: 0, hand_towels: 0, face_towels: 0, bath_mats: 0, mismatch: false }
     s.key :cleaning, defaults: { cleaned: false }
     s.key :kitchen, defaults: { fridge: false, dishes: false, dishwasher: false, coffee: false, microwave: false, stove: false, counters: false, toaster: false, trash: false, floor: false, restocking: false }
     s.key :living_room, defaults: { dust: false, furniture: false, floor: false }

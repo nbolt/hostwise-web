@@ -62,7 +62,11 @@ class Property < ActiveRecord::Base
   end
 
   def last_service_date
-    bookings.where(status_cd: 3).order('date DESC').first.then(:date)
+    last_booking.then :date
+  end
+
+  def last_booking
+    bookings.completed.order('date desc')[0]
   end
 
   def self.search(term, sort=nil)
