@@ -69,6 +69,18 @@ class Property < ActiveRecord::Base
     bookings.completed.order('date desc')[0]
   end
 
+  def turnover_rate
+    rates = []
+    bookingz = bookings.completed.order('date')
+    if bookingz.count > 1
+      (bookingz.count-1).times {|i| rates.push([bookingz[i], bookingz[i+1]])}
+      rates.map! {|bookings| (bookings[1].date - bookings[0].date).to_i}
+      "#{rates.sum / rates.count} days"
+    else
+      'n/a'
+    end
+  end
+
   def self.search(term, sort=nil)
     results = Property.all
     results = results.search_property(term) if term.present? && !results.empty? && sort != 'upcoming_service' # NEEDS FIX

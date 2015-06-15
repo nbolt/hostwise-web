@@ -31,6 +31,7 @@
             th Customer
             th Address
             th Linen Count
+            th Turnover Rate
         tfoot
           tr
             th ID
@@ -38,6 +39,7 @@
             th Customer
             th Address
             th Linen Count
+            th Turnover Rate
         tbody
           tr ng:repeat='property in properties'
             td
@@ -49,3 +51,4 @@
                 | {{property.user.name}}
             td ng:bind='property.neighborhood_address'
             td ng:bind='property.linen_count'
+            td ng:bind='property.turnover_rate'
