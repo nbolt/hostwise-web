@@ -164,14 +164,6 @@ class User < ActiveRecord::Base
     date.strftime '%m/%d/%Y' if date
   end
 
-  def completed_jobs
-    jobs.complete
-  end
-
-  def cancelled_jobs
-    jobs.cancelled
-  end
-
   def can_claim_job? job, admin=false
     jobs_today = self.jobs.on_date(job.date)
     team_members = job.contractors.team_members
@@ -318,6 +310,14 @@ class User < ActiveRecord::Base
 
   def property_count
     properties.count
+  end
+
+  def completed_jobs_count
+    properties.reduce(0) {|acc, property| acc + property.bookings.completed.count}
+  end
+
+  def upcoming_jobs_count
+    properties.upcoming_bookings.count
   end
 
   private
