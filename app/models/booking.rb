@@ -132,7 +132,7 @@ class Booking < ActiveRecord::Base
     end
     if coupon_id
       coupon = Coupon.find coupon_id
-      if coupon && coupon.status == :active && (coupon.limit == 0 || coupon.applied(property.user) < coupon.limit) && (coupon.users.empty? || coupon.users.find(property.user.id)) && (if date then (!coupon.expiration || coupon.expiration >= date) elsif dates then dates.any? {|k,v| if v then v.any? {|day| month=k.split('-')[0];year=k.split('-')[1];date=Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d');coupon.expiration >= date} end} end)
+      if coupon && coupon.status == :active && (coupon.limit == 0 || coupon.applied(property.user) < coupon.limit) && (coupon.users.empty? || coupon.users.find(property.user.id)) && (!coupon.expiration || (if date then coupon.expiration >= date elsif dates then dates.any? {|k,v| if v then v.any? {|day| month=k.split('-')[0];year=k.split('-')[1];date=Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d');coupon.expiration >= date} end} end))
         amount = coupon.amount
         amount /= 100.0 if coupon.discount_type == :dollar
         amount = rsp[:cost] * (coupon.amount / 100.0) if coupon.discount_type == :percentage
@@ -142,7 +142,7 @@ class Booking < ActiveRecord::Base
           rsp[:coupon_cost] = rsp[:cost] * 100
         end
         rsp[:cost] -= (rsp[:coupon_cost] / 100.0)
-        rsp[:valid_dates] = dates.map {|k,v| if v then v.map {|day| month=k.split('-')[0];year=k.split('-')[1];date=Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d');coupon.expiration >= date && date.strftime || nil} end}.flatten.compact if dates
+        rsp[:valid_dates] = dates.map {|k,v| if v then v.map {|day| month=k.split('-')[0];year=k.split('-')[1];date=Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d');(!coupon.expiration && date.strftime) || (coupon.expiration >= date && date.strftime || nil)} end}.flatten.compact if dates
       end
     end
     if first_booking_discount
