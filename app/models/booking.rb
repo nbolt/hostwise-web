@@ -231,7 +231,7 @@ class Booking < ActiveRecord::Base
   end
 
   def update_cost!
-    cost = Booking.cost(property, services, linen_handling, timeslot_type, timeslot, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id))
+    cost = Booking.cost(property, services, linen_handling, timeslot_type, timeslot, extra_king_sets, extra_twin_sets, extra_toiletry_sets, first_booking_discount, late_next_day, late_same_day, no_access_fee, self.chain(:coupons, :first, :id), date)
     self.timeslot_cost               = cost[:timeslot_cost] || 0
     self.contractor_service_cost     = cost[:contractor_service_cost] || 0
     self.cleaning_cost               = cost[:cleaning] || 0

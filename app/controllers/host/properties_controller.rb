@@ -140,7 +140,7 @@ class Host::PropertiesController < Host::AuthController
               cost = Booking.cost(property, booking.services, booking.linen_handling, booking.timeslot_type, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
               if coupon && (coupon.limit == 0 || coupon.applied(current_user) < coupon.limit)
                 booking.coupons.push coupon
-                cost = Booking.cost(property, booking.services, booking.linen_handling, booking.timeslot_type, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, coupon.id)
+                cost = Booking.cost(property, booking.services, booking.linen_handling, booking.timeslot_type, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, coupon.id, booking.date)
               end
               booking.timeslot_cost               = cost[:timeslot_cost] || 0
               booking.contractor_service_cost     = cost[:contractor_service_cost] || 0
@@ -281,7 +281,7 @@ class Host::PropertiesController < Host::AuthController
 
     services = params[:services].map {|s| Service.where(name: s)[0] if s[1]}.compact
     if booking
-      cost = Booking.cost property, services, (linen_handling || booking.linen_handling), (params[:timeslot] && (flex && :flex || :premium) || booking.timeslot_type), (params[:timeslot] || booking.timeslot), params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id) || params[:coupon_id]
+      cost = Booking.cost property, services, (linen_handling || booking.linen_handling), (params[:timeslot] && (flex && :flex || :premium) || booking.timeslot_type), (params[:timeslot] || booking.timeslot), params[:extra_king_sets], params[:extra_twin_sets], params[:extra_toiletry_sets], booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee, booking.chain(:coupons, :first, :id) || params[:coupon_id], booking.date
       render json: cost
     else
       discount = if Booking.by_user(current_user)[0] || current_user.migrated then false else true end
