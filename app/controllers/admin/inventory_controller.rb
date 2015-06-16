@@ -26,4 +26,8 @@ class Admin::InventoryController < Admin::AuthController
     end
   end
 
+  def jobs
+    render json: Job.standard.complete.to_json(methods: [:soiled_twin_count, :soiled_king_count, :king_bed_count, :twin_bed_count, :contractor_names], include: {booking: {methods: [:service_list], include: {property: {methods: [:nickname, :property_size, :neighborhood_address]}}}})
+  end
+
 end

@@ -100,7 +100,7 @@ Rails.application.routes.draw do
     post  '/hosts/:id/reactivate' => 'hosts#reactivate'
     post  '/hosts/:id/transfer' => 'hosts#transfer'
     get   '/inventory' => 'inventory#index'
-    post  '/inventory/:action' => 'inventory'
+    match '/inventory/:action' => 'inventory', via: [:get, :post]
     get   '/bookings' => 'bookings#index'
     match '/bookings/:id/:action' => 'bookings', via: [:get, :post]
     get   '/jobs' => 'jobs#index'

@@ -159,6 +159,10 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def soiled_king_count
+    checklist.checklist_settings[:inventory_count]['king_sheets'] if checklist
+  end
+
   def twin_bed_count
     if booking && has_linens?
       if booking.linen_handling == :in_unit
@@ -169,6 +173,10 @@ class Job < ActiveRecord::Base
     else
       0
     end
+  end
+
+  def soiled_twin_count
+    checklist.checklist_settings[:inventory_count]['twin_sheets'] if checklist
   end
 
   def toiletry_count

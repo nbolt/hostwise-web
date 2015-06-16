@@ -14,6 +14,20 @@ AdminInventoryCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, 
         })
       ),1000)
 
+  $scope.fetch_jobs = ->
+    spinner.startSpin()
+    $http.get('/inventory/jobs.json').success (rsp) ->
+      $scope.jobs = rsp
+      spinner.stopSpin()
+      $timeout((->
+        angular.element("#example-2").dataTable({
+          aLengthMenu: [
+            [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+          ]
+        })
+      ),1000)
+
+  $scope.fetch_jobs()
   $scope.fetch_properties()
 
 ]
