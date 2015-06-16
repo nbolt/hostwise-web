@@ -1,12 +1,15 @@
 class DistributionCenter < ActiveRecord::Base
   has_many :jobs, through: :job_distribution_centers
   has_many :job_distribution_centers, dependent: :destroy
+  belongs_to :market
 
   as_enum :status, inactive: 0, active: 1
 
   scope :active,   -> { where(status_cd: 1) }
   scope :inactive, -> { where(status_cd: 0) }
+  scope :within_market, -> (market) { where('markets.id = ?', market.id).includes(:market).references(:market) }
 
+  before_create :assign_market
   before_save :standardize_address, :fetch_zone
 
   attr_accessor :distance
@@ -45,6 +48,10 @@ class DistributionCenter < ActiveRecord::Base
   end
 
   private
+
+  def assign_market
+    self.market = Market.near([lat, lng], 50)[0]
+  end
 
   def fetch_zone
     if !zone && lng

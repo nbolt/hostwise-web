@@ -35,7 +35,7 @@ class Job < ActiveRecord::Base
     date = date.to_date if date.class == Time
     where(date: date)
   }
-  scope :within_market, -> (contractor) { where('markets.id = ?', contractor.contractor_profile.market.id).references(:markets).includes(booking: {property: {zip_code: :market}}) || where(id:nil) }
+  scope :within_market, -> (market) { where('markets.id = ?', market.id).references(:markets).includes(booking: {property: {zip_code: :market}}) || where(id:nil) }
   scope :on_month, -> (date) { where('extract(month from jobs.date) = ? and extract(year from jobs.date) = ?', date.month, date.year) }
   scope :on_year, -> (date) { where('extract(year from jobs.date) = ?', date.year) }
   scope :in_week, -> (week, date) { where('extract(year from jobs.date) = ? and extract(month from jobs.date) = ? and extract(day from jobs.date) in (?)', date.year, date.month, week) }
@@ -55,7 +55,7 @@ class Job < ActiveRecord::Base
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
     states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
-    standard.days(contractor).within_market(contractor).where(state_cd: states, status_cd: 0)
+    standard.days(contractor).within_market(contractor.contractor_profile.market).where(state_cd: states, status_cd: 0)
     .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and jobs.date >= ? and jobs.date <= ?', contractor.id, Date.today, Date.today + 2.weeks)
     .order('jobs.date ASC').includes(:contractor_jobs).references(:contractor_jobs)
   }
@@ -558,15 +558,19 @@ class Job < ActiveRecord::Base
         else
           jobs.distribution.pickup[0].update_attribute :distribution_timeslot, first_job.booking.timeslot - 1
         end
-        centers = DistributionCenter.active.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
+        begin
+        centers = DistributionCenter.active.within_market(contractor.contractor_profile.market).map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
         jobs.pickup[0].distribution_center = DistributionCenter.find centers[0][0]
-        centers = DistributionCenter.active.map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
+        rescue
+          binding.pry
+        end
+        centers = DistributionCenter.active.within_market(contractor.contractor_profile.market).map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
         jobs.dropoff[0].distribution_center = DistributionCenter.find centers[0][0]
         jobs.pickup[0].save; jobs.dropoff[0].save
       end
     else
       paths = []
-      (DistributionCenter.active.map{|dc| [dc, dc]} + DistributionCenter.active.to_a.permutation(2).to_a).each do |dc_permutation|
+      (DistributionCenter.active.within_market(contractor.contractor_profile.market).map{|dc| [dc, dc]} + DistributionCenter.active.within_market(contractor.contractor_profile.market).to_a.permutation(2).to_a).each do |dc_permutation|
         jobs.standard.to_a.permutation(jobs.standard.length).to_a.each do |jobs_permutation|
           team_job = jobs.standard.find {|job| job.contractors.count > 1}
           jobs_permutation = jobs_permutation - [team_job]

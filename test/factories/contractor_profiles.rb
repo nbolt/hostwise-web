@@ -5,6 +5,10 @@ FactoryGirl.define do |profile|
     city 'Los Angeles'
     state 'CA'
     zip '90025'
+    after(:create) do |profile|
+      profile.market = Market.where(name: 'Los Angeles')[0]
+      profile.save
+    end
   end
 
   factory :profile_2, class: ContractorProfile do
@@ -13,5 +17,9 @@ FactoryGirl.define do |profile|
     city 'Los Angeles'
     state 'CA'
     zip '90025'
+    after(:create) do |profile|
+      profile.market = Market.where(name: 'Los Angeles')[0]
+      profile.save
+    end
   end
 end

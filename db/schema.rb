@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150614152247) do
+ActiveRecord::Schema.define(version: 20150616221332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -300,7 +300,10 @@ ActiveRecord::Schema.define(version: 20150614152247) do
     t.string   "name"
     t.string   "zone"
     t.integer  "status_cd"
+    t.integer  "market_id"
   end
+
+  add_index "distribution_centers", ["market_id"], name: "index_distribution_centers_on_market_id", using: :btree
 
   create_table "job_distribution_centers", force: :cascade do |t|
     t.integer  "job_id"
@@ -594,6 +597,7 @@ ActiveRecord::Schema.define(version: 20150614152247) do
   add_foreign_key "contractor_profiles", "markets"
   add_foreign_key "coupon_users", "coupons"
   add_foreign_key "coupon_users", "users"
+  add_foreign_key "distribution_centers", "markets"
   add_foreign_key "job_distribution_centers", "distribution_centers"
   add_foreign_key "job_distribution_centers", "jobs"
   add_foreign_key "payments", "users"
