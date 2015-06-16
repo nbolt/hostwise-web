@@ -150,7 +150,8 @@ class Contractor::JobsController < Contractor::AuthController
         checklist_photos << job.checklist.kitchen_photo.url << job.checklist.bedroom_photo.url << job.checklist.bathroom_photo.url
 
         if property.user.settings(:service_completion).sms
-          TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!", checklist_photos)
+          TwilioJob.perform_later("+1#{property.phone_number}", "Your property at #{property.full_address} has been cleaned and is ready for your next check in!")
+          TwilioJob.perform_later("+1#{property.phone_number}", '', checklist_photos)
         end
 
         king_sheets  = job.checklist.checklist_settings[:inventory_count]['king_sheets']
@@ -220,7 +221,8 @@ class Contractor::JobsController < Contractor::AuthController
       job = Job.find_by_id(params[:job_id])
       staging = Rails.env.staging? && '[STAGING] ' || ''
 
-      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has found damages at #{job.booking.property.full_address}", [contractor_photo.photo.url])
+      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has found damages at #{job.booking.property.full_address}")
+      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", '', [contractor_photo.photo.url])
       TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has found damages at property #{job.booking.property.id}.", [contractor_photo.photo.url])
 
       render json: { success: true, contractor_photos: checklist.contractor_photos }
