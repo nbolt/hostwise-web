@@ -154,6 +154,11 @@ class Contractor::JobsController < Contractor::AuthController
           TwilioJob.perform_later("+1#{property.phone_number}", '', checklist_photos)
         end
 
+        if property.user.first_service?
+          body = "Job: #{job.id} - Property: #{property.full_address} - Customer: #{property.user.name}"
+          UserMailer.generic_notification("First Service - #{property.user.name}", body).then(:deliver)
+        end
+
         king_sheets  = job.checklist.checklist_settings[:inventory_count]['king_sheets']
         twin_sheets  = job.checklist.checklist_settings[:inventory_count]['twin_sheets']
         total_sheets = king_sheets + twin_sheets

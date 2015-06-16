@@ -291,6 +291,10 @@ class User < ActiveRecord::Base
     return bookings.first.date unless bookings.empty?
   end
 
+  def first_service?
+    Booking.complete(self).count == 1
+  end
+
   def show_quiz
     completed_jobs = Job.standard.past(self).count
     passed_quizzes = QuizStage.passed(self.contractor_profile)
