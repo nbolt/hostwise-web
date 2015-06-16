@@ -121,14 +121,26 @@
       options:
         1: Hair anywhere
         2: Heavy dust
-        3: Mildew anywhere in bathroom (sink, toilet, floor, shower, bath)
-        4: Trash anywhere in home
-        5: Dirty floors
-        6: Stains on linen
-        7: All of the above
+        3: Dirty laundry
+        4: Mildew anywhere in bathroom (sink, toilet, floor, shower, bath)
+        5: Light dust
+        6: Trash anywhere in home
+        7: Dirty floors
+        8: Stains on linen
+        9: All of the above
       answers:
         -
+          1
+        -
+          2
+        -
+          4
+        -
+          6
+        -
           7
+        -
+          8
     -
       question: How do you remove hairs efficiently from surfaces?
       id: q12
