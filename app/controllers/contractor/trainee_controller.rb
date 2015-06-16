@@ -1,7 +1,7 @@
 class Contractor::TraineeController < Contractor::AuthController
 
   def available_jobs
-    jobs = Job.standard.within_market(current_user).future(current_user.contractor_profile.zone).scheduled.single.trainers.not_training.order('jobs.date')
+    jobs = Job.standard.within_market(current_user.contractor_profile.market).future(current_user.contractor_profile.zone).scheduled.single.trainers.not_training.order('jobs.date')
     jobs = jobs - jobs.on_date(current_user.jobs.standard[0].date) if current_user.jobs.standard.first
     jobs = jobs.each {|job| job.current_user = current_user}
     jobs = jobs.reject {|job| job.previous_team_job}.uniq{|job| job.date}
