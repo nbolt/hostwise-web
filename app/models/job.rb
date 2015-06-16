@@ -558,12 +558,8 @@ class Job < ActiveRecord::Base
         else
           jobs.distribution.pickup[0].update_attribute :distribution_timeslot, first_job.booking.timeslot - 1
         end
-        begin
         centers = DistributionCenter.active.within_market(contractor.contractor_profile.market).map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
         jobs.pickup[0].distribution_center = DistributionCenter.find centers[0][0]
-        rescue
-          binding.pry
-        end
         centers = DistributionCenter.active.within_market(contractor.contractor_profile.market).map {|center| [center.id, Haversine.distance(center.lat, center.lng, contractor.contractor_profile.lat, contractor.contractor_profile.lng)]}.sort_by {|c| c[1]}
         jobs.dropoff[0].distribution_center = DistributionCenter.find centers[0][0]
         jobs.pickup[0].save; jobs.dropoff[0].save
