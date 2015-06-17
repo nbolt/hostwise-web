@@ -255,9 +255,9 @@ module Clockwork
               end
             end
           when 'bookings:nil_check'
-            bookings = Booking.where('services.id is null').includes(:services).references(:services)
-            body = "Bad data alert! These bookings have no services attached: #{bookings.map(&:id).join ', '}"
-            UserMailer.generic_notification("Bookings with no services alert", body).then(:deliver) if bookings.present?
+            bookings = Booking.on_date(Date.today).select {|booking| booking.duplicate?}
+            body = "Duplicate booking alert! These bookings may be duplicates: #{bookings.map(&:id).join ', '}"
+            UserMailer.generic_notification("Duplicate booking alert", body).then(:deliver) if bookings.present?
           when 'linens:check_counts'
             mismatched = []
             jobs = Job.standard.complete.on_date(Date.yesterday)
@@ -292,6 +292,6 @@ module Clockwork
   every(1.hour, 'jobs:check_no_shows', at: '**:30')
   every(1.day,  'coupons:monitor', at: '22:00')
   every(1.day,  'linens:check_counts', at: '17:00')
+  every(1.day,  'bookings:nil_check', at: '17:00')
   every(10.minutes, 'jobs:check_timers')
-  every(30.minutes, 'bookings:nil_check')
 end

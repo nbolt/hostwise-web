@@ -334,16 +334,18 @@ class Booking < ActiveRecord::Base
   end
 
   def duplicate?
-    existing_booking = property.bookings.active.original.on_date(date)[0]
-    if existing_booking
-      if existing_booking == self
-        false
+    unless status == :deleted || status == :cancelled
+      existing_booking = property.bookings.active.original.on_date(date)[0]
+      if existing_booking
+        if existing_booking == self
+          false
+        else
+          errors.add(:date, "can't have more than one active booking on per property")
+          true
+        end
       else
-        errors.add(:date, "can't have more than one active booking on per property")
-        true
+        false
       end
-    else
-      false
     end
   end
 
