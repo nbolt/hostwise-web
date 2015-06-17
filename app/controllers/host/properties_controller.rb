@@ -90,27 +90,27 @@ class Host::PropertiesController < Host::AuthController
             year  = k.split('-')[1]
             date = Date.strptime("#{month}-#{year}-#{day}", '%m-%Y-%d')
             booking = property.bookings.build(date: date, linen_handling_cd: params[:handling] || property.linen_handling_cd)
-            params[:services].each do |service|
-              booking.services.push Service.where(name: service)[0]
-            end
-            if params[:timeslot] == 'flex'
-              booking.timeslot_type_cd = 0
-            else
-              booking.timeslot_type_cd = 1
-              booking.timeslot = params[:timeslot]
-            end
-            if params[:handling]
-              property.update_attribute :linen_handling_cd, params[:handling]
-              if property.linen_handling_cd == 0
-                (property.bookings.active.future - [booking]).each do |booking|
-                  unless booking.linen_handling_cd == 0
-                    booking.update_attribute :linen_handling_cd, params[:handling]
-                    booking.update_cost!
+            unless booking.duplicate?
+              params[:services].each do |service|
+                booking.services.push Service.where(name: service)[0]
+              end
+              if params[:timeslot] == 'flex'
+                booking.timeslot_type_cd = 0
+              else
+                booking.timeslot_type_cd = 1
+                booking.timeslot = params[:timeslot]
+              end
+              if params[:handling]
+                property.update_attribute :linen_handling_cd, params[:handling]
+                if property.linen_handling_cd == 0
+                  (property.bookings.active.future - [booking]).each do |booking|
+                    unless booking.linen_handling_cd == 0
+                      booking.update_attribute :linen_handling_cd, params[:handling]
+                      booking.update_cost!
+                    end
                   end
                 end
               end
-            end
-            unless booking.duplicate?
               if params[:late_next_day].present?
                 booking.late_next_day = true if date.strftime('%b %-d, %Y') == params[:late_next_day]
               end
@@ -159,7 +159,7 @@ class Host::PropertiesController < Host::AuthController
               booking.extra_twin_sets_cost        = cost[:extra_twin_sets] || 0
               booking.extra_toiletry_sets_cost    = cost[:extra_toiletry_sets] || 0
               booking.coupon_cost                 = cost[:coupon_cost] || 0
-              booking.save # need to check for errors
+              booking.save! # need to check for errors
               bookings.push booking
               UserMailer.new_booking_notification(booking).then(:deliver)
               UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
