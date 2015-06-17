@@ -226,9 +226,9 @@ class Contractor::JobsController < Contractor::AuthController
       job = Job.find_by_id(params[:job_id])
       staging = Rails.env.staging? && '[STAGING] ' || ''
 
-      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has found damages at #{job.booking.property.full_address}")
+      TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "HostWise has found damage at #{job.booking.property.full_address}")
       TwilioJob.perform_later("+1#{job.booking.property.phone_number}", '', [contractor_photo.photo.url])
-      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has found damages at property #{job.booking.property.id}.", [contractor_photo.photo.url])
+      TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} has found damage at property #{job.booking.property.id}.", [contractor_photo.photo.url])
 
       render json: { success: true, contractor_photos: checklist.contractor_photos }
     else
