@@ -191,6 +191,46 @@ class Job < ActiveRecord::Base
     end
   end
 
+  def pillow_count
+    king_bed_count * 4
+  end
+
+  def soiled_pillow_count
+    checklist.checklist_settings[:inventory_count]['pillow_count'] if checklist
+  end
+
+  def bath_towel_count
+    king_bed_count * 3 + twin_bed_count * 2
+  end
+
+  def soiled_bath_towel_count
+    checklist.checklist_settings[:inventory_count]['bath_towels'] if checklist
+  end
+
+  def bath_mat_count
+    king_bed_count
+  end
+
+  def soiled_mat_count
+    checklist.checklist_settings[:inventory_count]['bath_mats'] if checklist
+  end
+
+  def hand_towel_count
+    king_bed_count * 2 + twin_bed_count
+  end
+
+  def soiled_hand_count
+    checklist.checklist_settings[:inventory_count]['hand_towels'] if checklist
+  end
+
+  def face_towel_count
+    king_bed_count * 2 + twin_bed_count
+  end
+
+  def soiled_face_count
+    checklist.checklist_settings[:inventory_count]['face_towels'] if checklist
+  end
+
   def contractor_names
     (contractors + payouts.map(&:user)).uniq.compact.map(&:name).join ', '
   end

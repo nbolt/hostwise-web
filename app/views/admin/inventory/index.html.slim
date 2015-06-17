@@ -88,10 +88,13 @@
                 th Services
                 th Date
                 th Contractors
-                th New King Sets
-                th New Twin Sets
-                th Soiled King Sets
-                th Soiled Twin Sets
+                th King Sheets (new / soiled)
+                th Twin Sheets
+                th Pillows
+                th Bath Towels
+                th Bath Mats
+                th Hand Towels
+                th Face Towels
             tfoot
               tr
                 th ID
@@ -101,10 +104,13 @@
                 th Services
                 th Date
                 th Contractors
-                th New King Sets
-                th New Twin Sets
-                th Soiled King Sets
-                th Soiled Twin Sets
+                th King Sheets (new / soiled)
+                th Twin Sheets
+                th Pillows
+                th Bath Towels
+                th Bath Mats
+                th Hand Towels
+                th Face Towels
             tbody
               tr ng:repeat='job in jobs'
                 td
@@ -116,7 +122,10 @@
                 td ng:bind='job.booking.service_list'
                 td ng:bind='job.date'
                 td ng:bind='job.contractor_names'
-                td ng:bind='job.king_bed_count'
-                td ng:bind='job.twin_bed_count'
-                td ng:bind='job.soiled_king_count'
-                td ng:bind='job.soiled_twin_count'
+                td ng:bind-template='{{job.king_bed_count}} / {{job.soiled_king_count}}'
+                td ng:bind-template='{{job.twin_bed_count}} / {{job.soiled_twin_count}}'
+                td ng:bind-template='{{job.pillow_count}} / {{job.soiled_pillow_count}}'
+                td ng:bind-template='{{job.bath_towel_count}} / {{job.soiled_bath_towel_count}}'
+                td ng:bind-template='{{job.bath_mat_count}} / {{job.soiled_mat_count}}'
+                td ng:bind-template='{{job.hand_towel_count}} / {{job.soiled_hand_count}}'
+                td ng:bind-template='{{job.face_towel_count}} / {{job.soiled_face_count}}'
