@@ -24,14 +24,17 @@ class User < ActiveRecord::Base
   has_many :coupon_users, class_name: 'CouponUser', dependent: :destroy
   has_many :coupons, through: :coupon_users
   has_many :payouts
+  belongs_to :market
 
-  as_enum :role, admin: 0, host: 1, contractor: 2
+  as_enum :role, admin: 0, host: 1, contractor: 2, super_mentor: 3
 
   has_settings :new_open_job, :job_claim_confirmation, :service_reminder, :booking_confirmation, :service_completion, :porter_arrived, :property_added, :porter_en_route
 
   pg_search_scope :search_contractors, against: [:email, :first_name, :last_name, :phone_number], associated_against: {contractor_profile: [:address1, :city, :zip]}, using: { tsearch: { prefix: true } }
   pg_search_scope :search_hosts, against: [:email, :first_name, :last_name, :phone_number], using: { tsearch: { prefix: true } }
 
+  scope :within_market, -> (market) { where('markets.id = ?', market.id).references(:markets).includes(properties: {bookings: {property: {zip_code: :market}}}) || where(id:nil) }
+  scope :within_contractor_market, -> (market) { where('markets.id = ?', market.id).references(:markets).includes(contractor_profile: :market) || where(id:nil) }
   scope :trainers, -> { where('position_cd = 3').includes(:contractor_profile).references(:contractor_profile) }
   scope :trainees, -> { where('position_cd = 1').includes(:contractor_profile).references(:contractor_profile) }
   scope :team_members, -> { where('position_cd in (2,3) ').includes(:contractor_profile).references(:contractor_profile) }

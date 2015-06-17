@@ -3,6 +3,7 @@ class Admin::PropertiesController < Admin::AuthController
 
   def index
     properties = Property.all
+    properties = properties.within_market(current_user.market) if current_user.market
     respond_to do |format|
       format.html
       format.json do

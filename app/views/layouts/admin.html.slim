@@ -29,11 +29,12 @@ html
     #sidebar-container
       #sidebar
         .section
-          a href='/dashboard'
-            .title
-              .icon
-                i.icon-analytics
-              .text Dashboard
+          - if current_user.role == :admin
+            a href='/dashboard'
+              .title
+                .icon
+                  i.icon-analytics
+                .text Dashboard
         .section
           a href='/jobs'
             .title
@@ -58,24 +59,26 @@ html
               .icon
                 i.icon-house
               .text Properties
-        .section
-          a href='/transactions'
-            .title
-              .icon
-                i.icon-transactions
-              .text Transactions
+        - if current_user.role == :admin
+          .section
+            a href='/transactions'
+              .title
+                .icon
+                  i.icon-transactions
+                .text Transactions
         .section
           a href='/inventory'
             .title
               .icon
                 i.icon-inventory
               .text Inventory
-        .section
-          a href='/coupons'
-            .title
-              .icon
-                i.icon-wallet
-              .text Coupons
+        - if current_user.role == :admin
+          .section
+            a href='/coupons'
+              .title
+                .icon
+                  i.icon-wallet
+                .text Coupons
         .section sidebar-dropdown='250'
           .title
             .icon

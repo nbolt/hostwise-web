@@ -1,6 +1,12 @@
 class HomeController < ApplicationController
   def index
-    redirect_to subdomain: current_user.role.to_s, controller: 'home', action: 'index' if logged_in?
+    if logged_in?
+      if current_user.role == :admin || current_user.role == :super_mentor
+        redirect_to subdomain: 'admin', controller: 'home', action: 'index'
+      else
+        redirect_to subdomain: current_user.role.to_s, controller: 'home', action: 'index'
+      end
+    end
   end
 
   def signup

@@ -29,6 +29,7 @@ class Admin::InventoryController < Admin::AuthController
   def jobs
     data = params[:data]
     jobs = Job.standard.complete
+    jobs = jobs.within_market(current_user.market) if current_user.market
     total = jobs.count
     jobs = jobs.search(data['search']['value']) if data['search']['value'].present?
     filtered = jobs.count

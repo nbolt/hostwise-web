@@ -6,6 +6,7 @@ class Admin::JobsController < Admin::AuthController
     data = if params[:data] then JSON.parse params[:data] else nil end
     filtered_jobs = nil
     jobs = Job.standard.includes(booking: {property: {zip_code: {market: {}}}, user: {}})
+    jobs = jobs.within_market(current_user.market) if current_user.market
     case params[:filter]
     when 'complete'
       jobs = jobs.where(status_cd: [3,5,6]).where('bookings.status_cd != 0').includes(:booking).references(:bookings)
@@ -114,6 +115,7 @@ class Admin::JobsController < Admin::AuthController
 
   def export_all
     jobs = Job.standard.includes(booking: {property: {zip_code: {market: {}}}, user: {}})
+    jobs = jobs.within_market(current_user.market) if current_user.market
     respond_to do |format|
       format.csv { send_data job_csv(jobs), filename: 'jobs.csv' }
     end
@@ -124,11 +126,17 @@ class Admin::JobsController < Admin::AuthController
   end
 
   def metrics
-    total = Job.standard.count
-    next_ten = Job.standard.where('date > ? and date < ?', Date.yesterday, Date.today + 10.days).count
-    unclaimed = Job.standard.where('status_cd = 0 and date > ? and date < ?', Date.yesterday, Date.today + 3.days).count
-    completed = Job.standard.on_month(Date.today - 1.month).count
-    growth = (completed - Job.standard.on_month(Date.today - 2.months).count) / completed
+    jobs = Job.standard
+    jobs = jobs.within_market(current_user.market) if current_user.market
+    total = jobs.standard.count
+    next_ten = jobs.standard.where('jobs.date > ? and jobs.date < ?', Date.yesterday, Date.today + 10.days).count
+    unclaimed = jobs.standard.where('jobs.status_cd = 0 and jobs.date > ? and jobs.date < ?', Date.yesterday, Date.today + 3.days).count
+    completed = jobs.standard.on_month(Date.today - 1.month).count
+    if completed > 0
+      growth = (completed - jobs.standard.on_month(Date.today - 2.months).count) / completed
+    else
+      growth = 0
+    end
     render json: { total: total, next_ten: next_ten, unclaimed: unclaimed, completed: completed, growth: growth }
   end
 

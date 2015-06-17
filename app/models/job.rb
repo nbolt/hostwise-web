@@ -29,7 +29,7 @@ class Job < ActiveRecord::Base
   scope :future_from_today, -> (zone=nil) {
     timezone = Timezone::Zone.new :zone => zone if zone
     now = zone && timezone.time(Time.now) || Time.now
-    where('date >= ?', now)
+    where('jobs.date >= ?', now)
   }
   scope :on_date, -> (date) {
     date = date.to_date if date.class == Time

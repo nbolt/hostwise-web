@@ -21,14 +21,14 @@
           .large.text-secondary
             | {{highest_paid.name}} - ${{highest_paid.amount}}
   .actions
-    .icon-button.teal ng:click='show_signup()'
+    .icon-button.teal ng:click='show_signup()' ng:show='user.role_cd == 0'
       .icon
         i.icon-team
       .text Create Team Member
   .panel.panel-default
     .panel-heading
       h3.panel-title Team Members
-      .select2-head
+      .select2-head ng:show='user.role_cd == 0'
         input type='hidden' ui:select2='marketHash()' ng:model='market'
       .panel-options
         a data-toggle="panel" href="#"

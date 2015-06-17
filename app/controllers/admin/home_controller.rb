@@ -1,5 +1,10 @@
 class Admin::HomeController < Admin::AuthController
   def index
-    redirect_to '/dashboard'
+    case current_user.role
+    when :admin
+      redirect_to '/dashboard'
+    when :super_mentor
+      redirect_to '/jobs'
+    end
   end
 end

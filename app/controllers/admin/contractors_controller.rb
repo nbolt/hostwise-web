@@ -1,8 +1,10 @@
 class Admin::ContractorsController < Admin::AuthController
   def index
+    contractors = User.contractors
+    contractors = contractors.within_contractor_market(current_user.market) if current_user.market
     respond_to do |format|
       format.html
-      format.json { render json: User.contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {include: {market: {}}, methods: [:position, :display_position]}}, methods: [:name, :avatar, :next_job_date, :display_phone_number, :earnings]) }# why methods dont work?
+      format.json { render json: contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {include: {market: {}}, methods: [:position, :display_position]}}, methods: [:name, :avatar, :next_job_date, :display_phone_number, :earnings]) }# why methods dont work?
     end
   end
 

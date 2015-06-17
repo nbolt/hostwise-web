@@ -9,7 +9,10 @@ header
         .drop-arrow
         .drop
           .links
-            = render "#{current_user.role}/account_settings"  
+            - if current_user.role == :admin || current_user.role == :super_mentor
+              = render "admin/account_settings"
+            - else
+              = render "#{current_user.role}/account_settings"
       .name ng:show='user'
         | Hi,&nbsp;
         strong ng:bind='::user.first_name'

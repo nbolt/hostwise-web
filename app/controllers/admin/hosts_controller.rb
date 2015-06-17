@@ -2,9 +2,11 @@ class Admin::HostsController < Admin::AuthController
   expose(:contractor) { User.find_by_id params[:id] }
 
   def index
+    hosts = User.hosts
+    hosts = hosts.within_market(current_user.market) if current_user.market
     respond_to do |format|
       format.html
-      format.json { render json: User.hosts, each_serializer: HostSerializer, root: :hosts }
+      format.json { render json: hosts, each_serializer: HostSerializer, root: :hosts }
       #format.json { render json: User.hosts.to_json(include: {properties: {include: {bookings: {}, active_bookings: {}, past_bookings: {include: {successful_transactions: {}}}}, methods: [:future_bookings]}}, methods: [:name, :avatar, :next_service_date, :display_phone_number, :total_spent]) }
     end
   end

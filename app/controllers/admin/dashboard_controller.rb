@@ -2,7 +2,13 @@ class Admin::DashboardController < Admin::AuthController
   include ActionView::Helpers::NumberHelper
 
   def team_members
-    highest_paid = User.payouts_on_month(Date.today - 1.month)[0]
+    users = User.all
+    highest_paid = User.payouts_on_month(Date.today - 1.month)
+    if current_user.market
+      users = users.within_contractor_market(current_user.market)
+      highest_paid.select {|paid| User.find(paid[0]).contractor_profile.market.id == current_user.market.id}
+    end
+    highest_paid = highest_paid[0]
     render json: {
       active: User.active_contractors.count,
       inactive: User.inactive_contractors.count,
