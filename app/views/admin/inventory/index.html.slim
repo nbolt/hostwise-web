@@ -112,20 +112,3 @@
                 th Hand Towels
                 th Face Towels
             tbody
-              tr ng:repeat='job in jobs'
-                td
-                  a.teal ng:href='/jobs/{{job.id}}'
-                    | {{job.id}}
-                td ng:bind='job.booking.property.nickname'
-                td ng:bind='job.booking.property.property_size'
-                td ng:bind='job.booking.property.neighborhood_address'
-                td ng:bind='job.booking.service_list'
-                td ng:bind='job.date'
-                td ng:bind='job.contractor_names'
-                td ng:bind-template='{{job.king_bed_count}} / {{job.soiled_king_count}}'
-                td ng:bind-template='{{job.twin_bed_count}} / {{job.soiled_twin_count}}'
-                td ng:bind-template='{{job.pillow_count}} / {{job.soiled_pillow_count}}'
-                td ng:bind-template='{{job.bath_towel_count}} / {{job.soiled_bath_towel_count}}'
-                td ng:bind-template='{{job.bath_mat_count}} / {{job.soiled_mat_count}}'
-                td ng:bind-template='{{job.hand_towel_count}} / {{job.soiled_hand_count}}'
-                td ng:bind-template='{{job.face_towel_count}} / {{job.soiled_face_count}}'
