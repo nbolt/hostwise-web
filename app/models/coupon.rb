@@ -24,6 +24,10 @@ class Coupon < ActiveRecord::Base
     end
   end
 
+  def booking_users
+    bookings.map(&:user).uniq
+  end
+
   def applied user
     user.coupons.select{|c| c == self}.count
   end
