@@ -334,7 +334,7 @@ class Booking < ActiveRecord::Base
   end
 
   def duplicate?
-    unless status == :deleted || status == :cancelled
+    unless cloned || status == :deleted || status == :cancelled
       existing_booking = property.bookings.active.original.on_date(date)[0]
       if existing_booking
         if existing_booking == self
