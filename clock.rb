@@ -24,7 +24,7 @@ module Clockwork
           when 'launder:notify_and_charge'
             Property.not_purchased.each do |property|
               last_booking = property.bookings.completed.sort_by(&:date)[-1]
-              if last_booking.chain(:job, :has_linens?) && last_booking.date >= Date.parse('June 15th, 2015')
+              if last_booking.chain(:job, :has_linens?) && last_booking.date >= Date.parse('June 2nd, 2015')
                 last_transaction = last_booking.transactions.where(transaction_type_cd: 2).order(charged_at: :asc, created_at: :asc).last
                 diff = (Date.today - last_booking.date).to_i
                 if diff == 15
@@ -52,7 +52,7 @@ module Clockwork
           when 'launder:notify_and_charge_reports'
             Property.not_purchased.each do |property|
               last_booking = property.bookings.sort_by(&:date)[-1]
-              if last_booking.chain(:job, :has_linens?) && last_booking.date >= Date.parse('June 15th, 2015')
+              if last_booking.chain(:job, :has_linens?) && last_booking.date >= Date.parse('June 2nd, 2015')
                 last_transaction = last_booking.transactions.where(transaction_type_cd: 2).order(charged_at: :asc, created_at: :asc).last
                 diff = (Date.today - last_booking.date).to_i
                 if diff == 15
