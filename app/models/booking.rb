@@ -2,6 +2,8 @@ class Booking < ActiveRecord::Base
   include PgSearch
   pg_search_scope :search, against: [:id], associated_against: {user: [:first_name, :last_name, :email], property: [:title, :address1, :city, :state, :zip, :user_id]}, using: { tsearch: { prefix: true } }
 
+  validate :duplicate?
+
   belongs_to :property
   belongs_to :payment
 
@@ -30,7 +32,9 @@ class Booking < ActiveRecord::Base
   scope :past, -> { where('date < ?', Date.today) }
   scope :by_user, -> (user) { where('user_id = ? and bookings.status_cd != ?', user.id, 0).includes(property: [:user]).references(:user) }
   scope :active, -> { where(status_cd: 1) }
-  scope :completed, -> {where(status_cd: 3) }
+  scope :completed, -> { where(status_cd: 3) }
+  scope :original, -> { where(cloned: false) }
+  scope :cloned, -> { where(cloned: true) }
 
   before_save :check_transaction, :update_linen_handling
   before_create :create_job
@@ -330,11 +334,12 @@ class Booking < ActiveRecord::Base
   end
 
   def duplicate?
-    existing_booking = property.bookings.active.on_date(date)[0]
+    existing_booking = property.bookings.active.original.on_date(date)[0]
     if existing_booking
       if existing_booking == self
         false
       else
+        errors.add(:date, "can't have more than one active booking on per property")
         true
       end
     else

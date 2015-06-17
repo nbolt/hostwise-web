@@ -149,6 +149,7 @@ class Admin::JobsController < Admin::AuthController
     new_booking.status_cd = 1
     new_booking.payment_status_cd = 0
     new_booking.timeslot_type_cd = 0
+    new_booking.cloned = true
     if new_booking.save
       new_booking.update_cost!
       render json: { success: true, url: admin_job_url(new_booking.job) }
