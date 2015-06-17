@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
       when 6 then 'sat'
       end
 
-    where(activation_state: 'active').where("availabilities.#{day} = ?", true).where(contractor_profiles: {position_cd: [2,3]}).includes(:availability, :contractor_profile).references(:availability, :contractor_profile)
+    where(activation_state: 'active').where("availabilities.#{day} = ?", true).where(contractor_profiles: {position_cd: [2,3], market_id: booking.property.zip_code.market.id}).includes(:availability, :contractor_profile).references(:availability, :contractor_profile)
   }
 
   validates_uniqueness_of :email, if: lambda { step == 'step1' || step == 'edit_info' || step == 'contractor_info' || step == 'contractor_profile'}
