@@ -62,42 +62,42 @@ script#booking-modal type="text/ng-template"
             .linen-boxes
               .box.purchase
                 img src='/images/purchase.png'
-                .title Purchase
-                hr
+                .title Annual Purchase Plan
+                .price
+                  span $299
+                  | / Year
+                .text Luxury hotel linens & towels.
+                .i-plus
+                  span +
                 .price
                   span $13
-                  | / Bed
-                .text
-                  span $299 for two 18lb sets for each bed.
-                  |  Save money by renting if you have more than 3 guests a month.
-                  .btn.outlined ng:click='learn_purchase()'
-                    span Learn More
-                    span.circle
-                      i
+                  | / Turn
+                .text Offsite commercial laundry.
                 .button.chosen ng:click='select_handling(0, "purchase")'
                   | Select
               .box.rental
                 img src='/images/rent.png'
-                .title Rent
-                hr
+                .title Rental Program
                 .price
                   span $19
-                  | / Bed
-                .text
-                  span Same quanity, same quality.
-                  |  Save money by renting if you have less than 3 guests a month.
+                  | / Turn
+                .text Rent our luxury grade, commercially laundered & pressed linens.
                 .button  ng:click='select_handling(1, "rental")'
                   | Select
               .box.in-unit
                 img src='/images/laundry.png'
                 .title In-Unit Laundry
-                hr
                 .price
                   span $15
                   | / Load
-                .text We can wash your linens & towels if you have an in-unit modern washer and dryer.
+                .text Your linens, your towels. Your in-unit washer / dryer.
                 .button ng:click='select_handling(2, "in-unit")'
                   | Select
+            .learn-more
+              .btn.outlined ng:click='learn_purchase()'
+                span Learn More
+                span.circle
+                  i
         .foot.next
           .right
             .button.grey ng:click='prev()' Back
@@ -105,27 +105,25 @@ script#booking-modal type="text/ng-template"
       .content-group.learn-purchase
         i.close ng:click='dismiss_purchase()'
         .content
-          img.purchase-icon src='/images/purchase.png'
+          #price-table
+            .outlined
+              span
+                strong Luxury Hotel - grade Linens & Towels Options
           .col2
             .left
-              h3 Linens & Towels Purchase Program
+              img src='/images/morethan3_all.png'
+              h3 Annual Purchase Plan
               h6
-                strong
-                  | Save money
-                | &nbsp;by purchasing if you have more than 3 guests per month. Commercially laundered and pressed for $13 a turn.
-              #price-table
-                .outlined
-                  span
-                    strong $299
-                    | &nbsp;for 2 sets
+                strong $299 per year per bed. 
+                | &nbsp;Save money by purchasing if you have more than 3 guests per month. Commercially laundered and pressed for only
+                strong.gray &nbsp;$13 / turn
+                | .
             .right
-              img.count src='/images/setcount.png'
-          img.compare-hort src='/images/price_compare_horiz.png'
-          img.compare-vert src='/images/price_compare_vert.png'
-          .btn.outlined ng:click='dismiss_purchase()'
-            span Back to Options
-            span.circle
-              i
+              img src='/images/lessthan3_all.png'
+              h3 Rental Program
+              h6
+                strong$19 per turn. Product and offsite laundry included.
+                | &nbsp;Save money by renting if you have less than 3 guests per month.
       .content-group.step-additional
         .header
           .icon

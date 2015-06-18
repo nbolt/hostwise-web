@@ -176,7 +176,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.dismiss_purchase = ->
     $scope.slide 'step-linens'
-    angular.element('.ngdialog-close').show()
+    $timeout((-> angular.element('.ngdialog-close').show()), 200)
     null
 
   $scope.select_handling = (num, name) ->

@@ -591,83 +591,86 @@
           &.learn-purchase
             height: 100%
             i.close
+              background-color: white
+              color: light-blue
+              opacity: 1
               font-style: normal
+              font-size: 25px
+              border-radius: 50%
+              width: 50px
+              height: 50px
+              line-height: 45px
+              text-align: center
+              top: 15px
+              right: 8px
+              &::before
+                font-family: Lato
+                content: 'x'
             .content
               width: 100%
               height: 100%
-              @media phone
-                padding-bottom: 30px
-            .btn.outlined
-              background-color: white
-              border-radius: 20px
-              padding: 7px 0
-              display: block
-              .circle
-                right: 10px
-                top: 7px
-            img.purchase-icon
-              width: 20%
+            #price-table
+              .outlined
+                position: absolute
+                top: 80px
+                left: 15%
+                font-size: 22px
+                text-align: center
+                padding: 20px 0
+                width: 70%
+                background-color: white
+                color: light-blue
+                border-radius: 50px
+                @media phone
+                  left: 5%
+                  width: 90%
+            img
+              width: 50%
               margin: 0 auto 5px
-              padding-top: 30px
+              padding-top: 200px
               display: block
               @media phone
                 width: 40%
-            img.compare-hort
-              width: 90%
-              display: block
-              margin: 15px auto
-              @media phone
-                display: none
-            img.compare-vert
-              display: none
-              @media phone
-                display: block
-                width: 70%
-                margin: 15px auto
-            img.count
-              width: 90%
-              @media phone
-                width: 100%
-                margin-top: 30px
             .col2
               margin: 0 auto
-              padding: 30px 60px
-              @media phone
-                padding: 15px
+              height: 100%
               .left, .right
                 display: inline-block
                 vertical-align: top
                 text-align: center
-                width: 45%
+                width: 40%
+                height: 100%
+                padding: 0 5%
                 @media phone
                   display: block
                   width: 100%
-              .left
-                margin-right: 10%
-                text-align: left
-                @media phone
-                  margin-right: 0
-                  text-align: center
+                  padding: 0
                 h3
                   color: dark-blue
+                  margin: 40px 0 25px
                 h6
                   color: darker-gray
-                  font-size: 14px
+                  font-size: 15px
                   font-weight: normal
-                  line-height: 18px
-                  margin: 0
+                  line-height: 20px
+                  margin: 0 auto
+                  width: 80%
+                  @media phone
+                    padding-bottom: 30px
                   strong
                     color: light-blue
-                #price-table .outlined
-                  font-size: 18px
-                  text-align: center
-                  padding: 8px 0
-                  margin: 20px 0 0
-                  width: 180px
-                  background-color: white
-                  color: light-blue
+                    &.gray
+                      color: darker-gray
+              .left
+                background-color: lighter-gray
+              .right
+                background-color: gray
+                img
                   @media phone
-                    margin: 20px auto 0
+                    padding-top: 50px
+                h6
+                  strong
+                    color: dark-gold
           &.step-linens
             .content.extras
               padding: 30px 100px
@@ -1249,8 +1252,21 @@
               padding: 8px 12px
               width: 100%
               margin: 10px 0 30px
+            .learn-more
+              width: 150px
+              margin: 0 auto
+              .btn.outlined
+                margin-top: 20px
+                padding: 8px
+                background-color: #E3E6E7
+                border-radius: 20px
+                color: heavy-gray
+                @media portrait_tablet
+                  margin-top: 3px
+                .circle
+                  top: 8px
             .linen-boxes
-              margin-top: 30px
+              margin-top: 20px
               position: relative
               .nav
                 z-index: 1
@@ -1284,7 +1300,7 @@
                 width: 30%
                 margin-right: 5%
                 box-sizing: border-box
-                padding: 20px
+                padding: 15px 20px
                 text-align: center
                 @media phone
                   width: 100%
@@ -1298,8 +1314,21 @@
                 .title
                   font-weight: 600
                   font-size: 0.9em
+                  margin-bottom: 20px
                   color: heavy-gray
+                .i-plus
+                  width: 20px
+                  height: 20px
+                  line-height: 20px
+                  text-align: center
+                  background-color: white
+                  margin: 15px auto
+                  border-radius: 50%
+                  span
+                    color: light-blue
+                    font-weight: bold
                 hr
+                  display: none
                   border: 0
                   border-top: 1px solid #bfc5cd
                   margin: 12px auto
@@ -1317,8 +1346,10 @@
                 .text
                   margin-bottom: 10px
                   font-size: 0.75em
-                  min-height: 90px
+                  min-height: 103px
                   color: #818B97
+                  @media portrait_tablet
+                    min-height: 134px
                   span
                     font-weight: 600
                 .button
@@ -1331,8 +1362,11 @@
                 &.purchase
                   .price
                     color: light-blue
+                    margin-bottom: 8px
                   .button:hover, &.selected .button
                     background-color: light-blue
+                  .text
+                    min-height: auto
                 &.rental
                   .price
                     color: light-orange
