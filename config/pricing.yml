@@ -16,7 +16,7 @@ toiletries: 10
 linens:
   purchase: 13
   rental: 19
-  in_unit: 15
+  in_unit: 16
 
 timeslots:
   9:  0.8
