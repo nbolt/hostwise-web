@@ -1,7 +1,8 @@
-EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, $http, $timeout, ngDialog, spinner) ->
+EditContractorCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spinner', ($scope, $http, $timeout, $window, ngDialog, spinner) ->
 
-  url = window.location.href.split('/')
+  url = $window.location.href.split('/')
   $scope.id = url[url.length-2]
+
 
   $scope.payment_modal = -> ngDialog.open template: 'transfer-modal', className: 'info full', scope: $scope
 
@@ -13,10 +14,26 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
       $scope.cancel_status()
       spinner.stopSpin()
 
+  $scope.edit_time = (job) ->
+    el = $("#job-#{job.id} .line.edit")
+    el.children('span.time').hide().after("<input type='text' value='#{job.formatted_time}''>")
+    el.children('input').focus()
+    el.children('input').keyup (e) ->
+      if e.keyCode == 13
+        $http.post("/jobs/#{job.id}/edit_time", {contractor_id: $scope.contractor.id, time: el.children('input').val()}).success (rsp) ->
+          el.children('input').remove()
+          if rsp.meta.success
+            date = moment(job.date).format('dddd, MMMM Do')
+            day = _($scope.contractor.days).find (a) -> a[0] == date
+            day[1] = rsp.jobs
+          else
+            el.children('span.time').show()
+    null
+
   $scope.fetch_contractor = ->
     unless $scope.contractor
       spinner.startSpin()
-      $http.get(window.location.href + '.json').success (rsp) ->
+      $http.get("/contractors/#{$scope.id}/edit.json").success (rsp) ->
         spinner.stopSpin()
         $scope.markets = rsp.meta.markets
         $scope.contractor = rsp.contractor
@@ -49,6 +66,11 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($sc
           id: i
           job_count: _(day[1]).filter((job) -> !job.distribution).length
         }]
+        $timeout((->
+          job = $("#job-#{window.location.hash[1..-1]}")
+          $.scrollTo(job, 400) if window.location.hash != ''
+          job.click()
+        ),50)
 
   $scope.open_day = (day) ->
     angular.element('.day').removeClass 'active'

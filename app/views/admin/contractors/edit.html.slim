@@ -108,7 +108,7 @@
               span ng:if='day[2].job_count > 1' jobs
               span ng:if='day[2].job_count == 1' job
             .dropdown
-              .job ng:repeat='job in day[1]'
+              .job id='job-{{job.id}}' ng:repeat='job in day[1]'
                 div ng:if='job.occasion_cd == 0'
                   .line
                     span Inventory Pickup
@@ -120,8 +120,8 @@
                     span ng:bind='job.booking.user.name'
                     span ng:bind='job.booking.property.neighborhood_address'
                     span.teal ng:bind='job.booking.property.property_size'
-                  .line
-                    span ng:bind='job.formatted_time'
+                  .line.edit
+                    span.time ng:bind='job.formatted_time' ng:click='edit_time(job)'
                     span ng:if='job.booking.timeslot_type_cd == 0' Flex Window
                     span ng:if='job.booking.timeslot_type_cd == 1' Specific Time
                     span.teal ng:bind-template='${{job.payout_amount}}'

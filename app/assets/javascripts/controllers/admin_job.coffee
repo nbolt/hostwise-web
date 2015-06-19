@@ -56,6 +56,8 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
 
   $scope.clone = -> $http.post($window.location.href + '/clone').success (rsp) -> $window.location = rsp.url
 
+  $scope.to_schedule = (teammate) -> $window.location = "/contractors/#{teammate.id}/edit##{$scope.job.id}"
+
   $scope.update_extras = ->
     $http.post($window.location.href + '/update_extras', extras: $scope.extra).success (rsp) ->
       if rsp.success

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617205806) do
+ActiveRecord::Schema.define(version: 20150619004741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -342,6 +342,7 @@ ActiveRecord::Schema.define(version: 20150617205806) do
     t.integer  "bath_mats",             default: 0
     t.float    "man_hours"
     t.integer  "distribution_timeslot"
+    t.boolean  "admin_set",             default: false
   end
 
   create_table "markets", force: :cascade do |t|

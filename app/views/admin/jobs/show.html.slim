@@ -97,7 +97,7 @@
           .number ng:bind='::teammate.display_phone_number'
           .icon
             .typcn.typcn-user
-          .name ng:bind='::teammate.name'
+          .name ng:bind='::teammate.name' ng:click='to_schedule(teammate)'
           .position ng:bind='::teammate.contractor_profile.display_position'
         .add-teammate
           .flash.failure
