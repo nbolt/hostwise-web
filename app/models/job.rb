@@ -607,13 +607,13 @@ class Job < ActiveRecord::Base
 
   def self.set_priorities contractor, date
     jobs = contractor.jobs.on_date(date)
-    if jobs.standard.any? {|job| job.booking.timeslot_type_cd == 1}
+    if jobs.standard.any? {|job| job.booking.timeslot_type_cd == 1 || job.admin_set}
       hours = Job.organize_day(contractor, date).uniq.compact
       hours.each_with_index do |id, index|
         ContractorJobs.where(user_id: contractor.id, job_id: id)[0].update_attribute :priority, index + 1
         job = Job.find id
         if index > 0 then prev_job = Job.find hours[index-1] else prev_job = nil end
-        if (!job.booking.timeslot || jobs.size == 1) && job.booking.timeslot_type_cd == 0 && !job.admin_set
+        if (!job.booking.timeslot || job.size == 1) && job.booking.timeslot_type_cd == 0 && !job.admin_set
           if prev_job
             job.booking.update_attribute :timeslot, (prev_job.booking.timeslot + prev_job.man_hours).floor + 1
           else
