@@ -65,6 +65,25 @@
 
 .edit-contractor
   box-shadow: none
+  #times
+    opacity: 0
+    position: absolute
+    width: 140px
+    background-color: white
+    border-radius: 4px
+    border: thin solid #EBECEF
+    transition: opacity .4s ease-in-out
+    z-index: 99
+    .slot
+      font-weight: 600
+      padding: 8px
+      text-align: center
+      .time
+        display: inline-block
+        width: 115px
+      &:hover
+        cursor: pointer
+        background-color: #E8ECEF
   .step.schedule, .step.payouts
     background-color: white
     .head
@@ -108,10 +127,9 @@
             &:last-child
               border-bottom: 0
             .line
+              position: relative
               &:first-child
                 margin-bottom: 6px
-              input
-                width: 80px
               span
                 color: darker-gray
                 margin-left: 10px

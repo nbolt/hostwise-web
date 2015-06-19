@@ -121,7 +121,7 @@
                     span ng:bind='job.booking.property.neighborhood_address'
                     span.teal ng:bind='job.booking.property.property_size'
                   .line.edit
-                    span.time ng:bind='job.formatted_time' ng:click='edit_time(job)'
+                    span.time ng:bind='job.formatted_time' ng:click='show_times(job)'
                     span ng:if='job.booking.timeslot_type_cd == 0' Flex Window
                     span ng:if='job.booking.timeslot_type_cd == 1' Specific Time
                     span.teal ng:bind-template='${{job.payout_amount}}'
@@ -132,6 +132,36 @@
       /  .payouts
       /    .payout ng:repeat='payout in contractor.payouts'
       /      .amount ng:bind-template='${{payout.total / 100}}'
+
+    #times
+      .slot ng:click='choose_time(9)' ng:show='times[0]'
+        .time 8-9 AM
+      .slot ng:click='choose_time(10)' ng:show='times[1]'
+        .time 9-10 AM
+      .slot ng:click='choose_time(11)' ng:show='times[2]'
+        .time 10-11 AM
+      .slot ng:click='choose_time(12)' ng:show='times[3]'
+        .time 11-12 PM
+      .slot ng:click='choose_time(13)' ng:show='times[4]'
+        .time 12-1 PM
+      .slot ng:click='choose_time(14)' ng:show='times[5]'
+        .time 1-2 PM
+      .slot ng:click='choose_time(15)' ng:show='times[6]'
+        .time 2-3 PM
+      .slot ng:click='choose_time(16)' ng:show='times[7]'
+        .time 3-4 PM
+      .slot ng:click='choose_time(17)' ng:show='times[8]'
+        .time 4-5 PM
+      .slot ng:click='choose_time(18)' ng:show='times[9]'
+        .time 5-6 PM
+      .slot ng:click='choose_time(18)' ng:show='times[10]'
+        .time 6-7 PM
+      .slot ng:click='choose_time(18)' ng:show='times[11]'
+        .time 7-8 PM
+      .slot ng:click='choose_time(18)' ng:show='times[12]'
+        .time 8-9 PM
+      .slot ng:click='choose_time(18)' ng:show='times[13]'
+        .time 9-10 PM
 
   .deactivate ng:show="contractor.activation_state == 'active'"
     | Do you wish to

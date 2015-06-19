@@ -3,7 +3,6 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spi
   url = $window.location.href.split('/')
   $scope.id = url[url.length-2]
 
-
   $scope.payment_modal = -> ngDialog.open template: 'transfer-modal', className: 'info full', scope: $scope
 
   $scope.send_payment = ->
@@ -14,21 +13,20 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spi
       $scope.cancel_status()
       spinner.stopSpin()
 
-  $scope.edit_time = (job) ->
-    el = $("#job-#{job.id} .line.edit")
-    el.children('span.time').hide().after("<input type='text' value='#{job.formatted_time}''>")
-    el.children('input').focus()
-    el.children('input').keyup (e) ->
-      if e.keyCode == 13
-        $http.post("/jobs/#{job.id}/edit_time", {contractor_id: $scope.contractor.id, time: el.children('input').val()}).success (rsp) ->
-          el.children('input').remove()
-          if rsp.meta.success
-            date = moment(job.date).format('dddd, MMMM Do')
-            day = _($scope.contractor.days).find (a) -> a[0] == date
-            day[1] = rsp.jobs
-          else
-            el.children('span.time').show()
-    null
+  $scope.show_times = (job) ->
+    offset = angular.element("#job-#{job.id} .line.edit").position()
+    $scope.chosen_job = job
+    $http.post("/jobs/#{job.id}/available_times").success (rsp) ->
+      $scope.times = rsp.times
+      angular.element('#times').css('top', offset.top).css('left', offset.left).css 'opacity', 1
+
+  $scope.choose_time = (time) ->
+    $http.post("/jobs/#{$scope.chosen_job.id}/edit_time", {contractor_id: $scope.contractor.id, time: time}).success (rsp) ->
+      angular.element('#times').css('top', 0).css('left', 0).css 'opacity', 0
+      if rsp.meta.success
+        date = moment($scope.chosen_job.date).format('dddd, MMMM Do')
+        day = _($scope.contractor.days).find (a) -> a[0] == date
+        day[1] = rsp.jobs
 
   $scope.fetch_contractor = ->
     unless $scope.contractor

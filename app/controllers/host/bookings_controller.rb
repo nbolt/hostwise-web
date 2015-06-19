@@ -40,7 +40,7 @@ class Host::BookingsController < Host::AuthController
           if booking.job.fits_in_day contractor
             Job.set_priorities contractor, booking.date
           else
-            contractor.drop_job booking.job
+            contractor.drop_job booking.job, true
           end
         end
       end

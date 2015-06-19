@@ -575,18 +575,34 @@ class Job < ActiveRecord::Base
     end
   end
 
-  def edit_time contractor, time
+  def edit_time time
     orig_timeslot = booking.timeslot
     booking.update_attribute :timeslot, time
     begin
-      Job.organize_day contractor, date, nil, true, self
+      contractors.each {|contractor| Job.organize_day contractor, date, nil, true, self}
       update_attribute :admin_set, true
-      Job.set_priorities contractor, date
+      contractors.each {|contractor| Job.set_priorities contractor, date}
       true
     rescue
       booking.update_attribute :timeslot, orig_timeslot
       false
     end
+  end
+
+  def check_times
+    hours = []; hours[12] = nil
+    orig_timeslot = booking.timeslot
+    13.times do |time|
+      booking.update_attribute :timeslot, time + 9
+      begin
+        contractors.each {|contractor| Job.organize_day contractor, date, nil, true, self}
+        hours[time] = true
+      rescue
+        hours[time] = false
+      end
+    end
+    booking.update_attribute :timeslot, orig_timeslot
+    hours
   end
 
   def self.set_priorities contractor, date

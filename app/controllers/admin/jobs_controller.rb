@@ -166,17 +166,16 @@ class Admin::JobsController < Admin::AuthController
     end
   end
 
+  def available_times
+    render json: job.check_times, root: :times
+  end
+
   def edit_time
     contractor = User.find params[:contractor_id]
-    time = Time.parse params[:time]
-    if time.hour != 0
-      if job.edit_time(contractor, time.hour + 1)
-        jobs = contractor.jobs.on_date(job.date).where('occasion_cd != 1 or distribution = ?', false)
-        jobs.each {|j| j.current_user = contractor}
-        render json: jobs.sort_by{|j| j.priority contractor}, root: :jobs, meta: { success: true }
-      else
-        render json: { meta: { success: false } }
-      end
+    if job.edit_time(params[:time])
+      jobs = contractor.jobs.on_date(job.date).where('occasion_cd != 1 or distribution = ?', false)
+      jobs.each {|j| j.current_user = contractor}
+      render json: jobs.sort_by{|j| j.priority contractor}, root: :jobs, meta: { success: true }
     else
       render json: { meta: { success: false } }
     end
