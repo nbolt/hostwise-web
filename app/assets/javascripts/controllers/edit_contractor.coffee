@@ -23,6 +23,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spi
   $scope.choose_time = (time) ->
     $http.post("/jobs/#{$scope.chosen_job.id}/edit_time", {contractor_id: $scope.contractor.id, time: time}).success (rsp) ->
       angular.element('#times').css('top', 0).css('left', 0).css 'opacity', 0
+      $scope.times = {}
       if rsp.meta.success
         date = moment($scope.chosen_job.date).format('dddd, MMMM Do')
         day = _($scope.contractor.days).find (a) -> a[0] == date
@@ -64,6 +65,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spi
           id: i
           job_count: _(day[1]).filter((job) -> !job.distribution).length
         }]
+        $scope.contractor.days = _($scope.contractor.days).sortBy (day) -> moment(day[0], 'dddd, MMMM Do')
         $timeout((->
           job = $("#job-#{window.location.hash[1..-1]}")
           $.scrollTo(job, 400) if window.location.hash != ''
@@ -73,7 +75,8 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spi
   $scope.open_day = (day) ->
     angular.element('.day').removeClass 'active'
     angular.element("#day-#{day[2].id}").addClass 'active'
-    null
+    angular.element('#times').css('top', 0).css('left', 0).css 'opacity', 0
+    $scope.times = {}
 
   $scope.position = ->
     {
