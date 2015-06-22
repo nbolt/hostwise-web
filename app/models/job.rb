@@ -436,6 +436,7 @@ class Job < ActiveRecord::Base
 
   def complete!
     completed!
+    update_attribute :size, contractors.team_members.count
     inventory_count! if occasion == :dropoff
     pay_contractors!
     booking.update_attribute :status_cd, 3 if booking
