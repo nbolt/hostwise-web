@@ -154,7 +154,10 @@ class UserMailer < MandrillMailer::TemplateMailer
                         'DATE' => date,
                         'ADDRESS' => booking.property.full_address,
                         'SERVICES' => booking.services.map(&:display).join(', '),
-                        'PROP_SIZE' => booking.property.property_size
+                        'PROP_SIZE' => booking.property.property_size,
+                        'START_HOUR' => booking.arrival_start_hour,
+                        'END_HOUR' => booking.arrival_end_hour,
+                        'COMPLETE_HOUR' => booking.display_complete_hour
                       },
                       inline_css: true,
                       async: true,

@@ -63,6 +63,35 @@ class Booking < ActiveRecord::Base
     job.king_bed_count + job.twin_bed_count
   end
 
+  def arrival_start_hour
+    display_timeslot.split(' - ')[0]
+  end
+
+  def arrival_end_hour
+    display_timeslot.split(' - ')[1]
+  end
+
+  def display_timeslot
+    if timeslot
+      if timeslot < 12 then meridian2 = 'am' else meridian2 = 'pm' end
+      if timeslot < 13 then meridian1 = 'am' else meridian1 = 'pm' end
+      time1 = timeslot - 1; time1 -= 12 if time1 > 12
+      time2 = timeslot;     time2 -= 12 if time2 > 12
+      "#{time1}#{meridian1} - #{time2}#{meridian2}"
+    end
+  end
+
+  def complete_hour
+    (timeslot + job.man_hours).round if timeslot
+  end
+
+  def display_complete_hour
+    hour = complete_hour
+    if hour < 12 then meridian = 'am' else meridian = 'pm' end
+    hour -= 12 if hour > 12
+    "#{hour}#{meridian}"
+  end
+
   def self.cost property, services, linen_handling, timeslot_type, timeslot, extra_king_sets = false, extra_twin_sets = false, extra_toiletry_sets = false, first_booking_discount = false, late_next_day = false, late_same_day = false, no_access_fee = false, coupon_id = false, date=nil, dates=nil
     pool_service = Service.where(name: 'pool')[0]
     rsp = {cost:0}
