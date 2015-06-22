@@ -103,6 +103,7 @@ module Clockwork
                 begin
                   booking.update_cost! if booking.status_cd == 5
                   booking.charge!
+                  booking.job.pay_contractors!
                   booking.property.update_attribute :purchase_date, time if booking.property.linen_handling_cd == 0 && !booking.property.purchase_date
                 rescue
                   # report to appsignal
