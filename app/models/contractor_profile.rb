@@ -31,6 +31,8 @@ class ContractorProfile < ActiveRecord::Base
         'contractor'
       when :trainer
         'mentor'
+      when :elite
+        'elite'
     end
   end
 

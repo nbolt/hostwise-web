@@ -68,6 +68,8 @@ class Admin::ContractorsController < Admin::AuthController
                             'contractor'
                           when 'mentor'
                             'trainer'
+                          when 'elite'
+                            'elite'
                         end
 
       user.contractor_profile.position = params[:status].downcase.to_sym
