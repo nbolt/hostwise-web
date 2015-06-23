@@ -5,4 +5,8 @@ class Market < ActiveRecord::Base
   has_many :users
 
   reverse_geocoded_by :lat, :lng
+
+  def property_count
+    Property.within_market(self).count
+  end
 end

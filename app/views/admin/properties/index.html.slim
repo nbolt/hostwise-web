@@ -4,14 +4,14 @@
       | Total Properties
     .panel-body
       .row
-        .col-sm-3
-          p.text-medium Total number of properties
+        .col-sm-2
+          p.text-medium All Markets
           .super-large.text-secondary
             | {{properties.length}}
-        .col-sm-3
-          #reqs-per-second style=("height: 150px;")
-        .col-sm-6
-          #reqs-per-second-chart style=("height: 150px;")
+        .col-sm-2 ng:repeat='market in markets'
+          p.text-medium ng:bind='market.name'
+          .super-large.text-secondary
+            | {{market.property_count}}
 
   .panel.panel-default
     .panel-heading

@@ -23,6 +23,7 @@ class Booking < ActiveRecord::Base
     where(date: date)
   }
   scope :on_month, -> (date) { where('extract(month from bookings.date) = ? and extract(year from bookings.date) = ?', date.month, date.year) }
+  scope :within_market, -> (market) { where('markets.id = ?', market.id).references(:markets).includes(property: {zip_code: :market}) || where(id:nil) }
   scope :pending, -> { where('services.id is null or bookings.payment_id is null').includes(:services).references(:services) }
   scope :today, -> { where('date = ?', Date.today) }
   scope :tomorrow, -> { where('date = ?', Date.today + 1) }

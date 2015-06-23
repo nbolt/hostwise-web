@@ -1,5 +1,7 @@
 AdminPropertiesCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $timeout, spinner) ->
 
+  $http.get('/data/markets').success (rsp) -> $scope.markets = rsp.markets
+
   $scope.fetch_properties = ->
     spinner.startSpin()
     $http.get('/properties.json').success (rsp) ->
