@@ -62,7 +62,7 @@ AdminScheduleCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $
   range = (n) -> if n then _.range 0, n else []
 
   open_jobs = (time) ->
-    jobs = _($scope.jobs).filter (job) -> job.status_cd == 0 && (job.booking.timeslot == time || !job.booking.timeslot)
+    jobs = _($scope.jobs).filter (job) -> job.status_cd == 0 && (job.booking.timeslot == time || (time == 11 && !job.booking.timeslot))
     _(jobs).map((job) -> "<a href='/jobs/#{job.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id}]</a>").join ' - '
 
   scheduled_jobs = (time) ->
