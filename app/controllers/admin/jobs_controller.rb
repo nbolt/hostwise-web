@@ -37,9 +37,9 @@ class Admin::JobsController < Admin::AuthController
               when 9 then jobs.select {|job| job.booking.user.name.downcase.match value}
               when 10 then jobs.select {|job| job.booking.user.phone_number.match value}
               when 11 then jobs.select {|job| job.status.to_s.match value}
-              when 12 then jobs.select {|job| "$#{job.booking.cost}".match value}
-              when 13 then jobs.select {|job| job.booking.service_list.downcase.match value}
-              when 20 then jobs.select {|job| job.contractor_names.downcase.match value}
+              when 12 then jobs.select {|job| job.contractor_names.downcase.match value}
+              when 13 then jobs.select {|job| "$#{job.booking.cost}".match value}
+              when 14 then jobs.select {|job| job.booking.service_list.downcase.match value}
               when 21 then jobs.select {|job| job.state.to_s.downcase.match value}
               when 6 then jobs.select do |job|
                 from = value.split('|')[0]
@@ -59,7 +59,12 @@ class Admin::JobsController < Admin::AuthController
             case order['column']
             when 0 then jobs.sort_by {|job| dir * job.id}
             when 1 then jobs.sort_by {|job| dir * job.booking.property.id}
+            when 2 then dir == 1 && jobs.sort_by {|job| job.formatted_time} || jobs.sort_by {|job| job.formatted_time}.reverse
             when 6 then jobs.sort_by {|job| dir * job.date.to_time.to_i}
+            when 9 then dir == 1 && jobs.sort_by {|job| job.booking.user.name} || jobs.sort_by {|job| job.booking.user.name}.reverse
+            when 11 then jobs.sort_by {|job| dir * job.status_cd}
+            when 12 then dir == 1 && jobs.sort_by {|job| job.contractor_names} || jobs.sort_by {|job| job.contractor_names}.reverse
+            when 14 then dir == 1 && jobs.sort_by {|job| job.booking.service_list} || jobs.sort_by {|job| job.booking.service_list}.reverse
             end
         end
       else

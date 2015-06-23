@@ -45,7 +45,6 @@ class Contractor::JobsController < Contractor::AuthController
   def begin
     if job.status == :open || job.status == :scheduled || job.status == :cant_access
       job.status_cd = 2
-      job.size = job.contractors.team_members.count
       job.save
 
       if params[:issue_resolved].present? # issue resolved
