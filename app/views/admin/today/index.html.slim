@@ -1,0 +1,36 @@
+.xenon.custom ng:controller='admin_schedule'
+  .panel.panel-default
+    .panel-heading
+      h3.panel-title Today's Schedule
+      .select2-head ng:show='user.role_cd == 0'
+        input type='hidden' ui:select2='marketHash()' ng:model='market'
+      .panel-options
+        a data-toggle="panel" href="#"
+          span.collapse-icon &ndash;
+          span.expand-icon +
+        a data-toggle="remove" href="#"
+          | \&times;
+    .panel-body.table-responsive
+      table#example-1.table.table-striped.table-bordered.schedule cellspacing="0" width="100%"
+        thead
+          tr
+            th
+            th Open
+            th Scheduled
+            th In Progress
+            th Completed
+        thead.search style='display:none'
+          tr
+            th
+            th Open
+            th Scheduled
+            th In Progress
+            th Completed
+        tfoot
+          tr
+            th
+            th Open
+            th Scheduled
+            th In Progress
+            th Completed
+        tbody

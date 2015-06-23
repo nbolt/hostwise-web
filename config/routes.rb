@@ -108,6 +108,8 @@ Rails.application.routes.draw do
     get   '/jobs/metrics' => 'jobs#metrics'
     get   '/jobs/:id' => 'jobs#show', as: :admin_job
     match '/jobs/:id/:action' => 'jobs', via: [:get, :post]
+    get   '/today' => 'today#index'
+    match '/today/:action' => 'today', via: [:get, :post]
     get   '/properties' => 'properties#index'
     get   '/properties/:id' => 'properties#show'
     post  '/properties/:id' => 'properties#update'
