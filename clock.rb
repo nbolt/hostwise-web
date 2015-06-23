@@ -212,10 +212,12 @@ module Clockwork
             end
           when 'jobs:check_no_shows'
             url = Rails.application.routes.url_helpers
+            zones = {}
             User.contractors.each do |contractor|
               if contractor.contractor_profile
                 timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
-                time = timezone.time Time.now
+                time = timezone.time(Time.now-8.days)
+                pickup = contractor.jobs.on_date(time).distribution.pickup[0]
                 jobs_today = contractor.jobs.standard.on_date(time)
                 jobs_today.each {|j| j.current_user = contractor}
                 jobs_today = jobs_today.sort_by(&:priority)
@@ -225,27 +227,34 @@ module Clockwork
                   last_job  = job == jobs_today[-1]
                   second_to_last = if jobs_today.count > 1 then job == jobs_today[-2] else false end
 
-                  if first_job && job.status_cd == 1 && time.hour == 10
+                  if job.status_cd == 1 && time.hour == job.booking.timeslot - 1
                     TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
                     UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
                   end
 
-                  if second_to_last && job.not_complete? && time.hour == 13
-                    TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not completed job ##{job.id} (#{job.booking.property.nickname}) by 1:30p")
-                    UserMailer.generic_notification("Contractor has not completed job - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not completed job ##{job.id} (#{job.booking.property.nickname}) by 1:30p - #{url.admin_job_url(job)}").then(:deliver)
+                  if first_job && pickup.then(:not_complete?) && time.hour == job.booking.timeslot - 2
+                    TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not picked up linens for job ##{job.id} (#{job.booking.property.nickname})")
+                    UserMailer.generic_notification("Contractor has not picked up linens - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not picked up linens for job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
                   end
 
-                  if last_job && job.status_cd == 1 && time.hour == 14
-                    TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
-                    UserMailer.generic_notification("Contractor has not arrived - #{contractor.name}", "#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname}) - #{url.admin_job_url(job)}").then(:deliver)
+                  if time.hour == 18
+                    zones["#{contractor.contractor_profile.zone}"] ||= []
+                    zones["#{contractor.contractor_profile.zone}"].push job
                   end
 
-                  if job.not_complete? && time.hour == 22
+                  if time.hour == 22 && job.not_complete?
                     job.past_due!
                     job.save
                   end
                 end
               end
+            end
+            zones.each do |zone, jobs|
+              completed   = jobs.select {|job| job.status_cd > 2}.count
+              in_progress = jobs.select {|job| job.status_cd == 2}.count
+              not_started = jobs.select {|job| job.status_cd == 1}.count
+              open        = jobs.select {|job| job.status_cd == 0}.count
+              UserMailer.generic_notification("Daily Progress Report (#{zone})", "#{completed} jobs completed, #{in_progress} jobs in progress, #{not_started} jobs not started, #{open} open jobs").then(:deliver)
             end
           when 'jobs:check_timers'
             Job.where(status_cd: 5).each do |job|
@@ -290,7 +299,7 @@ module Clockwork
   every(1.week, 'payouts:report', at: 'Wednesday 03:00')
   every(1.hour, 'jobs:notify_no_access', at: '**:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')
-  every(1.hour, 'jobs:check_no_shows', at: '**:30')
+  every(1.hour, 'jobs:check_no_shows', at: '**:06')
   every(1.day,  'coupons:monitor', at: '22:00')
   every(1.day,  'linens:check_counts', at: '17:00')
   every(1.day,  'bookings:nil_check', at: '17:00')
