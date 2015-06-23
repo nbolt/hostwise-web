@@ -5,7 +5,7 @@ class ContractorProfile < ActiveRecord::Base
   before_validation :standardize_address
   before_save :create_stripe_recipient, :fetch_zone, :handle_position_change
 
-  as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3
+  as_enum :position, fired: 0, trainee: 1, contractor: 2, trainer: 3, elite: 4
 
   attr_encrypted :ssn, :driver_license, key: ENV['CIPHER_KEY']
 

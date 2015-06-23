@@ -82,7 +82,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spi
     {
     dropdownCssClass: 'details'
     minimumResultsForSearch: -1
-    data: [{id:'0',text:'FIRED'},{id:'1',text:'APPLICANT'},{id:'2',text:'CONTRACTOR'},{id:'3',text:'MENTOR'}]
+    data: [{id:'0',text:'FIRED'},{id:'1',text:'APPLICANT'},{id:'2',text:'CONTRACTOR'},{id:'3',text:'MENTOR'},{id:'4',text:'ELITE'}]
     initSelection: (el, cb) ->
     }
 

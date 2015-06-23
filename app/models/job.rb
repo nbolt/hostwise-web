@@ -54,7 +54,7 @@ class Job < ActiveRecord::Base
   scope :untimed, -> { where('(bookings.timeslot is null or jobs.size = 1) and bookings.timeslot_type_cd = 0 and jobs.admin_set = ?', false).includes(booking: [:job]).references(:bookings, :jobs) }
   scope :ordered, -> (user) { where('contractor_jobs.user_id = ?', user.id).order('contractor_jobs.priority').includes(:contractor_jobs).references(:contractor_jobs) }
   scope :open, -> (contractor) {
-    states = contractor.contractor_profile.position == :trainer ? [0,1] : 0
+    states = contractor.contractor_profile.position_cd > 2 ? [0,1] : 0
     standard.days(contractor).within_market(contractor.contractor_profile.market).where(state_cd: states, status_cd: 0)
     .where('(contractor_jobs.user_id is null or contractor_jobs.user_id != ?) and jobs.date >= ? and jobs.date <= ?', contractor.id, Date.today, Date.today + 2.weeks)
     .order('jobs.date ASC').includes(:contractor_jobs).references(:contractor_jobs)
