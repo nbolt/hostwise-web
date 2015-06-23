@@ -64,19 +64,19 @@ AdminScheduleCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $
 
   open_jobs = (time) ->
     jobs = _($scope.jobs).filter (job) -> job.status_cd == 0 && (job.booking.timeslot == time || (time == 11 && !job.booking.timeslot))
-    _(jobs).map((job) -> "<a class='job' href='/jobs/#{job.id}' market='#{job.booking.property.zip_code.market.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id}]</a>").join ' - '
+    _(jobs).map((job) -> "<a class='job' href='/jobs/#{job.id}' market='#{job.booking.property.zip_code.market.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id}]</a>").join '<br/>'
 
   scheduled_jobs = (time) ->
     jobs = _($scope.jobs).filter (job) -> job.status_cd == 1 && job.booking.timeslot == time
-    _(jobs).map((job) -> "<a class='job' href='/jobs/#{job.id}' market='#{job.booking.property.zip_code.market.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id} - #{job.contractor_names}]</a>").join ' - '
+    _(jobs).map((job) -> "<a class='job' href='/jobs/#{job.id}' market='#{job.booking.property.zip_code.market.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id} - #{job.contractor_names}]</a>").join '<br/>'
 
   in_progress_jobs = (time) ->
     jobs = _($scope.jobs).filter (job) -> job.status_cd == 2 && job.booking.timeslot == time
-    _(jobs).map((job) -> "<a class='job' href='/jobs/#{job.id}' market='#{job.booking.property.zip_code.market.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id} - #{job.contractor_names}]</a>").join ' - '
+    _(jobs).map((job) -> "<a class='job' href='/jobs/#{job.id}' market='#{job.booking.property.zip_code.market.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id} - #{job.contractor_names}]</a>").join '<br/>'
 
   completed_jobs = (time) ->
     jobs = _($scope.jobs).filter (job) -> (job.status_cd == 3 || job.status_cd == 5) && job.booking.timeslot == time
-    _(jobs).map((job) -> "<a class='job' href='/jobs/#{job.id}' market='#{job.booking.property.zip_code.market.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id} - #{job.contractor_names}]</a>").join ' - '
+    _(jobs).map((job) -> "<a class='job' href='/jobs/#{job.id}' market='#{job.booking.property.zip_code.market.id}'>[#{job.booking.property.neighborhood} - #{job.booking.property.nickname} - #{job.id} - #{job.contractor_names}]</a>").join '<br/>'
 
 ]
 
