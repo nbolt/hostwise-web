@@ -86,6 +86,7 @@ class Contractor::JobsController < Contractor::AuthController
   def timer_finished
     unless job.booking.status == :couldnt_access
       job.booking.update_attribute :status_cd, 5
+      job.pay_contractors!
       staging = Rails.env.staging? && '[STAGING] ' || ''
       TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} was unable to access property ##{job.booking.property.id} and the 30m timer has passed. They are now either leaving the property or have forgotten to notify us they've gotten in. This is for job ##{job.id}.")
     end

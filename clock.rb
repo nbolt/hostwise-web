@@ -103,7 +103,6 @@ module Clockwork
                 begin
                   booking.update_cost! if booking.status_cd == 5
                   booking.charge!
-                  booking.job.pay_contractors!
                   booking.property.update_attribute :purchase_date, time if booking.property.linen_handling_cd == 0 && !booking.property.purchase_date
                 rescue
                   # report to appsignal
@@ -260,6 +259,7 @@ module Clockwork
             Job.where(status_cd: 5).each do |job|
               if job.booking.status != :couldnt_access && job.cant_access < Time.now.utc - 30.minutes
                 job.booking.update_attribute :status_cd, 5
+                job.pay_contractors!
                 staging = Rails.env.staging? && '[STAGING] ' || ''
                 TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{job.primary_contractor.name} was unable to access property ##{job.booking.property.id} and the 30m timer has passed. They are now either leaving the property or have forgotten to notify us they've gotten in. This is for job ##{job.id}.")
               end
