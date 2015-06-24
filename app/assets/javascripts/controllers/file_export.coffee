@@ -22,7 +22,7 @@ FileExportCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $ti
     onchange: () ->
 
     onclick: ($this) ->
-      date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')+1}", 'YYYY D MM'
+      date = moment "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
       $scope.selected_start_date = date
       $scope.$apply -> $scope.form.start_date = date.format('MM/DD/YYYY')
       refresh_calendar($this.parents('.calendar'), date)
@@ -37,7 +37,7 @@ FileExportCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $ti
     onchange: () ->
 
     onclick: ($this) ->
-      date = moment.utc "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')+1}", 'YYYY D MM'
+      date = moment "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
       $scope.selected_end_date = date
       $scope.$apply -> $scope.form.end_date = date.format('MM/DD/YYYY')
       refresh_calendar($this.parents('.calendar'), date)
