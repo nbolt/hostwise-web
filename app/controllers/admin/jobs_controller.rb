@@ -288,7 +288,7 @@ class Admin::JobsController < Admin::AuthController
 
   def update_status
     success = false; message = 'status update not allowed'
-    if job.status_cd < 3
+    if job.status_cd < 3 || job.status_cd == 4
       case params[:status]
       when 3
         success = true; message = nil
