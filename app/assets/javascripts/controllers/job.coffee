@@ -106,6 +106,9 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     angular.element('.actions .phase.arrival').addClass('active')
     null
 
+  $scope.show_full_address = ->
+    $scope.job and $scope.job.status and ($scope.job.status == 'completed' or $scope.job.status == 'in_progress' or $scope.job.status == 'cant_access' or $scope.job.status == 'active')
+
   $scope.issue_resolved = ->
     $scope.resolved = true
     $scope.start()

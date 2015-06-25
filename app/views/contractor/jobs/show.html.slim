@@ -29,7 +29,8 @@
       .top
         .title
           .name ng:bind='job.booking.property.nickname'
-          .address ng:bind='job.booking.property.full_address'
+          .address ng:if="show_full_address()" ng:bind='job.booking.property.full_address'
+          .address ng:if="!show_full_address()" ng:bind='job.booking.property.neighborhood'
         .beds
           .text Beds
           .bed ng:if='job.booking.property.king_beds == 1'
@@ -727,7 +728,7 @@
                         .existing-photo ng:show='checklist.kitchen_photo.url' ng:file-select='' ng:model='kitchen_photo' ng:multiple='false'
                           img ng:src='{{checklist.kitchen_photo.url}}'
                         .new-photo ng:hide='checklist.kitchen_photo.url' ng:file-select='' ng:model='kitchen_photo' ng:multiple='false' style='background-image:url(/images/sample_kitchen.png);'
-                        .label 1 Kitchen 
+                        .label 1 Kitchen
                       .snap-photo.bedroom
                         .existing-photo ng:show='checklist.bedroom_photo.url' ng:file-select='' ng:model='bedroom_photo' ng:multiple='false'
                           img ng:src='{{checklist.bedroom_photo.url}}'

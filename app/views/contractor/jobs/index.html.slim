@@ -47,9 +47,12 @@
                     .icon
                       i.icon-details
                     .text View Job
-                .title ng:show="tab.name == 'upcoming' || tab.name == 'past'"
-                  .name ng:bind='job.booking.user.name'
+                .title ng:show="tab.name == 'past'"
+                  .name ng:bind='job.booking.property.user.name'
                   .address ng:bind='job.booking.property.full_address'
+                .title ng:show="tab.name == 'upcoming'"
+                  .name ng:bind='job.booking.property.user.name'
+                  .address ng:bind='job.booking.property.neighborhood'
                 .neighborhood ng:show="tab.name == 'open'"
                   .name ng:bind='job.booking.property.neighborhood'
               .bottom
