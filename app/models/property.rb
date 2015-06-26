@@ -38,6 +38,7 @@ class Property < ActiveRecord::Base
   scope :upcoming_bookings, -> { where('bookings.id is not null').where('date >= ?', Date.today).includes(:active_bookings).references(:active_bookings) }
   scope :no_upcoming, -> { where('bookings.id is null').includes(:active_bookings).references(:active_bookings) }
   scope :recently_added, -> { reorder('created_at DESC') }
+  scope :purchase_on_month, -> (date) { where('linen_handling_cd = 0 and purchase_date is not null and extract(month from properties.purchase_date) = ? and extract(year from properties.purchase_date) = ?', date.month, date.year) }
 
   attr_accessor :step
 
