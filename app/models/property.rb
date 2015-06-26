@@ -55,7 +55,7 @@ class Property < ActiveRecord::Base
   end
 
   def linen_purchase_revenue
-    Transaction.where('property_transactions.property_id in (?)', property_transactions.map(&:id)).includes(:property_transactions).references(:property_transactions).sum(:amount) / 100.0
+    transactions.reduce(0) {|acc, transaction| acc + (transaction.amount / 100.0 || 0)}
   end
 
   def last_transaction
