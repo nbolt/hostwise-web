@@ -54,6 +54,10 @@ class Property < ActiveRecord::Base
     Transaction.where('booking_transactions.booking_id in (?)', bookings.map(&:id)).includes(:booking_transactions).references(:booking_transactions).sum(:amount) / 100.0
   end
 
+  def linen_purchase_revenue
+    Transaction.where('property_transactions.property_id in (?)', property_transactions.map(&:id)).includes(:property_transactions).references(:property_transactions).sum(:amount) / 100.0
+  end
+
   def last_transaction
     transactions.order(charged_at: :asc, created_at: :asc).last
   end
