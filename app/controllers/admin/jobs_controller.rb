@@ -306,7 +306,7 @@ class Admin::JobsController < Admin::AuthController
         end
 
         job.contractors.each do |contractor|
-          contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100) if job.booking.same_day_cancellation
+          contractor.payouts.create(job_id: job.id, amount: job.payout(contractor) * 100, payout_type_cd: 0) if job.booking.same_day_cancellation
           job.contractors.destroy contractor
           other_jobs = contractor.jobs.standard.on_date(job.date)
           if other_jobs[0]

@@ -73,7 +73,7 @@ class Host::BookingsController < Host::AuthController
       if booking.job
         booking.job.update_attribute :status_cd, 6
         booking.job.contractors.each do |contractor|
-          contractor.payouts.create(job_id: booking.job.id, amount: booking.job.payout(contractor) * 100) if params[:apply_fee]
+          contractor.payouts.create(job_id: booking.job.id, amount: booking.job.payout(contractor) * 100, payout_type_cd: 0) if params[:apply_fee]
           booking.job.contractors.destroy contractor
           other_jobs = contractor.jobs.standard.on_date(booking.date)
           if other_jobs[0]

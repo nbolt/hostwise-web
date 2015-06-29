@@ -446,7 +446,7 @@ class Job < ActiveRecord::Base
   def pay_contractors!
     contractors.each do |contractor|
       unless Payout.where(job_id: self.id, user_id: contractor.id)[0] || !payout(contractor)
-        contractor.payouts.create(job_id: self.id, amount: payout(contractor) * 100)
+        contractor.payouts.create(job_id: self.id, amount: payout(contractor) * 100, payout_type_cd: 0)
       end
     end
   end
