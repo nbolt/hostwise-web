@@ -35,7 +35,7 @@ class Admin::BookingsController < Admin::AuthController
               when 2  then @bookings.select {|booking| booking.job.id.to_s.match value}
               when 3  then @bookings.select {|booking| booking.property.id.to_s.match value}
               when 4  then @bookings.select {|booking| booking.user.id.to_s.match value}
-              when 6  then @bookings.select {|booking| booking.user.name.match value}
+              when 6  then @bookings.select {|booking| booking.user.name.downcase.match value}
               when 7  then @bookings.select {|booking| (booking.payment_status_cd == 0 && 'Open' || 'Received').match value}
               when 8  then @bookings
               when 9  then @bookings
@@ -57,10 +57,11 @@ class Admin::BookingsController < Admin::AuthController
           @bookings =
             case order['column']
             when 0 then @bookings
-            when 1 then @bookings.sort_by {|booking| dir * booking.job.id}
-            when 2 then @bookings.sort_by {|booking| dir * booking.property.id}
-            when 3 then @bookings.sort_by {|booking| dir * booking.user.id}
-            when 4 then @bookings.sort_by {|booking| dir * booking.date.to_time.to_i}
+            when 1 then @bookings.sort_by {|booking| dir * booking.id}
+            when 2 then @bookings.sort_by {|booking| dir * booking.job.id}
+            when 3 then @bookings.sort_by {|booking| dir * booking.property.id}
+            when 4 then @bookings.sort_by {|booking| dir * booking.user.id}
+            when 5 then @bookings.sort_by {|booking| dir * booking.date.to_time.to_i}
             end
         end
         filtered_bookings = @bookings
