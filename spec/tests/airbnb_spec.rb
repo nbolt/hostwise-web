@@ -18,12 +18,18 @@ describe 'airbnb' do
 
   it 'create account', type: 'signup' do
     report = []
-    server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
-    server.start
-    proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
-    caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
-    driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    use_proxy = ENV['proxy'] == 'true'
+
+    driver = Selenium::WebDriver.for :firefox
+    if use_proxy
+      server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
+      server.start
+      proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
+      caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
+      driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    end
     site = 'https://www.airbnb.com'
+
     account_limit = ENV['account_limit'].to_i
     report << "creating #{account_limit} accounts..."
 
@@ -32,7 +38,7 @@ describe 'airbnb' do
       last_name = ['wong', 'lee', 'chin', 'chan', 'li'].sample
 
       email = "#{ENV['base_email']}+#{Random.new.rand(1...10000)}@gmail.com"
-      while BotAccount.where(email: email, source_cd: 1).present?
+      while BotAccount.where(email: email, source_cd: 0).present?
         email = "#{ENV['base_email']}+#{Random.new.rand(1...10000)}@gmail.com"
       end
       pwd = 'airbnb338'
@@ -373,5 +379,301 @@ describe 'airbnb' do
     driver.quit
     server.stop if use_proxy
     send_report 'booking', report
+  end
+
+  it 'scrape and book properties', type: 'scrape_and_book' do
+    report = []
+    use_proxy = ENV['proxy'] == 'true'
+    test = ENV['test'] == 'true'
+    start_page = ENV['start_page'].present? ? ENV['start_page'].to_i : 1
+    month_limit = 5
+    message_limit = ENV['message_limit'].to_i
+    account_limit = ENV['account_limit'].to_i
+    total_all_msg = 0
+
+    messages = ["Hey |name|!\n\nI love your vacation rental. You should check out HostWise[.com], (first clean free) I use them and if I refer a free service then I get another free service! :) You can do the same!",
+                "Hey |name|!\n\nLooks like your vacation rental would be a perfect fit for our company, HostWise[.com]. Our company was created by hosts, for hosts. We automate the entire home turnover for you and guarantee a 5 star clean rating every time. Give us a try for first time for free, no strings attached. Not sure if you have many more properties, but if so we do offer enterprise pricing discounts as well! :)",
+                "Hey |name|!\n\nI just started using HostWise[.com] to clean and turnover my property and think your property would be a perfect fit for them too. First service is free, no strings attached, I just got a coupon code for 10% off 3 services if your are interested I can give it to you!\n\nCheers!",
+                "Hi |name|!\n\nDo you use HostWise[.com] to clean and restock your property? The last rental we booked in LA did and the presentation was hotel caliber - from linens and towels to toiletries just for the guests. They're still doing FREE TRIALS at HostWise[.com], by the way.\n\nCoupon code: TRYHOSTWISE100\n\nCheers!",
+                "Hi |name|,\n\nDo you use HostWise[.com] for housekeeping, linens, towels?"]
+
+    driver = Selenium::WebDriver.for :chrome
+    if use_proxy
+      server = BrowserMob::Proxy::Server.new ENV['BROWSERMOB']
+      server.start
+      proxy = Selenium::WebDriver::Proxy.new(http: server.create_proxy.selenium_proxy.http)
+      caps = Selenium::WebDriver::Remote::Capabilities.chrome(proxy: proxy)
+      driver = Selenium::WebDriver.for(:chrome, desired_capabilities: caps)
+    end
+    site = 'https://www.airbnb.com'
+
+    location = URI.unescape ENV['location']
+    puts "scraping properties at #{location}..."
+    report << "scraping properties at #{location}..."
+
+    accounts = BotAccount.where('status_cd = 1 and source_cd = 0 and last_run < ?', Date.today).limit(account_limit)
+    puts "good accounts: #{accounts.count}"
+    report << "good accounts: #{accounts.count}"
+    accounts.each do |account|
+      username = account.email
+      password = account.password
+      driver.navigate.to site
+
+      driver.find_element(:xpath, '//li[@id="login"]//a').click
+      sleep 3
+
+      puts "logging into account: #{username}"
+      report << "logging into account: #{username}"
+      login_form = driver.find_element(:xpath, '//form[@class="signin-form login-form"]')
+      login_form.find_element(:xpath, '//input[@id="signin_email"]').send_keys username
+      login_form.find_element(:xpath, '//input[@id="signin_password"]').send_keys password
+      login_form.submit
+      sleep 3
+
+      begin
+        #account has been disabled
+        recovery_panel = driver.find_element(:xpath, '//div[@id="account_recovery_panel"]') rescue nil
+        if recovery_panel.present?
+          if recovery_panel.find_element(:xpath, '//h3[@class="text-special"]').text == 'Account Disabled'
+            puts "deactivating account: #{username}"
+            report << "deactivating account: #{username}"
+            account.status = :deactivated
+            account.save
+            driver.navigate.to site
+            next
+          end
+        end
+
+        #account needs email verification
+        email_verification = driver.find_element(:xpath, '//div[@id="email-verification"]') rescue nil
+        if email_verification.present?
+          verification_icon = email_verification.find_element(:xpath, '//div[@class="verify-email-icon verify-email-panel-icon"]') rescue nil
+          if verification_icon.present?
+            puts "pending account: #{username}"
+            report << "pending account: #{username}"
+            account.status = :pending
+            account.save
+            driver.navigate.to site
+            next
+          end
+        end
+
+        #update account status if account required further verification
+        driver.get "#{site}/account"
+        sleep 3
+        verify_id = driver.find_element(:xpath, '//div[@class="vid-intro text-copy"]//h2') rescue nil
+        if verify_id.present?
+          puts verify_id.text
+          if verify_id.text == 'We need to do a virtual ID check'
+            puts "account #{username} requires further verification."
+            report << "account #{username} requires further verification."
+            account.status = :pending
+            account.save
+            driver.navigate.to site
+            logout driver
+            next
+          end
+        end
+      rescue Exception => e
+        puts e
+      end
+
+      driver.navigate.to site
+      search_form = driver.find_element(:xpath, '//form[@id="searchbar-form"]')
+      search_form.find_element(:xpath, '//input[@id="location"]').send_keys location
+      search_form.submit
+      sleep 3
+
+      #loop through each result
+      base_url = driver.current_url.split('?').first
+      last_page = driver.find_element(:xpath, '//div[@class="results-footer"]//ul//li[last()-1]//a').text.to_i
+      total_message = 0
+      puts "#{base_url}, #{start_page}, #{last_page}"
+      (start_page..last_page).each do |i|
+        driver.navigate.to "#{base_url}?page=#{i}"
+        sleep 1
+        search_results = driver.find_element(:xpath, '//div[@class="search-results"]//div[@class="listings-container"]')
+        items = search_results.find_elements(:xpath, '//div[@class="listing"]')
+        puts "page: #{i} -> items: #{items.size}"
+        report << "page: #{i} -> items: #{items.size}"
+
+        result_hash = {}
+        items.each do |item|
+          property_id = item.attribute('data-id')
+          user_id = item.attribute('data-user')
+          result_hash[property_id] = {user_id: user_id,
+                                      profile_url: "#{site}/users/show/#{user_id}",
+                                      property_name: item.attribute('data-name'),
+                                      property_url: "#{site}#{item.attribute('data-url')}"}
+        end
+
+        result_hash.each do |key, value|
+          #skip if already been scraped
+          if Bot.where(source_cd: 0, property_id: key).present?
+            puts "already scraped property id: #{key}"
+            next
+          end
+
+          break if total_message >= message_limit  #STOP when limit reaches
+
+          begin
+            puts value[:property_url]
+            driver.get value[:property_url]
+            sleep 1
+
+            superhost = driver.find_element(:xpath, '//div[@id="superhost-badge-profile"]') rescue nil
+            user_name = driver.find_element(:xpath, '//div[@id="host-profile"]//div[@class="row"]//div[@class="col-lg-8"]//h4').text.split(',').last.strip
+            map = driver.find_elements(:xpath, '//div[@id="neighborhood"]//div[@class="panel location-panel"]//div[@class="panel"]//div[@class="panel-body"]').last
+            address = map.find_elements(:xpath, '//div[@id="neighborhood"]//div[@class="text-center"]').last.text
+            feature_section = driver.find_elements(:xpath, '//div[@id="details"]//div[@id="details-column"]//div[@class="col-md-9"]').first
+            features = feature_section.find_elements(:xpath, '//div[@class="col-md-6"]//div')
+
+            property_type = ''
+            num_bedrooms = 0
+            num_bathrooms = 0
+            num_beds = 0
+            features.each do |feature|
+              text = feature.text
+              if text.include? 'Property type:'
+                property_type = text.split(' ').last.downcase
+              elsif text.include? 'Bedrooms:'
+                num_bedrooms = text.split(' ').last.to_i
+              elsif text.include? 'Bathrooms:'
+                num_bathrooms = text.split(' ').last.to_i
+              elsif text.include? 'Beds:'
+                num_beds = text.split(' ').last.to_i
+              end
+            end
+
+            #store all scraped data
+            puts "user: #{value[:user_id]}, name: #{user_name}, property id: #{key}, property name: #{value[:property_name]}, property url: #{value[:property_url]}, profile url: #{value[:profile_url]}, superhost: #{superhost.present?}, address: #{address}, property type: #{property_type}, bedrooms: #{num_bedrooms}, bathrooms: #{num_bathrooms}, beds: #{num_beds}"
+            report << "user: #{value[:user_id]}, name: #{user_name}, property id: #{key}, property name: #{value[:property_name]}, property url: #{value[:property_url]}, profile url: #{value[:profile_url]}, superhost: #{superhost.present?}, address: #{address}, property type: #{property_type}, bedrooms: #{num_bedrooms}, bathrooms: #{num_bathrooms}, beds: #{num_beds}"
+            record = Bot.new({'host_name' => user_name,
+                           'profile_id' => value[:user_id],
+                           'profile_url' => value[:profile_url],
+                           'property_id' => key,
+                           'property_name' => value[:property_name],
+                           'property_url' => value[:property_url],
+                           'address' => address,
+                           'property_type' => property_type,
+                           'num_bedrooms' => num_bedrooms,
+                           'num_bathrooms' => num_bathrooms,
+                           'num_beds' => num_beds,
+                           'status' => :active,
+                           'source' => :airbnb,
+                           'super_host' => superhost.present?})
+            record.save
+
+            if Bot.where(source_cd: 0, profile_id: record.profile_id, status_cd: 2).present? #SKIP when same host already been messaged
+              puts "already messaged this host #{record.profile_id}"
+              next
+            end
+
+            #book
+            #click contact host button
+            driver.find_element(:xpath, '//button[@id="host-profile-contact-btn"]').click
+            sleep 3
+            contact_form = driver.find_element(:xpath, '//form[@id="message_form"]')
+
+            #set message
+            message = messages[3].gsub '|name|', record.host_name ||= 'host'
+            textarea = contact_form.find_element(:xpath, '//textarea[@id="question"]')
+            textarea.clear
+            textarea.send_keys message
+            sleep 3
+
+            #set guest - some properties will have only 1 guest option
+            default_guest = 1
+            guest_ddl = Selenium::WebDriver::Support::Select.new(contact_form.find_element(:xpath, '//select[@id="message_number_of_guests"]'))
+            guest_ddl.options.reverse.each do |ele|
+              default_guest = 2 if ele.text.split(' ').first == '2' #pick 2 guests if available otherwise default to 1 guest
+            end
+            guest_ddl.select_by(:value, default_guest.to_s)
+            sleep 1
+
+            #pick checkin date
+            contact_form.find_element(:xpath, '//input[@id="message_checkin"]').click
+            sleep 5
+            available_dates = nil
+            date_selected_index = -1
+            month_index = 0
+            while !available_dates.present? && month_index < month_limit
+              calendar = contact_form.find_element(:xpath, '//div[@class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"]')
+              available_dates = calendar.find_elements(:xpath, '//table[@class="ui-datepicker-calendar"]//tbody//a[@class="ui-state-default"]') rescue nil
+              if available_dates.present?
+                dates = available_dates.collect {|date| date.text.to_i}
+                dates.each_with_index do |date, index|
+                  if dates.include? (dates[index] + 1)
+                    date_selected_index = index
+                    break
+                  end
+                end
+                if date_selected_index > -1
+                  available_dates[date_selected_index].click
+                  sleep 3
+                  break
+                else #try next month
+                  calendar.find_element(:xpath, '//a[@class="ui-datepicker-next icon icon-chevron-right ui-corner-all"]').click
+                  available_dates = nil
+                  month_index += 1
+                  sleep 3
+                end
+              else #try next month
+                calendar.find_element(:xpath, '//a[@class="ui-datepicker-next icon icon-chevron-right ui-corner-all"]').click
+                available_dates = nil
+                month_index += 1
+                sleep 3
+              end
+            end
+
+            if month_index >= month_limit #update invalid host
+              record.status = :deleted
+              record.save
+            end
+
+            error_box = contact_form.find_element(:xpath, '//div[@id="messaging-errors"]')
+            if error_box.displayed? && !error_box.text.include?("You've contacted this host before")
+              puts "failed booking #{record.id} #{record.host_name} at property #{record.property_name}"
+              report << "failed booking #{record.id} #{record.host_name} at property #{record.property_name}"
+            else
+              contact_form.submit unless test
+              unless test
+                total_message += 1
+                total_all_msg += 1
+                sleep 5
+                puts "contacted host #{record.host_name} for property #{record.property_name}"
+                report << "contacted host #{record.host_name} for property #{record.property_name}"
+                record.status = :contacted
+                record.save
+              else
+                total_message += 1
+              end
+            end
+          rescue Exception => e
+            report << "AirBnb error for #{key} #{value}: #{e}"
+          end
+        end
+
+        if total_message >= message_limit  #STOP when limit reaches
+          puts "next run starts at page:#{i}"
+          report << "next run starts at page:#{i}"
+          start_page = i
+          break
+        end
+      end
+
+      account.last_run = Date.today
+      account.save
+      puts "total sent: #{total_all_msg}"
+      report << "total sent: #{total_all_msg}"
+
+      driver.navigate.to site
+      sleep 2
+      logout driver
+    end
+
+    driver.quit
+    server.stop if use_proxy
+    send_report 'scrape', report
   end
 end
