@@ -52,8 +52,8 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
           displayed.push( table.fnGetData(index)[1].match(/>\d*</)[0].replace('>', '').replace('<', '') )
     displayed
 
-  $scope.selected_payments = -> _($scope.bookings).filter (booking) -> booking.selected
-  $scope.selected_payouts = -> _($scope.jobs).filter (job) -> job.selected
+  $scope.selected_payments = -> _(angular.element('#example-1 .cbr:checked')).map (el) -> angular.element(el).attr('id').replace('booking-', '')
+  $scope.selected_payouts = -> _(angular.element('#example-2 .cbr:checked')).map (el) -> angular.element(el).attr('id').replace('job-', '')
 
   $scope.check_booking = (booking) ->
     if angular.element("#booking-#{booking.id}").prop('checked')
@@ -122,25 +122,20 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
 
   $scope.process_payments = ->
     spinner.startSpin()
-    $http.post('/transactions/process_payments', {bookings: _($scope.selected_payments()).map((b) -> b.id)}).success (rsp) ->
+    $http.post('/transactions/process_payments', {bookings: $scope.selected_payments()}).success (rsp) ->
+      $scope.bookings_table.DataTable().ajax.reload()
       ngDialog.closeAll()
       spinner.stopSpin()
-      _(rsp.payments).each (id) ->
-        booking = _($scope.bookings).find (booking) -> booking.id == id
-        booking.payment_status_cd = 1
-        booking.status = 'Received'
 
   $scope.process_payouts_modal = -> ngDialog.open template: 'process-payouts-confirmation', className: 'info full', scope: $scope
   $scope.cancel_process = -> ngDialog.closeAll()
 
   $scope.process_payouts = ->
     spinner.startSpin()
-    $http.post('/transactions/process_payouts', {jobs: _($scope.selected_payouts()).map((b) -> b.id)}).success (rsp) ->
+    $http.post('/transactions/process_payouts', {jobs: $scope.selected_payouts()}).success (rsp) ->
+      $scope.jobs_table.DataTable().ajax.reload()
       ngDialog.closeAll()
       spinner.stopSpin()
-      _(rsp.payouts).each (id) ->
-        job = _($scope.jobs).find (job) -> job.id == id
-        job.status = 'Paid'
 
   $scope.edit_payout_modal = (job) ->
     job = _($scope.jobs).find (j) -> j.id == job
