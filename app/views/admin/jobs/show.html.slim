@@ -73,6 +73,9 @@
               .linens ng:if='job.booking.property.linen_handling_cd == 0'
                 img src='/images/badge.png'
                 .text This host has purchased linens & towels for this property
+              .linens ng:if='job.booking.property.linen_handling_cd == 2'
+                img src='/images/laundry.png'
+                .text In-Unit Laundry
   .row.uneven
     .block.customer
       .head
