@@ -282,7 +282,7 @@ class Job < ActiveRecord::Base
         payout += PRICING['patio_payout']  if pricing[:patio] > 0
         payout += PRICING['windows_payout']  if pricing[:windows] > 0
         payout += PRICING['no_access_fee_payout'] if pricing[:no_access_fee] > 0
-        payout += PRICING['laundry_payout'] * booking.property.bedrooms if booking.linen_handling == :in_unit
+        payout += PRICING['laundry_payout'] * booking.property.beds if booking.linen_handling == :in_unit
 
         if contractor.chain(:contractor_profile, :position) == :trainee
           payout = 20
