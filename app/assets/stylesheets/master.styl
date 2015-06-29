@@ -3828,3 +3828,48 @@ a.a-desk-widget.a-desk-widget-chat
     .desc
       strong
         color: light-orange
+
+.admin-schedule
+  .icon-schedule
+    float: right
+    margin-right: 15px
+    cursor: pointer
+    font-size: 20px
+  .calendar
+    border: thin solid light-gray
+    display: none
+    width: 300px
+    background-color: lighter-gray
+    z-index: 10
+    position: absolute
+    right: 0
+    top: 35px
+    border-radius: 5px
+    overflow: hidden
+    .month_header
+      height: 50px
+      line-height: 50px
+      background-color: white
+      .month
+        color: teal
+        font-size: 1.2em
+      .arrow
+        background-color: transparent
+        top: 10px
+        width: 30px
+        height: 30px
+        line-height: 30px
+        &.prev
+          margin-top: 2px
+        i
+          color: teal
+    .table
+      font-size: 0.9em
+      padding: 10px
+      table
+        tbody
+          td
+            padding: 10px
+        thead
+          th
+            padding: 10px

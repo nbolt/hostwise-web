@@ -1,9 +1,12 @@
-.xenon.custom ng:controller='admin_schedule'
+.xenon.custom.admin-schedule ng:controller='admin_schedule'
   .panel.panel-default
     .panel-heading
       h3.panel-title Today's Schedule
       .select2-head ng:show='user.role_cd == 0'
         input type='hidden' ui:select2='marketHash()' ng:model='market'
+      .date
+        i.icon-schedule ng:click='calendar($event)'
+        .calendar calendar='' options='calendar_options1' dates='chosen_dates'
       .panel-options
         a data-toggle="panel" href="#"
           span.collapse-icon &ndash;

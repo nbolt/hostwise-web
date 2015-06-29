@@ -5,7 +5,12 @@ class Admin::TodayController < Admin::AuthController
   def index
     data = if params[:data] then JSON.parse params[:data] else nil end
     filtered_jobs = nil
-    jobs = Job.standard.today.includes(booking: {property: {zip_code: {market: {}}}, user: {}})
+    if params[:date].present?
+      date = Time.strptime(params[:date], '%m/%d/%Y')
+      jobs = Job.standard.on_date(date).includes(booking: {property: {zip_code: {market: {}}}, user: {}})
+    else
+      jobs = Job.standard.today.includes(booking: {property: {zip_code: {market: {}}}, user: {}})
+    end
     jobs = jobs.within_market(current_user.market) if current_user.market
     jobs = jobs.search(params[:search]) if params[:search] && !params[:search].empty?
     total = jobs.count
