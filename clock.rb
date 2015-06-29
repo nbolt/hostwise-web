@@ -215,7 +215,7 @@ module Clockwork
             User.contractors.each do |contractor|
               if contractor.contractor_profile
                 timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
-                time = timezone.time(Time.now-8.days)
+                time = timezone.time Time.now
                 pickup = contractor.jobs.on_date(time).distribution.pickup[0]
                 jobs_today = contractor.jobs.standard.on_date(time)
                 jobs_today.each {|j| j.current_user = contractor}
@@ -223,8 +223,6 @@ module Clockwork
                 jobs_today.each do |job|
                   staging = Rails.env.staging? && '[STAGING] ' || ''
                   first_job = job == jobs_today[0]
-                  last_job  = job == jobs_today[-1]
-                  second_to_last = if jobs_today.count > 1 then job == jobs_today[-2] else false end
 
                   if job.status_cd == 1 && time.hour == job.booking.timeslot - 1
                     TwilioJob.perform_later("+1#{ENV['SUPPORT_NOTIFICATION_SMS']}", "#{staging}#{contractor.name} (#{contractor.id}) has not arrived at job ##{job.id} (#{job.booking.property.nickname})")
