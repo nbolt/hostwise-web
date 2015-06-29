@@ -10,8 +10,8 @@ AdminScheduleCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $
 
   $http.get('/jobs/metrics').success (rsp) -> $scope.metrics = { total: rsp.total, next_ten: rsp.next_ten, unclaimed: rsp.unclaimed, completed: rsp.completed, growth: rsp.growth }
 
-  $scope.calendar = (event) ->
-    $(event.currentTarget).siblings('.calendar').toggle()
+  $scope.calendar = ->
+    angular.element('.calendar').toggle()
     return true
 
   $scope.calendar_options1 =
@@ -25,10 +25,9 @@ AdminScheduleCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $
     onclick: ($this) ->
       date = moment "#{$this.attr 'year'} #{$this.attr 'day'} #{parseInt($this.attr 'month')}", 'YYYY D MM'
       $scope.chosen_date = date.format('MM/DD/YYYY')
-      $timeout.cancel promise
-      promise = $timeout (->
-        $scope.fetch_jobs()
-      ), 400
+      angular.element($scope.table).DataTable().ajax.reload()
+      angular.element('.calendar').toggle()
+      $scope.chosen_date = ''
   }
 
   $scope.fetch_jobs = ->

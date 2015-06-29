@@ -5,7 +5,7 @@
       .select2-head ng:show='user.role_cd == 0'
         input type='hidden' ui:select2='marketHash()' ng:model='market'
       .date
-        i.icon-schedule ng:click='calendar($event)'
+        i.icon-schedule ng:click='calendar()'
         .calendar calendar='' options='calendar_options1' dates='chosen_dates'
       .panel-options
         a data-toggle="panel" href="#"
