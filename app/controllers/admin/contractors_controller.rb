@@ -1,4 +1,6 @@
 class Admin::ContractorsController < Admin::AuthController
+  expose(:contractor) { User.find_by_id params[:id] }
+
   def index
     contractors = User.contractors
     contractors = contractors.within_contractor_market(current_user.market) if current_user.market
@@ -33,6 +35,20 @@ class Admin::ContractorsController < Admin::AuthController
       format.html
       format.json { render json: @contractor, serializer: ContractorSerializer, meta: { markets: Market.all } }
     end
+  end
+
+  def transfer
+    amount = (params[:amount].to_f * 100).to_i
+    recipient = Stripe::Account.retrieve contractor.contractor_profile.stripe_recipient_id
+    rsp = Stripe::Transfer.create(
+      :amount => amount,
+      :currency => 'usd',
+      :destination => recipient.id,
+      :statement_descriptor => 'HostWise Payout',
+      :metadata => { reason: params[:reason] }
+    )
+    contractor.payouts.create(status_cd: 2, amount: amount, stripe_transfer_id: rsp.id, payout_type_cd: 1)
+    render json: { success: true }
   end
 
   def notes

@@ -1,5 +1,5 @@
 class Admin::HostsController < Admin::AuthController
-  expose(:contractor) { User.find_by_id params[:id] }
+  expose(:host) { User.find_by_id params[:id] }
 
   def index
     hosts = User.hosts
@@ -14,23 +14,30 @@ class Admin::HostsController < Admin::AuthController
   def edit
     respond_to do |format|
       format.html
-      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {methods: [:last_service_date, :next_service_date, :revenue, :nickname, :display_created_at], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar, :total_spent]) }
+      format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {methods: [:last_service_date, :next_service_date, :revenue, :nickname, :display_created_at], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar, :total_spent, :default_payment]) }
       #format.json { render json: User.find(params[:id]), serializer: HostSerializer }
     end
   end
 
-  def transfer
-    amount = (params[:amount].to_f * 100).to_i
-    recipient = Stripe::Account.retrieve contractor.contractor_profile.stripe_recipient_id
-    rsp = Stripe::Transfer.create(
-      :amount => amount,
-      :currency => 'usd',
-      :destination => recipient.id,
-      :statement_descriptor => 'HostWise Payout',
-      :metadata => { reason: params[:reason] }
-    )
-    contractor.payouts.create(status_cd: 2, amount: amount, stripe_transfer_id: rsp.id, payout_type_cd: 1)
-    render json: { success: true }
+  def charge
+    begin
+      amount = (params[:amount].to_f * 100).to_i
+      rsp = Stripe::Charge.create(
+        amount: amount,
+        currency: 'usd',
+        customer: host.stripe_customer_id,
+        source: host.payments.primary[0].stripe_id,
+        statement_descriptor: "HostWise"[0..21], # 22 characters max
+        metadata: { reason: params[:reason] }
+      )
+      transaction = Transaction.create(stripe_charge_id: rsp.id, status_cd: 0, amount: amount, transaction_type_cd: 1)
+      # UserMailer.service_completed(booking).then(:deliver) if user_bookings[:user].settings(:service_completion).email
+      render json: { success: true }
+    rescue Stripe::CardError => e
+      err  = e.json_body[:error]
+      transaction = Transaction.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], transaction_type_cd: 1)
+      render json: { success: false }
+    end
   end
 
   def notes

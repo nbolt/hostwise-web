@@ -63,11 +63,10 @@ class Admin::TransactionsController < Admin::AuthController
             statement_descriptor: "HostWise"[0..21], # 22 characters max
             metadata: metadata
           )
-          transaction = Transaction.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total])
-          booking_group[:bookings].each {|booking| transaction.bookings << booking; booking.save}
+          transaction = Transaction.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total], transaction_type_cd: 0)
 
           booking_group[:bookings].each do |booking|
-            booking.transactions.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total], transaction_type_cd: 0)
+            transaction.bookings << booking
             booking.save
             successful_payments.push booking.id
             UserMailer.service_completed(booking).then(:deliver) if user_bookings[:user].settings(:service_completion).email

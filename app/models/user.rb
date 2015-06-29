@@ -82,6 +82,10 @@ class User < ActiveRecord::Base
     payouts.sort_by {|id, n| -n}
   end
 
+  def default_payment
+    payments.primary[0]
+  end
+
   def status
     last_booking = bookings.sort_by(&:date).last
     if last_booking

@@ -13,6 +13,9 @@
               .name
                 | {{::host.name}}
               a href="/hosts/{{host.id}}/notes" Notes
+              br
+              br
+              a href='javascript:void(0)' ng:click='open_charge()' Charge
           .vr
           .section.info
             div
@@ -115,3 +118,4 @@
     | Do you wish to
     span ng:click='open_reactivation()'  reactivate {{host.first_name}}'s account?
     = render 'common/account_reactivation_modal'
+= render 'common/charge_modal'

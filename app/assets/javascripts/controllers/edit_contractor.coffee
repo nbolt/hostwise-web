@@ -7,7 +7,7 @@ EditContractorCtrl = ['$scope', '$http', '$timeout', '$window', 'ngDialog', 'spi
 
   $scope.send_payment = ->
     spinner.startSpin()
-    $http.post("/hosts/#{$scope.contractor.id}/transfer", {amount: $scope.amount, reason: $scope.reason}).success (rsp) ->
+    $http.post("/contractors/#{$scope.contractor.id}/transfer", {amount: $scope.amount, reason: $scope.reason}).success (rsp) ->
       $scope.amount = null
       $scope.reason = null
       $scope.cancel_status()

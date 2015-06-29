@@ -91,6 +91,7 @@ Rails.application.routes.draw do
     post  '/contractors/:id/delete' => 'contractors#delete'
     post  '/contractors/:id/complete_contract' => 'contractors#complete_contract'
     post  '/contractors/:id/background_check' => 'contractors#background_check'
+    post  '/contractors/:id/transfer' => 'contractors#transfer'
     get   '/hosts' => 'hosts#index'
     get   '/hosts/:id/edit' => 'hosts#edit'
     get   '/hosts/:id/notes' => 'hosts#notes'
@@ -98,7 +99,7 @@ Rails.application.routes.draw do
     put   '/hosts/:id/update' => 'hosts#update'
     post  '/hosts/:id/deactivate' => 'hosts#deactivate'
     post  '/hosts/:id/reactivate' => 'hosts#reactivate'
-    post  '/hosts/:id/transfer' => 'hosts#transfer'
+    post  '/hosts/:id/charge' => 'hosts#charge'
     get   '/inventory' => 'inventory#index'
     match '/inventory/:action' => 'inventory', via: [:get, :post]
     get   '/bookings' => 'bookings#index'

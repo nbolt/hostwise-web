@@ -1,9 +1,20 @@
-EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $timeout, ngDialog) ->
+EditCustomerCtrl = ['$scope', '$http', '$timeout', 'ngDialog', 'spinner', ($scope, $http, $timeout, ngDialog, spinner) ->
 
   url = window.location.href.split('/')
   $scope.id = url[url.length-2]
 
   $http.get(window.location.href + '.json').success (rsp) -> $scope.host = rsp
+
+  $scope.open_charge = -> ngDialog.open template: 'charge-modal', className: 'info full', scope: $scope
+
+  $scope.charge = ->
+    spinner.startSpin()
+    $http.post("/hosts/#{$scope.host.id}/charge", { amount: $scope.amount, reason: $scope.reason }).success (rsp) ->
+      if rsp.success
+        $scope.amount = null
+        $scope.reason = null
+        ngDialog.closeAll()
+        spinner.stopSpin()
 
   $scope.count_bookings = ->
     if $scope.host
