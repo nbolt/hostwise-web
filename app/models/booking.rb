@@ -193,16 +193,19 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    total_cost = (adjusted_cost + (contractor_service_cost*100) + (linen_cost*100) + (toiletries_cost*100) + (late_next_day_cost*100) + (late_same_day_cost*100) + (no_access_fee_cost*100) + (extra_king_sets_cost*100) + (extra_twin_sets_cost*100) + (extra_toiletry_sets_cost*100) - (first_booking_discount_cost*100) - coupon_cost) / 100.0
-    if cancelled? || couldnt_access?
+    total_cost = ((contractor_service_cost*100) + (linen_cost*100) + (toiletries_cost*100) + (late_next_day_cost*100) + (late_same_day_cost*100) + (no_access_fee_cost*100) + (extra_king_sets_cost*100) + (extra_twin_sets_cost*100) + (extra_toiletry_sets_cost*100) - (first_booking_discount_cost*100) - coupon_cost) / 100.0
+    if deleted?
+      0
+    elsif cancelled? || couldnt_access?
       total_cost -= linen_cost
       total_cost -= toiletries_cost
       total_cost -= extra_king_sets_cost
       total_cost -= extra_twin_sets_cost
       total_cost -= extra_toiletry_sets_cost
       total_cost = 0 if total_cost < 0
-      [PRICING['cancellation'], (total_cost * 0.2).round(2)].max
+      [PRICING['cancellation'], (total_cost * 0.2).round(2)].max + adjusted_cost
     else
+      total_cost += adjusted_cost
       total_cost = 0 if total_cost < 0
       total_cost
     end
