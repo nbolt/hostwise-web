@@ -63,7 +63,7 @@ class ContractorProfile < ActiveRecord::Base
                 file = Stripe::FileUpload.create(
                   {
                     purpose: 'identity_document',
-                    file: document.photo.url
+                    file: open(document.url)
                   },
                   { stripe_account: account.id }
                 )

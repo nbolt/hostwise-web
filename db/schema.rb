@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150619004741) do
+ActiveRecord::Schema.define(version: 20150630182135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -252,6 +252,7 @@ ActiveRecord::Schema.define(version: 20150619004741) do
     t.string   "zone"
     t.boolean  "verified",                     default: false
     t.integer  "market_id"
+    t.string   "document"
   end
 
   add_index "contractor_profiles", ["market_id"], name: "index_contractor_profiles_on_market_id", using: :btree
