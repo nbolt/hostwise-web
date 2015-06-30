@@ -1,7 +1,7 @@
 .xenon.custom.admin-schedule ng:controller='admin_schedule'
   .panel.panel-default
     .panel-heading
-      h3.panel-title Today's Schedule
+      h3.panel-title ng:bind='schedule_date()'
       .select2-head ng:show='user.role_cd == 0'
         input type='hidden' ui:select2='marketHash()' ng:model='market'
       .date

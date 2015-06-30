@@ -10,6 +10,9 @@ AdminScheduleCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $
 
   $http.get('/jobs/metrics').success (rsp) -> $scope.metrics = { total: rsp.total, next_ten: rsp.next_ten, unclaimed: rsp.unclaimed, completed: rsp.completed, growth: rsp.growth }
 
+  $scope.schedule_date = ->
+    if $scope.chosen_date is '' then "Today's Schedule" else "Schedule for #{$scope.chosen_date}"
+
   $scope.calendar = ->
     angular.element('.calendar').toggle()
     return true
@@ -27,7 +30,7 @@ AdminScheduleCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $
       $scope.chosen_date = date.format('MM/DD/YYYY')
       angular.element($scope.table).DataTable().ajax.reload()
       angular.element('.calendar').toggle()
-      $scope.chosen_date = ''
+      angular.element('.calendar').trigger 'clear_dates'
   }
 
   $scope.fetch_jobs = ->
@@ -44,7 +47,7 @@ AdminScheduleCtrl = ['$scope', '$http', '$timeout', 'spinner', ($scope, $http, $
             angular.element(@).children('input').on 'keyup change', ->
               table.fnFilter angular.element(@).val(), index
       ajax: (data, cb, settings) ->
-        $http.get('/today.json',{params: {search: $scope.search, filter: $scope.filter.id, data: data, date: $scope.chosen_date}}).success (rsp) ->
+        $http.get('/schedule.json',{params: {search: $scope.search, filter: $scope.filter.id, data: data, date: $scope.chosen_date}}).success (rsp) ->
           data_jobs = []
           $scope.jobs = rsp.jobs
           _(range(14)).each (i) ->

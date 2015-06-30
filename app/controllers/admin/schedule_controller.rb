@@ -1,4 +1,4 @@
-class Admin::TodayController < Admin::AuthController
+class Admin::ScheduleController < Admin::AuthController
   include CsvHelper
   expose(:job) { Job.find params[:id] }
 
