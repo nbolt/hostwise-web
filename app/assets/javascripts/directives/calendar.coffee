@@ -10,6 +10,10 @@ app = angular.module('porter').directive('calendar', [->
     options = scope.options
     first_gen = true
 
+    element.bind 'clear_dates', ->
+      $scope.chosen_dates = {}
+      element.find("table td.day.chosen").removeClass 'chosen'
+
     gen_cal = (cal, month, year) ->
       calendar = element.find('table')
       calendar.find('thead th.month').attr('month', month)
