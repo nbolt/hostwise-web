@@ -55,7 +55,7 @@ Rails.application.routes.draw do
     post  '/user/deactivate' => 'users#deactivate'
     get   '/users/:id/activate' => 'users#activate', as: :activate
     get   '/users/activate' => 'users#activate'
-    put   '/users/:id/activated' => 'users#activated'
+    post  '/users/:id/activated' => 'users#activated'
     put   '/users/:id/avatar' => 'users#avatar'
     get   '/user/jobs_today' => 'users#jobs_today'
     get   '/payments' => 'payments#index'

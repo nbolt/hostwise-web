@@ -54,6 +54,22 @@
               .row
                 label Social Security Number
                 input type='text' required='' ng:model='contractor_profile.ssn' ui:mask='999-99-9999' placeholder='xxx-xx-xxxx'
+              .row.photo
+                label Driver's License Photo
+                .text
+                  | Please upload a clear photo of the
+                  strong  front side
+                  |  of your valid
+                  strong  US driver's license.
+                .photo-upload ng:file-select='' ng:model='documents' ng:multiple='false'
+                  .top
+                    .icon
+                      i.icon-cam
+                  .bottom
+                    .icon-button.teal
+                      .icon
+                        i.icon-cam
+                      .text Upload Photo
               .row
                 label Driver's License Number
                 input type='text' required='' maxlength='15' ng:model='contractor_profile.driver_license'

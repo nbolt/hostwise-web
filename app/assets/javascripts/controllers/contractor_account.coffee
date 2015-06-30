@@ -2,18 +2,22 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'n
 
   $scope.contractor_profile = {}
   $scope.files = []
+  $scope.documents = []
 
   url = $window.location.href.split('/')
   $scope.token = url[url.length-2]
 
   $scope.setup_account = ->
-    if validate(1)
+    if validate(1) && $scope.documents[0]
       if $scope.user.tos == 'yes'
         spinner.startSpin()
-        $http.put('/users/' + $scope.token + '/activated', {
-          user: $scope.user
-          contractor_profile: $scope.contractor_profile
-        }).success (rsp) ->
+        $upload.upload(
+          url: '/users/' + $scope.token + '/activated'
+          file: $scope.documents[0]
+          fields:
+            user: $scope.user
+            contractor_profile: $scope.contractor_profile
+        ).success (rsp) ->
           spinner.stopSpin()
           if rsp.success
             scroll 0
@@ -93,7 +97,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'n
             flash 'failure', rsp.message
 
   $scope.$watch 'files', ->
-    if $scope.files.length
+    if $scope.files && $scope.files.length > 0
       file = $scope.files[0]
       post_url = if activation() then '/users/' + $scope.token + '/avatar' else '/user/update'
       $scope.upload = $upload.upload(
@@ -109,6 +113,15 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'n
         else
           flash 'failure', rsp.message
       )
+
+  $scope.$watch 'documents', ->
+    if $scope.documents && $scope.documents.length > 0
+      file = $scope.documents[0]
+      reader = new FileReader()
+      reader.onload = (e) ->
+        angular.element('.photo-upload .top .icon').css 'display', 'none'
+        angular.element('.photo-upload .top').css 'background-image', "url(#{e.target.result})"
+      reader.readAsDataURL file
 
   activation = ->
     return angular.element('.activate').length

@@ -78,13 +78,20 @@ class Contractor::UsersController < Contractor::AuthController
     else
       user = User.load_from_activation_token(params[:id])
     end
-    user.assign_attributes user_params
+
+    user_hash = JSON.parse params[:user]
+    user_hash = { email: user_hash['email'], password: user_hash['password'], password_confirmation: user_hash['password_confirmation'], first_name: user_hash['first_name'], last_name: user_hash['last_name'], phone_number: user_hash['phone_number'], secondary_phone: user_hash['secondary_phone'] }
+
+    profile_hash = JSON.parse params[:contractor_profile]
+    profile_hash = { address1: profile_hash['address1'], address2: profile_hash['address2'], zip: profile_hash['zip'], emergency_contact_first_name: profile_hash['emergency_contact_first_name'], emergency_contact_last_name: profile_hash['emergency_contact_last_name'], emergency_contact_phone: profile_hash['emergency_contact_phone'], ssn: profile_hash['ssn'], dob: profile_hash['dob'], driver_license: profile_hash['driver_license'] }
+
+    user.assign_attributes user_hash
     user.step = 'contractor_profile'
     user.phone_confirmed = true #hack for now
 
     if user.valid?
-      profile = ContractorProfile.new
-      profile.assign_attributes new_profile_params
+      profile = ContractorProfile.new(document: params[:file])
+      profile.assign_attributes profile_hash
       profile.position = :trainee
       profile.docusign_completed = true
 
