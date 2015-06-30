@@ -36,7 +36,7 @@
                   span Job {{$index+1}}
             .order ng:show="tab.name == 'upcoming'"
               | {{$index+1}}
-            .right
+            .right ng:class="tab.name == 'upcoming' && 'upcoming'"
               .top
                 .icon-button.teal ng:click='confirm_claim(job, day)' ng:show="tab.name == 'open'"
                   .icon
@@ -72,7 +72,7 @@
                   .rooms
                     i.icon-house ng:if='job.booking.property.property_type_cd == 0'
                     i.icon-apt ng:if='job.booking.property.property_type_cd == 1'
-                    .text ng:bind='job.booking.property.property_size'
+                    .text ng:bind='job.booking.property.rooms'
                   .size
                     i.icon-person
                     .text ng:bind='::job.size'

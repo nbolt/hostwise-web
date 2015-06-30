@@ -238,6 +238,14 @@
     .right
       overflow: hidden
       border-radius: 0 0 3px
+      &.upcoming
+        .bottom
+          .size, .timeslot.first
+            @media phone
+              margin-left: 10px
+          .left
+            @media phone
+              padding: 15px 5px
     .top
       padding: 18px
       height: 65px
@@ -282,11 +290,13 @@
           color: dark-gray
           margin-right: 10px
         @media phone
-          padding: 0 10px 0 18px
+          padding: 0 10px
           text-align: left
         width: auto
       .left
         padding: 15px 18px
+        @media phone
+          padding: 15px 10px
       .id, .rooms, .text, .est, .timeslot, .linens
         display: inline-block
         vertical-align: top
@@ -312,6 +322,8 @@
         &.first
           margin-left: 0
           margin-right: 20px
+          @media phone
+            margin-right: 13px
       .id
         display: none
         margin-left: 20px
@@ -755,7 +767,7 @@
                     &:hover
                       cursor: pointer
                     .icon
-                      margin-top: 10px 
+                      margin-top: 10px
                 &.damage
                   .damage-photos
                     display: none
@@ -886,7 +898,7 @@
                   background-color: white
                   .icon
                     display: block
-                .sector 
+                .sector
                   height: 6px
                   width: 6px
                   background-color: white
@@ -906,7 +918,7 @@
                   left: 0
                 .icon
                   position: absolute
-                  font-size: 0.4em 
+                  font-size: 0.4em
                   margin: -1px 0 0 1px
                   display: none
                   color: teal
