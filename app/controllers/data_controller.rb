@@ -81,8 +81,9 @@ class DataController < ApplicationController
         end
       when 'upcoming'
         bookings = Booking.upcoming current_user
+        properties = current_user.properties.where('purchase_date is not null and linen_handling_cd = 0')
         respond_to do |format|
-          format.json { render json: bookings.to_json(methods: :cost, include: [:payment, :services, property: {methods: :nickname}]) }
+          format.json { render json: { properties: properties.to_json(methods: [:nickname, :beds], include: {user: {methods: [:primary_payment]}}), bookings: bookings.to_json(methods: :cost, include: [:payment, :services, property: {methods: :nickname}]) } }
         end
     end
   end

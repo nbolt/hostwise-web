@@ -40,7 +40,7 @@
               td.property ng:if='tab.name == "completed"'
                 | {{transaction.properties}}
               td.property ng:if='tab.name == "upcoming"'
-                | {{transaction.property.nickname}}
+                | {{transaction.nickname}}
               td.payment
                 | **** {{transaction.payment.last4}}
               td.total ng:click='breakdown_modal(transaction)'

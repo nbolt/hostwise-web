@@ -5,8 +5,8 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
   $scope.$on 'fetch_transactions', ->
     _($scope.tabs).each (tab) ->
       $http.get('/data/transactions.json', {params: {scope: tab.name}}).success (rsp) ->
-        tab.transactions = rsp
         if tab.name is 'completed'
+          tab.transactions = rsp
           $scope.tab tab.name
           _(tab.transactions).each (transaction) ->
             transaction.bookings = _(transaction.bookings).select (booking) -> booking.user.id == $scope.user.id
@@ -15,9 +15,13 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
             transaction.payment = transaction.bookings[0].payment
             transaction.total = (transaction.amount / 100).toFixed(2)
         else if tab.name is 'upcoming'
+          tab.transactions = JSON.parse(rsp.properties)
+          tab.transactions = tab.transactions.concat JSON.parse(rsp.bookings)
           _(tab.transactions).each (transaction) ->
-            transaction.services = booked_services transaction.services
-            transaction.total = transaction.cost.toFixed(2)
+            transaction.nickname = transaction.property.nickname if transaction.property
+            transaction.payment = transaction.user.primary_payment unless transaction.payment
+            transaction.date = transaction.purchase_date if transaction.purchase_date
+            transaction.total = transaction.cost || 299 * transaction.beds
 
   $scope.user_fetched.promise.then -> $scope.$emit 'fetch_transactions'
 
