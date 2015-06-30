@@ -212,6 +212,15 @@ class User < ActiveRecord::Base
       end
       job.handle_distribution_jobs self
       job.contractors.each {|contractor| Job.set_priorities contractor, job.date}
+      timezone = Timezone::Zone.new :zone => job.booking.property.zone
+      time = timezone.time Time.now
+      if job.scheduled? && time.to_date == job.date
+        timeslot = job.booking.timeslot - 1
+        if timeslot < 12 then meridian = 'A' else meridian = 'P' end
+        timeslot -= 12 if timeslot > 12
+        timeslot = "#{timeslot} #{meridian}M"
+        TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "Your service today will be done by HostWise housekeeper(s) #{job.contractor_names} They will arrive at about #{timeslot} and can be reached at #{job.primary_contractor.display_phone_number}.")
+      end
       unless Rails.env.test?
         fanout = Fanout.new ENV['FANOUT_ID'], ENV['FANOUT_KEY']
         fanout.publish_async 'jobs', {}

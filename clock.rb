@@ -109,6 +109,20 @@ module Clockwork
                 end
               end
             end
+          when 'jobs:notify_customers'
+            Job.standard.where(status_cd: 1).each do |job|
+              if job.chain(:booking, :property) && job.booking.timeslot
+                timezone = Timezone::Zone.new :zone => job.booking.property.zone
+                time = timezone.time Time.now
+                if time.hour == 22 && time.to_date == (booking.date - 1.day)
+                  timeslot = job.booking.timeslot - 1
+                  if timeslot < 12 then meridian = 'A' else meridian = 'P' end
+                  timeslot -= 12 if timeslot > 12
+                  timeslot = "#{timeslot} #{meridian}M"
+                  TwilioJob.perform_later("+1#{job.booking.property.phone_number}", "Your service tomorrow will be done by HostWise housekeeper(s) #{job.contractor_names} They will arrive at about #{timeslot} and can be reached at #{job.primary_contractor.display_phone_number}.")
+                end
+              end
+            end
           when 'jobs:notify_no_access'
             Booking.where(payment_status_cd: 0, status_cd: 5).each do |booking|
               timezone = Timezone::Zone.new :zone => booking.property.zone
@@ -295,6 +309,7 @@ module Clockwork
   every(1.hour, 'payments:report', at: '**:00')
   every(1.week, 'payouts:process', at: 'Wednesday 05:00')
   every(1.week, 'payouts:report', at: 'Wednesday 03:00')
+  every(1.hour, 'jobs:notify_customers', at: '**:00')
   every(1.hour, 'jobs:notify_no_access', at: '**:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')
   every(1.hour, 'jobs:check_no_shows', at: '**:06')

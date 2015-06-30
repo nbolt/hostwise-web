@@ -61,8 +61,8 @@ class Contractor::JobsController < Contractor::AuthController
   def done
     if job.status == :scheduled
       job.update_attribute :status_cd, 3
-      next_job = job.next_job(current_user)
-      TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise housekeeper #{next_job.primary_contractor.name} is on the way to #{next_job.booking.property.nickname}. You can reach #{next_job.primary_contractor.name} at #{next_job.primary_contractor.display_phone_number}.") if next_job.then(:booking) && next_job.booking.property.user.settings(:porter_en_route).sms
+      # next_job = job.next_job(current_user)
+      # TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise housekeeper #{next_job.primary_contractor.name} is on the way to #{next_job.booking.property.nickname}. You can reach #{next_job.primary_contractor.name} at #{next_job.primary_contractor.display_phone_number}.") if next_job.then(:booking) && next_job.booking.property.user.settings(:porter_en_route).sms
     end
 
     render json: { success: true, next_job: next_job.then(:id) }
@@ -140,8 +140,8 @@ class Contractor::JobsController < Contractor::AuthController
       job.complete!
 
       job.contractors.each do |contractor|
-        next_job = job.next_job contractor
-        TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise housekeeper #{next_job.primary_contractor.name} is on the way to #{next_job.booking.property.nickname}. You can reach #{next_job.primary_contractor.name} at #{next_job.primary_contractor.display_phone_number}.") if next_job && next_job.booking && next_job.booking.property.user.settings(:porter_en_route).sms
+        # next_job = job.next_job contractor
+        # TwilioJob.perform_later("+1#{next_job.booking.property.phone_number}", "HostWise housekeeper #{next_job.primary_contractor.name} is on the way to #{next_job.booking.property.nickname}. You can reach #{next_job.primary_contractor.name} at #{next_job.primary_contractor.display_phone_number}.") if next_job && next_job.booking && next_job.booking.property.user.settings(:porter_en_route).sms
       end
 
       if job.booking
