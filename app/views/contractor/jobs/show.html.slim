@@ -72,6 +72,10 @@
     .special-column
       = render 'test_and_tips'
     .special-column
+      .section.staging-type ng:show='staging'
+        img src='/images/staging_circle.png'
+        h3 This is a staging job
+    .special-column
       .section.profile ng:hide='job.hide_details'
         .head
           .icon

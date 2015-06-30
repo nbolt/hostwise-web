@@ -50,11 +50,14 @@
                 .title ng:show="tab.name == 'past'"
                   .name ng:bind='job.booking.property.user.name'
                   .address ng:bind='job.booking.property.full_address'
+                  .staging-type ng:if='job.staging' Staging
                 .title ng:show="tab.name == 'upcoming'"
                   .name ng:bind='job.booking.property.user.name'
                   .address ng:bind='job.booking.property.neighborhood'
+                  .staging-type ng:if='job.staging' Staging
                 .neighborhood ng:show="tab.name == 'open'"
                   .name ng:bind='job.booking.property.neighborhood'
+                  .staging-type ng:if='job.staging' Staging
               .bottom
                 .payout
                   .icon
