@@ -133,8 +133,12 @@ class Host::PropertiesController < Host::AuthController
                 booking.first_booking_discount = true
               end
               booking.payment = payment
-              if property.bookings.count == 0 && current_user.vip_count < VIP_CLEANINGS
-                booking.vip = true
+              if (property.bookings - [booking]).count == 0 && current_user.vip_count < VIP_CLEANINGS
+                if booking.job.then(:id)
+                  booking.job.update_attribute :state_cd, 1
+                else
+                  booking.vip = true
+                end
                 current_user.update_attribute :vip_count, current_user.vip_count + 1
               end
               cost = Booking.cost(property, booking.services, booking.linen_handling, booking.timeslot_type, booking.timeslot, booking.extra_king_sets, booking.extra_twin_sets, booking.extra_toiletry_sets, booking.first_booking_discount, booking.late_next_day, booking.late_same_day, booking.no_access_fee)
