@@ -116,10 +116,11 @@ class Property < ActiveRecord::Base
   end
 
   def display_phone_number
-    if phone_number
-      first  = phone_number[0..2]
-      second = phone_number[3..5]
-      third  = phone_number[6..9]
+    number = phone_number.present? && phone_number || user.phone_number
+    if number.present?
+      first  = number[0..2]
+      second = number[3..5]
+      third  = number[6..9]
       "(#{first}) #{second}-#{third}"
     else
       ''
