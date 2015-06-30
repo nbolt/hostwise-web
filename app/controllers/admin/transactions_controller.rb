@@ -67,7 +67,6 @@ class Admin::TransactionsController < Admin::AuthController
 
           booking_group[:bookings].each do |booking|
             transaction.bookings << booking
-            booking.save
             successful_payments.push booking.id
             UserMailer.service_completed(booking).then(:deliver) if user_bookings[:user].settings(:service_completion).email
           end

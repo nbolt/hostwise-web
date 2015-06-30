@@ -8,15 +8,12 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
         tab.transactions = rsp
         if tab.name is 'completed'
           $scope.tab tab.name
-          tab.transactions = _(tab.transactions).filter (transaction) -> transaction.cost > 0
           _(tab.transactions).each (transaction) ->
-            #transaction.bookings = _(transaction.bookings).select (booking) -> booking.user.id == $scope.user.id
-            #transaction.date = transaction.charged_at
-            #transaction.properties = _(transaction.bookings).map((booking) -> booking.property.nickname).join ', '
-            #transaction.payment = transaction.bookings[0].payment.last4
-            #transaction.total = (transaction.amount / 100).toFixed(2)
-            transaction.services = booked_services transaction.services
-            transaction.total = transaction.cost.toFixed(2)
+            transaction.bookings = _(transaction.bookings).select (booking) -> booking.user.id == $scope.user.id
+            transaction.date = transaction.charged_at || transaction.created_at
+            transaction.properties = _(transaction.bookings).map((booking) -> booking.property.nickname).join ', '
+            transaction.payment = transaction.bookings[0].payment
+            transaction.total = (transaction.amount / 100).toFixed(2)
         else if tab.name is 'upcoming'
           _(tab.transactions).each (transaction) ->
             transaction.services = booked_services transaction.services

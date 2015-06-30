@@ -74,21 +74,11 @@ class DataController < ApplicationController
   def transactions
     case params[:scope]
       when 'completed'
-        if params[:start_date].present? && params[:end_date].present?
-          bookings = Booking.complete(current_user).within_date(params[:start_date], params[:end_date])
-        else
-          bookings = Booking.complete(current_user)
-        end
-
+        transactions = Transaction.completed(current_user, params[:start_date], params[:end_date])
         respond_to do |format|
-          format.json { render json: bookings.to_json(methods: :cost, include: [:payment, :services, property: {methods: :nickname}]) }
-          format.csv { send_data transaction_csv(bookings), filename: "completed_transactions_#{params[:start_date].gsub('/', '_')}_#{params[:end_date].gsub('/', '_')}.csv" }
+          format.json { render json: transactions.to_json(include: {bookings: {methods: :cost, include: [:payment, :services, :user, property: {methods: :nickname}]}}) }
+          format.csv { send_data transaction_csv(transactions), filename: "completed_transactions_#{params[:start_date].gsub('/', '_')}_#{params[:end_date].gsub('/', '_')}.csv" }
         end
-        #transactions = Transaction.completed(current_user, params[:start_date], params[:end_date])
-        #respond_to do |format|
-        #  format.json { render json: transactions.to_json(include: {bookings: {methods: :cost, include: [:payment, :services, :user, property: {methods: :nickname}]}}) }
-        #  format.csv { send_data transaction_csv(transactions), filename: "completed_transactions_#{params[:start_date].gsub('/', '_')}_#{params[:end_date].gsub('/', '_')}.csv" }
-        #end
       when 'upcoming'
         bookings = Booking.upcoming current_user
         respond_to do |format|
