@@ -2,6 +2,8 @@ class ContractorProfile < ActiveRecord::Base
   belongs_to :user
   belongs_to :market
 
+  mount_uploader :document, DocumentUploader
+
   before_validation :standardize_address
   before_save :create_stripe_recipient, :fetch_zone, :handle_position_change
 
@@ -57,25 +59,36 @@ class ContractorProfile < ActiveRecord::Base
                 subfield = field.gsub(field.match(/^.*\./)[0], '')
                 field    = field.match(/(^.*)\./)[1]
               end
-              account.legal_entity[field] =
-                case field
-                when 'type'
-                  'individual'
-                when 'first_name'
-                  self.user.first_name
-                when 'last_name'
-                  self.user.last_name
-                when 'ssn_last_4'
-                  self.ssn[-4..-1]
-                when 'personal_id_number'
-                  self.ssn
-                when 'address'
-                  { 'line1' => self.address1, 'line2' => self.address2, 'city' => self.city, 'state' => self.state, 'postal_code' => self.zip }
-                when 'personal_address'
-                  { 'line1' => self.address1, 'line2' => self.address2, 'city' => self.city, 'state' => self.state, 'postal_code' => self.zip }
-                when 'dob'
-                  { 'month' => self.dob[0..1], 'day' => self.dob[2..3], 'year' => self.dob[4..7] }
-                end
+              if subfield == 'document' && document
+                file = Stripe::FileUpload.create(
+                  {
+                    purpose: 'identity_document',
+                    file: document.photo.url
+                  },
+                  { stripe_account: account.id }
+                )
+                account.legal_entity.verification.document = file.id
+              else
+                account.legal_entity[field] =
+                  case field
+                  when 'type'
+                    'individual'
+                  when 'first_name'
+                    self.user.first_name
+                  when 'last_name'
+                    self.user.last_name
+                  when 'ssn_last_4'
+                    self.ssn[-4..-1]
+                  when 'personal_id_number'
+                    self.ssn
+                  when 'address'
+                    { 'line1' => self.address1, 'line2' => self.address2, 'city' => self.city, 'state' => self.state, 'postal_code' => self.zip }
+                  when 'personal_address'
+                    { 'line1' => self.address1, 'line2' => self.address2, 'city' => self.city, 'state' => self.state, 'postal_code' => self.zip }
+                  when 'dob'
+                    { 'month' => self.dob[0..1], 'day' => self.dob[2..3], 'year' => self.dob[4..7] }
+                  end
+              end
             end
           end
           account.save
