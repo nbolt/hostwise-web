@@ -167,7 +167,41 @@
               .name Toiletry Kits:
               .value ng:bind='::job.toiletry_count'
       .section.actions
-        div ng:switch='job.status'
+        .linen-container
+          .linen-head
+            .icon
+              i.icon-alert-bolt
+            .title Linens & towels are missing!
+            .sub Check closets, washer & dryer, and under beds
+          .content
+            .title What's missing?
+            .numbers
+              .number-container
+                .number ng:bind='king_sheets_diff' ng:class='num_class(king_sheets_diff)'
+                .text King Sheets
+              .number-container
+                .number ng:bind='twin_sheets_diff' ng:class='num_class(twin_sheets_diff)'
+                .text Twin Sheets
+              .number-container
+                .number ng:bind='pillow_count_diff' ng:class='num_class(pillow_count_diff)'
+                .text Pillow Cases
+              .number-container
+                .number ng:bind='bath_towels_diff' ng:class='num_class(bath_towels_diff)'
+                .text Bath Towels
+              .number-container
+                .number ng:bind='hand_towels_diff' ng:class='num_class(hand_towels_diff)'
+                .text Hand Towels
+              .number-container
+                .number ng:bind='face_towels_diff' ng:class='num_class(face_towels_diff)'
+                .text Face Towels
+              .number-container
+                .number ng:bind='bath_mats_diff' ng:class='num_class(bath_mats_diff)'
+                .text Bath Mats
+            .icon-button.teal.right ng:click='continue()'
+              .icon
+                i.icon-job-start
+              .text Continue looking
+        .checklist-container ng:switch='job.status'
           .phase.active ng:switch-default=''
             .header
               .text Job Not Started
@@ -336,13 +370,13 @@
                           .box decrement='checklist.checklist_settings.inventory_count.king_sheets' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.king_sheets'
                           .box increment='checklist.checklist_settings.inventory_count.king_sheets' +
-                        .label King Sheets
+                        .label ng:class='num_class(king_sheets_diff)' King Sheets
                       .counter
                         .boxes
                           .box decrement='checklist.checklist_settings.inventory_count.twin_sheets' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.twin_sheets'
                           .box increment='checklist.checklist_settings.inventory_count.twin_sheets' +
-                        .label Twin Sheets
+                        .label ng:class='num_class(twin_sheets_diff)' Twin Sheets
                     .div.teal
                     .title.inventory Soiled Pillow Case Count
                     .counters
@@ -351,7 +385,7 @@
                           .box decrement='checklist.checklist_settings.inventory_count.pillow_count' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.pillow_count'
                           .box increment='checklist.checklist_settings.inventory_count.pillow_count' +
-                        .label Pillow Cases
+                        .label ng:class='num_class(pillow_count_diff)' Pillow Cases
                     .div.teal
                     .title.inventory Soiled Towel Count
                     .counters
@@ -360,25 +394,25 @@
                           .box decrement='checklist.checklist_settings.inventory_count.bath_towels' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.bath_towels'
                           .box increment='checklist.checklist_settings.inventory_count.bath_towels' +
-                        .label Bath Towels
+                        .label ng:class='num_class(bath_towels_diff)' Bath Towels
                       .counter
                         .boxes
                           .box decrement='checklist.checklist_settings.inventory_count.hand_towels' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.hand_towels'
                           .box increment='checklist.checklist_settings.inventory_count.hand_towels' +
-                        .label Hand Towels
+                        .label ng:class='num_class(hand_towels_diff)' Hand Towels
                       .counter
                         .boxes
                           .box decrement='checklist.checklist_settings.inventory_count.face_towels' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.face_towels'
                           .box increment='checklist.checklist_settings.inventory_count.face_towels' +
-                        .label Face Towels
+                        .label ng:class='num_class(face_towels_diff)' Face Towels
                       .counter
                         .boxes
                           .box decrement='checklist.checklist_settings.inventory_count.bath_mats' -
                           .box ng:bind='checklist.checklist_settings.inventory_count.bath_mats'
                           .box increment='checklist.checklist_settings.inventory_count.bath_mats' +
-                        .label Bath Mats
+                        .label ng:class='num_class(bath_mats_diff)' Bath Mats
                     .div.teal
                     .icon-button.teal.right ng:class='begin_cleaning_class()' ng:click='to_cleaning()'
                       .icon

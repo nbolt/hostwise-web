@@ -568,384 +568,435 @@
             color: darker-gray
             line-height: 25px
       &.actions
-        .phase
-          .number
-            float: left
-            font-weight: bold
-            margin: 13px 0 0 20px
-            color: dark-gray
-            border: 2px dark-gray solid
-            border-radius: 100%
-            box-sizing: border-box
-            padding: 3px 8px 3px 8px
-          strong.teal
-            color: teal
-          .supplies
-            padding: 0
-            margin-top: 20px
-            .div.teal
-              border-bottom: thin solid teal
-              height: 1px
-              margin: 20px 0
-            .supply
-              display: inline-block
-              vertical-align: top
-              width: 30%
-              height: 25px
-              @media phone
-                width: 50%
-              &:last-child
-                margin-right: 0
-              .name, .value
-                display: inline-block
-                vertical-align: top
-              .name
-                color: teal
-                width: 60px
-                @media phone
-                  margin-right: 0
-              &.toiletries .name
-                width: 100px
-              .value
-                color: darker-gray
-            .icon-button
-              height: 60px
-              line-height: 60px
-              .icon
-                width: 60px
-          &.active
-            .header
-              background-color: teal
-              color: white
-              border-bottom: 0
-            .content
-              max-height: 2000px
-            .number
-              color: white
-              border-color: white
-          &.complete
-            .header
-              background-color: light-teal
-              color: white
-              border-bottom: thin solid dark-teal
-            .content
-              max-height: 0
-            .number
-              color: white
-              border-color: white
-          &.cant_access
-            .div
-              &.gray
-                margin: 12px auto 10px !important
-          &.hidden
-            display: none
-          .header
-            background-color: #ccc
-            font-size: 1.2em
-            font-weight: 600
-            text-align: center
-            color: #999
-            padding: 15px
-            border-bottom: thin solid #999
-            transition: background-color .5s ease-in-out, color .5s ease-in-out
-            &.warning
-              background-color: orange
-          &:last-child
-            .header
-              border-bottom: 0
+        .linen-container
+          display: none
           .content
-            transition: max-height .5s ease-in-out
-            box-sizing: border-box
-            overflow: hidden
-            max-height: 0
-            &.top
-              text-align: center
-            > i
-              color: #ccc
+            padding: 30px
+            text-align: center
+            .title
+              color: teal
+              font-weight: 600
               font-size: 1.5em
-            .text
-              color: darker-gray
-              &.inventory
+              margin-bottom: 15px
+            .numbers
+              margin-bottom: 15px
+              .number-container
+                display: inline-block
+                width: 30%
                 margin-bottom: 20px
-              &:first-child
-                margin: 10px 0 6px
-              &.strong
-                color: teal
-                font-weight: 600
-                font-size: 1.1em
-                margin-top: 2px
-              &.bottom
-                margin-bottom: 35px
+                .number
+                  font-weight: 600
+                  font-size: 1.5em
+                  margin-bottom: 5px
+                  &.red
+                    color: red
+                .text
+                  font-weight: 600
+                  font-size: .8em
+                  color: heavy-gray
+          .linen-head
+            height: 160px
+            color: white
+            background-color: teal
+            text-align: center
+            overflow: auto
+            .icon
+              background-color: light-teal
+              border-radius: 50%
+              width: 60px
+              height: 60px
+              margin: 15px auto
+              box-sizing: border-box
+              padding-top: 9px
+              i
+                font-size: 2em
             .title
               font-weight: 600
+              font-size: 1.2em
+            .sub
+              margin-top: 10px
+        .checklist-container
+          .phase
+            .number
+              float: left
+              font-weight: bold
+              margin: 13px 0 0 20px
+              color: dark-gray
+              border: 2px dark-gray solid
+              border-radius: 100%
+              box-sizing: border-box
+              padding: 3px 8px 3px 8px
+            strong.teal
               color: teal
-              font-size: 1.1em
-              &.inventory
-                margin-bottom: 5px
-              &.right
-                float: right
-            .div
-              height: 1px
-              &.gray
-                border-bottom: thin solid #B8B8B8
-                width: 140px
-                margin: 40px auto 30px
-              &.teal
-                border-bottom: thin solid teal
-                margin: 20px 0
-              &.bottom
-                margin-bottom: 35px !important
-            .icon-button
-              width: 80%
-              margin: 15px auto
-              .text
-                color: white
-            .caption
-              text-align: center
-              color: darker-gray
-              font-size: 14px
+            .supplies
+              padding: 0
               margin-top: 20px
-            .pad
-              padding: 20px
-              timer
-                color: teal
-                font-weight: 600
-                font-size: 1.5em
-              .stat
-                font-weight: 600
-                font-size: 1.2em
-                margin: 18px 0
-                i, .text, .value
+              .div.teal
+                border-bottom: thin solid teal
+                height: 1px
+                margin: 20px 0
+              .supply
+                display: inline-block
+                vertical-align: top
+                width: 30%
+                height: 25px
+                @media phone
+                  width: 50%
+                &:last-child
+                  margin-right: 0
+                .name, .value
                   display: inline-block
                   vertical-align: top
-                i
+                .name
                   color: teal
-                  margin-right: 15px
-                  font-size: 1.2em
-                .text, .value
-                  margin-top: 3px
+                  width: 60px
+                  @media phone
+                    margin-right: 0
+                &.toiletries .name
+                  width: 100px
                 .value
-                  float: right
+                  color: darker-gray
+              .icon-button
+                height: 60px
+                line-height: 60px
+                .icon
+                  width: 60px
+            &.active
+              .header
+                background-color: teal
+                color: white
+                border-bottom: 0
+              .content
+                max-height: 2000px
+              .number
+                color: white
+                border-color: white
+            &.complete
+              .header
+                background-color: light-teal
+                color: white
+                border-bottom: thin solid dark-teal
+              .content
+                max-height: 0
+              .number
+                color: white
+                border-color: white
+            &.cant_access
+              .div
+                &.gray
+                  margin: 12px auto 10px !important
+            &.hidden
+              display: none
+            .header
+              background-color: #ccc
+              font-size: 1.2em
+              font-weight: 600
+              text-align: center
+              color: #999
+              padding: 15px
+              border-bottom: thin solid #999
+              transition: background-color .5s ease-in-out, color .5s ease-in-out
+              &.warning
+                background-color: orange
+            &:last-child
+              .header
+                border-bottom: 0
+            .content
+              transition: max-height .5s ease-in-out
+              box-sizing: border-box
+              overflow: hidden
+              max-height: 0
+              &.top
+                text-align: center
+              > i
+                color: #ccc
+                font-size: 1.5em
+              .text
+                color: darker-gray
+                &.inventory
+                  margin-bottom: 20px
+                &:first-child
+                  margin: 10px 0 6px
+                &.strong
                   color: teal
-              .tab
-                display: none
-                &.active
-                  display: block
-                &.photos
-                  .snap-photos
-                    margin: 25px 0 15px
-                    text-align: center
-                    &.active
-                      display: block
-                  .snap-photo
+                  font-weight: 600
+                  font-size: 1.1em
+                  margin-top: 2px
+                &.bottom
+                  margin-bottom: 35px
+              .title
+                font-weight: 600
+                color: teal
+                font-size: 1.1em
+                &.inventory
+                  margin-bottom: 5px
+                &.right
+                  float: right
+              .div
+                height: 1px
+                &.gray
+                  border-bottom: thin solid #B8B8B8
+                  width: 140px
+                  margin: 40px auto 30px
+                &.teal
+                  border-bottom: thin solid teal
+                  margin: 20px 0
+                &.bottom
+                  margin-bottom: 35px !important
+              .icon-button
+                width: 80%
+                margin: 15px auto
+                .text
+                  color: white
+              .caption
+                text-align: center
+                color: darker-gray
+                font-size: 14px
+                margin-top: 20px
+              .pad
+                padding: 20px
+                timer
+                  color: teal
+                  font-weight: 600
+                  font-size: 1.5em
+                .stat
+                  font-weight: 600
+                  font-size: 1.2em
+                  margin: 18px 0
+                  i, .text, .value
                     display: inline-block
                     vertical-align: top
-                    margin-right: 10px
-                    margin: 0 30px 10px 0
-                    img
-                      width: 50px
-                      height: 50px
-                      border-radius: 50%
-                    .label
-                      color: teal
-                      margin-top: 15px
-                      font-size: .9em
-                  .existing-photo
-                    &:hover
-                      cursor: pointer
-                  .new-photo
-                    overflow: auto
-                    width: 60px
-                    height: 60px
-                    color: white
-                    font-size: 1.4em
-                    border-radius: 50%
-                    background-color: teal
-                    display: inline-block
-                    vertical-align: top
-                    background-size: cover
-                    &:hover
-                      cursor: pointer
-                    .icon
-                      margin-top: 10px
-                &.damage
-                  .damage-photos
-                    display: none
-                    margin-top: 15px
-                    &.active
-                      display: block
-                  .photos
-                    margin-top: 15px
-                    .damage-photo
+                  i
+                    color: teal
+                    margin-right: 15px
+                    font-size: 1.2em
+                  .text, .value
+                    margin-top: 3px
+                  .value
+                    float: right
+                    color: teal
+                .tab
+                  display: none
+                  &.active
+                    display: block
+                  &.photos
+                    .snap-photos
+                      margin: 25px 0 15px
+                      text-align: center
+                      &.active
+                        display: block
+                    .snap-photo
                       display: inline-block
                       vertical-align: top
                       margin-right: 10px
-                      margin: 0 10px 10px 0
+                      margin: 0 30px 10px 0
                       img
-                        width: 40px
-                        height: 40px
+                        width: 50px
+                        height: 50px
                         border-radius: 50%
+                      .label
+                        color: teal
+                        margin-top: 15px
+                        font-size: .9em
+                    .existing-photo
+                      &:hover
+                        cursor: pointer
                     .new-photo
                       overflow: auto
-                      width: 40px
-                      height: 40px
+                      width: 60px
+                      height: 60px
                       color: white
-                      font-size: 1.2em
+                      font-size: 1.4em
                       border-radius: 50%
                       background-color: teal
                       display: inline-block
                       vertical-align: top
+                      background-size: cover
                       &:hover
                         cursor: pointer
                       .icon
-                        margin: 7px 0 0 11px
-                &.inventory
-                  .flash
-                    opacity: 0
-                    transaition: opacity .6s ease-in-out
-                    color: white
-                    display: none
-                    &.info
-                      background-color: orange
-                  .counters
-                    .counter
-                      display: inline-block
-                      vertical-align: top
-                      width: 50%
-                      .label
-                        margin-top: 8px
-                        color: dark-gray
-                      .boxes
-                        margin-top: 15px
-                      .box
+                        margin-top: 10px
+                  &.damage
+                    .damage-photos
+                      display: none
+                      margin-top: 15px
+                      &.active
+                        display: block
+                    .photos
+                      margin-top: 15px
+                      .damage-photo
                         display: inline-block
                         vertical-align: top
-                        border: thin solid gray
+                        margin-right: 10px
+                        margin: 0 10px 10px 0
+                        img
+                          width: 40px
+                          height: 40px
+                          border-radius: 50%
+                      .new-photo
+                        overflow: auto
                         width: 40px
                         height: 40px
-                        box-sizing: border-box
-                        padding: 8px 15px
-                        &:first-child, &:last-child
-                          color: teal
-                          font-weight: 600
-                          font-size: 1.1em
-                          &:hover
-                            cursor: pointer
-                        &:first-child
-                          border-top-left-radius: 3px
-                          border-bottom-left-radius: 3px
-                        &:nth-child(2)
-                          border-left: 0
-                          border-right: 0
-                          color: heavy-gray
-                        &:last-child
-                          border-top-right-radius: 3px
-                          border-bottom-right-radius: 3px
-            .checklists
-              .checklist
-                display: none
-                &.active
-                  display: block
-            .checklist
-              .check
-                margin: 18px 0
-                .strike
+                        color: white
+                        font-size: 1.2em
+                        border-radius: 50%
+                        background-color: teal
+                        display: inline-block
+                        vertical-align: top
+                        &:hover
+                          cursor: pointer
+                        .icon
+                          margin: 7px 0 0 11px
+                  &.inventory
+                    .flash
+                      opacity: 0
+                      transaition: opacity .6s ease-in-out
+                      color: white
+                      display: none
+                      &.info
+                        background-color: orange
+                    .counters
+                      .counter
+                        display: inline-block
+                        vertical-align: top
+                        width: 50%
+                        .label
+                          margin-top: 8px
+                          color: dark-gray
+                          &.red
+                            color: red
+                            font-weight: 600
+                        .boxes
+                          margin-top: 15px
+                        .box
+                          display: inline-block
+                          vertical-align: top
+                          border: thin solid gray
+                          width: 40px
+                          height: 40px
+                          box-sizing: border-box
+                          padding: 8px 15px
+                          &:first-child, &:last-child
+                            color: teal
+                            font-weight: 600
+                            font-size: 1.1em
+                            &:hover
+                              cursor: pointer
+                          &:first-child
+                            border-top-left-radius: 3px
+                            border-bottom-left-radius: 3px
+                          &:nth-child(2)
+                            border-left: 0
+                            border-right: 0
+                            color: heavy-gray
+                          &:last-child
+                            border-top-right-radius: 3px
+                            border-bottom-right-radius: 3px
+              .checklists
+                .checklist
                   display: none
-                  position: absolute
-                  border-bottom: thin solid darker-gray
-                  top: 11px
-                  left: 0
-                  right: 0
-                input
-                  margin-right: 8px
-                label
-                  color: darker-gray
-                  position: relative
-                &.complete
-                  .strike
+                  &.active
                     display: block
-            .radios
-              margin-top: 10px
-              .radiop
+              .checklist
+                .check
+                  margin: 18px 0
+                  .strike
+                    display: none
+                    position: absolute
+                    border-bottom: thin solid darker-gray
+                    top: 11px
+                    left: 0
+                    right: 0
+                  input
+                    margin-right: 8px
+                  label
+                    color: darker-gray
+                    position: relative
+                  &.complete
+                    .strike
+                      display: block
+              .radios
+                margin-top: 10px
+                .radiop
+                  display: inline-block
+                  vertical-align: top
+                  margin-right: 16px
+                  label
+                    margin-left: 8px
+            .tabs
+              background-color: teal
+              text-align: center
+              .tab
+                background-color: light-teal
+                color: white
+                height: 50px
+                border-top-left-radius: 3px
+                border-top-right-radius: 3px
                 display: inline-block
                 vertical-align: top
-                margin-right: 16px
-                label
-                  margin-left: 8px
-          .tabs
-            background-color: teal
-            text-align: center
-            .tab
-              background-color: light-teal
-              color: white
-              height: 50px
-              border-top-left-radius: 3px
-              border-top-right-radius: 3px
-              display: inline-block
-              vertical-align: top
-              font-size: 1.6em
-              overflow: auto
-              .progress_circle
-                float: right
-                margin: 5px 5px 0 0
-                height: 12px
-                width: 12px
-                border: 2px white solid
-                border-radius: 100%
-                overflow: hidden
-                position: relative
-                &.complete
-                  background-color: white
-                  .icon
-                    display: block
-                .sector
-                  height: 6px
-                  width: 6px
-                  background-color: white
-                  position: absolute
-                  border-radius: none
-                  display: none
-                  &.visible
-                    display: block
-                .top_right
-                  top: 0
-                  right: 0
-                .bottom_right
-                  bottom: 0
-                  right: 0
-                .bottom_left
-                  bottom: 0
-                  left: 0
-                .icon
-                  position: absolute
-                  font-size: 0.4em
-                  margin: -1px 0 0 1px
-                  display: none
-                  color: teal
-              .icon
-                margin-top: 8px
-              &:last-child
-                margin-right: 0 !important
-              &.active
-                background-color: white
-                color: teal
+                font-size: 1.6em
+                overflow: auto
                 .progress_circle
-                  border: 2px teal solid
-                  .sector
-                    background-color: teal
+                  float: right
+                  margin: 5px 5px 0 0
+                  height: 12px
+                  width: 12px
+                  border: 2px white solid
+                  border-radius: 100%
+                  overflow: hidden
+                  position: relative
                   &.complete
-                    background-color: teal
+                    background-color: white
                     .icon
-                      display: none
-                      color: white
-              &:hover
-                cursor: pointer
-            &.thirds .tab
-              width: 30%
-              margin-right: 5%
-            &.fifths .tab
-              width: 18%
-              margin-right: 2.5%
+                      display: block
+                  .sector
+                    height: 6px
+                    width: 6px
+                    background-color: white
+                    position: absolute
+                    border-radius: none
+                    display: none
+                    &.visible
+                      display: block
+                  .top_right
+                    top: 0
+                    right: 0
+                  .bottom_right
+                    bottom: 0
+                    right: 0
+                  .bottom_left
+                    bottom: 0
+                    left: 0
+                  .icon
+                    position: absolute
+                    font-size: 0.4em
+                    margin: -1px 0 0 1px
+                    display: none
+                    color: teal
+                .icon
+                  margin-top: 8px
+                &:last-child
+                  margin-right: 0 !important
+                &.active
+                  background-color: white
+                  color: teal
+                  .progress_circle
+                    border: 2px teal solid
+                    .sector
+                      background-color: teal
+                    &.complete
+                      background-color: teal
+                      .icon
+                        display: none
+                        color: white
+                &:hover
+                  cursor: pointer
+              &.thirds .tab
+                width: 30%
+                margin-right: 5%
+              &.fifths .tab
+                width: 18%
+                margin-right: 2.5%
     .special-column
       #map
         height: 325px

@@ -377,10 +377,17 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
     angular.element('.inventory .flash').css 'display', 'block'
     $timeout((-> angular.element('.inventory .flash').text(msg).addClass(type).css 'opacity', 1), 50)
 
+  $scope.num_class = (num) -> if num > 0 then 'red' else ''
+
   $scope.to_cleaning = ->
     king_sheets = $scope.checklist.checklist_settings.inventory_count.king_sheets
     twin_sheets = $scope.checklist.checklist_settings.inventory_count.twin_sheets
-    if $scope.job.soiled_pickup_count == king_sheets + twin_sheets || $scope.inventory_check
+    pillow_count = $scope.checklist.checklist_settings.inventory_count.pillow_count
+    bath_towel_count = $scope.checklist.checklist_settings.inventory_count.bath_towels
+    bath_mat_count = $scope.checklist.checklist_settings.inventory_count.bath_mats
+    hand_towel_count = $scope.checklist.checklist_settings.inventory_count.hand_towels
+    face_towel_count = $scope.checklist.checklist_settings.inventory_count.face_towels
+    if $scope.inventory_check || ($scope.job.soiled_pickup_count == king_sheets + twin_sheets && $scope.job.pillow_count == pillow_count && $scope.job.bath_towel_count == bath_towel_count && $scope.job.bath_mat_count == bath_mat_count && $scope.job.hand_towel_count == hand_towel_count && $scope.job.face_towel_count == face_towel_count)
       if $scope.begin_cleaning_class() == ''
         $scope.checklist.checklist_settings.inventory_count.complete = true
         $scope.arrival = true
@@ -388,7 +395,20 @@ JobCtrl = ['$scope', '$http', '$timeout', '$interval', '$window', '$q', '$upload
       null
     else
       $scope.inventory_check = true
-      flash 'info', "Our system indicates there are #{$scope.job.soiled_pickup_count} linen sets to pick up. Are you sure there are no others left in the residence?"
+      angular.element('.actions .linen-container').css 'display', 'block'
+      angular.element('.actions .checklist-container').css 'display', 'none'
+      $scope.king_sheets_diff = $scope.job.king_bed_count - king_sheets
+      $scope.twin_sheets_diff = $scope.job.twin_bed_count - twin_sheets
+      $scope.pillow_count_diff = $scope.job.pillow_count - pillow_count
+      $scope.bath_towels_diff = $scope.job.bath_towel_count - bath_towel_count
+      $scope.hand_towels_diff = $scope.job.hand_towel_count - hand_towel_count
+      $scope.face_towels_diff = $scope.job.face_towel_count - face_towel_count
+      $scope.bath_mats_diff = $scope.job.bath_mat_count - bath_mat_count
+
+  $scope.continue = ->
+    angular.element('.actions .linen-container').css 'display', 'none'
+    angular.element('.actions .checklist-container').css 'display', 'block'
+    null
 
   $scope.complete_cleaning = -> $scope.checklist.checklist_settings.cleaning.cleaned = true
 
