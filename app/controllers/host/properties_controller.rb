@@ -167,7 +167,7 @@ class Host::PropertiesController < Host::AuthController
               bookings.push booking
               UserMailer.new_booking_notification(booking).then(:deliver)
               UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
-              blast booking if booking.date <= Date.today + 2.weeks
+              BlastJob.perform_later(booking) if booking.date <= Date.today + 2.weeks
             end
           end
         end
@@ -336,16 +336,5 @@ class Host::PropertiesController < Host::AuthController
   def call_smarty(address1, address2, zip)
     address = SmartyStreets::StreetAddressRequest.new(street: address1, street2: address2, zipcode: zip)
     return SmartyStreets::StreetAddressApi.call(address)
-  end
-
-  def blast(booking)
-    if booking.job
-      User.available_contractors(booking).each do |contractor|
-        if contractor.can_claim_job?(booking.job)[:success]
-          UserMailer.new_open_job(contractor, booking.job).then(:deliver) if contractor.settings(:new_open_job).email
-          TwilioJob.perform_later("+1#{contractor.phone_number}", "New HostWise Job! $#{booking.job.payout(contractor)} in #{booking.property.city}, #{booking.property.zip} on #{booking.formatted_date}.") if contractor.settings(:new_open_job).sms
-        end
-      end
-    end
   end
 end
