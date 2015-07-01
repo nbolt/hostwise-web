@@ -8,7 +8,7 @@ ContractorAccountCtrl = ['$scope', '$http', '$timeout', '$upload', '$window', 'n
   $scope.token = url[url.length-2]
 
   $scope.setup_account = ->
-    if validate(1) && $scope.documents[0]
+    if validate(1) && $scope.documents && $scope.documents[0]
       if $scope.user.tos == 'yes'
         spinner.startSpin()
         $upload.upload(
