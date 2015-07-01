@@ -205,9 +205,9 @@ class Booking < ActiveRecord::Base
       total_cost -= extra_twin_sets_cost
       total_cost -= extra_toiletry_sets_cost
       total_cost = 0 if total_cost < 0
-      [PRICING['cancellation'], (total_cost * 0.2).round(2)].max + adjusted_cost
+      [PRICING['cancellation'], (total_cost * 0.2).round(2)].max + (adjusted_cost / 100.0)
     else
-      total_cost += adjusted_cost
+      total_cost += (adjusted_cost / 100.0)
       total_cost = 0 if total_cost < 0
       total_cost
     end
