@@ -35,7 +35,7 @@
                   | Total
                   i.icon-acc-open
             tr ng:repeat='transaction in tab.transactions | orderBy:predicate:reverse' id='t-{{transaction.id}}'
-              td.date ng:bind="::transaction.date | date: 'MM/dd/yyyy':'UTC'"
+              td.date ng:bind="transaction.date"
               td.property ng:if='tab.name == "completed"'
                 | {{transaction.properties}}
               td.property ng:if='tab.name == "upcoming"'
