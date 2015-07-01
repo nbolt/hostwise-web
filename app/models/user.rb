@@ -215,7 +215,7 @@ class User < ActiveRecord::Base
       timezone = Timezone::Zone.new :zone => job.booking.property.zone
       time = timezone.time Time.now
       if job.scheduled? && time.to_date == job.date
-        timeslot = job.booking.timeslot - 1
+        timeslot = Booking.find(job.booking.id).timeslot - 1
         if timeslot < 12 then meridian = 'A' else meridian = 'P' end
         timeslot -= 12 if timeslot > 12
         timeslot = "#{timeslot} #{meridian}M"
