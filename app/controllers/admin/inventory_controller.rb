@@ -1,4 +1,5 @@
 class Admin::InventoryController < Admin::AuthController
+  include CsvHelper
   expose(:job) { Job.find params[:id] }
 
   def index
@@ -23,6 +24,22 @@ class Admin::InventoryController < Admin::AuthController
         headers['Content-Disposition'] = "attachment; filename=\"bookings.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
+    end
+  end
+
+  def export_properties
+    properties = Property.all
+    properties = properties.within_market(current_user.market) if current_user.market
+    respond_to do |format|
+      format.csv { send_data inventory_properties_csv(properties), filename: 'inventory_properties.csv' }
+    end
+  end
+
+  def export_jobs
+    jobs = Job.standard.complete
+    jobs = jobs.within_market(current_user.market) if current_user.market
+    respond_to do |format|
+      format.csv { send_data inventory_jobs_csv(jobs), filename: 'inventory_jobs.csv' }
     end
   end
 

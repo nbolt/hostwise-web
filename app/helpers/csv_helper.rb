@@ -55,4 +55,22 @@ module CsvHelper
       end
     end
   end
+
+  def inventory_properties_csv(results)
+    CSV.generate do |csv|
+      csv << ['ID', 'Nickname', 'Customer', 'Address', 'Linen Count', 'Turnover Rate', 'Last Service', 'Next Service']
+      results.each do |property|
+        csv << [property.id, property.nickname, property.user.name, property.neighborhood_address, property.linen_count, property.turnover_rate, property.last_service_date, property.next_service_date]
+      end
+    end
+  end
+
+  def inventory_jobs_csv(results)
+    CSV.generate do |csv|
+      csv << ['ID', 'Nickname', 'Size', 'Address', 'Services', 'Date', 'Contractors', 'King Sheets (new / soiled)', 'Twin Sheets', 'Pillows', 'Bath Towels', 'Bath Mats', 'Hand Towels', 'Face Towels']
+      results.each do |job|
+        csv << [job.id, job.booking.property.nickname, job.booking.property.property_size, job.booking.property.neighborhood_address, job.booking.service_list, job.date, job.contractor_names, "#{job.king_bed_count} / #{job.soiled_king_count}", "#{job.twin_bed_count} / #{job.soiled_twin_count}", "#{job.pillow_count} / #{job.soiled_pillow_count}", "#{job.bath_towel_count} / #{job.soiled_bath_towel_count}", "#{job.bath_mat_count} / #{job.soiled_mat_count}", "#{job.hand_towel_count} / #{job.soiled_hand_count}", "#{job.face_towel_count} / #{job.soiled_face_count}"]
+      end
+    end
+  end
 end
