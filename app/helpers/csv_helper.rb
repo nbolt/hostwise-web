@@ -4,14 +4,9 @@ module CsvHelper
 
   def transaction_csv(results)
     CSV.generate do |csv|
-      csv << %w(Date Property Services Payment Total)
-      results.each do |booking|
-        #booking = transaction.bookings.find {|booking| booking.user.id == current_user.id}
-        csv << [booking.date.strftime('%m/%d/%Y'),
-                booking.property.nickname,
-                booking.services.collect{|s| s.display}.join(','),
-                "**** #{booking.payment.last4}",
-                "#{number_to_currency(booking.cost, precision: 2)}"]
+      csv << %w(Date Properties Payment Total)
+      results.each do |transaction|
+        csv << [transaction.created_at.to_date, transaction.bookings.map{|b| b.property.nickname}.join(', '), transaction.bookings.first.payment.display, transaction.amount / 100.0]
       end
     end
   end

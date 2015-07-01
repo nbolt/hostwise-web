@@ -5,7 +5,7 @@ script#transaction-breakdown-modal type="text/ng-template"
     .content
       .transaction-details
         .days
-          .day collapses='' ngs:repeat='booking in bookings'
+          .day collapses='' ng:repeat='booking in bookings'
             .total
               /.arrow
               /  i.icon-acc-open
@@ -73,10 +73,9 @@ script#transaction-breakdown-modal type="text/ng-template"
                   span ng:bind="service_cost(booking, service)"
         .total
           .text Total
-          .price ${{booking.cost}}
-          /.price ${{total}}
+          .price ${{total}}
         .paid
-          .right ng:bind='booking.payment.serializer_display'
+          .right ng:bind='bookings[0].payment.serializer_display'
           .left Paid with:
     .footer
       .buttons
