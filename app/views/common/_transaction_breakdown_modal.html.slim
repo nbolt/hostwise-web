@@ -5,10 +5,13 @@ script#transaction-breakdown-modal type="text/ng-template"
     .content
       .transaction-details
         .days
-          .day collapses='' ng:repeat='booking in bookings'
+          .day ng:if='property'
             .total
-              /.arrow
-              /  i.icon-acc-open
+              .text ng:bind-template='{{property.nickname}} - {{property.beds}} bed' ng:if='property.beds == 1'
+              .text ng:bind-template='{{property.nickname}} - {{property.beds}} beds' ng:if='property.beds != 1'
+              .price ${{total}}
+          .day collapses='' ng:repeat='booking in bookings' ng:if='bookings'
+            .total
               .text ng:bind-template='{{booking.property.nickname}} - {{booking.date}}'
               .price ${{booking.cost}}
             .day-services
@@ -75,7 +78,8 @@ script#transaction-breakdown-modal type="text/ng-template"
           .text Total
           .price ${{total}}
         .paid
-          .right ng:bind='bookings[0].payment.serializer_display'
+          .right ng:bind='bookings[0].payment.serializer_display' ng:if='bookings'
+          .right ng:bind='property.user.default_payment.display' ng:if='property'
           .left Paid with:
     .footer
       .buttons

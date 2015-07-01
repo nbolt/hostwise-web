@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     get   '/transactions' => 'transactions#index'
     get   '/transactions/:id' => 'transactions#show'
     get   '/transactions/booking/:id' => 'transactions#booking'
+    get   '/transactions/property/:id' => 'transactions#property'
     get   '/last_services' => 'users#last_services'
     post  '/bookings/apply_discount' => 'bookings#apply_discount'
     match '/users/:action' => 'users', via: [:get, :post]

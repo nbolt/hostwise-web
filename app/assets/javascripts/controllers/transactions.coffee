@@ -39,9 +39,16 @@ TransactionsCtrl = ['$scope', '$http', '$timeout', 'ngDialog', ($scope, $http, $
     ngDialog.open template: 'file-export-modal', className: 'export full', scope: $scope
 
   $scope.breakdown_modal = (transaction) ->
+    $scope.bookings = null
+    $scope.property = null
     booking = ''
     booking = 'booking/' if transaction.property_id
-    unless transaction.user_id
+    if transaction.user_id
+      $http.get("/transactions/property/#{transaction.id}").success (rsp) ->
+        $scope.property = rsp
+        $scope.total = 299 * $scope.property.beds
+        ngDialog.open template: 'transaction-breakdown-modal', className: 'edit full', scope: $scope
+    else
       $http.get("/transactions/#{booking}#{transaction.id}").success (rsp) ->
         $scope.bookings = rsp.bookings
         $scope.total = _($scope.bookings).reduce(((acc, booking) -> acc + booking.cost), 0)
