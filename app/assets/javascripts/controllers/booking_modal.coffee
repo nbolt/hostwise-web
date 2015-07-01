@@ -102,6 +102,12 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
+  $scope.service_text = (display) ->
+    if display == 'Linens & Towels' && $scope.linen_handling == 0
+      'Launder & Press'
+    else
+      display
+
   $scope.steps_class = -> if _($scope.steps).filter((step) -> step.visible).length == 4 then 'four' else 'five'
 
   $scope.step_class = (step, name, index) ->

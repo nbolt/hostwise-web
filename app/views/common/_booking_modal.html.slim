@@ -268,22 +268,31 @@ script#booking-modal type="text/ng-template"
                     span ng:bind="day.same_day_booking"
                 - Service.all.each do |service|
                   .service ng:show="day.#{service.name}"
-                    .text= service.display
+                    .text ng:bind="service_text('#{service.display}')"
                     .price
                       | $
                       span ng:bind="day.#{service.name}"
                 .extra-set ng:show='extra.king_sets > 0'
-                  .text ng:bind-template='{{extra.king_sets}} Extra King Set'
+                  .text
+                    .pad
+                      | {{extra.king_sets}} Extra King Set
+                    span.red
+                      |  rental
                   .price
                     | $
                     span ng:bind='day.extra_king_sets'
                 .extra-set ng:show='extra.twin_sets > 0'
-                  .text ng:bind-template='{{extra.twin_sets}} Extra Twin Set'
+                  .text
+                    .pad
+                      | {{extra.twin_sets}} Extra Twin Set
+                    span.red
+                      |  rental
                   .price
                     | $
                     span ng:bind='day.extra_twin_sets'
                 .extra-set ng:show='extra.toiletry_sets > 0'
-                  .text ng:bind-template='{{extra.toiletry_sets}} Extra Toiletry Set'
+                  .text
+                    | {{extra.toiletry_sets}} Extra Toiletry Set
                   .price
                     | $
                     span ng:bind='day.extra_toiletry_sets'

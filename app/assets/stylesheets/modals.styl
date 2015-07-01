@@ -112,6 +112,42 @@
       display: block
       padding: 30px
 
+.ngdialog.distribution
+  .counters
+    .counter
+      display: inline-block
+      vertical-align: top
+      width: 33%
+      .label
+        margin-top: 8px
+        color: dark-gray
+      .boxes
+        margin-top: 15px
+      .box
+        display: inline-block
+        vertical-align: top
+        border: thin solid gray
+        width: 40px
+        height: 40px
+        box-sizing: border-box
+        padding: 8px 15px
+        &:first-child, &:last-child
+          color: teal
+          font-weight: 600
+          font-size: 1.1em
+          &:hover
+            cursor: pointer
+        &:first-child
+          border-top-left-radius: 3px
+          border-bottom-left-radius: 3px
+        &:nth-child(2)
+          border-left: 0
+          border-right: 0
+          color: heavy-gray
+        &:last-child
+          border-top-right-radius: 3px
+          border-bottom-right-radius: 3px
+
 .ngdialog.extras
   .ngdialog-content
     width: 600px !important
@@ -1723,6 +1759,14 @@
       transition: max-height .6s ease-in-out
       .service, .late, .extra-set
         margin: 10px 0
+        .pad
+          width: 150px
+          display: inline-block
+        span
+          &.red
+            color: red
+            text-transform: uppercase
+            font-size: .85em
       @media phone
         overflow: scroll
       .service
