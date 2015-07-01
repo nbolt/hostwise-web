@@ -9,6 +9,9 @@ class Transaction < ActiveRecord::Base
 
   before_create :set_charged_at
 
+  scope :manual_charges, -> { where(status_cd: 0, transaction_type_cd: 1) }
+  scope :on_month, -> (date) { where('extract(month from transactions.charged_at) = ? and extract(year from transactions.charged_at) = ?', date.month, date.year) }
+
   def self.completed(user, start_date, end_date)
     if start_date.present? && end_date.present?
       Transaction.where(status_cd: 0).where('bookings.date >= ? and bookings.date <= ?', DateTime.strptime(start_date, '%m/%d/%Y'), DateTime.strptime(end_date, '%m/%d/%Y')).includes({bookings: [{property: :user}]}).references(:user, :bookings).where('users.id = ?', user.id)
