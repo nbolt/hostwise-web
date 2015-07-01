@@ -104,10 +104,13 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
 
   $scope.service_text = (display) ->
     if display == 'Linens & Towels'
-      if $scope.linen_handling == 0
-        'Launder & Press'
-      else
-        'Linens & Towels &mdash; Rental'
+      switch $scope.linen_handling
+        when 0
+          'Launder & Press'
+        when 1
+          'Linens & Towels &mdash; Rental'
+        when 2
+          'Linens & Towels'
     else
       display
 
