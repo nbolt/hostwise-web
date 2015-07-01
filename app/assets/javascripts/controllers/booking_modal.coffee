@@ -440,12 +440,7 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
             if day.total > service_total
               service_total = day.total
               $scope.first_booking_discount_cost = day.first_booking_discount || 0
-            _($scope.selected_services).each (v,k) ->
-              if v
-                if (k is 'cleaning' or k is 'preset') and day.timeslot_cost
-                  day[k] = rsp[k] + day.timeslot_cost
-                else
-                  day[k] = rsp[k]
+            _($scope.selected_services).each (v,k) -> day[k] = rsp[k] if v
             $scope.days.push day
         $scope.service_total = service_total
         $scope.total = 0 if $scope.total < 0

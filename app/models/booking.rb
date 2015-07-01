@@ -137,6 +137,8 @@ class Booking < ActiveRecord::Base
     end
     rsp[:contractor_service_cost] = rsp[:contractor_service_cost].round
     rsp[:timeslot_cost] = rsp[:contractor_service_cost] - rsp[:orig_service_cost]
+    rsp[:cleaning] += rsp[:timeslot_cost] if rsp[:cleaning]
+    rsp[:preset] += rsp[:timeslot_cost] if rsp[:preset]
     rsp[:cost] += rsp[:contractor_service_cost]
     if late_next_day
       rsp[:late_next_day] = PRICING['late_next_day']
