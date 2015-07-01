@@ -1,4 +1,5 @@
 class Admin::ContractorsController < Admin::AuthController
+  include CsvHelper
   expose(:contractor) { User.find_by_id params[:id] }
 
   def index
@@ -7,6 +8,14 @@ class Admin::ContractorsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json { render json: contractors.to_json(include: {background_check: {methods: [:status]}, contractor_profile: {include: {market: {}}, methods: [:position, :display_position]}}, methods: [:name, :avatar, :next_job_date, :display_phone_number, :earnings]) }# why methods dont work?
+    end
+  end
+
+  def export
+    contractors = User.contractors
+    contractors = contractors.within_market(current_user.market) if current_user.market
+    respond_to do |format|
+      format.csv { send_data contractor_csv(contractors), filename: 'contractors.csv' }
     end
   end
 

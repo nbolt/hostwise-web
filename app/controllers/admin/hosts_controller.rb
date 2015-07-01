@@ -1,4 +1,5 @@
 class Admin::HostsController < Admin::AuthController
+  include CsvHelper
   expose(:host) { User.find_by_id params[:id] }
 
   def index
@@ -16,6 +17,14 @@ class Admin::HostsController < Admin::AuthController
       format.html
       format.json { render json: User.find_by_id(params[:id]).to_json(include: {properties: {methods: [:last_service_date, :next_service_date, :revenue, :nickname, :display_created_at], include: {bookings: {methods: [:cost, :formatted_date]}}}}, methods: [:name, :avatar, :total_spent, :default_payment]) }
       #format.json { render json: User.find(params[:id]), serializer: HostSerializer }
+    end
+  end
+
+  def export
+    hosts = User.hosts
+    hosts = hosts.within_market(current_user.market) if current_user.market
+    respond_to do |format|
+      format.csv { send_data host_csv(hosts), filename: 'hosts.csv' }
     end
   end
 

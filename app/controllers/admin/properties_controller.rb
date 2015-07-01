@@ -1,4 +1,5 @@
 class Admin::PropertiesController < Admin::AuthController
+  include CsvHelper
   expose(:property) { Property.find params[:id] }
 
   def index
@@ -16,6 +17,14 @@ class Admin::PropertiesController < Admin::AuthController
     respond_to do |format|
       format.html { redirect_to '/' unless property }
       format.json { render json: property.to_json(include: {property_photos: {}, bookings: {}, active_bookings: {include: [:services], methods: [:cost]}, past_bookings: {include: [:services], methods: [:cost]}}, methods: [:nickname, :short_address, :primary_photo, :full_address, :next_service_date, :beds]) }
+    end
+  end
+
+  def export
+    properties = Property.all
+    properties = properties.within_market(current_user.market) if current_user.market
+    respond_to do |format|
+      format.csv { send_data property_csv(properties), filename: 'properties.csv' }
     end
   end
 

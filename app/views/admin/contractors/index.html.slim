@@ -30,6 +30,10 @@
       h3.panel-title Team Members
       .select2-head ng:show='user.role_cd == 0'
         input type='hidden' ui:select2='marketHash()' ng:model='market'
+      .btn.btn-gray.btn-icon style='margin-right: 25px'
+        a href='/contractors/export.csv'
+          i.icon-details
+          span Export All
       .panel-options
         a data-toggle="panel" href="#"
           span.collapse-icon &ndash;

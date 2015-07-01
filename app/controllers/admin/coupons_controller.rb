@@ -1,4 +1,5 @@
 class Admin::CouponsController < Admin::AuthController
+  include CsvHelper
   expose(:coupon) { Coupon.find params[:id] }
 
   def index
@@ -19,6 +20,13 @@ class Admin::CouponsController < Admin::AuthController
         job.current_user = current_user
         render json: job.to_json(methods: [:payout, :payout_integer, :payout_fractional, :man_hours], include: {contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}})
       end
+    end
+  end
+
+  def export
+    coupons = Coupon.all
+    respond_to do |format|
+      format.csv { send_data coupon_csv(coupons), filename: 'coupons.csv' }
     end
   end
 

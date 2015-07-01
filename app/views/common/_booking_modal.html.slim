@@ -268,7 +268,7 @@ script#booking-modal type="text/ng-template"
                     span ng:bind="day.same_day_booking"
                 - Service.all.each do |service|
                   .service ng:show="day.#{service.name}"
-                    .text ng:bind="service_text('#{service.display}')"
+                    .text ng:bind-html="service_text('#{service.display}')"
                     .price
                       | $
                       span ng:bind="day.#{service.name}"

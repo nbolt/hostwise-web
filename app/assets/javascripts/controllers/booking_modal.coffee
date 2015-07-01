@@ -103,8 +103,11 @@ BookingModalCtrl = ['$scope', '$http', '$timeout', '$window', '$q', '$rootScope'
   $http.get('/data/timeslots').success (rsp) -> $scope.timeslots = rsp.timeslots
 
   $scope.service_text = (display) ->
-    if display == 'Linens & Towels' && $scope.linen_handling == 0
-      'Launder & Press'
+    if display == 'Linens & Towels'
+      if $scope.linen_handling == 0
+        'Launder & Press'
+      else
+        'Linens & Towels &mdash; Rental'
     else
       display
 
