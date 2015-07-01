@@ -274,25 +274,19 @@ script#booking-modal type="text/ng-template"
                       span ng:bind="day.#{service.name}"
                 .extra-set ng:show='extra.king_sets > 0'
                   .text
-                    .pad
-                      | {{extra.king_sets}} Extra King Set
-                    span.red
-                      |  rental
+                    | {{extra.king_sets}} Extra Rental King Sets
                   .price
                     | $
                     span ng:bind='day.extra_king_sets'
                 .extra-set ng:show='extra.twin_sets > 0'
                   .text
-                    .pad
-                      | {{extra.twin_sets}} Extra Twin Set
-                    span.red
-                      |  rental
+                    | {{extra.twin_sets}} Extra Rental Twin Sets
                   .price
                     | $
                     span ng:bind='day.extra_twin_sets'
                 .extra-set ng:show='extra.toiletry_sets > 0'
                   .text
-                    | {{extra.toiletry_sets}} Extra Toiletry Set
+                    | {{extra.toiletry_sets}} Extra Toiletry Sets
                   .price
                     | $
                     span ng:bind='day.extra_toiletry_sets'
