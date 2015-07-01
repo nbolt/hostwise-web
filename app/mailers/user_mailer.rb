@@ -6,6 +6,71 @@ class UserMailer < MandrillMailer::TemplateMailer
 
   DEFAULT_REPLY_TO = 'HostWise <support@hostwise.com>'
 
+  def daily_digest
+    mandrill do
+      mandrill_mail template: 'daily-digest',
+                    to: {email: Rails.application.config.hq_notification_email},
+                    vars: {
+                      grand_totals: {
+                        users: User.hosts.count,
+                        properties: Property.count,
+                        jobs: Booking.where('status_cd > 0').count
+                      },
+                      active_totals: {
+                        users: User.hosts.active.count,
+                        properties: Property.has_upcoming.count,
+                        jobs: Booking.where('status_cd > 0').within_date(Date.today - 2.weeks, Date.today).count
+                      },
+                      daily_totals: {
+                        users: User.hosts.where('users.created_at = ?', Date.yesterday).count,
+                        properties: Property.where('properties.created_at = ?', Date.yesterday).count,
+                        jobs: Booking.where('bookings.created_at = ?', Date.yesterday).count
+                      },
+                      markets: [
+                        {
+                          market: 'Los Angeles',
+                          grand_totals: {
+                            users: User.hosts.within_market(Market.find_by_name('Los Angeles')).count,
+                            properties: Property.within_market(Market.find_by_name('Los Angeles')).count,
+                            jobs: Booking.where('status_cd > 0').within_market(Market.find_by_name('Los Angeles')).count
+                          },
+                          active_totals: {
+                            users: User.hosts.active.within_market(Market.find_by_name('Los Angeles')).count,
+                            properties: Property.has_upcoming.within_market(Market.find_by_name('Los Angeles')).count,
+                            jobs: Booking.where('status_cd > 0').within_date(Date.today - 2.weeks, Date.today).within_market(Market.find_by_name('Los Angeles')).count
+                          },
+                          daily_totals: {
+                            users: User.hosts.where('users.created_at = ?', Date.yesterday).within_market(Market.find_by_name('Los Angeles')).count,
+                            properties: Property.where('properties.created_at = ?', Date.yesterday).within_market(Market.find_by_name('Los Angeles')).count,
+                            jobs: Booking.where('bookings.created_at = ?', Date.yesterday).within_market(Market.find_by_name('Los Angeles')).count
+                          }
+                        },
+                        {
+                          market: 'San Diego',
+                          grand_totals: {
+                            users: User.hosts.within_market(Market.find_by_name('San Diego')).count,
+                            properties: Property.within_market(Market.find_by_name('San Diego')).count,
+                            jobs: Booking.where('status_cd > 0').within_market(Market.find_by_name('San Diego')).count
+                          },
+                          active_totals: {
+                            users: User.hosts.active.within_market(Market.find_by_name('San Diego')).count,
+                            properties: Property.has_upcoming.within_market(Market.find_by_name('San Diego')).count,
+                            jobs: Booking.where('status_cd > 0').within_date(Date.today - 2.weeks, Date.today).within_market(Market.find_by_name('San Diego')).count
+                          },
+                          daily_totals: {
+                            users: User.hosts.where('users.created_at = ?', Date.yesterday).within_market(Market.find_by_name('San Diego')).count,
+                            properties: Property.where('properties.created_at = ?', Date.yesterday).within_market(Market.find_by_name('San Diego')).count,
+                            jobs: Booking.where('bookings.created_at = ?', Date.yesterday).within_market(Market.find_by_name('San Diego')).count
+                          }
+                        }
+                      ]
+                    },
+                    merge_language: 'handlebars',
+                    inline_css: true,
+                    async: true
+    end
+  end
+
   def report(subject, body, email)
     mandrill_mail template: 'generic-notification',
                   subject: subject,

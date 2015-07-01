@@ -36,7 +36,7 @@ class Booking < ActiveRecord::Base
   scope :completed, -> { where(status_cd: 3) }
   scope :original, -> { where(cloned: false) }
   scope :cloned, -> { where(cloned: true) }
-  scope :within_date, -> (start_date, end_date) { where('bookings.date >= ? and bookings.date <= ?', DateTime.strptime(start_date, '%m/%d/%Y'), DateTime.strptime(end_date, '%m/%d/%Y')).order(date: :asc) }
+  scope :within_date, -> (start_date, end_date) { where('bookings.date >= ? and bookings.date <= ?', start_date, end_date).order(date: :asc) }
 
   before_save :check_transaction, :update_linen_handling
   before_create :create_job

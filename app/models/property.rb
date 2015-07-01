@@ -31,6 +31,7 @@ class Property < ActiveRecord::Base
   scope :within_market, -> (market) { where('markets.id = ?', market.id).references(:markets).includes(zip_code: :market) || where(id:nil) }
   scope :not_purchased, -> { where('linen_handling_cd > 0') }
   scope :purchased, -> { where('linen_handling_cd = 0 and purchase_date is not null') }
+  scope :has_upcoming, -> { where('bookings.date >= ? and bookings.date <= ?', Date.today - 2.weeks, Date.today).includes(:bookings).references(:bookings) }
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :by_user, -> (user) { where(user_id: user.id) }

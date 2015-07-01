@@ -292,6 +292,8 @@ module Clockwork
             body = "These jobs have potential linens that were not picked up: #{mismatched.map(&:id).join ', '}"
             UserMailer.generic_notification('Linen pickup mismatch', body).then(:deliver) if mismatched.present?
           end
+        when 'digest:send_emails'
+          UserMailer.daily_digest.then(:deliver)
       end
     rescue Exception => exception
       Appsignal::Transaction.current.add_exception(exception)
@@ -316,5 +318,6 @@ module Clockwork
   every(1.day,  'coupons:monitor', at: '22:00')
   every(1.day,  'linens:check_counts', at: '17:00')
   every(1.day,  'bookings:nil_check', at: '17:00')
+  every(1.day,  'digest:send_emails', at: '17:00')
   every(10.minutes, 'jobs:check_timers')
 end
