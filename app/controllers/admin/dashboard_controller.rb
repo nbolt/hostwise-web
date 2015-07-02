@@ -22,7 +22,7 @@ class Admin::DashboardController < Admin::AuthController
 
   def revenue
     this_month = Job.revenue_on_month(Date.today)
-    last_month = Job.revenue_on_month(Date.today - 1.month)
+    last_month = Job.revenue_on_month(Date.today - 1.month) + Job.restocking_revenue_on_last_month
     last_month2 = Job.revenue_on_month(Date.today - 2.months)
     if this_month > 0 && last_month > 0
       growth = ((last_month - last_month2) / last_month2 * 100).round 2

@@ -80,7 +80,11 @@ class Job < ActiveRecord::Base
 
   def self.revenue_on_month date
     jobs = Job.standard.on_month(date).where('bookings.status_cd > 1 and jobs.status_cd > 2').includes(:booking).references(:bookings)
-    jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)} + Property.purchase_on_month(date).reduce(0) {|acc, property| acc + (property.linen_purchase_revenue || 0)}  + Transaction.manual_charges.on_month(date).reduce(0) {|acc, transaction| acc + ((transaction.amount || 0) / 100.00)}
+    jobs.reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)} + Property.purchase_on_month(date).reduce(0) {|acc, property| acc + (property.linen_purchase_revenue || 0)}
+  end
+
+  def self.restocking_revenue_on_last_month
+    1931.00 #Since we are not tracking before discounted restocking charges, we will update this number at the end of every month
   end
 
   def self.payouts_on_month date
