@@ -284,10 +284,14 @@ module Clockwork
             mismatched = []
             jobs = Job.standard.complete.on_date(Date.yesterday)
             jobs.each do |job|
-              king_sheets  = job.checklist.checklist_settings[:inventory_count]['king_sheets']
-              twin_sheets  = job.checklist.checklist_settings[:inventory_count]['twin_sheets']
-              total_sheets = king_sheets + twin_sheets
-              mismatched.push job if job.soiled_pickup_count != total_sheets
+              if job.checklist
+                king_sheets  = job.checklist.checklist_settings[:inventory_count]['king_sheets']
+                twin_sheets  = job.checklist.checklist_settings[:inventory_count]['twin_sheets']
+                total_sheets = king_sheets + twin_sheets
+                mismatched.push job if job.soiled_pickup_count != total_sheets
+              else
+                UserMailer.generic_notification('Job completed without checklist', "It appears job ##{job.id} has been completed without a checklist.").then(:deliver)
+              end
             end
             body = "These jobs have potential linens that were not picked up: #{mismatched.map(&:id).join ', '}"
             UserMailer.generic_notification('Linen pickup mismatch', body).then(:deliver) if mismatched.present?
