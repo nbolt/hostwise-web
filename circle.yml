@@ -21,12 +21,14 @@ deployment:
   staging:
     branch: develop
     commands:
+      - eb deploy hostwise-staging
       - git push git@heroku.com:hostwise-staging.git $CIRCLE_SHA1:master
       - heroku run rake db:migrate --app hostwise-staging
       - heroku restart --app hostwise-staging
   production:
     branch: master
     commands:
+       - eb deploy hostwise-production
        - git push git@heroku.com:hostwise.git $CIRCLE_SHA1:master
        - heroku run rake db:migrate --app hostwise
        - heroku restart --app hostwise
