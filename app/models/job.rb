@@ -39,7 +39,7 @@ class Job < ActiveRecord::Base
   scope :on_month, -> (date) { where('extract(month from jobs.date) = ? and extract(year from jobs.date) = ?', date.month, date.year) }
   scope :on_year, -> (date) { where('extract(year from jobs.date) = ?', date.year) }
   scope :in_week, -> (week, date) { where('extract(year from jobs.date) = ? and extract(month from jobs.date) = ? and extract(day from jobs.date) in (?)', date.year, date.month, week) }
-  scope :today, -> { on_date(Time.now) }
+  scope :today, -> { on_date(Date.today) }
   scope :distribution, -> { where(distribution: true) }
   scope :scheduled, -> { where(status_cd: 1) }
   scope :not_complete, -> { where(status_cd: [0,1,2]) }
