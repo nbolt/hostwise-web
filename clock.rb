@@ -44,7 +44,7 @@ module Clockwork
                     UserMailer.linen_recovery_charge(property, amount).then(:deliver)
                   rescue Stripe::CardError => e
                     err  = e.json_body[:error]
-                    property.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount, transaction_type_cd: 2)
+                    last_booking.transactions.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: amount, transaction_type_cd: 2)
                   end
                 end
               end
