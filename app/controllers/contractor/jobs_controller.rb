@@ -59,11 +59,8 @@ class Contractor::JobsController < Contractor::AuthController
   end
 
   def done
-    if job.status == :scheduled
-      job.update_attribute :status_cd, 3
-    end
-
-    render json: { success: true, next_job: next_job.then(:id) }
+    job.update_attribute :status_cd, 3 if job.status == :scheduled
+    render json: { success: true, next_job: job.next_job(current_user).then(:id) }
   end
 
   def cant_access
