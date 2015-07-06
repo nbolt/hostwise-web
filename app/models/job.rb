@@ -393,6 +393,10 @@ class Job < ActiveRecord::Base
     booking.services.select {|s| s.name == 'linens' }.count > 0
   end
 
+  def has_sets?
+    booking.linen_set_count > 0
+  end
+
   def has_toiletries?
     booking.services.select {|s| s.name == 'toiletries' }.count > 0
   end
