@@ -114,7 +114,7 @@ module Clockwork
               if job.chain(:booking, :property) && job.booking.timeslot
                 timezone = Timezone::Zone.new :zone => job.booking.property.zone
                 time = timezone.time Time.now
-                if time.hour == 22 && time.to_date == (booking.date - 1.day)
+                if time.hour == 22 && time.to_date == (job.booking.date - 1.day)
                   timeslot = job.booking.timeslot - 1
                   if timeslot < 12 then meridian = 'A' else meridian = 'P' end
                   timeslot -= 12 if timeslot > 12
