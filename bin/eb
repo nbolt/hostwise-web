@@ -1,2 +1,0 @@
-#!/bin/bash
-PYTHONPATH="/usr/local/Cellar/aws-elasticbeanstalk/3.2/libexec/lib/python2.7/site-packages" exec "/usr/local/Cellar/aws-elasticbeanstalk/3.2/libexec/bin/eb" "$@"

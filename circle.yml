@@ -4,6 +4,10 @@ general:
       - master
       - develop
 
+dependencies:
+  pre:
+    - sudo pip install awsebcli
+
 machine:
   hosts:
     hostwise-web.dev: 127.0.0.1
