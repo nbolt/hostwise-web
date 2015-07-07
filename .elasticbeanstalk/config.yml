@@ -1,0 +1,12 @@
+branch-defaults:
+  develop:
+    environment: hostwise-staging
+  master:
+    environment: hostwise-production
+global:
+  application_name: hostwise
+  default_ec2_keyname: hostwise-staging
+  default_platform: 64bit Amazon Linux 2015.03 v1.4.3 running Ruby 2.2 (Puma)
+  default_region: null
+  profile: null
+  sc: git
