@@ -30,7 +30,12 @@ class Admin::DashboardController < Admin::AuthController
       growth = 0
     end
     total = Job.on_year(Date.today).standard.where('status_cd > 2').reduce(0) {|acc, job| acc + (job.chain(:booking, :prediscount_cost) || 0)}
-    render json: { this_month: number_with_precision(this_month, precision: 2, delimiter: ','), last_month: number_with_precision(last_month, precision: 2, delimiter: ','), total: number_with_precision(total, precision: 2, delimiter: ','), growth: growth }
+    render json: { this_month: number_with_precision(this_month, precision: 2, delimiter: ','),
+                   this_month_linen_purchase: number_with_precision(Job.linen_purchased_revenue_on_month(Date.today), precision: 2, delimiter: ','),
+                   last_month: number_with_precision(last_month, precision: 2, delimiter: ','),
+                   last_month_linen_purchase: number_with_precision(Job.linen_purchased_revenue_on_month(Date.today - 1.month), precision: 2, delimiter: ','),
+                   last_month_restocking: number_with_precision(Job.restocking_revenue_on_last_month, precision: 2, delimiter: ','),
+                   total: number_with_precision(total, precision: 2, delimiter: ','), growth: growth }
   end
 
   def payouts

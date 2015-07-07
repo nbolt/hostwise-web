@@ -14,7 +14,10 @@ AdminDashCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'n
   $http.get('/dashboard/revenue').success (rsp) ->
     $scope.total_revenue      = rsp.total
     $scope.monthly_revenue    = rsp.this_month
+    $scope.monthly_linen_purchase_revenue = rsp.this_month_linen_purchase
     $scope.last_month_revenue = rsp.last_month
+    $scope.last_month_linen_purchase_revenue = rsp.last_month_linen_purchase
+    $scope.last_month_restocking_revenue = rsp.last_month_restocking
     #data = { labels: [], datasets: [DEFAULT_LINE_CONFIG] }
     #_(rsp.data).each (d) -> data.labels.push(MONTHS[d.month-1] + " '" + d.year)
     #data.datasets[0].label = 'Revenue'
