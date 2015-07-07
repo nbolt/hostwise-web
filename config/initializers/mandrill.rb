@@ -5,7 +5,7 @@ MandrillMailer.configure do |c|
   when 'production'
     MandrillMailer.config.default_url_options = { host: 'www.hostwise.com', protocol: 'https' }
   when 'staging'
-    MandrillMailer.config.default_url_options = { host: 'www.hostwise-staging.com', protocol: 'http' }
+    MandrillMailer.config.default_url_options = { host: 'www.hostwise-qa.com', protocol: 'http' }
   when 'development'
     MandrillMailer.config.default_url_options = { host: ENV['HOST'], protocol: 'http' }
   end
