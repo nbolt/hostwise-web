@@ -8,6 +8,6 @@ class Host::TransactionsController < Host::AuthController
   end
 
   def property
-    render json: Property.find(params[:id]).to_json(methods: [:nickname, :beds], include: {user: {include: {default_payment: {methods: [:display]}}}})
+    render json: Property.find(params[:id]).to_json(methods: [:nickname, :beds], include: {user: {include: {primary_payment: {methods: [:display]}}}})
   end
 end

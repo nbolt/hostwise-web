@@ -246,21 +246,25 @@ AdminTransactionsCtrl = ['$scope', '$http', '$timeout', '$window', 'spinner', 'n
         )
       )
       ajax: (data, cb, settings) ->
-        $http.get('/bookings.json?filter=complete', {params: {data: data}}).success (rsp) ->
-          $scope.bookings = JSON.parse rsp.bookings
+        $http.get('/bookings.json', {params: {data: data}}).success (rsp) ->
+          $scope.bookings = _(rsp.transactions).map (transaction) -> JSON.parse transaction
           _($scope.bookings).each (booking) ->
-            booking.adjusted_cost = booking.adjusted_cost / 100
-            if booking.adjusted_cost >= 0
-              booking.adjusted_cost = "$#{booking.adjusted_cost.toFixed(2)}"
+            if booking.properties
+              booking.status = 'Received'
+              booking.cost = (booking.amount / 100.0).toFixed 2
             else
-              booking.adjusted_cost = "(-$#{(booking.adjusted_cost * -1).toFixed(2)})"
-            booking.cost = booking.cost.toFixed 2
-            booking.selected = false
-            booking.status =
-              switch booking.payment_status_cd
-                when 0 then 'Open'
-                when 1 then 'Received'
-          data_bookings = _($scope.bookings).map (booking) -> [(if booking.payment_status_cd == 0 then "<div style='text-align:center'><input class='cbr' type='checkbox' id='booking-#{booking.id}' /></div>" else ''), booking.id, "<a href='/jobs/#{booking.job.id}' class='teal'>#{booking.job.id}</a>", "<a href='/properties/#{booking.property.id}' class='teal'>#{booking.property.id}</a>", "<a href='/hosts/#{booking.user.id}/edit' class='teal'>#{booking.user.id}</a>", booking.date, "<a href='/hosts/#{booking.user.id}/edit' class='teal'>#{booking.user.name}</a>", booking.status, (if booking.payment_status_cd == 1 then "<div class='btn btn-xs #{$scope.refund_class(booking)}' onclick='javascript:$(this).scope().refund_modal(#{booking.id})'>#{$scope.refund_text(booking)}</div>" else null), booking.adjusted_cost, (if booking.payment_status_cd == 0 then "<a class='teal' href='javascript:void(0)' onclick='javascript:$(this).scope().edit_payment_modal(#{booking.id})'>$#{booking.cost}</a>" else "<span>$#{booking.cost}</span>")]
+              booking.adjusted_cost = booking.adjusted_cost / 100
+              if booking.adjusted_cost >= 0
+                booking.adjusted_cost = "$#{booking.adjusted_cost.toFixed(2)}"
+              else
+                booking.adjusted_cost = "(-$#{(booking.adjusted_cost * -1).toFixed(2)})"
+              booking.cost = booking.cost.toFixed 2
+              booking.selected = false
+              booking.status =
+                switch booking.payment_status_cd
+                  when 0 then 'Open'
+                  when 1 then 'Received'
+          data_bookings = _($scope.bookings).map (booking) -> [(if booking.payment_status_cd == 0 then "<div style='text-align:center'><input class='cbr' type='checkbox' id='booking-#{booking.id}' /></div>" else null), booking.id, (if booking.properties then null else "<a href='/jobs/#{booking.job.id}' class='teal'>#{booking.job.id}</a>"), "<a href='/properties/#{booking.properties && booking.properties[0].id || booking.property.id}' class='teal'>#{booking.properties && booking.properties[0].id || booking.property.id}</a>", "<a href='/hosts/#{booking.properties && booking.properties[0].user.id || booking.user.id}/edit' class='teal'>#{booking.properties && booking.properties[0].user.id || booking.user.id}</a>", booking.properties && booking.charged_at || booking.date, "<a href='/hosts/#{booking.properties && booking.properties[0].user.id || booking.user.id}/edit' class='teal'>#{booking.properties && booking.properties[0].user.name || booking.user.name}</a>", booking.status, (if booking.payment_status_cd == 1 then "<div class='btn btn-xs #{$scope.refund_class(booking)}' onclick='javascript:$(this).scope().refund_modal(#{booking.id})'>#{$scope.refund_text(booking)}</div>" else null), (if booking.properties then null else booking.adjusted_cost), (if booking.properties then "<span>$#{booking.cost}</span>" else if booking.payment_status_cd == 0 then "<a class='teal' href='javascript:void(0)' onclick='javascript:$(this).scope().edit_payment_modal(#{booking.id})'>$#{booking.cost}</a>" else "<span>$#{booking.cost}</span>")]
           cb({data:data_bookings,recordsTotal:rsp.meta.total,recordsFiltered:rsp.meta.filtered})
     })
     $scope.bookings_table = table

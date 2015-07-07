@@ -88,6 +88,22 @@ class Property < ActiveRecord::Base
     end
   end
 
+  def charges
+    dates = []
+    date = purchase_date || bookings.active.sort_by(&:date)[0].date
+    while date < Date.today
+      dates.push date
+      date += 1.year
+    end
+
+    dates.map do |date|
+      {
+        id: id,
+        date: date
+      }
+    end
+  end
+
   def self.search(term, sort=nil)
     results = Property.all
     results = results.search_property(term) if term.present? && !results.empty? && sort != 'upcoming_service' # NEEDS FIX

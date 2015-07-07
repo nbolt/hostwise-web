@@ -79,7 +79,7 @@ script#transaction-breakdown-modal type="text/ng-template"
           .price ${{total}}
         .paid
           .right ng:bind='bookings[0].payment.serializer_display' ng:if='bookings'
-          .right ng:bind='property.user.default_payment.display' ng:if='property'
+          .right ng:bind='property.user.primary_payment.display' ng:if='property'
           .left Paid with:
     .footer
       .buttons

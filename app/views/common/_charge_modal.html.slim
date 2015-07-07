@@ -10,8 +10,8 @@ script#charge-modal type="text/ng-template"
           input type='text' ng:model='$parent.reason' placeholder='Reason'
           .card style='margin-top: 10px'
             strong
-              | {{host.default_payment.card_type}}
-            |  ending in {{host.default_payment.last4}}
+              | {{host.primary_payment.card_type}}
+            |  ending in {{host.primary_payment.last4}}
         .footer
           .buttons
             .button.teal ng:click='charge()'

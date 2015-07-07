@@ -13,7 +13,7 @@ class Admin::TransactionsController < Admin::AuthController
   end
 
   def export_bookings
-    @bookings = params[:bookings].map {|id| Booking.find id}
+    @transactions = params[:bookings].map {|id| Booking.find_by_id(id) || Transaction.find_by_id(id)}
 
     respond_to do |format|
       format.csv do
