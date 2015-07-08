@@ -28,6 +28,7 @@ config/database.yml
 /public/photo_preview/
 /public/checklist/
 /public/contractor_photo/
+/public/contractor_profile/
 doc/
 #vcr_cassettes/
 dump.rdb

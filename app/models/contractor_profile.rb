@@ -108,6 +108,10 @@ class ContractorProfile < ActiveRecord::Base
     self.market = Market.near(self.zip, 50)[0]
   end
 
+  def address_changed?
+    self.address1_changed? || self.address2_changed? || self.city_changed? || self.state_changed? || self.zip_changed?
+  end
+
   private
 
   def fetch_zone
@@ -145,10 +149,6 @@ class ContractorProfile < ActiveRecord::Base
         errors[:base] << 'Invalid address'
       end
     end
-  end
-
-  def address_changed?
-    address1_changed? || address2_changed? || city_changed? || state_changed? || zip_changed?
   end
 
   def handle_position_change

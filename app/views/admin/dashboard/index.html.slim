@@ -14,8 +14,8 @@
         .panel-body
           p.text-medium Last Month's Revenue
           .super-large.text-secondary ng:bind-template='${{last_month_revenue}}'
-          .text-medium.text-bold ng:bind-template='Linen Purchase - ${{last_month_linen_purchase_revenue}}'
-          .text-medium.text-bold ng:bind-template='Restocking - ${{last_month_restocking_revenue}}'
+          .text-medium ng:bind-template='Linen Purchase - ${{last_month_linen_purchase_revenue}}'
+          .text-medium ng:bind-template='Restocking - ${{last_month_restocking_revenue}}'
   .row
     .col-sm-4
       .panel.panel-default
@@ -24,7 +24,7 @@
         .panel-body
           p.text-medium This Month's Revenue
           .super-large.text-secondary ng:bind-template='${{monthly_revenue}}'
-          .text-medium.text-bold ng:bind-template='Linen Purchase - ${{monthly_linen_purchase_revenue}}'
+          .text-medium ng:bind-template='Linen Purchase - ${{monthly_linen_purchase_revenue}}'
   /.row
   /  .col-sm-12
   /    .panel.panel-default
