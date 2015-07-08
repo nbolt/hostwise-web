@@ -54,4 +54,22 @@ namespace :email_campaign do
     end
     puts 'Email sent successfully.'
   end
+
+  task conversion0: :environment do
+    users = User.where(email: 'andre@hostwise.com')
+    puts "Sending #{users.count} email..."
+    users.each do |user|
+      UserMailer.announcement(user, 'conversion-0').then(:deliver)
+    end
+    puts 'Email sent successfully.'
+  end
+
+  task retention0: :environment do
+    users = User.where(email: 'andre@hostwise.com')
+    puts "Sending #{users.count} email..."
+    users.each do |user|
+      UserMailer.announcement(user, 'retention-0').then(:deliver)
+    end
+    puts 'Email sent successfully.'
+  end
 end
