@@ -38,7 +38,10 @@ AdminJobCtrl = ['$scope', '$http', '$timeout', '$interval', '$q', '$window', 'ng
           $timeout((-> angular.element('.states .message').css 'opacity', 0), 2000)
 
   $scope.$watch 'state', (n,o) -> if o != undefined
-    $http.post($window.location.href + '/update_state', {state: $scope.state.id})
+    $http.post($window.location.href + '/update_state', {state: $scope.state.id}).success (rsp) ->
+      rsp = JSON.parse rsp.job
+      $scope.job.payout_integer = rsp.payout_integer
+      $scope.job.payout_fractional = rsp.payout_fractional
 
   $scope.$watch 'new_teammate', (n,o) -> if n
     $http.post($window.location.href + '/add_contractor', {contractor_id: n.id}).success (rsp) ->

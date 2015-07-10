@@ -335,7 +335,7 @@ class Admin::JobsController < Admin::AuthController
 
   def update_state
     job.update_attribute :state_cd, params[:state]
-    render json: { success: true }
+    render json: { success: true, job: job.to_json(methods: [:formatted_time, :payout, :payout_integer, :payout_fractional, :man_hours, :king_bed_count, :twin_bed_count, :toiletry_count], include: {payouts: {include: {user: {methods: [:name, :display_phone_number]}}}, contractors: {methods: [:name, :display_phone_number], include: {contractor_profile: {methods: [:display_position]}}}, booking: {methods: [:cost], include: {services: {}, payment: {methods: :display}, property: {methods: [:primary_photo, :full_address, :nickname, :king_bed_count, :property_size], include: {user: {methods: [:name, :display_phone_number, :avatar]}}}}}}) }
   end
 
   def available_contractors
