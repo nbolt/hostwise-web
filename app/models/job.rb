@@ -316,9 +316,9 @@ class Job < ActiveRecord::Base
               end
             end
           end
+          payout = 35 if payout < 35
         end
 
-        payout = 35 if payout < 35
         payout.round 2
       end
     end
