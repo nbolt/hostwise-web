@@ -80,6 +80,18 @@ namespace :email_campaign do
     puts "Sent out #{count} email successfully."
   end
 
+  task retention1: :environment do
+    count = 0
+    User.where(role_cd: 1, activation_state: 'active').each do |user|
+      if user.completed_jobs_count > 0 && user.upcoming_jobs_count == 0
+        puts user.email
+        UserMailer.announcement(user, 'retention-1').then(:deliver)
+        count += 1
+      end
+    end
+    puts "Sent out #{count} email successfully."
+  end
+
   task sandiego_launch: :environment do
     count = 0
     User.where(role_cd: 1, activation_state: 'active').each do |user|
