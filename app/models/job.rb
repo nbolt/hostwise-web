@@ -294,25 +294,27 @@ class Job < ActiveRecord::Base
 
         if contractor.chain(:contractor_profile, :position) == :trainee
           payout = 20
-        elsif size > 1
-          even_payout = (payout / size).round 2
-          primary_payout = (even_payout + (even_payout * 0.1)).round 2
-          secondary_payout = (even_payout - ((primary_payout - even_payout) / (size-1))).round 2
-          contractor_job = contractor && ContractorJobs.where(job_id: self.id, user_id: contractor.id)[0]
-          if contractor_job && !contractor.admin? # requesting pricing for specific contractor (job detail page)
-            if contractor_job.primary
-              payout = primary_payout
-            else
-              payout = secondary_payout
-            end
-          else
-            if contractor && contractor.admin? # average pricing for viewing job detail as admin
-              payout /= size
-            else
-              if contractors.empty? # pricing for open jobs
+        else
+          if size > 1
+            even_payout = (payout / size).round 2
+            primary_payout = (even_payout + (even_payout * 0.1)).round 2
+            secondary_payout = (even_payout - ((primary_payout - even_payout) / (size-1))).round 2
+            contractor_job = contractor && ContractorJobs.where(job_id: self.id, user_id: contractor.id)[0]
+            if contractor_job && !contractor.admin? # requesting pricing for specific contractor (job detail page)
+              if contractor_job.primary
                 payout = primary_payout
               else
                 payout = secondary_payout
+              end
+            else
+              if contractor && contractor.admin? # average pricing for viewing job detail as admin
+                payout /= size
+              else
+                if contractors.empty? # pricing for open jobs
+                  payout = primary_payout
+                else
+                  payout = secondary_payout
+                end
               end
             end
           end
