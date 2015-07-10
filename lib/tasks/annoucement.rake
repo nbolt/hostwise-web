@@ -61,7 +61,7 @@ namespace :email_campaign do
       booking_count = user.properties.reduce(0) {|acc, property| acc + property.bookings.count}
       if booking_count == 0
         puts user.email
-        #UserMailer.announcement(user, 'conversion-0').then(:deliver)
+        UserMailer.announcement(user, 'conversion-0').then(:deliver)
         count += 1
       end
     end
@@ -73,9 +73,18 @@ namespace :email_campaign do
     User.where(role_cd: 1, activation_state: 'active').each do |user|
       if user.completed_jobs_count > 0 && user.upcoming_jobs_count == 0
         puts user.email
-        #UserMailer.announcement(user, 'retention-0').then(:deliver)
+        UserMailer.announcement(user, 'retention-0').then(:deliver)
         count += 1
       end
+    end
+    puts "Sent out #{count} email successfully."
+  end
+
+  task sandiego_launch: :environment do
+    count = 0
+    User.where(role_cd: 1, activation_state: 'active').each do |user|
+      UserMailer.announcement(user, 'san-diego-launch').then(:deliver)
+      count += 1
     end
     puts "Sent out #{count} email successfully."
   end
