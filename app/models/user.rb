@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   scope :within_contractor_market, -> (market) { where('markets.id = ?', market.id).references(:markets).includes(contractor_profile: :market) || where(id:nil) }
   scope :trainers, -> { where('position_cd = 3').includes(:contractor_profile).references(:contractor_profile) }
   scope :trainees, -> { where('position_cd = 1').includes(:contractor_profile).references(:contractor_profile) }
-  scope :team_members, -> { where('position_cd in (2,3) ').includes(:contractor_profile).references(:contractor_profile) }
+  scope :team_members, -> { where('position_cd in (2,3,4) ').includes(:contractor_profile).references(:contractor_profile) }
   scope :contractors, -> { where(role_cd: 2) }
   scope :active, -> { where('bookings.date >= ? and bookings.date <= ?', Date.today - 2.weeks, Date.today).includes(properties: :bookings).references(:bookings) }
   scope :active_contractors, -> { where('role_cd = 2 and date >= ?', Time.now).includes(:jobs).references(:jobs) }
