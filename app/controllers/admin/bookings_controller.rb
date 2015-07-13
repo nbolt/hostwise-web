@@ -21,25 +21,26 @@ class Admin::BookingsController < Admin::AuthController
           if value.present?
             @transactions =
               case column['data']
-              when 1  then @transactions.select {|transaction| (transaction.id).to_s.match value}
-              when 2  then @transactions.select {|transaction| (transaction.class == Booking && transaction.job.id || nil).to_s.match value}
-              when 3  then @transactions.select {|transaction| (transaction.chain(:property, :id) || transaction.id).to_s.match value}
-              when 4  then @transactions.select {|transaction| (transaction.chain(:user, :id) || transaction.property.user.id).to_s.match value}
-              when 6  then @transactions.select {|transaction| (transaction.chain(:user, :name) || transaction.property.user.name).downcase.match value}
-              when 7  then @transactions.select {|transaction| ((transaction.class == Transaction && transaction.status_cd != 0 || transaction.payment_status_cd == 0) && 'Open' || 'Received').match value}
-              when 8  then @transactions
-              when 9  then @transactions
-              when 10 then @transactions
-              when 5  then @transactions.select do |transaction|
-                from = value.split('|')[0]
-                to   = value.split('|')[1]
-                if from.then(:present?) && to.then(:present?)
-                  date = transaction.date || transaction.charged_at
-                  date >= Date.strptime(from, '%m/%d/%Y') && date <= Date.strptime(to, '%m/%d/%Y')
-                else
-                  true
+                when 1  then @transactions.select {|transaction| (transaction.id).to_s.match value}
+                when 2  then @transactions.select {|transaction| (transaction.class == Booking && transaction.job.id || nil).to_s.match value}
+                when 3  then @transactions.select {|transaction| (transaction.chain(:property, :id) || transaction.id).to_s.match value}
+                when 4  then @transactions.select {|transaction| (transaction.chain(:user, :id) || transaction.property.user.id).to_s.match value}
+                when 5  then @transactions.select {|transaction| (transaction.chain(:property, :full_address) || transaction.property.full_address).downcase.match value}
+                when 7  then @transactions.select {|transaction| (transaction.chain(:user, :name) || transaction.property.user.name).downcase.match value}
+                when 8  then @transactions.select {|transaction| ((transaction.class == Transaction && transaction.status_cd != 0 || transaction.payment_status_cd == 0) && 'Open' || 'Received').match value}
+                when 9  then @transactions
+                when 10  then @transactions
+                when 11 then @transactions
+                when 6  then @transactions.select do |transaction|
+                  from = value.split('|')[0]
+                  to   = value.split('|')[1]
+                  if from.then(:present?) && to.then(:present?)
+                    date = transaction.date || transaction.charged_at
+                    date >= Date.strptime(from, '%m/%d/%Y') && date <= Date.strptime(to, '%m/%d/%Y')
+                  else
+                    true
+                  end
                 end
-              end
               end
           end
         end
@@ -47,12 +48,12 @@ class Admin::BookingsController < Admin::AuthController
           dir = if order['dir'] == 'asc' then 1 else -1 end
           @transactions =
             case order['column']
-            when 0 then @transactions
-            when 1 then @transactions.sort_by {|transaction| dir * transaction.id}
-            when 2 then @transactions.sort_by {|transaction| dir * (transaction.class == Booking && transaction.job.id || 0)}
-            when 3 then @transactions.sort_by {|transaction| dir * (transaction.chain(:property, :id) || transaction.id)}
-            when 4 then @transactions.sort_by {|transaction| dir * (transaction.chain(:user, :id) || transaction.property.user.id)}
-            when 5 then @transactions.sort_by {|transaction| dir * (transaction.date || transaction.charged_at).to_time.to_i}
+              when 0 then @transactions
+              when 1 then @transactions.sort_by {|transaction| dir * transaction.id}
+              when 2 then @transactions.sort_by {|transaction| dir * (transaction.class == Booking && transaction.job.id || 0)}
+              when 3 then @transactions.sort_by {|transaction| dir * (transaction.chain(:property, :id) || transaction.id)}
+              when 4 then @transactions.sort_by {|transaction| dir * (transaction.chain(:user, :id) || transaction.property.user.id)}
+              when 6 then @transactions.sort_by {|transaction| dir * (transaction.date || transaction.charged_at).to_time.to_i}
             end
         end
         filtered_bookings = @transactions
@@ -63,7 +64,7 @@ class Admin::BookingsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: { meta: { total: total, filtered: filtered_bookings.then(:count) }, transactions: @transactions.map {|transaction| if transaction.class == Transaction then transaction.to_json(include: {properties: {include: {user: {methods: [:name]}}}}) else transaction.to_json(methods: [:cost, :original_cost], include: {job: {}, user: {methods: :name}, payment: {methods: [:display]}, property: {methods: :nickname, include: {user: {methods: :name}}}}) end}}
+        render json: { meta: { total: total, filtered: filtered_bookings.then(:count) }, transactions: @transactions.map {|transaction| if transaction.class == Transaction then transaction.to_json(include: {properties: {include: {user: {methods: [:name]}}}}) else transaction.to_json(methods: [:cost, :original_cost], include: {job: {}, user: {methods: :name}, payment: {methods: [:display]}, property: {methods: [:nickname, :full_address], include: {user: {methods: :name}}}}) end}}
       end
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"transactions.csv\""
