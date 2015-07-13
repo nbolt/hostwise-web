@@ -64,7 +64,7 @@ class Admin::BookingsController < Admin::AuthController
     respond_to do |format|
       format.html
       format.json do
-        render json: { meta: { total: total, filtered: filtered_bookings.then(:count) }, transactions: @transactions.map {|transaction| if transaction.class == Transaction then transaction.to_json(include: {properties: {include: {user: {methods: [:name]}}}}) else transaction.to_json(methods: [:cost, :original_cost], include: {job: {}, user: {methods: :name}, payment: {methods: [:display]}, property: {methods: [:nickname, :full_address], include: {user: {methods: :name}}}}) end}}
+        render json: { meta: { total: total, filtered: filtered_bookings.then(:count) }, transactions: @transactions.map {|transaction| if transaction.class == Transaction then transaction.to_json(include: {properties: {methods: [:full_address], include: {user: {methods: [:name]}}}}) else transaction.to_json(methods: [:cost, :original_cost], include: {job: {}, user: {methods: :name}, payment: {methods: [:display]}, property: {methods: [:nickname, :full_address], include: {user: {methods: :name}}}}) end}}
       end
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"transactions.csv\""
