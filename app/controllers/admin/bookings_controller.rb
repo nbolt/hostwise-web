@@ -35,7 +35,7 @@ class Admin::BookingsController < Admin::AuthController
                   from = value.split('|')[0]
                   to   = value.split('|')[1]
                   if from.then(:present?) && to.then(:present?)
-                    date = transaction.date || transaction.charged_at
+                    date = transaction.then(:date) || transaction.then(:charged_at)
                     date >= Date.strptime(from, '%m/%d/%Y') && date <= Date.strptime(to, '%m/%d/%Y')
                   else
                     true
