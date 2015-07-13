@@ -277,7 +277,8 @@ class Job < ActiveRecord::Base
         ((booking.original_cost / size) * 0.8).round 2
       else
         contractor ||= current_user
-        payout_multiplier = state == :vip ? 0.75 : 0.7
+        # payout_multiplier = state == :vip ? 0.75 : 0.7
+        payout_multiplier = 0.7
         if training
           payout_multiplier = 0.8 if payout_multiplier == 0.7
           payout_multiplier = 0.85 if payout_multiplier == 0.75
