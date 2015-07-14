@@ -1811,7 +1811,7 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
 
 #apply-btn{
   margin:2em 0 0 28px;
-  padding:2em 3em;
+  width:350px;
   float:left;
 }
 
@@ -2014,7 +2014,7 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   }
 
   #contractor-banner-text{
-    width:90%;
+    width:100%;
     margin:0 auto;
   }
 
@@ -2038,6 +2038,8 @@ ul.faq-categories li.active a, ul.faq-categories li.active a strong{
   #apply-btn{
     float:none;
     margin-left:0;
+    width: 100%;
+    padding: 2em 0;
   }
 
 }
