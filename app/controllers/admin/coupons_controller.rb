@@ -58,7 +58,7 @@ class Admin::CouponsController < Admin::AuthController
     params[:coupon][:customers].each do |customer|
       user = User.find customer['id']
       coupon.users.push user unless coupon.users.index user
-    end
+    end if params[:coupon][:customers].present?
     if coupon.save
       render json: { success: true }
     else
