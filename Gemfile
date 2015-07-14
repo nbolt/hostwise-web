@@ -52,6 +52,9 @@ end
 gem 'coveralls', require: false, group: :test
 gem 'pry-rails', groups: [:test, :development]
 
+gem 'headless'
+gem 'whenever'
+
 gem "resque", "~> 2.0.0.pre.1", github: "resque/resque"
 gem 'stylus', github: 'lucasmazza/ruby-stylus', group: :assets
 gem 'rmagick', require: false
@@ -65,7 +68,6 @@ gem 'appsignal', '~> 0.11.8.beta.3'
 gem 'pg_search'
 gem 'httparty'
 gem 'friendly_id'
-#gem 'sentry-raven'
 gem 'jbuilder'
 gem 'bcrypt'
 gem 'pg'
