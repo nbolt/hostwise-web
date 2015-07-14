@@ -52,7 +52,7 @@ class Admin::BookingsController < Admin::AuthController
               when 1 then @transactions.sort_by {|transaction| dir * transaction.id}
               when 2 then @transactions.sort_by {|transaction| dir * (transaction.class == Booking && transaction.job.id || 0)}
               when 3 then @transactions.sort_by {|transaction| dir * (if transaction.class == Transaction then transaction.properties[0].id else transaction.property.id end)}
-              when 4 then @transactions.sort_by {|transaction| dir * (if transaction.class == Transaction then transaction.properties[0].user.id) else transaction.property.user.id end)}
+              when 4 then @transactions.sort_by {|transaction| dir * (if transaction.class == Transaction then transaction.properties[0].user.id else transaction.property.user.id end)}
               when 6 then @transactions.sort_by {|transaction| dir * (transaction.date || transaction.charged_at).to_time.to_i}
             end
         end
