@@ -49,9 +49,9 @@ module CsvHelper
 
   def coupon_csv(results)
     CSV.generate do |csv|
-      csv << ['ID', 'Description', 'Code', 'Status', 'Discount Type', 'Amount', 'Expiration', 'Limit', 'Applied']
+      csv << ['ID', 'Description', 'Code', 'Status', 'Discount Type', 'Amount', 'Expiration', 'Limit', 'Applied - Projected', 'Applied - Completed']
       results.each do |coupon|
-        csv << [coupon.id, coupon.description, coupon.code, coupon.status, coupon.discount_type, coupon.amount / 100.0, coupon.expiration, coupon.limit, coupon.total_applied]
+        csv << [coupon.id, coupon.description, coupon.code, coupon.status, coupon.discount_type, coupon.amount / 100.0, coupon.expiration, coupon.limit, coupon.total_applied_projected, coupon.total_applied]
       end
     end
   end

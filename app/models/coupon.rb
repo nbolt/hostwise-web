@@ -35,4 +35,8 @@ class Coupon < ActiveRecord::Base
   def total_applied
     bookings.completed.count
   end
+
+  def total_applied_projected
+    bookings.future.count
+  end
 end

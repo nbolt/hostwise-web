@@ -37,7 +37,8 @@
             th Amount
             th Expiration
             th Limit
-            th Applied
+            th Applied (Projected)
+            th Applied (Completed)
         thead.search
           tr
             th ID
@@ -48,7 +49,8 @@
             th Amount
             th.date Expiration
             th Limit
-            th Applied
+            th Applied (Projected)
+            th Applied (Completed)
         tfoot
           tr
             th ID
@@ -59,7 +61,8 @@
             th Amount
             th Expiration
             th Limit
-            th Applied
+            th Applied (Projected)
+            th Applied (Completed)
         tbody
           tr ng:repeat='coupon in coupons'
             td
@@ -71,6 +74,7 @@
             td ng:bind='coupon.display_amount'
             td ng:bind='coupon.expiration'
             td ng:bind='coupon.limit'
+            td ng:bind='coupon.total_applied_projected'
             td ng:bind='coupon.total_applied'
 
 = render 'common/create_coupon_modal'
