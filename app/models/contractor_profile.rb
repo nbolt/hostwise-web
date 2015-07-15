@@ -11,6 +11,7 @@ class ContractorProfile < ActiveRecord::Base
 
   attr_encrypted :ssn, :driver_license, key: ENV['CIPHER_KEY']
 
+  validates_uniqueness_of :user_id
   validates_presence_of :address1, :zip
   validates_numericality_of :emergency_contact_phone, only_integer: true, if: lambda { self.emergency_contact_phone.present? }
   validates_length_of :emergency_contact_phone, is: 10, if: lambda { self.emergency_contact_phone.present? }
