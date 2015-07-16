@@ -454,7 +454,7 @@ class UserMailer < MandrillMailer::TemplateMailer
     mandrill do
       unless user.deactivated?
         mandrill_mail template: 'new-jobs',
-                      subject: 'New HostWise Jobs!'
+                      subject: 'New HostWise Jobs!',
                       to: {email: user.email, name: user.name},
                       vars: {
                         'CONTRACTOR_NAME' => user.name,
