@@ -87,7 +87,10 @@ run do
 
     @driver.navigate.to site
 
-    @driver.find_element(:xpath, '//input[@id="no_specify_dates"]').click
+    begin
+      @driver.find_element(:xpath, '//input[@id="no_specify_dates"]').click
+    rescue
+    end
     search_form = @driver.find_element(:xpath, '//div[@class="search-form clearfix"]')
     search_form.find_element(:xpath, '//input[@name="q"]').send_keys location
     search_form.find_element(:xpath, '//button[@type="submit"]').click
@@ -127,12 +130,12 @@ run do
       end
 
       result_hash.each do |key, value|
-        record = Bot.where(source_cd: source, property_id: key)
+        record = Bot.where(source_cd: source, property_id: key)[0]
         puts "already scraped property id: #{key}" if record.present?
 
         break if total_message >= message_limit  #STOP when limit reaches
 
-        begin
+        #begin
           puts value[:property_url]
           @driver.get value[:property_url]
           sleep 1
@@ -259,9 +262,9 @@ run do
               total_message += 1
             end
           end
-        rescue Exception => e
-          report << "Roomorama error for #{key} #{value}: #{e}"
-        end
+        # rescue Exception => e
+        #   report << "Roomorama error for #{key} #{value}: #{e}"
+        # end
       end
 
       if total_message >= message_limit  #STOP when limit reaches

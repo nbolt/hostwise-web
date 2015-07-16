@@ -180,7 +180,7 @@ describe 'roomorama' do
         end
 
         result_hash.each do |key, value|
-          record = Bot.where(source_cd: 2, property_id: key)
+          record = Bot.where(source_cd: 2, property_id: key)[0]
           puts "already scraped property id: #{key}" if record.present?
 
           break if total_message >= message_limit  #STOP when limit reaches
