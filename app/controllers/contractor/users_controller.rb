@@ -60,7 +60,7 @@ class Contractor::UsersController < Contractor::AuthController
       end
     else
       user = User.load_from_activation_token(params[:id])
-      if user
+      if user && !user.contractor_profile.present? #no duplicate contractor profile is allowed (if user clicks the activation link again)
         respond_to do |format|
           format.html { render 'contractor/users/activate', layout: 'plain' }
           format.json { render json: user.to_json(include: [:contractor_profile], methods: [:avatar, :name, :role]) }
