@@ -118,12 +118,6 @@ class Contractor::JobsController < Contractor::AuthController
         body = "#{current_user.name} (#{current_user.id}) just made a last minute cancellation for job <a href='http://admin.hostwise.com/jobs/#{job.id}'>#{job.id}</a>. #{current_user.name} has now made #{current_user.last_minute_cancellation_count} last minute cancellations."
         UserMailer.generic_notification("Last Minute Contractor Cancellation - #{current_user.name}", body).then(:deliver)
       end
-      unless current_user.contractor_profile.trainee?
-        User.available_contractors(job.booking).each do |contractor|
-          UserMailer.new_open_job(contractor, job).then(:deliver) if contractor.settings(:new_open_job).email
-          TwilioJob.perform_later("+1#{contractor.phone_number}", "New HostWise Job! $#{job.payout(contractor)} in #{job.booking.property.city}, #{job.booking.property.zip} on #{job.booking.formatted_date}.") if contractor.settings(:new_open_job).sms && job.date <= Date.today + 2.weeks
-        end
-      end
       render json: { success: true }
     else
       render json: { success: false }

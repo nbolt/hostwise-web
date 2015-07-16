@@ -123,6 +123,14 @@ module Clockwork
                 end
               end
             end
+          when 'jobs:notify_contractors'
+            User.contractors.each do |contractor|
+              if contractor.contractor_profile.zone && contractor.contractor_profile.market
+                timezone = Timezone::Zone.new :zone => contractor.contractor_profile.zone
+                time = timezone.time Time.now
+                NewJobs.perform_later(contractor) if (time.hour == 7 || time.hour == 18) && Job.standard.within_market(contractor.contractor_profile.market).booked_on(time).select{|job| job.booking.date <= Date.today + 2.weeks && contractor.can_claim_job?(job)[:success]}.count > 0
+              end
+            end
           when 'jobs:notify_no_access'
             Booking.where(payment_status_cd: 0, status_cd: 5).each do |booking|
               timezone = Timezone::Zone.new :zone => booking.property.zone
@@ -315,6 +323,7 @@ module Clockwork
   every(1.hour, 'payments:report', at: '**:00')
   every(1.week, 'payouts:process', at: 'Wednesday 05:00')
   every(1.week, 'payouts:report', at: 'Wednesday 03:00')
+  every(1.hour, 'jobs:notify_contractors', at: '**:00')
   every(1.hour, 'jobs:notify_customers', at: '**:00')
   every(1.hour, 'jobs:notify_no_access', at: '**:00')
   every(1.hour, 'jobs:check_unclaimed', at: '**:00')

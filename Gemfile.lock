@@ -588,6 +588,3 @@ DEPENDENCIES
   webmock
   week_of_month
   whenever
-
-BUNDLED WITH
-   1.10.5

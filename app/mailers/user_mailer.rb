@@ -450,6 +450,23 @@ class UserMailer < MandrillMailer::TemplateMailer
     end
   end
 
+  def new_jobs(user)
+    mandrill do
+      unless user.deactivated?
+        mandrill_mail template: 'new-jobs',
+                      subject: 'New HostWise Jobs!'
+                      to: {email: user.email, name: user.name},
+                      vars: {
+                        'CONTRACTOR_NAME' => user.name,
+                        'CLAIM_LINK' => contractor_jobs_url
+                      },
+                      inline_css: true,
+                      async: true,
+                      headers: {'Reply-To' => DEFAULT_REPLY_TO}
+      end
+    end
+  end
+
   def job_claim_confirmation(job, user)
     mandrill do
       unless user.deactivated?

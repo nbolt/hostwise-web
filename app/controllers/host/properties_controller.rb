@@ -167,7 +167,6 @@ class Host::PropertiesController < Host::AuthController
               bookings.push booking
               UserMailer.new_booking_notification(booking).then(:deliver)
               UserMailer.booking_confirmation(booking).then(:deliver) if current_user.settings(:booking_confirmation).email
-              BlastJob.perform_later(booking) if booking.date <= Date.today + 2.weeks
             end
           end
         end
