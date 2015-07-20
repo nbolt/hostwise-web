@@ -30,6 +30,7 @@ class Admin::HostsController < Admin::AuthController
 
   def charge
     begin
+      params[:amount].gsub! '$', ''
       amount = (params[:amount].to_f * 100).to_i
       rsp = Stripe::Charge.create(
         amount: amount,

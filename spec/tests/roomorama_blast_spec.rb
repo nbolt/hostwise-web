@@ -52,7 +52,7 @@ run do
   start_page = 1
   month_limit = 5
   message_limit = 2
-  account_limit = 5
+  account_limit = 2
   total_all_msg = 0
   test = false
 
