@@ -26,9 +26,7 @@ def send_report(type, report)
 end
 
 def logout
-  @driver.find_element(:xpath, '//li[@id="user-dropdown"]//a[@id="user-drop"]').click
-  sleep 3
-  @driver.find_element(:xpath, '//a[@id="signout"]').click
+  @driver.execute_script("document.getElementById('signout').click();")
   sleep 5
 end
 
@@ -38,7 +36,6 @@ end
 
 run do
   report = []
-  site = 'https://www.homeaway.com'
   account_limit = 2
   base_email = 'jeannchen11'
   report << "creating #{account_limit} accounts..."
@@ -53,10 +50,7 @@ run do
     end
     pwd = 'airbnb338'
 
-    @driver.navigate.to site
-    @driver.find_element(:xpath, '//ul[@class="nav"]//a[@class="traveler-sign-in"]').click
-    sleep 3
-    @driver.find_element(:xpath, '//a[contains(., "Sign Up")]').click
+    @driver.navigate.to 'https://cas.homeaway.com/auth/traveler/register?service=https%3A%2F%2Fwww.homeaway.com%2Fuser%2Fsso%2Fauth%3Flt%3Dtraveler%26context%3Ddef%26service%3D%252F&requestingBrand=homea'
     sleep 3
 
     login_form = @driver.find_element(:xpath, '//form[@id="login-form"]')
@@ -68,7 +62,6 @@ run do
     sleep 3
 
     @driver.find_element(:xpath, '//a[contains(., "Continue")]').click
-
 
     begin
       acct = BotAccount.new({'email' => email,

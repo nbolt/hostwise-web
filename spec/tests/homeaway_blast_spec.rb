@@ -77,7 +77,6 @@ run do
 
     login username, password
 
-    #@driver.navigate.to site
     search_form = @driver.find_element(:xpath, '//form[@name="searchForm"]')
     search_form.find_element(:xpath, '//input[@id="searchKeywords"]').send_keys location
     search_form.find_element(:xpath, '//button[@type="button"]').click
