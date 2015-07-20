@@ -26,16 +26,11 @@ def send_report(type, report)
 end
 
 def logout
-  @driver.find_element(:xpath, '//li[@id="user-dropdown"]//a[@id="user-drop"]').click
-  sleep 3
-  @driver.find_element(:xpath, '//a[@id="signout"]').click
+  @driver.execute_script("document.getElementById('signout').click();")
   sleep 5
 end
 
 def login(username, password)
-  @driver.find_element(:xpath, '//ul[@class="nav"]//a[@class="traveler-sign-in"]').click
-  sleep 2
-
   login_form = @driver.find_element(:xpath, '//form[@id="login-form"]')
   login_form.find_element(:xpath, '//input[@id="username"]').send_keys username
   login_form.find_element(:xpath, '//input[@id="password"]').send_keys password
@@ -73,7 +68,7 @@ run do
     username = account.email
     password = account.password
     puts "logging into account: #{username}"
-    @driver.navigate.to site
+    @driver.navigate.to 'https://cas.homeaway.com/auth/homeaway/login?service=https%3A%2F%2Fwww.homeaway.com%2Fuser%2Fsso%2Fauth%3Flt%3Dtraveler%26context%3Ddef%26service%3D%252F'
 
     login username, password
 
