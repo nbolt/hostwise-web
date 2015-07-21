@@ -188,7 +188,7 @@ run do
             guest_ddl.select_by(:value, default_guest.to_s)
             sleep 2
 
-            message = messages[3].gsub '|name|', record.host_name ||= 'host'
+            message = messages[3].gsub '|name|', record.host_name ||= 'Host'
             textarea = contact_form.find_element(:xpath, '//textarea[@id="message_body"]')
             textarea.clear
             textarea.send_keys message

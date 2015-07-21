@@ -297,7 +297,7 @@ describe 'airbnb' do
           contact_form = driver.find_element(:xpath, '//form[@id="message_form"]')
 
           #set message
-          message = messages[2].gsub '|name|', record.host_name ||= 'host'
+          message = messages[2].gsub '|name|', record.host_name ||= 'Host'
           textarea = contact_form.find_element(:xpath, '//textarea[@id="question"]')
           textarea.clear
           textarea.send_keys message
@@ -581,7 +581,7 @@ describe 'airbnb' do
             contact_form = driver.find_element(:xpath, '//form[@id="message_form"]')
 
             #set message
-            message = messages[3].gsub '|name|', record.host_name ||= 'host'
+            message = messages[3].gsub '|name|', record.host_name ||= 'Host'
             textarea = contact_form.find_element(:xpath, '//textarea[@id="question"]')
             textarea.clear
             textarea.send_keys message

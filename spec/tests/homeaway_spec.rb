@@ -268,7 +268,7 @@ describe 'homeaway' do
           input_num_adults = booking_form.find_element(:xpath, '//input[@name="numberOfAdults"]')
           input_num_adults.clear
           input_num_adults.send_keys '2'
-          message = messages[3].gsub '|name|', record.host_name ||= 'host'
+          message = messages[3].gsub '|name|', record.host_name ||= 'Host'
           textarea = booking_form.find_element(:xpath, '//textarea[@name="comments"]')
           textarea.clear
           textarea.send_keys message
@@ -468,7 +468,7 @@ describe 'homeaway' do
             input_num_adults = booking_form.find_element(:xpath, '//input[@name="numberOfAdults"]')
             input_num_adults.clear
             input_num_adults.send_keys '2'
-            message = messages[3].gsub '|name|', record.host_name ||= 'host'
+            message = messages[3].gsub '|name|', record.host_name ||= 'Host'
             textarea = booking_form.find_element(:xpath, '//textarea[@name="comments"]')
             textarea.clear
             textarea.send_keys message

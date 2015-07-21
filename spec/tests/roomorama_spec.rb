@@ -254,7 +254,7 @@ describe 'roomorama' do
             question_ddl.select_by(:value, 'other')
             sleep 2
 
-            message = messages[3].gsub '|name|', record.host_name ||= 'host'
+            message = messages[3].gsub '|name|', record.host_name ||= 'Host'
             textarea = contact_form.find_element(:xpath, '//textarea[@class="js-messaging-el"]')
             textarea.clear
             textarea.send_keys message

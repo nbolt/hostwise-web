@@ -53,7 +53,7 @@ run do
   messages = ["Hey |name|!\n\nI love your vacation rental. You should check out HostWise.com, (first clean free) I use them and if I refer a free service then I get another free service! :) You can do the same!",
               "Hey |name|!\n\nLooks like your vacation rental would be a perfect fit for our company, HostWise.com. Our company was created by hosts, for hosts. We automate the entire home turnover for you and guarantee a 5 star clean rating every time. Give us a try for first time for free, no strings attached. Not sure if you have many more properties, but if so we do offer enterprise pricing discounts as well! :)",
               "Hey |name|!\n\nI just started using HostWise.com to clean and turnover my property and think your property would be a perfect fit for them too. First service is free, no strings attached, I just got a coupon code for 10% off 3 services if your are interested I can give it to you!\n\nCheers!",
-              "Hi |name|!\n\nDo you use HostWise.com to clean and restock your property? The last rental we booked in LA did and the presentation was hotel caliber - from linens and towels to toiletries just for the guests. They're still doing FREE TRIALS at HostWise.com, by the way.\n\nCoupon code: TRYHOSTWISE100\n\nCheers!",
+              "Hi |name|! Do you use HostWise.com to clean and restock your property? The last rental we booked in LA did and the presentation was hotel caliber - from linens and towels to toiletries just for the guests. They're still doing FREE TRIALS at HostWise.com, by the way. Coupon code: TRYHOSTWISE100",
               "Hi |name|,\n\nDo you use HostWise.com for housekeeping, linens, towels?"]
 
   site = 'https://www.homeaway.com'
@@ -165,34 +165,15 @@ run do
           end
 
           #book
-          contact_btn = @driver.find_element(:xpath, '//a[@class="btn-inquiry-link cta btn btn-inquiry js-emailOwnerButton btn-link"]') rescue nil
-          if contact_btn.present?
-            contact_btn.click
-          else
-            contact_btn = @driver.find_element(:xpath, '//a[@class="btn-inquiry-button cta btn btn-inquiry js-emailOwnerButton btn-primary cta-primary"]') rescue nil
-            if contact_btn.present?
-              contact_btn.click
-            else
-              contact_btn = @driver.find_element(:xpath, '//div[@class="owner-contact-box"]//a[@class="js-emailOwnerButton"]') rescue nil
-              if contact_btn.present?
-                contact_btn.click
-              else
-                next
-              end
-            end
-          end
+          @driver.execute_script("document.getElementsByClassName('js-emailOwnerButton')[0].click()")
           sleep 3
 
           booking_form = @driver.find_element(:xpath, '//form[@id="propertyInquiryForm"]')
           flex_date_cb = booking_form.find_element(:xpath, '//input[@name="flexibleInquiryDates"]')
           flex_date_cb.click unless flex_date_cb.selected?
-          input_num_adults = booking_form.find_element(:xpath, '//input[@name="numberOfAdults"]')
-          input_num_adults.clear
-          input_num_adults.send_keys '2'
-          message = messages[3].gsub '|name|', record.host_name ||= 'host'
-          textarea = booking_form.find_element(:xpath, '//textarea[@name="comments"]')
-          textarea.clear
-          textarea.send_keys message
+          @driver.execute_script("document.getElementsByName('numberOfAdults')[0].value='2'")
+          message = messages[3].gsub '|name|', record.host_name ||= 'Host'
+          @driver.execute_script("document.getElementsByName('comments')[0].value='" + message + "'")
           sleep 3
           booking_form.submit unless test
           sleep 5
@@ -206,8 +187,8 @@ run do
             else
               total_message += 1
               total_all_msg += 1
-              puts "contacted host #{record.host_name} for property #{record.property_name}"
-              report << "contacted host #{record.host_name} for property #{record.property_name}"
+              puts "contacted host #{record.host_name} for property #{record.property_id}"
+              report << "contacted host #{record.host_name} for property #{record.property_id}"
               record.status = :contacted
               record.last_contacted = Date.today
               record.save

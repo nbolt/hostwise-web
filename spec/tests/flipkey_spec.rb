@@ -197,7 +197,7 @@ describe 'flipkey' do
             email_input.send_keys account.email
             sleep 1
 
-            message = messages[3].gsub '|name|', record.host_name ||= 'host'
+            message = messages[3].gsub '|name|', record.host_name ||= 'Host'
             textarea = contact_form.find_element(:xpath, '//textarea[@id="modal_inquiry_message"]')
             textarea.clear
             textarea.send_keys message
