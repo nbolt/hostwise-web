@@ -173,7 +173,12 @@ run do
             if contact_btn.present?
               contact_btn.click
             else
-              next
+              contact_btn = @driver.find_element(:xpath, '//div[@class="owner-contact-box"]//a[@class="js-emailOwnerButton"]') rescue nil
+              if contact_btn.present?
+                contact_btn.click
+              else
+                next
+              end
             end
           end
           sleep 3
