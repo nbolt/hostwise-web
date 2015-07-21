@@ -15,6 +15,10 @@ describe 'homeaway' do
     sleep 5
   end
 
+  def source
+    1
+  end
+
   it 'create account', type: 'signup' do
     report = []
     use_proxy = ENV['proxy'] == 'true'
@@ -283,6 +287,7 @@ describe 'homeaway' do
               puts "contacted host #{record.host_name} for property #{record.property_name}"
               report << "contacted host #{record.host_name} for property #{record.property_name}"
               record.status = :contacted
+              record.last_contacted = Date.today
               record.save
             end
           else
@@ -443,7 +448,7 @@ describe 'homeaway' do
                               'super_host' => false})
             record.save
 
-            if Bot.where(source_cd: 1, host_name: record.host_name, status_cd: 2).present? #SKIP when same host already been messaged
+            if Bot.where('source_cd = ? and host_name = ? and last_contacted > ?', source, record.host_name, Date.today - 7.days).present? #SKIP when same host already been messaged recently
               puts "already messaged this host #{record.host_name}"
               next
             end
@@ -483,6 +488,7 @@ describe 'homeaway' do
                 puts "contacted host #{record.host_name} for property #{record.property_name}"
                 report << "contacted host #{record.host_name} for property #{record.property_name}"
                 record.status = :contacted
+                record.last_contacted = Date.today
                 record.save
               end
             else

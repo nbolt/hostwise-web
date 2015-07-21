@@ -16,6 +16,10 @@ describe 'airbnb' do
     sleep 5
   end
 
+  def source
+    0
+  end
+
   it 'create account', type: 'signup' do
     report = []
     use_proxy = ENV['proxy'] == 'true'
@@ -358,6 +362,7 @@ describe 'airbnb' do
             report << "contacted host #{record.host_name} for property #{record.property_name}"
             unless test
               record.status = :contacted
+              record.last_contacted = Date.today
               record.save
             end
           end
@@ -564,7 +569,7 @@ describe 'airbnb' do
                            'super_host' => superhost.present?})
             record.save
 
-            if Bot.where(source_cd: 0, profile_id: record.profile_id, status_cd: 2).present? #SKIP when same host already been messaged
+            if Bot.where('source_cd = ? and profile_id = ? and last_contacted > ?', source, record.profile_id, Date.today - 7.days).present? #SKIP when same host already been messaged recently
               puts "already messaged this host #{record.profile_id}"
               next
             end
@@ -644,6 +649,7 @@ describe 'airbnb' do
                 puts "contacted host #{record.host_name} for property #{record.property_name}"
                 report << "contacted host #{record.host_name} for property #{record.property_name}"
                 record.status = :contacted
+                record.last_contacted = Date.today
                 record.save
               else
                 total_message += 1

@@ -167,7 +167,7 @@ describe 'flipkey' do
               record.save unless test
             end
 
-            if Bot.where(source_cd: source, profile_id: record.profile_id, status_cd: 2).present? #SKIP when same host already been messaged
+            if Bot.where('source_cd = ? and profile_id = ? and last_contacted > ?', source, record.profile_id, Date.today - 7.days).present? #SKIP when same host already been messaged recently
               puts "already messaged this host #{record.profile_id}"
               next
             end
@@ -218,6 +218,7 @@ describe 'flipkey' do
                 puts "contacted host #{record.host_name} for property #{record.property_name}"
                 report << "contacted host #{record.host_name} for property #{record.property_name}"
                 record.status = :contacted
+                record.last_contacted = Date.today
                 record.save
               end
             else
