@@ -22,24 +22,11 @@ end
 
 def send_report(type, report)
   include ActionView::Helpers::TextHelper
-  UserMailer.report("roomorama #{type}", simple_format(report.join('<br>')), 'andre@hostwise.com').then(:deliver)
+  UserMailer.report("Roomorama #{type}", simple_format(report.join('<br>')), 'andre@hostwise.com').then(:deliver)
 end
 
 def logout
-  @driver.find_element(:xpath, '//li[@class="user dropdown dropit-trigger"]//a').click
-  sleep 3
-  @driver.find_element(:xpath, '//div[@class="user-menu menu hide dropit-submenu"]//a[contains(., "Log Out")]').click
-  sleep 5
-end
-
-def login(username, password)
-  @driver.find_element(:xpath, '//a[@id="header-sign-in-link"]').click
-  sleep 3
-
-  login_form = @driver.find_element(:xpath, '//form[@id="new_session"]')
-  login_form.find_element(:xpath, '//input[@id="session_login"]').send_keys username
-  login_form.find_element(:xpath, '//input[@id="session_password"]').send_keys password
-  login_form.submit
+  @driver.navigate.to 'https://www.roomorama.com/logout'
   sleep 3
 end
 
@@ -64,10 +51,7 @@ run do
     end
     pwd = 'airbnb338'
 
-    @driver.navigate.to site
-    @driver.find_element(:xpath, '//a[@id="header-sign-up-link"]').click
-    sleep 3
-    @driver.find_element(:xpath, '//a[@id="signup-email"]').click
+    @driver.navigate.to 'https://www.roomorama.com/login?origin=signup'
     sleep 3
 
     signup_form = @driver.find_element(:xpath, '//form[@id="new_user"]')

@@ -26,14 +26,12 @@ def send_report(type, report)
 end
 
 def logout
-  @driver.find_element(:xpath, '//li[@class="user dropdown dropit-trigger"]//a').click
+  @driver.navigate.to 'https://www.roomorama.com/logout'
   sleep 3
-  @driver.find_element(:xpath, '//div[@class="user-menu menu hide dropit-submenu"]//a[contains(., "Log Out")]').click
-  sleep 5
 end
 
 def login(username, password)
-  @driver.find_element(:xpath, '//a[@id="header-sign-in-link"]').click
+  @driver.navigate.to 'https://www.roomorama.com/login'
   sleep 3
 
   login_form = @driver.find_element(:xpath, '//form[@id="new_session"]')
