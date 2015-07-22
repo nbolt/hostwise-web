@@ -35,51 +35,55 @@ class Admin::TransactionsController < Admin::AuthController
   end
 
   def process_payments
-    successful_payments = []
+    if params[:bookings].present?
+      successful_payments = []
 
-    bookings = params[:bookings].map {|id| Booking.find id}.group_by {|booking| booking.user.id}.map do |user_id, bookings|
-      {
-        user: User.find(user_id),
-        booking_groups: bookings.group_by {|booking| booking.payment.id}.map do |payment_id, bookings|
-          bookings = bookings.select {|booking| booking.payment_status_cd == 0}
-          {
-            payment: Payment.find(payment_id),
-            total: (bookings.reduce(0) {|acc, booking| acc + booking.cost} * 100).to_i,
-            bookings: bookings
-          }
-        end
-      }
-    end
-
-    bookings.each do |user_bookings|
-      user_bookings[:booking_groups].each do |booking_group|
-        begin
-          metadata = { booking_ids: booking_group[:bookings].map(&:id).to_s }
-          rsp = Stripe::Charge.create(
-            amount: booking_group[:total],
-            currency: 'usd',
-            customer: user_bookings[:user].stripe_customer_id,
-            source: booking_group[:payment].stripe_id,
-            statement_descriptor: "HostWise"[0..21], # 22 characters max
-            metadata: metadata
-          )
-          transaction = Transaction.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total], transaction_type_cd: 0)
-
-          booking_group[:bookings].each do |booking|
-            transaction.bookings << booking
-            successful_payments.push booking.id
-            UserMailer.service_completed(booking).then(:deliver) if user_bookings[:user].settings(:service_completion).email
+      bookings = params[:bookings].map {|id| Booking.find id}.group_by {|booking| booking.user.id}.map do |user_id, bookings|
+        {
+          user: User.find(user_id),
+          booking_groups: bookings.group_by {|booking| booking.payment.id}.map do |payment_id, bookings|
+            bookings = bookings.select {|booking| booking.payment_status_cd == 0}
+            {
+              payment: Payment.find(payment_id),
+              total: (bookings.reduce(0) {|acc, booking| acc + booking.cost} * 100).to_i,
+              bookings: bookings
+            }
           end
-        rescue Stripe::CardError => e
-          err  = e.json_body[:error]
-          transaction = Transaction.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: booking_group[:total])
-          booking_group[:bookings].each {|booking| transaction.bookings << booking}
-          UserMailer.generic_notification("Stripe Payment Failed - ***#{booking_group[:payment].last4}", "Booking IDs: #{booking_group[:bookings].map(&:id).join(', ').to_s}").then(:deliver)
-          false
+        }
+      end
+
+      bookings.each do |user_bookings|
+        user_bookings[:booking_groups].each do |booking_group|
+          begin
+            metadata = { booking_ids: booking_group[:bookings].map(&:id).to_s }
+            rsp = Stripe::Charge.create(
+              amount: booking_group[:total],
+              currency: 'usd',
+              customer: user_bookings[:user].stripe_customer_id,
+              source: booking_group[:payment].stripe_id,
+              statement_descriptor: "HostWise"[0..21], # 22 characters max
+              metadata: metadata
+            )
+            transaction = Transaction.create(stripe_charge_id: rsp.id, status_cd: 0, amount: booking_group[:total], transaction_type_cd: 0)
+
+            booking_group[:bookings].each do |booking|
+              transaction.bookings << booking
+              successful_payments.push booking.id
+              UserMailer.service_completed(booking).then(:deliver) if user_bookings[:user].settings(:service_completion).email
+            end
+          rescue Stripe::CardError => e
+            err  = e.json_body[:error]
+            transaction = Transaction.create(stripe_charge_id: err[:charge], status_cd: 1, failure_message: err[:message], amount: booking_group[:total])
+            booking_group[:bookings].each {|booking| transaction.bookings << booking}
+            UserMailer.generic_notification("Stripe Payment Failed - ***#{booking_group[:payment].last4}", "Booking IDs: #{booking_group[:bookings].map(&:id).join(', ').to_s}").then(:deliver)
+            false
+          end
         end
       end
+      render json: { success: true, payments: successful_payments }
+    else
+      render json: { success: false }
     end
-    render json: { success: true, payments: successful_payments }
   end
 
   def process_payouts

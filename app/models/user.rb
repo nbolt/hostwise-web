@@ -140,7 +140,7 @@ class User < ActiveRecord::Base
   end
 
   def total_spent
-    (transactions.select{|t| t.successful?}.map(&:amount).sum / 100.0).round 2
+    (transactions.select{|t| t.successful? && t.amount}.map(&:amount).sum / 100.0).round 2
   end
 
   def coupons
